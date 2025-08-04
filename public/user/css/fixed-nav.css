@@ -1,0 +1,300 @@
+/* === Container === */
+.site-container {
+    width: 1220px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* === Main Nav (Fixed) === */
+#site-main-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    /* New */
+    color: #000;
+    /* New */
+    border-bottom: 1px solid #f5f5f5;
+    /* New border */
+    z-index: 1400;
+}
+
+/* === Breaking News (fixed) === */
+#site-breaking-news {
+    position: fixed;
+    top: 60px;
+    right: 0;
+    left: 0;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    background: #C1121F;
+    color: #fff;
+    z-index: 1100;
+}
+
+/* === Secondary Nav (relative, scrolls normally) === */
+#site-secondary-nav {
+    position: relative;
+    width: 100%;
+    height: 48px;
+    background: #fff;
+    /* New */
+    color: #000;
+    /* New */
+    margin-top: 60px;
+    z-index: 800;
+    margin-bottom: 30px;
+}
+
+/* === Subnav (fixed hidden, optional) === */
+#site-subnav {
+    position: fixed;
+    top: 60px;
+    right: 0;
+    left: 0;
+    height: 48px;
+    display: none;
+    align-items: center;
+    background: #f5f5f5;
+    /* New */
+    color: #000;
+    /* New */
+    z-index: 1200;
+}
+
+/* === Inner containers === */
+#site-main-nav .site-container,
+#site-breaking-news .site-container,
+#site-secondary-nav .site-container,
+#site-subnav .site-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+/* === Main Nav Right === */
+.site-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.site-logo {
+    height: 40px;
+}
+
+.site-nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.site-nav-link {
+    cursor: pointer;
+    color: #000;
+    /* New */
+    transition: font-weight 0.2s;
+}
+
+.site-nav-link:hover {
+    color: #000;
+    /* Keep same */
+    font-weight: bold;
+    /* New bold on hover */
+}
+
+/* === Main Nav Left === */
+.site-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.site-search-input {
+    display: none;
+    border: none;
+    background-color: #f5f5f5;
+    padding: 10px 20px;
+    outline: none;
+    font-family: asswat-regular;
+}
+
+.site-search-input.active {
+    display: inline-block;
+}
+
+.site-search-input:focus {
+    border: none;
+    outline: none;
+}
+
+.site-search-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #000;
+    /* New */
+    font-size: 18px;
+}
+
+/* === Breaking News === */
+.site-breaking-news-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.site-breaking-news-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.site-breaking-label {
+    font-weight: bold;
+    padding-left: 10px;
+    border-left: 2px solid white;
+    color: white;
+}
+
+.site-breaking-text {
+    margin: 0;
+}
+
+.site-close-breaking {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* === Secondary Nav === */
+.site-secondary-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.site-secondary-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.site-latest-news {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #000;
+    /* New */
+}
+
+.site-latest-label {
+    font-weight: bold;
+    padding-left: 10px;
+    border-left: 2px solid black;
+    color: #000;
+}
+
+.site-weather-widget {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #000;
+    /* New */
+}
+
+/* .site-weather-location {
+    font-weight: bold;
+} */
+
+.site-weather-item {
+    display: flex;
+}
+
+.site-weather-item img {
+    width: 24px;
+    height: 24px;
+}
+
+.site-weather-divider {
+    width: 1px;
+    height: 30px;
+    background: #ccc;
+}
+
+/* === Subnav === */
+.site-subnav-links {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    margin: 0;
+    padding-right: 151.34px;
+
+}
+
+.site-subnav-link {
+    cursor: pointer;
+    color: #000;
+    /* New */
+    transition: font-weight 0.2s;
+}
+
+.site-subnav-link:hover {
+    color: #000;
+    /* Keep same */
+    font-weight: bold;
+    /* New */
+}
+
+#site-breaking-news.fixed-bottom {
+    top: auto;
+    bottom: 0;
+}
+
+#site-breaking-news.fade-in {
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+#site-show-subnav.active {
+    font-weight: bold;
+}
+
+
+
+@keyframes blink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
+}

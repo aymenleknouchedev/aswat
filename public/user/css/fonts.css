@@ -1,0 +1,39 @@
+@font-face {
+    font-weight: 200;
+    font-family: 'asswat-light';
+    src: url('/user/fonts/reith_qalam_bold.ttf') format('woff');
+}
+
+@font-face {
+    font-weight: 400;
+    font-family: 'asswat-regular';
+    src: url('/user/fonts/reith_qalam_regular.ttf') format('woff');
+}
+
+@font-face {
+    font-weight: 500;
+    font-family: 'asswat-medium';
+    src: url('/user/fonts/reith_qalam_bold.ttf') format('woff');
+}
+
+@font-face {
+    font-weight: 600;
+    font-family: 'asswat-bold';
+    src: url('/user/fonts/reith_qalam_extra_bold.ttf') format('woff');
+}
+
+body {
+    font-family: 'asswat-regular';
+}
+
+.font-r {
+    font-family: 'asswat-regular';
+}
+
+.font-m {
+    font-family: 'asswat-medium';
+}
+
+.font-b {
+    font-family: 'asswat-bold';
+}

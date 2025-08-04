@@ -1,0 +1,10 @@
+.search {
+    cursor: pointer;
+}
+
+.delete {
+    color: white;
+    width: 23px;
+    height: 23px;
+    cursor: pointer;
+}

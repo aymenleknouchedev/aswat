@@ -1,0 +1,97 @@
+/* === 1. Box sizing reset === */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* === 2. Remove default margins === */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+    margin: 0;
+    padding: 0;
+}
+
+/* === 3. Set core body defaults === */
+body {
+    font-family: 'asswat', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #ffffff;
+}
+
+/* === 4. Make images responsive === */
+img,
+picture {
+    max-width: 100%;
+    display: block;
+}
+
+/* === 5. Lists: remove bullets === */
+ul[role='list'],
+ol[role='list'],
+ul,
+ol {
+    list-style: none;
+}
+
+/* === 6. Links: inherit color, remove underline === */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* === 7. Container for max-width === */
+.container {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+
+/* === 8. Add some default spacing === */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600;
+}
+
+p+p {
+    margin-top: 1em;
+}
+
+/* === 9. Smooth scroll === */
+html {
+    scroll-behavior: smooth;
+}
+
+/* === 10. Buttons: basic reset === */
+button {
+    font: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+nav svg {
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+}
