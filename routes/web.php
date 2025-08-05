@@ -10,6 +10,18 @@ use App\Http\Controllers\WritterController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PagesController;
 
+// artisan commands
+use Illuminate\Support\Facades\Artisan;
+
+// Clear cache, config, routes, views
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    return 'Cache, config, routes, and views cleared successfully.';
+});
+
 
 if (env('COMING_SOON', true)) {
     Route::get('/{any}', function () {
