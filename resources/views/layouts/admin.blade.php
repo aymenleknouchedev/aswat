@@ -42,6 +42,8 @@
 
     @yield('content')
 
+
+
     <!-- JavaScript -->
     <script src="./rtl.js"></script>
 
@@ -78,6 +80,8 @@
         });
     </script>
  --}}
+    @include('components.head.tinymce-config')
+    @stack('scripts')
 
 
 </body>
