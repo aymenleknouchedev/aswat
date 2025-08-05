@@ -6,8 +6,8 @@
 
 @font-face {
     font-family: 'asswatdjazairia';
-    src: url('../fonts/reith_qalam_bold.ttf') format('woff2'),
-         url('../fonts/reith_qalam_bold.ttf') format('woff');
+    src: url('../fonts/reith_qalam_bold.woff2') format('woff2'),
+         url('../fonts/reith_qalam_bold.woff') format('woff');
 }
 
 body , h1, h2, p{
