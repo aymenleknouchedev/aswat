@@ -35,9 +35,9 @@
                                     <input type="text" name="title" class="form-control" id="title" required>
                                 </div>
                             </div>
-                            
+
                             <!-- وصف الصفحة -->
-                            <x-forms.tinymce-editor />
+                            <x-forms.tinymce-editor id="myeditorinstance" name="content" :value="$post->content ?? ''" />
 
                             <!-- محتوى الصفحة باستخدام TinyMCE -->
                             {{-- <div class="form-group">

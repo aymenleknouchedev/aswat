@@ -1,4 +1,4 @@
-@once
+{{-- @once
     @push('scripts')
         <script src="https://cdn.tiny.cloud/1/qwcigpkrm410kyux7b6j7rhygc758v6hviqqvkgf4878s508/tinymce/8/tinymce.min.js"
             referrerpolicy="origin" crossorigin="anonymous"></script>
@@ -70,4 +70,4 @@
             });
         </script>
     @endpush
-@endonce
+@endonce --}}
