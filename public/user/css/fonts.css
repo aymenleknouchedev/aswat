@@ -3,25 +3,26 @@
 @font-face {
     font-weight: 200;
     font-family: 'asswat-light';
-    src: url('../fonts/bbc-reight-qalam-bold.woff2');
+    src: url('../fonts/IBMPlexSansArabic-Bold.ttf');
+    
 }
 
 @font-face {
     font-weight: 400;
     font-family: 'asswat-regular';
-    src: url('../fonts/bbc-reight-qalam-normal.woff2');
+    src: url('../fonts/IBMPlexSansArabic-Regular.ttf');
 }
 
 @font-face {
     font-weight: 500;
     font-family: 'asswat-medium';
-    src: url('../fonts/bbc-reith-qalam-medium.woff2');
+    src: url('../fonts/IBMPlexSansArabic-Medium.ttf');
 }
 
 @font-face {
     font-weight: 600;
     font-family: 'asswat-bold';
-    src: url('../fonts/bbc-reith-qalam-bold.woff2');
+    src: url('../fonts/IBMPlexSansArabic-Bold.ttf');
 }
 
 
