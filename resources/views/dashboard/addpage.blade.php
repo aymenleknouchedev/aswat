@@ -37,14 +37,14 @@
                             </div>
 
                             <!-- محتوى الصفحة باستخدام TinyMCE -->
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label class="form-label" for="content" data-en="Content" data-ar="المحتوى">المحتوى</label>
                                 <div class="form-control-wrap">
                                     <div class="inner-card">
                                         <textarea id="editor">مرحبا بك في TinyMCE</textarea>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <!-- زر الإرسال -->
                             <div class="form-group">

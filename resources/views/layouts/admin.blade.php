@@ -49,8 +49,7 @@
     <script src="./dashlite/assets/js/scripts.js?ver=3.3.0"></script>
     <script src="./dashlite/assets/js/charts/gd-default.js?ver=3.3.0"></script>
 
-    <script src="https://cdn.tiny.cloud/1/YOUR_API_KEY/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script src="https://cdn.tiny.cloud/1/YOUR_API_KEY/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    {{-- <script src="https://cdn.tiny.cloud/1/qwcigpkrm410kyux7b6j7rhygc758v6hviqqvkgf4878s508/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
             selector: '#editor',
@@ -78,7 +77,7 @@
             }
         });
     </script>
-
+ --}}
 
 
 </body>
