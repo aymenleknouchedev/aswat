@@ -5,12 +5,14 @@
 */
 
 @font-face {
-    font-family: 'asswatdjazairia';
-    src: url('../fonts/reith_qalam_bold.woff2') format('woff2'),
-         url('../fonts/reith_qalam_bold.woff') format('woff');
+	font-family: 'asswatdjazairia';
+	src: url('../fonts/reith_qalam_bold.woff');
 }
 
-body , h1, h2, p{
+body,
+h1,
+h2,
+p {
 	font-family: 'asswatdjazairia';
 }
 
@@ -19,26 +21,26 @@ h2,
 h3,
 h4,
 h5,
-h6{
-	margin:0;
+h6 {
+	margin: 0;
 	font-weight: 700;
 }
 
-img{
+img {
 	max-width: 100%;
 }
 
-a:hover{
+a:hover {
 	text-decoration: none;
 	outline: 0;
 }
 
-a:focus{
+a:focus {
 	text-decoration: none;
 	outline: 0;
 }
 
-.comming-soon{
+.comming-soon {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -48,10 +50,10 @@ a:focus{
 	background-size: cover;
 	display: flex;
 	align-items: center;
-	
+
 }
 
-.comming-soon:before{
+.comming-soon:before {
 	content: '';
 	display: block;
 	position: absolute;
@@ -59,47 +61,45 @@ a:focus{
 	right: 0;
 	left: 0;
 	bottom: 0;
-	background: rgba(0,0,0,0.6);
+	background: rgba(0, 0, 0, 0.6);
 }
 
-.coming-soon-box{
+.coming-soon-box {
 	width: 100%;
 	text-align: center;
 	color: #aeaeae;
 }
 
-.logo{
+.logo {
 	position: fixed;
 	top: 30px;
 	right: 30px;
 }
 
-.logo h1{
+.logo h1 {
 	font-size: 36px;
 	font-weight: 700;
 	color: #fff;
 }
 
-.logo h1:first-letter{
+.logo h1:first-letter {
 	color: #52B788;
 }
 
-.logo p{
+.logo p {
 	font-size: 12px;
 	color: #fff;
 	letter-spacing: 0.08em;
 }
 
-.coming-text{
-	
-}
+.coming-text {}
 
-.coming-text p{
+.coming-text p {
 	color: #fff;
 	font-size: 20px;
 }
 
-.coming-text h2{
+.coming-text h2 {
 	color: #e1e1e1;
 	font-size: 54px;
 	letter-spacing: 0.1em;
@@ -108,57 +108,55 @@ a:focus{
 	margin: 20px 0;
 }
 
-.typing-title{
+.typing-title {
 	display: none;
 }
 
-.countdown-timer-wrapper{
+.countdown-timer-wrapper {
 	margin: 60px 0 20px;
 }
 
-.timer .timer-wrapper{
+.timer .timer-wrapper {
 	display: inline-block;
 	width: 132px;
 	height: 132px;
-	border: 6px solid rgba(255,255,255,0.5);
+	border: 6px solid rgba(255, 255, 255, 0.5);
 	border-radius: 50%;
 	margin: 0 20px 30px;
 	padding-top: 22px;
 }
 
-.timer .timer-wrapper .time{
+.timer .timer-wrapper .time {
 	font-size: 54px;
 	color: #fff;
 	font-weight: 700;
 	line-height: 1em;
 }
 
-.timer .timer-wrapper .text{
+.timer .timer-wrapper .text {
 	color: #52B788;
 	text-transform: uppercase;
 	font-size: 16px;
 }
 
-.newsletter{
-	
-}
+.newsletter {}
 
-.newsletter-form{
+.newsletter-form {
 	margin-top: 30px;
 }
 
-.new-text{
+.new-text {
 	width: 70%;
 	display: inline-block;
 	background: none;
-	border: 1px solid rgba(255,255,255,0.5);
+	border: 1px solid rgba(255, 255, 255, 0.5);
 	height: 44px;
 	padding: 0 20px;
 	margin-right: 2%;
 	outline: 0;
 }
 
-.new-btn{
+.new-btn {
 	border: none;
 	height: 44px;
 	width: 28%;
@@ -174,17 +172,17 @@ a:focus{
 	outline: 0;
 }
 
-.new-btn:hover{
+.new-btn:hover {
 	opacity: 0.8;
 }
 
-.social-link{
+.social-link {
 	position: fixed;
 	bottom: 30px;
 	right: 30px;
 }
 
-.social-link a{
+.social-link a {
 	display: inline-block;
 	margin: 0 6px;
 	color: #fff;
@@ -192,26 +190,26 @@ a:focus{
 	transition: all 0.3s;
 }
 
-.social-link a:hover{
+.social-link a:hover {
 	color: #52B788;
 }
 
-@media only screen and (max-width:768px){
-	.logo{
+@media only screen and (max-width:768px) {
+	.logo {
 		position: relative;
 		top: auto;
 		left: auto;
 	}
-	
-	.social-link{
+
+	.social-link {
 		width: 100%;
 		position: relative;
 		top: 0;
 		left: 0;
 		margin-top: 30px;
 	}
-	
-	.coming-soon-box{
+
+	.coming-soon-box {
 		padding: 30px 0;
 	}
 }
@@ -220,27 +218,27 @@ a:focus{
 		Responsive Media Query
 ****************************************/
 
-@media only screen and (max-width:480px){
-	.timer .timer-wrapper{
+@media only screen and (max-width:480px) {
+	.timer .timer-wrapper {
 		width: 100px;
 		height: 100px;
 		border-width: 4px;
 	}
-	
-	.coming-text h2{
+
+	.coming-text h2 {
 		font-size: 30px;
 	}
-	
-	.coming-text p{
+
+	.coming-text p {
 		font-size: 18px;
 		margin-bottom: 0;
 	}
-	
-	.timer .timer-wrapper .time{
+
+	.timer .timer-wrapper .time {
 		font-size: 34px;
 	}
 
-	.timer .timer-wrapper .text{
+	.timer .timer-wrapper .text {
 		font-size: 12px;
 	}
 }
