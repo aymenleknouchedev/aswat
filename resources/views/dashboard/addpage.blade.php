@@ -6,6 +6,7 @@
     <div class="nk-app-root">
         <div class="nk-main">
             @include('dashboard.components.sidebar')
+
             <div class="nk-wrap">
                 @include('dashboard.components.header')
 
@@ -29,8 +30,9 @@
 
                             <!-- عنوان الصفحة -->
                             <div class="form-group">
-                                <label class="form-label" for="title" data-en="Page Title" data-ar="عنوان الصفحة">عنوان
-                                    الصفحة</label>
+                                <label class="form-label" for="title" data-en="Page Title" data-ar="عنوان الصفحة">
+                                    عنوان الصفحة
+                                </label>
                                 <div class="form-control-wrap">
                                     <input type="text" name="title" class="form-control" id="title" required>
                                 </div>
@@ -39,20 +41,23 @@
                             <!-- وصف الصفحة -->
                             <x-forms.tinymce-editor id="myeditorinstance" name="content" :value="$post->content ?? ''" />
 
-                            <!-- محتوى الصفحة باستخدام TinyMCE -->
-                            {{-- <div class="form-group">
-                                <label class="form-label" for="content" data-en="Content" data-ar="المحتوى">المحتوى</label>
-                                <div class="form-control-wrap">
-                                    <div class="inner-card">
-                                        <textarea id="editor">مرحبا بك في TinyMCE</textarea>
-                                    </div>
+                            <!-- محتوى الصفحة باستخدام TinyMCE (معلق) -->
+                            {{--
+                        <div class="form-group">
+                            <label class="form-label" for="content" data-en="Content" data-ar="المحتوى">المحتوى</label>
+                            <div class="form-control-wrap">
+                                <div class="inner-card">
+                                    <textarea id="editor">مرحبا بك في TinyMCE</textarea>
                                 </div>
-                            </div> --}}
-
+                            </div>
+                        </div>
+                        --}}
+                            <br>
                             <!-- زر الإرسال -->
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary" data-en="Add Page" data-ar="إضافة صفحة">إضافة
-                                    صفحة</button>
+                                <button type="submit" class="btn btn-primary" data-en="Add Page" data-ar="إضافة صفحة">
+                                    إضافة صفحة
+                                </button>
                             </div>
                         </form>
 
