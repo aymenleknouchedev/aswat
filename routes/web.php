@@ -9,6 +9,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\WritterController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\ContentController;
 
 // artisan commands
 use Illuminate\Support\Facades\Artisan;

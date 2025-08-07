@@ -1,3 +1,5 @@
 <form method="post">
-  <textarea id="myeditorinstance">Hello, World!</textarea>
+  <textarea id="myeditorinstance">
+    أدخل المحتوى هنا...
+  </textarea>
 </form>

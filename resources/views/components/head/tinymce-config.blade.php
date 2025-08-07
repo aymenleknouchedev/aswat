@@ -4,6 +4,7 @@
     const theme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
 
     tinymce.init({
+        directionality: 'rtl',
         height: 600,
         promotion: false,
         onboarding: false,
