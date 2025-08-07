@@ -1,3 +1,71 @@
+<?php
+$fakeContents = [
+    [
+        'title' => 'تأثير الذكاء الاصطناعي على سوق العمل في 2025',
+        'date' => '2025-08-01',
+        'author' => 'أحمد العلي',
+        'status' => 'Published',
+    ],
+    [
+        'title' => 'أفضل 10 استراتيجيات لتسويق المنتجات عبر الإنترنت',
+        'date' => '2025-07-28',
+        'author' => 'سارة منصور',
+        'status' => 'Draft',
+    ],
+    [
+        'title' => 'دليل شامل لتصميم واجهات المستخدم UI/UX',
+        'date' => '2025-07-15',
+        'author' => 'ليلى خالد',
+        'status' => 'Published',
+    ],
+    [
+        'title' => 'أحدث تقنيات الطاقة المتجددة في الشرق الأوسط',
+        'date' => '2025-07-10',
+        'author' => 'محمد ناصر',
+        'status' => 'Cancelled',
+    ],
+    [
+        'title' => 'كيف تبدأ مشروعك الناشئ برأس مال صغير',
+        'date' => '2025-06-30',
+        'author' => 'ريم أحمد',
+        'status' => 'Published',
+    ],
+    [
+        'title' => 'مستقبل العملات الرقمية بعد تنظيم الأسواق',
+        'date' => '2025-06-20',
+        'author' => 'عمر ياسين',
+        'status' => 'Draft',
+    ],
+    [
+        'title' => 'أسرار كتابة محتوى يجذب العملاء',
+        'date' => '2025-06-15',
+        'author' => 'نور الهدى',
+        'status' => 'Published',
+    ],
+    [
+        'title' => 'تأثير التغير المناخي على الزراعة العربية',
+        'date' => '2025-06-05',
+        'author' => 'خالد فؤاد',
+        'status' => 'Cancelled',
+    ],
+    [
+        'title' => 'أفضل الأدوات لإدارة فريق العمل عن بعد',
+        'date' => '2025-05-28',
+        'author' => 'هبة حسين',
+        'status' => 'Published',
+    ],
+    [
+        'title' => 'كيف تحافظ على أمان بياناتك الشخصية على الإنترنت',
+        'date' => '2025-05-15',
+        'author' => 'زياد محمود',
+        'status' => 'Draft',
+    ],
+];
+
+?>
+
+
+
 @extends('layouts.admin')
 
 @section('title', 'أصوات جزائرية | لوحة التحكم')
@@ -11,9 +79,11 @@
 
                 <!-- Language Switcher -->
                 <div class="language-switcher p-3 text-end">
-                    <button id="arabic" class="btn btn-outline-primary btn-sm me-2">عربي</button>
-                    <button id="english" class="btn btn-outline-secondary btn-sm">English</button>
-                    <span id="language-button-label" class="ms-2">English</span>
+                    <button id="arabic" class="btn btn-outline-primary btn-sm me-2" data-en="Arabic"
+                        data-ar="عربي">عربي</button>
+                    <button id="english" class="btn btn-outline-secondary btn-sm" data-en="English"
+                        data-ar="إنجليزي">English</button>
+                    <span id="language-button-label" class="ms-2" data-en="English" data-ar="إنجليزي">English</span>
                 </div>
 
                 <div class="nk-content">
@@ -21,11 +91,13 @@
                         <div class="card-inner">
                             <!-- Header Section -->
                             <div class="card-title mb-5">
-                                <h3 class="title" data-en="Welcome to Dashboard" data-ar="مرحبًا بك في لوحة التحكم">Welcome
-                                    to Dashboard</h3>
+                                <h3 class="title" data-en="Welcome to Dashboard" data-ar="مرحبًا بك في لوحة التحكم">
+                                    Welcome to Dashboard
+                                </h3>
                                 <p data-en="Add new content easily using the tools below."
-                                    data-ar="أضف محتوى جديد بسهولة باستخدام الأدوات أدناه.">Add new content easily using the
-                                    tools below.</p>
+                                    data-ar="أضف محتوى جديد بسهولة باستخدام الأدوات أدناه.">
+                                    Add new content easily using the tools below.
+                                </p>
                             </div>
 
                             <!-- 3 Lists Section -->
@@ -90,7 +162,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-6 col-xl-3">
                                     <div class="card card-bordered text-center h-100">
                                         <div class="card-inner">
@@ -100,7 +171,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-6 col-xl-3">
                                     <div class="card card-bordered text-center h-100">
                                         <div class="card-inner">
@@ -110,7 +180,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-6 col-xl-3">
                                     <div class="card card-bordered text-center h-100">
                                         <div class="card-inner">
@@ -123,102 +192,81 @@
                                 </div>
                             </div>
 
-                            <!-- Last 3 Cards Section -->
-                            <div class="row g-gs">
-                                <!-- Monthly Goals Tracker -->
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="card card-bordered h-100">
-                                        <div class="card-inner">
-                                            <div class="card-title-group align-start mb-3">
-                                                <div class="card-title">
-                                                    <h6 class="title" data-en="🎯 Monthly Goals"
-                                                        data-ar="🎯 إنجازات هذا الشهر">🎯 إنجازات هذا الشهر</h6>
-                                                    <p class="text-soft" data-en="Target articles vs published"
-                                                        data-ar="عدد المقالات المستهدفة مقابل المنشور">عدد المقالات
-                                                        المستهدفة مقابل المنشور</p>
-                                                </div>
-                                            </div>
-                                            <div class="progress progress-md mb-3">
-                                                <div class="progress-bar bg-primary" data-progress="60"
-                                                    style="width: 60%;"></div>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <div>
-                                                    <span class="text-soft" data-en="Target:"
-                                                        data-ar="المستهدف:">المستهدف:</span>
-                                                    <span class="fw-bold">30 مقال</span>
-                                                </div>
-                                                <div>
-                                                    <span class="text-soft" data-en="Published:"
-                                                        data-ar="المنشور:">المنشور:</span>
-                                                    <span class="fw-bold">18 مقال</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <!-- Last 10 Contents Table -->
+                                <!-- Table Header with Title & Button -->
+                                <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                                    <h5 class="mb-0" data-en="Last 10 Contents" data-ar="آخر 10 محتويات">آخر 10 محتويات
+                                    </h5>
+                                    <a href="" class="btn btn-sm btn-outline-primary" data-en="View All Content"
+                                        data-ar="عرض كل المحتويات">
+                                        عرض كل المحتويات
+                                    </a>
                                 </div>
 
-                                <!-- Team Notes -->
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="card card-bordered h-100">
-                                        <div class="card-inner">
-                                            <div class="card-title-group align-start mb-3">
-                                                <div class="card-title">
-                                                    <h6 class="title" data-en="📝 Team Notes"
-                                                        data-ar="📝 ملاحظات الفريق">📝 ملاحظات الفريق</h6>
-                                                    <p class="text-soft" data-en="Message visible to all editorial team"
-                                                        data-ar="رسالة تظهر لجميع أعضاء فريق التحرير">رسالة تظهر لجميع
-                                                        أعضاء فريق التحرير</p>
-                                                </div>
-                                            </div>
-                                            <div class="alert alert-primary alert-icon">
-                                                <em class="icon ni ni-info"></em>
-                                                <strong data-en="Reminder:" data-ar="تذكير:">تذكير:</strong>
-                                                <span
-                                                    data-en="Make sure to review articles before publishing at the end of the week."
-                                                    data-ar="تأكد من مراجعة المقالات قبل نشرها نهاية الأسبوع.">
-                                                    تأكد من مراجعة المقالات قبل نشرها نهاية الأسبوع.
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Add Note Section -->
-                                <div class="col-md-12 col-lg-4">
-                                    <div class="card card-bordered h-100">
-                                        <div class="card-inner">
-                                            <div class="card-title-group mb-3">
-                                                <div class="card-title">
-                                                    <h6 class="title" data-en="🗒️ Add New Note"
-                                                        data-ar="🗒️ إضافة ملاحظة جديدة">🗒️ إضافة ملاحظة جديدة</h6>
-                                                    <p class="text-soft" data-en="Write a note visible to team members"
-                                                        data-ar="اكتب ملاحظة تظهر لأعضاء الفريق">اكتب ملاحظة تظهر لأعضاء
-                                                        الفريق</p>
-                                                </div>
-                                            </div>
-
-                                            <form method="POST">
-                                                @csrf
-                                                <div class="row gy-3">
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <textarea name="note" class="form-control no-resize" rows="4" placeholder="أدخل الملاحظة هنا..."
-                                                                data-en-placeholder="Enter your note here..." data-ar-placeholder="أدخل الملاحظة هنا..."></textarea>
+                                <!-- Scrollable Table -->
+                                <div style="">
+                                    <table class="table table-orders">
+                                        <thead class="tb-odr-head sticky-top bg-grey" style="z-index: 10;">
+                                            <tr>
+                                                <th style="font-weight: bold; color: #333;" data-en="Title"
+                                                    data-ar="العنوان">العنوان</th>
+                                                <th style="font-weight: bold; color: #333;" data-en="Date"
+                                                    data-ar="التاريخ">التاريخ</th>
+                                                <th style="font-weight: bold; color: #333;" data-en="Author"
+                                                    data-ar="الكاتب">الكاتب</th>
+                                                <th style="font-weight: bold; color: #333;" data-en="Status"
+                                                    data-ar="الحالة">الحالة</th>
+                                                <th style="font-weight: bold; color: #333;" data-en="Actions"
+                                                    data-ar="إجراءات">إجراءات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($fakeContents as $content)
+                                                <tr>
+                                                    <td>{{ $content['title'] }}</td>
+                                                    <td>{{ $content['date'] }}</td>
+                                                    <td>{{ $content['author'] }}</td>
+                                                    <td>
+                                                        @if ($content['status'] == 'Published')
+                                                            <span class="badge badge-dot bg-success" data-en="Published"
+                                                                data-ar="منشور">منشور</span>
+                                                        @elseif($content['status'] == 'Draft')
+                                                            <span class="badge badge-dot bg-warning" data-en="Draft"
+                                                                data-ar="مسودة">مسودة</span>
+                                                        @elseif($content['status'] == 'Cancelled')
+                                                            <span class="badge badge-dot bg-danger" data-en="Cancelled"
+                                                                data-ar="ملغي">ملغي</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <div class="tb-odr-btns d-none d-md-inline">
+                                                            <a href="#" class="btn btn-sm btn-primary"
+                                                                data-en="View" data-ar="عرض">عرض</a>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <button type="submit" class="btn btn-primary">
-                                                            <em class="icon ni ni-save"></em>
-                                                            <span data-en="Save" data-ar="حفظ">حفظ</span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+                                                        <div class="dropdown">
+                                                            <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                                                data-bs-toggle="dropdown" data-offset="-8,0">
+                                                                <em class="icon ni ni-more-h"></em>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                                                <ul class="link-list-plain">
+                                                                    <li><a href="#" class="text-primary"
+                                                                            data-en="Edit" data-ar="تعديل">تعديل</a></li>
+                                                                    <li><a href="#" class="text-primary"
+                                                                            data-en="View" data-ar="عرض">عرض</a></li>
+                                                                    <li><a href="#" class="text-danger"
+                                                                            data-en="Delete" data-ar="حذف">حذف</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
+                         
+
                         </div>
                     </div>
                 </div>
