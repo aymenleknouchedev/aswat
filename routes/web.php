@@ -44,6 +44,7 @@ if (env('COMING_SOON', true)) {
         // تعريف المجموعات المتكررة
         $entities = [
             'user' => AuthController::class,
+            'content' => ContentController::class,
             'writer' => WritterController::class,
             'tag' => TagController::class,
             'section' => SectionController::class,
