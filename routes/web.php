@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BreakingNewsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\TagController;
@@ -38,11 +39,7 @@ if (env('COMING_SOON', true)) {
 
 
     Route::prefix('dashboard')->group(function () {
-        // Dashboard
-        Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');
-        Route::get('/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
 
-        // تعريف المجموعات المتكررة
         $entities = [
             'user' => AuthController::class,
             'content' => ContentController::class,
@@ -51,6 +48,7 @@ if (env('COMING_SOON', true)) {
             'section' => SectionController::class,
             'categorie' => CategoryController::class,
             'page' => PagesController::class,
+            'breakingnew' => BreakingNewsController::class,
 
         ];
 
@@ -70,6 +68,13 @@ if (env('COMING_SOON', true)) {
         Route::get('/auth', [AuthController::class, 'auth'])->name('dashboard.user.auth');
         Route::get('/login', [AuthController::class, 'login'])->name('dashboard.login');
         Route::get('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
+
+        // Dashboard
+        Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');
+        Route::get('/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
+
+
+       
     });
 
 

@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ContentController extends Controller
+class BreakingNewsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // Logic to retrieve and display all contents
-        return view('dashboard.allcontents');
+        // Logic to retrieve and display all breaking news
     }
 
     /**
@@ -20,7 +19,7 @@ class ContentController extends Controller
      */
     public function create()
     {
-        return view('dashboard.addcontent');
+        return view('dashboard.addbreakingnew');
     }
 
     /**

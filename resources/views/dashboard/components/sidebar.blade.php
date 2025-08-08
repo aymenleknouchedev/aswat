@@ -41,12 +41,12 @@
                             <span class="nk-menu-text" data-en="Content" data-ar="المحتوى">Content</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="/contents" class="nk-menu-link"><span class="nk-menu-text"
+                            <li class="nk-menu-item"><a href="dashboard/contents" class="nk-menu-link"><span class="nk-menu-text"
                                         data-en="All Contents" data-ar="جميع المحتوى">All Contents</span></a></li>
-                            <li class="nk-menu-item"><a href="/contents/create" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="dashboard/content-create" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="Add Content" data-ar="إضافة محتوى">Add
                                         Content</span></a></li>
-                            <li class="nk-menu-item"><a href="/contents/breaking" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="dashboard/breakingnew-create" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="Add Breaking News" data-ar="إضافة خبر عاجل">Add
                                         Breaking News</span></a></li>
                         </ul>
