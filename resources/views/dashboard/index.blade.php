@@ -77,15 +77,6 @@ $fakeContents = [
             <div class="nk-wrap">
                 @include('dashboard.components.header')
 
-                <!-- Language Switcher -->
-                <div class="language-switcher p-3 text-end">
-                    <button id="arabic" class="btn btn-outline-primary btn-sm me-2" data-en="Arabic"
-                        data-ar="عربي">عربي</button>
-                    <button id="english" class="btn btn-outline-secondary btn-sm" data-en="English"
-                        data-ar="إنجليزي">English</button>
-                    <span id="language-button-label" class="ms-2" data-en="English" data-ar="إنجليزي">English</span>
-                </div>
-
                 <div class="nk-content">
                     <div class="container-fluid bg-white">
                         <div class="card-inner">
@@ -94,9 +85,9 @@ $fakeContents = [
                                 <h3 class="title" data-en="Welcome to Dashboard" data-ar="مرحبًا بك في لوحة التحكم">
                                     Welcome to Dashboard
                                 </h3>
-                                <p data-en="Add new content easily using the tools below."
+                                <p data-en="Access to some features easily using the tools below."
                                     data-ar="أضف محتوى جديد بسهولة باستخدام الأدوات أدناه.">
-                                    Add new content easily using the tools below.
+                                    Access to some features easily using the tools below.
                                 </p>
                             </div>
 
@@ -105,49 +96,88 @@ $fakeContents = [
                                 <!-- List 1 -->
                                 <div class="col-sm-6 col-md-4 col-xxl-3">
                                     <div class="fake-class">
-                                        <h5 class="title" data-en="Add Content" data-ar="إضافة محتوى">Add Content</h5>
+                                        <h5 class="title" data-en="Content Management" data-ar="إدارة المحتوى">Content
+                                            Management</h5>
                                         <ul class="link-list is-compact pb-0">
-                                            <li><a href="#"><em class="icon ni ni-edit-fill"></em><span
-                                                        data-en="Add New Content" data-ar="إضافة محتوى جديد">Add New
-                                                        Content</span></a></li>
-                                            <li><a href="#"><em class="icon ni ni-alert-circle"></em><span
-                                                        data-en="Add Breaking News" data-ar="إضافة خبر عاجل">Add Breaking
-                                                        News</span></a></li>
+                                            <li>
+                                                <a href="#">
+                                                    <em class="icon ni ni-plus"></em>
+                                                    <span data-en="Add Content" data-ar="إضافة محتوى">Add Content</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <em class="icon ni ni-upload-cloud"></em>
+                                                    <span data-en="Upload Media" data-ar="رفع وسائط">Upload Media</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <em class="icon ni ni-alert-circle-fill"></em>
+                                                    <span data-en="Add Breaking News" data-ar="إضافة خبر عاجل">Add Breaking
+                                                        News</span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
+
 
                                 <!-- List 2 -->
                                 <div class="col-sm-6 col-md-4 col-xxl-3">
                                     <div class="fake-class">
                                         <h5 class="title" data-en="Structure" data-ar="البنية">Structure</h5>
                                         <ul class="link-list is-compact pb-0">
-                                            <li><a href="#"><em class="icon ni ni-trend-up"></em><span
-                                                        data-en="Add Trend" data-ar="إضافة ترند">Add Trend</span></a></li>
-                                            <li><a href="#"><em class="icon ni ni-grid-alt"></em><span
-                                                        data-en="Add Window" data-ar="إضافة نافذة">Add Window</span></a>
+                                            <li>
+                                                <a href="#">
+                                                    <em class="icon ni ni-list-thumb"></em>
+                                                    <span data-en="Add Category" data-ar="إضافة تصنيف">Add Category</span>
+                                                </a>
                                             </li>
-                                            <li><a href="#"><em class="icon ni ni-list-thumb"></em><span
-                                                        data-en="Add Category" data-ar="إضافة تصنيف">Add Category</span></a>
+                                            <li>
+                                                <a href="#">
+                                                    <em class="icon ni ni-trend-up"></em>
+                                                    <span data-en="Add Trend" data-ar="إضافة ترند">Add Trend</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <em class="icon ni ni-grid-alt"></em>
+                                                    <span data-en="Add Window" data-ar="إضافة نافذة">Add Window</span>
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
+
 
                                 <!-- List 3 -->
                                 <div class="col-sm-6 col-md-4 col-xxl-3">
                                     <div class="fake-class">
                                         <h5 class="title" data-en="More Actions" data-ar="إجراءات أخرى">More Actions</h5>
                                         <ul class="link-list is-compact pb-0">
-                                            <li><a href="#"><em class="icon ni ni-tag-alt"></em><span
-                                                        data-en="Add Tag" data-ar="إضافة وسم">Add Tag</span></a></li>
-                                            <li><a href="#"><em class="icon ni ni-img"></em><span data-en="Add Media"
-                                                        data-ar="إضافة وسائط">Add Media</span></a></li>
-                                            <li><a href="#"><em class="icon ni ni-user-add"></em><span
-                                                        data-en="Add Writer" data-ar="إضافة كاتب">Add Writer</span></a></li>
+                                            <li>
+                                                <a href="#">
+                                                    <em class="icon ni ni-user"></em>
+                                                    <span data-en="Add User" data-ar="إضافة مستخدم">Add User</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <em class="icon ni ni-user-add"></em>
+                                                    <span data-en="Add Writer" data-ar="إضافة كاتب">Add Writer</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <em class="icon ni ni-tag-alt"></em>
+                                                    <span data-en="Add Tag" data-ar="إضافة وسم">Add Tag</span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
+
                             </div>
 
                             <!-- 4 Stats Cards Section -->
@@ -155,7 +185,7 @@ $fakeContents = [
                                 <div class="col-sm-6 col-xl-3">
                                     <div class="card card-bordered text-center h-100">
                                         <div class="card-inner">
-                                            <em class="icon ni ni-edit fs-2 text-primary mb-2"></em>
+                                            <em class="icon ni ni-file-text fs-2 text-primary mb-2"></em>
                                             <h4 class="mb-0">128</h4>
                                             <p class="text-soft" data-en="Total Articles" data-ar="إجمالي المقالات">Total
                                                 Articles</p>
@@ -165,107 +195,110 @@ $fakeContents = [
                                 <div class="col-sm-6 col-xl-3">
                                     <div class="card card-bordered text-center h-100">
                                         <div class="card-inner">
-                                            <em class="icon ni ni-users fs-2 text-success mb-2"></em>
+                                            <em class="icon ni ni-calendar-check fs-2 text-success mb-2"></em>
                                             <h4 class="mb-0">24</h4>
-                                            <p class="text-soft" data-en="Writers" data-ar="الكتّاب">Writers</p>
+                                            <p class="text-soft" data-en="Today’s Published Articles"
+                                                data-ar="مقالات اليوم المنشورة">Today’s Published Articles</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-xl-3">
                                     <div class="card card-bordered text-center h-100">
                                         <div class="card-inner">
-                                            <em class="icon ni ni-comments fs-2 text-info mb-2"></em>
-                                            <h4 class="mb-0">314</h4>
-                                            <p class="text-soft" data-en="Comments" data-ar="التعليقات">Comments</p>
+                                            <em class="icon ni ni-check-circle fs-2 text-warning mb-2"></em>
+                                            <h4 class="mb-0">10</h4>
+                                            <p class="text-soft" data-en="Articles Pending Approval"
+                                                data-ar="مقالات في انتظار الموافقة">Articles Pending Approval</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-xl-3">
                                     <div class="card card-bordered text-center h-100">
                                         <div class="card-inner">
-                                            <em class="icon ni ni-eye fs-2 text-warning mb-2"></em>
-                                            <h4 class="mb-0">5.4K</h4>
-                                            <p class="text-soft" data-en="Total Views" data-ar="إجمالي المشاهدات">Total
-                                                Views</p>
+                                            <em class="icon ni ni-upload-cloud fs-2 text-info mb-2"></em>
+                                            <h4 class="mb-0">58</h4>
+                                            <p class="text-soft" data-en="Total Media Uploads"
+                                                data-ar="إجمالي الوسائط المرفوعة">Total Media Uploads</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Last 10 Contents Table -->
-                                <!-- Table Header with Title & Button -->
-                                <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
-                                    <h5 class="mb-0" data-en="Last 10 Contents" data-ar="آخر 10 محتويات">آخر 10 محتويات
-                                    </h5>
-                                    <a href="" class="btn btn-sm btn-outline-primary" data-en="View All Content"
-                                        data-ar="عرض كل المحتويات">
-                                        عرض كل المحتويات
-                                    </a>
-                                </div>
 
-                                <!-- Scrollable Table -->
-                                <div style="">
-                                    <table class="table table-orders">
-                                        <thead class="tb-odr-head sticky-top bg-grey" style="z-index: 10;">
+                            <!-- Last 10 Contents Table -->
+                            <!-- Table Header with Title & Button -->
+                            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                                <h5 class="mb-0" data-en="Last 10 Contents" data-ar="آخر 10 محتويات">آخر 10 محتويات
+                                </h5>
+                                <a href="" class="btn btn-sm btn-outline-primary" data-en="View All Content"
+                                    data-ar="عرض كل المحتويات">
+                                    عرض كل المحتويات
+                                </a>
+                            </div>
+
+                            <!-- Scrollable Table -->
+                            <div style="">
+                                <table class="table table-orders">
+                                    <thead class="tb-odr-head sticky-top bg-grey" style="z-index: 10;">
+                                        <tr>
+                                            <th style="font-weight: bold; color: #333;" data-en="Title"
+                                                data-ar="العنوان">العنوان</th>
+                                            <th style="font-weight: bold; color: #333;" data-en="Date" data-ar="التاريخ">
+                                                التاريخ</th>
+                                            <th style="font-weight: bold; color: #333;" data-en="Author"
+                                                data-ar="الكاتب">الكاتب</th>
+                                            <th style="font-weight: bold; color: #333;" data-en="Status"
+                                                data-ar="الحالة">الحالة</th>
+                                            <th style="font-weight: bold; color: #333;" data-en="Actions"
+                                                data-ar="إجراءات">إجراءات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($fakeContents as $content)
                                             <tr>
-                                                <th style="font-weight: bold; color: #333;" data-en="Title"
-                                                    data-ar="العنوان">العنوان</th>
-                                                <th style="font-weight: bold; color: #333;" data-en="Date"
-                                                    data-ar="التاريخ">التاريخ</th>
-                                                <th style="font-weight: bold; color: #333;" data-en="Author"
-                                                    data-ar="الكاتب">الكاتب</th>
-                                                <th style="font-weight: bold; color: #333;" data-en="Status"
-                                                    data-ar="الحالة">الحالة</th>
-                                                <th style="font-weight: bold; color: #333;" data-en="Actions"
-                                                    data-ar="إجراءات">إجراءات</th>
+                                                <td>{{ $content['title'] }}</td>
+                                                <td>{{ $content['date'] }}</td>
+                                                <td>{{ $content['author'] }}</td>
+                                                <td>
+                                                    @if ($content['status'] == 'Published')
+                                                        <span class="badge badge-dot bg-success" data-en="Published"
+                                                            data-ar="منشور">منشور</span>
+                                                    @elseif($content['status'] == 'Draft')
+                                                        <span class="badge badge-dot bg-warning" data-en="Draft"
+                                                            data-ar="مسودة">مسودة</span>
+                                                    @elseif($content['status'] == 'Cancelled')
+                                                        <span class="badge badge-dot bg-danger" data-en="Cancelled"
+                                                            data-ar="ملغي">ملغي</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <div class="tb-odr-btns d-none d-md-inline">
+                                                        <a href="#" class="btn btn-sm btn-primary" data-en="View"
+                                                            data-ar="عرض">عرض</a>
+                                                    </div>
+                                                    <div class="dropdown">
+                                                        <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
+                                                            data-bs-toggle="dropdown" data-offset="-8,0">
+                                                            <em class="icon ni ni-more-h"></em>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                                                            <ul class="link-list-plain">
+                                                                <li><a href="#" class="text-primary" data-en="Edit"
+                                                                        data-ar="تعديل">تعديل</a></li>
+                                                                <li><a href="#" class="text-primary" data-en="View"
+                                                                        data-ar="عرض">عرض</a></li>
+                                                                <li><a href="#" class="text-danger"
+                                                                        data-en="Delete" data-ar="حذف">حذف</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($fakeContents as $content)
-                                                <tr>
-                                                    <td>{{ $content['title'] }}</td>
-                                                    <td>{{ $content['date'] }}</td>
-                                                    <td>{{ $content['author'] }}</td>
-                                                    <td>
-                                                        @if ($content['status'] == 'Published')
-                                                            <span class="badge badge-dot bg-success" data-en="Published"
-                                                                data-ar="منشور">منشور</span>
-                                                        @elseif($content['status'] == 'Draft')
-                                                            <span class="badge badge-dot bg-warning" data-en="Draft"
-                                                                data-ar="مسودة">مسودة</span>
-                                                        @elseif($content['status'] == 'Cancelled')
-                                                            <span class="badge badge-dot bg-danger" data-en="Cancelled"
-                                                                data-ar="ملغي">ملغي</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <div class="tb-odr-btns d-none d-md-inline">
-                                                            <a href="#" class="btn btn-sm btn-primary"
-                                                                data-en="View" data-ar="عرض">عرض</a>
-                                                        </div>
-                                                        <div class="dropdown">
-                                                            <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
-                                                                data-bs-toggle="dropdown" data-offset="-8,0">
-                                                                <em class="icon ni ni-more-h"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
-                                                                <ul class="link-list-plain">
-                                                                    <li><a href="#" class="text-primary"
-                                                                            data-en="Edit" data-ar="تعديل">تعديل</a></li>
-                                                                    <li><a href="#" class="text-primary"
-                                                                            data-en="View" data-ar="عرض">عرض</a></li>
-                                                                    <li><a href="#" class="text-danger"
-                                                                            data-en="Delete" data-ar="حذف">حذف</a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                         
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
 
                         </div>
                     </div>
