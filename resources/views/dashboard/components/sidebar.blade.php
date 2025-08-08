@@ -11,7 +11,7 @@
         </div>
         <div class="nk-sidebar-brand">
             <a href="/dashboard/home" class="logo-link nk-sidebar-logo">
-                <img id="site-logo" class="logo-light logo-img" src="" alt="logo">
+                <img id="site-logo" class="logo-img" src="" alt="logo">
             </a>
         </div>
     </div>
@@ -42,7 +42,7 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="/contents" class="nk-menu-link"><span class="nk-menu-text"
-                                        data-en="All Contents" data-ar="جميع المحتويات">All Contents</span></a></li>
+                                        data-en="All Contents" data-ar="جميع المحتوى">All Contents</span></a></li>
                             <li class="nk-menu-item"><a href="/contents/create" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="Add Content" data-ar="إضافة محتوى">Add
                                         Content</span></a></li>
@@ -88,6 +88,45 @@
                                         Sections</span></a></li>
                         </ul>
                     </li>
+                    <!-- Backup: Sections -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon">
+                                <em class="icon ni ni-menu-circled"></em>
+                            </span>
+                            <span class="nk-menu-text" data-en="Sections" data-ar="الأقسام">Sections</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item"><a href="{{ route('dashboard.sections.index') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text" data-en="All Sections"
+                                        data-ar="جميع الأقسام">All
+                                        Sections</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('dashboard.section.create') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text" data-en="Add Section"
+                                        data-ar="إضافة قسم">Add
+                                        Section</span></a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Backup: Categories -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon">
+                                <em class="icon ni ni-tag"></em>
+                            </span>
+                            <span class="nk-menu-text" data-en="Categories" data-ar="التصنيفات">Categories</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item"><a href="{{ route('dashboard.categories.index') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text" data-en="All Categories"
+                                        data-ar="جميع التصنيفات">All
+                                        Categories</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('dashboard.categorie.create') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text" data-en="Add Category"
+                                        data-ar="إضافة تصنيف">Add
+                                        Category</span></a></li>
+                        </ul>
+                    </li>
 
                     <!-- Trends -->
                     <li class="nk-menu-item has-sub">
@@ -104,24 +143,6 @@
                             <li class="nk-menu-item"><a href="/trends/create" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="Add Trend" data-ar="إضافة اتجاه">Add
                                         Trend</span></a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Locations -->
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon">
-                                <em class="icon ni ni-map"></em>
-                            </span>
-                            <span class="nk-menu-text" data-en="Locations" data-ar="المواقع">Locations</span>
-                        </a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="/locations" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="All Locations" data-ar="جميع المواقع">All
-                                        Locations</span></a></li>
-                            <li class="nk-menu-item"><a href="/locations/create" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Add Location" data-ar="إضافة موقع">Add
-                                        Location</span></a></li>
                         </ul>
                     </li>
 
@@ -143,41 +164,41 @@
                         </ul>
                     </li>
 
-                    <!-- Pages -->
+                    <!-- Tags -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon">
-                                <em class="icon ni ni-layers"></em>
+                                <em class="icon ni ni-hash"></em>
                             </span>
-                            <span class="nk-menu-text" data-en="Pages" data-ar="الصفحات">Pages</span>
+                            <span class="nk-menu-text" data-en="Tags" data-ar="الوسوم">Tags</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.pages.index') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="All Pages" data-ar="جميع الصفحات">All
-                                        Pages</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.page.create') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Add Page" data-ar="إضافة صفحة">Add
-                                        Page</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('dashboard.tags.index') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text" data-en="All Tags"
+                                        data-ar="جميع الوسوم">All
+                                        Tags</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('dashboard.tag.create') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text" data-en="Add Tag"
+                                        data-ar="إضافة وسم">Add Tag</span></a>
+                            </li>
                         </ul>
                     </li>
 
-                    <!-- Authors -->
+                    <!-- Locations -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon">
-                                <em class="icon ni ni-user"></em>
+                                <em class="icon ni ni-map"></em>
                             </span>
-                            <span class="nk-menu-text" data-en="Writers" data-ar="الكتّاب">Writers</span>
+                            <span class="nk-menu-text" data-en="Locations" data-ar="المواقع">Locations</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.writers.index') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text" data-en="All Writers"
-                                        data-ar="جميع الكتّاب">All
-                                        Authors</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.writer.create') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text" data-en="Add Writer"
-                                        data-ar="إضافة كاتب">Add
-                                        Writer</span></a></li>
+                            <li class="nk-menu-item"><a href="/locations" class="nk-menu-link"><span
+                                        class="nk-menu-text" data-en="All Locations" data-ar="جميع المواقع">All
+                                        Locations</span></a></li>
+                            <li class="nk-menu-item"><a href="/locations/create" class="nk-menu-link"><span
+                                        class="nk-menu-text" data-en="Add Location" data-ar="إضافة موقع">Add
+                                        Location</span></a></li>
                         </ul>
                     </li>
 
@@ -201,57 +222,48 @@
                         </ul>
                     </li>
 
-                    <!-- Tags -->
+
+
+
+
+                    <!-- Authors -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon">
-                                <em class="icon ni ni-hash"></em>
+                                <em class="icon ni ni-user"></em>
                             </span>
-                            <span class="nk-menu-text" data-en="Tags" data-ar="الوسوم">Tags</span>
+                            <span class="nk-menu-text" data-en="Writers" data-ar="الكتّاب">Writers</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.tags.index') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="All Tags" data-ar="جميع الوسوم">All
-                                        Tags</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.tag.create') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Add Tag" data-ar="إضافة وسم">Add Tag</span></a>
-                            </li>
+                            <li class="nk-menu-item"><a href="{{ route('dashboard.writers.index') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text" data-en="All Writers"
+                                        data-ar="جميع الكتّاب">All
+                                        Authors</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('dashboard.writer.create') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text" data-en="Add Writer"
+                                        data-ar="إضافة كاتب">Add
+                                        Writer</span></a></li>
                         </ul>
                     </li>
 
-                    <!-- Backup: Sections -->
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon">
-                                <em class="icon ni ni-menu-circled"></em>
-                            </span>
-                            <span class="nk-menu-text" data-en="Sections" data-ar="الأقسام">Sections</span>
-                        </a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.sections.index') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="All Sections" data-ar="جميع الأقسام">All
-                                        Sections</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.section.create') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Add Section" data-ar="إضافة قسم">Add
-                                        Section</span></a></li>
-                        </ul>
-                    </li>
 
-                    <!-- Backup: Categories -->
+                    <!-- Pages -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon">
-                                <em class="icon ni ni-tag"></em>
+                                <em class="icon ni ni-layers"></em>
                             </span>
-                            <span class="nk-menu-text" data-en="Categories" data-ar="التصنيفات">Categories</span>
+                            <span class="nk-menu-text" data-en="Pages" data-ar="الصفحات">Pages</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.categories.index') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="All Categories" data-ar="جميع التصنيفات">All
-                                        Categories</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.categorie.create') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Add Category" data-ar="إضافة تصنيف">Add
-                                        Category</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('dashboard.pages.index') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text" data-en="All Pages"
+                                        data-ar="جميع الصفحات">All
+                                        Pages</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('dashboard.page.create') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text" data-en="Add Page"
+                                        data-ar="إضافة صفحة">Add
+                                        Page</span></a></li>
                         </ul>
                     </li>
 
