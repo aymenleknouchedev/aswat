@@ -228,28 +228,28 @@ $fakeContents = [
                             <!-- Last 10 Contents Table -->
                             <!-- Table Header with Title & Button -->
                             <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
-                                <h5 class="mb-0" data-en="Last 10 Contents" data-ar="آخر 10 محتويات">آخر 10 محتويات
+                                <h5 class="mb-0" data-en="Last 10 Contents" data-ar="آخر المحتوى">آخر 10 المحتوى
                                 </h5>
                                 <a href="" class="btn btn-sm btn-outline-primary" data-en="View All Content"
-                                    data-ar="عرض كل المحتويات">
-                                    عرض كل المحتويات
+                                    data-ar="عرض كل المحتوى">
+                                    عرض كل المحتوى
                                 </a>
                             </div>
 
                             <!-- Scrollable Table -->
                             <div style="">
                                 <table class="table table-orders">
-                                    <thead class="tb-odr-head sticky-top bg-grey" style="z-index: 10;">
+                                    <thead class="tb-odr-head sticky-top" style="z-index: 10;">
                                         <tr>
-                                            <th style="font-weight: bold; color: #333;" data-en="Title"
+                                            <th style="font-weight: bold;" data-en="Title"
                                                 data-ar="العنوان">العنوان</th>
-                                            <th style="font-weight: bold; color: #333;" data-en="Date" data-ar="التاريخ">
+                                            <th style="font-weight: bold;" data-en="Date" data-ar="التاريخ">
                                                 التاريخ</th>
-                                            <th style="font-weight: bold; color: #333;" data-en="Author"
+                                            <th style="font-weight: bold;" data-en="Author"
                                                 data-ar="الكاتب">الكاتب</th>
-                                            <th style="font-weight: bold; color: #333;" data-en="Status"
+                                            <th style="font-weight: bold;" data-en="Status"
                                                 data-ar="الحالة">الحالة</th>
-                                            <th style="font-weight: bold; color: #333;" data-en="Actions"
+                                            <th style="font-weight: bold;" data-en="Actions"
                                                 data-ar="إجراءات">إجراءات</th>
                                         </tr>
                                     </thead>
