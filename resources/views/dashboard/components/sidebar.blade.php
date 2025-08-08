@@ -41,8 +41,9 @@
                             <span class="nk-menu-text" data-en="Content" data-ar="المحتوى">Content</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="dashboard/contents" class="nk-menu-link"><span class="nk-menu-text"
-                                        data-en="All Contents" data-ar="جميع المحتوى">All Contents</span></a></li>
+                            <li class="nk-menu-item"><a href="dashboard/contents" class="nk-menu-link"><span
+                                        class="nk-menu-text" data-en="All Contents" data-ar="جميع المحتوى">All
+                                        Contents</span></a></li>
                             <li class="nk-menu-item"><a href="dashboard/content-create" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="Add Content" data-ar="إضافة محتوى">Add
                                         Content</span></a></li>
@@ -53,22 +54,16 @@
                     </li>
 
                     <!-- Media Library -->
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                    <li class="nk-menu-item">
+                        <a href="dashboard/medias" class="nk-menu-link">
                             <span class="nk-menu-icon">
                                 <em class="icon ni ni-img"></em>
                             </span>
                             <span class="nk-menu-text" data-en="Media Library" data-ar="مكتبة الوسائط">Media
                                 Library</span>
                         </a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="/media" class="nk-menu-link"><span class="nk-menu-text"
-                                        data-en="All Media" data-ar="جميع الوسائط">All Media</span></a></li>
-                            <li class="nk-menu-item"><a href="/media/upload" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Upload File" data-ar="رفع ملف">Upload
-                                        File</span></a></li>
-                        </ul>
                     </li>
+
 
                     <!-- Content Management -->
                     <li class="nk-menu-item has-sub">

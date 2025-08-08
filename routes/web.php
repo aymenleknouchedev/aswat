@@ -11,7 +11,7 @@ use App\Http\Controllers\WritterController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ContentController;
-
+use App\Http\Controllers\MediaController;
 // artisan commands
 use Illuminate\Support\Facades\Artisan;
 
@@ -49,12 +49,11 @@ if (env('COMING_SOON', true)) {
             'categorie' => CategoryController::class,
             'page' => PagesController::class,
             'breakingnew' => BreakingNewsController::class,
-
+            'media' => MediaController::class,
         ];
 
         foreach ($entities as $entity => $controller) {
             $plural = $entity . 's'; // مثل: user => users
-
             Route::get("/{$plural}", [$controller, 'index'])->name("dashboard.{$plural}.index");
             Route::get("/{$entity}-create", [$controller, 'create'])->name("dashboard.{$entity}.create");
             Route::post("/{$entity}-store", [$controller, 'store'])->name("dashboard.{$entity}.store");
