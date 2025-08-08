@@ -118,7 +118,7 @@ document.getElementById('english').addEventListener('click', function (e) {
     if (localStorage.getItem('theme') === 'dark') {
         logo.setAttribute('src', './user/assets/images/white_logo_ltr.png');
     } else {
-        logo.setAttribute('src', './user/assets/images/xxxx_ltr.png');
+        logo.setAttribute('src', './user/assets/images/dark_logo_ltr.png');
     }
 
     localStorage.setItem('siteDirection', 'ltr');
@@ -148,7 +148,7 @@ document.getElementById('arabic').addEventListener('click', function (e) {
     if (localStorage.getItem('theme') === 'dark') {
         logo.setAttribute('src', './user/assets/images/white_logo_rtl.png');
     } else {
-        logo.setAttribute('src', './user/assets/images/xxxx_rtl.png');
+        logo.setAttribute('src', './user/assets/images/dark_logo_rtl.png');
     }
 
     localStorage.setItem('siteDirection', 'rtl');
