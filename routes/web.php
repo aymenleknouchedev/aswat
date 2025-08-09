@@ -11,7 +11,11 @@ use App\Http\Controllers\WritterController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\TrendController;
+use App\Http\Controllers\WindowController;
+use App\Models\Window;
 // artisan commands
 use Illuminate\Support\Facades\Artisan;
 
@@ -50,6 +54,9 @@ if (env('COMING_SOON', true)) {
             'page' => PagesController::class,
             'breakingnew' => BreakingNewsController::class,
             'media' => MediaController::class,
+            'trend' => TrendController::class,
+            'window' => WindowController::class,
+            'location' => LocationController::class,
         ];
 
         foreach ($entities as $entity => $controller) {
@@ -71,9 +78,6 @@ if (env('COMING_SOON', true)) {
         // Dashboard
         Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');
         Route::get('/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
-
-
-       
     });
 
 

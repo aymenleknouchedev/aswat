@@ -132,10 +132,10 @@
                             <span class="nk-menu-text" data-en="Trends" data-ar="الاتجاهات">Trends</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="/trends" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="./dashboard/trends" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="All Trends" data-ar="جميع الاتجاهات">All
                                         Trends</span></a></li>
-                            <li class="nk-menu-item"><a href="/trends/create" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="./dashboard/trend-create" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="Add Trend" data-ar="إضافة اتجاه">Add
                                         Trend</span></a></li>
                         </ul>
@@ -150,10 +150,10 @@
                             <span class="nk-menu-text" data-en="Windows" data-ar="نوافذ">Windows</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="/windows" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="./dashboard/windows" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="All Windows" data-ar="جميع النوافذ">All
                                         Windows</span></a></li>
-                            <li class="nk-menu-item"><a href="/windows/create" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="./dashboard/window-create" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="Add Window" data-ar="إضافة نافذة">Add
                                         Window</span></a></li>
                         </ul>
@@ -188,10 +188,10 @@
                             <span class="nk-menu-text" data-en="Locations" data-ar="المواقع">Locations</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="/locations" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="./dashboard/locations" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="All Locations" data-ar="جميع المواقع">All
                                         Locations</span></a></li>
-                            <li class="nk-menu-item"><a href="/locations/create" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="./dashboard/location-create" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="Add Location" data-ar="إضافة موقع">Add
                                         Location</span></a></li>
                         </ul>
