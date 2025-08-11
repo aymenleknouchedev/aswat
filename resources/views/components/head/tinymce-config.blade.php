@@ -11,7 +11,7 @@
         skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
         content_css: theme === 'dark' ? 'dark' : 'default',
         selector: 'textarea#myeditorinstance',
-        plugins: 'advlist anchor autolink  autosave charmap code codesample directionality emoticons fullscreen help hr image imagetools importcss insertdatetime link lists media nonbreaking pagebreak preview print quickbars save searchreplace table template visualblocks visualchars wordcount export',
-        toolbar: 'undo redo | blocks | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist checklist | link image media table template charmap emoticons hr pagebreak codesample | forecolor backcolor removeformat | searchreplace | export | wordcount | fullscreen | code | preview print'
+        plugins: 'advlist anchor autolink  autosave charmap code codesample directionality emoticons fullscreen help hr image imagetools importcss insertdatetime link lists media nonbreaking pagebreak preview print quickbars save searchreplace table template visualblocks visualchars wordcount ',
+        toolbar: 'undo redo | blocks | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist checklist | link image media table template charmap emoticons hr pagebreak codesample | forecolor backcolor removeformat | searchreplace | wordcount | fullscreen | code | preview print'
     });
 </script>
