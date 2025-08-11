@@ -92,19 +92,22 @@
                             <ul class="nav mb-4" id="contentTabs" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active" id="add-content-tab" data-bs-target="#add-content"
-                                        type="button" role="tab" aria-controls="add-content" aria-selected="true">
+                                        type="button" role="tab" aria-controls="add-content" aria-selected="true"
+                                        data-ar="إضافة محتوى" data-en="Add Content">
                                         إضافة محتوى
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="media-tab" data-bs-target="#media" type="button"
-                                        role="tab" aria-controls="media" aria-selected="false">
+                                        role="tab" aria-controls="media" aria-selected="false" data-ar="الوسائط"
+                                        data-en="Media">
                                         الوسائط
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="message-tab" data-bs-target="#message" type="button"
-                                        role="tab" aria-controls="message" aria-selected="false">
+                                        role="tab" aria-controls="message" aria-selected="false"
+                                        data-ar="رسالة المراجعة" data-en="Review Message">
                                         رسالة المراجعة
                                     </button>
                                 </li>
