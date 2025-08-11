@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     img.src = e.target.result;
                     img.alt = file.name;
                     img.style.width = '80px';
+                    
                     img.style.height = '60px';
                     img.style.objectFit = 'cover';
                     img.classList.add('me-2', 'rounded');

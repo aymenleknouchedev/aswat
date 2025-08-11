@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (urlInput) urlInput.style.display = selected === 'url' ? 'block' :
                     'none';
                 if (assetInput) assetInput.style.display = selected === 'asset' ? 'block' :
+                
                     'none';
             });
         });

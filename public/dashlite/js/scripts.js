@@ -15,6 +15,7 @@
         _sidebar_mob = 'nk-sidebar-mobile',
         //breakpoints
         _break = NioApp.Break;
+        
 
     function extend(obj, ext) {
         Object.keys(ext).forEach(function (key) { obj[key] = ext[key]; });
@@ -23,6 +24,7 @@
     // ClassInit @v1.0
     NioApp.ClassBody = function () {
         NioApp.AddInBody(_sidebar);
+
     };
 
     // ClassInit @v1.0

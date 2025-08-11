@@ -65,5 +65,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize view
     if (selectedTemplate) {
         toggleMediaContainers(selectedTemplate);
+        
     }
 });

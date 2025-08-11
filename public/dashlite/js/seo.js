@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }).trim();
         }
         return '';
+        
     }
 
     function evaluateSEO() {
