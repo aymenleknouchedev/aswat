@@ -47,5 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Save updated list back as JSON string
             albumInputHidden.value = JSON.stringify(existingFiles);
         };
+        
     });
 });
