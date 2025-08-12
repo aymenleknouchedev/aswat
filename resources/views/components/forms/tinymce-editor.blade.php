@@ -1,3 +1,2 @@
   <textarea id="myeditorinstance">
-    أدخل المحتوى هنا...
   </textarea>

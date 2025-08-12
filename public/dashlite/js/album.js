@@ -1,39 +1,51 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const albumInput = document.getElementById('album_images');
-    const albumPreview = document.getElementById('album-images-preview');
+document.addEventListener('DOMContentLoaded', () => {
+    const albumBtn = document.getElementById('album_images_btn');
+    const albumInputHidden = document.getElementById('album_images');
+    const albumPreview = document.getElementById('album_preview');
+    const albumPlaceholder = document.getElementById('album_preview_placeholder');
 
-    if (albumInput && albumPreview) {
-        albumInput.addEventListener('change', function () {
-            const files = Array.from(this.files);
+    albumBtn.addEventListener('click', () => {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.multiple = true;
+        fileInput.click();
+
+        fileInput.onchange = () => {
+            const files = Array.from(fileInput.files);
+            if (files.length === 0) return;
+
+            // Parse existing saved images or start empty
+            let existingFiles = [];
+            try {
+                existingFiles = JSON.parse(albumInputHidden.value);
+                if (!Array.isArray(existingFiles)) existingFiles = [];
+            } catch {
+                existingFiles = [];
+            }
+
+            // If placeholder visible, hide it now (only once)
+            if (albumPlaceholder.style.display !== 'none') {
+                albumPlaceholder.style.display = 'none';
+            }
 
             files.forEach(file => {
-                if (!file.type.startsWith('image/')) return;
-
                 const reader = new FileReader();
-                reader.onload = function (e) {
-                    const li = document.createElement('li');
-                    li.classList.add('list-group-item', 'd-flex', 'align-items-center');
-
+                reader.onload = (e) => {
                     const img = document.createElement('img');
                     img.src = e.target.result;
-                    img.alt = file.name;
-                    img.style.width = '80px';
-                    
-                    img.style.height = '60px';
-                    img.style.objectFit = 'cover';
-                    img.classList.add('me-2', 'rounded');
-
-                    const span = document.createElement('span');
-                    span.textContent = file.name;
-
-                    li.appendChild(img);
-                    li.appendChild(span);
-                    albumPreview.appendChild(li);
+                    img.title = file.name;
+                    img.style.marginRight = '8px';
+                    albumPreview.appendChild(img);
                 };
                 reader.readAsDataURL(file);
+
+                // Add new file names to existingFiles
+                existingFiles.push(file.name);
             });
 
-            this.value = ''; // allow same files to be selected again
-        });
-    }
+            // Save updated list back as JSON string
+            albumInputHidden.value = JSON.stringify(existingFiles);
+        };
+    });
 });

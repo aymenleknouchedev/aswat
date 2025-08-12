@@ -1,136 +1,100 @@
-{{-- album fields --}}
-<div id="media-album-field" style="display:none;">
+<div id="media-album-field" class="media-fields-section" style="display: none;">
 
-    <!-- Source Selection -->
-    <label data-ar="اختر مصدر الصور" data-en="Choose Image Source">اختر مصدر الصور</label>
-    <div>
-        @foreach ([
-            'local' => ['ar' => 'رفع من الجهاز', 'en' => 'Upload from device'],
-            'url' => ['ar' => 'رابط مباشر', 'en' => 'Direct URL'],
-            'website' => ['ar' => 'من الموقع', 'en' => 'From Website'],
-        ] as $sourceValue => $texts)
-            <div class="custom-control custom-radio custom-control-inline custom-control">
-                <input type="radio" id="album_source_{{ $sourceValue }}" name="album_source"
-                       value="{{ $sourceValue }}"
-                       class="custom-control-input"
-                       {{ $sourceValue === 'local' ? 'checked' : '' }}>
-                <label class="custom-control-label" for="album_source_{{ $sourceValue }}"
-                       data-ar="{{ $texts['ar'] }}"
-                       data-en="{{ $texts['en'] }}">
-                    {{ $texts['ar'] }}
-                </label>
+    <div class="row g-3">
+
+        {{-- Album Images (multiple) --}}
+        <div class="col-12">
+            <label for="album_images" class="form-label">صور الألبوم</label>
+
+            <input type="hidden" name="album_images" id="album_images" value="[]">
+
+            <div id="album_preview" class="d-flex flex-wrap gap-2 mb-2"
+                style="min-height: 150px; border: 1px solid var(--bs-gray-300); border-radius: 6px; background-color: var(--bs-light); padding: 10px; align-items: center; justify-content: flex-start;">
+                <p class="text-muted m-0" id="album_preview_placeholder">لا توجد صور مختارة</p>
             </div>
-        @endforeach
+
+            <button type="button" class="btn btn-outline-primary btn-sm" id="album_images_btn"
+                data-target="album_images" data-type="image-multiple">
+                اختيار / رفع صور
+            </button>
+        </div>
+
+        {{-- Principal Image (was first Mobile Image) --}}
+        <div class="col-md-4">
+            <label for="album_principal_image" class="form-label">الصورة الرئيسية للألبوم</label>
+            <div class="media-preview border rounded mb-2" id="preview-album_principal_image"
+                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                <span class="text-muted">لا توجد صورة مختارة</span>
+            </div>
+            <input type="hidden" name="album_principal_image" id="album_principal_image">
+            <button type="button" class="btn btn-outline-primary btn-sm open-media" data-target="album_principal_image"
+                data-type="image">
+                اختيار صورة
+            </button>
+        </div>
+
+        {{-- Mobile Image (second block, unchanged) --}}
+        <div class="col-md-4">
+            <label for="album_mobile_image" class="form-label">صورة الجوال للألبوم</label>
+            <div class="media-preview border rounded mb-2" id="preview-album_mobile_image"
+                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                <span class="text-muted">لا توجد صورة مختارة</span>
+            </div>
+            <input type="hidden" name="album_mobile_image" id="album_mobile_image">
+            <button type="button" class="btn btn-outline-primary btn-sm open-media" data-target="album_mobile_image"
+                data-type="image">
+                اختيار صورة
+            </button>
+        </div>
+
+        {{-- Content Image --}}
+        <div class="col-md-4">
+            <label for="album_content_image" class="form-label">صورة محتوى الألبوم</label>
+            <div class="media-preview border rounded mb-2" id="preview-album_content_image"
+                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                <span class="text-muted">لا توجد صورة مختارة</span>
+            </div>
+            <input type="hidden" name="album_content_image" id="album_content_image">
+            <button type="button" class="btn btn-outline-primary btn-sm open-media" data-target="album_content_image"
+                data-type="image">
+                اختيار صورة
+            </button>
+        </div>
+
     </div>
 
-    <!-- MAIN IMAGE -->
-    <div class="image-block mt-3">
-        <label data-ar="الصورة الرئيسية" data-en="Main Image">الصورة الرئيسية</label>
-
-        <!-- Local -->
-        <div class="source-local-fields mt-2">
-            <input id="main_image_local" name="main_image_local" type="file"
-                   class="form-control form-control-lg" accept="image/*">
-        </div>
-
-        <!-- URL -->
-        <div class="source-url-fields mt-2" style="display:none;">
-            <input id="main_image_url" name="main_image_url" type="text"
-                   placeholder="https://example.com/image.jpg"
-                   class="form-control form-control-lg">
-        </div>
-
-        <!-- Website -->
-        <div class="source-website-fields mt-2" style="display:none;">
-            <select id="main_image_website" name="main_image_website"
-                    class="form-select form-control-lg">
-                @foreach ($existing_albums as $album_image)
-                    <option value="{{ $album_image }}">{{ $album_image }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-
-    <!-- MOBILE IMAGE -->
-    <div class="image-block mt-3">
-        <label data-ar="صورة الهاتف" data-en="Mobile Image">صورة الهاتف</label>
-
-        <!-- Local -->
-        <div class="source-local-fields mt-2">
-            <input id="mobile_image_local" name="mobile_image_local" type="file"
-                   class="form-control form-control-lg" accept="image/*">
-        </div>
-
-        <!-- URL -->
-        <div class="source-url-fields mt-2" style="display:none;">
-            <input id="mobile_image_url" name="mobile_image_url" type="text"
-                   placeholder="https://example.com/image.jpg"
-                   class="form-control form-control-lg">
-        </div>
-
-        <!-- Website -->
-        <div class="source-website-fields mt-2" style="display:none;">
-            <select id="mobile_image_website" name="mobile_image_website"
-                    class="form-select form-control-lg">
-                @foreach ($existing_albums as $album_image)
-                    <option value="{{ $album_image }}">{{ $album_image }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-
-    <!-- CONTENT IMAGE -->
-    <div class="image-block mt-3">
-        <label data-ar="صورة المحتوى" data-en="Content Image">صورة المحتوى</label>
-
-        <!-- Local -->
-        <div class="source-local-fields mt-2">
-            <input id="content_image_local" name="content_image_local" type="file"
-                   class="form-control form-control-lg" accept="image/*">
-        </div>
-
-        <!-- URL -->
-        <div class="source-url-fields mt-2" style="display:none;">
-            <input id="content_image_url" name="content_image_url" type="text"
-                   placeholder="https://example.com/image.jpg"
-                   class="form-control form-control-lg">
-        </div>
-
-        <!-- Website -->
-        <div class="source-website-fields mt-2" style="display:none;">
-            <select id="content_image_website" name="content_image_website"
-                    class="form-select form-control-lg">
-                @foreach ($existing_albums as $album_image)
-                    <option value="{{ $album_image }}">{{ $album_image }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-
-    <!-- ALBUM IMAGES -->
-    <div class="image-block mt-3">
-        <label data-ar="صور الألبوم" data-en="Album Images">صور الألبوم</label>
-
-        <!-- Local -->
-        <div class="source-local-fields mt-2">
-            <input id="album_images_local" name="album_images_local[]" type="file"
-                   class="form-control form-control-lg" accept="image/*" multiple>
-        </div>
-
-        <!-- URL -->
-        <div class="source-url-fields mt-2" style="display:none;">
-            <textarea id="album_images_url" name="album_images_url"
-                      class="form-control form-control-lg"
-                      placeholder="https://image1.jpg, https://image2.jpg"></textarea>
-        </div>
-
-        <!-- Website -->
-        <div class="source-website-fields mt-2" style="display:none;">
-            <select id="album_images_website" name="album_images_website[]" class="form-select form-control-lg" multiple>
-                @foreach ($existing_albums as $album_image)
-                    <option value="{{ $album_image }}">{{ $album_image }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
 </div>
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        #media-album-field {
+            color: #ddd;
+        }
+
+        #media-album-field .media-preview {
+            background-color: #333 !important;
+            border-color: #555 !important;
+        }
+
+        #media-album-field .btn-outline-primary {
+            color: #aad4ff;
+            border-color: #55aaff;
+        }
+
+        #media-album-field .btn-outline-primary:hover {
+            background-color: #55aaff;
+            color: #fff;
+        }
+    }
+
+    /* Album preview thumbnails */
+    #album_preview img {
+        max-height: 120px;
+        border-radius: 4px;
+        object-fit: cover;
+        cursor: pointer;
+        border: 1px solid #ccc;
+    }
+</style>
+

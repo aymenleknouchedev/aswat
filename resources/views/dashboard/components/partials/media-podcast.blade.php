@@ -1,122 +1,90 @@
-{{-- podcast fields --}}
-<div id="media-podcast-field" style="display:none;">
-    <label data-ar="اختر مصدر البودكاست" data-en="Choose Podcast Source">اختر مصدر البودكاست</label>
-    <div>
-        @foreach ([
-            'local' => ['ar' => 'رفع من الجهاز', 'en' => 'Upload from device'],
-            'url' => ['ar' => 'رابط مباشر', 'en' => 'Direct URL'],
-            'website' => ['ar' => 'من الموقع', 'en' => 'From Website'],
-        ] as $sourceValue => $texts)
-            <div class="custom-control custom-radio custom-control-inline custom-control">
-                <input type="radio" id="podcast_source_{{ $sourceValue }}" name="podcast_source" 
-                       value="{{ $sourceValue }}" class="custom-control-input" 
-                       {{ $sourceValue === 'local' ? 'checked' : '' }}>
-                <label class="custom-control-label" for="podcast_source_{{ $sourceValue }}"
-                       data-ar="{{ $texts['ar'] }}" data-en="{{ $texts['en'] }}">
-                    {{ $texts['ar'] }}
-                </label>
+<div id="media-podcast-field" class="media-fields-section" style="display: none;">
+
+    <div class="row g-3">
+
+        {{-- Main Image --}}
+        <div class="col-md-3">
+            <label for="podcast_main_image" class="form-label">الصورة الأساسية</label>
+            <div class="media-preview border rounded mb-2" id="preview-podcast_main_image"
+                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
-        @endforeach
+            <input type="hidden" name="podcast_main_image" id="podcast_main_image">
+            <button type="button" class="btn btn-outline-primary btn-sm open-media" data-target="podcast_main_image"
+                data-type="image">
+                اختيار صورة
+            </button>
+        </div>
+
+        {{-- Mobile Image --}}
+        <div class="col-md-3">
+            <label for="podcast_mobile_image" class="form-label">صورة الهاتف المحمول</label>
+            <div class="media-preview border rounded mb-2" id="preview-podcast_mobile_image"
+                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                <span class="text-muted">لا توجد صورة مختارة</span>
+            </div>
+            <input type="hidden" name="podcast_mobile_image" id="podcast_mobile_image">
+            <button type="button" class="btn btn-outline-primary btn-sm open-media" data-target="podcast_mobile_image"
+                data-type="image">
+                اختيار صورة
+            </button>
+        </div>
+
+        {{-- Content Image --}}
+        <div class="col-md-3">
+            <label for="podcast_content_image" class="form-label">صورة المحتوى التفصيلية</label>
+            <div class="media-preview border rounded mb-2" id="preview-podcast_content_image"
+                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                <span class="text-muted">لا توجد صورة مختارة</span>
+            </div>
+            <input type="hidden" name="podcast_content_image" id="podcast_content_image">
+            <button type="button" class="btn btn-outline-primary btn-sm open-media" data-target="podcast_content_image"
+                data-type="image">
+                اختيار صورة
+            </button>
+        </div>
+
+        {{-- Podcast Upload and URL --}}
+        <div class="col-md-3">
+            <label for="podcast_file" class="form-label">بودكاست</label>
+            <div id="preview-podcast_file" class="media-preview border rounded mb-2"
+                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                <span class="text-muted">لا يوجد بودكاست محدد</span>
+            </div>
+            <div class="input-group ">
+                <button type="button" class="btn btn-outline-primary btn-sm open-media" data-target="podcast_file"
+                    data-type="audio">
+                    رفع / اختيار بودكاست
+                </button>
+                <input type="hidden" name="podcast_file" id="podcast_file">
+                <input type="url" name="podcast_url" id="podcast_url" class="form-control"
+                    placeholder="https://example.com/podcast.mp3">
+            </div>
+        </div>
+
     </div>
 
-    <div class="source-local-fields mt-2">
-        <div class="mb-3">
-            <label for="podcast_file" data-ar="ملف البودكاست (رفع من الجهاز)" data-en="Podcast File (Upload from device)">
-                ملف البودكاست (رفع من الجهاز)
-            </label>
-            <input id="podcast_file" name="podcast_local" type="file"
-                class="form-control form-control-lg" accept="audio/*">
-        </div>
-        <div class="mb-3">
-            <label for="podcast_main_image" data-ar="صورة الواجهة (رفع من الجهاز)" data-en="Main Image (Upload from device)">
-                صورة الواجهة (رفع من الجهاز)
-            </label>
-            <input id="podcast_main_image" name="podcast_main_image_local" type="file"
-                class="form-control form-control-lg" accept="image/*">
-        </div>
-        <div class="mb-3">
-            <label for="podcast_mobile_image" data-ar="صورة الموبايل (رفع من الجهاز)" data-en="Mobile Image (Upload from device)">
-                صورة الموبايل (رفع من الجهاز)
-            </label>
-            <input id="podcast_mobile_image" name="podcast_mobile_image_local" type="file"
-                class="form-control form-control-lg" accept="image/*">
-        </div>
-        <div class="mb-3">
-            <label for="podcast_content_image" data-ar="صورة المحتوى (رفع من الجهاز)" data-en="Content Image (Upload from device)">
-                صورة المحتوى (رفع من الجهاز)
-            </label>
-            <input id="podcast_content_image" name="podcast_content_image_local" type="file"
-                class="form-control form-control-lg" accept="image/*">
-        </div>
-    </div>
-
-    <div class="source-url-fields mt-2" style="display:none;">
-        <div class="mb-3">
-            <label for="podcast_link" data-ar="رابط البودكاست" data-en="Podcast URL">رابط البودكاست</label>
-            <input id="podcast_link" name="podcast_url" type="url" class="form-control form-control-lg" placeholder="https://">
-        </div>
-        <div class="mb-3">
-            <label for="podcast_main_image_url" data-ar="رابط صورة الواجهة" data-en="Main Image URL">
-                رابط صورة الواجهة
-            </label>
-            <input id="podcast_main_image_url" name="podcast_main_image_url" type="url" class="form-control form-control-lg" placeholder="https://">
-        </div>
-        <div class="mb-3">
-            <label for="podcast_mobile_image_url" data-ar="رابط صورة الموبايل" data-en="Mobile Image URL">
-                رابط صورة الموبايل
-            </label>
-            <input id="podcast_mobile_image_url" name="podcast_mobile_image_url" type="url" class="form-control form-control-lg" placeholder="https://">
-        </div>
-        <div class="mb-3">
-            <label for="podcast_content_image_url" data-ar="رابط صورة المحتوى" data-en="Content Image URL">
-                رابط صورة المحتوى
-            </label>
-            <input id="podcast_content_image_url" name="podcast_content_image_url" type="url" class="form-control form-control-lg" placeholder="https://">
-        </div>
-    </div>
-
-    <div class="source-website-fields mt-2" style="display:none;">
-        <div class="mb-3">
-            <label for="podcast_website" data-ar="اختر بودكاست من الموقع" data-en="Select Podcast from Website">اختر بودكاست من الموقع</label>
-            <select id="podcast_website" name="podcast_website" class="form-select form-control-lg">
-                <option value="" data-ar="اختر بودكاست" data-en="Choose Podcast">اختر بودكاست</option>
-                @foreach ($existing_podcasts as $podcast)
-                    <option value="{{ $podcast }}" data-ar="{{ $podcast }}" data-en="{{ $podcast }}">{{ $podcast }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="podcast_main_image_website" data-ar="اختر صورة الواجهة من الموقع" data-en="Select Main Image from Website">
-                اختر صورة الواجهة من الموقع
-            </label>
-            <select id="podcast_main_image_website" name="podcast_main_image_website" class="form-select form-control-lg">
-                <option value="" data-ar="اختر صورة" data-en="Choose Image">اختر صورة</option>
-                @foreach ($existing_images as $image)
-                    <option value="{{ $image }}" data-ar="{{ $image }}" data-en="{{ $image }}">{{ $image }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="podcast_mobile_image_website" data-ar="اختر صورة الموبايل من الموقع" data-en="Select Mobile Image from Website">
-                اختر صورة الموبايل من الموقع
-            </label>
-            <select id="podcast_mobile_image_website" name="podcast_mobile_image_website" class="form-select form-control-lg">
-                <option value="" data-ar="اختر صورة" data-en="Choose Image">اختر صورة</option>
-                @foreach ($existing_images as $image)
-                    <option value="{{ $image }}" data-ar="{{ $image }}" data-en="{{ $image }}">{{ $image }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="podcast_content_image_website" data-ar="اختر صورة المحتوى من الموقع" data-en="Select Content Image from Website">
-                اختر صورة المحتوى من الموقع
-            </label>
-            <select id="podcast_content_image_website" name="podcast_content_image_website" class="form-select form-control-lg">
-                <option value="" data-ar="اختر صورة" data-en="Choose Image">اختر صورة</option>
-                @foreach ($existing_images as $image)
-                    <option value="{{ $image }}" data-ar="{{ $image }}" data-en="{{ $image }}">{{ $image }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
 </div>
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        #media-podcast-field {
+            color: #ddd;
+        }
+
+        #media-podcast-field .media-preview {
+            background-color: #333 !important;
+            border-color: #555 !important;
+        }
+
+        #media-podcast-field .btn-outline-primary {
+            color: #aad4ff;
+            border-color: #55aaff;
+        }
+
+        #media-podcast-field .btn-outline-primary:hover {
+            background-color: #55aaff;
+            color: #fff;
+        }
+    }
+</style>

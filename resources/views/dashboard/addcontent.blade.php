@@ -264,9 +264,8 @@
                                     </div>
 
                                     <div class="form-group my-3">
-                                        <label for="summary" data-ar="ملخص" data-en="Summary">ملخص</label>
-                                        <textarea id="summary" name="summary" class="form-control form-control-lg" rows="3" data-ar="ملخص"
-                                            data-en="Summary"></textarea>
+                                        <label for="summary" data-ar="ملخص" data-en="Summary"></label>
+                                        <textarea id="summary" name="summary" class="form-control form-control-lg" rows="3"></textarea>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -279,9 +278,7 @@
                                         <label for="seo_keyword" data-ar="الكلمة المفتاحية للسيو"
                                             data-en="SEO Keyword">الكلمة المفتاحية للسيو</label>
                                         <input id="seo_keyword" name="seo_keyword" type="text"
-                                            class="form-control form-control-lg" maxlength="50"
-                                            placeholder="أدخل الكلمة المفتاحية" data-ar="أدخل الكلمة المفتاحية"
-                                            data-en="Enter SEO keyword">
+                                            class="form-control form-control-lg" maxlength="50">
                                     </div>
                                 </div>
 
