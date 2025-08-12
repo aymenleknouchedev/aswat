@@ -24,50 +24,6 @@
             font-weight: bold;
         }
     </style>
-    @php
-        $sections = [
-            (object) ['id' => 1, 'name' => 'الأخبار المحلية', 'en' => 'Local News'],
-            (object) ['id' => 2, 'name' => 'التكنولوجيا', 'en' => 'Technology'],
-            (object) ['id' => 3, 'name' => 'الصحة', 'en' => 'Health'],
-            (object) ['id' => 4, 'name' => 'الرياضة', 'en' => 'Sports'],
-            (object) ['id' => 5, 'name' => 'الثقافة', 'en' => 'Culture'],
-        ];
-        $categories = [
-            (object) ['id' => 1, 'name' => 'تصنيف 1', 'en' => 'Category 1'],
-            (object) ['id' => 2, 'name' => 'تصنيف 2', 'en' => 'Category 2'],
-        ];
-        $writers = [
-            (object) ['id' => 1, 'name' => 'أحمد العلي', 'en' => 'Ahmed Ali'],
-            (object) ['id' => 2, 'name' => 'سارة منصور', 'en' => 'Sarah Mansour'],
-            (object) ['id' => 3, 'name' => 'ليلى خالد', 'en' => 'Laila Khaled'],
-            (object) ['id' => 4, 'name' => 'محمد ناصر', 'en' => 'Mohamed Nasser'],
-        ];
-        $locations = [
-            (object) ['id' => 1, 'name' => 'الجزائر العاصمة', 'en' => 'Algiers'],
-            (object) ['id' => 2, 'name' => 'وهران', 'en' => 'Oran'],
-        ];
-        $tags = [
-            (object) ['id' => 1, 'name' => 'تقنية', 'en' => 'Tech'],
-            (object) ['id' => 2, 'name' => 'رياضة', 'en' => 'Sports'],
-            (object) ['id' => 3, 'name' => 'صحة', 'en' => 'Health'],
-            (object) ['id' => 4, 'name' => 'ثقافة', 'en' => 'Culture'],
-        ];
-        $trends = [
-            (object) ['id' => 1, 'name' => 'ترند 1', 'en' => 'Trend 1'],
-            (object) ['id' => 2, 'name' => 'ترند 2', 'en' => 'Trend 2'],
-            (object) ['id' => 3, 'name' => 'ترند 3', 'en' => 'Trend 3'],
-        ];
-        $windows = [
-            (object) ['id' => 1, 'name' => 'نافذة 1', 'en' => 'Window 1'],
-            (object) ['id' => 2, 'name' => 'نافذة 2', 'en' => 'Window 2'],
-            (object) ['id' => 3, 'name' => 'نافذة 3', 'en' => 'Window 3'],
-        ];
-        // Example existing media for selection (replace with real backend data)
-        $existing_images = ['existing_image_1.jpg', 'existing_image_2.jpg', 'existing_image_3.jpg'];
-        $existing_videos = ['existing_video_1.mp4', 'existing_video_2.mp4'];
-        $existing_podcasts = ['existing_podcast_1.mp3', 'existing_podcast_2.mp3'];
-        $existing_albums = ['album_image_1.jpg', 'album_image_2.jpg', 'album_image_3.jpg'];
-    @endphp
 
     <div class="nk-app-root">
         <div class="nk-main">
@@ -114,7 +70,6 @@
                                 </li>
                             </ul>
 
-
                             <!-- Tabs content -->
                             <div class="tab-content" id="contentTabsContent">
                                 <!-- Add Content Tab -->
@@ -156,55 +111,42 @@
 
                                     </div>
 
-
-
-                                    <div class="row g-3 mt-3">
-                                        <div class="col-lg-12">
+                                    <div class="row g-3 mt-1 ">
+                                        <div class="col-lg-12 mb-2">
                                             <label for="display_method" data-ar="طريقة عرض المحتوى"
                                                 data-en="Content Display Method">طريقة عرض المحتوى</label>
-                                            <select name="display_method" id="display_method"
-                                                class="form-select js-select2 form-control-lg" required
-                                                data-ar="طريقة العرض" data-en="Display Method">
-                                                <option value="" data-ar="اختر الطريقة" data-en="Choose Method">
-                                                    اختر الطريقة</option>
-                                                <option value="simple" data-ar="بسيط" data-en="Simple">بسيط</option>
-                                                <option value="list" data-ar="قائم" data-en="List">قائم</option>
+                                            <select name="display_method" id="display_method" class="form-control"
+                                                required>
+                                                <option value="">اختر الطريقة</option>
+                                                <option value="simple">بسيط</option>
+                                                <option value="list">قائم</option>
                                             </select>
                                         </div>
 
-                                        <div class="col-md-12 col-lg-4">
+                                        <div class="col-md-12 col-lg-4 ">
                                             <label data-ar="القسم" data-en="Section">القسم</label>
-                                            <select name="section_id" class="form-select js-select2 form-control-lg"
-                                                required data-ar="القسم" data-en="Section">
-                                                <option value="" data-ar="اختر القسم" data-en="Choose Section">اختر
-                                                    القسم</option>
+                                            <select name="section_id" class="form-control" required>
+                                                <option value="">اختر القسم</option>
                                                 @foreach ($sections as $section)
-                                                    <option value="{{ $section->id }}" data-ar="{{ $section->name }}"
-                                                        data-en="{{ $section->en }}">{{ $section->name }}</option>
+                                                    <option value="{{ $section->id }}">{{ $section->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="col-md-6 col-lg-4">
                                             <label data-ar="التصنيف" data-en="Category">التصنيف</label>
-                                            <select name="category_id" class="form-select js-select2 form-control-lg"
-                                                data-ar="التصنيف" data-en="Category">
-                                                <option value="" data-ar="اختر التصنيف" data-en="Choose Category">
-                                                    اختر التصنيف</option>
+                                            <select name="category_id" class="form-control">
+                                                <option value="">اختر التصنيف</option>
                                                 @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}" data-ar="{{ $category->name }}"
-                                                        data-en="{{ $category->en }}">{{ $category->name }}</option>
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="col-md-6 col-lg-4">
                                             <label data-ar="المكان" data-en="Location">المكان</label>
-                                            <select name="location_id" class="form-select js-select2 form-control-lg"
-                                                data-ar="المكان" data-en="Location">
-                                                <option value="" data-ar="اختر المكان" data-en="Choose Location">
-                                                    اختر المكان</option>
+                                            <select name="location_id" class="form-control">
+                                                <option value="">اختر المكان</option>
                                                 @foreach ($locations as $location)
-                                                    <option value="{{ $location->id }}" data-ar="{{ $location->name }}"
-                                                        data-en="{{ $location->en }}">{{ $location->name }}</option>
+                                                    <option value="{{ $location->id }}">{{ $location->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -213,25 +155,19 @@
 
                                         <div class="col-md-6 col-lg-6">
                                             <label data-ar="الترند" data-en="Trend">الترند</label>
-                                            <select name="trend_id" class="form-select js-select2 form-control-lg"
-                                                data-ar="الترند" data-en="Trend">
-                                                <option value="" data-ar="اختر الترند" data-en="Choose Trend">اختر
-                                                    الترند</option>
+                                            <select name="trend_id" class="form-control">
+                                                <option value="">اختر الترند</option>
                                                 @foreach ($trends as $trend)
-                                                    <option value="{{ $trend->id }}" data-ar="{{ $trend->name }}"
-                                                        data-en="{{ $trend->en }}">{{ $trend->name }}</option>
+                                                    <option value="{{ $trend->id }}">{{ $trend->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="col-md-6 col-lg-6">
                                             <label data-ar="النافذة" data-en="Window">النافذة</label>
-                                            <select name="window_id" class="form-select js-select2 form-control-lg"
-                                                data-ar="النافذة" data-en="Window">
-                                                <option value="" data-ar="اختر النافذة" data-en="Choose Window">
-                                                    اختر النافذة</option>
+                                            <select name="window_id" class="form-control">
+                                                <option value="">اختر النافذة</option>
                                                 @foreach ($windows as $window)
-                                                    <option value="{{ $window->id }}" data-ar="{{ $window->name }}"
-                                                        data-en="{{ $window->en }}">{{ $window->name }}</option>
+                                                    <option value="{{ $window->id }}">{{ $window->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -240,44 +176,35 @@
                                     <div class="row g-3 mt-3">
                                         <div class="col-md-6 col-lg-6">
                                             <label data-ar="الكاتب" data-en="Writer">الكاتب</label>
-                                            <select name="writer_id" class="form-select js-select2 form-control-lg"
-                                                required data-ar="الكاتب" data-en="Writer">
-                                                <option value="" data-ar="اختر الكاتب" data-en="Choose Writer">اختر
-                                                    الكاتب</option>
+                                            <select name="writer_id" class="form-control" required>
+                                                <option value="">اختر الكاتب</option>
                                                 @foreach ($writers as $writer)
-                                                    <option value="{{ $writer->id }}" data-ar="{{ $writer->name }}"
-                                                        data-en="{{ $writer->en }}">{{ $writer->name }}</option>
+                                                    <option value="{{ $writer->id }}">{{ $writer->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="col-md-6 col-lg-6">
                                             <label data-ar="موقع الكاتب" data-en="Writer Location">موقع الكاتب</label>
-                                            <select name="writer_location_id"
-                                                class="form-select js-select2 form-control-lg" required
-                                                data-ar="موقع الكاتب" data-en="Writer Location">
-                                                <option value="" data-ar="اختر الموقع" data-en="Choose Location">
-                                                    اختر الموقع</option>
+                                            <select name="writer_location_id" class="form-control" required>
+                                                <option value="">اختر الموقع</option>
                                                 @foreach ($locations as $location)
-                                                    <option value="{{ $location->id }}" data-ar="{{ $location->name }}"
-                                                        data-en="{{ $location->en }}">{{ $location->name }}</option>
+                                                    <option value="{{ $location->id }}">{{ $location->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-
                                     </div>
                                     <div class="row g-3 mt-3">
                                         <div>
                                             <label data-ar="الوسوم" data-en="Tags">الوسوم</label>
-                                            <select name="tags_id[]" multiple
-                                                class="form-select js-select2 form-control-lg" data-ar="الوسوم"
-                                                data-en="Tags">
+                                            <select name="tags_id[]" multiple class="form-select js-select2"
+                                                style="width: 100%;">
                                                 @foreach ($tags as $tag)
-                                                    <option value="{{ $tag->id }}" data-ar="{{ $tag->name }}"
-                                                        data-en="{{ $tag->en }}">{{ $tag->name }}</option>
+                                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
+
 
                                     <div class="form-group my-3">
                                         <label for="summary" data-ar="ملخص" data-en="Summary"></label>
@@ -305,7 +232,6 @@
                                     'existing_podcasts' => $existing_podcasts,
                                     'existing_albums' => $existing_albums,
                                 ])
-
 
                                 <!-- Message Tab -->
                                 <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
@@ -346,6 +272,9 @@
     </div>
 
 
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script src="/dashlite/js/seo.js"></script>
     <script src="/dashlite/js/tabs.js"></script>
     <script src="/dashlite/js/album.js"></script>
@@ -382,7 +311,19 @@
                 }
             });
         });
+
+
+        $(document).ready(function() {
+            $('.js-select2').select2({
+                placeholder: 'ابحث واختر الوسوم',
+                minimumInputLength: 1, // تظهر الخيارات بعد كتابة حرف واحد
+                allowClear: true,
+                width: '100%'
+            });
+        });
     </script>
+
+
 
 
 

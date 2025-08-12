@@ -35,6 +35,9 @@
         gtag('config', 'UA-91615293-4');
     </script>
     <link rel="stylesheet" href="/dashlite/assets/css/editors/tinymce.css?ver=3.3.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar">
