@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (albumPlaceholder.style.display !== 'none') {
                 albumPlaceholder.style.display = 'none';
             }
+            
 
             files.forEach(file => {
                 const reader = new FileReader();
@@ -47,6 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Save updated list back as JSON string
             albumInputHidden.value = JSON.stringify(existingFiles);
         };
-        
+
     });
 });
