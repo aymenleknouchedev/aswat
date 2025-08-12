@@ -160,8 +160,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // تحديث دوري كل 500ms لضمان التحديث real-time
-    setInterval(updateSEOBar, 500);
+    // setInterval(updateSEOBar, 500);
 
     // تحديث مبدئي
-    updateSEOBar();
+    // updateSEOBar();
 });

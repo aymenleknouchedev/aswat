@@ -104,6 +104,7 @@
                                         الوسائط
                                     </button>
                                 </li>
+
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="message-tab" data-bs-target="#message" type="button"
                                         role="tab" aria-controls="message" aria-selected="false"
@@ -155,8 +156,23 @@
 
                                     </div>
 
+
+
                                     <div class="row g-3 mt-3">
-                                        <div class="col-md-6 col-lg-4">
+                                        <div class="col-lg-12">
+                                            <label for="display_method" data-ar="طريقة عرض المحتوى"
+                                                data-en="Content Display Method">طريقة عرض المحتوى</label>
+                                            <select name="display_method" id="display_method"
+                                                class="form-select js-select2 form-control-lg" required
+                                                data-ar="طريقة العرض" data-en="Display Method">
+                                                <option value="" data-ar="اختر الطريقة" data-en="Choose Method">
+                                                    اختر الطريقة</option>
+                                                <option value="simple" data-ar="بسيط" data-en="Simple">بسيط</option>
+                                                <option value="list" data-ar="قائم" data-en="List">قائم</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-12 col-lg-4">
                                             <label data-ar="القسم" data-en="Section">القسم</label>
                                             <select name="section_id" class="form-select js-select2 form-control-lg"
                                                 required data-ar="القسم" data-en="Section">
@@ -289,6 +305,7 @@
                                     'existing_podcasts' => $existing_podcasts,
                                     'existing_albums' => $existing_albums,
                                 ])
+
 
                                 <!-- Message Tab -->
                                 <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
