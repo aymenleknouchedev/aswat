@@ -61,6 +61,15 @@
                                     </button>
                                 </li>
 
+                                <!-- NEW Social Media tab -->
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="social-media-tab" data-bs-target="#social-media"
+                                        type="button" role="tab" aria-controls="social-media" aria-selected="false"
+                                        data-ar="وسائل التواصل" data-en="Social Media">
+                                        وسائل التواصل
+                                    </button>
+                                </li>
+
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="message-tab" data-bs-target="#message" type="button"
                                         role="tab" aria-controls="message" aria-selected="false"
@@ -78,7 +87,10 @@
 
                                     <div class="row g-3">
                                         <div class="col-12">
-                                            <label for="title" data-ar="العنوان" data-en="Title">العنوان</label>
+                                            <label for="title" data-ar="العنوان" data-en="Title">
+                                                العنوان
+                                            </label>
+                                            <label style="color:red;">*</label>
                                             <input id="title" name="title" type="text"
                                                 class="form-control form-control-lg" maxlength="75" required
                                                 data-ar="العنوان" data-en="Title">
@@ -90,6 +102,8 @@
                                         <div class="col-12">
                                             <label for="long_title" data-ar="العنوان الطويل" data-en="Long Title">العنوان
                                                 الطويل</label>
+                                            <label style="color:red;">*</label>
+
                                             <input id="long_title" name="long_title" type="text"
                                                 class="form-control form-control-lg" maxlength="210" required
                                                 data-ar="العنوان الطويل" data-en="Long Title">
@@ -99,11 +113,13 @@
                                         </div>
 
                                         <div class="col-12">
-                                            <label for="mobile_title" data-ar="عنوان الهاتف" data-en="Mobile Title">عنوان
-                                                الهاتف</label>
+                                            <label for="mobile_title" data-ar="عنوان الموبايل" data-en="Mobile Title">عنوان
+                                                الموبايل</label>
+                                            <label style="color:red;">*</label>
+
                                             <input id="mobile_title" name="mobile_title" type="text"
                                                 class="form-control form-control-lg" maxlength="40" required
-                                                data-ar="عنوان الهاتف" data-en="Mobile Title">
+                                                data-ar="عنوان الموبايل" data-en="Mobile Title">
                                             <small class="text-muted">
                                                 <span id="mobile_title-count">0</span> / 40
                                             </small>
@@ -113,18 +129,18 @@
 
                                     <div class="row g-3 mt-1 ">
                                         <div class="col-lg-12 mb-2">
-                                            <label for="display_method" data-ar="طريقة عرض المحتوى"
-                                                data-en="Content Display Method">طريقة عرض المحتوى</label>
+                                            <label for="display_method" data-ar="القالب"
+                                                data-en="Content Display Method">القالب</label>
                                             <select name="display_method" id="display_method" class="form-control"
                                                 required>
-                                                <option value="">اختر الطريقة</option>
-                                                <option value="simple">بسيط</option>
-                                                <option value="list">قائم</option>
+                                                <option value="simple">أساسي</option>
+                                                <option value="list">قائمة</option>
                                             </select>
                                         </div>
 
                                         <div class="col-md-12 col-lg-4 ">
                                             <label data-ar="القسم" data-en="Section">القسم</label>
+                                            <label style="color:red;">*</label>
                                             <select name="section_id" class="form-control" required>
                                                 <option value="">اختر القسم</option>
                                                 @foreach ($sections as $section)
@@ -154,9 +170,9 @@
                                     <div class="row g-3 mt-3">
 
                                         <div class="col-md-6 col-lg-6">
-                                            <label data-ar="الترند" data-en="Trend">الترند</label>
+                                            <label data-ar="الاتجاه" data-en="Trend">الاتجاه</label>
                                             <select name="trend_id" class="form-control">
-                                                <option value="">اختر الترند</option>
+                                                <option value="">اختر الاتجاه</option>
                                                 @foreach ($trends as $trend)
                                                     <option value="{{ $trend->id }}">{{ $trend->name }}</option>
                                                 @endforeach
@@ -196,6 +212,7 @@
                                     <div class="row g-3 mt-3">
                                         <div>
                                             <label data-ar="الوسوم" data-en="Tags">الوسوم</label>
+                                            <label style="color:red;">*</label>
                                             <select name="tags_id[]" multiple class="form-select js-select2"
                                                 style="width: 100%;">
                                                 @foreach ($tags as $tag)
@@ -207,19 +224,28 @@
 
 
                                     <div class="form-group my-3">
-                                        <label for="summary" data-ar="ملخص" data-en="Summary"></label>
-                                        <textarea id="summary" name="summary" class="form-control form-control-lg" rows="3"></textarea>
+                                        <label for="summary" data-ar="الملخص" data-en="Summary">الملخص</label>
+                                        <label style="color:red;">*</label>
+                                        <textarea id="summary" name="summary" class="form-control form-control-lg" rows="3"
+                                            style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130"></textarea>
+                                        <small class="text-muted">
+                                            <span id="summary-count">0</span> / 130
+                                        </small>
                                     </div>
 
+
+
                                     <div class="form-group mb-3">
-                                        <label for="body" data-ar="نص المحتوى" data-en="Content Text">نص
-                                            المحتوى</label>
+                                        <label for="body" data-ar="المتن" data-en="Body">
+                                            المتن</label>
+                                        <label style="color:red;">*</label>
+
                                         <x-forms.tinymce-editor id="myeditorinstance" name="content" :value="$post->content ?? ''" />
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="seo_keyword" data-ar="الكلمة المفتاحية للسيو"
-                                            data-en="SEO Keyword">الكلمة المفتاحية للسيو</label>
+                                        <label for="seo_keyword" data-ar="الكلمة الرئيسية" data-en="SEO Keyword">الكلمة
+                                            الرئيسية</label>
                                         <input id="seo_keyword" name="seo_keyword" type="text"
                                             class="form-control form-control-lg" maxlength="50">
                                     </div>
@@ -243,6 +269,62 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Tabs content -->
+                            <div class="tab-content">
+                                <!-- Add Content Tab -->
+                                <div class="tab-pane fade show active" id="add-content" role="tabpanel"
+                                    aria-labelledby="add-content-tab">
+                                    <!-- Existing content here -->
+                                </div>
+
+                                <!-- Media Tab -->
+                                <div class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
+                                    <!-- Existing content here -->
+                                </div>
+
+                                <!-- Social Media Tab Content -->
+                                <div class="tab-pane fade" id="social-media" role="tabpanel"
+                                    aria-labelledby="social-media-tab">
+                                    <div class="row g-3 mt-3">
+
+                                        <!-- Content Image -->
+                                        <div class="col-md-6">
+                                            <label for="share_image" class="form-label" data-ar="صورة المحتوى"
+                                                data-en="Content Image">صورة المحتوى</label>
+                                            <input type="file" id="share_image" name="share_image"
+                                                class="form-control" accept="image/*">
+                                            <div class="mt-2 border rounded p-2 text-center" style="height:150px;">
+                                                <img id="share_image_preview" src="" alt=""
+                                                    style="max-height:100%; max-width:100%; display:none;">
+                                            </div>
+                                        </div>
+
+                                        <!-- Title -->
+                                        <div class="col-md-6">
+                                            <label for="share_title" class="form-label" data-ar="عنوان المشاركة"
+                                                data-en="Share Title">عنوان المشاركة</label>
+                                            <input type="text" id="share_title" name="share_title"
+                                                class="form-control" placeholder="عنوان المشاركة">
+                                        </div>
+
+                                        <!-- Description -->
+                                        <div class="col-md-12">
+                                            <label for="share_description" class="form-label" data-ar="وصف المشاركة"
+                                                data-en="Share Description">وصف المشاركة</label>
+                                            <textarea id="share_description" name="share_description" class="form-control" rows="3"
+                                                placeholder="أدخل وصفًا للمشاركة"></textarea>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- Review Message Tab -->
+                                <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
+                                    <!-- Existing content here -->
+                                </div>
+                            </div>
+
 
                             <div class="mt-4 p-3 border rounded" id="seo-evaluation" style="">
                                 <h5 data-ar="تقييم السيو (SEO)" data-en="SEO Evaluation">تقييم السيو (SEO)</h5>
@@ -293,7 +375,11 @@
                 {
                     id: "mobile_title",
                     max: 40
-                }
+                },
+                {
+                    id: "summary",
+                    max: 130
+                } // ✅ Added summary field
             ];
 
             fields.forEach(f => {
@@ -306,25 +392,27 @@
 
                     // Update on typing
                     el.addEventListener("input", function() {
-                        counter.textContent = el.value.length;
+                        counter.textContent = this.value.length;
                     });
                 }
-            });
-        });
-
-
-        $(document).ready(function() {
-            $('.js-select2').select2({
-                placeholder: 'ابحث واختر الوسوم',
-                minimumInputLength: 1, // تظهر الخيارات بعد كتابة حرف واحد
-                allowClear: true,
-                width: '100%'
             });
         });
     </script>
 
 
-
-
+    <!-- Preview Script -->
+    <script>
+        document.getElementById('share_image').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('share_image_preview');
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block';
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+            }
+        });
+    </script>
 
 @endsection

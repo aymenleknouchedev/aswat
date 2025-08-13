@@ -1,3 +1,37 @@
+<style>
+    /* Light grey button style */
+    .btn-light-grey {
+        background-color: #f8f9fa;
+        /* Light grey */
+        border: 1px solid #ddd;
+        color: #333;
+    }
+
+    .btn-light-grey:hover {
+        background-color: #e9ecef;
+        /* Slightly darker grey on hover */
+        color: #000;
+    }
+
+    /* Light grey dropdown style */
+    .dropdown-menu.custom-dropdown {
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 4px 0;
+    }
+
+    .dropdown-menu.custom-dropdown .dropdown-item {
+        color: #333;
+        padding: 6px 14px;
+    }
+
+    .dropdown-menu.custom-dropdown .dropdown-item:hover {
+        background-color: #e9ecef;
+        color: #000;
+    }
+</style>
+
 @extends('layouts.admin')
 
 @section('title', 'أصوات جزائرية | إضافة تصنيف')
@@ -29,50 +63,48 @@
                                                     </a>
                                                     <div class="toggle-expand-content" data-content="pageMenu"
                                                         style="display: none;">
-                                                        <ul class="nk-block-tools g-3">
-                                                            <li>
-                                                                <div class="drodown"></a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            <li><a href="#"><span
-                                                                                        data-en="All Media Files"
-                                                                                        data-ar="كل ملفات الوسائط">All Media
-                                                                                        Files</span></a></li>
-                                                                            <li><a href="#"><span data-en="Images"
-                                                                                        data-ar="صور">Images</span></a>
-                                                                            </li>
-                                                                            <li><a href="#"><span data-en="Audio"
-                                                                                        data-ar="صوتيات">Audio</span></a>
-                                                                            </li>
-                                                                            <li><a href="#"><span data-en="Video"
-                                                                                        data-ar="فيديو">Video</span></a>
-                                                                            </li>
-                                                                            <li><a href="#"><span data-en="Document"
-                                                                                        data-ar="مستند">Document</span></a>
-                                                                            </li>
-                                                                            <li><a href="#"><span
-                                                                                        data-en="Spreadsheets"
-                                                                                        data-ar="جداول البيانات">Spreadsheets</span></a>
-                                                                            </li>
-                                                                            <li><a href="#"><span data-en="Archives"
-                                                                                        data-ar="أرشيف">Archives</span></a>
-                                                                            </li>
-                                                                            <li><a href="#"><span data-en="Mine"
-                                                                                        data-ar="خاص بي">Mine</span></a>
-                                                                            </li>
-                                                                        </ul>
+                                                        <div class="toggle-expand-content" data-content="pageMenu"
+                                                            style="display: none;">
+                                                            <ul class="nk-block-tools g-3">
+
+                                                                <!-- Filter File Type -->
+                                                                <li class="nk-block-tools-opt">
+                                                                    <div class="form-control-wrap">
+                                                                        <select class="form-select js-select2"
+                                                                            id="fileTypeFilter" data-search="off">
+                                                                            <option value="all" data-en="All Files"
+                                                                                data-ar="كل الملفات">All Files</option>
+                                                                            <option value="images" data-en="Images"
+                                                                                data-ar="صور">Images</option>
+                                                                            <option value="videos" data-en="Videos"
+                                                                                data-ar="فيديوهات">Videos</option>
+                                                                            <option value="documents" data-en="Documents"
+                                                                                data-ar="مستندات">Documents</option>
+                                                                        </select>
                                                                     </div>
-                                                                </div>
-                                                            </li>
-                                                            <li class="nk-block-tools-opt">
-                                                                <a data-bs-toggle="modal" href="#addMedia"
-                                                                    class="btn btn-primary">
-                                                                    <em class="icon ni ni-plus"></em><span
-                                                                        data-en="Add Media" data-ar="إضافة وسائط">Add
-                                                                        Media</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
+                                                                </li>
+
+                                                                <!-- Upload File Button -->
+                                                                <li class="nk-block-tools-opt">
+                                                                    <a data-bs-toggle="modal" href="#addMedia"
+                                                                        class="btn btn-primary">
+                                                                        <em class="icon ni ni-plus"></em>
+                                                                        <span data-en="Add Media" data-ar="رفع ملف">Upload
+                                                                            File</span>
+                                                                    </a>
+                                                                </li>
+
+                                                            </ul>
+                                                        </div>
+
+                                                        <script>
+                                                            document.getElementById('fileTypeFilter').addEventListener('change', function() {
+                                                                const type = this.value;
+                                                                console.log("Filter selected:", type);
+                                                                // TODO: Hook into your filtering logic
+                                                            });
+                                                        </script>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -149,7 +181,7 @@
             <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close"><em
                     class="icon ni ni-cross-sm"></em></a>
             <div class="modal-body modal-body-md">
-                <h5 class="modal-title" data-en="Add Media" data-ar="إضافة وسائط">Add Media</h5>
+                <h5 class="modal-title" data-en="Upload File" data-ar="إضافة ملف">Upload File</h5>
                 <form action="#" class="mt-4">
                     <div class="row g-gs">
                         <div class="col-md-6">

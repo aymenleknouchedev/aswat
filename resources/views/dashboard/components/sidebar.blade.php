@@ -41,16 +41,26 @@
                             <span class="nk-menu-text" data-en="Content" data-ar="المحتوى">Content</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="dashboard/contents" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="All Contents" data-ar="جميع المحتوى">All
-                                        Contents</span></a></li>
-                            <li class="nk-menu-item"><a href="dashboard/content-create" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Add Content" data-ar="إضافة محتوى">Add
-                                        Content</span></a></li>
-                            <li class="nk-menu-item"><a href="dashboard/breakingnew-create" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Add Breaking News" data-ar="إضافة خبر عاجل">Add
-                                        Breaking News</span></a></li>
+                            <li class="nk-menu-item">
+                                <a href="dashboard/contents" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="All Contents" data-ar="كل المحتوى">كل
+                                        المحتوى</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="dashboard/content-create" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Add Content" data-ar="إضافة محتوى">إضافة
+                                        محتوى</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="dashboard/breakingnew-create" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Add Breaking News" data-ar="إضافة عاجل">إضافة
+                                        عاجل</span>
+                                </a>
+                            </li>
                         </ul>
+
                     </li>
 
                     <!-- Media Library -->
@@ -75,9 +85,15 @@
                                 Management</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="/featured/manage" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Manage Featured" data-ar="إدارة المميز">Manage
-                                        Featured</span></a></li>
+                            <li class="nk-menu-item">
+                                <a href="/featured/manage" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Manage Featured" data-ar="إدارة الأولى">
+                                        Manage Featured
+                                    </span>
+                                </a>
+                            </li>
+
+
                             <li class="nk-menu-item"><a href="/sections/manage" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="Manage Sections" data-ar="إدارة الأقسام">Manage
                                         Sections</span></a></li>
@@ -94,7 +110,7 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="{{ route('dashboard.sections.index') }}"
                                     class="nk-menu-link"><span class="nk-menu-text" data-en="All Sections"
-                                        data-ar="جميع الأقسام">All
+                                        data-ar="كل الأقسام">All
                                         Sections</span></a></li>
                             <li class="nk-menu-item"><a href="{{ route('dashboard.section.create') }}"
                                     class="nk-menu-link"><span class="nk-menu-text" data-en="Add Section"
@@ -114,7 +130,7 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="{{ route('dashboard.categories.index') }}"
                                     class="nk-menu-link"><span class="nk-menu-text" data-en="All Categories"
-                                        data-ar="جميع التصنيفات">All
+                                        data-ar="كل التصنيفات">All
                                         Categories</span></a></li>
                             <li class="nk-menu-item"><a href="{{ route('dashboard.categorie.create') }}"
                                     class="nk-menu-link"><span class="nk-menu-text" data-en="Add Category"
@@ -133,7 +149,7 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="./dashboard/trends" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="All Trends" data-ar="جميع الاتجاهات">All
+                                        class="nk-menu-text" data-en="All Trends" data-ar="كل الاتجاهات">All
                                         Trends</span></a></li>
                             <li class="nk-menu-item"><a href="./dashboard/trend-create" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="Add Trend" data-ar="إضافة اتجاه">Add
@@ -147,11 +163,11 @@
                             <span class="nk-menu-icon">
                                 <em class="icon ni ni-view-list"></em>
                             </span>
-                            <span class="nk-menu-text" data-en="Windows" data-ar="نوافذ">Windows</span>
+                            <span class="nk-menu-text" data-en="Windows" data-ar="النوافذ">Windows</span>
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="./dashboard/windows" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="All Windows" data-ar="جميع النوافذ">All
+                                        class="nk-menu-text" data-en="All Windows" data-ar="كل النوافذ">All
                                         Windows</span></a></li>
                             <li class="nk-menu-item"><a href="./dashboard/window-create" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="Add Window" data-ar="إضافة نافذة">Add
@@ -170,7 +186,7 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="{{ route('dashboard.tags.index') }}"
                                     class="nk-menu-link"><span class="nk-menu-text" data-en="All Tags"
-                                        data-ar="جميع الوسوم">All
+                                        data-ar="كل الوسوم">All
                                         Tags</span></a></li>
                             <li class="nk-menu-item"><a href="{{ route('dashboard.tag.create') }}"
                                     class="nk-menu-link"><span class="nk-menu-text" data-en="Add Tag"
@@ -189,7 +205,7 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="./dashboard/locations" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="All Locations" data-ar="جميع المواقع">All
+                                        class="nk-menu-text" data-en="All Locations" data-ar="كل المواقع">All
                                         Locations</span></a></li>
                             <li class="nk-menu-item"><a href="./dashboard/location-create" class="nk-menu-link"><span
                                         class="nk-menu-text" data-en="Add Location" data-ar="إضافة موقع">Add
@@ -208,7 +224,7 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="{{ route('dashboard.users.index') }}"
                                     class="nk-menu-link"><span class="nk-menu-text" data-en="All Users"
-                                        data-ar="جميع المستخدمين">All
+                                        data-ar="كل المستخدمين">All
                                         Users</span></a></li>
                             <li class="nk-menu-item"><a href="{{ route('dashboard.user.create') }}"
                                     class="nk-menu-link"><span class="nk-menu-text" data-en="Add User"
@@ -232,7 +248,7 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="{{ route('dashboard.writers.index') }}"
                                     class="nk-menu-link"><span class="nk-menu-text" data-en="All Writers"
-                                        data-ar="جميع الكتّاب">All
+                                        data-ar="كل الكتّاب">All
                                         Authors</span></a></li>
                             <li class="nk-menu-item"><a href="{{ route('dashboard.writer.create') }}"
                                     class="nk-menu-link"><span class="nk-menu-text" data-en="Add Writer"
@@ -253,7 +269,7 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="{{ route('dashboard.pages.index') }}"
                                     class="nk-menu-link"><span class="nk-menu-text" data-en="All Pages"
-                                        data-ar="جميع الصفحات">All
+                                        data-ar="كل الصفحات">All
                                         Pages</span></a></li>
                             <li class="nk-menu-item"><a href="{{ route('dashboard.page.create') }}"
                                     class="nk-menu-link"><span class="nk-menu-text" data-en="Add Page"
