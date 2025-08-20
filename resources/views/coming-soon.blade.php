@@ -3,61 +3,54 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ✅ الحل -->
+
     <meta charset="UTF-8">
     <title>أصوات جزائرية - قريباً</title>
     <style>
-        /* ✅ استدعاء الخطوط */
+        /* ✅ استدعاء الخط */
         @font-face {
-            font-family: 'asswat';
-            src: url('../fonts/reith_qalam_light.ttf') format('truetype');
             font-weight: 200;
-            font-style: normal;
+            font-family: 'asswat-bold-light';
+            src: url('../fonts/reith_qalam_bold.ttf') format('woff');
         }
 
         @font-face {
-            font-family: 'asswat';
-            src: url('../fonts/reith_qalam_regular.ttf') format('truetype');
             font-weight: 400;
-            font-style: normal;
+            font-family: 'asswat-bold-regular';
+            src: url('../fonts/reith_qalam_regular.ttf') format('woff');
         }
 
         @font-face {
-            font-family: 'asswat';
-            src: url('../fonts/reith_qalam_bold.ttf') format('truetype');
             font-weight: 500;
-            font-style: normal;
+            font-family: 'asswat-bold-medium';
+            src: url('../fonts/reith_qalam_bold.ttf') format('woff');
         }
 
         @font-face {
-            font-family: 'asswat';
-            src: url('../fonts/reith_qalam_extra_bold.ttf') format('truetype');
             font-weight: 600;
-            font-style: normal;
+            font-family: 'asswat-bold-bold';
+            src: url('../fonts/reith_qalam_extra_bold.ttf') format('woff');
         }
 
-        html {
-            -webkit-text-size-adjust: 100%;
-            text-size-adjust: 100%;
-        }
 
         body,
         html {
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: 'asswat', sans-serif;
+            font-family: 'asswat-bold';
             color: #fff;
             text-align: center;
             overflow: hidden;
         }
 
         * {
-            font-family: 'asswat', sans-serif;
+            font-family: 'asswat-bold';
         }
 
         /* ✅ placeholder */
         input::placeholder {
-            font-family: 'asswat', sans-serif;
+            font-family: 'asswat-bold';
             font-size: 16px;
             color: #ddd;
         }
@@ -231,7 +224,6 @@
             }
         }
 
-        /* ✅ موبايل */
         @media (max-width: 600px) {
             .logo {
                 position: relative;
