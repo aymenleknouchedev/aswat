@@ -3,39 +3,61 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ✅ الحل -->
-
     <meta charset="UTF-8">
     <title>أصوات جزائرية - قريباً</title>
     <style>
-        /* ✅ استدعاء الخط */
+        /* ✅ استدعاء الخطوط */
         @font-face {
             font-family: 'asswat';
-            src: url('./user/fonts/asswat.woff2') format('woff2'),
-                url('./user/fonts/asswat.woff') format('woff'),
-                url('./user/fonts/asswat.ttf') format('truetype');
-            font-weight: normal;
+            src: url('../fonts/reith_qalam_light.ttf') format('truetype');
+            font-weight: 200;
             font-style: normal;
         }
 
+        @font-face {
+            font-family: 'asswat';
+            src: url('../fonts/reith_qalam_regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'asswat';
+            src: url('../fonts/reith_qalam_bold.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'asswat';
+            src: url('../fonts/reith_qalam_extra_bold.ttf') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
 
         body,
         html {
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: 'asswat';
+            font-family: 'asswat', sans-serif;
             color: #fff;
             text-align: center;
             overflow: hidden;
         }
 
         * {
-            font-family: 'asswat';
+            font-family: 'asswat', sans-serif;
         }
 
         /* ✅ placeholder */
         input::placeholder {
-            font-family: 'asswat';
+            font-family: 'asswat', sans-serif;
             font-size: 16px;
             color: #ddd;
         }
@@ -209,6 +231,7 @@
             }
         }
 
+        /* ✅ موبايل */
         @media (max-width: 600px) {
             .logo {
                 position: relative;
