@@ -10,9 +10,9 @@
         /* ✅ استدعاء الخط */
         @font-face {
             font-family: 'asswat';
-            src: url('./user/assets/fonts/asswat.woff2') format('woff2'),
-                url('./user/assets/fonts/asswat.woff') format('woff'),
-                url('./user/assets/fonts/asswat.ttf') format('truetype');
+            src: url('./user/fonts/asswat.woff2') format('woff2'),
+                url('./user/fonts/asswat.woff') format('woff'),
+                url('./user/fonts/asswat.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
