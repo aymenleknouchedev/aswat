@@ -9,7 +9,7 @@
         @font-face {
             font-family: 'asswat';
             src: url('./user/assets/fonts/asswat.woff2') format('woff2'),
-                 url('./user/assets/fonts/asswat.woff') format('woff');
+                url('./user/assets/fonts/asswat.woff') format('woff');
             font-weight: normal;
             font-style: normal;
         }
@@ -206,16 +206,42 @@
         }
 
         @media (max-width: 600px) {
-            h1 {
-                font-size: 28px;
-            }
-
-            p.tagline {
-                font-size: 16px;
+            .logo {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 20px auto;
+                display: block;
+                width: 140px;
+                /* ✅ تكبير الشعار */
             }
 
             .glass-box {
-                padding: 30px 20px;
+                padding: 50px 25px;
+                /* ✅ أكبر من السابق */
+                min-height: 80vh;
+                /* ✅ طول إضافي */
+            }
+
+            h1 {
+                font-size: 34px;
+                /* ✅ تكبير العنوان */
+            }
+
+            p.tagline {
+                font-size: 18px;
+                /* ✅ أكبر */
+            }
+
+            .animation-text {
+                font-size: 22px;
+                /* ✅ تكبير النص المتحرك */
+            }
+
+            input[type="email"],
+            button {
+                font-size: 18px;
+                /* ✅ أكبر */
             }
         }
     </style>
