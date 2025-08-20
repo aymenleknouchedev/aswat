@@ -2,57 +2,32 @@
 <html lang="ar" dir="rtl">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ✅ الحل -->
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>أصوات جزائرية - قريباً</title>
     <style>
-        /* ✅ استدعاء الخط */
+        /* ✅ استدعاء الخطوط */
         @font-face {
-            font-weight: 200;
-            font-family: 'asswat-light';
-            src: url('./user/fonts/reith_qalam_bold.ttf') format('woff');
-        }
-
-        @font-face {
-            font-weight: 400;
-            font-family: 'asswat-regular';
-            src: url('./user/fonts/reith_qalam_regular.ttf') format('woff');
-        }
-
-        @font-face {
-            font-weight: 500;
-            font-family: 'asswat-medium';
-            src: url('./user/fonts/reith_qalam_bold.ttf') format('woff');
-        }
-
-        @font-face {
-            font-weight: 600;
             font-family: 'asswat-bold';
-            src: url('./user/fonts/reith_qalam_extra_bold.ttf') format('woff');
+            src: url('./user/fonts/reith_qalam_bold.ttf') format('truetype');
+            font-weight: bold;
         }
 
+        @font-face {
+            font-family: 'asswat-regular';
+            src: url('./user/fonts/reith_qalam_regular.ttf') format('truetype');
+            font-weight: normal;
+        }
 
         body,
         html {
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: 'asswat-bold';
+            font-family: 'asswat-regular', sans-serif;
             color: #fff;
             text-align: center;
             overflow: hidden;
-        }
-
-        * {
-            font-family: 'asswat-bold';
-        }
-
-        /* ✅ placeholder */
-        input::placeholder {
-            font-family: 'asswat-bold';
-            font-size: 16px;
-            color: #ddd;
         }
 
         .video-bg {
@@ -107,9 +82,9 @@
 
         h1 {
             font-size: 40px;
-            font-weight: 700;
-            animation: fadeInDown 1.5s ease;
+            font-family: 'asswat-bold', sans-serif;
             margin-bottom: 35px;
+            animation: fadeInDown 1.5s ease;
         }
 
         p.tagline {
@@ -117,13 +92,12 @@
             margin-bottom: 20px;
             line-height: 1.6;
             animation: fadeIn 2s ease;
-            font-weight: 600;
+            font-family: 'asswat-regular', sans-serif;
         }
 
-        /* ✅ النص الجديد */
         .animation-text {
             font-size: 26px;
-            font-weight: bold;
+            font-family: 'asswat-bold', sans-serif;
             margin: 50px 0;
             background: linear-gradient(90deg, #ffffff, #52B788, #ffffff);
             background-size: 200% auto;
@@ -156,6 +130,7 @@
             width: 250px;
             font-size: 16px;
             outline: none;
+            font-family: 'asswat-regular', sans-serif;
         }
 
         button {
@@ -166,6 +141,7 @@
             font-size: 16px;
             cursor: pointer;
             transition: 0.3s;
+            font-family: 'asswat-bold', sans-serif;
         }
 
         button:hover {
@@ -177,16 +153,18 @@
             margin-top: 20px;
             font-size: 16px;
             animation: fadeIn 2.5s ease;
+            font-family: 'asswat-regular', sans-serif;
         }
 
-        .social-icons span {
-            margin: 0 10px;
-            cursor: pointer;
-            font-weight: bold;
+        .social-icons a {
+            margin: 0 8px;
+            font-family: 'asswat-bold', sans-serif;
+            color: #fff;
+            text-decoration: none;
             transition: color 0.3s;
         }
 
-        .social-icons span:hover {
+        .social-icons a:hover {
             color: #52B788;
         }
 
@@ -232,35 +210,28 @@
                 margin: 20px auto;
                 display: block;
                 width: 140px;
-                /* ✅ تكبير الشعار */
             }
 
             .glass-box {
                 padding: 50px 25px;
-                /* ✅ أكبر من السابق */
                 min-height: 80vh;
-                /* ✅ طول إضافي */
             }
 
             h1 {
                 font-size: 34px;
-                /* ✅ تكبير العنوان */
             }
 
             p.tagline {
                 font-size: 18px;
-                /* ✅ أكبر */
             }
 
             .animation-text {
                 font-size: 22px;
-                /* ✅ تكبير النص المتحرك */
             }
 
             input[type="email"],
             button {
                 font-size: 18px;
-                /* ✅ أكبر */
             }
         }
     </style>
@@ -277,9 +248,8 @@
     <div class="container">
         <div class="glass-box">
             <h1>أصوات جزائرية</h1>
-            <p class="tagline">منصة إخبارية جزائرية حديثة، تقدم لكم آخر المستجدات، التحليلات، والرأي المستقل</p>
+            <p class="tagline">موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين</p>
 
-            <!-- ✅ النص الجديد -->
             <div class="animation-text">ترقبونا قريباً</div>
 
             <form>
@@ -290,10 +260,10 @@
             <footer>
                 <p>تابعونا على</p>
                 <div class="social-icons">
-                    <span>فيسبوك</span> |
-                    <span>إكس</span> |
-                    <span>إنستغرام</span> |
-                    <span>يوتيوب</span>
+                    <a href="https://www.facebook.com/asswatdjazairia" target="_blank">فيسبوك</a> |
+                    <a href="https://x.com/asswatdjazairia" target="_blank">إكس</a> |
+                    <a href="https://www.instagram.com/asswatdjazairia" target="_blank">إنستغرام</a> |
+                    <a href="https://www.youtube.com/@asswatdjazairia" target="_blank">يوتيوب</a>
                 </div>
             </footer>
         </div>
