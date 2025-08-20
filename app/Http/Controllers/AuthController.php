@@ -100,6 +100,7 @@ class AuthController extends Controller
             'password' => 'nullable|string|min:6|confirmed',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'role' => 'nullable|in:admin,editor,writer',
+            'token' => '',
         ]);
 
         $user = User::findOrFail($id);

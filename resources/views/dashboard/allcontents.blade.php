@@ -246,6 +246,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                         
                                         @foreach ($pagedContents as $content)
                                             <tr>
                                                 <td>{{ $content['title'] }}</td>
