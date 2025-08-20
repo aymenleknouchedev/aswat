@@ -11,10 +11,12 @@
         @font-face {
             font-family: 'asswat';
             src: url('./user/assets/fonts/asswat.woff2') format('woff2'),
-                url('./user/assets/fonts/asswat.woff') format('woff');
+                url('./user/assets/fonts/asswat.woff') format('woff'),
+                url('./user/assets/fonts/asswat.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
+
 
         body,
         html {
@@ -263,7 +265,7 @@
             <p class="tagline">منصة إخبارية جزائرية حديثة، تقدم لكم آخر المستجدات، التحليلات، والرأي المستقل</p>
 
             <!-- ✅ النص الجديد -->
-            <div class="animation-text">الموقع قيد التطوير - ترقبونا قريباً</div>
+            <div class="animation-text">ترقبونا قريباً</div>
 
             <form>
                 <input type="email" placeholder="أدخل بريدك الإلكتروني">
