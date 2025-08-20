@@ -23,19 +23,19 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: 'asswat', sans-serif;
+            font-family: 'asswat';
             color: #fff;
             text-align: center;
             overflow: hidden;
         }
 
         * {
-            font-family: 'asswat', sans-serif;
+            font-family: 'asswat';
         }
 
         /* ✅ placeholder */
         input::placeholder {
-            font-family: 'asswat', sans-serif;
+            font-family: 'asswat';
             font-size: 16px;
             color: #ddd;
         }
