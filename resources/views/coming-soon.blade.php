@@ -10,26 +10,26 @@
         /* ✅ استدعاء الخط */
         @font-face {
             font-weight: 200;
-            font-family: 'asswat-bold-light';
-            src: url('../fonts/reith_qalam_bold.ttf') format('woff');
+            font-family: 'asswat-light';
+            src: url('./user/fonts/reith_qalam_bold.ttf') format('woff');
         }
 
         @font-face {
             font-weight: 400;
-            font-family: 'asswat-bold-regular';
-            src: url('../fonts/reith_qalam_regular.ttf') format('woff');
+            font-family: 'asswat-regular';
+            src: url('./user/fonts/reith_qalam_regular.ttf') format('woff');
         }
 
         @font-face {
             font-weight: 500;
-            font-family: 'asswat-bold-medium';
-            src: url('../fonts/reith_qalam_bold.ttf') format('woff');
+            font-family: 'asswat-medium';
+            src: url('./user/fonts/reith_qalam_bold.ttf') format('woff');
         }
 
         @font-face {
             font-weight: 600;
-            font-family: 'asswat-bold-bold';
-            src: url('../fonts/reith_qalam_extra_bold.ttf') format('woff');
+            font-family: 'asswat-bold';
+            src: url('./user/fonts/reith_qalam_extra_bold.ttf') format('woff');
         }
 
 
