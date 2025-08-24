@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('display_methods', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name', 50);      // اسم طريقة العرض (مثلاً: standard, featured, slider...)
+            $table->string('description')->nullable(); // وصف اختياري
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('display_methods');
     }
 };

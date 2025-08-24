@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('social_media_links', function (Blueprint $table) {
+        Schema::create('content_tag', function (Blueprint $table) {
             $table->id();
-            $table->enum('platform', ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube', 'tiktok', 'other']);
-            $table->string('url');
-            $table->string('icon')->nullable();
+            $table->foreignId('content_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('tag_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('social_media_links');
+        Schema::dropIfExists('content_tag');
     }
 };

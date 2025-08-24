@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('links', function (Blueprint $table) {
+        Schema::create('content_media', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('content_id')->constrained('contents')->cascadeOnDelete();
+            $table->enum('media_type', ['video', 'podcast']);
             $table->string('url');
             $table->timestamps();
         });
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('links');
+        Schema::dropIfExists('content_media');
     }
 };

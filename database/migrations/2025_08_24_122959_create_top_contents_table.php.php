@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('top_contents', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('content_id')->constrained('contents')->cascadeOnDelete();
+            $table->integer('order')->default(0); // الترتيب اليدوي
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('top_contents');
     }
 };

@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('header_news', function (Blueprint $table) {
+        Schema::create('content_images', function (Blueprint $table) {
             $table->id();
-            $table->unsignedTinyInteger('slot_number')->unique(); // slots 1 to 5
+            $table->foreignId('content_id')->constrained('contents')->cascadeOnDelete();
+            $table->enum('type', ['main', 'mobile', 'detail', 'social', 'album'])->default('main');
+            $table->string('path');
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('header_news');
+        Schema::dropIfExists('content_images');
     }
 };

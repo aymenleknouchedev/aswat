@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-   
+    public function contents()
+    {
+        return $this->belongsToMany(Content::class, 'content_tag');
+    }
+    
 }

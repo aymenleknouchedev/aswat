@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-
-        Schema::create('media', function (Blueprint $table) {
+        Schema::create('sections', function (Blueprint $table) {
             $table->id();
-            $table->string('file_name');
-            $table->string('file_path');
-            $table->enum('file_type', ['image', 'video', 'audio', 'document']);
-            $table->string('alt_text')->nullable();
-            $table->string('caption')->nullable();
+            $table->string('name', 100);
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('media');
+        Schema::dropIfExists('sections');
     }
 };

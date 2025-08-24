@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('writers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('bio')->nullable();
+            $table->string('name', 150);
+            $table->string('email')->nullable();
             $table->timestamps();
         });
     }
