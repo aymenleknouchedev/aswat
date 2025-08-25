@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('image')->nullable()->default('default.png');
-            $table->enum('role', ['admin', 'editor', 'writer'])->default('writer');
             $table->timestamps();
         });
     }
