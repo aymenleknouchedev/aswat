@@ -18,7 +18,6 @@ return new class extends Migration
 
             $table->foreignId('display_method_id')->nullable()->constrained('display_methods')->nullOnDelete();
 
-
             // Titles
             $table->string('title', 75);
             $table->string('long_title', 210)->nullable();
@@ -32,7 +31,6 @@ return new class extends Migration
             $table->foreignId('window_id')->nullable()->constrained('windows')->nullOnDelete();
             $table->foreignId('writer_id')->nullable()->constrained('writers')->nullOnDelete();
             $table->foreignId('writer_location_id')->nullable()->constrained('locations')->nullOnDelete();
-            
 
             // Body
             $table->string('summary', 130);

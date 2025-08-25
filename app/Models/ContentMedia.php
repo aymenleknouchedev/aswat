@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContentMedia extends Model
 {
-    protected $fillable = ['content_id', 'media_type', 'url'];
+    protected $fillable = ['content_id', 'type', 'path'];
 
     public function content()
     {

@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('content_media', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('content_id')->constrained('contents')->cascadeOnDelete();
-            $table->enum('media_type', ['video', 'podcast']);
-            $table->string('url');
+            $table->enum('type', ['main', 'mobile', 'detail', 'social', 'album', 'video', 'podcast'])->default('main');
+            $table->string('path');
             $table->timestamps();
         });
     }
