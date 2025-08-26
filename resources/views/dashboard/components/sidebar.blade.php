@@ -233,8 +233,46 @@
                         </ul>
                     </li>
 
+                    
 
+                    <!-- Roles & Permissions -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon">
+                                <em class="icon ni ni-shield"></em>
+                            </span>
+                            <span class="nk-menu-text" data-en="Roles & Permissions"
+                                data-ar="الأدوار والصلاحيات">Roles & Permissions</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <!-- Roles -->
+                            <li class="nk-menu-item">
+                                <a href="{{ route('dashboard.roles.index') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="All Roles" data-ar="كل الأدوار">All
+                                        Roles</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('dashboard.role.create') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Add Role" data-ar="إضافة دور">Add Role</span>
+                                </a>
+                            </li>
 
+                            <!-- Permissions -->
+                            <li class="nk-menu-item">
+                                <a href="{{ route('dashboard.permissions.index') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="All Permissions" data-ar="كل الصلاحيات">All
+                                        Permissions</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('dashboard.permission.create') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Add Permission" data-ar="إضافة صلاحية">Add
+                                        Permission</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
 
                     <!-- Authors -->

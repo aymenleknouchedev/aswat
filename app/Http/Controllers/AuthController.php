@@ -37,37 +37,44 @@ class AuthController extends Controller
      */
     public function store(Request $request)
     {
+    
         $request->validate([
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'role' => 'nullable|in:admin,editor,writer',
+            'role' => 'required',
         ]);
 
-        // Handle image upload if provided
-        $imageName = 'default.png';
+        // ✅ Default image
+        $imageName = 'user.png';
+
+        // ✅ If user uploaded an image
         if ($request->hasFile('image')) {
-            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
-            $request->file('image')->storeAs('public/users', $imageName);
+            $file = $request->file('image');
+            $imageName = time() . '_' . $file->getClientOriginalName();
+
+            // تخزين داخل storage/app/public/users
+            $file->storeAs('/users', $imageName);
         }
 
-        // Create the user
+        // ✅ Create user
         $user = User::create([
             'name' => $request->name,
             'surname' => $request->surname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'image' => $imageName,
-            'role' => $request->role ?? 'writer',
+            'role' => $request->role,
         ]);
 
-        return response()->json([
-            'message' => 'User created successfully',
-            'user' => $user
-        ], 201);
+        // ✅ Redirect with success message
+        return redirect()
+            ->route('dashboard.user.create')
+            ->with('success', 'تمت إضافة المستخدم بنجاح');
     }
+
 
     /**
      * Display the specified resource.
@@ -112,7 +119,7 @@ class AuthController extends Controller
             $user->image = $imageName;
         }
 
-        
+
         // Update user details
         $user->name = $request->name;
         $user->surname = $request->surname;

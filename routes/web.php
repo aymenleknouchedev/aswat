@@ -13,6 +13,8 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TrendController;
 use App\Http\Controllers\WindowController;
 
@@ -59,6 +61,8 @@ Route::prefix('dashboard')->group(function () {
         'trend' => TrendController::class,
         'window' => WindowController::class,
         'location' => LocationController::class,
+        'role' => RoleController::class,
+        'permission' => PermissionController::class,
     ];
 
     foreach ($entities as $entity => $controller) {
