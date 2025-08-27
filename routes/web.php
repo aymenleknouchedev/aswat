@@ -34,6 +34,11 @@ Route::get('/migrate-fresh', function () {
     return 'Database migrated fresh successfully.';
 });
 
+Route::get('/storage-link', function () {
+    Artisan::call('storage:link');
+    return 'Storage link created successfully.';
+});
+
 if (env('COMING_SOON', true)) {
     Route::get('/{any}', function () {
         return view('coming-soon');
