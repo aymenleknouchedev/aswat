@@ -46,7 +46,18 @@
                                                     </td>
                                                     <td>{{ $user->name }} {{ $user->surname }}</td>
                                                     <td>{{ $user->email }}</td>
-                                                    <td>{{ $user->role }}Admin</td>
+                                                    @if ($user->roles->isNotEmpty())
+                                                        <td>
+                                                            @foreach ($user->roles as $role)
+                                                                <span class="badge badge-primary">{{ $role->name }}</span>
+                                                            @endforeach
+                                                        </td>
+                                                    @else
+                                                        <td> <span class="text-muted">لا يوجد دور</span>
+                                                        </td>
+                                                    @endif
+
+
                                                     <td>
                                                         <a href="{{ route('dashboard.user.edit', $user->id) }}"
                                                             class="btn btn-sm btn-primary" data-en="Edit"

@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Permission;
+
 
 class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-   public function index()
+    public function index()
     {
-        return view('dashboard.allpermissions');
+        $permissions = Permission::all();
+        return view('dashboard.allpermissions', compact('permissions'));
     }
 
     /**
@@ -27,7 +30,18 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // ✅ Validate input
+        $validated = $request->validate([
+            'name' => 'required|string|unique:permissions,name',
+        ]);
+
+        // ✅ Create permission
+        Permission::create(['name' => $validated['name']]);
+
+        // ✅ Redirect with success message
+        return redirect()
+            ->route('dashboard.permission.create')
+            ->with('success', 'تمت إضافة الصلاحية بنجاح ✅');
     }
 
     /**

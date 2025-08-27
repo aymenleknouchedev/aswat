@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Role;
 
 class AuthController extends Controller
 {
@@ -28,35 +29,33 @@ class AuthController extends Controller
      */
     public function create()
     {
-
-        return view('dashboard.adduser');
+        $roles = Role::all(); // ✅ استرجاع كل الأدوار
+        return view('dashboard.adduser', compact('roles'));
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-    
         $request->validate([
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'role' => 'required',
+            'roles' => 'required|array',
+            'roles.*' => 'exists:roles,id', // نتأكد كل role موجود
         ]);
 
         // ✅ Default image
         $imageName = 'user.png';
 
-        // ✅ If user uploaded an image
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $imageName = time() . '_' . $file->getClientOriginalName();
-
-            // تخزين داخل storage/app/public/users
-            $file->storeAs('/users', $imageName);
+            $file->storeAs('users', $imageName, 'public');
         }
 
         // ✅ Create user
@@ -66,14 +65,16 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'image' => $imageName,
-            'role' => $request->role,
         ]);
 
-        // ✅ Redirect with success message
+        // ✅ Attach multiple roles
+        $user->roles()->sync($request->roles);
+
         return redirect()
             ->route('dashboard.user.create')
-            ->with('success', 'تمت إضافة المستخدم بنجاح');
+            ->with('success', 'تمت إضافة المستخدم مع الأدوار بنجاح');
     }
+
 
 
     /**
@@ -152,6 +153,28 @@ class AuthController extends Controller
     /**
      * Logout the user.
      */
+    public function login(Request $request)
+    {
+        // ✅ التحقق من المدخلات
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+
+        // ✅ محاولة تسجيل الدخول
+        if (Auth::attempt($credentials)) {
+            // يحافظ على السيشن
+            $request->session()->regenerate();
+
+            return redirect()->route('dashboard.index') // غيرها للروت المناسب عندك
+                ->with('success', 'تم تسجيل الدخول بنجاح');
+        }
+
+        // ❌ في حالة فشل الدخول
+        return back()->withErrors([
+            'email' => 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+        ])->onlyInput('email');
+    }
     //logout
     public function logout()
     {

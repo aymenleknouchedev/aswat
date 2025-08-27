@@ -11,94 +11,81 @@
 
                 <div class="nk-content">
                     <div class="container-fluid">
-
-                        <!-- ✅ العنوان -->
-                        <div class="nk-block-head">
-                            <div class="nk-block-head-content d-flex justify-content-between align-items-center">
-                                <h4 class="nk-block-title">جميع الأدوار</h4>
-                                <a href="{{ route('dashboard.role.create') }}" class="btn btn-primary">إضافة دور</a>
+                        <div class="nk-block nk-block-lg">
+                            <div class="nk-block-head">
+                                <div class="nk-block-head-content">
+                                    <h4 class="nk-block-title" data-en="All Roles" data-ar="جميع الأدوار">
+                                        جميع الأدوار
+                                    </h4>
+                                    <p data-en="List of all roles and their permissions." data-ar="قائمة الأدوار وصلاحياتها.">
+                                        قائمة الأدوار وصلاحياتها.
+                                    </p>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- ✅ رسائل النجاح -->
-                        @if (session('success'))
-                            <div class="alert alert-success">{{ session('success') }}</div>
-                        @endif
-
-                        <!-- ✅ الجدول -->
-                        <div class="card card-bordered">
-                            <div class="card-inner">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>اسم الدور</th>
-                                            <th>الصلاحيات</th>
-                                            <th>العمليات</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            $fakeRoles = [
-                                                [
-                                                    'id' => 1,
-                                                    'name' => 'مدير النظام',
-                                                    'permissions' => [
-                                                        'إدارة المستخدمين',
-                                                        'إدارة الأدوار',
-                                                        'إدارة الصلاحيات',
-                                                        'إدارة الإعدادات',
-                                                    ],
-                                                ],
-                                                [
-                                                    'id' => 2,
-                                                    'name' => 'محرر',
-                                                    'permissions' => [
-                                                        'إدارة المقالات',
-                                                        'إدارة التعليقات',
-                                                        'إدارة الوسائط',
-                                                    ],
-                                                ],
-                                                [
-                                                    'id' => 3,
-                                                    'name' => 'مشرف',
-                                                    'permissions' => ['عرض التقارير', 'إدارة التعليقات'],
-                                                ],
-                                                [
-                                                    'id' => 4,
-                                                    'name' => 'كاتب',
-                                                    'permissions' => ['إدارة المقالات'],
-                                                ],
-                                                [
-                                                    'id' => 5,
-                                                    'name' => 'زائر',
-                                                    'permissions' => ['عرض التقارير'],
-                                                ],
-                                            ];
-                                        @endphp
-
-                                        @foreach ($fakeRoles as $role)
-                                            <tr>
-                                                <td>{{ $role['id'] }}</td>
-                                                <td>{{ $role['name'] }}</td>
-                                                <td>
-                                                    @foreach ($role['permissions'] as $perm)
-                                                        <span
-                                                            class="badge badge-sm badge-outline-primary">{{ $perm }}</span>
-                                                    @endforeach
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="btn btn-sm btn-warning">تعديل</a>
-                                                    <button class="btn btn-sm btn-danger">حذف</button>
-                                                </td>
+                            <!-- ✅ الأدوار -->
+                            <div class="card card-bordered card-preview">
+                                @if (count($roles) > 0)
+                                    <table class="table table-orders">
+                                        <thead class="tb-odr-head">
+                                            <tr class="tb-odr-item">
+                                                <th>#</th>
+                                                <th data-en="Role Name" data-ar="اسم الدور">اسم الدور</th>
+                                                <th data-en="Permissions" data-ar="الصلاحيات">الصلاحيات</th>
+                                                <th data-en="Actions" data-ar="الإجراءات">الإجراءات</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
+                                        </thead>
+                                        <tbody class="tb-odr-body">
+                                            @foreach ($roles as $role)
+                                                <tr class="tb-odr-item">
+                                                    <td>{{ $role->id }}</td>
+                                                    <td>
+                                                        <strong>{{ $role->name }}</strong>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex flex-wrap gap-1">
+                                                            @foreach ($role->permissions as $perm)
+                                                                <span class="badge badge-dim badge-primary">
+                                                                    {{ $perm->name }}
+                                                                </span>
+                                                            @endforeach
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('dashboard.role.edit', $role->id) }}"
+                                                            class="btn btn-sm btn-primary" data-en="Edit" data-ar="تعديل">
+                                                            تعديل
+                                                        </a>
 
-                                </table>
+                                                        <form action="{{ route('dashboard.role.destroy', $role->id) }}"
+                                                            method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                                data-en="Delete" data-ar="حذف">حذف</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                @else
+                                    <!-- ✅ ويدجت أنيقة عند عدم وجود أدوار -->
+                                    <div class="text-center p-5">
+                                        <h5 class="mt-3 text-muted" data-en="No roles found yet"
+                                            data-ar="لا توجد أدوار بعد">
+                                            لا توجد أدوار بعد
+                                        </h5>
+                                        <a href="{{ route('dashboard.role.create') }}" class="btn btn-primary mt-3"
+                                            data-en="Add New Role" data-ar="إضافة دور جديد">
+                                            + إضافة دور جديد
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
-                        </div>
+                            <!-- ✅ نهاية الأدوار -->
 
+                        </div>
                     </div>
                 </div>
 

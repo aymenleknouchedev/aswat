@@ -78,6 +78,6 @@ Route::prefix('dashboard')->group(function () {
 
     // Authentication specific routes
     Route::get('/auth', [AuthController::class, 'auth'])->name('dashboard.user.auth');
-    Route::get('/login', [AuthController::class, 'login'])->name('dashboard.login');
+    Route::post('/login', [AuthController::class, 'login'])->name('dashboard.login');
     Route::get('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
 });

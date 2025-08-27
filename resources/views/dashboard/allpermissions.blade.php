@@ -11,106 +11,74 @@
 
                 <div class="nk-content">
                     <div class="container-fluid">
-
-                        <!-- ✅ العنوان -->
-                        <div class="nk-block-head">
-                            <div class="nk-block-head-content d-flex justify-content-between align-items-center">
-                                <h4 class="nk-block-title">جميع الصلاحيات</h4>
-                                <a href="{{ route('dashboard.permission.create') }}" class="btn btn-primary">إضافة
-                                    صلاحية</a>
+                        <div class="nk-block nk-block-lg">
+                            <div class="nk-block-head">
+                                <div class="nk-block-head-content">
+                                    <h4 class="nk-block-title" data-en="All Permissions" data-ar="جميع الصلاحيات">
+                                        جميع الصلاحيات
+                                    </h4>
+                                    <p data-en="List of all permissions in the system." data-ar="قائمة جميع الصلاحيات في النظام.">
+                                        قائمة جميع الصلاحيات في النظام.
+                                    </p>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- ✅ رسائل النجاح -->
-                        @if (session('success'))
-                            <div class="alert alert-success">{{ session('success') }}</div>
-                        @endif
-
-                        <!-- ✅ الجدول -->
-                        <div class="card card-bordered">
-                            <div class="card-inner">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>اسم الصلاحية</th>
-                                            <th>الوصف</th>
-                                            <th>العمليات</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            $fakePermissions = [
-                                                [
-                                                    'id' => 1,
-                                                    'name' => 'إدارة المستخدمين',
-                                                    'description' => 'إضافة وتعديل وحذف المستخدمين',
-                                                ],
-                                                [
-                                                    'id' => 2,
-                                                    'name' => 'إدارة الأدوار',
-                                                    'description' => 'إنشاء وتحرير الأدوار',
-                                                ],
-                                                [
-                                                    'id' => 3,
-                                                    'name' => 'إدارة الصلاحيات',
-                                                    'description' => 'إعطاء وإزالة الصلاحيات',
-                                                ],
-                                                [
-                                                    'id' => 4,
-                                                    'name' => 'عرض التقارير',
-                                                    'description' => 'الوصول إلى تقارير النظام',
-                                                ],
-                                                [
-                                                    'id' => 5,
-                                                    'name' => 'إدارة الإعدادات',
-                                                    'description' => 'تحديث إعدادات الموقع',
-                                                ],
-                                                [
-                                                    'id' => 6,
-                                                    'name' => 'إدارة المقالات',
-                                                    'description' => 'إضافة وتحرير المقالات',
-                                                ],
-                                                [
-                                                    'id' => 7,
-                                                    'name' => 'إدارة التعليقات',
-                                                    'description' => 'مراجعة وحذف التعليقات',
-                                                ],
-                                                [
-                                                    'id' => 8,
-                                                    'name' => 'إدارة الوسائط',
-                                                    'description' => 'رفع وحذف الصور والفيديوهات',
-                                                ],
-                                                [
-                                                    'id' => 9,
-                                                    'name' => 'إدارة الإعلانات',
-                                                    'description' => 'إضافة وتحرير وحذف الإعلانات',
-                                                ],
-                                                [
-                                                    'id' => 10,
-                                                    'name' => 'صلاحية مخصصة',
-                                                    'description' => 'صلاحية تجريبية لاختبار النظام',
-                                                ],
-                                            ];
-                                        @endphp
-
-                                        @foreach ($fakePermissions as $fake)
-                                            <tr>
-                                                <td>{{ $fake['id'] }}</td>
-                                                <td>{{ $fake['name'] }}</td>
-                                                <td>{{ $fake['description'] }}</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-sm btn-warning">تعديل</a>
-                                                    <button class="btn btn-sm btn-danger">حذف</button>
-                                                </td>
+                            <!-- ✅ الصلاحيات -->
+                            <div class="card card-bordered card-preview">
+                                @if (count($permissions) > 0)
+                                    <table class="table table-orders">
+                                        <thead class="tb-odr-head">
+                                            <tr class="tb-odr-item">
+                                                <th>#</th>
+                                                <th data-en="Permission Name" data-ar="اسم الصلاحية">اسم الصلاحية</th>
+                                                <th data-en="Actions" data-ar="الإجراءات">الإجراءات</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
+                                        </thead>
+                                        <tbody class="tb-odr-body">
+                                            @foreach ($permissions as $perm)
+                                                <tr class="tb-odr-item">
+                                                    <td>{{ $perm->id }}</td>
+                                                    <td>
+                                                        <span class="badge badge-dim badge-primary">
+                                                            {{ $perm->name }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-sm btn-primary"
+                                                            data-en="Edit" data-ar="تعديل">
+                                                            تعديل
+                                                        </a>
 
-                                </table>
+                                                        <form action="#" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                                data-en="Delete" data-ar="حذف">
+                                                                حذف
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                @else
+                                    <!-- ✅ ويدجت أنيقة عند عدم وجود صلاحيات -->
+                                    <div class="text-center p-5">
+                                        <h5 class="mt-3 text-muted" data-en="No permissions found yet"
+                                            data-ar="لا توجد صلاحيات بعد">
+                                            لا توجد صلاحيات بعد
+                                        </h5>
+                                        <a href="#" class="btn btn-primary mt-3"
+                                            data-en="Add New Permission" data-ar="إضافة صلاحية جديدة">
+                                            + إضافة صلاحية جديدة
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
-                        </div>
+                            <!-- ✅ نهاية الصلاحيات -->
 
+                        </div>
                     </div>
                 </div>
 

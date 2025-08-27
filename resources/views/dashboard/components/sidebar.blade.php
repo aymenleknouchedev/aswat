@@ -232,9 +232,6 @@
                                         User</span></a></li>
                         </ul>
                     </li>
-
-                    
-
                     <!-- Roles & Permissions -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">

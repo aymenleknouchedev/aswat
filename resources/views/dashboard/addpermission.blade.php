@@ -13,51 +13,71 @@
                     <div class="container-fluid">
 
                         <!-- ✅ عنوان الصفحة -->
-                        <div class="nk-block-head">
-                            <div class="nk-block-head-content">
-                                <h4 class="nk-block-title">إضافة صلاحية</h4>
-                                <p>املأ النموذج أدناه لإضافة صلاحية جديدة يمكن ربطها بالأدوار.</p>
+                        <div class="nk-block-head nk-block-head-sm">
+                            <div class="nk-block-between g-3">
+                                <div class="nk-block-head-content">
+                                    <h4 class="nk-block-title" data-ar="إضافة صلاحية" data-en="Add Permission">إضافة صلاحية</h4>
+                                    <div class="nk-block-des text-soft">
+                                        <p data-ar="املأ النموذج أدناه لإضافة صلاحية جديدة يمكن ربطها بالأدوار."
+                                           data-en="Fill the form below to add a new permission that can be assigned to roles.">
+                                           املأ النموذج أدناه لإضافة صلاحية جديدة يمكن ربطها بالأدوار.
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- ✅ رسائل النجاح -->
                         @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
+                            <div class="alert alert-fill alert-success alert-icon">
+                                <em class="icon ni ni-check-circle"></em>
+                                <span data-ar="{{ session('success') }}" data-en="Permission added successfully">
+                                    {{ session('success') }}
+                                </span>
                             </div>
                         @endif
 
                         <!-- ✅ رسائل الأخطاء -->
                         @if ($errors->any())
-                            <div class="alert alert-danger">
+                            <div class="alert alert-fill alert-danger alert-icon">
+                                <em class="icon ni ni-cross-circle"></em>
                                 <ul class="mb-0">
                                     @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
+                                        <li data-ar="{{ $error }}" data-en="Error: {{ $error }}">{{ $error }}</li>
                                     @endforeach
                                 </ul>
                             </div>
                         @endif
 
                         <!-- ✅ النموذج -->
-                        <form action="{{ route('dashboard.permission.store') }}" method="POST">
-                            @csrf
+                        <div class="card card-bordered">
+                            <div class="card-inner">
+                                <form action="{{ route('dashboard.permission.store') }}" method="POST">
+                                    @csrf
+                                    <!-- اسم الصلاحية -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="name" data-ar="اسم الصلاحية" data-en="Permission Name">اسم الصلاحية</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="name" class="form-control" id="name"
+                                                value="{{ old('name') }}" required
+                                                placeholder="مثال: edit-posts">
+                                        </div>
+                                    </div>
 
-                            <!-- اسم الصلاحية -->
-                            <div class="form-group">
-                                <label for="name">اسم الصلاحية</label>
-                                <input type="text" name="name" class="form-control" id="name"
-                                       value="{{ old('name') }}" required>
+                                    <!-- أزرار -->
+                                    <div class="form-group mt-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            <em class="icon ni ni-save"></em>
+                                            <span data-ar="حفظ الصلاحية" data-en="Save Permission">حفظ الصلاحية</span>
+                                        </button>
+                                        <a href="{{ route('dashboard.permissions.index') }}" class="btn btn-light">
+                                            <em class="icon ni ni-arrow-left"></em>
+                                            <span data-ar="إلغاء" data-en="Cancel">إلغاء</span>
+                                        </a>
+                                    </div>
+                                </form>
                             </div>
-
-                            <!-- الوصف (اختياري) -->
-                            <div class="form-group">
-                                <label for="description">الوصف (اختياري)</label>
-                                <textarea name="description" id="description" class="form-control"
-                                          rows="3">{{ old('description') }}</textarea>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">إضافة صلاحية</button>
-                        </form>
+                        </div>
 
                     </div>
                 </div>
