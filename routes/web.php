@@ -27,6 +27,12 @@ Route::get('/clear-cache', function () {
     return 'Cache, config, routes, and views cleared successfully.';
 });
 
+Route::get('/migrate-fresh', function () {
+    Artisan::call('migrate:fresh', [
+        '--force' => true // مهم إذا كنت بتشغلها على production
+    ]);
+    return 'Database migrated fresh successfully.';
+});
 
 if (env('COMING_SOON', true)) {
     Route::get('/{any}', function () {
@@ -44,7 +50,7 @@ if (env('COMING_SOON', true)) {
 
 Route::prefix('dashboard')->group(function () {
 
-     // Dashboard
+    // Dashboard
     Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
 
