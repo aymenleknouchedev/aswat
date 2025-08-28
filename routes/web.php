@@ -22,11 +22,22 @@ use App\Http\Controllers\{
     WindowController
 };
 
-Route::prefix('artisan')->middleware('auth')->group(function () {
-    Route::get('/clear-cache', fn() => Artisan::call('cache:clear') ?: 'Cache cleared');
-    Route::get('/migrate-fresh', fn() => Artisan::call('migrate:fresh', ['--force' => true]) ?: 'Migrated fresh');
-    Route::get('/storage-link', fn() => Artisan::call('storage:link') ?: 'Storage linked');
+// Clear cache, config, routes, views
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    return 'Cache, config, routes, and views cleared successfully.';
 });
+Route::get('/migrate-fresh', function () {
+    Artisan::call('migrate:fresh', [
+        '--force' => true // مهم إذا كنت بتشغلها على production
+    ]);
+    return 'Database migrated fresh successfully.';
+});
+Route::get('/storage-link', function () {
+    Artisan::call('storage:link');
+    return 'Storage link created successfully.';
+});
+
 
 if (env('COMING_SOON', true)) {
     Route::get('/{any}', function () {
