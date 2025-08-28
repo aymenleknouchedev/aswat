@@ -27,17 +27,25 @@ Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     return 'Cache, config, routes, and views cleared successfully.';
 });
+
 Route::get('/migrate-fresh', function () {
     Artisan::call('migrate:fresh', [
-        '--force' => true // مهم إذا كنت بتشغلها على production
+        '--force' => true
     ]);
     return 'Database migrated fresh successfully.';
 });
+
 Route::get('/storage-link', function () {
     Artisan::call('storage:link');
     return 'Storage link created successfully.';
 });
 
+Route::get('/seed', function () {
+    Artisan::call('migrate:fresh --seed', [
+        '--force' => true
+    ]);
+    return 'Database seeded successfully.';
+});
 
 if (env('COMING_SOON', true)) {
     Route::get('/{any}', function () {
