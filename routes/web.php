@@ -41,7 +41,7 @@ Route::get('/storage-link', function () {
 });
 
 Route::get('/seed', function () {
-    Artisan::call('migrate:fresh --seed', [
+    Artisan::call('db:seed', [
         '--force' => true
     ]);
     return 'Database seeded successfully.';
