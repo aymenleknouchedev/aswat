@@ -84,7 +84,7 @@
                             <div class="dropdown-inner">
                                 <ul class="link-list">
                                     <li>
-                                        <a href="#">
+                                        <a href="{{ route('dashboard.logout') }}">
                                             <em class="icon ni ni-signout"></em>
                                             <span data-en="Sign out" data-ar="تسجيل الخروج">Sign out</span>
                                         </a>

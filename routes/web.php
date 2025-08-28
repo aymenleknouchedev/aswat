@@ -1,42 +1,31 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomePageController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BreakingNewsController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\SectionController;
-use App\Http\Controllers\TagController;
-use App\Http\Controllers\WritterController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PagesController;
-use App\Http\Controllers\ContentController;
-use App\Http\Controllers\LocationController;
-use App\Http\Controllers\MediaController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\TrendController;
-use App\Http\Controllers\WindowController;
-
-// artisan commands
 use Illuminate\Support\Facades\Artisan;
 
-// Clear cache, config, routes, views
-Route::get('/clear-cache', function () {
-    Artisan::call('cache:clear');
-    return 'Cache, config, routes, and views cleared successfully.';
-});
+use App\Http\Controllers\{
+    HomePageController,
+    AuthController,
+    BreakingNewsController,
+    DashboardController,
+    SectionController,
+    TagController,
+    WritterController,
+    CategoryController,
+    PagesController,
+    ContentController,
+    LocationController,
+    MediaController,
+    PermissionController,
+    RoleController,
+    TrendController,
+    WindowController
+};
 
-Route::get('/migrate-fresh', function () {
-    Artisan::call('migrate:fresh', [
-        '--force' => true // مهم إذا كنت بتشغلها على production
-    ]);
-    return 'Database migrated fresh successfully.';
-});
-
-Route::get('/storage-link', function () {
-    Artisan::call('storage:link');
-    return 'Storage link created successfully.';
+Route::prefix('artisan')->middleware('auth')->group(function () {
+    Route::get('/clear-cache', fn() => Artisan::call('cache:clear') ?: 'Cache cleared');
+    Route::get('/migrate-fresh', fn() => Artisan::call('migrate:fresh', ['--force' => true]) ?: 'Migrated fresh');
+    Route::get('/storage-link', fn() => Artisan::call('storage:link') ?: 'Storage linked');
 });
 
 if (env('COMING_SOON', true)) {
@@ -55,40 +44,48 @@ if (env('COMING_SOON', true)) {
 
 Route::prefix('dashboard')->group(function () {
 
-    // Dashboard
-    Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');
-    Route::get('/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
+    Route::middleware(['guesto'])->group(function () {
+        Route::get('/auth', [AuthController::class, 'auth'])->name('dashboard.user.auth');
+        Route::post('/login', [AuthController::class, 'login'])->name('dashboard.login');
+    });
 
-    $entities = [
-        'user' => AuthController::class,
-        'content' => ContentController::class,
-        'writer' => WritterController::class,
-        'tag' => TagController::class,
-        'section' => SectionController::class,
-        'categorie' => CategoryController::class,
-        'page' => PagesController::class,
-        'breakingnew' => BreakingNewsController::class,
-        'media' => MediaController::class,
-        'trend' => TrendController::class,
-        'window' => WindowController::class,
-        'location' => LocationController::class,
-        'role' => RoleController::class,
-        'permission' => PermissionController::class,
-    ];
+    // Routes dashboard  
+    Route::middleware(['autho'])->group(function () {
 
-    foreach ($entities as $entity => $controller) {
-        $plural = $entity . 's'; // مثل: user => users
-        Route::get("/{$plural}", [$controller, 'index'])->name("dashboard.{$plural}.index");
-        Route::get("/{$entity}-create", [$controller, 'create'])->name("dashboard.{$entity}.create");
-        Route::post("/{$entity}-store", [$controller, 'store'])->name("dashboard.{$entity}.store");
-        Route::get("/{$entity}-{id}", [$controller, 'show'])->name("dashboard.{$entity}.show");
-        Route::get("/{$entity}-{id}-edit", [$controller, 'edit'])->name("dashboard.{$entity}.edit");
-        Route::put("/{$entity}-{id}", [$controller, 'update'])->name("dashboard.{$entity}.update");
-        Route::delete("/{$entity}-{id}", [$controller, 'destroy'])->name("dashboard.{$entity}.destroy");
-    }
+        // Dashboard
+        Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');
+        Route::get('/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
 
-    // Authentication specific routes
-    Route::get('/auth', [AuthController::class, 'auth'])->name('dashboard.user.auth');
-    Route::post('/login', [AuthController::class, 'login'])->name('dashboard.login');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
+        // Entities
+        $entities = [
+            'user' => AuthController::class,
+            'content' => ContentController::class,
+            'writer' => WritterController::class,
+            'tag' => TagController::class,
+            'section' => SectionController::class,
+            'categorie' => CategoryController::class,
+            'page' => PagesController::class,
+            'breakingnew' => BreakingNewsController::class,
+            'media' => MediaController::class,
+            'trend' => TrendController::class,
+            'window' => WindowController::class,
+            'location' => LocationController::class,
+            'role' => RoleController::class,
+            'permission' => PermissionController::class,
+        ];
+
+        foreach ($entities as $entity => $controller) {
+            $plural = $entity . 's'; // مثال: user => users
+            Route::get("/{$plural}", [$controller, 'index'])->name("dashboard.{$plural}.index");
+            Route::get("/{$entity}-create", [$controller, 'create'])->name("dashboard.{$entity}.create");
+            Route::post("/{$entity}-store", [$controller, 'store'])->name("dashboard.{$entity}.store");
+            Route::get("/{$entity}-{id}", [$controller, 'show'])->name("dashboard.{$entity}.show");
+            Route::get("/{$entity}-{id}-edit", [$controller, 'edit'])->name("dashboard.{$entity}.edit");
+            Route::put("/{$entity}-{id}", [$controller, 'update'])->name("dashboard.{$entity}.update");
+            Route::delete("/{$entity}-{id}", [$controller, 'destroy'])->name("dashboard.{$entity}.destroy");
+        }
+
+        // Logout
+        Route::get('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
+    });
 });
