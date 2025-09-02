@@ -13,6 +13,28 @@
                 <div class="nk-content">
                     <div class="container-fluid">
 
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
                         <!-- ✅ عنوان الصفحة -->
                         <div class="nk-block-head">
                             <div class="nk-block-head-content">
@@ -38,8 +60,20 @@
                                 </div>
                             </div>
 
+                            <!-- رابط الصفحة (Slug) -->
+                            <div class="form-group">
+                                <label class="form-label" for="slug" data-en="Page Slug" data-ar="رابط الصفحة">
+                                    رابط الصفحة
+                                </label>
+                                <div class="form-control-wrap">
+                                    <input type="text" name="slug" class="form-control" id="slug" required
+                                        placeholder="example-page-slug">
+                                </div>
+                            </div>
+
+
                             <!-- وصف الصفحة -->
-                            <x-forms.tinymce-editor id="myeditorinstance" name="content" :value="$post->content ?? ''" />
+                            <x-forms.tinymce-editor id="myeditorinstance" :value="$post->content ?? ''" />
 
                             <!-- محتوى الصفحة باستخدام TinyMCE (معلق) -->
                             {{--

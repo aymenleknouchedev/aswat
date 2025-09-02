@@ -12,6 +12,14 @@
                 <div class="nk-content">
                     <div class="container-fluid">
 
+                        @if (session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
+
                         <!-- ✅ عنوان الصفحة -->
                         <div class="nk-block-head">
                             <div class="nk-block-head-content">
@@ -24,16 +32,19 @@
                         </div>
 
                         <!-- ✅ النموذج -->
-                        <form action="{{ route('dashboard.user.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('dashboard.writer.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <!-- الاسم -->
                             <div class="form-group">
                                 <label class="form-label" for="name" data-en="Name" data-ar="الاسم">الاسم</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" name="name" class="form-control" id="name" placeholder=""
-                                        required>
+                                    <input type="text" name="name" class="form-control" id="name"
+                                        value="{{ old('name') }}" required>
                                 </div>
+                                @error('name')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <!-- سلاق -->
@@ -41,31 +52,39 @@
                                 <label class="form-label" for="slug" data-en="Slug" data-ar="الرابط">الرابط</label>
                                 <div class="form-control-wrap">
                                     <input type="text" name="slug" class="form-control" id="slug"
-                                        placeholder="مثال: ahmed-mohamed" required>
+                                        value="{{ old('slug') }}" placeholder="مثال: ahmed-mohamed" required>
                                 </div>
+                                @error('slug')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <!-- نبذة تعريفية -->
                             <div class="form-group">
                                 <label class="form-label" for="bio" data-en="Bio" data-ar="نبذة">نبذة</label>
                                 <div class="form-control-wrap">
-                                    <textarea name="bio" class="form-control" id="bio" rows="4" placeholder="" required></textarea>
+                                    <textarea name="bio" class="form-control" id="bio" rows="4" required>{{ old('bio') }}</textarea>
                                 </div>
+                                @error('bio')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <!-- صورة الكاتب -->
-                            
                             <div class="form-group">
                                 <label class="form-label" for="customFile" data-en="Image" data-ar="الصورة"></label>
                                 <div class="form-control-wrap">
                                     <div class="form-file">
-                                        <input type="file" name="image[]" multiple class="form-file-input"
-                                            id="customFile" accept="image/*">
+                                        <input type="file" name="image" class="form-file-input" id="customFile"
+                                            accept="image/*">
                                         <label class="form-file-label" for="customFile">
                                             <span data-en="Choose file" data-ar="اختر الملف"></span>
                                         </label>
                                     </div>
                                 </div>
+                                @error('image')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <!-- روابط وسائل التواصل -->
@@ -73,16 +92,22 @@
                                 <label class="form-label" for="facebook" data-en="Facebook" data-ar="فيسبوك">فيسبوك</label>
                                 <div class="form-control-wrap">
                                     <input type="url" name="facebook" class="form-control" id="facebook"
-                                        placeholder="https://facebook.com/">
+                                        value="{{ old('facebook') }}" placeholder="https://facebook.com/">
                                 </div>
+                                @error('facebook')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label" for="x" data-en="X" data-ar="إكس">X</label>
                                 <div class="form-control-wrap">
                                     <input type="url" name="x" class="form-control" id="x"
-                                        placeholder="https://x.com/">
+                                        value="{{ old('x') }}" placeholder="https://x.com/">
                                 </div>
+                                @error('x')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="form-group">
@@ -90,8 +115,11 @@
                                     data-ar="انستغرام">إنستغرام</label>
                                 <div class="form-control-wrap">
                                     <input type="url" name="instagram" class="form-control" id="instagram"
-                                        placeholder="https://instagram.com/">
+                                        value="{{ old('instagram') }}" placeholder="https://instagram.com/">
                                 </div>
+                                @error('instagram')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="form-group">
@@ -99,8 +127,11 @@
                                     data-ar="لينكد إن">لينكدإن</label>
                                 <div class="form-control-wrap">
                                     <input type="url" name="linkedin" class="form-control" id="linkedin"
-                                        placeholder="https://linkedin.com/">
+                                        value="{{ old('linkedin') }}" placeholder="https://linkedin.com/">
                                 </div>
+                                @error('linkedin')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <!-- زر الإرسال -->

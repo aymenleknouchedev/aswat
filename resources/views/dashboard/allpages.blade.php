@@ -16,12 +16,34 @@
                             <div class="nk-block-head">
                                 <div class="nk-block-head-content">
                                     <h4 class="nk-block-title" data-en="All Pages" data-ar="جميع الصفحات">جميع الصفحات</h4>
-                                    <p data-en="List of all site pages."
-                                       data-ar="قائمة بجميع الصفحات في الموقع.">
-                                       قائمة بجميع الصفحات في الموقع.
+                                    <p data-en="List of all site pages." data-ar="قائمة بجميع الصفحات في الموقع.">
+                                        قائمة بجميع الصفحات في الموقع.
                                     </p>
                                 </div>
                             </div>
+
+                            {{-- Validation / Success Messages --}}
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+
+                            @if (session('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
 
                             <div class="card card-bordered card-preview">
                                 <table class="table table-orders">
@@ -33,22 +55,22 @@
                                     </thead>
                                     <tbody class="tb-odr-body">
 
-                                        @php
-                                            $pages = [
-                                                'Privacy Policy',
-                                                'Terms and Conditions',
-                                                'About Us',
-                                                'Contact Us',
-                                                'Cookies Policy',
-                                            ];
-                                        @endphp
-
                                         @foreach ($pages as $page)
                                             <tr class="tb-odr-item">
-                                                <td>{{ $page }}</td>
+                                                <td>{{ $page->title }}</td>
                                                 <td>
-                                                    <a href="#" class="btn btn-sm btn-primary" data-en="Edit" data-ar="تعديل">تعديل</a>
-                                                    <a href="#" class="btn btn-sm btn-danger" data-en="Delete" data-ar="حذف">حذف</a>
+                                                    <a href="{{ route('dashboard.page.edit', $page->id) }}"
+                                                        class="btn btn-sm btn-primary" data-en="Edit"
+                                                        data-ar="تعديل">تعديل</a>
+                                                    <form action="{{ route('dashboard.page.destroy', $page->id) }}"
+                                                        method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                            data-en="Delete" data-ar="حذف">
+                                                            حذف
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach

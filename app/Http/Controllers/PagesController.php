@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use App\Models\Page;
 
 class PagesController extends BaseController
 {
@@ -18,8 +19,8 @@ class PagesController extends BaseController
      */
     public function index()
     {
-        // This method can be used to list all pages or perform any other logic
-        return view('dashboard.allpages'); // Adjust the view as necessary
+        $pages = Page::all();
+        return view('dashboard.allpages', compact('pages'));
     }
 
     /**
@@ -36,8 +37,18 @@ class PagesController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+
+        Page::create($validated);
+
+        return redirect()->route('dashboard.page.create')
+            ->with('success', 'Page created successfully!');
     }
+
 
     /**
      * Display the specified resource.
@@ -68,6 +79,10 @@ class PagesController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $page = Page::findOrFail($id);
+        $page->delete();
+
+        return redirect()->route('dashboard.pages.index')
+            ->with('success', 'Page deleted successfully!');
     }
 }

@@ -33,30 +33,20 @@
                                         </tr>
                                     </thead>
                                     <tbody class="tb-odr-body">
-                                        @php
-                                            $writers = [
-                                                ['Ahmed Mohamed', 'كاتب تقني يهتم بمجال البرمجيات والتطوير.'],
-                                                ['Layla Ali', 'كاتبة مقالات في المجال الصحي والطبي.'],
-                                                ['Youssef Karim', 'مهتم بكتابة القصص القصيرة والمقالات الأدبية.'],
-                                                ['Sara Saleh', 'مختصة بكتابة محتوى تسويقي وإعلاني.'],
-                                                ['Mohamed Adel', 'كاتب تقارير وتحليلات اقتصادية.'],
-                                                ['Khaled Nour', 'متخصص في كتابة المحتوى التعليمي.'],
-                                                ['Nourhan Saad', 'تكتب عن التنمية البشرية وتطوير الذات.'],
-                                                ['Rami Hossam', 'كاتب في مجال السياسة والعلاقات الدولية.'],
-                                                ['Omar Fathi', 'يكتب مقالات تقنية باللغة الإنجليزية.'],
-                                                ['Huda Hassan', 'كاتبة نصوص وقصائد شعرية.'],
-                                            ];
-                                        @endphp
-
                                         @foreach ($writers as $writer)
                                             <tr class="tb-odr-item">
-                                                <td>{{ $writer[0] }}</td>
-                                                <td>{{ $writer[1] }}</td>
+                                                <td>{{ $writer->name }}</td>
+                                                <td>{{ $writer->bio }}</td>
                                                 <td>
                                                     <a href="#" class="btn btn-sm btn-primary" data-en="Edit"
                                                         data-ar="تعديل">تعديل</a>
-                                                    <a href="#" class="btn btn-sm btn-danger" data-en="Delete"
-                                                        data-ar="حذف">حذف</a>
+                                                    <form action="{{ route('dashboard.writer.destroy', $writer->id) }}"
+                                                        method="POST" style="display: inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                            data-en="Delete" data-ar="حذف">حذف</button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -14,7 +14,13 @@ return new class extends Migration
         Schema::create('writers', function (Blueprint $table) {
             $table->id();
             $table->string('name', 150);
-            $table->string('email')->nullable();
+            $table->string('slug', 150)->unique();
+            $table->text('bio')->nullable();
+            $table->string('image')->nullable(); // you can store multiple images as JSON if needed
+            $table->string('facebook')->nullable();
+            $table->string('x')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('linkedin')->nullable();
             $table->timestamps();
         });
     }

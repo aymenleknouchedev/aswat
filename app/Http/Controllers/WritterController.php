@@ -19,8 +19,8 @@ class WritterController extends BaseController
      */
     public function index()
     {
-        $writters = Writer::all();
-        return view('dashboard.allwritters', compact('writters'));
+        $writers = Writer::all();
+        return view('dashboard.allwritters', compact('writers'));
     }
 
     /**
@@ -36,16 +36,31 @@ class WritterController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:150',
+            'slug' => 'required|string|max:150|unique:writers',
+            'bio' => 'required|string',
+            'image.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'facebook' => 'nullable|url',
+            'x' => 'nullable|url',
+            'instagram' => 'nullable|url',
+            'linkedin' => 'nullable|url',
+        ]);
+
+        $writer = Writer::create($validated);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('writers', 'public');
+            $writer->image = $path;
+        }
+
+        return redirect()->route('dashboard.writer.create')->with('success', 'Writer added successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -68,6 +83,9 @@ class WritterController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $writer = Writer::findOrFail($id);
+        $writer->delete();
+
+        return redirect()->route('dashboard.writers.index')->with('success', 'Writer deleted successfully.');
     }
 }
