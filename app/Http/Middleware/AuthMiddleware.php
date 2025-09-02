@@ -20,6 +20,7 @@ class AuthMiddleware
         if (! Auth::check()) {
             return redirect()->route('dashboard.user.auth');
         }
+        
         return $next($request);
     }
 }
