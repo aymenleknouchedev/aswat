@@ -37,7 +37,15 @@ class CategoryController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $category = new Category();
+        $category->name = $request->input('name');
+        $category->save();
+
+        return redirect()->route('dashboard.categorie.create')->with('success', 'Category created successfully.');
     }
 
     /**

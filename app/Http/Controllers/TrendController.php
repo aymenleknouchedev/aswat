@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use App\Models\Trend;
 
 class TrendController extends BaseController
 {
@@ -31,7 +32,17 @@ class TrendController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(Request $request) {
+        $request->validate([
+            'title' => 'required|string|max:255',
+        ]);
+
+        $trend = new Trend();
+        $trend->title = $request->input('title');
+        $trend->save();
+
+        return redirect()->route('dashboard.trend.create')->with('success', 'Trend created successfully.');
+    }
 
     /**
      * Display the specified resource.

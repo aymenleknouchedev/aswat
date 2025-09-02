@@ -37,7 +37,15 @@ class SectionController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $section = new Section();
+        $section->name = $request->input('name');
+        $section->save();
+
+        return redirect()->route('dashboard.section.create')->with('success', 'Section created successfully.');
     }
 
     /**
