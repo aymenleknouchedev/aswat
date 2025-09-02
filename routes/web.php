@@ -29,7 +29,7 @@ Route::get('/clear-cache', function () {
     return 'Cache, config, routes, and views cleared successfully.';
 });
 
-Route::get('/   ', function () {
+Route::get('/migrate-fresh', function () {
     Artisan::call('migrate:fresh', [
         '--force' => true
     ]);
