@@ -3,15 +3,6 @@
 @section('title', 'أصوات جزائرية | جميع النوافذ')
 
 @section('content')
-    @php
-        // بيانات وهمية لاختبار الجدول
-        $windows = [
-            (object) ['id' => 1, 'name' => 'نافذة الأخبار', 'description' => 'تعرض أحدث الأخبار اليومية.'],
-            (object) ['id' => 2, 'name' => 'نافذة الفيديوهات', 'description' => 'تضم أحدث الفيديوهات الشائعة.'],
-            (object) ['id' => 3, 'name' => 'نافذة الصور', 'description' => 'تضم أجمل الصور المميزة.'],
-        ];
-    @endphp
-
     <div class="nk-app-root">
         <div class="nk-main">
             @include('dashboard.components.sidebar')
@@ -42,18 +33,14 @@
                             <table class="table table-orders">
                                 <thead class="tb-odr-head">
                                     <tr class="tb-odr-item">
-                                        <th>#</th>
                                         <th data-en="Name" data-ar="الاسم">الاسم</th>
-                                        <th data-en="Description" data-ar="الوصف">الوصف</th>
                                         <th data-en="Actions" data-ar="الإجراءات">الإجراءات</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($windows as $index => $window)
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
                                             <td>{{ $window->name }}</td>
-                                            <td>{{ Str::limit($window->description, 50) }}</td>
                                             <td>
                                                 <a href="{{ route('dashboard.window.edit', $window->id) }}"
                                                     class="btn btn-sm btn-primary" data-en="Edit" data-ar="تعديل">تعديل</a>

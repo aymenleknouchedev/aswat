@@ -3,37 +3,6 @@
 @section('title', 'أصوات جزائرية | جميع الترندات')
 
 @section('content')
-    @php
-        // بيانات وهمية لاختبار الجدول
-        $trends = [
-            (object) [
-                'id' => 1,
-                'name' => 'أحداث الجزائر',
-                'description' => 'أهم الأخبار العاجلة من الجزائر اليوم.',
-            ],
-            (object) [
-                'id' => 2,
-                'name' => 'ترند كرة القدم',
-                'description' => 'أحدث أخبار مباريات الدوري الجزائري والعالمي.',
-            ],
-            (object) [
-                'id' => 3,
-                'name' => 'الموضة والجمال',
-                'description' => 'أحدث صيحات الموضة والمكياج في الجزائر والعالم.',
-            ],
-            (object) [
-                'id' => 4,
-                'name' => 'التكنولوجيا',
-                'description' => 'آخر أخبار التكنولوجيا والشركات الناشئة.',
-            ],
-            (object) [
-                'id' => 5,
-                'name' => 'الموسيقى والفن',
-                'description' => 'إصدارات الأغاني والحفلات والمهرجانات الفنية.',
-            ],
-        ];
-    @endphp
-
     <div class="nk-app-root">
         <div class="nk-main">
             @include('dashboard.components.sidebar')
@@ -64,18 +33,14 @@
                             <table class="table table-orders">
                                 <thead class="tb-odr-head">
                                     <tr class="tb-odr-item">
-                                        <th>#</th>
                                         <th data-en="Name" data-ar="الاسم">الاسم</th>
-                                        <th data-en="Description" data-ar="الوصف">الوصف</th>
                                         <th data-en="Actions" data-ar="الإجراءات">الإجراءات</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($trends as $index => $trend)
+                                    @forelse ($trends as $trend)
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $trend->name }}</td>
-                                            <td>{{ Str::limit($trend->description, 50) }}</td>
+                                            <td>{{ $trend->title }}</td>
                                             <td>
                                                 <a href="{{ route('dashboard.trend.edit', $trend->id) }}"
                                                     class="btn btn-sm btn-primary" data-en="Edit" data-ar="تعديل">تعديل</a>
@@ -92,7 +57,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="text-center" data-en="No trends found"
+                                            <td colspan="2" class="text-center" data-en="No trends found"
                                                 data-ar="لا توجد ترندات">لا توجد ترندات</td>
                                         </tr>
                                     @endforelse

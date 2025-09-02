@@ -41,7 +41,7 @@ class SectionController extends BaseController
             'name' => 'required|string|max:255',
         ]);
 
-        $section = new Section();
+        $section = new Section();       
         $section->name = $request->input('name');
         $section->save();
 

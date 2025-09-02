@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use App\Models\Tag;
 
 class TagController extends BaseController
 {
@@ -16,8 +17,10 @@ class TagController extends BaseController
      * Display a listing of the resource.
      */
     public function index()
+
     {
-        return view('dashboard.alltags');
+        $tags = Tag::all();
+        return view('dashboard.alltags', compact('tags'));
     }
 
     /**
@@ -34,7 +37,14 @@ class TagController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        // Create the tag
+        Tag::create($request->only('name'));
+
+        return redirect()->route('dashboard.tag.create')->with('success', 'Tag created successfully.');
     }
 
     /**

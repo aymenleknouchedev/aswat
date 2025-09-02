@@ -32,24 +32,10 @@
                                         </tr>
                                     </thead>
                                     <tbody class="tb-odr-body">
-                                        @php
-                                            $sections = [
-                                                'Technology',
-                                                'Culture',
-                                                'Politics',
-                                                'Environment',
-                                                'Health',
-                                                'Sports',
-                                                'Education',
-                                                'Art',
-                                                'Science',
-                                                'History',
-                                            ];
-                                        @endphp
 
                                         @foreach ($sections as $section)
                                             <tr class="tb-odr-item">
-                                                <td>{{ $section }}</td>
+                                                <td>{{ $section->name }}</td>
                                                 <td>
                                                     <a href="#" class="btn btn-sm btn-primary" data-en="Edit"
                                                         data-ar="تعديل">تعديل</a>

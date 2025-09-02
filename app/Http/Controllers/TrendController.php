@@ -18,7 +18,8 @@ class TrendController extends BaseController
      */
     public function index()
     {
-        return view('dashboard.alltrends');
+        $trends = Trend::all();
+        return view('dashboard.alltrends', compact('trends'));
     }
 
     /**
@@ -26,6 +27,7 @@ class TrendController extends BaseController
      */
     public function create()
     {
+        
         return view('dashboard.addtrend');
     }
 

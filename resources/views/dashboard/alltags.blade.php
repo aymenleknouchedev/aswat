@@ -37,24 +37,9 @@
                                     <tbody class="tb-odr-body">
 
                                         <!-- ✅ بيانات وهمية -->
-                                        @php
-                                            $tags = [
-                                                'Technology',
-                                                'Culture',
-                                                'Politics',
-                                                'Environment',
-                                                'Health',
-                                                'Sports',
-                                                'Education',
-                                                'Art',
-                                                'Science',
-                                                'History',
-                                            ];
-                                        @endphp
-
                                         @foreach ($tags as $tag)
                                             <tr class="tb-odr-item">
-                                                <td>{{ $tag }}</td>
+                                                <td>{{ $tag->name }}</td>
                                                 <td>
                                                     <a href="#" class="btn btn-sm btn-primary" data-en="Edit"
                                                         data-ar="تعديل">تعديل</a>

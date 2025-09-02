@@ -23,6 +23,24 @@
                             </div>
                         </div>
 
+                        <!-- ✅ رسائل النجاح -->
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        <!-- ✅ رسائل الأخطاء -->
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <!-- ✅ النموذج -->
                         <form action="{{ route('dashboard.window.store') }}" method="POST">
                             @csrf
@@ -31,17 +49,15 @@
                             <div class="form-group">
                                 <label class="form-label" for="name" data-en="Name" data-ar="الاسم">الاسم</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" name="name" class="form-control" id="name" placeholder=""
-                                        required>
-                                </div>
-                            </div>
+                                    <input type="text" name="name"
+                                        class="form-control @error('name') is-invalid @enderror" id="name"
+                                        value="{{ old('name') }}" required>
 
-                            <!-- الوصف -->
-                            <div class="form-group">
-                                <label class="form-label" for="description" data-en="Description"
-                                    data-ar="الوصف">الوصف</label>
-                                <div class="form-control-wrap">
-                                    <textarea name="description" class="form-control" id="description" rows="3" placeholder=""></textarea>
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
 

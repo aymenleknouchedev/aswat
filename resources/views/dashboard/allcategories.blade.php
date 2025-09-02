@@ -32,26 +32,11 @@
                                         </tr>
                                     </thead>
                                     <tbody class="tb-odr-body">
-                                        @php
-                                            $categories = [
-                                                'تقنية',
-                                                'ثقافة',
-                                                'سياسة',
-                                                'بيئة',
-                                                'صحة',
-                                                'رياضة',
-                                                'تعليم',
-                                                'فن',
-                                                'علوم',
-                                                'تاريخ',
-                                            ];
-                                        @endphp
-
                                         @foreach ($categories as $category)
-                                            <tr class="tb-odr-item">
-                                                <td>{{ $category }}</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-sm btn-primary" data-en="Edit"
+                                        <tr class="tb-odr-item">
+                                            <td>{{ $category->name }}</td>
+                                            <td>
+                                                <a href="#" class="btn btn-sm btn-primary" data-en="Edit"
                                                         data-ar="تعديل">تعديل</a>
                                                     <a href="#" class="btn btn-sm btn-danger" data-en="Delete"
                                                         data-ar="حذف">حذف</a>

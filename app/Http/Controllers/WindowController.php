@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Routing\Controller as BaseController;
+use App\Models\Window;
 
 class WindowController extends BaseController
 {
@@ -18,7 +19,8 @@ class WindowController extends BaseController
      */
     public function index()
     {
-        return view('dashboard.allwindows');
+        $windows = Window::all();
+        return view('dashboard.allwindows', compact('windows'));
     }
 
     /**
@@ -34,7 +36,15 @@ class WindowController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $window = new Window();
+        $window->name = $request->input('name');
+        $window->save();
+
+        return redirect()->route('dashboard.window.create')->with('success', 'Window created successfully.');
     }
 
     /**

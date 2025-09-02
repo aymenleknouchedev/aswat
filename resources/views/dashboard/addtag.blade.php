@@ -23,6 +23,24 @@
                             </div>
                         </div>
 
+                        <!-- ✅ رسائل النجاح -->
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        <!-- ✅ رسائل الأخطاء -->
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <!-- ✅ النموذج -->
                         <form action="{{ route('dashboard.tag.store') }}" method="POST">
                             @csrf
@@ -31,15 +49,23 @@
                             <div class="form-group">
                                 <label class="form-label" for="name" data-en="Name" data-ar="الاسم">الاسم</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" name="name" class="form-control" id="name" placeholder=""
+                                    <input type="text" name="name" id="name"
+                                        class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
                                         required>
+
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
 
                             <!-- زر الإرسال -->
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary" data-en="Add Tag" data-ar="إضافة وسم">إضافة
-                                    وسم</button>
+                                <button type="submit" class="btn btn-primary" data-en="Add Tag" data-ar="إضافة وسم">
+                                    إضافة وسم
+                                </button>
                             </div>
                         </form>
 
