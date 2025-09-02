@@ -8,7 +8,7 @@
                     <em class="icon ni ni-menu"></em>
                 </a>
             </div>
-
+            {{-- 
             <div class="nk-header-brand d-xl-none">
                 <a href="dashboard/home" class="logo-link">
                     <img class="logo-light logo-img" src="./dashlite/images/logo.png"
@@ -16,7 +16,7 @@
                     <img class="logo-dark logo-img" src="./dashlite/images/logo-dark.png"
                         srcset="./dashlite/images/logo-dark2x.png 2x" alt="logo-dark">
                 </a>
-            </div>
+            </div> --}}
 
             <div class="nk-header-tools">
                 <ul class="nk-quick-nav">
@@ -35,24 +35,33 @@
                                     <em class="icon ni ni-user-alt"></em>
                                 </div>
                                 <div class="user-info d-none d-md-block">
-                                    <div class="user-status" data-en="Administrator" data-ar="مدير">Administrator</div>
-                                    <div class="user-name dropdown-indicator" data-en="Abu Bin Ishityak"
-                                        data-ar="أبو بن إشتياك">Abu Bin Ishityak</div>
+                                    <div class="user-status">
+                                        {{ Auth::user()->roles[0]->name }}
+                                    </div>
+                                    <div class="user-name dropdown-indicator">
+                                        {{ Auth::user()->name }} {{ Auth::user()->surname }}
+                                    </div>
                                 </div>
                             </div>
                         </a>
+
 
                         <div class="dropdown-menu dropdown-menu-md dropdown-menu-end dropdown-menu-s1">
                             <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
                                 <div class="user-card">
                                     <div class="user-avatar">
-                                        <span>AB</span>
+                                        {{-- Initials (e.g., "AL" for Aymen Leknouche) --}}
+                                        <span>
+                                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}{{ strtoupper(substr(Auth::user()->surname, 0, 1)) }}
+                                        </span>
                                     </div>
                                     <div class="user-info">
-                                        <span class="lead-text" data-en="Abu Bin Ishtiyak" data-ar="أبو بن إشتياك">Abu
-                                            Bin Ishtiyak</span>
-                                        <span class="sub-text" data-en="info@softnio.com"
-                                            data-ar="info@softnio.com">info@softnio.com</span>
+                                        <span class="lead-text">
+                                            {{ Auth::user()->name }} {{ Auth::user()->surname }}
+                                        </span>
+                                        <span class="sub-text">
+                                            {{ Auth::user()->email }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -60,22 +69,21 @@
                             <div class="dropdown-inner">
                                 <ul class="link-list">
                                     <li>
-                                        <a href="html/user-profile-regular.html">
+                                        <a>
                                             <em class="icon ni ni-user-alt"></em>
-                                            <span data-en="View Profile" data-ar="عرض الملف الشخصي">View Profile</span>
+                                            <span>View Profile</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="html/user-profile-setting.html">
+                                        <a>
                                             <em class="icon ni ni-setting-alt"></em>
-                                            <span data-en="Account Setting" data-ar="إعدادات الحساب">Account
-                                                Setting</span>
+                                            <span>Account Setting</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a id="dark-switch" class="dark-switch" href="#">
                                             <em class="icon ni ni-moon"></em>
-                                            <span data-en="Dark Mode" data-ar="الوضع الليلي">Dark Mode</span>
+                                            <span>Dark Mode</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -86,13 +94,13 @@
                                     <li>
                                         <a href="{{ route('dashboard.logout') }}">
                                             <em class="icon ni ni-signout"></em>
-                                            <span data-en="Sign out" data-ar="تسجيل الخروج">Sign out</span>
+                                            <span>Sign out</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
-
                         </div>
+
                     </li>
 
                 </ul>

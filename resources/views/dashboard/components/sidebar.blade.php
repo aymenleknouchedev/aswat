@@ -22,7 +22,7 @@
             <div class="nk-sidebar-menu" data-simplebar>
                 <ul class="nk-menu">
 
-                    <!-- Dashboard -->
+                    @canDo('dashboard_access')
                     <li class="nk-menu-item">
                         <a href="/dashboard/home" class="nk-menu-link">
                             <span class="nk-menu-icon">
@@ -31,8 +31,10 @@
                             <span class="nk-menu-text" data-en="Dashboard" data-ar="لوحة التحكم">Dashboard</span>
                         </a>
                     </li>
+                    @endcanDo
 
-                    <!-- Content -->
+
+                    @canDo('content_access')
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon">
@@ -60,29 +62,35 @@
                                 </a>
                             </li>
                         </ul>
-
                     </li>
+                    @endcanDo
 
+
+                    @canDo('media_access')
                     <!-- Media Library -->
                     <li class="nk-menu-item">
                         <a href="dashboard/medias" class="nk-menu-link">
                             <span class="nk-menu-icon">
                                 <em class="icon ni ni-img"></em>
                             </span>
-                            <span class="nk-menu-text" data-en="Media Library" data-ar="مكتبة الوسائط">Media
-                                Library</span>
+                            <span class="nk-menu-text" data-en="Media Library" data-ar="مكتبة الوسائط">
+                                Media Library
+                            </span>
                         </a>
                     </li>
+                    @endcanDo
 
 
+                    @canDo('content_management_access')
                     <!-- Content Management -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon">
                                 <em class="icon ni ni-setting"></em>
                             </span>
-                            <span class="nk-menu-text" data-en="Content Management" data-ar="إدارة المحتوى">Content
-                                Management</span>
+                            <span class="nk-menu-text" data-en="Content Management" data-ar="إدارة المحتوى">
+                                Content Management
+                            </span>
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
@@ -93,12 +101,18 @@
                                 </a>
                             </li>
 
-
-                            <li class="nk-menu-item"><a href="/sections/manage" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Manage Sections" data-ar="إدارة الأقسام">Manage
-                                        Sections</span></a></li>
+                            <li class="nk-menu-item">
+                                <a href="/sections/manage" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Manage Sections" data-ar="إدارة الأقسام">
+                                        Manage Sections
+                                    </span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
+                    @endcanDo
+
+                    @canDo('sections_access')
                     <!-- Backup: Sections -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
@@ -108,17 +122,26 @@
                             <span class="nk-menu-text" data-en="Sections" data-ar="الأقسام">Sections</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.sections.index') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text" data-en="All Sections"
-                                        data-ar="كل الأقسام">All
-                                        Sections</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.section.create') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text" data-en="Add Section"
-                                        data-ar="إضافة قسم">Add
-                                        Section</span></a></li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('dashboard.sections.index') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="All Sections" data-ar="كل الأقسام">
+                                        All Sections
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('dashboard.section.create') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Add Section" data-ar="إضافة قسم">
+                                        Add Section
+                                    </span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
+                    @endcanDo
 
+
+                    @canDo('categories_access')
                     <!-- Backup: Categories -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
@@ -128,17 +151,26 @@
                             <span class="nk-menu-text" data-en="Categories" data-ar="التصنيفات">Categories</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.categories.index') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text" data-en="All Categories"
-                                        data-ar="كل التصنيفات">All
-                                        Categories</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.categorie.create') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text" data-en="Add Category"
-                                        data-ar="إضافة تصنيف">Add
-                                        Category</span></a></li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('dashboard.categories.index') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="All Categories" data-ar="كل التصنيفات">
+                                        All Categories
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('dashboard.categorie.create') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Add Category" data-ar="إضافة تصنيف">
+                                        Add Category
+                                    </span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
+                    @endcanDo
 
+
+                    @canDo('trends_access')
                     <!-- Trends -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
@@ -148,15 +180,26 @@
                             <span class="nk-menu-text" data-en="Trends" data-ar="الاتجاهات">Trends</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="./dashboard/trends" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="All Trends" data-ar="كل الاتجاهات">All
-                                        Trends</span></a></li>
-                            <li class="nk-menu-item"><a href="./dashboard/trend-create" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Add Trend" data-ar="إضافة اتجاه">Add
-                                        Trend</span></a></li>
+                            <li class="nk-menu-item">
+                                <a href="./dashboard/trends" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="All Trends" data-ar="كل الاتجاهات">
+                                        All Trends
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="./dashboard/trend-create" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Add Trend" data-ar="إضافة اتجاه">
+                                        Add Trend
+                                    </span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
+                    @endcanDo
 
+
+                    @canDo('windows_access')
                     <!-- Windows -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
@@ -166,15 +209,24 @@
                             <span class="nk-menu-text" data-en="Windows" data-ar="النوافذ">Windows</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="./dashboard/windows" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="All Windows" data-ar="كل النوافذ">All
-                                        Windows</span></a></li>
-                            <li class="nk-menu-item"><a href="./dashboard/window-create" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Add Window" data-ar="إضافة نافذة">Add
-                                        Window</span></a></li>
+                            <li class="nk-menu-item">
+                                <a href="./dashboard/windows" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="All Windows" data-ar="كل النوافذ">All
+                                        Windows</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="./dashboard/window-create" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Add Window" data-ar="إضافة نافذة">Add
+                                        Window</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
+                    @endcanDo
 
+
+                    @canDo('tags_access')
                     <!-- Tags -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
@@ -184,17 +236,21 @@
                             <span class="nk-menu-text" data-en="Tags" data-ar="الوسوم">Tags</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.tags.index') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text" data-en="All Tags"
-                                        data-ar="كل الوسوم">All
-                                        Tags</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('dashboard.tag.create') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text" data-en="Add Tag"
-                                        data-ar="إضافة وسم">Add Tag</span></a>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('dashboard.tags.index') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="All Tags" data-ar="كل الوسوم">All Tags</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('dashboard.tag.create') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Add Tag" data-ar="إضافة وسم">Add Tag</span>
+                                </a>
                             </li>
                         </ul>
                     </li>
+                    @endcanDo
 
+                    @canDo('locations_access')
                     <!-- Locations -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
@@ -204,16 +260,25 @@
                             <span class="nk-menu-text" data-en="Locations" data-ar="المواقع">Locations</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="./dashboard/locations" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="All Locations" data-ar="كل المواقع">All
-                                        Locations</span></a></li>
-                            <li class="nk-menu-item"><a href="./dashboard/location-create" class="nk-menu-link"><span
-                                        class="nk-menu-text" data-en="Add Location" data-ar="إضافة موقع">Add
-                                        Location</span></a></li>
+                            <li class="nk-menu-item">
+                                <a href="./dashboard/locations" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="All Locations" data-ar="كل المواقع">All
+                                        Locations</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="./dashboard/location-create" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Add Location" data-ar="إضافة موقع">Add
+                                        Location</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
+                    @endcanDo
+
 
                     <!-- Users -->
+                    @canDo('users_access')
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon">
@@ -232,7 +297,11 @@
                                         User</span></a></li>
                         </ul>
                     </li>
+                    @endcanDo
+
+
                     <!-- Roles & Permissions -->
+                    @canDo('roles_access')
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon">
@@ -270,9 +339,11 @@
                             </li>
                         </ul>
                     </li>
+                    @endcanDo
 
 
                     <!-- Authors -->
+                    @canDo('writers_access')
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon">
@@ -291,9 +362,10 @@
                                         Writer</span></a></li>
                         </ul>
                     </li>
-
+                    @endcanDo
 
                     <!-- Pages -->
+                    @canDo('pages_access')
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon">
@@ -312,8 +384,10 @@
                                         Page</span></a></li>
                         </ul>
                     </li>
+                    @endcanDo
 
                     <!-- Settings -->
+                    @canDo('settings_access')
                     <li class="nk-menu-item">
                         <a href="{{ route('dashboard.settings') }}" class="nk-menu-link">
                             <span class="nk-menu-icon">
@@ -322,7 +396,7 @@
                             <span class="nk-menu-text" data-en="Settings" data-ar="الإعدادات">Settings</span>
                         </a>
                     </li>
-
+                    @endcanDo
                 </ul>
             </div>
         </div>

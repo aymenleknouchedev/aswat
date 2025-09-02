@@ -4,8 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class MediaController extends Controller
+use Illuminate\Routing\Controller as BaseController;
+
+class MediaController extends BaseController
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'check:media_access']);
+    }
     /**
      * Display a listing of the resource.
      */

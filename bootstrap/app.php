@@ -15,6 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'check' => \App\Http\Middleware\CheckRoleOrPermission::class,
             'autho' => \App\Http\Middleware\AuthMiddleware::class,
             'guesto' => \App\Http\Middleware\GuestMiddleware::class,
+            'check.content_access' => \App\Http\Middleware\CheckRoleOrPermission::class,
+
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

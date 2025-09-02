@@ -4,8 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class WindowController extends Controller
+use Illuminate\Routing\Controller as BaseController;
+
+class WindowController extends BaseController
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'check:windows_access']);
+    }
     /**
      * Display a listing of the resource.
      */

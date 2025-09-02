@@ -17,7 +17,8 @@
                                     <h4 class="nk-block-title" data-en="All Permissions" data-ar="جميع الصلاحيات">
                                         جميع الصلاحيات
                                     </h4>
-                                    <p data-en="List of all permissions in the system." data-ar="قائمة جميع الصلاحيات في النظام.">
+                                    <p data-en="List of all permissions in the system."
+                                        data-ar="قائمة جميع الصلاحيات في النظام.">
                                         قائمة جميع الصلاحيات في النظام.
                                     </p>
                                 </div>
@@ -44,12 +45,8 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <a href="#" class="btn btn-sm btn-primary"
-                                                            data-en="Edit" data-ar="تعديل">
-                                                            تعديل
-                                                        </a>
-
-                                                        <form action="#" method="POST" style="display:inline;">
+                                                        <form action="{{ route('dashboard.permission.destroy', $perm->id) }}" method="POST"
+                                                            style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-sm btn-danger"
@@ -69,8 +66,8 @@
                                             data-ar="لا توجد صلاحيات بعد">
                                             لا توجد صلاحيات بعد
                                         </h5>
-                                        <a href="#" class="btn btn-primary mt-3"
-                                            data-en="Add New Permission" data-ar="إضافة صلاحية جديدة">
+                                        <a href="#" class="btn btn-primary mt-3" data-en="Add New Permission"
+                                            data-ar="إضافة صلاحية جديدة">
                                             + إضافة صلاحية جديدة
                                         </a>
                                     </div>

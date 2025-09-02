@@ -5,8 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+use Illuminate\Routing\Controller as BaseController;
+
+class CategoryController extends BaseController
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'check:categories_access']);
+    }
     /**
      * Display a listing of the resource.
      */

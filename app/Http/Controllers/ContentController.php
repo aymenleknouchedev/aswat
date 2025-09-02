@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 
-class ContentController extends Controller
+class ContentController extends BaseController
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'check:content_access']);
+    }
     /**
      * Display a listing of the resource.
      */

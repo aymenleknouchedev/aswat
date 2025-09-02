@@ -6,10 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 
 use App\Models\Permission; // ✅ Your Eloquent model
+use Illuminate\Routing\Controller as BaseController;
 
-
-class RoleController extends Controller
+class RoleController extends BaseController
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'check:roles_access']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -87,6 +92,10 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $role->delete();
+
+        return redirect()->route('dashboard.roles.index')
+            ->with('success', 'تم حذف الدور بنجاح.');
     }
 }

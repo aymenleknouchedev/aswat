@@ -3,9 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 
-class PagesController extends Controller
+class PagesController extends BaseController
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'check:pages_access']);
+    }
+
     /**
      * Display a listing of the resource.
      */

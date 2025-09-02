@@ -3,18 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Tag;
+use Illuminate\Routing\Controller as BaseController;
 
-class TagController extends Controller
+class TagController extends BaseController
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'check:tags_access']);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // Fetch all tags from the database
-        $tags = Tag::all();
-        return view('dashboard.alltags', compact('tags'));
+        return view('dashboard.alltags');
     }
 
     /**

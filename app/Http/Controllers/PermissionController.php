@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Permission;
 
+use Illuminate\Routing\Controller as BaseController;
 
-class PermissionController extends Controller
+class PermissionController extends BaseController
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'check:roles_access']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -73,6 +79,10 @@ class PermissionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $permission = Permission::findOrFail($id);
+        $permission->delete();
+
+        return redirect()->route('dashboard.permissions.index')
+            ->with('success', 'Permission deleted successfully.');
     }
 }

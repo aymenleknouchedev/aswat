@@ -18,6 +18,7 @@ use App\Http\Controllers\{
     MediaController,
     PermissionController,
     RoleController,
+    SettingsController,
     TrendController,
     WindowController
 };
@@ -73,7 +74,9 @@ Route::prefix('dashboard')->group(function () {
 
         // Dashboard
         Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');
-        Route::get('/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
+
+        // Settings
+        Route::get('/settings', [SettingsController::class, 'settings'])->name('dashboard.settings');
 
         // Entities
         $entities = [

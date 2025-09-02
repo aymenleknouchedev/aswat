@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 
-class SectionController extends Controller
+class SectionController extends BaseController
 {
-   /**
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'check:sections_access']);
+    }
+    /**
      * Display a listing of the resource.
      */
     public function index()

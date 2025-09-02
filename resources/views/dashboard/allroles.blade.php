@@ -17,7 +17,8 @@
                                     <h4 class="nk-block-title" data-en="All Roles" data-ar="جميع الأدوار">
                                         جميع الأدوار
                                     </h4>
-                                    <p data-en="List of all roles and their permissions." data-ar="قائمة الأدوار وصلاحياتها.">
+                                    <p data-en="List of all roles and their permissions."
+                                        data-ar="قائمة الأدوار وصلاحياتها.">
                                         قائمة الأدوار وصلاحياتها.
                                     </p>
                                 </div>
@@ -38,20 +39,28 @@
                                         <tbody class="tb-odr-body">
                                             @foreach ($roles as $role)
                                                 <tr class="tb-odr-item">
-                                                    <td>{{ $role->id }}</td>
-                                                    <td>
+                                                    <td class="text-center" style="width: 60px;">{{ $role->id }}</td>
+
+                                                    <td style="width: 200px;">
                                                         <strong>{{ $role->name }}</strong>
                                                     </td>
+
+                                                    <!-- Permissions column auto-expands -->
                                                     <td>
                                                         <div class="d-flex flex-wrap gap-1">
-                                                            @foreach ($role->permissions as $perm)
+                                                            @foreach ($role->permissions->take(6) as $perm)
                                                                 <span class="badge badge-dim badge-primary">
                                                                     {{ $perm->name }}
                                                                 </span>
                                                             @endforeach
+
+                                                            @if ($role->permissions->count() > 6)
+                                                                <span class="badge badge-dim badge-secondary">...</span>
+                                                            @endif
                                                         </div>
                                                     </td>
-                                                    <td>
+
+                                                    <td class="text-center" style="width: 150px;">
                                                         <a href="{{ route('dashboard.role.edit', $role->id) }}"
                                                             class="btn btn-sm btn-primary" data-en="Edit" data-ar="تعديل">
                                                             تعديل

@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Writer;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 
-class WritterController extends Controller
+class WritterController extends BaseController
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'check:writers_access']);
+    }
+
     /**
      * Display a listing of the resource.
      */

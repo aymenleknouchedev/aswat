@@ -82,16 +82,16 @@ class User extends Authenticatable
      */
     public function hasPermission(string $permission): bool
     {
-        // صلاحية مباشرة
-        if ($this->permissions()->where('name', $permission)->exists()) {
-            return true;
+        if ($this->roles()->count() === 0) {
+            return false; // no role → no permission
         }
 
-        // صلاحية عن طريق الدور
         return $this->roles()->whereHas('permissions', function ($q) use ($permission) {
             $q->where('name', $permission);
         })->exists();
     }
+
+
 
     /**
      * التحقق من أي دور (قائمة)
