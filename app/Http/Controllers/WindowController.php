@@ -76,6 +76,9 @@ class WindowController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $window = Window::findOrFail($id);
+        $window->delete();
+
+        return redirect()->route('dashboard.windows.index')->with('success', 'Window deleted successfully.');
     }
 }

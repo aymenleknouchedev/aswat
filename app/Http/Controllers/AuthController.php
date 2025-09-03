@@ -181,7 +181,7 @@ class AuthController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('dashboard.roles.index')
+        return redirect()->route('dashboard.users.index')
             ->with('success', 'تم حذف المستعمل بنجاح.');
     }
 

@@ -54,6 +54,37 @@
     <script src="./dashlite/assets/js/scripts.js?ver=3.3.0"></script>
     <script src="./dashlite/assets/js/charts/gd-default.js?ver=3.3.0"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const deleteButtons = document.querySelectorAll(".delete-btn");
+
+            deleteButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    let form = this.closest("form");
+
+                    Swal.fire({
+                        title: "هل أنت متأكد؟",
+                        text: "لن تتمكن من التراجع عن هذا الإجراء!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "نعم، احذف!",
+                        cancelButtonText: "إلغاء"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+
     {{-- <script src="https://cdn.tiny.cloud/1/qwcigpkrm410kyux7b6j7rhygc758v6hviqqvkgf4878s508/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({

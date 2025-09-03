@@ -13,16 +13,44 @@
                 <div class="nk-content">
                     <div class="container-fluid">
                         <div class="nk-block nk-block-lg">
+
+                            <!-- ✅ رأس الصفحة -->
                             <div class="nk-block-head">
                                 <div class="nk-block-head-content">
                                     <h4 class="nk-block-title" data-en="All Writers" data-ar="جميع الكتاب">جميع الكتاب</h4>
-                                    <p data-en="Static fake data for testing purpose."
-                                        data-ar="بيانات وهمية لأغراض الاختبار فقط.">
-                                        بيانات وهمية لأغراض الاختبار فقط.
+                                    <p data-en="Manage all writers from here" data-ar="قم بإدارة جميع الكتّاب من هنا">
+                                        قم بإدارة جميع الكتّاب من هنا
                                     </p>
                                 </div>
                             </div>
 
+                            <!-- رسائل النجاح -->
+                            @if (session('success'))
+                                <div class="alert alert-fill alert-success alert-icon">
+                                    <em class="icon ni ni-check-circle"></em>
+                                    <span class="translatable" data-ar="تمت العملية بنجاح"
+                                        data-en="Operation completed successfully">
+                                        {{ session('success') ?? 'تمت العملية بنجاح' }}
+                                    </span>
+                                </div>
+                            @endif
+
+                            <!-- رسائل الخطأ -->
+                            @if ($errors->any())
+                                <div class="alert alert-fill alert-danger alert-icon">
+                                    <em class="icon ni ni-cross-circle"></em>
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li class="translatable" data-ar="حدث خطأ ما" data-en="An error occurred">
+                                                {{ $error ?? 'حدث خطأ ما' }}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+
+                            <!-- ✅ جدول الكتّاب -->
                             <div class="card card-bordered card-preview">
                                 <table class="table table-orders">
                                     <thead class="tb-odr-head">
@@ -33,24 +61,37 @@
                                         </tr>
                                     </thead>
                                     <tbody class="tb-odr-body">
-                                        @foreach ($writers as $writer)
+                                        @forelse ($writers as $writer)
                                             <tr class="tb-odr-item">
                                                 <td>{{ $writer->name }}</td>
                                                 <td>{{ $writer->bio }}</td>
                                                 <td>
-                                                    <a href="#" class="btn btn-sm btn-primary" data-en="Edit"
+                                                    <!-- زر تعديل -->
+                                                    <a href="{{ route('dashboard.writer.edit', $writer->id) }}"
+                                                        class="btn btn-sm btn-primary" data-en="Edit"
                                                         data-ar="تعديل">تعديل</a>
+
+                                                    <!-- زر حذف -->
                                                     <form action="{{ route('dashboard.writer.destroy', $writer->id) }}"
-                                                        method="POST" style="display: inline;">
+                                                        method="POST" class="d-inline delete-form">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                            data-en="Delete" data-ar="حذف">حذف</button>
+                                                        <button type="button" class="btn btn-sm btn-danger delete-btn"
+                                                            data-en="Delete" data-ar="حذف">
+                                                            حذف
+                                                        </button>
                                                     </form>
+
                                                 </td>
                                             </tr>
-                                        @endforeach
-
+                                        @empty
+                                            <tr>
+                                                <td colspan="3" class="text-center" data-en="No writers found"
+                                                    data-ar="لا يوجد كتّاب">
+                                                    لا يوجد كتّاب
+                                                </td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>

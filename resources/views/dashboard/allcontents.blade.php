@@ -233,6 +233,25 @@
                                     data-ar="إضافة محتوى جديد">إضافة محتوى جديد</a>
                             </div>
 
+                            <!-- ✅ Alerts -->
+                            @if (session('success'))
+                                <div class="alert alert-success alert-dismissible fade show rounded shadow-sm mt-3"
+                                    role="alert">
+                                    <strong>✔ تم بنجاح:</strong> {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            @if (session('error'))
+                                <div class="alert alert-danger alert-dismissible fade show rounded shadow-sm mt-3"
+                                    role="alert">
+                                    <strong>⚠ خطأ:</strong> {{ session('error') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
+
                             <!-- Scrollable Table -->
                             <div style="overflow-x:auto;">
                                 <table class="table table-orders">
@@ -246,7 +265,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                         
+
                                         @foreach ($pagedContents as $content)
                                             <tr>
                                                 <td>{{ $content['title'] }}</td>

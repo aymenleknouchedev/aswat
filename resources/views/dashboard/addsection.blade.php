@@ -23,28 +23,30 @@
                             </div>
                         </div>
 
-                        <!-- ✅ رسالة النجاح -->
+                      <!-- رسائل النجاح -->
                         @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
+                            <div class="alert alert-fill alert-success alert-icon">
+                                <em class="icon ni ni-check-circle"></em>
+                                <span class="translatable" data-ar="تمت العملية بنجاح"
+                                    data-en="Operation completed successfully">
+                                    {{ session('success') ?? 'تمت العملية بنجاح' }}
+                                </span>
                             </div>
                         @endif
 
-                        <!-- ✅ رسالة الخطأ العامة -->
+                        <!-- رسائل الخطأ -->
                         @if ($errors->any())
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div class="alert alert-fill alert-danger alert-icon">
+                                <em class="icon ni ni-cross-circle"></em>
                                 <ul class="mb-0">
                                     @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
+                                        <li class="translatable" data-ar="حدث خطأ ما" data-en="An error occurred">
+                                            {{ $error ?? 'حدث خطأ ما' }}
+                                        </li>
                                     @endforeach
                                 </ul>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
                             </div>
                         @endif
-
                         <!-- ✅ النموذج -->
                         <form action="{{ route('dashboard.section.store') }}" method="POST">
                             @csrf

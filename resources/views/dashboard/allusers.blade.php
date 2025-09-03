@@ -23,6 +23,33 @@
                                     </p>
                                 </div>
                             </div>
+
+                            <!-- رسائل النجاح -->
+                            @if (session('success'))
+                                <div class="alert alert-fill alert-success alert-icon">
+                                    <em class="icon ni ni-check-circle"></em>
+                                    <span class="translatable" data-ar="تمت العملية بنجاح"
+                                        data-en="Operation completed successfully">
+                                        {{ session('success') ?? 'تمت العملية بنجاح' }}
+                                    </span>
+                                </div>
+                            @endif
+
+                            <!-- رسائل الخطأ -->
+                            @if ($errors->any())
+                                <div class="alert alert-fill alert-danger alert-icon">
+                                    <em class="icon ni ni-cross-circle"></em>
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li class="translatable" data-ar="حدث خطأ ما" data-en="An error occurred">
+                                                {{ $error ?? 'حدث خطأ ما' }}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+
                             <!-- ✅ المستخدمين -->
                             <div class="card card-bordered card-preview">
                                 @if ($users->count() > 0)
@@ -63,13 +90,23 @@
                                                             class="btn btn-sm btn-primary" data-en="Edit"
                                                             data-ar="تعديل">تعديل</a>
 
-                                                        <form action="{{ route('dashboard.user.destroy', $user->id) }}"
-                                                            method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                                data-en="Delete" data-ar="حذف">حذف</button>
-                                                        </form>
+                                                        @if ($user->id !== auth()->id())
+                                                            <form action="{{ route('dashboard.user.destroy', $user->id) }}"
+                                                                method="POST" class="delete-form d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="button"
+                                                                    class="btn btn-sm btn-danger delete-btn"
+                                                                    data-en="Delete" data-ar="حذف">
+                                                                    حذف
+                                                                </button>
+                                                            </form>
+                                                        @else
+                                                            <button class="btn btn-sm btn-secondary" disabled
+                                                                title="لا يمكنك حذف حسابك">
+                                                                لا يمكن الحذف
+                                                            </button>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach

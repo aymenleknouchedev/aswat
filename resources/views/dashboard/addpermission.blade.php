@@ -27,27 +27,31 @@
                             </div>
                         </div>
 
-                        <!-- ✅ رسائل النجاح -->
+                       <!-- رسائل النجاح -->
                         @if (session('success'))
                             <div class="alert alert-fill alert-success alert-icon">
                                 <em class="icon ni ni-check-circle"></em>
-                                <span data-ar="{{ session('success') }}" data-en="Permission added successfully">
-                                    {{ session('success') }}
+                                <span class="translatable" data-ar="تمت العملية بنجاح"
+                                    data-en="Operation completed successfully">
+                                    {{ session('success') ?? 'تمت العملية بنجاح' }}
                                 </span>
                             </div>
                         @endif
 
-                        <!-- ✅ رسائل الأخطاء -->
+                        <!-- رسائل الخطأ -->
                         @if ($errors->any())
                             <div class="alert alert-fill alert-danger alert-icon">
                                 <em class="icon ni ni-cross-circle"></em>
                                 <ul class="mb-0">
                                     @foreach ($errors->all() as $error)
-                                        <li data-ar="{{ $error }}" data-en="Error: {{ $error }}">{{ $error }}</li>
+                                        <li class="translatable" data-ar="حدث خطأ ما" data-en="An error occurred">
+                                            {{ $error ?? 'حدث خطأ ما' }}
+                                        </li>
                                     @endforeach
                                 </ul>
                             </div>
                         @endif
+
 
                         <!-- ✅ النموذج -->
                         <div class="card card-bordered">

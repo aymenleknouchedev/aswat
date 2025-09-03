@@ -77,6 +77,9 @@ class SectionController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $section = Section::findOrFail($id);
+        $section->delete();
+
+        return redirect()->route('dashboard.sections.index')->with('success', 'Section deleted successfully.');
     }
 }

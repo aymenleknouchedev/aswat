@@ -12,6 +12,8 @@
                 <div class="nk-content">
                     <div class="container-fluid">
                         <div class="nk-block nk-block-lg">
+
+
                             <div class="nk-block-head">
                                 <div class="nk-block-head-content">
                                     <h4 class="nk-block-title" data-en="All Permissions" data-ar="جميع الصلاحيات">
@@ -23,6 +25,32 @@
                                     </p>
                                 </div>
                             </div>
+
+                            <!-- رسائل النجاح -->
+                            @if (session('success'))
+                                <div class="alert alert-fill alert-success alert-icon">
+                                    <em class="icon ni ni-check-circle"></em>
+                                    <span class="translatable" data-ar="تمت العملية بنجاح"
+                                        data-en="Operation completed successfully">
+                                        {{ session('success') ?? 'تمت العملية بنجاح' }}
+                                    </span>
+                                </div>
+                            @endif
+
+                            <!-- رسائل الخطأ -->
+                            @if ($errors->any())
+                                <div class="alert alert-fill alert-danger alert-icon">
+                                    <em class="icon ni ni-cross-circle"></em>
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li class="translatable" data-ar="حدث خطأ ما" data-en="An error occurred">
+                                                {{ $error ?? 'حدث خطأ ما' }}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
 
                             <!-- ✅ الصلاحيات -->
                             <div class="card card-bordered card-preview">
@@ -45,11 +73,12 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <form action="{{ route('dashboard.permission.destroy', $perm->id) }}" method="POST"
-                                                            style="display:inline;">
+                                                        <form
+                                                            action="{{ route('dashboard.permission.destroy', $perm->id) }}"
+                                                            method="POST" class="delete-form d-inline">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                            <button type="button" class="btn btn-sm btn-danger delete-btn"
                                                                 data-en="Delete" data-ar="حذف">
                                                                 حذف
                                                             </button>

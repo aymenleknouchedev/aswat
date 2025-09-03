@@ -19,11 +19,37 @@
                                     جميع الدول والمدن
                                 </h4>
                                 <p data-en="Here you can manage all countries and cities."
-                                   data-ar="هنا يمكنك إدارة جميع الدول والمدن.">
+                                    data-ar="هنا يمكنك إدارة جميع الدول والمدن.">
                                     هنا يمكنك إدارة جميع الدول والمدن.
                                 </p>
                             </div>
                         </div>
+
+                        <!-- رسائل النجاح -->
+                        @if (session('success'))
+                            <div class="alert alert-fill alert-success alert-icon">
+                                <em class="icon ni ni-check-circle"></em>
+                                <span class="translatable" data-ar="تمت العملية بنجاح"
+                                    data-en="Operation completed successfully">
+                                    {{ session('success') ?? 'تمت العملية بنجاح' }}
+                                </span>
+                            </div>
+                        @endif
+
+                        <!-- رسائل الخطأ -->
+                        @if ($errors->any())
+                            <div class="alert alert-fill alert-danger alert-icon">
+                                <em class="icon ni ni-cross-circle"></em>
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li class="translatable" data-ar="حدث خطأ ما" data-en="An error occurred">
+                                            {{ $error ?? 'حدث خطأ ما' }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
 
                         <!-- ✅ جدول المواقع -->
                         <div class="card card-bordered card-preview">
@@ -40,11 +66,36 @@
                                 <tbody>
                                     @php
                                         $fakeLocations = [
-                                            ['id' => 1, 'country' => 'Algeria', 'city' => 'Algiers', 'description' => 'Capital city of Algeria'],
-                                            ['id' => 2, 'country' => 'Morocco', 'city' => 'Casablanca', 'description' => 'Largest city in Morocco'],
-                                            ['id' => 3, 'country' => 'Tunisia', 'city' => 'Tunis', 'description' => 'Capital city of Tunisia'],
-                                            ['id' => 4, 'country' => 'Egypt', 'city' => 'Cairo', 'description' => 'Capital city of Egypt'],
-                                            ['id' => 5, 'country' => 'Saudi Arabia', 'city' => 'Riyadh', 'description' => 'Capital city of Saudi Arabia'],
+                                            [
+                                                'id' => 1,
+                                                'country' => 'Algeria',
+                                                'city' => 'Algiers',
+                                                'description' => 'Capital city of Algeria',
+                                            ],
+                                            [
+                                                'id' => 2,
+                                                'country' => 'Morocco',
+                                                'city' => 'Casablanca',
+                                                'description' => 'Largest city in Morocco',
+                                            ],
+                                            [
+                                                'id' => 3,
+                                                'country' => 'Tunisia',
+                                                'city' => 'Tunis',
+                                                'description' => 'Capital city of Tunisia',
+                                            ],
+                                            [
+                                                'id' => 4,
+                                                'country' => 'Egypt',
+                                                'city' => 'Cairo',
+                                                'description' => 'Capital city of Egypt',
+                                            ],
+                                            [
+                                                'id' => 5,
+                                                'country' => 'Saudi Arabia',
+                                                'city' => 'Riyadh',
+                                                'description' => 'Capital city of Saudi Arabia',
+                                            ],
                                         ];
                                     @endphp
 
@@ -55,9 +106,10 @@
                                             <td>{{ $location['city'] }}</td>
                                             <td>{{ $location['description'] }}</td>
                                             <td>
-                                                <a href="#" class="btn btn-sm btn-primary" data-en="Edit" data-ar="تعديل">تعديل</a>
-                                                <button type="button" class="btn btn-sm btn-danger" data-en="Delete" data-ar="حذف"
-                                                        onclick="return confirm('هل أنت متأكد من الحذف؟');">
+                                                <a href="#" class="btn btn-sm btn-primary" data-en="Edit"
+                                                    data-ar="تعديل">تعديل</a>
+                                                <button type="button" class="btn btn-sm btn-danger" data-en="Delete"
+                                                    data-ar="حذف" onclick="return confirm('هل أنت متأكد من الحذف؟');">
                                                     حذف
                                                 </button>
                                             </td>

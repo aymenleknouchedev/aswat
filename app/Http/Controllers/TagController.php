@@ -76,6 +76,7 @@ class TagController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        Tag::destroy($id);
+        return redirect()->route('dashboard.tags.index')->with('success', 'Tag deleted successfully.');
     }
 }

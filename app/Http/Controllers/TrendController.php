@@ -75,6 +75,9 @@ class TrendController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $trend = Trend::findOrFail($id);
+        $trend->delete();
+
+        return redirect()->route('dashboard.trends.index')->with('success', 'Trend deleted successfully.');
     }
 }
