@@ -59,7 +59,8 @@ class TrendController extends BaseController
      */
     public function edit(string $id)
     {
-        //
+        $trend = Trend::findOrFail($id);
+        return view('dashboard.edittrend', compact('trend'));
     }
 
     /**
@@ -67,7 +68,16 @@ class TrendController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $trend = Trend::findOrFail($id);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+        ]);
+
+        $trend->title = $request->input('title');
+        $trend->save();
+
+        return redirect()->route('dashboard.trends.index')->with('success', 'Trend updated successfully.');
     }
 
     /**

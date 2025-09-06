@@ -115,13 +115,14 @@ class AuthController extends Controller
     public function edit(string $id, Request $request)
     {
         $user = Auth::user();
+        $roles = $user->roles;
 
         if (!$user || !$request->user()->hasPermission('users_access')) {
             return redirect()->route('dashboard.index')->with('error', 'Unauthorized access');
         }
 
         $user = User::findOrFail($id);
-        return view('dashboard.auth.edit', compact('user'));
+        return view('dashboard.edituser', compact('user', 'roles'));
     }
 
     /**
@@ -140,7 +141,6 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string|min:6|confirmed',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'role' => 'nullable|in:admin,editor,writer',
             'token' => '',
         ]);
 
@@ -161,13 +161,9 @@ class AuthController extends Controller
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
-        $user->role = $request->role ?? 'writer';
         $user->save();
 
-        return response()->json([
-            'message' => 'User updated successfully',
-            'user' => $user
-        ], 200);
+        return redirect()->route('dashboard.users.index')->with('success', 'User updated successfully');
     }
 
     /**

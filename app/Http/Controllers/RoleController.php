@@ -76,7 +76,9 @@ class RoleController extends BaseController
      */
     public function edit(string $id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $permissions = Permission::all();
+        return view('dashboard.editrole', compact('role', 'permissions'));
     }
 
     /**
@@ -84,7 +86,23 @@ class RoleController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $role = Role::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'exists:permissions,id',
+        ]);
+
+        $role->name = $request->input('name');
+        $role->save();
+
+        // Sync permissions
+        if (!empty($request->input('permissions'))) {
+            $role->permissions()->sync($request->input('permissions'));
+        }
+
+        return redirect()->route('dashboard.roles.index')->with('success', 'تم تحديث الدور بنجاح.');
     }
 
     /**

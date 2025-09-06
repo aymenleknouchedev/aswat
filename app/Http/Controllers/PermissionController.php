@@ -63,7 +63,8 @@ class PermissionController extends BaseController
      */
     public function edit(string $id)
     {
-        //
+        $permission = Permission::findOrFail($id);
+        return view('dashboard.editpermission', compact('permission'));
     }
 
     /**
@@ -71,7 +72,16 @@ class PermissionController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $permission = Permission::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|unique:permissions,name,' . $permission->id,
+        ]);
+
+        $permission->name = $request->input('name');
+        $permission->save();
+
+        return redirect()->route('dashboard.permissions.index')->with('success', 'Permission updated successfully.');
     }
 
     /**

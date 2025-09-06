@@ -12,8 +12,6 @@
 
                 <div class="nk-content">
                     <div class="container-fluid">
-
-
                         <div class="nk-block nk-block-lg">
                             <div class="nk-block-head">
                                 <div class="nk-block-head-content">
@@ -24,7 +22,6 @@
                                     </p>
                                 </div>
                             </div>
-
                             <!-- رسائل النجاح -->
                             @if (session('success'))
                                 <div class="alert alert-fill alert-success alert-icon">
@@ -49,9 +46,6 @@
                                     </ul>
                                 </div>
                             @endif
-
-
-
                             <div class="card card-bordered card-preview">
                                 <table class="table table-orders">
                                     <thead class="tb-odr-head">
@@ -79,7 +73,6 @@
                                                             حذف
                                                         </button>
                                                     </form>
-
                                                 </td>
                                             </tr>
                                         @empty

@@ -60,7 +60,8 @@ class WindowController extends BaseController
      */
     public function edit(string $id)
     {
-        //
+        $window = Window::findOrFail($id);
+        return view('dashboard.editwindow', compact('window'));
     }
 
     /**
@@ -68,7 +69,16 @@ class WindowController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $window = Window::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $window->name = $request->input('name');
+        $window->save();
+
+        return redirect()->route('dashboard.windows.index')->with('success', 'Window updated successfully.');
     }
 
     /**

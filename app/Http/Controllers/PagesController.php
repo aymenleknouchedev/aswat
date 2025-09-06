@@ -63,7 +63,8 @@ class PagesController extends BaseController
      */
     public function edit(string $id)
     {
-        //
+        $page = Page::findOrFail($id);
+        return view('dashboard.editpage', compact('page'));
     }
 
     /**
@@ -71,7 +72,18 @@ class PagesController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $page = Page::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:pages,slug,' . $page->id,
+            'content' => 'required|string',
+        ]);
+
+        $page->update($validated);
+
+        return redirect()->route('dashboard.pages.index')
+            ->with('success', 'Page updated successfully!');
     }
 
     /**

@@ -29,7 +29,7 @@ Route::get('/clear-cache', function () {
     return 'Cache, config, routes, and views cleared successfully.';
 });
 
-Route::get('/test', function() {
+Route::get('/test', function () {
     dd("Test");
 })->middleware('test');
 
@@ -106,7 +106,7 @@ Route::prefix('dashboard')->group(function () {
             Route::get("/{$entity}-create", [$controller, 'create'])->name("dashboard.{$entity}.create");
             Route::post("/{$entity}-store", [$controller, 'store'])->name("dashboard.{$entity}.store");
             Route::get("/{$entity}-{id}", [$controller, 'show'])->name("dashboard.{$entity}.show");
-            Route::get("/{$entity}-{id}-edit", [$controller, 'edit'])->name("dashboard.{$entity}.edit");
+            Route::get("/{$entity}{id}", [$controller, 'edit'])->name("dashboard.{$entity}.edit");
             Route::put("/{$entity}-{id}", [$controller, 'update'])->name("dashboard.{$entity}.update");
             Route::delete("/{$entity}-{id}", [$controller, 'destroy'])->name("dashboard.{$entity}.destroy");
         }

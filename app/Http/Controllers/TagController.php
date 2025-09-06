@@ -60,7 +60,8 @@ class TagController extends BaseController
      */
     public function edit(string $id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+        return view('dashboard.edittag', compact('tag'));
     }
 
     /**
@@ -68,7 +69,16 @@ class TagController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $tag->name = $request->input('name');
+        $tag->save();
+
+        return redirect()->route('dashboard.tags.index')->with('success', 'Tag updated successfully.');
     }
 
     /**

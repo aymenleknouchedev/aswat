@@ -67,7 +67,8 @@ class WritterController extends BaseController
      */
     public function edit(string $id)
     {
-        //
+        $writer = Writer::findOrFail($id);
+        return view('dashboard.editwritter', compact('writer'));
     }
 
     /**
@@ -75,7 +76,27 @@ class WritterController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $writer = Writer::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:150',
+            'slug' => 'required|string|max:150|unique:writers,slug,' . $writer->id,
+            'bio' => 'required|string',
+            'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'facebook' => 'nullable|url',
+            'x' => 'nullable|url',
+            'instagram' => 'nullable|url',
+            'linkedin' => 'nullable|url',
+        ]);
+
+        $writer->update($validated);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('writers', 'public');
+            $writer->image = $path;
+        }
+
+        return redirect()->route('dashboard.writers.index')->with('success', 'Writer updated successfully.');
     }
 
     /**
