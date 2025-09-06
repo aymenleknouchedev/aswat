@@ -29,6 +29,10 @@ Route::get('/clear-cache', function () {
     return 'Cache, config, routes, and views cleared successfully.';
 });
 
+Route::get('/test', function() {
+    dd("Test");
+})->middleware('test');
+
 Route::get('/migrate-fresh', function () {
     Artisan::call('migrate:fresh', [
         '--force' => true
@@ -70,7 +74,7 @@ Route::prefix('dashboard')->group(function () {
     });
 
     // Routes dashboard  
-    Route::middleware(['autho'])->group(function () {
+    Route::middleware(['auth'])->group(function () {
 
         // Dashboard
         Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -108,6 +112,6 @@ Route::prefix('dashboard')->group(function () {
         }
 
         // Logout
-        Route::get('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
     });
 });

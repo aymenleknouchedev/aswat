@@ -61,7 +61,8 @@ class SectionController extends BaseController
      */
     public function edit(string $id)
     {
-        //
+        $section = Section::findOrFail($id);
+        return view('dashboard.editsection', compact('section'));
     }
 
     /**
@@ -69,7 +70,15 @@ class SectionController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $section = Section::findOrFail($id);
+        $section->name = $request->input('name');
+        $section->save();
+
+        return redirect()->route('dashboard.sections.index')->with('success', 'Section updated successfully.');
     }
 
     /**

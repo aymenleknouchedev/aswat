@@ -7,12 +7,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Role;
+use Illuminate\Notifications\Notifiable;
 
 class AuthController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    use Notifiable;
 
     public function index(Request $request)
     {
@@ -217,9 +220,11 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
     //logout
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('dashboard.user.auth')->with('message', 'Logged out successfully');
     }
 }
