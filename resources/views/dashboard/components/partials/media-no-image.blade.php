@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <label for="no_image_mobile_image" class="form-label">صورة الجوال</label>
             <div class="media-preview border rounded mb-2" id="preview-no_image_mobile_image"
-                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
             <input type="hidden" name="no_image_mobile_image" id="no_image_mobile_image">
@@ -20,7 +20,7 @@
         <div class="col-md-6">
             <label for="no_image_content_image" class="form-label">الصورة الرئيسية</label>
             <div class="media-preview border rounded mb-2" id="preview-no_image_content_image"
-                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
             <input type="hidden" name="no_image_content_image" id="no_image_content_image">

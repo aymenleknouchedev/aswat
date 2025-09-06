@@ -8,8 +8,8 @@
 
             <input type="hidden" name="album_images" id="album_images" value="[]">
 
-            <div id="album_preview" class="d-flex flex-wrap gap-2 mb-2"
-                style="min-height: 150px; border: 1px solid var(--bs-gray-300); border-radius: 6px; background-color: var(--bs-light); padding: 10px; align-items: center; justify-content: flex-start;">
+            <div id="album_preview" class="d-flex flex-wrap gap-2 mb-2 border"
+                style="aspect-ratio: 16/9; border-radius: 6px; padding: 10px; align-items: center; justify-content: flex-start;">
                 <p class="text-muted m-0" id="album_preview_placeholder">لا توجد صور مختارة</p>
             </div>
 
@@ -23,7 +23,7 @@
         <div class="col-md-4">
             <label for="album_principal_image" class="form-label">الصورة الرئيسية للألبوم</label>
             <div class="media-preview border rounded mb-2" id="preview-album_principal_image"
-                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
             <input type="hidden" name="album_principal_image" id="album_principal_image">
@@ -37,7 +37,7 @@
         <div class="col-md-4">
             <label for="album_mobile_image" class="form-label">صورة الجوال للألبوم</label>
             <div class="media-preview border rounded mb-2" id="preview-album_mobile_image"
-                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
             <input type="hidden" name="album_mobile_image" id="album_mobile_image">
@@ -51,7 +51,7 @@
         <div class="col-md-4">
             <label for="album_content_image" class="form-label">صورة محتوى الألبوم</label>
             <div class="media-preview border rounded mb-2" id="preview-album_content_image"
-                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
             <input type="hidden" name="album_content_image" id="album_content_image">

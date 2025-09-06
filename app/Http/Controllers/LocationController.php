@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Location;
 use Illuminate\Routing\Controller as BaseController;
 
 class LocationController extends BaseController
@@ -17,7 +18,13 @@ class LocationController extends BaseController
      */
     public function index()
     {
-        return view('dashboard.alllocations');
+        $countries = Location::where('type', 'country')->paginate(10);
+        $continents = Location::where('type', 'continent')->paginate(10);
+        $cities = Location::where('type', 'city')->paginate(10);
+
+
+
+        return view('dashboard.alllocations', compact('countries', 'continents', 'cities'));
     }
 
     /**
@@ -33,7 +40,12 @@ class LocationController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $location = new Location();
+        $location->name = $request->input('name');
+        $location->type = $request->input('type');
+        $location->save();
+
+        return redirect()->route('dashboard.locations.index')->with('success', 'Location created successfully.');
     }
 
     /**
@@ -65,6 +77,9 @@ class LocationController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $location = Location::findOrFail($id);
+        $location->delete();
+
+        return redirect()->route('dashboard.locations.index')->with('success', 'Location deleted successfully.');
     }
 }

@@ -19,7 +19,7 @@
                                     <h4 class="nk-block-title" data-ar="تعديل مستخدم" data-en="Edit User">تعديل مستخدم</h4>
                                     <div class="nk-block-des text-soft">
                                         <p data-ar="قم بتحديث النموذج أدناه لتعديل المستخدم."
-                                           data-en="Update the form below to edit the user.">
+                                            data-en="Update the form below to edit the user.">
                                             قم بتحديث النموذج أدناه لتعديل المستخدم.
                                         </p>
                                     </div>
@@ -50,7 +50,8 @@
                         <!-- ✅ النموذج -->
                         <div class="card card-bordered">
                             <div class="card-inner">
-                                <form action="{{ route('dashboard.user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('dashboard.user.update', $user->id) }}" method="POST"
+                                    enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
 
@@ -90,17 +91,17 @@
                                         </div>
                                     </div>
 
-                                    <!-- الأدوار -->
+                                    <!-- ✅ الأدوار -->
                                     <div class="form-group">
-                                        <label class="form-label">الأدوار</label>
+                                        <label class="form-label d-block">الأدوار</label>
                                         <div class="row">
                                             @foreach ($roles as $role)
-                                                <div class="col-md-3">
-                                                    <div class="custom-control custom-checkbox">
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-check mb-2">
                                                         <input type="checkbox" name="roles[]" value="{{ $role->id }}"
-                                                            id="role-{{ $role->id }}" class="custom-control-input"
-                                                            {{ (in_array($role->id, old('roles', $user->roles->pluck('id')->toArray()))) ? 'checked' : '' }}>
-                                                        <label class="custom-control-label" for="role-{{ $role->id }}">
+                                                            id="role_{{ $role->id }}" class="form-check-input"
+                                                            {{ $user->roles->contains($role->id) ? 'checked' : '' }}>
+                                                        <label class="form-check-label" for="role_{{ $role->id }}">
                                                             {{ $role->name }}
                                                         </label>
                                                     </div>
@@ -109,30 +110,33 @@
                                         </div>
                                     </div>
 
+
                                     <!-- صورة -->
                                     <div class="form-group">
                                         <label class="form-label" for="customFile">الصورة</label>
-                                        @if($user->image)
+                                        @if ($user->image)
                                             <div class="mb-2">
-                                                <img src="{{ asset('uploads/users/' . $user->image) }}" alt="صورة المستخدم" class="img-thumbnail" width="100">
+                                                <img src="{{ asset('uploads/users/' . $user->image) }}" alt="صورة المستخدم"
+                                                    class="img-thumbnail" width="100">
                                             </div>
                                         @endif
                                         <div class="form-file">
-                                            <input type="file" name="image" class="form-file-input" id="customFile" accept="image/*">
+                                            <input type="file" name="image" class="form-file-input" id="customFile"
+                                                accept="image/*">
                                             <label class="form-file-label" for="customFile">اختر صورة...</label>
                                         </div>
                                     </div>
 
                                     <!-- أزرار -->
                                     <div class="form-group mt-4">
-                                            <form action="{{ route('dashboard.user.update', $user->id) }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <button type="submit" class="btn btn-primary">
-                                                    <em class="icon ni ni-save"></em>
-                                                    <span>تحديث مستخدم</span>
-                                                </button>
-                                            </form>
+                                        <form action="{{ route('dashboard.user.update', $user->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="btn btn-primary">
+                                                <em class="icon ni ni-save"></em>
+                                                <span>تحديث مستخدم</span>
+                                            </button>
+                                        </form>
 
                                         <a href="{{ route('dashboard.users.index') }}" class="btn btn-light">
                                             <em class="icon ni ni-arrow-left"></em>

@@ -38,9 +38,11 @@ class AuthController extends Controller
         if (!$user || !$request->user()->hasPermission('users_access')) {
             return redirect()->route('dashboard.index')->with('error', 'Unauthorized access');
         }
+
         $roles = Role::all(); // ✅ استرجاع كل الأدوار
         return view('dashboard.adduser', compact('roles'));
     }
+
 
 
     /**
@@ -115,8 +117,7 @@ class AuthController extends Controller
     public function edit(string $id, Request $request)
     {
         $user = Auth::user();
-        $roles = $user->roles;
-
+        $roles = Role::all();
         if (!$user || !$request->user()->hasPermission('users_access')) {
             return redirect()->route('dashboard.index')->with('error', 'Unauthorized access');
         }
@@ -141,6 +142,8 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string|min:6|confirmed',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'roles' => 'required|array',
+            'roles.*' => 'exists:roles,id',
             'token' => '',
         ]);
 
@@ -158,10 +161,13 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->surname = $request->surname;
         $user->email = $request->email;
+        //roles
+        $user->roles()->sync($request->roles);
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
         $user->save();
+        
 
         return redirect()->route('dashboard.users.index')->with('success', 'User updated successfully');
     }

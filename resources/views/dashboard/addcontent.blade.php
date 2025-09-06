@@ -85,170 +85,210 @@
                                 <div class="tab-pane fade show active" id="add-content" role="tabpanel"
                                     aria-labelledby="add-content-tab">
 
-                                    <div class="row g-3">
-                                        <div class="col-12">
-                                            <label for="title" data-ar="العنوان" data-en="Title">
-                                                العنوان
-                                            </label>
-                                            <label style="color:red;">*</label>
-                                            <input id="title" name="title" type="text"
-                                                class="form-control form-control-lg" maxlength="75" required
-                                                data-ar="العنوان" data-en="Title">
-                                            <small class="text-muted">
-                                                <span id="title-count">0</span> / 75
-                                            </small>
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <label class="form-label" for="title" data-ar="العنوان"
+                                                data-en="Title">العنوان</label>
+                                            <span style="color:red;">*</span>
+                                            <div class="form-control-wrap">
+                                                <input id="title" name="title" type="text"
+                                                    class="form-control form-control" maxlength="75" required
+                                                    data-ar="العنوان" data-en="Title">
+                                            </div>
+                                            <small class="text-muted"><span id="title-count">0</span> / 75</small>
                                         </div>
 
-                                        <div class="col-12">
-                                            <label for="long_title" data-ar="العنوان الطويل" data-en="Long Title">العنوان
-                                                الطويل</label>
-                                            <label style="color:red;">*</label>
-
-                                            <input id="long_title" name="long_title" type="text"
-                                                class="form-control form-control-lg" maxlength="210" required
-                                                data-ar="العنوان الطويل" data-en="Long Title">
-                                            <small class="text-muted">
-                                                <span id="long_title-count">0</span> / 210
-                                            </small>
+                                        <div class="form-group col-12">
+                                            <label class="form-label" for="long_title" data-ar="العنوان الطويل"
+                                                data-en="Long Title">العنوان الطويل</label>
+                                            <span style="color:red;">*</span>
+                                            <div class="form-control-wrap">
+                                                <input id="long_title" name="long_title" type="text"
+                                                    class="form-control form-control" maxlength="210" required
+                                                    data-ar="العنوان الطويل" data-en="Long Title">
+                                            </div>
+                                            <small class="text-muted"><span id="long_title-count">0</span> / 210</small>
                                         </div>
 
-                                        <div class="col-12">
-                                            <label for="mobile_title" data-ar="عنوان الموبايل" data-en="Mobile Title">عنوان
-                                                الموبايل</label>
-                                            <label style="color:red;">*</label>
-
-                                            <input id="mobile_title" name="mobile_title" type="text"
-                                                class="form-control form-control-lg" maxlength="40" required
-                                                data-ar="عنوان الموبايل" data-en="Mobile Title">
-                                            <small class="text-muted">
-                                                <span id="mobile_title-count">0</span> / 40
-                                            </small>
+                                        <div class="form-group col-12">
+                                            <label class="form-label" for="mobile_title" data-ar="عنوان الموبايل"
+                                                data-en="Mobile Title">عنوان الموبايل </label>
+                                            <span style="color:red;">*</span>
+                                            <div class="form-control-wrap">
+                                                <input id="mobile_title" name="mobile_title" type="text"
+                                                    class="form-control form-control" maxlength="40" required
+                                                    data-ar="عنوان الموبايل" data-en="Mobile Title">
+                                            </div>
+                                            <small class="text-muted"><span id="mobile_title-count">0</span> / 40</small>
                                         </div>
-
                                     </div>
+
 
                                     <div class="row g-3 mt-1 ">
-                                        <div class="col-lg-12 mb-2">
-                                            <label for="display_method" data-ar="القالب"
+                                        <div class="form-group col-lg-12 mb-2">
+                                            <label class="form-label" for="display_method" data-ar="القالب"
                                                 data-en="Content Display Method">القالب</label>
-                                            <select name="display_method" id="display_method" class="form-control"
-                                                required>
-                                                <option value="simple">أساسي</option>
-                                                <option value="list">قائمة</option>
-                                            </select>
+                                            <span style="color:red;">*</span>
+                                            <div class="form-control-wrap">
+                                                <select name="display_method" id="display_method"
+                                                    class="form-select js-select2" data-search="on" required>
+                                                    <option value="simple">أساسي</option>
+                                                    <option value="list">قائمة</option>
+                                                </select>
+                                            </div>
                                         </div>
 
-                                        <div class="col-md-12 col-lg-4 ">
-                                            <label data-ar="القسم" data-en="Section">القسم</label>
-                                            <label style="color:red;">*</label>
-                                            <select name="section_id" class="form-control" required>
-                                                <option value="">اختر القسم</option>
-                                                @foreach ($sections as $section)
-                                                    <option value="{{ $section->id }}">{{ $section->name }}</option>
-                                                @endforeach
-                                            </select>
+                                        <div class="form-group col-md-6 col-lg-4">
+                                            <label class="form-label" data-ar="القسم" data-en="Section">القسم</label>
+                                            <span style="color:red;">*</span>
+                                            <div class="form-control-wrap">
+                                                <select name="section_id" class="form-select js-select2" data-search="on"
+                                                    required>
+                                                    <option value=" ">اختر القسم</option>
+                                                    @foreach ($sections as $section)
+                                                        <option value="{{ $section->id }}">{{ $section->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="col-md-6 col-lg-4">
-                                            <label data-ar="التصنيف" data-en="Category">التصنيف</label>
-                                            <select name="category_id" class="form-control">
-                                                <option value="">اختر التصنيف</option>
-                                                @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach
-                                            </select>
+                                        <div class="form-group col-md-6 col-lg-4">
+                                            <label class="form-label" data-ar="التصنيف"
+                                                data-en="Category">التصنيف</label>
+                                            <div class="form-control-wrap">
+                                                <select name="category_id" class="form-select js-select2"
+                                                    data-search="on" required>
+                                                    <option value=" ">اختر التصنيف</option>
+                                                    @foreach ($categories as $category)
+                                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="col-md-6 col-lg-4">
-                                            <label data-ar="المكان" data-en="Location">المكان</label>
-                                            <select name="location_id" class="form-control">
-                                                <option value="">اختر المكان</option>
-                                                @foreach ($locations as $location)
-                                                    <option value="{{ $location->id }}">{{ $location->name }}</option>
-                                                @endforeach
-                                            </select>
+                                        <div class="form-group col-md-6 col-lg-4">
+                                            <label class="form-label" data-ar="المكان" data-en="Location">المكان</label>
+                                            <div class="form-control-wrap">
+                                                <select name="location_id" class="form-select js-select2"
+                                                    data-search="on" required>
+                                                    <option value=" ">اختر المكان</option>
+                                                    @foreach ($locations as $location)
+                                                        <option value="{{ $location->id }}">{{ $location->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row g-3 mt-3">
 
-                                        <div class="col-md-6 col-lg-6">
-                                            <label data-ar="الاتجاه" data-en="Trend">الاتجاه</label>
-                                            <select name="trend_id" class="form-control">
-                                                <option value="">اختر الاتجاه</option>
-                                                @foreach ($trends as $trend)
-                                                    <option value="{{ $trend->id }}">{{ $trend->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 col-lg-6">
-                                            <label data-ar="النافذة" data-en="Window">النافذة</label>
-                                            <select name="window_id" class="form-control">
-                                                <option value="">اختر النافذة</option>
-                                                @foreach ($windows as $window)
-                                                    <option value="{{ $window->id }}">{{ $window->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
                                     </div>
+                                    <div class="row g-3">
 
-                                    <div class="row g-3 mt-3">
-                                        <div class="col-md-6 col-lg-6">
-                                            <label data-ar="الكاتب" data-en="Writer">الكاتب</label>
-                                            <select name="writer_id" class="form-control" required>
-                                                <option value="">اختر الكاتب</option>
-                                                @foreach ($writers as $writer)
-                                                    <option value="{{ $writer->id }}">{{ $writer->name }}</option>
-                                                @endforeach
-                                            </select>
+                                        <div class="form-group col-md-6 col-lg-6">
+                                            <label class="form-label" data-ar="الاتجاه" data-en="Trend">الاتجاه</label>
+                                            <div class="form-control-wrap">
+                                                <select name="trend_id" class="form-select js-select2" data-search="on"
+                                                    required>
+                                                    <option value=" ">اختر الاتجاه</option>
+                                                    @foreach ($trends as $trend)
+                                                        <option value="{{ $trend->id }}">{{ $trend->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="col-md-6 col-lg-6">
-                                            <label data-ar="موقع الكاتب" data-en="Writer Location">موقع الكاتب</label>
-                                            <select name="writer_location_id" class="form-control" required>
-                                                <option value="">اختر الموقع</option>
-                                                @foreach ($locations as $location)
-                                                    <option value="{{ $location->id }}">{{ $location->name }}</option>
-                                                @endforeach
-                                            </select>
+
+                                        <div class="form-group col-md-6 col-lg-6">
+                                            <label class="form-label" data-ar="النافذة" data-en="Window">النافذة</label>
+                                            <div class="form-control-wrap">
+                                                <select name="window_id" class="form-select js-select2" data-search="on"
+                                                    required>
+                                                    <option value=" ">اختر النافذة</option>
+                                                    @foreach ($windows as $window)
+                                                        <option value="{{ $window->id }}">{{ $window->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row g-3 mt-3">
-                                        <div>
-                                            <label data-ar="الوسوم" data-en="Tags">الوسوم</label>
-                                            <label style="color:red;">*</label>
-                                            <select name="tags_id[]" multiple class="form-select js-select2"
-                                                style="width: 100%;">
-                                                @foreach ($tags as $tag)
-                                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+
                                     </div>
 
+                                    <div class="row g-3">
+                                        <div class="form-group col-md-6 col-lg-6">
+                                            <label class="form-label" data-ar="الكاتب" data-en="Writer">الكاتب</label>
+                                            <div class="form-control-wrap">
+                                                <select name="writer_id" class="form-select js-select2" data-search="on"
+                                                    required>
+                                                    <option value=" ">اختر الكاتب</option>
+                                                    @foreach ($writers as $writer)
+                                                        <option value="{{ $writer->id }}">{{ $writer->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
 
-                                    <div class="form-group my-3">
-                                        <label for="summary" data-ar="الملخص" data-en="Summary">الملخص</label>
-                                        <label style="color:red;">*</label>
-                                        <textarea id="summary" name="summary" class="form-control form-control-lg" rows="3"
-                                            style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130"></textarea>
-                                        <small class="text-muted">
-                                            <span id="summary-count">0</span> / 130
-                                        </small>
+                                        <div class="form-group col-md-6 col-lg-6">
+                                            <label class="form-label" data-ar="موقع الكاتب"
+                                                data-en="Writer Location">موقع الكاتب</label>
+                                            <div class="form-control-wrap">
+                                                <select name="writer_location_id" class="form-select js-select2"
+                                                    data-search="on" required>
+                                                    <option value=" ">اختر الموقع</option>
+                                                    @foreach ($locations as $location)
+                                                        <option value="{{ $location->id }}">{{ $location->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="form-group col-12">
+                                            <label class="form-label" data-ar="الوسوم" data-en="Tags">الوسوم</label>
+                                            <span style="color:red;">*</span>
+                                            <div class="form-control-wrap">
+                                                <select name="tags_id[]" multiple class="form-select js-select2"
+                                                    data-search="on" style="width: 100%;" required>
+                                                    @foreach ($tags as $tag)
+                                                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="form-group col-12 my-3">
+                                        <label class="form-label" for="summary" data-ar="الملخص"
+                                            data-en="Summary">الملخص</label>
+                                        <span style="color:red;">*</span>
+                                        <div class="form-control-wrap">
+                                            <textarea id="summary" name="summary" class="form-control form-control" rows="3"
+                                                style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130" required></textarea>
+                                        </div>
+                                        <small class="text-muted"><span id="summary-count">0</span> / 130</small>
                                     </div>
 
 
 
-                                    <div class="form-group mb-3">
-                                        <label for="body" data-ar="المتن" data-en="Body">
-                                            المتن</label>
-                                        <label style="color:red;">*</label>
-
-                                        <x-forms.tinymce-editor id="myeditorinstance" name="content" :value="$post->content ?? ''" />
+                                    <div class="form-group col-12 mb-3">
+                                        <label class="form-label" for="body" data-ar="المتن" data-en="Body">المتن
+                                        </label>
+                                        <span style="color:red;">*</span>
+                                        <div class="form-control-wrap">
+                                            <x-forms.tinymce-editor id="myeditorinstance" name="content"
+                                                :value="$post->content ?? ''" />
+                                        </div>
                                     </div>
 
-                                    <div class="mb-3">
-                                        <label for="seo_keyword" data-ar="الكلمة الرئيسية" data-en="SEO Keyword">الكلمة
-                                            الرئيسية</label>
-                                        <input id="seo_keyword" name="seo_keyword" type="text"
-                                            class="form-control form-control-lg" maxlength="50">
+
+                                    <div class="form-group col-12 mb-3">
+                                        <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
+                                            data-en="SEO Keyword">الكلمة الرئيسية</label>
+                                        <span style="color:red;">*</span>
+                                        <div class="form-control-wrap">
+                                            <input id="seo_keyword" name="seo_keyword" type="text"
+                                                class="form-control form-control" maxlength="50">
+                                        </div>
                                     </div>
+
                                 </div>
 
                                 <!-- Media Tab -->
@@ -264,7 +304,7 @@
                                     <div class="mb-3">
                                         <label for="message_text" data-ar="رسالة المراجعة" data-en="Review Message">رسالة
                                             المراجعة</label>
-                                        <textarea id="message_text" name="message_text" class="form-control form-control-lg" rows="4"
+                                        <textarea id="message_text" name="message_text" class="form-control form-control" rows="4"
                                             data-ar="رسالة المراجعة" data-en="Review Message"></textarea>
                                     </div>
                                 </div>
@@ -294,9 +334,9 @@
                                                 data-en="Content Image">صورة المحتوى</label>
                                             <input type="file" id="share_image" name="share_image"
                                                 class="form-control" accept="image/*">
-                                            <div class="mt-2 border rounded p-2 text-center" style="height:150px;">
+                                            <div class="mt-2 border rounded p-2 text-center" style="aspect-ratio: 16/9;">
                                                 <img id="share_image_preview" src="" alt=""
-                                                    style="max-height:100%; max-width:100%; display:none;">
+                                                    style="aspect-ratio: 16/9; display:none;">
                                             </div>
                                         </div>
 
@@ -414,5 +454,17 @@
             }
         });
     </script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('.js-select2').select2({
+                placeholder: "اختر",
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
+
 
 @endsection

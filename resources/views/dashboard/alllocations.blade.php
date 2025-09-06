@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'أصوات جزائرية | جميع الدول والمدن')
+@section('title', 'أصوات جزائرية | جميع المواقع')
 
 @section('content')
     <div class="nk-app-root">
@@ -15,109 +15,175 @@
                         <!-- ✅ عنوان الصفحة -->
                         <div class="nk-block-head">
                             <div class="nk-block-head-content">
-                                <h4 class="nk-block-title" data-en="All Locations" data-ar="جميع الدول والمدن">
-                                    جميع الدول والمدن
+                                <h4 class="nk-block-title" data-en="All Locations" data-ar="جميع المواقع">
+                                    جميع المواقع
                                 </h4>
-                                <p data-en="Here you can manage all countries and cities."
-                                    data-ar="هنا يمكنك إدارة جميع الدول والمدن.">
-                                    هنا يمكنك إدارة جميع الدول والمدن.
+                                <p data-en="Here you can manage all continents countries and cities."
+                                    data-ar="هنا يمكنك إدارة جميع الدول والمناطق والمدن.">
+                                    هنا يمكنك إدارة جميع الدول والمناطق والمدن.
                                 </p>
                             </div>
                         </div>
 
-                        <!-- رسائل النجاح -->
-                        @if (session('success'))
-                            <div class="alert alert-fill alert-success alert-icon">
-                                <em class="icon ni ni-check-circle"></em>
-                                <span class="translatable" data-ar="تمت العملية بنجاح"
-                                    data-en="Operation completed successfully">
-                                    {{ session('success') ?? 'تمت العملية بنجاح' }}
-                                </span>
+                        <!-- ✅ Accordion Dark Mode -->
+                        <div class="accordion" id="locationsAccordion">
+
+                            <!-- المناطق -->
+                            <div class="accordion-item bg-dark text-light">
+                                <h2 class="accordion-header" id="headingRegions">
+                                    <button class="accordion-button collapsed bg-dark text-light" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseRegions" aria-expanded="false"
+                                        aria-controls="collapseRegions">
+                                        القارات
+                                    </button>
+                                </h2>
+                                <div id="collapseRegions" class="accordion-collapse collapse"
+                                    aria-labelledby="headingRegions" data-bs-parent="#locationsAccordion">
+                                    <div class="accordion-body">
+                                        <table class="table table-dark table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>الاسم</th>
+                                                    <th>الإجراءات</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($continents as $continent)
+                                                    <tr>
+                                                        <td>{{ $continent->name }}</td>
+                                                        <td>
+                                                            <a href="#" class="btn btn-sm btn-primary">تعديل</a>
+                                                            <form
+                                                                action="{{ route('dashboard.location.destroy', $continent->id) }}"
+                                                                method="POST" class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="button"
+                                                                    class="btn btn-sm btn-danger delete-btn">
+                                                                    حذف
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="3" class="text-center text-muted">
+                                                            لا توجد مناطق حالياً
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                        {{ $continents->links() }}
+                                    </div>
+                                </div>
                             </div>
-                        @endif
 
-                        <!-- رسائل الخطأ -->
-                        @if ($errors->any())
-                            <div class="alert alert-fill alert-danger alert-icon">
-                                <em class="icon ni ni-cross-circle"></em>
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li class="translatable" data-ar="حدث خطأ ما" data-en="An error occurred">
-                                            {{ $error ?? 'حدث خطأ ما' }}
-                                        </li>
-                                    @endforeach
-                                </ul>
+                            <!-- الدول -->
+                            <div class="accordion-item bg-dark text-light">
+                                <h2 class="accordion-header" id="headingCountries">
+                                    <button class="accordion-button collapsed bg-dark text-light" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseCountries" aria-expanded="true"
+                                        aria-controls="collapseCountries">
+                                        الدول
+                                    </button>
+                                </h2>
+                                <div id="collapseCountries" class="accordion-collapse collapse"
+                                    aria-labelledby="headingCountries" data-bs-parent="#locationsAccordion">
+                                    <div class="accordion-body">
+                                        <table class="table table-dark table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>الاسم</th>
+                                                    <th>الإجراءات</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($countries as $country)
+                                                    <tr>
+                                                        <td>{{ $country->name }}</td>
+                                                        <td>
+                                                            <a href="#" class="btn btn-sm btn-primary">تعديل</a>
+                                                            <form
+                                                                action="{{ route('dashboard.location.destroy', $country->id) }}"
+                                                                method="POST" class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="button"
+                                                                    class="btn btn-sm btn-danger delete-btn">
+                                                                    حذف
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="3" class="text-center text-muted">
+                                                            لا توجد دول حالياً
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                        {{ $countries->links() }}
+                                    </div>
+                                </div>
                             </div>
-                        @endif
 
+                            <!-- المدن -->
+                            <div class="accordion-item bg-dark text-light">
+                                <h2 class="accordion-header" id="headingCities">
+                                    <button class="accordion-button collapsed bg-dark text-light" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseCities" aria-expanded="false"
+                                        aria-controls="collapseCities">
+                                        المدن
+                                    </button>
+                                </h2>
+                                <div id="collapseCities" class="accordion-collapse collapse" aria-labelledby="headingCities"
+                                    data-bs-parent="#locationsAccordion">
+                                    <div class="accordion-body">
+                                        <table class="table table-dark table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>الاسم</th>
+                                                    <th>الإجراءات</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($cities as $city)
+                                                    <tr>
+                                                        <td>{{ $city->name }}</td>
+                                                        <td>
+                                                            <a href="#" class="btn btn-sm btn-primary">تعديل</a>
+                                                            <form
+                                                                action="{{ route('dashboard.location.destroy', $city->id) }}"
+                                                                method="POST" class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="button"
+                                                                    class="btn btn-sm btn-danger delete-btn">
+                                                                    حذف
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="3" class="text-center text-muted">
+                                                            لا توجد مدن حالياً
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                        {{ $cities->links() }}
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- ✅ جدول المواقع -->
-                        <div class="card card-bordered card-preview">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th data-en="ID" data-ar="المعرف">المعرف</th>
-                                        <th data-en="Country" data-ar="الدولة">الدولة</th>
-                                        <th data-en="City" data-ar="المدينة">المدينة</th>
-                                        <th data-en="Description" data-ar="الوصف">الوصف</th>
-                                        <th data-en="Actions" data-ar="الإجراءات">الإجراءات</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $fakeLocations = [
-                                            [
-                                                'id' => 1,
-                                                'country' => 'Algeria',
-                                                'city' => 'Algiers',
-                                                'description' => 'Capital city of Algeria',
-                                            ],
-                                            [
-                                                'id' => 2,
-                                                'country' => 'Morocco',
-                                                'city' => 'Casablanca',
-                                                'description' => 'Largest city in Morocco',
-                                            ],
-                                            [
-                                                'id' => 3,
-                                                'country' => 'Tunisia',
-                                                'city' => 'Tunis',
-                                                'description' => 'Capital city of Tunisia',
-                                            ],
-                                            [
-                                                'id' => 4,
-                                                'country' => 'Egypt',
-                                                'city' => 'Cairo',
-                                                'description' => 'Capital city of Egypt',
-                                            ],
-                                            [
-                                                'id' => 5,
-                                                'country' => 'Saudi Arabia',
-                                                'city' => 'Riyadh',
-                                                'description' => 'Capital city of Saudi Arabia',
-                                            ],
-                                        ];
-                                    @endphp
-
-                                    @foreach ($fakeLocations as $location)
-                                        <tr>
-                                            <td>{{ $location['id'] }}</td>
-                                            <td>{{ $location['country'] }}</td>
-                                            <td>{{ $location['city'] }}</td>
-                                            <td>{{ $location['description'] }}</td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-primary" data-en="Edit"
-                                                    data-ar="تعديل">تعديل</a>
-                                                <button type="button" class="btn btn-sm btn-danger" data-en="Delete"
-                                                    data-ar="حذف" onclick="return confirm('هل أنت متأكد من الحذف؟');">
-                                                    حذف
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
                         </div>
+                        <!-- End Accordion -->
+
 
                     </div>
                 </div>

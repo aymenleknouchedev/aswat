@@ -6,7 +6,7 @@
         <div class="col-md-3">
             <label for="video_main_image" class="form-label">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-video_main_image"
-                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
             <input type="hidden" name="video_main_image" id="video_main_image">
@@ -20,7 +20,7 @@
         <div class="col-md-3">
             <label for="video_mobile_image" class="form-label">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-video_mobile_image"
-                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
             <input type="hidden" name="video_mobile_image" id="video_mobile_image">
@@ -34,7 +34,7 @@
         <div class="col-md-3">
             <label for="video_content_image" class="form-label">صورة المحتوى التفصيلية</label>
             <div class="media-preview border rounded mb-2" id="preview-video_content_image"
-                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
             <input type="hidden" name="video_content_image" id="video_content_image">
@@ -48,7 +48,7 @@
         <div class="col-md-3">
             <label for="video_file" class="form-label">فيديو</label>
             <div id="preview-video_file" class="media-preview border rounded mb-2"
-                style="height:150px; background-color: var(--bs-light); display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا يوجد فيديو محدد</span>
             </div>
             <div class="input-group ">
