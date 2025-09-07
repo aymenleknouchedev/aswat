@@ -1,12 +1,12 @@
 <div id="media-normal_image-fields" class="media-fields-section" style="display: block;">
 
-    <div class="row g-3">
+    <div style="height: 350px;" class="gap-3 d-flex flex-wrap flex-column  flex-md-row mb-4">
 
         {{-- Main Image --}}
-        <div class="col-md-4">
+        <div class="">
             <label for="normal_main_image" class="form-label">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-normal_main_image"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                style="height: 250px; aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
             <input type="hidden" name="normal_main_image" id="normal_main_image">
@@ -17,10 +17,10 @@
         </div>
 
         {{-- Mobile Image --}}
-        <div class="col-md-4">
+        <div class="">
             <label for="normal_mobile_image" class="form-label">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-normal_mobile_image"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                style="height: 250px;aspect-ratio: 9/16; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
             <input type="hidden" name="normal_mobile_image" id="normal_mobile_image">
@@ -31,10 +31,10 @@
         </div>
 
         {{-- Content Image --}}
-        <div class="col-md-4">
+        <div class="">
             <label for="normal_content_image" class="form-label">صورة المحتوى التفصيلية</label>
             <div class="media-preview border rounded mb-2" id="preview-normal_content_image"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                style="height: 250px;aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
             <input type="hidden" name="normal_content_image" id="normal_content_image">

@@ -16,25 +16,28 @@ return new class extends Migration
 
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
 
-            $table->foreignId('display_method_id')->nullable()->constrained('display_methods')->nullOnDelete();
 
             // Titles
             $table->string('title', 75);
             $table->string('long_title', 210)->nullable();
             $table->string('mobile_title', 40)->nullable();
 
+            // template
+            $table->enum('display_method', ['simple', 'list'])->default('list');
+
             // Foreign keys
             $table->foreignId('section_id')->nullable()->constrained('sections')->nullOnDelete();
             $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
-            $table->foreignId('location_id')->nullable()->constrained('locations')->nullOnDelete();
+            $table->foreignId('continent_id')->nullable()->constrained('locations')->nullOnDelete();
+            $table->foreignId('country_id')->nullable()->constrained('locations')->nullOnDelete();
             $table->foreignId('trend_id')->nullable()->constrained('trends')->nullOnDelete();
             $table->foreignId('window_id')->nullable()->constrained('windows')->nullOnDelete();
             $table->foreignId('writer_id')->nullable()->constrained('writers')->nullOnDelete();
-            $table->foreignId('writer_location_id')->nullable()->constrained('locations')->nullOnDelete();
+            $table->foreignId('city_id')->nullable()->constrained('locations')->nullOnDelete();
 
             // Body
             $table->string('summary', 130);
-            $table->longText('body');
+            $table->longText('content');
 
             // SEO
             $table->string('seo_keyword')->nullable();

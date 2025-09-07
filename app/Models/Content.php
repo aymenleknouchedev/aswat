@@ -10,22 +10,25 @@ class Content extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'user_id',
         'title',
         'long_title',
         'mobile_title',
         'display_method',
         'section_id',
         'category_id',
-        'location_id',
+        'continent_id',
+        'country_id',
         'trend_id',
         'window_id',
         'writer_id',
-        'writer_location_id',
+        'city_id',
+        'tag_id',
         'summary',
-        'body',
+        'content',
         'seo_keyword',
         'content_type',
-        'status'
+        'status',
     ];
 
     public function topContent()
@@ -35,10 +38,6 @@ class Content extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-    public function displayMethod()
-    {
-        return $this->belongsTo(DisplayMethod::class);
     }
     public function section()
     {
@@ -74,10 +73,10 @@ class Content extends Model
         return $this->belongsTo(Location::class, 'writer_location_id');
     }
 
-    public function images()
-    {
-        return $this->hasMany(ContentImage::class);
-    }
+    // public function images()
+    // {
+    //     return $this->hasMany(ContentImage::class);
+    // }
     public function media()
     {
         return $this->hasMany(ContentMedia::class);

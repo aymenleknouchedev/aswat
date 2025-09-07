@@ -12,10 +12,8 @@ use App\Models\Location;
 use App\Models\Tag;
 use App\Models\Trend;
 use App\Models\Window;
-use App\Models\Image;
-use App\Models\Video;
-use App\Models\Podcast;
-use App\Models\Album;
+use App\Models\Content;
+use Illuminate\Support\Facades\Auth;
 
 
 class ContentController extends BaseController
@@ -45,14 +43,12 @@ class ContentController extends BaseController
         $sections = Section::all();
         $categories = Category::all();
         $writers = Writer::all();
-        $locations = Location::all();
+        $cities = Location::where('type', 'city')->get();
+        $continents = Location::where('type', 'continent')->get();
+        $countries = Location::where('type', 'country')->get();
         $tags = Tag::all();
         $trends = Trend::all();
         $windows = Window::all();
-        // $existing_images = Image::where('status', 'existing')->get();
-        // $existing_videos = Video::where('status', 'existing')->get();
-        // $existing_podcasts = Podcast::where('status', 'existing')->get();
-        // $existing_albums = Album::where('status', 'existing')->get();
 
         $existing_images = [];
         $existing_videos = [];
@@ -63,7 +59,9 @@ class ContentController extends BaseController
             'sections',
             'categories',
             'writers',
-            'locations',
+            'cities',
+            'continents',
+            'countries',
             'tags',
             'trends',
             'windows',
@@ -79,8 +77,53 @@ class ContentController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:75',
+            'long_title' => 'required|string|max:210',
+            'mobile_title' => 'required|string|max:40',
+
+            'display_method' => 'required',
+
+            'section_id' => 'required|exists:sections,id',
+            'category_id' => 'nullable|exists:categories,id',
+
+            'continent_id' => 'nullable|exists:locations,id',
+            'country_id' => 'nullable|exists:locations,id',
+
+            'trend_id' => 'nullable|exists:trends,id',
+            'window_id' => 'nullable|exists:windows,id',
+
+            'writer_id' => 'nullable|exists:writers,id',
+            'city_id' => 'nullable|exists:locations,id',
+
+            'tags_id' => 'required|array',
+            'tags_id.*' => 'exists:tags,id',
+
+            'summary' => 'required|string|max:130',
+
+            'content' => 'required|string',
+            'seo_keyword' => 'required|string',
+            'status' => 'required|in:published,draft',
+
+        ]);
+
+
+        // //assign value to content
+        // $validated['content'] = 'kjhgfd';
+
+        // assign user id
+        $content = Content::create(array_merge($validated, [
+            'user_id' => Auth::id(),
+        ]));
+
+        // sync tags
+        $content->tags()->sync($validated['tags_id'] ?? []);
+
+        return redirect()->route('dashboard.contents.index')
+            ->with('success', 'Content created successfully.');
     }
+
+
 
     /**
      * Display the specified resource.

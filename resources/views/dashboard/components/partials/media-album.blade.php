@@ -9,7 +9,7 @@
             <input type="hidden" name="album_images" id="album_images" value="[]">
 
             <div id="album_preview" class="d-flex flex-wrap gap-2 mb-2 border"
-                style="aspect-ratio: 16/9; border-radius: 6px; padding: 10px; align-items: center; justify-content: flex-start;">
+                style="aspect-ratio: 16/9;width: 100%;height: 150px; border-radius: 6px; padding: 10px; align-items: center; justify-content: flex-start;">
                 <p class="text-muted m-0" id="album_preview_placeholder">لا توجد صور مختارة</p>
             </div>
 

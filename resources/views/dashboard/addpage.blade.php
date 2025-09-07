@@ -12,7 +12,6 @@
 
                 <div class="nk-content">
                     <div class="container-fluid">
-
                         <!-- ✅ عنوان الصفحة -->
                         <div class="nk-block-head">
                             <div class="nk-block-head-content">
