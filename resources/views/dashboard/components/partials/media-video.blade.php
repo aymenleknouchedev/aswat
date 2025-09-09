@@ -56,7 +56,8 @@
                     data-type="video">
                     رفع / اختيار فيديو
                 </button>
-                <input type="hidden" name="video_file" id="video_file">
+                <input hidden type="file" name="video_file" id="video_file">
+
                 <input type="url" name="video_url" id="video_url" class="form-control"
                     placeholder="https://example.com/video.mp4">
 

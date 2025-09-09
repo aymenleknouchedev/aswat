@@ -4,9 +4,9 @@
     <div class="form-group mt-3 mb-4">
         @foreach ([
         'normal_image' => ['ar' => 'صورة عادية'],
-        'album' => ['ar' => 'ألبوم صور'],
         'video' => ['ar' => 'فيديو'],
         'podcast' => ['ar' => 'بودكاست'],
+        'album' => ['ar' => 'ألبوم صور'],
         'no_image' => ['ar' => 'بدون صورة'],
     ] as $value => $texts)
             <div class="custom-control custom-radio custom-control-inline">
@@ -21,9 +21,9 @@
 
     {{-- Include each template partial --}}
     @include('dashboard.components.partials.media-normal-image')
-    @include('dashboard.components.partials.media-album')
     @include('dashboard.components.partials.media-video')
     @include('dashboard.components.partials.media-podcast')
+    @include('dashboard.components.partials.media-album')
     @include('dashboard.components.partials.media-no-image')
 
     {{-- Media Modal (مشترك لكل الأنواع) --}}
@@ -52,14 +52,14 @@
                         <input type="file" id="mediaUploadFile" class="form-control mb-2"
                             accept="image/*,video/*,audio/*">
                         <input type="text" id="mediaUploadAlt" class="form-control" placeholder="نص بديل (Alt Text)">
-                        <button id="mediaUploadBtn" class="btn btn-success mt-2">رفع وإختيار</button>
+                        <button type="button" id="mediaUploadBtn" class="btn btn-success mt-2">رفع وإختيار</button>
                     </div>
 
                     <div id="mediaLinkSection" style="display: none;">
                         <input type="url" id="mediaLinkInput" class="form-control mb-2"
                             placeholder="https://example.com/media.jpg">
                         <input type="text" id="mediaLinkAlt" class="form-control" placeholder="نص بديل (Alt Text)">
-                        <button id="mediaAddLinkBtn" class="btn btn-primary mt-2">إضافة وإختيار</button>
+                        <button type="button" id="mediaAddLinkBtn" class="btn btn-primary mt-2">إضافة وإختيار</button>
                     </div>
                 </div>
             </div>

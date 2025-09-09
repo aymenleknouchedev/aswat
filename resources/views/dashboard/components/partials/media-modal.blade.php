@@ -31,14 +31,14 @@
                     <input type="file" id="mediaUploadFile" class="form-control mb-2">
                     <input type="text" id="mediaUploadName" class="form-control mb-2" placeholder="اسم الوسائط (اختياري)">
                     <input type="text" id="mediaUploadAlt" class="form-control" placeholder="نص بديل (Alt Text)">
-                    <button class="btn btn-success mt-2" id="mediaUploadBtn">رفع</button>
+                    <button type="button" class="btn btn-success mt-2" id="mediaUploadBtn">رفع</button>
                 </div>
 
                 <!-- Link Section -->
                 <div id="mediaLinkSection" class="source-section" style="display:none;">
                     <input type="url" id="mediaLinkInput" class="form-control mb-2" placeholder="https://example.com/media.jpg">
                     <input type="text" id="mediaLinkAlt" class="form-control" placeholder="نص بديل (Alt Text)">
-                    <button class="btn btn-primary mt-2" id="mediaAddLinkBtn">إضافة</button>
+                    <button type="button" class="btn btn-primary mt-2" id="mediaAddLinkBtn">إضافة</button>
                 </div>
 
             </div>

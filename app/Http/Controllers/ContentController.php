@@ -13,6 +13,7 @@ use App\Models\Tag;
 use App\Models\Trend;
 use App\Models\Window;
 use App\Models\Content;
+use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -77,51 +78,150 @@ class ContentController extends BaseController
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:75',
-            'long_title' => 'required|string|max:210',
-            'mobile_title' => 'required|string|max:40',
+        $rules = [
+            'title'         => 'required|string|max:75',
+            'long_title'    => 'required|string|max:210',
+            'mobile_title'  => 'required|string|max:40',
+            'display_method' => 'required|string',
+            'section_id'    => 'required|exists:sections,id',
+            'category_id'   => 'nullable|exists:categories,id',
+            'continent_id'  => 'nullable|exists:continents,id',
+            'country_id'    => 'nullable|exists:countries,id',
+            'trend_id'      => 'nullable|exists:trends,id',
+            'window_id'     => 'nullable|exists:windows,id',
+            'writer_id'     => 'nullable|exists:writers,id',
+            'city_id'       => 'nullable|exists:cities,id',
+            'summary'       => 'nullable|string',
+            'content'       => 'nullable|string',
+            'seo_keyword'   => 'nullable|string|max:255',
+            'status'        => 'required|in:draft,published,archived',
+            'template'      => 'required|string',
+        ];
 
-            'display_method' => 'required',
+        $templateRules = [
+            'normal_image' => [
+                'normal_main_image' => 'required|max:2048',
+                'normal_mobile_image' => 'required|max:2048',
+                'normal_content_image' => 'required|max:2048',
+            ],
+            'video' => [
+                'video_main_image' => 'required|max:2048',
+                'video_mobile_image' => 'required|max:2048',
+                'video_content_image' => 'required|max:2048',
+                'video_url'  => 'required_without:video_file|url|max:2048',
+                'video_file' => 'required_without:video_url|mimetypes:video/mp4,video/x-msvideo,video/quicktime,video/webm,video/x-matroska|max:20480',
+            ],
+            'podcast' => [
+                'podcast_main_image' => 'required|max:2048',
+                'podcast_content_image' => 'required|max:2048',
+                'podcast_mobile_image' => 'required|max:2048',
+                'podcast_file' => 'required_without:podcast_url|mimes:mp3,ogg,wav|max:20480',
+                'podcast_url'  => 'required_without:podcast_file|url|max:2048',
+            ],
+            'album' => [
+                'album_main_image' => 'required|max:2048',
+                'album_content_image' => 'required|max:2048',
+                'album_mobile_image' => 'required|max:2048',
+                'album_images.*' => 'required|max:2048',
+            ],
+            'no_image' => [
+                'no_image_content_image' => 'required|max:2048',
+                'no_image_mobile_image' => 'required|max:2048',
+            ],
+        ];
 
-            'section_id' => 'required|exists:sections,id',
-            'category_id' => 'nullable|exists:categories,id',
+        $templateMediaMap = [
+            'normal_image' => [
+                'normal_main_image' => 'main',
+                'normal_mobile_image' => 'mobile',
+                'normal_content_image' => 'detail',
+            ],
+            'video' => [
+                'video_main_image' => 'main',
+                'video_mobile_image' => 'mobile',
+                'video_content_image' => 'detail',
+                'video_file' => 'video',
+            ],
+            'podcast' => [
+                'podcast_main_image' => 'main',
+                'podcast_mobile_image' => 'mobile',
+                'podcast_content_image' => 'detail',
+                'podcast_file' => 'podcast',
+            ],
+            'album' => [
+                'album_main_image' => 'main',
+                'album_mobile_image' => 'mobile',
+                'album_content_image' => 'detail',
+                'album_images' => 'album',
+            ],
+            'no_image' => [
+                'no_image_content_image' => 'detail',
+                'no_image_mobile_image' => 'mobile',
+            ],
+        ];
 
-            'continent_id' => 'nullable|exists:locations,id',
-            'country_id' => 'nullable|exists:locations,id',
 
-            'trend_id' => 'nullable|exists:trends,id',
-            'window_id' => 'nullable|exists:windows,id',
+        $validated = $request->validate($rules);
+        $request->validate($templateRules[$request->template]);
 
-            'writer_id' => 'nullable|exists:writers,id',
-            'city_id' => 'nullable|exists:locations,id',
-
-            'tags_id' => 'required|array',
-            'tags_id.*' => 'exists:tags,id',
-
-            'summary' => 'required|string|max:130',
-
-            'content' => 'required|string',
-            'seo_keyword' => 'required|string',
-            'status' => 'required|in:published,draft',
-
+        // ✅ Create content
+        $content = Content::create([
+            ...$validated,
+            'user_id' => Auth::id(),
         ]);
 
 
-        // //assign value to content
-        // $validated['content'] = 'kjhgfd';
 
-        // assign user id
-        $content = Content::create(array_merge($validated, [
-            'user_id' => Auth::id(),
-        ]));
+        $mediaMap = $templateMediaMap[$request->template];
 
-        // sync tags
-        $content->tags()->sync($validated['tags_id'] ?? []);
+        // ✅ Loop and save media (simplified)
+        if (isset($mediaMap)) {
+            foreach ($mediaMap as $field => $type) {
+
+                // 🖼️ Single file upload
+                if ($request->hasFile($field)) {
+                    $file = $request->file($field);
+                    $path = asset('storage/' . $file->store('media', 'public'));
+                    $media = ContentMedia::create([
+                        'type' => $type,
+                        'path' => $path,
+                    ]);
+                    $content->media()->attach($media->id);
+                    continue;
+                }
+
+                // 🎥 Video Url / 🎙️ Podcast URL
+                if ($request->filled($field)) {
+                    $media = ContentMedia::create([
+                        'type' => $type,
+                        'path' => $request->input($field),
+                    ]);
+                    $content->media()->attach($media->id);
+                }
+
+                // 🎵 Album images (multiple)
+                if ($field === 'album_images' && $request->hasFile($field)) {
+                    foreach ($request->file($field) as $albumImage) {
+                        $path = asset('storage/' . $albumImage->store('media', 'public'));
+                        $media = ContentMedia::create([
+                            'type' => $type,
+                            'path' => $path,
+                        ]);
+                        $content->media()->attach($media->id);
+                    }
+                    continue;
+                }
+            }
+        }
+
+
+        // ✅ Attach tags
+        $content->tags()->sync($request->tags_id);
 
         return redirect()->route('dashboard.contents.index')
             ->with('success', 'Content created successfully.');
     }
+
 
 
 

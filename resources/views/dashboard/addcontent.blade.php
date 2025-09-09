@@ -41,6 +41,17 @@
                             </div>
                         </div>
 
+                        {{-- validation messages with problem --}}
+                        @if ($errors->any())
+                            <div class="alert alert-danger" role="alert">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <form action="{{ route('dashboard.content.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <!-- Tabs nav -->
@@ -78,17 +89,6 @@
                                 </li>
                             </ul>
 
-                            {{-- validation errors --}}
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-
                             <!-- Tabs content -->
                             <div class="tab-content" id="contentTabsContent">
                                 <!-- Add Content Tab -->
@@ -103,7 +103,7 @@
                                             <div class="form-control-wrap">
                                                 <input required id="title" name="title" type="text"
                                                     class="form-control form-control" maxlength="75" data-ar="العنوان"
-                                                    data-en="Title">
+                                                    data-en="Title" value="{{ old('title', '') }}">
                                             </div>
                                             <small class="text-muted"><span id="title-count">0</span> / 75</small>
                                         </div>
@@ -115,7 +115,8 @@
                                             <div class="form-control-wrap">
                                                 <input required id="long_title" name="long_title" type="text"
                                                     class="form-control form-control" maxlength="210"
-                                                    data-ar="العنوان الطويل" data-en="Long Title">
+                                                    data-ar="العنوان الطويل" data-en="Long Title"
+                                                    value="{{ old('long_title', '') }}">
                                             </div>
                                             <small class="text-muted"><span id="long_title-count">0</span> / 210</small>
                                         </div>
@@ -127,7 +128,8 @@
                                             <div class="form-control-wrap">
                                                 <input required id="mobile_title" name="mobile_title" type="text"
                                                     class="form-control form-control" maxlength="40"
-                                                    data-ar="عنوان الموبايل" data-en="Mobile Title">
+                                                    data-ar="عنوان الموبايل" data-en="Mobile Title"
+                                                    value="{{ old('mobile_title', '') }}">
                                             </div>
                                             <small class="text-muted"><span id="mobile_title-count">0</span> / 40</small>
                                         </div>
@@ -142,8 +144,12 @@
                                             <div class="form-control-wrap">
                                                 <select name="display_method" id="display_method"
                                                     class="form-select js-select2" data-search="on">
-                                                    <option value="simple">أساسي</option>
-                                                    <option value="list">قائمة</option>
+                                                    <option value="simple"
+                                                        {{ old('display_method', 'simple') == 'simple' ? 'selected' : '' }}>
+                                                        أساسي</option>
+                                                    <option value="list"
+                                                        {{ old('display_method') == 'list' ? 'selected' : '' }}>قائمة
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -154,9 +160,11 @@
                                             <div class="form-control-wrap">
                                                 <select required name="section_id" class="form-select js-select2"
                                                     data-search="on">
-                                                    <option value=" ">اختر القسم</option>
+                                                    <option value="">اختر القسم</option>
                                                     @foreach ($sections as $section)
-                                                        <option value="{{ $section->id }}">{{ $section->name }}</option>
+                                                        <option value="{{ $section->id }}"
+                                                            {{ old('section_id') == $section->id ? 'selected' : '' }}>
+                                                            {{ $section->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -167,9 +175,11 @@
                                             <div class="form-control-wrap">
                                                 <select name="category_id" class="form-select js-select2"
                                                     data-search="on">
-                                                    <option value=" ">اختر التصنيف</option>
+                                                    <option value="">اختر التصنيف</option>
                                                     @foreach ($categories as $category)
-                                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                        <option value="{{ $category->id }}"
+                                                            {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                            {{ $category->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -179,9 +189,11 @@
                                             <div class="form-control-wrap">
                                                 <select name="continent_id" class="form-select js-select2"
                                                     data-search="on">
-                                                    <option value=" ">اختر القارة</option>
+                                                    <option value="">اختر القارة</option>
                                                     @foreach ($continents as $continent)
-                                                        <option value="{{ $continent->id }}">{{ $continent->name }}
+                                                        <option value="{{ $continent->id }}"
+                                                            {{ old('continent_id') == $continent->id ? 'selected' : '' }}>
+                                                            {{ $continent->name }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -192,9 +204,11 @@
                                             <div class="form-control-wrap">
                                                 <select name="country_id" class="form-select js-select2"
                                                     data-search="on">
-                                                    <option value=" ">اختر المكان</option>
+                                                    <option value="">اختر المكان</option>
                                                     @foreach ($countries as $country)
-                                                        <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                        <option value="{{ $country->id }}"
+                                                            {{ old('country_id') == $country->id ? 'selected' : '' }}>
+                                                            {{ $country->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -207,9 +221,11 @@
                                             <label class="form-label" data-ar="الاتجاه" data-en="Trend">الاتجاه</label>
                                             <div class="form-control-wrap">
                                                 <select name="trend_id" class="form-select js-select2" data-search="on">
-                                                    <option value=" ">اختر الاتجاه</option>
+                                                    <option value="">اختر الاتجاه</option>
                                                     @foreach ($trends as $trend)
-                                                        <option value="{{ $trend->id }}">{{ $trend->title }}</option>
+                                                        <option value="{{ $trend->id }}"
+                                                            {{ old('trend_id') == $trend->id ? 'selected' : '' }}>
+                                                            {{ $trend->title }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -219,14 +235,15 @@
                                             <label class="form-label" data-ar="النافذة" data-en="Window">النافذة</label>
                                             <div class="form-control-wrap">
                                                 <select name="window_id" class="form-select js-select2" data-search="on">
-                                                    <option value=" ">اختر النافذة</option>
+                                                    <option value="">اختر النافذة</option>
                                                     @foreach ($windows as $window)
-                                                        <option value="{{ $window->id }}">{{ $window->name }}</option>
+                                                        <option value="{{ $window->id }}"
+                                                            {{ old('window_id') == $window->id ? 'selected' : '' }}>
+                                                            {{ $window->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
-
                                     </div>
 
                                     <div class="row g-3">
@@ -234,9 +251,11 @@
                                             <label class="form-label" data-ar="الكاتب" data-en="Writer">الكاتب</label>
                                             <div class="form-control-wrap">
                                                 <select name="writer_id" class="form-select js-select2" data-search="on">
-                                                    <option value=" ">اختر الكاتب</option>
+                                                    <option value="">اختر الكاتب</option>
                                                     @foreach ($writers as $writer)
-                                                        <option value="{{ $writer->id }}">{{ $writer->name }}</option>
+                                                        <option value="{{ $writer->id }}"
+                                                            {{ old('writer_id') == $writer->id ? 'selected' : '' }}>
+                                                            {{ $writer->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -247,9 +266,11 @@
                                                 data-en="Writer Location">موقع الكاتب</label>
                                             <div class="form-control-wrap">
                                                 <select name="city_id" class="form-select js-select2" data-search="on">
-                                                    <option value=" ">اختر الموقع</option>
+                                                    <option value="">اختر الموقع</option>
                                                     @foreach ($cities as $city)
-                                                        <option value="{{ $city->id }}">{{ $city->name }}
+                                                        <option value="{{ $city->id }}"
+                                                            {{ old('city_id') == $city->id ? 'selected' : '' }}>
+                                                            {{ $city->name }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -265,7 +286,9 @@
                                                 <select name="tags_id[]" multiple class="form-select js-select2"
                                                     data-search="on" style="width: 100%;">
                                                     @foreach ($tags as $tag)
-                                                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                                        <option value="{{ $tag->id }}"
+                                                            {{ in_array($tag->id, old('tags_id', [])) ? 'selected' : '' }}>
+                                                            {{ $tag->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -280,7 +303,7 @@
                                         <span style="color:red;">*</span>
                                         <div class="form-control-wrap">
                                             <textarea required id="summary" name="summary" class="form-control form-control" rows="3"
-                                                style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130"></textarea>
+                                                style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130">{{ old('summary', '') }}</textarea>
                                         </div>
                                         <small class="text-muted"><span id="summary-count">0</span> / 130</small>
                                     </div>
@@ -292,7 +315,8 @@
                                         </label>
                                         <span style="color:red;">*</span>
                                         <div class="form-control-wrap">
-                                            <x-forms.tinymce-editor id="myeditorinstance" name="content" />
+                                            <x-forms.tinymce-editor id="myeditorinstance" name="content"
+                                                value="{{ old('content', '') }}" />
                                         </div>
                                     </div>
 
@@ -303,7 +327,8 @@
                                         <span style="color:red;">*</span>
                                         <div class="form-control-wrap">
                                             <input required id="seo_keyword" name="seo_keyword" type="text"
-                                                class="form-control form-control" maxlength="50">
+                                                class="form-control form-control" maxlength="50"
+                                                value="{{ old('seo_keyword', '') }}">
                                         </div>
                                     </div>
 
@@ -323,7 +348,7 @@
                                         <label for="message_text" data-ar="رسالة المراجعة" data-en="Review Message">رسالة
                                             المراجعة</label>
                                         <textarea id="message_text" name="message_text" class="form-control form-control" rows="4"
-                                            data-ar="رسالة المراجعة" data-en="Review Message"></textarea>
+                                            data-ar="رسالة المراجعة" data-en="Review Message">{{ old('message_text', '') }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -363,7 +388,8 @@
                                             <label for="share_title" class="form-label" data-ar="عنوان المشاركة"
                                                 data-en="Share Title">عنوان المشاركة</label>
                                             <input type="text" id="share_title" name="share_title"
-                                                class="form-control" placeholder="عنوان المشاركة">
+                                                class="form-control" placeholder="عنوان المشاركة"
+                                                value="{{ old('share_title', '') }}">
                                         </div>
 
                                         <!-- Description -->
@@ -371,7 +397,7 @@
                                             <label for="share_description" class="form-label" data-ar="وصف المشاركة"
                                                 data-en="Share Description">وصف المشاركة</label>
                                             <textarea id="share_description" name="share_description" class="form-control" rows="3"
-                                                placeholder="أدخل وصفًا للمشاركة"></textarea>
+                                                placeholder="أدخل وصفًا للمشاركة">{{ old('share_description', '') }}</textarea>
                                         </div>
 
                                     </div>
@@ -399,12 +425,12 @@
                             </div>
 
                             <div class="mt-4 d-flex">
-                                <button name="status" value="published" type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر"
-                                    data-en="Publish">
+                                <button name="status" value="published" type="submit"
+                                    class="btn btn-primary btn-lg me-3" data-ar="نشر" data-en="Publish">
                                     نشر
                                 </button>
-                                <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg" data-ar="حفظ كمسودة"
-                                    data-en="Save as Draft">
+                                <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg"
+                                    data-ar="حفظ كمسودة" data-en="Save as Draft">
                                     حفظ كمسودة
                                 </button>
                             </div>

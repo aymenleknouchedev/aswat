@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Content;
+
 use Illuminate\Database\Eloquent\Model;
 
 class ContentMedia extends Model
 {
     protected $fillable = ['content_id', 'type', 'path'];
 
-    public function content()
+    public function contents()
     {
-        return $this->belongsTo(Content::class);
+        return $this->hasMany(Content::class);
     }
 }

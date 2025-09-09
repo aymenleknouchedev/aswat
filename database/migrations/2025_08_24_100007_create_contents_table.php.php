@@ -42,9 +42,8 @@ return new class extends Migration
             // SEO
             $table->string('seo_keyword')->nullable();
 
-            // Content type
-            $table->enum('content_type', ['image', 'video', 'podcast', 'album', 'none'])->default('image');
-
+            // Media type
+            $table->enum('template', ['normal_image', 'video', 'podcast', 'album', 'no_image'])->default('normal_image');
             // Status
             $table->enum('status', ['draft', 'published'])->default('draft');
 

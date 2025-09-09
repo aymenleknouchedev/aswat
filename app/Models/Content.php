@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\ContentMedia;
+
 
 class Content extends Model
 {
@@ -29,6 +31,38 @@ class Content extends Model
         'seo_keyword',
         'content_type',
         'status',
+        'template',
+
+
+
+        // Normal Image
+        'normal_main_image',
+        'normal_mobile_image',
+        'normal_content_image',
+
+        // Video
+        'video_main_image',
+        'video_mobile_image',
+        'video_content_image',
+        'video_file',
+        'video_url',
+
+        // Podcast
+        'podcast_main_image',
+        'podcast_mobile_image',
+        'podcast_content_image',
+        'podcast_file',
+        'podcast_url',
+
+        // Album
+        'album_main_image',
+        'album_mobile_image',
+        'album_content_image',
+        'album_images', // usually store as JSON or relation table
+
+        // No Image
+        'no_image_content_image',
+        'no_image_mobile_image',
     ];
 
     public function topContent()
@@ -73,13 +107,9 @@ class Content extends Model
         return $this->belongsTo(Location::class, 'writer_location_id');
     }
 
-    // public function images()
-    // {
-    //     return $this->hasMany(ContentImage::class);
-    // }
     public function media()
     {
-        return $this->hasMany(ContentMedia::class);
+        return $this->belongsToMany(ContentMedia::class, 'media_content', 'content_id', 'content_media_id');
     }
     public function social()
     {
