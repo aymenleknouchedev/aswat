@@ -1,59 +1,195 @@
-<div id="media-no_image-field" class="media-fields-section" style="display: none;">
-
+<div id="media-no_image-field" class="media-fields-section" style="display: block;">
     <div class="row g-3">
 
-        {{-- Mobile Image --}}
+        <!-- ================= MAIN IMAGE ================= -->
         <div class="col-md-6">
-            <label for="no_image_mobile_image" class="form-label">صورة الجوال</label>
+            <label class="form-label">الصورة الأساسية</label>
+            <div class="media-preview border rounded mb-2" id="preview-no_image_main_image"
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                <span class="text-muted">لا توجد صورة مختارة</span>
+            </div>
+
+            <input type="file" name="no_image_main_image" id="no_image_main_image" class="d-none" accept="image/*">
+            <input type="hidden" name="no_image_main_image" id="no_image_main_image_url">
+
+            <div class="d-flex flex-column gap-2">
+                <button type="button" class="btn btn-primary btn-sm w-100"
+                    onclick="document.getElementById('no_image_main_image').click()">📤 رفع صورة من الجهاز</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="no_image_main_image">🔗 إضافة من
+                    رابط</button>
+                <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
+                    data-bs-target="#mediaModal" data-target="no_image_main_image" data-type="image">🖼️ اختيار من
+                    المعرض</button>
+            </div>
+        </div>
+
+        <!-- ================= MOBILE IMAGE ================= -->
+        <div class="col-md-6">
+            <label class="form-label">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-no_image_mobile_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
-            <input type="hidden" name="no_image_mobile_image" id="no_image_mobile_image">
-            <button type="button" class="btn btn-outline-primary btn-sm open-media" data-target="no_image_mobile_image"
-                data-type="image">
-                اختيار صورة
-            </button>
-        </div>
 
-        {{-- Principal Image (was Content Image) --}}
-        <div class="col-md-6">
-            <label for="no_image_content_image" class="form-label">الصورة الرئيسية</label>
-            <div class="media-preview border rounded mb-2" id="preview-no_image_content_image"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted">لا توجد صورة مختارة</span>
+            <input type="file" name="no_image_mobile_image" id="no_image_mobile_image" class="d-none" accept="image/*">
+            <input type="hidden" name="no_image_mobile_image" id="no_image_mobile_image_url">
+
+            <div class="d-flex flex-column gap-2">
+                <button type="button" class="btn btn-primary btn-sm w-100"
+                    onclick="document.getElementById('no_image_mobile_image').click()">📤 رفع صورة من الجهاز</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="no_image_mobile_image">🔗 إضافة من
+                    رابط</button>
+                <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
+                    data-bs-target="#mediaModal" data-target="no_image_mobile_image" data-type="image">🖼️ اختيار من
+                    المعرض</button>
             </div>
-            <input type="hidden" name="no_image_content_image" id="no_image_content_image">
-            <button type="button" class="btn btn-outline-primary btn-sm open-media"
-                data-target="no_image_content_image" data-type="image">
-                اختيار صورة
-            </button>
         </div>
 
     </div>
-
 </div>
 
+<!-- ========== MODAL URL ========== -->
+<div class="modal fade" id="urlModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">إضافة صورة من رابط</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="url" id="imageUrlInput" class="form-control"
+                    placeholder="https://example.com/image.jpg">
+                <input type="hidden" id="urlTargetInput">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" id="saveUrlBtn">حفظ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MODAL GALLERY ========== -->
+<div class="modal fade" id="mediaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">📚 مكتبة الوسائط</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="mediaLibraryGrid" class="d-flex flex-wrap gap-2">
+                    <p>اختر صورة من المكتبة...</p>
+                </div>
+                <input type="hidden" id="mediaTargetInput">
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
-    @media (prefers-color-scheme: dark) {
-        #media-no_image-field {
-            color: #ddd;
-        }
+    .media-preview {
+        border: 2px dashed #ccc !important;
+        transition: 0.3s;
+    }
 
-        #media-no_image-field .media-preview {
-            background-color: #333 !important;
-            border-color: #555 !important;
-        }
+    .media-preview img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
 
-        #media-no_image-field .btn-outline-primary {
-            color: #aad4ff;
-            border-color: #55aaff;
-        }
+    .media-preview:hover {
+        border-color: #007bff !important;
+    }
 
-        #media-no_image-field .btn-outline-primary:hover {
-            background-color: #55aaff;
-            color: #fff;
-        }
+    .media-thumb {
+        width: 100px;
+        height: 100px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .media-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .media-thumb:hover {
+        border-color: #007bff;
     }
 </style>
+
+<script>
+    // ================= FILE UPLOAD (preview) =================
+    ["no_image_main_image", "no_image_mobile_image"].forEach(id => {
+        document.getElementById(id).addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById("preview-" + id).innerHTML =
+                        `<img src="${event.target.result}" alt="preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    // ================= URL MODAL =================
+    document.querySelectorAll('.open-url-modal').forEach(btn => {
+        btn.addEventListener("click", () => {
+            const target = btn.dataset.target;
+            document.getElementById("urlTargetInput").value = target;
+            document.getElementById("imageUrlInput").value = "";
+        });
+    });
+
+    document.getElementById("saveUrlBtn").addEventListener("click", function() {
+        const url = document.getElementById("imageUrlInput").value;
+        const target = document.getElementById("urlTargetInput").value;
+        if (url && target) {
+            document.getElementById("preview-" + target).innerHTML =
+                `<img src="${url}" alt="preview">`;
+            document.getElementById(target + "_url").value = url;
+            bootstrap.Modal.getInstance(document.getElementById("urlModal")).hide();
+        }
+    });
+
+    // ================= MEDIA MODAL =================
+    document.querySelectorAll('.open-media').forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const target = btn.dataset.target;
+            document.getElementById("mediaTargetInput").value = target;
+
+            const grid = document.getElementById("mediaLibraryGrid");
+            grid.innerHTML = "<p>⏳ جاري تحميل الصور...</p>";
+
+            try {
+                const response = await fetch("/api/media?type=image");
+                const items = await response.json();
+                grid.innerHTML = "";
+                items.forEach(item => {
+                    const div = document.createElement("div");
+                    div.className = "media-thumb";
+                    div.innerHTML = `<img src="${item.src}" alt="">`;
+                    div.onclick = () => {
+                        document.getElementById("preview-" + target).innerHTML =
+                            `<img src="${item.src}" alt="preview">`;
+                        document.getElementById(target + "_url").value = item.src;
+                        bootstrap.Modal.getInstance(document.getElementById(
+                            "mediaModal")).hide();
+                    };
+                    grid.appendChild(div);
+                });
+            } catch (e) {
+                grid.innerHTML = "<p>❌ فشل تحميل الوسائط</p>";
+            }
+        });
+    });
+</script>

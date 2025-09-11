@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        Paginator::useBootstrapFour(); // or useBootstrapFour()
+
 
         Blade::if('canDo', function ($permission) {
             $user = request()->user();   // safer than Auth::user()

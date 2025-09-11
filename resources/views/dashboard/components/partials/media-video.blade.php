@@ -1,149 +1,290 @@
 <div id="media-video-field" class="media-fields-section" style="display: none;">
-
     <div class="row g-3">
 
-        {{-- Main Image --}}
+        <!-- ================= MAIN IMAGE ================= -->
         <div class="col-md-3">
-            <label for="video_main_image" class="form-label">الصورة الأساسية</label>
+            <label class="form-label">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-video_main_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
-            <input type="hidden" name="video_main_image" id="video_main_image">
-            <button type="button" class="btn btn-outline-primary btn-sm open-media" data-target="video_main_image"
-                data-type="image">
-                اختيار صورة
-            </button>
+
+            <input type="file" name="video_main_image" id="video_main_image" class="d-none" accept="image/*">
+            <input type="hidden" name="video_main_image" id="video_main_image_url">
+
+            <div class="d-flex flex-column gap-2">
+                <button type="button" class="btn btn-primary btn-sm w-100"
+                    onclick="document.getElementById('video_main_image').click()">📤 رفع صورة من الجهاز</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_main_image">🔗 إضافة من
+                    رابط</button>
+                <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
+                    data-bs-target="#mediaModal" data-target="video_main_image" data-type="image">🖼️ اختيار من
+                    المعرض</button>
+            </div>
         </div>
 
-        {{-- Mobile Image --}}
+        <!-- ================= MOBILE IMAGE ================= -->
         <div class="col-md-3">
-            <label for="video_mobile_image" class="form-label">صورة الهاتف المحمول</label>
+            <label class="form-label">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-video_mobile_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
-            <input type="hidden" name="video_mobile_image" id="video_mobile_image">
-            <button type="button" class="btn btn-outline-primary btn-sm open-media" data-target="video_mobile_image"
-                data-type="image">
-                اختيار صورة
-            </button>
+
+            <input type="file" name="video_mobile_image" id="video_mobile_image" class="d-none" accept="image/*">
+            <input type="hidden" name="video_mobile_image" id="video_mobile_image_url">
+
+            <div class="d-flex flex-column gap-2">
+                <button type="button" class="btn btn-primary btn-sm w-100"
+                    onclick="document.getElementById('video_mobile_image').click()">📤 رفع صورة من الجهاز</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_mobile_image">🔗 إضافة من
+                    رابط</button>
+                <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
+                    data-bs-target="#mediaModal" data-target="video_mobile_image" data-type="image">🖼️ اختيار من
+                    المعرض</button>
+            </div>
         </div>
 
-        {{-- Content Image --}}
+        <!-- ================= CONTENT IMAGE ================= -->
         <div class="col-md-3">
-            <label for="video_content_image" class="form-label">صورة المحتوى التفصيلية</label>
+            <label class="form-label">صورة المحتوى التفصيلية</label>
             <div class="media-preview border rounded mb-2" id="preview-video_content_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا توجد صورة مختارة</span>
             </div>
-            <input type="hidden" name="video_content_image" id="video_content_image">
-            <button type="button" class="btn btn-outline-primary btn-sm open-media" data-target="video_content_image"
-                data-type="image">
-                اختيار صورة
-            </button>
+
+            <input type="file" name="video_content_image" id="video_content_image" class="d-none" accept="image/*">
+            <input type="hidden" name="video_content_image" id="video_content_image_url">
+
+            <div class="d-flex flex-column gap-2">
+                <button type="button" class="btn btn-primary btn-sm w-100"
+                    onclick="document.getElementById('video_content_image').click()">📤 رفع صورة من الجهاز</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_content_image">🔗 إضافة من
+                    رابط</button>
+                <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
+                    data-bs-target="#mediaModal" data-target="video_content_image" data-type="image">🖼️ اختيار من
+                    المعرض</button>
+            </div>
         </div>
 
-        {{-- Video Upload and URL --}}
+        <!-- ================= VIDEO ================= -->
         <div class="col-md-3">
-            <label for="video_file" class="form-label">فيديو</label>
+            <label class="form-label">الفيديو</label>
             <div id="preview-video_file" class="media-preview border rounded mb-2"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
                 <span class="text-muted">لا يوجد فيديو محدد</span>
             </div>
-            <div class="input-group ">
-                <button type="button" class="btn btn-outline-primary btn-sm open-media" data-target="video_file"
-                    data-type="video">
-                    رفع / اختيار فيديو
-                </button>
-                <input hidden type="file" name="video_file" id="video_file">
 
-                <input type="url" name="video_url" id="video_url" class="form-control"
-                    placeholder="https://example.com/video.mp4">
+            <input type="file" name="video_file" id="video_file" class="d-none" accept="video/*">
+            <input type="hidden" name="video_file" id="video_file_url">
 
+            <div class="d-flex flex-column gap-2">
+                <button type="button" class="btn btn-primary btn-sm w-100"
+                    onclick="document.getElementById('video_file').click()">📤 رفع فيديو من الجهاز</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_file">🔗 إضافة من
+                    رابط</button>
+                <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
+                    data-bs-target="#mediaModal" data-target="video_file" data-type="video">🎞️ اختيار من
+                    المعرض</button>
             </div>
-
         </div>
 
     </div>
+</div>
 
+<!-- ========== MODAL URL ========== -->
+<div class="modal fade" id="urlModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">إضافة من رابط</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="url" id="imageUrlInput" class="form-control"
+                    placeholder="https://example.com/file">
+                <input type="hidden" id="urlTargetInput">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" id="saveUrlBtn">حفظ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MODAL GALLERY ========== -->
+<div class="modal fade" id="mediaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">📚 مكتبة الوسائط</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="mediaLibraryGrid" class="d-flex flex-wrap gap-2">
+                    <p>اختر ملف من المكتبة...</p>
+                </div>
+                <input type="hidden" id="mediaTargetInput">
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
-    @media (prefers-color-scheme: dark) {
-        #media-video-field {
-            color: #ddd;
-        }
+    .media-preview {
+        border: 2px dashed #ccc !important;
+        transition: 0.3s;
+    }
 
-        #media-video-field .media-preview {
-            background-color: #333 !important;
-            border-color: #555 !important;
-        }
+    .media-preview img,
+    .media-preview video,
+    .media-preview iframe {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
 
-        #media-video-field .btn-outline-primary {
-            color: #aad4ff;
-            border-color: #55aaff;
-        }
+    .media-preview:hover {
+        border-color: #007bff !important;
+    }
 
-        #media-video-field .btn-outline-primary:hover {
-            background-color: #55aaff;
-            color: #fff;
-        }
+    .media-thumb {
+        width: 100px;
+        height: 100px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .media-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .media-thumb:hover {
+        border-color: #007bff;
     }
 </style>
 
-
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const videoUrlInput = document.getElementById('video_url');
-        const videoPreview = document.getElementById('preview-video_file');
-
-        function updateVideoPreview(url) {
-            if (!url) {
-                videoPreview.innerHTML = `<span class="text-muted">لا يوجد فيديو محدد</span>`;
-                return;
+    // ================= FILE UPLOAD (images) =================
+    ["video_main_image", "video_mobile_image", "video_content_image"].forEach(id => {
+        document.getElementById(id).addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById("preview-" + id).innerHTML =
+                        `<img src="${event.target.result}" alt="preview">`;
+                };
+                reader.readAsDataURL(file);
             }
-
-            // Check if YouTube URL
-            const youtubeMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
-            if (youtubeMatch && youtubeMatch[1]) {
-                const videoId = youtubeMatch[1];
-                videoPreview.innerHTML = `
-            <iframe width="100%" height="140" 
-                src="https://www.youtube.com/embed/${videoId}" 
-                frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-        `;
-                return;
-            }
-
-            // Check if URL is direct video file
-            const validExtensions = ['mp4', 'webm', 'ogg', 'mov', 'mkv'];
-            const urlLower = url.toLowerCase();
-            const isValidVideo = validExtensions.some(ext => urlLower.endsWith(ext));
-
-            if (!isValidVideo) {
-                videoPreview.innerHTML = `<span class="text-danger">رابط غير صالح لفيديو</span>`;
-                return;
-            }
-
-            // Show HTML5 video player for direct video files
-            videoPreview.innerHTML = `
-        <video controls style="max-height: 140px; max-width: 100%;">
-            <source src="${url}" type="video/mp4">
-            متصفحك لا يدعم عرض الفيديو.
-        </video>
-    `;
-        }
-
-
-        // Update preview when input changes (on input or on blur)
-        videoUrlInput.addEventListener('input', () => {
-            updateVideoPreview(videoUrlInput.value.trim());
         });
+    });
 
-        // Initialize preview on page load if input has value
-        if (videoUrlInput.value.trim()) {
-            updateVideoPreview(videoUrlInput.value.trim());
+    // ================= FILE UPLOAD (video) =================
+    document.getElementById("video_file").addEventListener("change", function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            document.getElementById("preview-video_file").innerHTML =
+                `<video controls style="max-height:140px; max-width:100%;">
+                    <source src="${url}" type="${file.type}">
+                    متصفحك لا يدعم عرض الفيديو.
+                 </video>`;
         }
     });
+
+    // ================= URL MODAL =================
+    document.querySelectorAll('.open-url-modal').forEach(btn => {
+        btn.addEventListener("click", () => {
+            const target = btn.dataset.target;
+            document.getElementById("urlTargetInput").value = target;
+            document.getElementById("imageUrlInput").value = "";
+        });
+    });
+
+    document.getElementById("saveUrlBtn").addEventListener("click", function() {
+        const url = document.getElementById("imageUrlInput").value;
+        const target = document.getElementById("urlTargetInput").value;
+        if (url && target) {
+            if (target === "video_file") {
+                updateVideoPreview(url);
+                document.getElementById(target + "_url").value = url;
+            } else {
+                document.getElementById("preview-" + target).innerHTML =
+                    `<img src="${url}" alt="preview">`;
+                document.getElementById(target + "_url").value = url;
+            }
+            bootstrap.Modal.getInstance(document.getElementById("urlModal")).hide();
+        }
+    });
+
+    // ================= MEDIA MODAL =================
+    document.querySelectorAll('.open-media').forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const target = btn.dataset.target;
+            const type = btn.dataset.type;
+            document.getElementById("mediaTargetInput").value = target;
+
+            const grid = document.getElementById("mediaLibraryGrid");
+            grid.innerHTML = "<p>⏳ جاري تحميل الملفات...</p>";
+
+            try {
+                const response = await fetch(`/api/media?type=${type}`);
+                const items = await response.json();
+                grid.innerHTML = "";
+                items.forEach(item => {
+                    const div = document.createElement("div");
+                    div.className = "media-thumb";
+                    div.innerHTML = `<img src="${item.src}" alt="">`;
+                    div.onclick = () => {
+                        if (type === "video") {
+                            updateVideoPreview(item.src);
+                        } else {
+                            document.getElementById("preview-" + target).innerHTML =
+                                `<img src="${item.src}" alt="preview">`;
+                        }
+                        document.getElementById(target + "_url").value = item.src;
+                        bootstrap.Modal.getInstance(document.getElementById(
+                            "mediaModal")).hide();
+                    };
+                    grid.appendChild(div);
+                });
+            } catch (e) {
+                grid.innerHTML = "<p>❌ فشل تحميل الوسائط</p>";
+            }
+        });
+    });
+
+    // ================= VIDEO PREVIEW FUNCTION =================
+    function updateVideoPreview(url) {
+        const preview = document.getElementById("preview-video_file");
+        if (!url) {
+            preview.innerHTML = `<span class="text-muted">لا يوجد فيديو محدد</span>`;
+            return;
+        }
+
+        const youtubeMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+        if (youtubeMatch && youtubeMatch[1]) {
+            preview.innerHTML = `
+                <iframe width="100%" height="140"
+                    src="https://www.youtube.com/embed/${youtubeMatch[1]}"
+                    frameborder="0" allowfullscreen></iframe>`;
+            return;
+        }
+
+        preview.innerHTML = `
+            <video controls style="max-height:140px; max-width:100%;">
+                <source src="${url}">
+                متصفحك لا يدعم عرض الفيديو.
+            </video>`;
+    }
 </script>

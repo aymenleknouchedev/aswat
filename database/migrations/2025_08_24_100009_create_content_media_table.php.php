@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('content_media', function (Blueprint $table) {
             $table->id();
             $table->enum('type', ['main', 'mobile', 'detail', 'album', 'video', 'podcast']);
-            $table->string('path');
+            $table->longText('path');
             $table->timestamps();
         });
     }

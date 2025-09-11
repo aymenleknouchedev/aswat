@@ -52,7 +52,7 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('dashboard.content.store') }}" method="POST" enctype="multipart/form-data">
+                        <form id="contentForm" action="{{ route('dashboard.content.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <!-- Tabs nav -->
                             <ul class="nav mb-4" id="contentTabs" role="tablist">
@@ -342,6 +342,7 @@
                                     'existing_albums' => $existing_albums,
                                 ])
 
+
                                 <!-- Message Tab -->
                                 <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
                                     <div class="mb-3">
@@ -439,7 +440,6 @@
                         </form>
                     </div>
                 </div>
-
                 @include('dashboard.components.footer')
             </div>
         </div>

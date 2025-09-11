@@ -28,8 +28,8 @@ class ContentController extends BaseController
      */
     public function index()
     {
-        // Logic to retrieve and display all contents
-        return view('dashboard.allcontents');
+        $contents = Content::latest()->paginate(5);
+        return view('dashboard.allcontents', compact('contents'));
     }
 
     /**
@@ -78,6 +78,21 @@ class ContentController extends BaseController
      */
     public function store(Request $request)
     {
+        $albumImages = [];
+
+        // --- Uploaded files ---
+        if ($request->hasFile('album_images')) {
+            foreach ($request->file('album_images') as $file) {
+                $albumImages[] = $file; // just add file object, don't save
+            }
+        }
+        // --- URLs ---
+        if ($request->album_images_urls) {
+            $urls = json_decode($request->album_images_urls, true); // decode JSON string
+            $albumImages = array_merge($albumImages, $urls); // combine with uploaded files
+        }
+
+        // ✅ Basic validation rules
         $rules = [
             'title'         => 'required|string|max:75',
             'long_title'    => 'required|string|max:210',
@@ -108,27 +123,26 @@ class ContentController extends BaseController
                 'video_main_image' => 'required|max:2048',
                 'video_mobile_image' => 'required|max:2048',
                 'video_content_image' => 'required|max:2048',
-                'video_url'  => 'required_without:video_file|url|max:2048',
-                'video_file' => 'required_without:video_url|mimetypes:video/mp4,video/x-msvideo,video/quicktime,video/webm,video/x-matroska|max:20480',
+                'video_file' => 'required|max:20480',
             ],
             'podcast' => [
                 'podcast_main_image' => 'required|max:2048',
                 'podcast_content_image' => 'required|max:2048',
                 'podcast_mobile_image' => 'required|max:2048',
-                'podcast_file' => 'required_without:podcast_url|mimes:mp3,ogg,wav|max:20480',
-                'podcast_url'  => 'required_without:podcast_file|url|max:2048',
+                'podcast_file' => 'required|max:20480',
             ],
             'album' => [
-                'album_main_image' => 'required|max:2048',
+                'album_main_image'   => 'required|max:2048',
                 'album_content_image' => 'required|max:2048',
                 'album_mobile_image' => 'required|max:2048',
-                'album_images.*' => 'required|max:2048',
             ],
             'no_image' => [
-                'no_image_content_image' => 'required|max:2048',
+                'no_image_main_image' => 'required|max:2048',
                 'no_image_mobile_image' => 'required|max:2048',
             ],
         ];
+
+
 
         $templateMediaMap = [
             'normal_image' => [
@@ -155,14 +169,19 @@ class ContentController extends BaseController
                 'album_images' => 'album',
             ],
             'no_image' => [
-                'no_image_content_image' => 'detail',
+                'no_image_main_image' => 'main',
                 'no_image_mobile_image' => 'mobile',
             ],
         ];
 
-
         $validated = $request->validate($rules);
         $request->validate($templateRules[$request->template]);
+        // Validate that $albumImages contains at least one file or URL
+        if ($request->template == 'album') {
+            if (empty($albumImages) || !is_array($albumImages) || count($albumImages) === 0) {
+                return back()->withErrors(['album_images' => 'You must provide at least one album image (file or URL).'])->withInput();
+            }
+        }
 
         // ✅ Create content
         $content = Content::create([
@@ -171,15 +190,13 @@ class ContentController extends BaseController
         ]);
 
 
-
         $mediaMap = $templateMediaMap[$request->template];
 
         // ✅ Loop and save media (simplified)
         if (isset($mediaMap)) {
             foreach ($mediaMap as $field => $type) {
 
-                // 🖼️ Single file upload
-                if ($request->hasFile($field)) {
+                if ($request->hasFile($field) && $field !== 'album_images') {
                     $file = $request->file($field);
                     $path = asset('storage/' . $file->store('media', 'public'));
                     $media = ContentMedia::create([
@@ -192,23 +209,47 @@ class ContentController extends BaseController
 
                 // 🎥 Video Url / 🎙️ Podcast URL
                 if ($request->filled($field)) {
+
                     $media = ContentMedia::create([
                         'type' => $type,
                         'path' => $request->input($field),
                     ]);
                     $content->media()->attach($media->id);
+                    continue;
                 }
 
-                // 🎵 Album images (multiple)
-                if ($field === 'album_images' && $request->hasFile($field)) {
-                    foreach ($request->file($field) as $albumImage) {
-                        $path = asset('storage/' . $albumImage->store('media', 'public'));
+
+                // 🎵 Album images (multiple: files + urls)
+                if ($field === 'album_images') {
+                    $items = [];
+                    // 1️⃣ Handle uploaded files
+                    if ($request->hasFile($field)) {
+                        foreach ($request->file($field) as $albumImage) {
+                            $path = asset('storage/' . $albumImage->store('media', 'public'));
+                            $items[] = $path;
+                        }
+                    }
+
+                    // 2️⃣ Handle URL images (array of URLs)
+                    if ($request->filled('album_images_urls')) {
+                        $urls = json_decode($request->album_images_urls, true); // decode JSON string
+                        if (is_array($urls)) {
+                            foreach ($urls as $url) {
+                                $items[] = $url; // add URL directly
+                            }
+                        }
+                    }
+
+
+                    // 3️⃣ Save all album media
+                    foreach ($items as $path) {
                         $media = ContentMedia::create([
                             'type' => $type,
                             'path' => $path,
                         ]);
                         $content->media()->attach($media->id);
                     }
+
                     continue;
                 }
             }
@@ -230,7 +271,7 @@ class ContentController extends BaseController
      */
     public function show(string $id)
     {
-        //
+       
     }
 
     /**
