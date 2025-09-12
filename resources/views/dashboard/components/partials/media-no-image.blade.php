@@ -3,47 +3,49 @@
 
         <!-- ================= MAIN IMAGE ================= -->
         <div class="col-md-6">
-            <label class="form-label">الصورة الأساسية</label>
+            <label class="form-label" data-ar="الصورة الأساسية" data-en="Main Image">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-no_image_main_image"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted">لا توجد صورة مختارة</span>
+            style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+            <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة مختارة</span>
             </div>
 
             <input type="file" name="no_image_main_image" id="no_image_main_image" class="d-none" accept="image/*">
             <input type="hidden" name="no_image_main_image" id="no_image_main_image_url">
 
             <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
-                    onclick="document.getElementById('no_image_main_image').click()">📤 رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
-                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="no_image_main_image">🔗 إضافة من
-                    رابط</button>
-                <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                    data-bs-target="#mediaModal" data-target="no_image_main_image" data-type="image">🖼️ اختيار من
-                    المعرض</button>
+            <button type="button" class="btn btn-primary btn-sm w-100"
+                onclick="document.getElementById('no_image_main_image').click()"
+                data-ar="رفع صورة من الجهاز" data-en="Upload from device">رفع صورة من الجهاز</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="no_image_main_image"
+                data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
+            <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
+                data-bs-target="#mediaModal" data-target="no_image_main_image" data-type="image"
+                data-ar="اختيار من المعرض" data-en="Choose from gallery">اختيار من المعرض</button>
             </div>
         </div>
 
         <!-- ================= MOBILE IMAGE ================= -->
         <div class="col-md-6">
-            <label class="form-label">صورة الهاتف المحمول</label>
+            <label class="form-label" data-ar="صورة الهاتف المحمول" data-en="Mobile Image">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-no_image_mobile_image"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted">لا توجد صورة مختارة</span>
+            style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+            <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة مختارة</span>
             </div>
 
             <input type="file" name="no_image_mobile_image" id="no_image_mobile_image" class="d-none" accept="image/*">
             <input type="hidden" name="no_image_mobile_image" id="no_image_mobile_image_url">
 
             <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
-                    onclick="document.getElementById('no_image_mobile_image').click()">📤 رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
-                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="no_image_mobile_image">🔗 إضافة من
-                    رابط</button>
-                <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                    data-bs-target="#mediaModal" data-target="no_image_mobile_image" data-type="image">🖼️ اختيار من
-                    المعرض</button>
+            <button type="button" class="btn btn-primary btn-sm w-100"
+                onclick="document.getElementById('no_image_mobile_image').click()"
+                data-ar="رفع صورة من الجهاز" data-en="Upload from device">رفع صورة من الجهاز</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="no_image_mobile_image"
+                data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
+            <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
+                data-bs-target="#mediaModal" data-target="no_image_mobile_image" data-type="image"
+                data-ar="اختيار من المعرض" data-en="Choose from gallery">اختيار من المعرض</button>
             </div>
         </div>
 

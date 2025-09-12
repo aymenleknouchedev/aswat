@@ -17,7 +17,7 @@
                                 <!-- Table Header with Title & Button -->
                                 <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
                                     <h5 class="mb-0" data-en="All Contents" data-ar="جميع المحتوى">جميع المحتوى</h5>
-                                    <a href="" class="btn btn-sm btn-outline-primary" data-en="Add New Content"
+                                    <a href="{{ route('dashboard.content.create') }}" class="btn btn-sm btn-outline-primary" data-en="Add New Content"
                                         data-ar="إضافة محتوى جديد">إضافة محتوى جديد</a>
                                 </div>
 
@@ -52,8 +52,7 @@
                                                 </th>
                                                 <th style="font-weight: bold;" data-en="Section" data-ar="القسم">القسم</th>
                                                 <th style="font-weight: bold;" data-en="Display Method"
-                                                    data-ar="قالب العرض">قالب العرض
-                                                </th>
+                                                    data-ar="قالب العرض">قالب العرض</th>
                                                 <th style="font-weight: bold;" data-en="Template" data-ar="القالب">القالب
                                                 </th>
                                                 <th style="font-weight: bold;" data-en="Status" data-ar="الحالة">الحالة</th>
@@ -64,39 +63,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-
-                                            @foreach ($contents as $content)
+                                            @forelse ($contents as $content)
                                                 <tr>
                                                     <td>{{ $content->id }}</td>
                                                     <td>{{ $content->mobile_title }}</td>
-                                                    <td>
-                                                        @if ($content->user)
-                                                            {{ $content->user->name }}
-                                                        @else
-                                                            -
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if ($content->section)
-                                                            {{ $content->section->name }}
-                                                        @else
-                                                            -
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if ($content->template)
-                                                            {{ $content->template }}
-                                                        @else
-                                                            -
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if ($content->display_method)
-                                                            {{ $content->display_method }}
-                                                        @else
-                                                            -
-                                                        @endif
-                                                    </td>
+                                                    <td>{{ $content->user->name ?? '-' }}</td>
+                                                    <td>{{ $content->section->name ?? '-' }}</td>
+                                                    <td>{{ $content->template ?? '-' }}</td>
+                                                    <td>{{ $content->display_method ?? '-' }}</td>
                                                     <td>
                                                         @if ($content->status == 'published')
                                                             <span class="badge badge-dot bg-success" data-en="Published"
@@ -107,13 +81,7 @@
                                                         @endif
                                                     </td>
                                                     <td>{{ $content->created_at->format('Y-m-d') }}</td>
-                                                    <td>
-                                                        @if ($content->writer)
-                                                            {{ $content->writer->name }}
-                                                        @else
-                                                            -
-                                                        @endif
-                                                    </td>
+                                                    <td>{{ $content->writer->name ?? '-' }}</td>
                                                     <td>
                                                         <a href="{{ route('dashboard.content.show', $content->id) }}"
                                                             class="btn btn-sm btn-primary" data-en="View"
@@ -132,7 +100,14 @@
                                                         </form>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            @empty
+                                                <tr>
+                                                    <td colspan="10" class="text-center text-muted py-4"
+                                                        data-en="No content found" data-ar="لا يوجد محتوى">
+                                                        لا يوجد محتوى
+                                                    </td>
+                                                </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>

@@ -3,10 +3,10 @@
 
         <!-- ================= MAIN IMAGE ================= -->
         <div class="col-md-3">
-            <label class="form-label">الصورة الأساسية</label>
+            <label class="form-label" data-ar="الصورة الأساسية" data-en="Main Image">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-podcast_main_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted">لا توجد صورة مختارة</span>
+                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة مختارة</span>
             </div>
 
             <input type="file" name="podcast_main_image" id="podcast_main_image" class="d-none" accept="image/*">
@@ -14,22 +14,20 @@
 
             <div class="d-flex flex-column gap-2">
                 <button type="button" class="btn btn-primary btn-sm w-100"
-                    onclick="document.getElementById('podcast_main_image').click()">📤 رفع صورة من الجهاز</button>
+                    onclick="document.getElementById('podcast_main_image').click()" data-ar="رفع صورة من الجهاز" data-en="Upload from device">رفع صورة من الجهاز</button>
                 <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
-                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_main_image">🔗 إضافة من
-                    رابط</button>
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_main_image" data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                    data-bs-target="#mediaModal" data-target="podcast_main_image" data-type="image">🖼️ اختيار من
-                    المعرض</button>
+                    data-bs-target="#mediaModal" data-target="podcast_main_image" data-type="image" data-ar="اختيار من المعرض" data-en="Choose from gallery">اختيار من المعرض</button>
             </div>
         </div>
 
         <!-- ================= MOBILE IMAGE ================= -->
         <div class="col-md-3">
-            <label class="form-label">صورة الهاتف المحمول</label>
+            <label class="form-label" data-ar="صورة الهاتف المحمول" data-en="Mobile Image">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-podcast_mobile_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted">لا توجد صورة مختارة</span>
+                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة مختارة</span>
             </div>
 
             <input type="file" name="podcast_mobile_image" id="podcast_mobile_image" class="d-none" accept="image/*">
@@ -37,22 +35,20 @@
 
             <div class="d-flex flex-column gap-2">
                 <button type="button" class="btn btn-primary btn-sm w-100"
-                    onclick="document.getElementById('podcast_mobile_image').click()">📤 رفع صورة من الجهاز</button>
+                    onclick="document.getElementById('podcast_mobile_image').click()" data-ar="رفع صورة من الجهاز" data-en="Upload from device">رفع صورة من الجهاز</button>
                 <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
-                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_mobile_image">🔗 إضافة من
-                    رابط</button>
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_mobile_image" data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                    data-bs-target="#mediaModal" data-target="podcast_mobile_image" data-type="image">🖼️ اختيار من
-                    المعرض</button>
+                    data-bs-target="#mediaModal" data-target="podcast_mobile_image" data-type="image" data-ar="اختيار من المعرض" data-en="Choose from gallery">اختيار من المعرض</button>
             </div>
         </div>
 
         <!-- ================= CONTENT IMAGE ================= -->
         <div class="col-md-3">
-            <label class="form-label">صورة المحتوى التفصيلية</label>
+            <label class="form-label" data-ar="صورة المحتوى التفصيلية" data-en="Content Image">صورة المحتوى التفصيلية</label>
             <div class="media-preview border rounded mb-2" id="preview-podcast_content_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted">لا توجد صورة مختارة</span>
+                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة مختارة</span>
             </div>
 
             <input type="file" name="podcast_content_image" id="podcast_content_image" class="d-none"
@@ -61,22 +57,20 @@
 
             <div class="d-flex flex-column gap-2">
                 <button type="button" class="btn btn-primary btn-sm w-100"
-                    onclick="document.getElementById('podcast_content_image').click()">📤 رفع صورة من الجهاز</button>
+                    onclick="document.getElementById('podcast_content_image').click()" data-ar="رفع صورة من الجهاز" data-en="Upload from device">رفع صورة من الجهاز</button>
                 <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
-                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_content_image">🔗 إضافة من
-                    رابط</button>
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_content_image" data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                    data-bs-target="#mediaModal" data-target="podcast_content_image" data-type="image">🖼️ اختيار من
-                    المعرض</button>
+                    data-bs-target="#mediaModal" data-target="podcast_content_image" data-type="image" data-ar="اختيار من المعرض" data-en="Choose from gallery">اختيار من المعرض</button>
             </div>
         </div>
 
         <!-- ================= PODCAST ================= -->
         <div class="col-md-3">
-            <label class="form-label">البودكاست</label>
+            <label class="form-label" data-ar="البودكاست" data-en="Podcast">البودكاست</label>
             <div id="preview-podcast_file" class="media-preview border rounded mb-2"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted">لا يوجد بودكاست محدد</span>
+                <span class="text-muted" data-ar="لا يوجد بودكاست محدد" data-en="No podcast selected">لا يوجد بودكاست محدد</span>
             </div>
 
             <input type="file" name="podcast_file" id="podcast_file" class="d-none" accept="audio/*">
@@ -84,13 +78,11 @@
 
             <div class="d-flex flex-column gap-2">
                 <button type="button" class="btn btn-primary btn-sm w-100"
-                    onclick="document.getElementById('podcast_file').click()">📤 رفع بودكاست من الجهاز</button>
+                    onclick="document.getElementById('podcast_file').click()" data-ar="رفع بودكاست من الجهاز" data-en="Upload podcast from device">رفع بودكاست من الجهاز</button>
                 <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
-                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_file">🔗 إضافة من
-                    رابط</button>
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_file" data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                    data-bs-target="#mediaModal" data-target="podcast_file" data-type="audio">🎧 اختيار من
-                    المعرض</button>
+                    data-bs-target="#mediaModal" data-target="podcast_file" data-type="audio" data-ar="اختيار من المعرض" data-en="Choose from gallery">اختيار من المعرض</button>
             </div>
         </div>
 
@@ -192,7 +184,7 @@
     function updatePodcastPreview(url) {
         const preview = document.getElementById("preview-podcast_file");
         if (!url) {
-            preview.innerHTML = `<span class="text-muted">لا يوجد بودكاست محدد</span>`;
+            preview.innerHTML = `<span class="text-muted" data-ar="لا يوجد بودكاست محدد" data-en="No podcast selected">لا يوجد بودكاست محدد</span>`;
             return;
         }
         preview.innerHTML = `

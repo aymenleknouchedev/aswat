@@ -3,12 +3,15 @@
 
         <!-- ================= ALBUM MULTIPLE IMAGES ================= -->
         <div class="col-12">
-            <label class="form-label">📸 صور الألبوم (متعددة)</label>
+            <label class="form-label" data-ar="صور الألبوم (متعددة)" data-en="Album Images (Multiple)">
+                صور الألبوم (متعددة)
+            </label>
 
             <!-- Preview container for multiple images -->
             <div class="media-preview border rounded mb-2 p-2" id="preview-album_images"
-                style="min-height:150px; display:flex; flex-wrap:wrap; gap:10px;">
-                <span class="text-muted">لا توجد صور مختارة</span>
+                style="height:150px; display:flex; flex-wrap:wrap; gap:10px;">
+                <span class="text-muted" data-ar="لا توجد صور مختارة" data-en="No images selected">لا توجد صور
+                    مختارة</span>
             </div>
 
             <!-- File input for multiple images (hidden) -->
@@ -17,73 +20,84 @@
 
             <!-- Buttons to add images -->
             <button type="button" class="mt-1 btn btn-primary btn-sm w-100"
-                onclick="document.getElementById('album_images').click()">📤 رفع صور من الجهاز</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-multi mt-1"
-                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="album_images">🔗 إضافة من روابط</button>
-            <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media-multi mt-1"
-                data-bs-toggle="modal" data-bs-target="#mediaModal" data-target="album_images" data-type="image">🖼️
-                اختيار من المعرض</button>
-        </div>
+                onclick="document.getElementById('album_images').click()" data-ar="رفع صور من الجهاز"
+                data-en="Upload from Device">رفع صور من الجهاز</button>
 
+            <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-multi mt-1"
+                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="album_images" data-ar="إضافة من روابط"
+                data-en="Add from URLs">إضافة من روابط</button>
+
+            <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media-multi mt-1"
+                data-bs-toggle="modal" data-bs-target="#mediaModal" data-target="album_images" data-type="image"
+                data-ar="اختيار من المعرض" data-en="Choose from Media">اختيار من المعرض</button>
+        </div>
         <!-- ================= SINGLE IMAGE FIELDS ================= -->
         <!-- MAIN IMAGE -->
         <div class="col-md-4">
-            <label class="form-label">الصورة الأساسية</label>
+            <label class="form-label" data-ar="الصورة الأساسية" data-en="Main Image">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-album_main_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted">لا توجد صورة مختارة</span>
+                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                    مختارة</span>
             </div>
             <input type="file" name="album_main_image" id="album_main_image" class="d-none" accept="image/*">
             <input type="hidden" name="album_main_image" id="album_main_image_url">
 
             <button type="button" class="mt-1 btn btn-primary btn-sm w-100"
-                onclick="document.getElementById('album_main_image').click()">📤 رفع صورة من الجهاز</button>
+                onclick="document.getElementById('album_main_image').click()" data-ar="رفع صورة من الجهاز"
+                data-en="Upload from Device">رفع صورة من الجهاز</button>
             <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mt-1"
-                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="album_main_image">🔗 إضافة من
-                رابط</button>
+                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="album_main_image" data-ar="إضافة من رابط"
+                data-en="Add from URL">إضافة من رابط</button>
             <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media mt-1" data-bs-toggle="modal"
-                data-bs-target="#mediaModal" data-target="album_main_image" data-type="image">🖼️ اختيار من
-                المعرض</button>
+                data-bs-target="#mediaModal" data-target="album_main_image" data-type="image" data-ar="اختيار من المعرض"
+                data-en="Choose from Media">اختيار من المعرض</button>
         </div>
 
         <!-- MOBILE IMAGE -->
         <div class="col-md-4">
-            <label class="form-label">صورة الهاتف المحمول</label>
+            <label class="form-label" data-ar="صورة الهاتف المحمول" data-en="Mobile Image">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-album_content_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted">لا توجد صورة مختارة</span>
+                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                    مختارة</span>
             </div>
             <input type="file" name="album_content_image" id="album_content_image" class="d-none" accept="image/*">
             <input type="hidden" name="album_content_image" id="album_content_image_url">
 
             <button type="button" class="mt-1 btn btn-primary btn-sm w-100"
-                onclick="document.getElementById('album_content_image').click()">📤 رفع صورة من الجهاز</button>
+                onclick="document.getElementById('album_content_image').click()" data-ar="رفع صورة من الجهاز"
+                data-en="Upload from Device">رفع صورة من الجهاز</button>
             <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mt-1"
-                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="album_content_image">🔗 إضافة من
-                رابط</button>
-            <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media mt-1" data-bs-toggle="modal"
-                data-bs-target="#mediaModal" data-target="album_content_image" data-type="image">🖼️ اختيار من
-                المعرض</button>
+                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="album_content_image"
+                data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
+            <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media mt-1"
+                data-bs-toggle="modal" data-bs-target="#mediaModal" data-target="album_content_image"
+                data-type="image" data-ar="اختيار من المعرض" data-en="Choose from Media">اختيار من المعرض</button>
         </div>
 
         <!-- CONTENT IMAGE -->
         <div class="col-md-4">
-            <label class="form-label">صورة المحتوى التفصيلية</label>
+            <label class="form-label" data-ar="صورة المحتوى التفصيلية" data-en="Detailed Content Image">صورة المحتوى
+                التفصيلية</label>
             <div class="media-preview border rounded mb-2" id="preview-album_mobile_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted">لا توجد صورة مختارة</span>
+                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                    مختارة</span>
             </div>
-            <input type="file" name="album_mobile_image" id="album_mobile_image" class="d-none" accept="image/*">
+            <input type="file" name="album_mobile_image" id="album_mobile_image" class="d-none"
+                accept="image/*">
             <input type="hidden" name="album_mobile_image" id="album_mobile_image_url">
 
             <button type="button" class="mt-1 btn btn-primary btn-sm w-100"
-                onclick="document.getElementById('album_mobile_image').click()">📤 رفع صورة من الجهاز</button>
+                onclick="document.getElementById('album_mobile_image').click()" data-ar="رفع صورة من الجهاز"
+                data-en="Upload from Device">رفع صورة من الجهاز</button>
             <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mt-1"
-                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="album_mobile_image">🔗 إضافة من
-                رابط</button>
+                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="album_mobile_image"
+                data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
             <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media mt-1"
                 data-bs-toggle="modal" data-bs-target="#mediaModal" data-target="album_mobile_image"
-                data-type="image">🖼️ اختيار من المعرض</button>
+                data-type="image" data-ar="اختيار من المعرض" data-en="Choose from Media">اختيار من المعرض</button>
         </div>
 
     </div>
@@ -117,7 +131,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">📚 مكتبة الوسائط</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>  
+            </div>
             <div class="modal-body">
                 <div id="mediaLibraryGrid" class="d-flex flex-wrap gap-2">
                     <p>اختر صورة من المكتبة...</p>

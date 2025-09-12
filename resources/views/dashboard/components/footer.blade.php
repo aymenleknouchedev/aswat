@@ -1,4 +1,4 @@
-<!-- footer @s-->
+{{-- <!-- footer @s-->
 <div class="nk-footer">
     <div class="container-fluid">
         <div class="nk-footer-wrap">
@@ -8,4 +8,4 @@
         </div>
     </div>
 </div>
-<!-- footer @e -->
+<!-- footer @e --> --}}
