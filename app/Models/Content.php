@@ -32,8 +32,10 @@ class Content extends Model
         'content_type',
         'status',
         'template',
-
-
+        'review_description',
+        'share_description',
+        'share_title',
+        'share_image',
 
         // Normal Image
         'normal_main_image',
@@ -58,8 +60,7 @@ class Content extends Model
         'album_main_image',
         'album_mobile_image',
         'album_content_image',
-        'album_images', // usually store as JSON or relation table
-
+        'album_images', 
         // No Image
         'no_image_content_image',
         'no_image_mobile_image',

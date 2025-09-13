@@ -39,8 +39,14 @@ return new class extends Migration
             $table->string('summary', 130);
             $table->longText('content');
 
+            $table->longText('review_description')->nullable();
+            $table->longText('share_description')->nullable();
+            $table->string('share_title')->nullable();
+            $table->longText('share_image')->nullable();
+            
             // SEO
             $table->string('seo_keyword')->nullable();
+
 
             // Media type
             $table->enum('template', ['normal_image', 'video', 'podcast', 'album', 'no_image'])->default('normal_image');

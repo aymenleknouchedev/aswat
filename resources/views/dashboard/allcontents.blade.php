@@ -94,9 +94,8 @@
                                                             method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                                data-en="Delete" data-ar="حذف"
-                                                                onclick="return confirm('هل أنت متأكد من الحذف؟')">حذف</button>
+                                                            <button type="button" class="btn btn-sm btn-danger delete-btn"
+                                                                data-en="Delete" data-ar="حذف">حذف</button>
                                                         </form>
                                                     </td>
                                                 </tr>

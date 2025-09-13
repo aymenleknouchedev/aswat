@@ -348,8 +348,8 @@
                                     <div class="mb-3">
                                         <label for="message_text" data-ar="رسالة المراجعة" data-en="Review Message">رسالة
                                             المراجعة</label>
-                                        <textarea id="message_text" name="message_text" class="form-control form-control" rows="4"
-                                            data-ar="رسالة المراجعة" data-en="Review Message">{{ old('message_text', '') }}</textarea>
+                                        <textarea id="message_text" name="review_description" class="form-control form-control" rows="4"
+                                            data-ar="رسالة المراجعة" data-en="Review Message">{{ old('review_description', '') }}</textarea>
                                     </div>
                                 </div>
                             </div>

@@ -1,17 +1,3 @@
-@php
-    $breakingNews = [
-        (object) ['id' => 1, 'title' => 'انفجار كبير في وسط المدينة', 'created_at' => '23 Jan 2019, 10:45pm'],
-        (object) ['id' => 2, 'title' => 'توقف حركة القطارات بسبب الإضراب', 'created_at' => '12 Jan 2020, 10:45pm'],
-        (object) [
-            'id' => 3,
-            'title' => 'اعلان حالة الطوارئ في المنطقة الشمالية',
-            'created_at' => '26 Dec 2019, 12:15 pm',
-        ],
-        (object) ['id' => 4, 'title' => 'تأخير في الرحلات الجوية', 'created_at' => '21 Jan 2019, 6:12 am'],
-        (object) ['id' => 5, 'title' => 'احتجاجات في وسط المدينة', 'created_at' => '21 Jan 2019, 6:12 am'],
-    ];
-@endphp
-
 @extends('layouts.admin')
 
 @section('title', 'أصوات جزائرية | أخبار عاجلة')
@@ -28,21 +14,46 @@
 
                         <div class="nk-block-head mb-4">
                             <div class="nk-block-head-content">
-                                <h4 class="nk-block-title" data-en="Add Breaking News" data-ar="إضافة خبر عاجل">إضافة خبر عاجل
+                                <h4 class="nk-block-title translatable" data-en="Add Breaking News" data-ar="إضافة خبر عاجل">إضافة خبر عاجل
                                 </h4>
                             </div>
                         </div>
 
+                        <!-- رسائل النجاح -->
+                        @if (session('success'))
+                            <div class="alert alert-fill alert-success alert-icon">
+                                <em class="icon ni ni-check-circle"></em>
+                                <span class="translatable" data-ar="تمت العملية بنجاح"
+                                    data-en="Operation completed successfully">
+                                    {{ session('success') ?? 'تمت العملية بنجاح' }}
+                                </span>
+                            </div>
+                        @endif
+
+                        <!-- رسائل الخطأ -->
+                        @if ($errors->any())
+                            <div class="alert alert-fill alert-danger alert-icon">
+                                <em class="icon ni ni-cross-circle"></em>
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li class="translatable" data-ar="حدث خطأ ما" data-en="An error occurred">
+                                            {{ $error ?? 'حدث خطأ ما' }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         {{-- Form --}}
-                        <form action="" method="POST" class="mb-5">
+                        <form action="{{ route('dashboard.breakingnew.store') }}" method="POST" class="mb-5">
                             @csrf
                             <div class="form-group mb-3">
-                                <label for="breaking_title" data-en="Breaking News Title" data-ar="عنوان الخبر العاجل">عنوان
-                                    الخبر العاجل</label>
+                                <label for="breaking_title" class="translatable" data-en="Breaking News Title" data-ar="عنوان الخبر العاجل">عنوان الخبر العاجل</label>
                                 <input id="breaking_title" name="title" type="text"
-                                    class="form-control form-control-lg" placeholder="أدخل عنوان الخبر العاجل" required>
+                                    class="form-control form-control-lg" required
+                                    data-en="Breaking News Title" data-ar="عنوان الخبر العاجل">
                             </div>
-                            <button type="submit" class="btn btn-primary" data-en="Add Breaking News"
+                            <button type="submit" class="btn btn-primary translatable" data-en="Add Breaking News"
                                 data-ar="إضافة الخبر العاجل">
                                 إضافة الخبر العاجل
                             </button>
@@ -53,9 +64,9 @@
                             <table class="table table-orders">
                                 <thead class="tb-odr-head">
                                     <tr class="tb-odr-item">
-                                        <th class="tb-odr-info text-center" style="width: 5%;">#</th>
-                                        <th class="tb-odr-info text-center" style="width: 80%;">العنوان</th>
-                                        <th class="tb-odr-action text-center" style="width: 15%;">الإجراءات</th>
+                                        <th class="tb-odr-info text-center translatable" style="width: 5%;" data-en="#" data-ar="#">#</th>
+                                        <th class="tb-odr-info text-center translatable" style="width: 20%;" data-en="Breaking News Text" data-ar="نص الخبر العاجل">نص الخبر العاجل</th>
+                                        <th class="tb-odr-action text-center translatable" style="width: 15%;" data-en="Actions" data-ar="الإجراءات">الإجراءات</th>
                                     </tr>
                                 </thead>
                                 <tbody class="tb-odr-body">
@@ -64,20 +75,15 @@
                                             <td class="tb-odr-info text-center">{{ $index + 1 }}</td>
                                             <td class="tb-odr-info text-center">
                                                 <span class="tb-odr-total"><span
-                                                        class="amount">{{ $news->title }}</span></span>
+                                                        class="amount">{{ $news->text }}</span></span>
                                             </td>
                                             <td class="tb-odr-action text-center">
-                                                <div class="dropdown">
-                                                    <a class="text-soft dropdown-toggle btn btn-icon btn-trigger"
-                                                        data-bs-toggle="dropdown" data-offset="-8,0"><em
-                                                            class="icon ni ni-more-h"></em></a>
-                                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
-                                                        <ul class="link-list-plain">
-                                                            <li><a href="#" class="text-primary">تعديل</a></li>
-                                                            <li><a href="#" class="text-danger">حذف</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                                <a href="{{ route('dashboard.breakingnew.edit', $news->id) }}" class="btn btn-sm btn-primary mx-1 translatable" data-en="Edit" data-ar="تعديل">تعديل</a>
+                                                <form action="{{ route('dashboard.breakingnew.destroy', $news->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-sm btn-danger mx-1 translatable delete-btn" data-en="Delete" data-ar="حذف">حذف</button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach

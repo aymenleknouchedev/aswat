@@ -111,6 +111,10 @@ class ContentController extends BaseController
             'seo_keyword'   => 'nullable|string|max:255',
             'status'        => 'required|in:draft,published,archived',
             'template'      => 'required|string',
+            'share_image'      => 'nullable|max:2048',
+            'share_title'      => 'nullable|string',
+            'share_description'      => 'nullable|string',
+            'review_description'      => 'nullable|string',
         ];
 
         $templateRules = [
@@ -182,6 +186,14 @@ class ContentController extends BaseController
                 return back()->withErrors(['album_images' => 'You must provide at least one album image (file or URL).'])->withInput();
             }
         }
+
+        // Validate that $shareImage is a valid URL
+        if ($request->hasFile('share_image')) {
+            $file = $request->file('share_image');
+            $path = asset('storage/' . $file->store('media', 'public'));
+            $validated['share_image'] = $path;
+        }
+
 
         // ✅ Create content
         $content = Content::create([
@@ -269,10 +281,7 @@ class ContentController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-       
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -295,6 +304,12 @@ class ContentController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $content = Content::findOrFail($id);
+        $content->media()->detach();
+        $content->tags()->detach();
+        $content->delete();
+
+        return redirect()->route('dashboard.contents.index')
+            ->with('success', 'Content deleted successfully.');
     }
 }
