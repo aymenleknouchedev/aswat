@@ -38,8 +38,6 @@ class ContentController extends BaseController
 
     public function create()
     {
-
-
         // GET DATA FROM DATABASE
         $sections = Section::all();
         $categories = Category::all();

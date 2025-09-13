@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Validator;
+
 use Illuminate\Routing\Controller as BaseController;
 
 class CategoryController extends BaseController
@@ -17,12 +19,28 @@ class CategoryController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+   public function index(Request $request)
     {
-        // Fetch all categories from the database
-        $categories = Category::all();
-        return view('dashboard.allcategories', compact('categories'));
+        try {
+            $pagination = config('pagination.categories_per_page', 20);
+
+            $query = Category::query();
+
+            if ($search = $request->input('search')) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            }
+
+            $categories = $query->latest()->paginate($pagination)
+                                ->appends($request->all());
+
+            return view('dashboard.allcategories', compact('categories'));
+        } catch (\Throwable $e) {
+            return redirect()
+                ->route('dashboard.categories.index')
+                ->withErrors(['error' => 'فشل تحميل التصنيفات. حاول مرة أخرى.']);
+        }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -37,15 +55,19 @@ class CategoryController extends BaseController
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+        try {
+            Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+            ])->validate();
 
-        $category = new Category();
-        $category->name = $request->input('name');
-        $category->save();
+            Category::create([
+                'name' => $request->input('name'),
+            ]);
 
-        return redirect()->route('dashboard.categorie.create')->with('success', 'Category created successfully.');
+            return redirect()->back()->with('success', 'Category created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to create category.']);
+        }
     }
 
     /**
@@ -70,16 +92,21 @@ class CategoryController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        $category = Category::findOrFail($id);
+        try {
+            $category = Category::findOrFail($id);
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+            Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+            ])->validate();
 
-        $category->name = $request->input('name');
-        $category->save();
+            $category->update([
+                'name' => $request->input('name'),
+            ]);
 
-        return redirect()->route('dashboard.categories.index')->with('success', 'Category updated successfully.');
+            return redirect()->route('dashboard.categories.index')->with('success', 'Category updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to update category.']);
+        }
     }
 
     /**
@@ -87,9 +114,13 @@ class CategoryController extends BaseController
      */
     public function destroy(string $id)
     {
-        $category = Category::findOrFail($id);
-        $category->delete();
+        try {
+            $category = Category::findOrFail($id);
+            $category->delete();
 
-        return redirect()->route('dashboard.categories.index')->with('success', 'Category deleted successfully.');
+            return redirect()->route('dashboard.categories.index')->with('success', 'Category deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to delete category.']);
+        }
     }
 }
