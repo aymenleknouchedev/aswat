@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Permission;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controller as BaseController;
+
+use App\Services\CacheService;
+use App\Enums\CacheKeys;
 
 class PermissionController extends BaseController
 {
@@ -17,11 +21,45 @@ class PermissionController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    // public function index()
+    // {
+    //     $ttl = config('cache_ttl.permissions', 3600);
+    //     $permissions = CacheService::remember(CacheKeys::PERMISSIONS, function () {
+    //         return Permission::all();
+    //     }, $ttl);
+    //     return view('dashboard.allpermissions', compact('permissions'));
+    // }
+
+    public function index(Request $request)
     {
-        $permissions = Permission::all();
-        return view('dashboard.allpermissions', compact('permissions'));
+        try {
+            $ttl = config('cache_ttl.permissions', 3600);
+
+            $query = Permission::query();
+
+            if ($search = $request->input('search')) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            }
+
+            if (!$search) {
+                $permissions = CacheService::remember(CacheKeys::PERMISSIONS, function () {
+                    return Permission::orderBy('id', 'desc')->get();
+                }, $ttl);
+            } else {
+                $pagination = config('pagination.permissions_per_page', 20);
+                $permissions = $query->orderBy('id', 'desc')
+                                    ->paginate($pagination)
+                                    ->appends($request->all());
+            }
+
+            return view('dashboard.allpermissions', compact('permissions'));
+        } catch (\Throwable $e) {
+            return redirect()
+                ->route('dashboard.permissions.index')
+                ->withErrors(['error' => 'فشل تحميل الصلاحيات. حاول مرة أخرى.']);
+        }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -36,18 +74,23 @@ class PermissionController extends BaseController
      */
     public function store(Request $request)
     {
-        // ✅ Validate input
-        $validated = $request->validate([
-            'name' => 'required|string|unique:permissions,name',
-        ]);
+        try {
+            $validated = Validator::validate($request->all(), [
+                'name' => 'required|string|unique:permissions,name',
+            ])->validate();
 
-        // ✅ Create permission
-        Permission::create(['name' => $validated['name']]);
+            Permission::create(['name' => $validated['name']]);
 
-        // ✅ Redirect with success message
-        return redirect()
-            ->route('dashboard.permission.create')
-            ->with('success', 'تمت إضافة الصلاحية بنجاح ✅');
+            CacheService::forget(CacheKeys::PERMISSIONS);
+
+            return redirect()
+                ->route('dashboard.permission.create')
+                ->with('success', 'تمت إضافة الصلاحية بنجاح ✅');
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('dashboard.permission.create')
+                ->with('error', 'حدث خطأ أثناء إضافة الصلاحية.');
+        }
     }
 
     /**
@@ -74,14 +117,19 @@ class PermissionController extends BaseController
     {
         $permission = Permission::findOrFail($id);
 
-        $request->validate([
+        Validator::validate($request->all(), [
             'name' => 'required|string|unique:permissions,name,' . $permission->id,
-        ]);
+        ])->validate();
+
+        if ($request->input('name') === $permission->name) {
+            return redirect()->back()->with('info', 'No changes made to the permission.');
+        }
 
         $permission->name = $request->input('name');
         $permission->save();
+        CacheService::forget(CacheKeys::PERMISSIONS);
 
-        return redirect()->route('dashboard.permissions.index')->with('success', 'Permission updated successfully.');
+        return redirect()->back()->with('success', 'Permission updated successfully.');
     }
 
     /**
@@ -89,10 +137,15 @@ class PermissionController extends BaseController
      */
     public function destroy(string $id)
     {
-        $permission = Permission::findOrFail($id);
-        $permission->delete();
+        try {
+            $permission = Permission::findOrFail($id);
+            $permission->delete();
 
-        return redirect()->route('dashboard.permissions.index')
-            ->with('success', 'Permission deleted successfully.');
+            return redirect()->back()
+                ->with('success', 'Permission deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Failed to delete permission.');
+        }
     }
 }

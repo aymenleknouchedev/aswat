@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'categories' => 3600, // 1 hour
+    'categories' => 3600,
+    'permissions' => 3600,
 ];

@@ -9,9 +9,11 @@ use Closure;
 
 class CacheService
 {
-    public static function remember(CacheKeys $key, Closure $callback)
+    public static function remember(CacheKeys $key, Closure $callback, $ttl = null)
     {
-        $ttl = Config::get("cache_ttl.{$key->value}", 3600);
+        if ($ttl === null) {
+            $ttl = Config::get("cache_ttl.{$key->value}", 3600);
+        }
 
         return Cache::remember($key->value, $ttl, $callback);
     }
