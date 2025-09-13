@@ -11,8 +11,6 @@
 
                 <div class="nk-content">
                     <div class="container-fluid">
-
-                        <!-- ✅ عنوان الصفحة -->
                         <div class="nk-block-head">
                             <div class="nk-block-head-content">
                                 <h4 class="nk-block-title" data-en="All Locations" data-ar="جميع المواقع">
@@ -24,167 +22,87 @@
                                 </p>
                             </div>
                         </div>
-
-                        <!-- ✅ Accordion Dark Mode -->
-                        <div class="accordion" id="locationsAccordion">
-
-                            <!-- المناطق -->
-                            <div class="accordion-item bg-dark text-light">
-                                <h2 class="accordion-header" id="headingRegions">
-                                    <button class="accordion-button collapsed bg-dark text-light" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseRegions" aria-expanded="false"
-                                        aria-controls="collapseRegions">
-                                        القارات
-                                    </button>
-                                </h2>
-                                <div id="collapseRegions" class="accordion-collapse collapse"
-                                    aria-labelledby="headingRegions" data-bs-parent="#locationsAccordion">
-                                    <div class="accordion-body">
-                                        <table class="table table-dark table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>الاسم</th>
-                                                    <th>الإجراءات</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @forelse ($continents as $continent)
-                                                    <tr>
-                                                        <td>{{ $continent->name }}</td>
-                                                        <td>
-                                                            <a href="#" class="btn btn-sm btn-primary">تعديل</a>
-                                                            <form
-                                                                action="{{ route('dashboard.location.destroy', $continent->id) }}"
-                                                                method="POST" class="d-inline">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button"
-                                                                    class="btn btn-sm btn-danger delete-btn">
-                                                                    حذف
-                                                                </button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @empty
-                                                    <tr>
-                                                        <td colspan="3" class="text-center text-muted">
-                                                            لا توجد مناطق حالياً
-                                                        </td>
-                                                    </tr>
-                                                @endforelse
-                                            </tbody>
-                                        </table>
-                                        {{ $continents->links() }}
+                        
+                        <div class="card card-bordered card-preview">
+                            <div class="card-inner">
+                                <form method="GET" action="{{ route('dashboard.locations.index') }}" class="row g-2 align-items-center">
+                                    <div class="col-md-8 col-12">
+                                        <input type="text" name="search" value="{{ request('search') }}"
+                                            class="form-control"
+                                            placeholder="ابحث عن تصنيف..." 
+                                            data-en="Search for category..."
+                                            data-ar="ابحث عن تصنيف...">
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- الدول -->
-                            <div class="accordion-item bg-dark text-light">
-                                <h2 class="accordion-header" id="headingCountries">
-                                    <button class="accordion-button collapsed bg-dark text-light" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseCountries" aria-expanded="true"
-                                        aria-controls="collapseCountries">
-                                        الدول
-                                    </button>
-                                </h2>
-                                <div id="collapseCountries" class="accordion-collapse collapse"
-                                    aria-labelledby="headingCountries" data-bs-parent="#locationsAccordion">
-                                    <div class="accordion-body">
-                                        <table class="table table-dark table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>الاسم</th>
-                                                    <th>الإجراءات</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @forelse ($countries as $country)
-                                                    <tr>
-                                                        <td>{{ $country->name }}</td>
-                                                        <td>
-                                                            <a href="#" class="btn btn-sm btn-primary">تعديل</a>
-                                                            <form
-                                                                action="{{ route('dashboard.location.destroy', $country->id) }}"
-                                                                method="POST" class="d-inline">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button"
-                                                                    class="btn btn-sm btn-danger delete-btn">
-                                                                    حذف
-                                                                </button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @empty
-                                                    <tr>
-                                                        <td colspan="3" class="text-center text-muted">
-                                                            لا توجد دول حالياً
-                                                        </td>
-                                                    </tr>
-                                                @endforelse
-                                            </tbody>
-                                        </table>
-                                        {{ $countries->links() }}
+                                    <div class="col-md-2 col-12">
+                                        <select name="type" class="form-select">
+                                            <option value="">جميع الأنواع</option>
+                                            <option value="city" {{ request('type') === 'city' ? 'selected' : '' }}>مدينة</option>
+                                            <option value="country" {{ request('type') === 'country' ? 'selected' : '' }}>دولة</option>
+                                            <option value="continent" {{ request('type') === 'continent' ? 'selected' : '' }}>قارة</option>
+                                        </select>
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- المدن -->
-                            <div class="accordion-item bg-dark text-light">
-                                <h2 class="accordion-header" id="headingCities">
-                                    <button class="accordion-button collapsed bg-dark text-light" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseCities" aria-expanded="false"
-                                        aria-controls="collapseCities">
-                                        المدن
-                                    </button>
-                                </h2>
-                                <div id="collapseCities" class="accordion-collapse collapse" aria-labelledby="headingCities"
-                                    data-bs-parent="#locationsAccordion">
-                                    <div class="accordion-body">
-                                        <table class="table table-dark table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>الاسم</th>
-                                                    <th>الإجراءات</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @forelse ($cities as $city)
-                                                    <tr>
-                                                        <td>{{ $city->name }}</td>
-                                                        <td>
-                                                            <a href="#" class="btn btn-sm btn-primary">تعديل</a>
-                                                            <form
-                                                                action="{{ route('dashboard.location.destroy', $city->id) }}"
-                                                                method="POST" class="d-inline">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button"
-                                                                    class="btn btn-sm btn-danger delete-btn">
-                                                                    حذف
-                                                                </button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @empty
-                                                    <tr>
-                                                        <td colspan="3" class="text-center text-muted">
-                                                            لا توجد مدن حالياً
-                                                        </td>
-                                                    </tr>
-                                                @endforelse
-                                            </tbody>
-                                        </table>
-                                        {{ $cities->links() }}
+                                    <div class="col-md-1 col-6">
+                                        <button type="submit" class="btn btn-primary w-100" data-en="Search" data-ar="بحث">بحث</button>
                                     </div>
-                                </div>
+                                    <div class="col-md-1 col-6">
+                                        <a href="{{ route('dashboard.locations.index') }}" class="btn btn-light w-100"
+                                        data-en="Reset" data-ar="إعادة تعيين">إعادة تعيين</a>
+                                    </div>
+                                </form>
                             </div>
+                            <table class="table table-orders">
+                                <thead class="tb-odr-head">
+                                    <tr class="tb-odr-item">
+                                        <th data-en="Name" data-ar="الإسم">الإسم</th>
+                                        <th data-en="Type" data-ar="النوع">النوع</th>
+                                        <th data-en="Actions" data-ar="الإجراءات">الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tb-odr-body">
+                                    @forelse ($locations as $location)
+                                        <tr class="tb-odr-item">
+                                            <td>{{ $location->name }}</td>
+                                            <td>
+                                                @if ($location->type === 'city')
+                                                    <span class="badge bg-info">{{ ucfirst($location->type) }}</span>
+                                                @elseif ($location->type === 'country')
+                                                    <span class="badge bg-success">{{ ucfirst($location->type) }}</span>
+                                                @else
+                                                    <span class="badge bg-secondary">{{ ucfirst($location->type) }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('dashboard.location.edit', $location->id) }}"
+                                                    class="btn btn-sm btn-primary" data-en="Edit" data-ar="تعديل">
+                                                    تعديل
+                                                </a>
 
+                                                <!-- ✅ زر الحذف -->
+                                                <form action="{{ route('dashboard.location.destroy', $location->id) }}"
+                                                    method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-sm btn-danger delete-btn"
+                                                        data-en="Delete" data-ar="حذف">
+                                                        حذف
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="2" class="text-center" data-en="No categories found"
+                                                data-ar="لا توجد تصنيفات">
+                                                لا توجد تصنيفات
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
-                        <!-- End Accordion -->
-
-
+                        <div class="d-flex justify-content-center mt-4">
+                            {{ $locations->links() }}
+                        </div>
                     </div>
                 </div>
 

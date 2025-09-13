@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Location;
 use Illuminate\Routing\Controller as BaseController;
 
+use Illuminate\Support\Facades\Validator;
+
 class LocationController extends BaseController
 {
 
@@ -13,19 +15,38 @@ class LocationController extends BaseController
     {
         $this->middleware(['auth', 'check:locations_access']);
     }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $countries = Location::where('type', 'country')->paginate(10);
-        $continents = Location::where('type', 'continent')->paginate(10);
-        $cities = Location::where('type', 'city')->paginate(10);
+        try {
+            $pagination = config('pagination.locations_per_page', 20);
 
+            $query = Location::query();
 
+            if ($search = $request->input('search')) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            }
 
-        return view('dashboard.alllocations', compact('countries', 'continents', 'cities'));
+            if ($type = $request->input('type')) {
+                $query->where('type', $type);
+            }
+
+            $locations = $query->latest()
+                ->paginate($pagination)
+                ->appends($request->all());
+
+            return view('dashboard.alllocations', compact('locations'));
+        } catch (\Throwable $e) {
+
+            return redirect()
+                ->route('dashboard.locations.index')
+                ->withErrors(['error' => 'فشل تحميل المواقع. حاول مرة أخرى.']);
+        }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -40,12 +61,21 @@ class LocationController extends BaseController
      */
     public function store(Request $request)
     {
-        $location = new Location();
-        $location->name = $request->input('name');
-        $location->type = $request->input('type');
-        $location->save();
+        try {
+            Validator::validate($request->all(), [
+                'name' => 'required|string',
+                'type' => 'required|in:city,continent,country',
+            ]);
 
-        return redirect()->route('dashboard.locations.index')->with('success', 'Location created successfully.');
+            Location::create([
+                'name' => $request->name,
+                'type' => $request->type,
+            ]);
+
+            return redirect()->back()->with('success', 'Location created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to create location: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -77,9 +107,13 @@ class LocationController extends BaseController
      */
     public function destroy(string $id)
     {
-        $location = Location::findOrFail($id);
-        $location->delete();
+        try {
+            $location = Location::findOrFail($id);
+            $location->delete();
 
-        return redirect()->route('dashboard.locations.index')->with('success', 'Location deleted successfully.');
+            return redirect()->back()->with('success', 'Location deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete location: ' . $e->getMessage());
+        }
     }
 }
