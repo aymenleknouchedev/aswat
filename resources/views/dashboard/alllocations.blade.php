@@ -26,26 +26,26 @@
                         <div class="card card-bordered card-preview">
                             <div class="card-inner">
                                 <form method="GET" action="{{ route('dashboard.locations.index') }}" class="row g-2 align-items-center">
-                                    <div class="col-md-8 col-12">
+                                    <div class="col-md-6 col-12">
                                         <input type="text" name="search" value="{{ request('search') }}"
                                             class="form-control"
                                             placeholder="ابحث عن تصنيف..." 
                                             data-en="Search for category..."
                                             data-ar="ابحث عن تصنيف...">
                                     </div>
-                                    <div class="col-md-2 col-12">
-                                        <select name="type" class="form-select">
+                                    <div class="col-md-2 col-12 ">
+                                        <select name="type" class="form-select center">
                                             <option value="">جميع الأنواع</option>
                                             <option value="city" {{ request('type') === 'city' ? 'selected' : '' }}>مدينة</option>
                                             <option value="country" {{ request('type') === 'country' ? 'selected' : '' }}>دولة</option>
                                             <option value="continent" {{ request('type') === 'continent' ? 'selected' : '' }}>قارة</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-1 col-6">
-                                        <button type="submit" class="btn btn-primary w-100" data-en="Search" data-ar="بحث">بحث</button>
+                                    <div class="col-md-2 col-6 ">
+                                        <button type="submit" class="btn btn-primary w-100 center" data-en="Search" data-ar="بحث">بحث</button>
                                     </div>
-                                    <div class="col-md-1 col-6">
-                                        <a href="{{ route('dashboard.locations.index') }}" class="btn btn-light w-100"
+                                    <div class="col-md-2 col-6">
+                                        <a href="{{ route('dashboard.locations.index') }}" class="btn btn-light w-100 center"
                                         data-en="Reset" data-ar="إعادة تعيين">إعادة تعيين</a>
                                     </div>
                                 </form>

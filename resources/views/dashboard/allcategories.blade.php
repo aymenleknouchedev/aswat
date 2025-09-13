@@ -55,19 +55,19 @@
                             <div class="card card-bordered card-preview">
                                 <div class="card-inner">
                                     <form method="GET" action="{{ route('dashboard.categories.index') }}" class="row g-2 align-items-center">
-                                        <div class="col-md-10 col-12">
+                                        <div class="col-md-8 col-12">
                                             <input type="text" name="search" value="{{ request('search') }}"
                                                 class="form-control"
                                                 placeholder="ابحث عن تصنيف..." 
                                                 data-en="Search for category..."
                                                 data-ar="ابحث عن تصنيف...">
                                         </div>
-                                        <div class="col-md-1 col-6">
-                                            <button type="submit" class="btn btn-primary w-100"
+                                        <div class="col-md-2 col-6">
+                                            <button type="submit" class="btn btn-primary w-100 center"
                                                     data-en="Search" data-ar="بحث">بحث</button>
                                         </div>
-                                        <div class="col-md-1 col-6">
-                                            <a href="{{ route('dashboard.categories.index') }}" class="btn btn-light w-100"
+                                        <div class="col-md-2 col-6">
+                                            <a href="{{ route('dashboard.categories.index') }}" class="btn btn-light w-100 center"
                                             data-en="Reset" data-ar="إعادة تعيين">إعادة تعيين</a>
                                         </div>
                                     </form>
