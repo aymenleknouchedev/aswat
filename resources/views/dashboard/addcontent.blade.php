@@ -146,23 +146,6 @@
 
 
                                     <div class="row g-3 mt-1 ">
-                                        <div class="form-group col-lg-12 mb-2">
-                                            <label class="form-label" for="display_method" data-ar="القالب"
-                                                data-en="Content Display Method">القالب</label>
-                                            <span style="color:red;">*</span>
-                                            <div class="form-control-wrap">
-                                                <select name="display_method" id="display_method"
-                                                    class="form-select js-select2" data-search="on">
-                                                    <option value="simple"
-                                                        {{ old('display_method', 'simple') == 'simple' ? 'selected' : '' }}>
-                                                        أساسي</option>
-                                                    <option value="list"
-                                                        {{ old('display_method') == 'list' ? 'selected' : '' }}>قائمة
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-
                                         <div class="form-group col-md-6 col-lg-3">
                                             <label class="form-label" data-ar="القسم" data-en="Section">القسم</label>
                                             <span style="color:red;">*</span>

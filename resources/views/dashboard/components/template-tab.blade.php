@@ -65,164 +65,164 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
 <script>
-    function initDynamicItems() {
-        const displayMethod = document.getElementById('display_method_id');
-        const dynamicSection = document.getElementById('dynamic-items-section');
-        const addBtn = document.getElementById('add-item-btn');
-        const container = document.getElementById('items-container');
-        const modalEl = document.getElementById('itemModal');
-        const editIndex = document.getElementById('editIndex');
-        const saveBtn = document.getElementById('saveItemBtn');
+function initDynamicItems() {
+    const displayMethod = document.getElementById('display_method_id');
+    const dynamicSection = document.getElementById('dynamic-items-section');
+    const addBtn = document.getElementById('add-item-btn');
+    const container = document.getElementById('items-container');
+    const modalEl = document.getElementById('itemModal');
+    const editIndex = document.getElementById('editIndex');
+    const saveBtn = document.getElementById('saveItemBtn');
 
-        // Hidden inputs container
-        const hiddenInputsContainer = document.getElementById('list-items-hidden-inputs');
-        const mainForm = document.getElementById('contentForm');
+    const hiddenInputsContainer = document.getElementById('list-items-hidden-inputs');
+    const mainForm = document.getElementById('contentForm'); // main form
 
-        if (!displayMethod || !dynamicSection || !addBtn || !container || !modalEl || !editIndex || !saveBtn || !hiddenInputsContainer || !mainForm) {
-            console.warn('Missing essential element(s) for dynamic items');
-            return;
+    if (!displayMethod || !dynamicSection || !addBtn || !container || !modalEl || !editIndex || !saveBtn || !hiddenInputsContainer || !mainForm) {
+        console.warn('Missing essential element(s) for dynamic items');
+        return;
+    }
+
+    let items = [];
+    let isEditing = false;
+
+    function toggleSection() {
+        const show = displayMethod.value === 'list' || displayMethod.value === 'file';
+        dynamicSection.style.display = show ? 'block' : 'none';
+
+        document.querySelectorAll('#template [required]').forEach(el => {
+            if (el.offsetParent === null) {
+                el.dataset.wasRequired = "true";
+                el.removeAttribute('required');
+            } else if (el.dataset.wasRequired) {
+                el.setAttribute('required', 'required');
+                delete el.dataset.wasRequired;
+            }
+        });
+    }
+
+    toggleSection();
+    displayMethod.addEventListener('change', toggleSection);
+
+    addBtn.addEventListener('click', () => {
+        isEditing = false;
+        editIndex.value = '';
+        document.getElementById('itemTitle').value = '';
+        document.getElementById('itemDescription').value = '';
+        document.getElementById('itemUrl').value = '';
+        document.getElementById('itemImage').value = '';
+    });
+
+    saveBtn.addEventListener('click', () => {
+        const title = (document.getElementById('itemTitle').value || '').trim();
+        const description = (document.getElementById('itemDescription').value || '').trim();
+        const imageInput = document.getElementById('itemImage');
+        const imageFile = imageInput.files[0];
+
+        if (!title) { alert('Title is required.'); return; }
+        if (!description) { alert('Description is required.'); return; }
+        if (!imageFile) { alert('Image is required.'); return; }
+
+        const newItem = {
+            title,
+            description,
+            imageFileInput: imageInput, // store the actual input
+            url: (document.getElementById('itemUrl').value || '').trim(),
+        };
+
+        if (editIndex.value !== '') {
+            items[Number(editIndex.value)] = newItem;
+        } else {
+            items.push(newItem);
         }
 
-        let items = [];
-        let isEditing = false;
+        renderItems();
 
-        function toggleSection() {
-            const show = displayMethod.value === 'list' || displayMethod.value === 'file';
-            dynamicSection.style.display = show ? 'block' : 'none';
+        if (window.bootstrap) {
+            bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+        }
+    });
 
-            // disable hidden required fields
-            document.querySelectorAll('#template [required]').forEach(el => {
-                if (el.offsetParent === null) {
-                    el.dataset.wasRequired = "true";
-                    el.removeAttribute('required');
-                } else if (el.dataset.wasRequired) {
-                    el.setAttribute('required', 'required');
-                    delete el.dataset.wasRequired;
+    function renderItems() {
+        container.innerHTML = '';
+
+        items.forEach((item, i) => {
+            item.index = i;
+
+            const div = document.createElement('div');
+            div.className = 'card p-2 d-flex flex-row justify-content-between align-items-center mt-0 mb-2';
+            div.innerHTML = `
+                <div><strong>#${item.index + 1}</strong> - ${escapeHtml(item.title || 'Untitled')}</div>
+                <div>
+                    <button type="button" class="btn btn-sm btn-warning me-1 edit-btn">Edit</button>
+                    <button type="button" class="btn btn-sm btn-danger delete-btn">Delete</button>
+                </div>
+            `;
+
+            div.querySelector('.edit-btn').addEventListener('click', () => {
+                isEditing = true;
+                editIndex.value = i;
+                document.getElementById('itemTitle').value = item.title;
+                document.getElementById('itemDescription').value = item.description;
+                document.getElementById('itemUrl').value = item.url;
+
+                if (window.bootstrap) {
+                    bootstrap.Modal.getOrCreateInstance(modalEl).show();
                 }
             });
-        }
 
-        toggleSection();
-        displayMethod.addEventListener('change', toggleSection);
-
-        addBtn.addEventListener('click', () => {
-            isEditing = false;
-            editIndex.value = '';
-            document.getElementById('itemTitle').value = '';
-            document.getElementById('itemDescription').value = '';
-            document.getElementById('itemUrl').value = '';
-            document.getElementById('itemImage').value = '';
-        });
-
-        saveBtn.addEventListener('click', () => {
-            const title = (document.getElementById('itemTitle').value || '').trim();
-            const description = (document.getElementById('itemDescription').value || '').trim();
-            const imageInput = document.getElementById('itemImage');
-            const image = imageInput.files[0]?.name || '';
-
-            // Required validation
-            if (!title) { alert('Title is required.'); return; }
-            if (!description) { alert('Description is required.'); return; }
-            if (!image) { alert('Image is required.'); return; }
-
-            const newItem = {
-                title,
-                description,
-                image,
-                url: (document.getElementById('itemUrl').value || '').trim(),
-            };
-
-            if (editIndex.value !== '') {
-                items[Number(editIndex.value)] = newItem;
-            } else {
-                items.push(newItem);
-            }
-
-            renderItems();
-
-            if (window.bootstrap) {
-                bootstrap.Modal.getOrCreateInstance(modalEl).hide();
-            }
-        });
-
-        function renderItems() {
-            container.innerHTML = '';
-
-            items.forEach((item, i) => {
-                item.index = i; // assign index dynamically
-
-                const div = document.createElement('div');
-                div.className = 'card p-2 d-flex flex-row justify-content-between align-items-center mt-0 mb-2';
-                div.innerHTML = `
-                    <div><strong>#${item.index + 1}</strong> - ${escapeHtml(item.title || 'Untitled')}</div>
-                    <div>
-                        <button type="button" class="btn btn-sm btn-warning me-1 edit-btn">Edit</button>
-                        <button type="button" class="btn btn-sm btn-danger delete-btn">Delete</button>
-                    </div>
-                `;
-
-                div.querySelector('.edit-btn').addEventListener('click', () => {
-                    isEditing = true;
-                    editIndex.value = i;
-                    document.getElementById('itemTitle').value = item.title;
-                    document.getElementById('itemDescription').value = item.description;
-                    document.getElementById('itemUrl').value = item.url;
-
-                    if (window.bootstrap) {
-                        bootstrap.Modal.getOrCreateInstance(modalEl).show();
-                    }
-                });
-
-                div.querySelector('.delete-btn').addEventListener('click', () => {
-                    items.splice(i, 1);
-                    renderItems();
-                });
-
-                container.appendChild(div);
-            });
-        }
-
-        mainForm.addEventListener('submit', (e) => {
-            hiddenContainer.innerHTML = '';
-
-            items.forEach((item, i) => {
-                const prefix = `items[${i}]`;
-
-                hiddenContainer.innerHTML += `
-                    <input type="hidden" name="${prefix}[title]" value="${item.title}">
-                    <input type="hidden" name="${prefix}[description]" value="${item.description}">
-                    <input type="hidden" name="${prefix}[image]" value="${item.image}">
-                    <input type="hidden" name="${prefix}[url]" value="${item.url}">
-                    <input type="hidden" name="${prefix}[index]" value="${item.index}">
-                `;
-            });
-        });
-
-        new Sortable(container, {
-            animation: 150,
-            onEnd(evt) {
-                const moved = items.splice(evt.oldIndex, 1)[0];
-                items.splice(evt.newIndex, 0, moved);
+            div.querySelector('.delete-btn').addEventListener('click', () => {
+                items.splice(i, 1);
                 renderItems();
-            }
+            });
+
+            container.appendChild(div);
         });
+    }
 
-        function escapeHtml(s) {
-            return String(s).replaceAll('&', '&amp;')
-                .replaceAll('<', '&lt;')
-                .replaceAll('>', '&gt;');
+    mainForm.addEventListener('submit', (e) => {
+        hiddenInputsContainer.innerHTML = '';
+
+        items.forEach((item, i) => {
+            const prefix = `items[${i}]`;
+
+            hiddenInputsContainer.innerHTML += `
+                <input type="hidden" name="${prefix}[title]" value="${item.title}">
+                <input type="hidden" name="${prefix}[description]" value="${item.description}">
+                <input type="hidden" name="${prefix}[url]" value="${item.url}">
+                <input type="hidden" name="${prefix}[index]" value="${item.index}">
+            `;
+
+            // Append the actual <input type="file"> to the form
+            const clonedInput = item.imageFileInput.cloneNode();
+            clonedInput.name = `${prefix}[image]`;
+            clonedInput.style.display = 'none';
+            mainForm.appendChild(clonedInput);
+        });
+    });
+
+    new Sortable(container, {
+        animation: 150,
+        onEnd(evt) {
+            const moved = items.splice(evt.oldIndex, 1)[0];
+            items.splice(evt.newIndex, 0, moved);
+            renderItems();
         }
-    }
+    });
 
-    // Run after DOM loaded
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initDynamicItems);
-    } else {
-        initDynamicItems();
+    function escapeHtml(s) {
+        return String(s).replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;');
     }
+}
 
-    // Support turbo/livewire/pjax reloads
-    document.addEventListener('turbo:load', initDynamicItems);
-    document.addEventListener('livewire:load', initDynamicItems);
-    document.addEventListener('pjax:success', initDynamicItems);
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDynamicItems);
+} else {
+    initDynamicItems();
+}
+
+document.addEventListener('turbo:load', initDynamicItems);
+document.addEventListener('livewire:load', initDynamicItems);
+document.addEventListener('pjax:success', initDynamicItems);
 </script>

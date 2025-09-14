@@ -76,6 +76,9 @@ class ContentController extends BaseController
      */
     public function store(Request $request)
     {
+        
+        dd($request->all());
+
         $albumImages = [];
 
         // --- Uploaded files ---

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('mobile_title', 40)->nullable();
 
             // template
-            $table->enum('display_method', ['simple', 'list'])->default('list');
+            $table->enum('display_method', ['simple', 'list', 'file'])->default('simple');
 
             // Foreign keys
             $table->foreignId('section_id')->nullable()->constrained('sections')->nullOnDelete();
