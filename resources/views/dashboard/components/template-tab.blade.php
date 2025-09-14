@@ -1,1 +1,3 @@
-template
+<div class="tab-pane fade">
+    
+</div>
