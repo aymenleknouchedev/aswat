@@ -218,22 +218,23 @@
                     class="icon ni ni-cross-sm"></em></a>
             <div class="modal-body modal-body-md">
                 <h5 class="modal-title" data-en="Upload File" data-ar="إضافة ملف">Upload File</h5>
-                <form action="#" class="mt-4">
+                <form action="{{ route('dashboard.media.store') }}" method="POST" enctype="multipart/form-data"
+                    class="mt-4">
+                    @csrf
                     <div class="row g-gs">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" for="addName" data-en="Name" data-ar="الاسم">Name</label>
-                                <input type="text" class="form-control" id="addName" placeholder="Plant"
-                                    value="Plant" data-en-placeholder="Plant" data-ar-placeholder="نبتة">
+                                <input type="text" class="form-control" id="addName" name="name">
                             </div>
                         </div><!-- .col -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" for="addAlt" data-en="Alt Text"
-                                    data-ar="النص البديل">Alter Text</label>
-                                <input type="text" class="form-control" id="addAlt"
-                                    placeholder="Feature Image" value="Feature Image"
-                                    data-en-placeholder="Feature Image" data-ar-placeholder="صورة مميزة">
+                                    data-ar="النص البديل">Alter
+                                    Text</label>
+                                <input type="text" class="form-control" id="addAlt" name="alt"
+                                    placeholder="Feature Image">
                             </div>
                         </div><!-- .col -->
                         <div class="col-12">
@@ -245,14 +246,15 @@
                                         <span class="dz-message-text" data-en="Drag and drop file"
                                             data-ar="اسحب وأسقط الملف">Drag and drop file</span>
                                     </div>
+                                    <input type="file" name="media" class="form-control mt-2">
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
                             <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                 <li>
-                                    <button type="submit" data-bs-dismiss="modal" class="btn btn-primary"
-                                        data-en="Add" data-ar="إضافة">Add</button>
+                                    <button type="submit" class="btn btn-primary" data-en="Add"
+                                        data-ar="إضافة">Add</button>
                                 </li>
                                 <li>
                                     <a href="#" class="link link-gray" data-bs-dismiss="modal"

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Routing\Controller as BaseController;
 use App\Models\ContentMedia;
+use Illuminate\Support\Facades\Storage;
 
 class MediaController extends BaseController
 {
@@ -54,7 +55,34 @@ class MediaController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'media' => 'required|file|max:5120', // 5MB كحد أقصى
+        ], [
+            'media.required' => 'الرجاء اختيار ملف وسائط.',
+            'media.file' => 'الملف يجب أن يكون من نوع ملف.',
+            'media.max' => 'حجم الملف لا يجب أن يتجاوز 5 ميغابايت.',
+        ]);
+
+         // حفظ الملف في التخزين
+
+        try {
+            $file = $request->file('media');
+            $path = '/storage/' . $file->store('media', 'public');
+
+            $media = new ContentMedia();
+            $media->media_type = $file->getClientMimeType();
+            $media->path = $path;
+            $media->save();
+
+            return redirect()
+                ->route('dashboard.medias.index')
+                ->with('success', 'تم تحميل الوسائط بنجاح.');
+        } catch (\Throwable $e) {
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'فشل تحميل الوسائط. حاول مرة أخرى.'])
+                ->withInput();
+        }
     }
 
     /**
@@ -86,6 +114,25 @@ class MediaController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $media = ContentMedia::findOrFail($id);
+
+            // حذف الملف من التخزين
+            $filePath = str_replace('/storage/', 'public/', $media->path);
+            if (Storage::exists($filePath)) {
+                Storage::delete($filePath);
+            }
+
+            // حذف السجل من قاعدة البيانات
+            $media->delete();
+
+            return redirect()
+                ->route('dashboard.medias.index')
+                ->with('success', 'تم حذف الوسائط بنجاح.');
+        } catch (\Throwable $e) {
+            return redirect()
+                ->route('dashboard.medias.index')
+                ->withErrors(['error' => 'فشل حذف الوسائط. حاول مرة أخرى.']);
+        }
     }
 }
