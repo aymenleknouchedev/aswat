@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('media_content', function (Blueprint $table) {
             $table->foreignId('content_id')->constrained()->cascadeOnDelete();
             $table->foreignId('content_media_id')->constrained()->cascadeOnDelete();
+            $table->enum('type', ['main', 'mobile', 'detail', 'album', 'video', 'podcast']);
             $table->primary(['content_media_id', 'content_id']);
-            
         });
     }
 

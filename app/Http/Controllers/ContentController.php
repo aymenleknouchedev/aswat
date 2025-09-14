@@ -211,11 +211,13 @@ class ContentController extends BaseController
                     $path = asset('storage/' . $file->store('media', 'public'));
                     $mediatype = $file->getClientMimeType();
                     $media = ContentMedia::create([
-                        'type' => $type,
                         'path' => $path,
                         'media_type' => $mediatype,
+                        'user_id' => Auth::id(),
+                        'name' => $file->getClientOriginalName(),
+                        'alt' => $content->title,
                     ]);
-                    $content->media()->attach($media->id);
+                    $content->media()->attach($media->id, ['type' => $type]);
                     continue;
                 }
 
@@ -223,11 +225,13 @@ class ContentController extends BaseController
                 if ($request->filled($field)) {
 
                     $media = ContentMedia::create([
-                        'type' => $type,
                         'path' => $request->input($field),
                         'media_type' => 'url',
+                        'user_id' => Auth::id(),
+                        'name' => $file->getClientOriginalName(),
+                        'alt' => $content->title,
                     ]);
-                    $content->media()->attach($media->id);
+                    $content->media()->attach($media->id, ['type' => $type]);
                     continue;
                 }
 
@@ -261,11 +265,13 @@ class ContentController extends BaseController
                             $mediatype = 'url';
                         }
                         $media = ContentMedia::create([
-                            'type' => $type,
                             'path' => $path,
                             'media_type' => $mediatype,
+                            'user_id' => Auth::id(),
+                            'name' => $file->getClientOriginalName(),
+                            'alt' => $content->title,
                         ]);
-                        $content->media()->attach($media->id);
+                        $content->media()->attach($media->id, ['type' => $type]);
                     }
 
                     continue;

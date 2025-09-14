@@ -113,11 +113,11 @@ class Content extends Model
         return $this->belongsToMany(
             ContentMedia::class,   // الموديل الآخر
             'media_content',       // اسم الجدول الوسيط (pivot)
-            'content_id',          // مفتاح الـ FK للـ content
-            'content_media_id'     // مفتاح الـ FK للـ media
-        );
+            'content_id',          // FK للـ content
+            'content_media_id'     // FK للـ media
+        )->withPivot('type');      // 🔥 نجيب كولم type من pivot
     }
-    
+
     public function social()
     {
         return $this->hasOne(ContentSocial::class);

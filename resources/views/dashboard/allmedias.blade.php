@@ -115,7 +115,10 @@
                                             <thead>
                                                 <tr>
                                                     <th data-en="Preview" data-ar="معاينة">Preview</th>
+                                                    <th data-en="Name" data-ar="الاسم">Name</th>
+                                                    <th data-en="Alt Text" data-ar="النص البديل">Alt Text</th>
                                                     <th data-en="Type" data-ar="النوع">Type</th>
+                                                    <th data-en="Created By" data-ar="أضيف بواسطة">Created By</th>
                                                     <th data-en="Created At" data-ar="تاريخ الإنشاء">Created At</th>
                                                     <th data-en="Actions" data-ar="إجراءات">Actions</th>
                                                 </tr>
@@ -148,7 +151,16 @@
                                                             @endif
                                                         </td>
                                                         <td>
+                                                            {{ $media->name }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $media->alt }}
+                                                        </td>
+                                                        <td>
                                                             {{ $media->media_type }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $media->user ? $media->user->name : '-' }}
                                                         </td>
                                                         <td>
                                                             {{ $media->created_at->format('Y-m-d H:i') }}
@@ -225,7 +237,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" for="addName" data-en="Name" data-ar="الاسم">Name</label>
-                                <input type="text" class="form-control" id="addName" name="name">
+                                <input required type="text" class="form-control" id="addName" name="name">
                             </div>
                         </div><!-- .col -->
                         <div class="col-md-6">
@@ -233,21 +245,13 @@
                                 <label class="form-label" for="addAlt" data-en="Alt Text"
                                     data-ar="النص البديل">Alter
                                     Text</label>
-                                <input type="text" class="form-control" id="addAlt" name="alt"
-                                    placeholder="Feature Image">
+                                <input required type="text" class="form-control" id="addAlt" name="alt">
                             </div>
                         </div><!-- .col -->
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="form-label" for="category" data-en="Featured Image"
-                                    data-ar="الصورة المميزة">Featured Image</label>
-                                <div class="upload-zone small bg-lighter my-2">
-                                    <div class="dz-message">
-                                        <span class="dz-message-text" data-en="Drag and drop file"
-                                            data-ar="اسحب وأسقط الملف">Drag and drop file</span>
-                                    </div>
-                                    <input type="file" name="media" class="form-control mt-2">
-                                </div>
+                                <label class="form-label" for="media" data-en="File" data-ar="ملف">File</label>
+                                <input required type="file" name="media" id="media" class="form-control mt-2">
                             </div>
                         </div>
                         <div class="col-12">

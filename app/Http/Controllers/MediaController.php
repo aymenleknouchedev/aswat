@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class MediaController extends BaseController
 {
@@ -57,21 +58,26 @@ class MediaController extends BaseController
     {
         $request->validate([
             'media' => 'required|file|max:5120', // 5MB كحد أقصى
+            'name' => 'required|string|max:255',
+            'alt' => 'required|string|max:255',
         ], [
             'media.required' => 'الرجاء اختيار ملف وسائط.',
             'media.file' => 'الملف يجب أن يكون من نوع ملف.',
             'media.max' => 'حجم الملف لا يجب أن يتجاوز 5 ميغابايت.',
         ]);
 
-         // حفظ الملف في التخزين
+        // حفظ الملف في التخزين
 
         try {
             $file = $request->file('media');
             $path = '/storage/' . $file->store('media', 'public');
 
             $media = new ContentMedia();
+            $media->name = $request->input('name');
+            $media->alt = $request->input('alt');
             $media->media_type = $file->getClientMimeType();
             $media->path = $path;
+            $media->user_id = Auth::id();
             $media->save();
 
             return redirect()
