@@ -22,7 +22,7 @@ class CategoryController extends BaseController
    public function index(Request $request)
     {
         try {
-            $pagination = config('pagination.categories_per_page', 20);
+            $pagination = config('pagination.per20', 20);
 
             $query = Category::query();
 

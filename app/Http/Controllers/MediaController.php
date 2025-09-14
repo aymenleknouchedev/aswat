@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Routing\Controller as BaseController;
+use App\Models\ContentMedia;
 
 class MediaController extends BaseController
 {
@@ -16,9 +17,28 @@ class MediaController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('dashboard.allmedias');
+        try {
+            $pagination = config('pagination.per10', 10);
+
+            $query = ContentMedia::query();
+
+            // البحث حسب type أو path مثلاً
+            if ($search = $request->input('search')) {
+                $query->where('type', 'LIKE', "%{$search}%")
+                    ->orWhere('path', 'LIKE', "%{$search}%");
+            }
+
+            $medias = $query->latest()->paginate($pagination)
+                ->appends($request->all());
+
+            return view('dashboard.allmedias', compact('medias'));
+        } catch (\Throwable $e) {
+            return redirect()
+                ->route('dashboard.medias.index')
+                ->withErrors(['error' => 'فشل تحميل الوسائط. حاول مرة أخرى.']);
+        }
     }
 
     /**

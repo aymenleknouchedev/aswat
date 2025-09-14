@@ -60,7 +60,7 @@ class Content extends Model
         'album_main_image',
         'album_mobile_image',
         'album_content_image',
-        'album_images', 
+        'album_images',
         // No Image
         'no_image_content_image',
         'no_image_mobile_image',
@@ -110,8 +110,14 @@ class Content extends Model
 
     public function media()
     {
-        return $this->belongsToMany(ContentMedia::class, 'media_content', 'content_id', 'content_media_id');
+        return $this->belongsToMany(
+            ContentMedia::class,   // الموديل الآخر
+            'media_content',       // اسم الجدول الوسيط (pivot)
+            'content_id',          // مفتاح الـ FK للـ content
+            'content_media_id'     // مفتاح الـ FK للـ media
+        );
     }
+    
     public function social()
     {
         return $this->hasOne(ContentSocial::class);

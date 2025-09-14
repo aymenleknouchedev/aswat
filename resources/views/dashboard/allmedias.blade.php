@@ -111,56 +111,92 @@
                                         </div>
                                     </div>
                                     <div class="nk-block">
-                                        <div class="row g-gs">
-                                            @for ($i = 0; $i < 8; $i++)
-                                                <div class="col-sm-6 col-lg-4 col-xxl-3">
-                                                    <div class="gallery gallery-content card card-bordered">
-                                                        <div class="gallery-images">
-                                                            <img class="w-100 rounded" src="user/assets/images/IMG1.webp"
-                                                                alt="">
-                                                        </div>
-                                                        <div class="image-overlay">
-                                                            <ul>
-                                                                <li>
-                                                                    <a data-bs-toggle="modal" href="#editMedia"
-                                                                        aria-label="Edit">
-                                                                        <em class="icon ni ni-edit"></em>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endfor
-                                        </div>
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th data-en="Preview" data-ar="معاينة">Preview</th>
+                                                    <th data-en="Type" data-ar="النوع">Type</th>
+                                                    <th data-en="Created At" data-ar="تاريخ الإنشاء">Created At</th>
+                                                    <th data-en="Actions" data-ar="إجراءات">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($medias as $media)
+                                                    <tr>
+                                                        <td style="width:150px; height:150px;">
+                                                            @if (
+                                                                $media->media_type === 'image/jpeg' ||
+                                                                    $media->media_type === 'image/png' ||
+                                                                    $media->media_type === 'image/gif' ||
+                                                                    $media->media_type === 'image/bmp' ||
+                                                                    $media->media_type === 'image/svg+xml' ||
+                                                                    $media->media_type === 'url')
+                                                                <img class="w-100" src="{{ $media->path }}"
+                                                                    alt="Media Preview">
+                                                            @elseif ($media->media_type === 'video/mp4' || $media->media_type === 'video/quicktime')
+                                                                <video class="w-100" controls>
+                                                                    <source src="{{ $media->path }}" type="video/mp4">
+                                                                    Your browser does not support the video tag.
+                                                                </video>
+                                                            @elseif ($media->media_type === 'audio/mpeg' || $media->media_type === 'audio/wav')
+                                                                <audio class="w-100" controls>
+                                                                    <source src="{{ $media->path }}" type="audio/mpeg">
+                                                                    Your browser does not support the audio element.
+                                                                </audio>
+                                                            @else
+                                                                <span data-en="Unknown" data-ar="غير معروف">Unknown</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            {{ $media->media_type }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $media->created_at->format('Y-m-d H:i') }}
+                                                        </td>
+                                                        <td>
+                                                            <a data-bs-toggle="modal" href="#editMedia" aria-label="Edit"
+                                                                class="btn btn-sm btn-light-grey">
+                                                                <em class="icon ni ni-edit"></em>
+                                                                <span data-en="Edit" data-ar="تعديل">Edit</span>
+                                                            </a>
+                                                            @if ($media->contents()->count() > 0)
+                                                                <button class="btn btn-sm btn-light-grey" disabled
+                                                                    title="Cannot delete: associated with content">
+                                                                    <em class="icon ni ni-cross"></em>
+                                                                    <span data-en="Delete" data-ar="حذف">Delete</span>
+                                                                </button>
+                                                            @else
+                                                                <form
+                                                                    action="{{ route('dashboard.media.destroy', $media->id) }}"
+                                                                    method="POST" style="display:inline;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-light-grey delete-btn btn-delete"
+                                                                        title="Delete">
+                                                                        <em class="icon ni ni-cross"></em>
+                                                                        <span data-en="Delete" data-ar="حذف">Delete</span>
+                                                                    </button>
+                                                                </form>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+
+                                        <style>
+                                            .btn-delete:hover {
+                                                background-color: #dc3545 !important;
+                                                color: #fff !important;
+                                                border-color: #dc3545 !important;
+                                            }
+                                        </style>
                                     </div>
-                                    <div class="nk-block">
-                                        <div class="card card-bordered card-stretch">
-                                            <div class="card-inner">
-                                                <div class="nk-block-between-md g-3">
-                                                    <div class="g">
-                                                        <ul
-                                                            class="pagination justify-content-center justify-content-md-start">
-                                                            <li class="page-item"><a class="page-link" href="#"
-                                                                    data-en="Prev" data-ar="السابق">Prev</a></li>
-                                                            <li class="page-item"><a class="page-link" href="#"
-                                                                    data-en="1" data-ar="1">1</a></li>
-                                                            <li class="page-item"><a class="page-link" href="#"
-                                                                    data-en="2" data-ar="2">2</a></li>
-                                                            <li class="page-item"><span class="page-link"><em
-                                                                        class="icon ni ni-more-h"></em></span></li>
-                                                            <li class="page-item"><a class="page-link" href="#"
-                                                                    data-en="6" data-ar="6">6</a></li>
-                                                            <li class="page-item"><a class="page-link" href="#"
-                                                                    data-en="7" data-ar="7">7</a></li>
-                                                            <li class="page-item"><a class="page-link" href="#"
-                                                                    data-en="Next" data-ar="التالي">Next</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="d-flex justify-content-center mt-4">
+                                        {{ $medias->links() }}
                                     </div>
+
                                 </div>
                             </div>
                         </div>

@@ -209,9 +209,11 @@ class ContentController extends BaseController
                 if ($request->hasFile($field) && $field !== 'album_images') {
                     $file = $request->file($field);
                     $path = asset('storage/' . $file->store('media', 'public'));
+                    $mediatype = $file->getClientMimeType();
                     $media = ContentMedia::create([
                         'type' => $type,
                         'path' => $path,
+                        'media_type' => $mediatype,
                     ]);
                     $content->media()->attach($media->id);
                     continue;
@@ -223,6 +225,7 @@ class ContentController extends BaseController
                     $media = ContentMedia::create([
                         'type' => $type,
                         'path' => $request->input($field),
+                        'media_type' => 'url',
                     ]);
                     $content->media()->attach($media->id);
                     continue;
@@ -253,9 +256,14 @@ class ContentController extends BaseController
 
                     // 3️⃣ Save all album media
                     foreach ($items as $path) {
+                        $mediatype = $file->getClientMimeType();
+                        if ($mediatype === null) {
+                            $mediatype = 'url';
+                        }
                         $media = ContentMedia::create([
                             'type' => $type,
                             'path' => $path,
+                            'media_type' => $mediatype,
                         ]);
                         $content->media()->attach($media->id);
                     }
