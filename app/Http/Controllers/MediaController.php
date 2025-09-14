@@ -149,17 +149,26 @@ class MediaController extends BaseController
 
             $query = ContentMedia::query();
 
+            // فلترة بالبحث
             if ($search = $request->input('search')) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('type', 'LIKE', "%{$search}%")
-                        ->orWhere('path', 'LIKE', "%{$search}%");
+                    $q->where('name', 'LIKE', "%{$search}%");
                 });
             }
 
             $medias = $query->latest()->paginate($pagination)
                 ->appends($request->all());
 
-            return response()->json($medias);
+            // نعدل الـ response عشان يطلع بيانات منظمة
+            $data = [
+                'data' => $medias->items(),
+                'links' => $medias->linkCollection(),
+                'current_page' => $medias->currentPage(),
+                'last_page' => $medias->lastPage(),
+                'total' => $medias->total(),
+            ];
+
+            return response()->json($data);
         } catch (\Throwable $e) {
             return response()->json(['error' => 'فشل تحميل الوسائط. حاول مرة أخرى.'], 500);
         }

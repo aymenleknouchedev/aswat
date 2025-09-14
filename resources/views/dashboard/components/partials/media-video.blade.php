@@ -5,23 +5,24 @@
         <div class="col-md-3">
             <label class="form-label" data-en="Main Image" data-ar="الصورة الأساسية">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-video_main_image"
-            style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-            <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة مختارة</span>
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة
+                    مختارة</span>
             </div>
 
             <input type="file" name="video_main_image" id="video_main_image" class="d-none" accept="image/*">
             <input type="hidden" name="video_main_image" id="video_main_image_url">
 
             <div class="d-flex flex-column gap-2">
-            <button type="button" class="btn btn-primary btn-sm w-100"
-                onclick="document.getElementById('video_main_image').click()"
-                data-en="Upload from device" data-ar="رفع صورة من الجهاز">رفع صورة من الجهاز</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
-                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_main_image"
-                data-en="Add from URL" data-ar="إضافة من رابط">إضافة من رابط</button>
-            <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                data-bs-target="#mediaModal" data-target="video_main_image" data-type="image"
-                data-en="Choose from gallery" data-ar="اختيار من المعرض">اختيار من المعرض</button>
+                <button type="button" class="btn btn-primary btn-sm w-100"
+                    onclick="document.getElementById('video_main_image').click()" data-en="Upload from device"
+                    data-ar="رفع صورة من الجهاز">رفع صورة من الجهاز</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_main_image"
+                    data-en="Add from URL" data-ar="إضافة من رابط">إضافة من رابط</button>
+                <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
+                    data-bs-target="#mediaModal" data-target="video_main_image" data-type="image"
+                    data-en="Choose from gallery" data-ar="اختيار من المعرض">اختيار من المعرض</button>
             </div>
         </div>
 
@@ -29,47 +30,50 @@
         <div class="col-md-3">
             <label class="form-label" data-en="Mobile Image" data-ar="صورة الهاتف المحمول">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-video_mobile_image"
-            style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-            <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة مختارة</span>
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة
+                    مختارة</span>
             </div>
 
             <input type="file" name="video_mobile_image" id="video_mobile_image" class="d-none" accept="image/*">
             <input type="hidden" name="video_mobile_image" id="video_mobile_image_url">
 
             <div class="d-flex flex-column gap-2">
-            <button type="button" class="btn btn-primary btn-sm w-100"
-                onclick="document.getElementById('video_mobile_image').click()"
-                data-en="Upload from device" data-ar="رفع صورة من الجهاز">رفع صورة من الجهاز</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
-                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_mobile_image"
-                data-en="Add from URL" data-ar="إضافة من رابط">إضافة من رابط</button>
-            <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                data-bs-target="#mediaModal" data-target="video_mobile_image" data-type="image"
-                data-en="Choose from gallery" data-ar="اختيار من المعرض">اختيار من المعرض</button>
+                <button type="button" class="btn btn-primary btn-sm w-100"
+                    onclick="document.getElementById('video_mobile_image').click()" data-en="Upload from device"
+                    data-ar="رفع صورة من الجهاز">رفع صورة من الجهاز</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_mobile_image"
+                    data-en="Add from URL" data-ar="إضافة من رابط">إضافة من رابط</button>
+                <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
+                    data-bs-target="#mediaModal" data-target="video_mobile_image" data-type="image"
+                    data-en="Choose from gallery" data-ar="اختيار من المعرض">اختيار من المعرض</button>
             </div>
         </div>
 
         <!-- ================= CONTENT IMAGE ================= -->
         <div class="col-md-3">
-            <label class="form-label" data-en="Content Image" data-ar="صورة المحتوى التفصيلية">صورة المحتوى التفصيلية</label>
+            <label class="form-label" data-en="Content Image" data-ar="صورة المحتوى التفصيلية">صورة المحتوى
+                التفصيلية</label>
             <div class="media-preview border rounded mb-2" id="preview-video_content_image"
-            style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-            <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة مختارة</span>
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة
+                    مختارة</span>
             </div>
 
             <input type="file" name="video_content_image" id="video_content_image" class="d-none" accept="image/*">
             <input type="hidden" name="video_content_image" id="video_content_image_url">
 
             <div class="d-flex flex-column gap-2">
-            <button type="button" class="btn btn-primary btn-sm w-100"
-                onclick="document.getElementById('video_content_image').click()"
-                data-en="Upload from device" data-ar="رفع صورة من الجهاز">رفع صورة من الجهاز</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
-                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_content_image"
-                data-en="Add from URL" data-ar="إضافة من رابط">إضافة من رابط</button>
-            <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                data-bs-target="#mediaModal" data-target="video_content_image" data-type="image"
-                data-en="Choose from gallery" data-ar="اختيار من المعرض">اختيار من المعرض</button>
+                <button type="button" class="btn btn-primary btn-sm w-100"
+                    onclick="document.getElementById('video_content_image').click()" data-en="Upload from device"
+                    data-ar="رفع صورة من الجهاز">رفع صورة من الجهاز</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_content_image"
+                    data-en="Add from URL" data-ar="إضافة من رابط">إضافة من رابط</button>
+                <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
+                    data-bs-target="#mediaModal" data-target="video_content_image" data-type="image"
+                    data-en="Choose from gallery" data-ar="اختيار من المعرض">اختيار من المعرض</button>
             </div>
         </div>
 
@@ -77,23 +81,24 @@
         <div class="col-md-3">
             <label class="form-label" data-en="Video" data-ar="الفيديو">الفيديو</label>
             <div id="preview-video_file" class="media-preview border rounded mb-2"
-            style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-            <span class="text-muted" data-en="No video selected" data-ar="لا يوجد فيديو محدد">لا يوجد فيديو محدد</span>
+                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                <span class="text-muted" data-en="No video selected" data-ar="لا يوجد فيديو محدد">لا يوجد فيديو
+                    محدد</span>
             </div>
 
             <input type="file" name="video_file" id="video_file" class="d-none" accept="video/*">
             <input type="hidden" name="video_file" id="video_file_url">
 
             <div class="d-flex flex-column gap-2">
-            <button type="button" class="btn btn-primary btn-sm w-100"
-                onclick="document.getElementById('video_file').click()"
-                data-en="Upload from device" data-ar="رفع فيديو من الجهاز">رفع فيديو من الجهاز</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
-                data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_file"
-                data-en="Add from URL" data-ar="إضافة من رابط">إضافة من رابط</button>
-            <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                data-bs-target="#mediaModal" data-target="video_file" data-type="video"
-                data-en="Choose from gallery" data-ar="اختيار من المعرض">اختيار من المعرض</button>
+                <button type="button" class="btn btn-primary btn-sm w-100"
+                    onclick="document.getElementById('video_file').click()" data-en="Upload from device"
+                    data-ar="رفع فيديو من الجهاز">رفع فيديو من الجهاز</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                    data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_file"
+                    data-en="Add from URL" data-ar="إضافة من رابط">إضافة من رابط</button>
+                <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
+                    data-bs-target="#mediaModal" data-target="video_file" data-type="video"
+                    data-en="Choose from gallery" data-ar="اختيار من المعرض">اختيار من المعرض</button>
             </div>
         </div>
 
@@ -121,61 +126,6 @@
     </div>
 </div>
 
-<!-- ========== MODAL GALLERY ========== -->
-<div class="modal fade" id="mediaModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">📚 مكتبة الوسائط</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div id="mediaLibraryGrid" class="d-flex flex-wrap gap-2">
-                    <p>اختر ملف من المكتبة...</p>
-                </div>
-                <input type="hidden" id="mediaTargetInput">
-            </div>
-        </div>
-    </div>
-</div>
-
-<style>
-    .media-preview {
-        border: 2px dashed #ccc !important;
-        transition: 0.3s;
-    }
-
-    .media-preview img,
-    .media-preview video,
-    .media-preview iframe {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-    }
-
-    .media-preview:hover {
-        border-color: #007bff !important;
-    }
-
-    .media-thumb {
-        width: 100px;
-        height: 100px;
-        cursor: pointer;
-        border: 2px solid transparent;
-        border-radius: 6px;
-        overflow: hidden;
-    }
-
-    .media-thumb img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .media-thumb:hover {
-        border-color: #007bff;
-    }
-</style>
 
 <script>
     // ================= FILE UPLOAD (images) =================
@@ -231,42 +181,6 @@
         }
     });
 
-    // ================= MEDIA MODAL =================
-    document.querySelectorAll('.open-media').forEach(btn => {
-        btn.addEventListener("click", async () => {
-            const target = btn.dataset.target;
-            const type = btn.dataset.type;
-            document.getElementById("mediaTargetInput").value = target;
-
-            const grid = document.getElementById("mediaLibraryGrid");
-            grid.innerHTML = "<p>⏳ جاري تحميل الملفات...</p>";
-
-            try {
-                const response = await fetch(`/api/media?type=${type}`);
-                const items = await response.json();
-                grid.innerHTML = "";
-                items.forEach(item => {
-                    const div = document.createElement("div");
-                    div.className = "media-thumb";
-                    div.innerHTML = `<img src="${item.src}" alt="">`;
-                    div.onclick = () => {
-                        if (type === "video") {
-                            updateVideoPreview(item.src);
-                        } else {
-                            document.getElementById("preview-" + target).innerHTML =
-                                `<img src="${item.src}" alt="preview">`;
-                        }
-                        document.getElementById(target + "_url").value = item.src;
-                        bootstrap.Modal.getInstance(document.getElementById(
-                            "mediaModal")).hide();
-                    };
-                    grid.appendChild(div);
-                });
-            } catch (e) {
-                grid.innerHTML = "<p>❌ فشل تحميل الوسائط</p>";
-            }
-        });
-    });
 
     // ================= VIDEO PREVIEW FUNCTION =================
     function updateVideoPreview(url) {
@@ -292,3 +206,77 @@
             </video>`;
     }
 </script>
+
+
+
+<style>
+    /* ====== Media Preview (where selected image shows) ====== */
+    .media-preview {
+        border: 2px dashed #ccc !important;
+        border-radius: 12px;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 140px;
+        transition: border-color 0.3s ease, background 0.3s ease;
+
+    }
+
+    .media-preview img,
+    .media-preview video {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 10px;
+        object-fit: contain;
+    }
+
+    .media-preview:hover {
+        border-color: #007bff !important;
+        background: #f0f8ff;
+    }
+
+    /* ====== Media Thumbnail (inside modal) ====== */
+    .media-thumb {
+        position: relative;
+        width: 180px;
+        height: 140px;
+        cursor: pointer;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .media-thumb img,
+    .media-thumb video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /* Hover effect */
+    .media-thumb:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .media-thumb::after {
+        content: attr(data-label);
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+
+    .media-thumb:hover::after {
+        opacity: 1;
+    }
+</style>

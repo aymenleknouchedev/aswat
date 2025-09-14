@@ -124,52 +124,7 @@
     </div>
 </div>
 
-<!-- ================= MODAL MEDIA GALLERY ================= -->
-<div class="modal fade" id="mediaModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">📚 مكتبة الوسائط</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div id="mediaLibraryGrid" class="d-flex flex-wrap gap-2">
-                    <p>اختر صورة من المكتبة...</p>
-                </div>
-                <input type="hidden" id="mediaTargetInput">
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- ================= STYLES ================= -->
-<style>
-    .media-preview {
-        border: 2px dashed #ccc !important;
-        transition: 0.3s;
-    }
-
-    .media-preview img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: cover;
-    }
-
-    .media-thumb {
-        width: 100px;
-        height: 100px;
-        cursor: pointer;
-        border: 2px solid transparent;
-        border-radius: 6px;
-        overflow: hidden;
-    }
-
-    .media-thumb img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-</style>
 
 <!-- ================= SCRIPT ================= -->
 <script>
@@ -327,34 +282,8 @@
             reader.readAsDataURL(file);
         });
 
-        // Open media library modal
-        document.querySelectorAll(`.open-media[data-target='${id}']`).forEach(btn => {
-            btn.addEventListener("click", async () => {
-                const grid = document.getElementById("mediaLibraryGrid");
-                grid.innerHTML = "<p>⏳ جاري تحميل الصور...</p>";
 
-                try {
-                    const response = await fetch("/api/media?type=image");
-                    const items = await response.json();
-                    grid.innerHTML = "";
-
-                    items.forEach(item => {
-                        const div = document.createElement("div");
-                        div.className = "media-thumb";
-                        div.innerHTML = `<img src="${item.src}" alt="">`;
-                        div.onclick = () => {
-                            inputUrl.value = item.src;
-                            preview.innerHTML =
-                                `<img src="${item.src}" class="w-100 h-100 rounded">`;
-                            bootstrap.Modal.getInstance(document.getElementById(
-                                "mediaModal")).hide();
-                        };
-                        grid.appendChild(div);
-                    });
-                } catch (e) {
-                    grid.innerHTML = "<p>❌ فشل تحميل الوسائط</p>";
-                }
-            });
-        });
     });
 </script>
+
+
