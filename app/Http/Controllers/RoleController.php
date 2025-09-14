@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Role;
 
-use App\Models\Permission; // ✅ Your Eloquent model
+use App\Models\Permission;
 use Illuminate\Routing\Controller as BaseController;
+
+use Illuminate\Support\Facades\Validator;
+use App\Services\CacheService;
+use App\Enums\CacheKeys;
 
 class RoleController extends BaseController
 {
@@ -18,12 +22,32 @@ class RoleController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // ✅ Load roles with permissions
-        $roles = Role::with('permissions')->get();
+        try {
+            
+            $ttl = config('cache_ttl.roles', 3600);
 
-        return view('dashboard.allroles', compact('roles'));
+            $query = Role::query();
+
+            if ($search = $request->input('search')) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            }
+
+            if (!$search) {
+                $roles = CacheService::remember(CacheKeys::ROLES, function () {
+                    return Role::orderBy('id', 'desc')->get();
+                }, $ttl);
+            } else {
+                $pagination = config('pagination.per20', 20);
+                $roles = $query->orderBy('id', 'desc')
+                                    ->paginate($pagination)
+                                    ->appends($request->all());
+            }
+            return view('dashboard.allroles', compact('roles'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'حدث خطأ أثناء جلب الأدوار.');
+        }
     }
 
     /**

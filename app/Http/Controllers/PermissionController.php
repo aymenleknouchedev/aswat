@@ -18,17 +18,6 @@ class PermissionController extends BaseController
     {
         $this->middleware(['auth', 'check:roles_access']);
     }
-    /**
-     * Display a listing of the resource.
-     */
-    // public function index()
-    // {
-    //     $ttl = config('cache_ttl.permissions', 3600);
-    //     $permissions = CacheService::remember(CacheKeys::PERMISSIONS, function () {
-    //         return Permission::all();
-    //     }, $ttl);
-    //     return view('dashboard.allpermissions', compact('permissions'));
-    // }
 
     public function index(Request $request)
     {
@@ -46,7 +35,7 @@ class PermissionController extends BaseController
                     return Permission::orderBy('id', 'desc')->get();
                 }, $ttl);
             } else {
-                $pagination = config('pagination.permissions_per_page', 20);
+                $pagination = config('pagination.per20', 20);
                 $permissions = $query->orderBy('id', 'desc')
                                     ->paginate($pagination)
                                     ->appends($request->all());

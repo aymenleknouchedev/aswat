@@ -143,12 +143,15 @@
                                             <span style="color:red;">*</span>
                                             <div class="form-control-wrap">
                                                 <select name="display_method" id="display_method"
-                                                    class="form-select js-select2" data-search="on">
-                                                    <option value="simple"
+                                                    class="form-select " data-search="on">
+                                                    <option value="simple" data-ar="أساسي" data-en="Simple"
                                                         {{ old('display_method', 'simple') == 'simple' ? 'selected' : '' }}>
                                                         أساسي</option>
-                                                    <option value="list"
+                                                    <option value="list" data-ar="قائمة" data-en="List"
                                                         {{ old('display_method') == 'list' ? 'selected' : '' }}>قائمة
+                                                    </option>
+                                                    <option value="file" data-ar="ملف" data-en="File"
+                                                        {{ old('display_method') == 'file' ? 'selected' : '' }}>ملف
                                                     </option>
                                                 </select>
                                             </div>
@@ -448,12 +451,12 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
     <script src="/dashlite/js/seo.js"></script>
     <script src="/dashlite/js/tabs.js"></script>
     <script src="/dashlite/js/album.js"></script>
     <script src="/dashlite/js/form-toggle.js"></script>
     <script src="/dashlite/js/media-tab.js"></script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const fields = [{
@@ -517,6 +520,4 @@
             });
         });
     </script>
-
-
 @endsection
