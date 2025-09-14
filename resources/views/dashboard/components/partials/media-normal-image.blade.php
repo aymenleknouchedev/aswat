@@ -6,7 +6,8 @@
             <label class="form-label" data-ar="الصورة الأساسية" data-en="Main Image">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-normal_main_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة مختارة</span>
+                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                    مختارة</span>
             </div>
 
             <input type="file" name="normal_main_image" id="normal_main_image" class="d-none" accept="image/*">
@@ -14,8 +15,8 @@
 
             <div class="d-flex flex-column gap-2">
                 <button type="button" class="btn btn-primary btn-sm w-100"
-                    onclick="document.getElementById('normal_main_image').click()"
-                    data-ar="رفع صورة من الجهاز" data-en="Upload from device">رفع صورة من الجهاز</button>
+                    onclick="document.getElementById('normal_main_image').click()" data-ar="رفع صورة من الجهاز"
+                    data-en="Upload from device">رفع صورة من الجهاز</button>
                 <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="normal_main_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
@@ -30,7 +31,8 @@
             <label class="form-label" data-ar="صورة الهاتف المحمول" data-en="Mobile Image">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-normal_mobile_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة مختارة</span>
+                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                    مختارة</span>
             </div>
 
             <input type="file" name="normal_mobile_image" id="normal_mobile_image" class="d-none" accept="image/*">
@@ -38,8 +40,8 @@
 
             <div class="d-flex flex-column gap-2">
                 <button type="button" class="btn btn-primary btn-sm w-100"
-                    onclick="document.getElementById('normal_mobile_image').click()"
-                    data-ar="رفع صورة من الجهاز" data-en="Upload from device">رفع صورة من الجهاز</button>
+                    onclick="document.getElementById('normal_mobile_image').click()" data-ar="رفع صورة من الجهاز"
+                    data-en="Upload from device">رفع صورة من الجهاز</button>
                 <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="normal_mobile_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
@@ -51,10 +53,12 @@
 
         <!-- ================= CONTENT IMAGE ================= -->
         <div class="col-md-4">
-            <label class="form-label" data-ar="صورة المحتوى التفصيلية" data-en="Content Image">صورة المحتوى التفصيلية</label>
+            <label class="form-label" data-ar="صورة المحتوى التفصيلية" data-en="Content Image">صورة المحتوى
+                التفصيلية</label>
             <div class="media-preview border rounded mb-2" id="preview-normal_content_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة مختارة</span>
+                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                    مختارة</span>
             </div>
 
             <input type="file" name="normal_content_image" id="normal_content_image" class="d-none" accept="image/*">
@@ -62,8 +66,8 @@
 
             <div class="d-flex flex-column gap-2">
                 <button type="button" class="btn btn-primary btn-sm w-100"
-                    onclick="document.getElementById('normal_content_image').click()"
-                    data-ar="رفع صورة من الجهاز" data-en="Upload from device">رفع صورة من الجهاز</button>
+                    onclick="document.getElementById('normal_content_image').click()" data-ar="رفع صورة من الجهاز"
+                    data-en="Upload from device">رفع صورة من الجهاز</button>
                 <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="normal_content_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
@@ -81,7 +85,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" data-ar="إضافة صورة من رابط" data-en="Add image from URL">إضافة صورة من رابط</h5>
+                <h5 class="modal-title" data-ar="إضافة صورة من رابط" data-en="Add image from URL">إضافة صورة من رابط
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -90,10 +95,10 @@
                 <input type="hidden" id="urlTargetInput">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                    data-ar="إلغاء" data-en="Cancel">إلغاء</button>
-                <button type="button" class="btn btn-primary" id="saveUrlBtn"
-                    data-ar="حفظ" data-en="Save">حفظ</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء"
+                    data-en="Cancel">إلغاء</button>
+                <button type="button" class="btn btn-primary" id="saveUrlBtn" data-ar="حفظ"
+                    data-en="Save">حفظ</button>
             </div>
         </div>
     </div>
@@ -102,14 +107,15 @@
 <!-- ========== MODAL GALLERY ========== -->
 <div class="modal fade" id="mediaModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content"> 
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" data-ar="📚 مكتبة الوسائط" data-en="📚 Media Library">📚 مكتبة الوسائط</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div id="mediaLibraryGrid" class="d-flex flex-wrap gap-2">
-                    <p data-ar="اختر صورة من المكتبة..." data-en="Choose an image from the library...">اختر صورة من المكتبة...</p>
+                    <p data-ar="اختر صورة من المكتبة..." data-en="Choose an image from the library...">اختر صورة من
+                        المكتبة...</p>
                 </div>
                 <input type="hidden" id="mediaTargetInput">
             </div>
@@ -196,27 +202,41 @@
             document.getElementById("mediaTargetInput").value = target;
 
             const grid = document.getElementById("mediaLibraryGrid");
-            grid.innerHTML = `<p data-ar="⏳ جاري تحميل الصور..." data-en="⏳ Loading images...">⏳ جاري تحميل الصور...</p>`;
+            grid.innerHTML =
+                `<p data-ar="⏳ جاري تحميل الصور..." data-en="⏳ Loading images...">⏳ جاري تحميل الصور...</p>`;
 
+            
             try {
-                const response = await fetch("/api/media?type=image");
+                const response = await fetch("{{ route('dashboard.media.getAllMediaPaginated') }}");
                 const items = await response.json();
+
                 grid.innerHTML = "";
-                items.forEach(item => {
-                    const div = document.createElement("div");
-                    div.className = "media-thumb";
-                    div.innerHTML = `<img src="${item.src}" alt="">`;
-                    div.onclick = () => {
-                        document.getElementById("preview-" + target).innerHTML =
-                            `<img src="${item.src}" alt="preview">`;
-                        document.getElementById(target + "_url").value = item.src;
-                        bootstrap.Modal.getInstance(document.getElementById(
-                            "mediaModal")).hide();
-                    };
-                    grid.appendChild(div);
-                });
-            } catch (e) {
-                grid.innerHTML = `<p data-ar="❌ فشل تحميل الوسائط" data-en="❌ Failed to load media">❌ فشل تحميل الوسائط</p>`;
+
+                // نتأكد أن فيه بيانات
+                if (items.data && items.data.length > 0) {
+                    items.data.forEach(item => {
+                        const div = document.createElement("div");
+                        div.className = "media-thumb";
+                        div.innerHTML = `<img src="${item.path}" alt="${item.name ?? ''}">`;
+
+                        div.onclick = () => {
+                            document.getElementById("preview-" + target).innerHTML =
+                                `<img src="${item.path}" alt="preview">`;
+                            document.getElementById(target + "_url").value = item.path;
+                            bootstrap.Modal.getInstance(document.getElementById(
+                                "mediaModal")).hide();
+                        };
+                        grid.appendChild(div);
+
+                    });
+                } else {
+                    grid.innerHTML =
+                        `<p data-ar="❌ لا توجد وسائط" data-en="❌ No media found">❌ لا توجد وسائط</p>`;
+                }
+            } catch (error) {
+                grid.innerHTML =
+                    `<p data-ar="❌ حدث خطأ أثناء تحميل الوسائط" data-en="❌ Error loading media">❌ حدث خطأ أثناء تحميل الوسائط</p>`;
+                console.error("Error fetching media:", error);
             }
         });
     });

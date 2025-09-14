@@ -52,7 +52,8 @@
                             </div>
                         @endif
 
-                        <form id="contentForm" action="{{ route('dashboard.content.store') }}" method="POST" enctype="multipart/form-data">
+                        <form id="contentForm" action="{{ route('dashboard.content.store') }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <!-- Tabs nav -->
                             <ul class="nav mb-4" id="contentTabs" role="tablist">
@@ -64,13 +65,19 @@
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="template-tab" data-bs-target="#template" type="button"
+                                        role="tab" aria-controls="template" aria-selected="false" data-ar="اختر القالب"
+                                        data-en="Choose Template">
+                                        اختر القالب
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="media-tab" data-bs-target="#media" type="button"
                                         role="tab" aria-controls="media" aria-selected="false" data-ar="الوسائط"
                                         data-en="Media">
                                         الوسائط
                                     </button>
                                 </li>
-
                                 <!-- NEW Social Media tab -->
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="social-media-tab" data-bs-target="#social-media"
@@ -142,8 +149,8 @@
                                                 data-en="Content Display Method">القالب</label>
                                             <span style="color:red;">*</span>
                                             <div class="form-control-wrap">
-                                                <select name="display_method" id="display_method"
-                                                    class="form-select " data-search="on">
+                                                <select name="display_method" id="display_method" class="form-select "
+                                                    data-search="on">
                                                     <option value="simple" data-ar="أساسي" data-en="Simple"
                                                         {{ old('display_method', 'simple') == 'simple' ? 'selected' : '' }}>
                                                         أساسي</option>
@@ -337,6 +344,10 @@
 
                                 </div>
 
+
+                                <!-- Template Tab -->
+                                @include('dashboard.components.template-tab')
+
                                 <!-- Media Tab -->
                                 @include('dashboard.components.media-tab', [
                                     'existing_images' => $existing_images,
@@ -456,7 +467,7 @@
     <script src="/dashlite/js/album.js"></script>
     <script src="/dashlite/js/form-toggle.js"></script>
     <script src="/dashlite/js/media-tab.js"></script>
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const fields = [{

@@ -82,6 +82,10 @@ Route::prefix('dashboard')->group(function () {
         // Settings
         Route::get('/settings', [SettingsController::class, 'settings'])->name('dashboard.settings');
 
+        // get all media paginated (for JS fetch)
+        Route::get('/media/getAllMediaPaginated', [MediaController::class, 'getAllMediaPaginated'])
+            ->name('dashboard.media.getAllMediaPaginated');
+
         // Entities
         $entities = [
             'user' => AuthController::class,

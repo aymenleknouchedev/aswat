@@ -141,4 +141,27 @@ class MediaController extends BaseController
                 ->withErrors(['error' => 'فشل حذف الوسائط. حاول مرة أخرى.']);
         }
     }
+
+    public function getAllMediaPaginated(Request $request)
+    {
+        try {
+            $pagination = config('pagination.per10', 10);
+
+            $query = ContentMedia::query();
+
+            if ($search = $request->input('search')) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('type', 'LIKE', "%{$search}%")
+                        ->orWhere('path', 'LIKE', "%{$search}%");
+                });
+            }
+
+            $medias = $query->latest()->paginate($pagination)
+                ->appends($request->all());
+
+            return response()->json($medias);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => 'فشل تحميل الوسائط. حاول مرة أخرى.'], 500);
+        }
+    }
 }
