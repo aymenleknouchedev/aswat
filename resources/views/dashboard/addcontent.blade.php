@@ -357,6 +357,8 @@
                                 ])
 
 
+
+
                                 <!-- Message Tab -->
                                 <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
                                     <div class="mb-3">
@@ -386,37 +388,66 @@
                                     aria-labelledby="social-media-tab">
                                     <div class="row g-3 mt-3">
 
-                                        <!-- Content Image -->
+                                        <!-- Share Image -->
                                         <div class="col-md-6">
-                                            <label for="share_image" class="form-label" data-ar="صورة المحتوى"
-                                                data-en="Content Image">صورة المحتوى</label>
-                                            <input type="file" id="share_image" name="share_image"
-                                                class="form-control" accept="image/*">
-                                            <div class="mt-2 border rounded p-2 text-center" style="aspect-ratio: 16/9;">
-                                                <img id="share_image_preview" src="" alt=""
-                                                    style="aspect-ratio: 16/9; display:none;">
+                                            <label class="form-label" data-ar="صورة المحتوى" data-en="Content Image">صورة
+                                                المحتوى</label>
+                                            <div class="media-preview border rounded mb-2" id="preview-share_image"
+                                                style="height: 100px; aspect-ratio: 16/9; ">
+                                                <span class="text-muted" data-ar="لا توجد صورة مختارة"
+                                                    data-en="No image selected">
+                                                    لا توجد صورة مختارة
+                                                </span>
+                                            </div>
+
+                                            <!-- File input (hidden) -->
+                                            <input type="file" id="share_image" class="d-none" accept="image/*">
+                                            <!-- Hidden URL input -->
+                                            <input type="hidden" id="share_image_url" name="share_image_url">
+
+                                            <div class="d-flex flex-column">
+                                                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
+                                                    onclick="document.getElementById('share_image').click()"
+                                                    data-ar="رفع صورة من الجهاز" data-en="Upload from device">رفع صورة من
+                                                    الجهاز</button>
+
+                                                <button type="button"
+                                                    class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
+                                                    data-bs-toggle="modal" data-bs-target="#urlModal"
+                                                    data-target="share_image" data-ar="إضافة من رابط"
+                                                    data-en="Add from URL">إضافة من رابط</button>
+
+                                                <button type="button"
+                                                    class="btn btn-outline-primary btn-sm w-100 open-media"
+                                                    data-bs-toggle="modal" data-bs-target="#mediaModal"
+                                                    data-target="share_image" data-type="image"
+                                                    data-ar="اختيار من المعرض" data-en="Choose from gallery">اختيار من
+                                                    المعرض</button>
                                             </div>
                                         </div>
 
-                                        <!-- Title -->
                                         <div class="col-md-6">
-                                            <label for="share_title" class="form-label" data-ar="عنوان المشاركة"
-                                                data-en="Share Title">عنوان المشاركة</label>
-                                            <input type="text" id="share_title" name="share_title"
-                                                class="form-control" placeholder="عنوان المشاركة"
-                                                value="{{ old('share_title', '') }}">
-                                        </div>
+                                            <!-- Share Title -->
+                                            <div class="col-md-12 mb-3">
+                                                <label for="share_title" class="form-label" data-ar="عنوان المشاركة"
+                                                    data-en="Share Title">عنوان المشاركة</label>
+                                                <input type="text" id="share_title" name="share_title"
+                                                    class="form-control" placeholder="عنوان المشاركة"
+                                                    value="{{ old('share_title', '') }}">
+                                            </div>
 
-                                        <!-- Description -->
-                                        <div class="col-md-12">
-                                            <label for="share_description" class="form-label" data-ar="وصف المشاركة"
-                                                data-en="Share Description">وصف المشاركة</label>
-                                            <textarea id="share_description" name="share_description" class="form-control" rows="3"
-                                                placeholder="أدخل وصفًا للمشاركة">{{ old('share_description', '') }}</textarea>
+                                            <!-- Share Description -->
+                                            <div class="col-md-12">
+                                                <label for="share_description" class="form-label" data-ar="وصف المشاركة"
+                                                    data-en="Share Description">وصف المشاركة</label>
+                                                <textarea id="share_description" name="share_description" class="form-control" rows="3"
+                                                    placeholder="أدخل وصفًا للمشاركة">{{ old('share_description', '') }}</textarea>
+                                            </div>
                                         </div>
 
                                     </div>
                                 </div>
+
 
                                 <!-- Review Message Tab -->
                                 <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
@@ -532,3 +563,21 @@
         });
     </script>
 @endsection
+
+
+
+<script>
+    // Share image file preview
+    document.getElementById("share_image").addEventListener("change", function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById("preview-share_image").innerHTML =
+                    `<img src="${event.target.result}" alt="preview">`;
+                document.getElementById("share_image_url").value = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
