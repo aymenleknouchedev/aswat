@@ -15,6 +15,7 @@ use App\Models\Window;
 use App\Models\Content;
 use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 
 class ContentController extends BaseController
@@ -76,6 +77,9 @@ class ContentController extends BaseController
      */
     public function store(Request $request)
     {
+
+        // dd($request->all());
+
         $albumImages = [];
 
         // --- Uploaded files ---
@@ -95,7 +99,7 @@ class ContentController extends BaseController
             'title'         => 'required|string|max:75',
             'long_title'    => 'required|string|max:210',
             'mobile_title'  => 'required|string|max:40',
-            'display_method' => 'required|string',
+            'display_method'=> 'required|string|in:simple,list,file',
             'section_id'    => 'required|exists:sections,id',
             'category_id'   => 'nullable|exists:categories,id',
             'continent_id'  => 'nullable|exists:continents,id',
@@ -109,11 +113,33 @@ class ContentController extends BaseController
             'seo_keyword'   => 'nullable|string|max:255',
             'status'        => 'required|in:draft,published,archived',
             'template'      => 'required|string',
+            // 'template'      => [
+            //     Rule::requiredIf(fn ($input) => $input->display_method !== 'simple'),
+            //     'string'
+            // ],
             'share_image'      => 'nullable|max:2048',
             'share_title'      => 'nullable|string',
             'share_description'      => 'nullable|string',
             'review_description'      => 'nullable|string',
         ];
+
+        if ($request->display_method === 'list') {
+            $rules['items'] = 'required|array|min:1';
+            $rules['items.*.title'] = 'required|string|max:255';
+            $rules['items.*.description'] = 'required|string';
+            $rules['items.*.url'] = 'required|url';
+            $rules['items.*.image'] = 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10000';
+            $rules['items.*.index'] = 'required|integer';
+        }
+
+        if ($request->display_method === 'file') {
+            $rules['items'] = 'required|array|min:1';
+            $rules['items.*.title'] = 'required|string|max:255';
+            $rules['items.*.description'] = 'required|string';
+            $rules['items.*.url'] = 'nullable|url';
+            $rules['items.*.image'] = 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10000';
+            $rules['items.*.index'] = 'required|integer';
+        }
 
         $templateRules = [
             'normal_image' => [
@@ -199,6 +225,33 @@ class ContentController extends BaseController
             'user_id' => Auth::id(),
         ]);
 
+        // store items here
+        if (!empty($validated['items']) && is_array($validated['items'])) {
+            foreach ($validated['items'] as $item) {
+                $imagePath = null;
+
+                // Handle uploaded file
+                if (isset($item['image']) && $item['image'] instanceof \Illuminate\Http\UploadedFile) {
+                    $imagePath = $item['image']->store('content_list_images', 'public');
+                } elseif (is_string($item['image'])) {
+                    $imagePath = $item['image'];
+                }
+
+                // store the whole path
+                if ($imagePath && !str_starts_with($imagePath, 'http')) {
+                    $imagePath = asset('storage/' . $imagePath);
+                }
+
+                $content->contentLists()->create([
+                    'title'       => $item['title'],
+                    'description' => $item['description'],
+                    'url'         => $item['url'] ?? null,
+                    'image'       => $imagePath,
+                    'index'       => $item['index'],
+                ]);
+            }
+        }
+
 
         $mediaMap = $templateMediaMap[$request->template];
 
@@ -228,7 +281,7 @@ class ContentController extends BaseController
                         'path' => $request->input($field),
                         'media_type' => 'url',
                         'user_id' => Auth::id(),
-                        'name' => $file->getClientOriginalName(),
+                        'name' => 'url_' . bin2hex(random_bytes(10)),
                         'alt' => $content->title,
                     ]);
                     $content->media()->attach($media->id, ['type' => $type]);
