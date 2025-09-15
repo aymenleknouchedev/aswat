@@ -126,6 +126,71 @@
 
 
 
+
+<!-- ================= ALBUM MEDIA MODAL ================= -->
+<div class="modal fade" id="album-mediaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg rounded-4">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold">📚 مكتبة الوسائط (ألبوم)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Search -->
+                <div class="mb-3">
+                    <input type="text" id="album_mediaSearch" class="form-control"
+                        placeholder="🔍 ابحث عن الصور...">
+                </div>
+
+                <!-- Grid -->
+                <div id="album_mediaLibraryGrid" class="row g-3 text-center">
+                    <p class="text-muted">⏳ جاري تحميل الصور...</p>
+                </div>
+
+                <!-- Pagination -->
+                <nav>
+                    <ul id="album_mediaPagination" class="pagination justify-content-center mt-3"></ul>
+                </nav>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-light border" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ================= SINGLE IMAGE MEDIA MODAL ================= -->
+<div class="modal fade" id="single-mediaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg rounded-4">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold">🖼 مكتبة الوسائط (صورة واحدة)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <input type="text" id="single_mediaSearch" class="form-control"
+                        placeholder="🔍 ابحث عن الصور...">
+                </div>
+                <div id="single_mediaLibraryGrid" class="row g-3 text-center">
+                    <p class="text-muted">⏳ جاري تحميل الصور...</p>
+                </div>
+                <nav>
+                    <ul id="single_mediaPagination" class="pagination justify-content-center mt-3"></ul>
+                </nav>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-light border" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <!-- ================= SCRIPT ================= -->
 <script>
     const form = document.getElementById('contentForm');
@@ -287,38 +352,6 @@
 </script>
 
 
-<!-- ================= ALBUM MEDIA MODAL ================= -->
-<div class="modal fade" id="album-mediaModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content shadow-lg rounded-4">
-            <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold">📚 مكتبة الوسائط (ألبوم)</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Search -->
-                <div class="mb-3">
-                    <input type="text" id="album_mediaSearch" class="form-control"
-                        placeholder="🔍 ابحث عن الصور...">
-                </div>
-
-                <!-- Grid -->
-                <div id="album_mediaLibraryGrid" class="row g-3 text-center">
-                    <p class="text-muted">⏳ جاري تحميل الصور...</p>
-                </div>
-
-                <!-- Pagination -->
-                <nav>
-                    <ul id="album_mediaPagination" class="pagination justify-content-center mt-3"></ul>
-                </nav>
-            </div>
-            <div class="modal-footer border-0">
-                <button class="btn btn-light border" data-bs-dismiss="modal">إغلاق</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <script>
     /* ================= MULTIPLE IMAGE MEDIA LIBRARY ================= */
@@ -384,33 +417,6 @@
 
 
 
-<!-- ================= SINGLE IMAGE MEDIA MODAL ================= -->
-<div class="modal fade" id="single-mediaModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content shadow-lg rounded-4">
-            <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold">🖼 مكتبة الوسائط (صورة واحدة)</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <input type="text" id="single_mediaSearch" class="form-control"
-                        placeholder="🔍 ابحث عن الصور...">
-                </div>
-                <div id="single_mediaLibraryGrid" class="row g-3 text-center">
-                    <p class="text-muted">⏳ جاري تحميل الصور...</p>
-                </div>
-                <nav>
-                    <ul id="single_mediaPagination" class="pagination justify-content-center mt-3"></ul>
-                </nav>
-            </div>
-            <div class="modal-footer border-0">
-                <button class="btn btn-light border" data-bs-dismiss="modal">إغلاق</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <script>
     let single_currentTarget = null;
@@ -425,7 +431,7 @@
         try {
             const response = await fetch(
                 `{{ route('dashboard.media.getAllMediaPaginated') }}?page=${page}&search=${encodeURIComponent(search)}`
-                );
+            );
             const items = await response.json();
             grid.innerHTML = "";
 
@@ -444,7 +450,7 @@
                         preview.innerHTML = `<img src="${item.path}" class="w-100 h-100 rounded">`;
 
                         bootstrap.Modal.getInstance(document.getElementById("single-mediaModal"))
-                    .hide();
+                            .hide();
                     };
 
                     grid.appendChild(div);
