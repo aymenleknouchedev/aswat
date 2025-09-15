@@ -14,11 +14,11 @@ class ContentList extends Model
 
     protected $fillable = [
         'content_id',
-        'type',
+        'title',
+        'description',
+        'image',
         'url',
-        'caption',
-        'alt_text',
-        'order',
+        'index',
     ];
 
     public function content()

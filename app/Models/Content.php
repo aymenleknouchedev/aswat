@@ -126,4 +126,9 @@ class Content extends Model
     {
         return $this->hasMany(ContentReview::class);
     }
+
+    public function contentLists()
+    {
+        return $this->hasMany(ContentList::class);
+    }
 }
