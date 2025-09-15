@@ -27,7 +27,6 @@ class RoleController extends BaseController
         try {
             
             $ttl = config('cache_ttl.roles', 3600);
-
             $query = Role::query();
 
             if ($search = $request->input('search')) {
@@ -55,9 +54,15 @@ class RoleController extends BaseController
      */
     public function create()
     {
-        // ✅ Get all permissions from your table
-        $permissions = Permission::all();
-        return view('dashboard.addrole', compact('permissions'));
+        try {
+            $ttl = config('cache_ttl.permissions', 3600);
+            $permissions = CacheService::remember(CacheKeys::PERMISSIONS, function () {
+                return Permission::all();
+            }, $ttl);
+            return view('dashboard.addrole', compact('permissions'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'حدث خطأ أثناء جلب الصلاحيات.');
+        }
     }
 
     /**
@@ -65,26 +70,33 @@ class RoleController extends BaseController
      */
     public function store(Request $request)
     {
-        // ✅ 1. Validate inputs
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name',
-            'permissions' => 'nullable|array',
-            'permissions.*' => 'exists:permissions,id',
-        ]);
+        try {
+            // ✅ 1. Validate inputs
+            $validated = $request->validate([
+                'name' => 'required|string|max:255|unique:roles,name',
+                'permissions' => 'nullable|array',
+                'permissions.*' => 'exists:permissions,id',
+            ]);
 
-        // ✅ 2. Create new role
-        $role = Role::create([
-            'name' => $validated['name'],
-        ]);
+            // ✅ 2. Create new role
+            $role = Role::create([
+                'name' => $validated['name'],
+            ]);
 
-        // ✅ 3. Attach permissions if selected
-        if (!empty($validated['permissions'])) {
-            $role->permissions()->attach($validated['permissions']);
+            CacheService::forget(CacheKeys::ROLES);
+            CacheService::forget(CacheKeys::PERMISSIONS);
+
+            // ✅ 3. Attach permissions if selected
+            if (!empty($validated['permissions'])) {
+                $role->permissions()->attach($validated['permissions']);
+            }
+
+            // ✅ 4. Redirect with success message
+            return redirect()->route('dashboard.role.create')
+                ->with('success', 'تم إنشاء الدور بنجاح مع الصلاحيات.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'حدث خطأ أثناء إنشاء الدور.');
         }
-
-        // ✅ 4. Redirect with success message
-        return redirect()->route('dashboard.role.create')
-            ->with('success', 'تم إنشاء الدور بنجاح مع الصلاحيات.');
     }
 
     /**
@@ -110,23 +122,30 @@ class RoleController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        $role = Role::findOrFail($id);
+        try {
+            $role = Role::findOrFail($id);
 
-        $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
-            'permissions' => 'nullable|array',
-            'permissions.*' => 'exists:permissions,id',
-        ]);
+            $request->validate([
+                'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+                'permissions' => 'nullable|array',
+                'permissions.*' => 'exists:permissions,id',
+            ]);
 
-        $role->name = $request->input('name');
-        $role->save();
+            $role->name = $request->input('name');
+            $role->save();
 
-        // Sync permissions
-        if (!empty($request->input('permissions'))) {
-            $role->permissions()->sync($request->input('permissions'));
+            CacheService::forget(CacheKeys::ROLES);
+            CacheService::forget(CacheKeys::PERMISSIONS);
+
+            // Sync permissions
+            if (!empty($request->input('permissions'))) {
+                $role->permissions()->sync($request->input('permissions'));
+            }
+
+            return redirect()->route('dashboard.roles.index')->with('success', 'تم تحديث الدور بنجاح.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'حدث خطأ أثناء تحديث الدور.');
         }
-
-        return redirect()->route('dashboard.roles.index')->with('success', 'تم تحديث الدور بنجاح.');
     }
 
     /**
@@ -134,10 +153,17 @@ class RoleController extends BaseController
      */
     public function destroy(string $id)
     {
-        $role = Role::findOrFail($id);
-        $role->delete();
+        try {
+            $role = Role::findOrFail($id);
+            $role->delete();
 
-        return redirect()->route('dashboard.roles.index')
-            ->with('success', 'تم حذف الدور بنجاح.');
+            CacheService::forget(CacheKeys::ROLES);
+            CacheService::forget(CacheKeys::PERMISSIONS);
+
+            return redirect()->route('dashboard.roles.index')
+                ->with('success', 'تم حذف الدور بنجاح.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'حدث خطأ أثناء حذف الدور.');
+        }
     }
 }

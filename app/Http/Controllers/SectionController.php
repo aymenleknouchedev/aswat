@@ -6,6 +6,9 @@ use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
+use App\Services\CacheService;
+use App\Enums\CacheKeys;
+
 class SectionController extends BaseController
 {
 
@@ -18,9 +21,16 @@ class SectionController extends BaseController
      */
     public function index()
     {
-        // Fetch all sections from the database
-        $sections = Section::all();
-        return view('dashboard.allsections', compact('sections'));
+        try {
+            $ttl = config('cache_ttl.sections', 3600);
+            $sections = CacheService::remember(CacheKeys::SECTIONS, function () {
+                return Section::all();
+            }, $ttl);
+
+            return view('dashboard.allsections', compact('sections'));
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to load sections.']);
+        }
     }
 
     /**
@@ -37,15 +47,20 @@ class SectionController extends BaseController
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
 
-        $section = new Section();       
-        $section->name = $request->input('name');
-        $section->save();
+            $section = new Section();       
+            $section->name = $request->input('name');
+            $section->save();
+            CacheService::forget(CacheKeys::SECTIONS);
 
-        return redirect()->route('dashboard.section.create')->with('success', 'Section created successfully.');
+            return redirect()->route('dashboard.section.create')->with('success', 'Section created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to create section.']);
+        }
     }
 
     /**
@@ -70,15 +85,21 @@ class SectionController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
 
-        $section = Section::findOrFail($id);
-        $section->name = $request->input('name');
-        $section->save();
+            $section = Section::findOrFail($id);
+            $section->name = $request->input('name');
+            $section->save();
 
-        return redirect()->route('dashboard.sections.index')->with('success', 'Section updated successfully.');
+            CacheService::forget(CacheKeys::SECTIONS);
+
+            return redirect()->route('dashboard.sections.index')->with('success', 'Section updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to update section.']);
+        }
     }
 
     /**
@@ -86,9 +107,14 @@ class SectionController extends BaseController
      */
     public function destroy(string $id)
     {
-        $section = Section::findOrFail($id);
-        $section->delete();
+        try {
+            $section = Section::findOrFail($id);
+            $section->delete();
+            CacheService::forget(CacheKeys::SECTIONS);
 
-        return redirect()->route('dashboard.sections.index')->with('success', 'Section deleted successfully.');
+            return redirect()->route('dashboard.sections.index')->with('success', 'Section deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to delete section.']);
+        }
     }
 }

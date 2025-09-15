@@ -2,27 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
+
 use App\Models\Content;
 use App\Models\Writer;
+use Illuminate\Support\Carbon;
+use Exception;
 
-class DashboardController extends BaseController
+class DashboardController extends Controller
 {
+
+    protected $last_10_cache_ttl = 1000;
 
     public function __construct()
     {
-        $this->middleware(['auth', 'check:dashboard_access']);
+        // $this->middleware(['auth', 'check:dashboard_access']);
     }
 
     public function index()
     {
-        $contentCount = Content::where('status', '!=', 'draft')->count();
-        $publishedTodayCount = Content::whereDate('created_at', now()->toDateString())
-            ->where('status', 'published')
-            ->count();
-        $waitingValidationCount = Content::where('status', 'draft')->count();
-        $writersCount = Writer::count();
-        $lastSevenContents = Content::orderBy('created_at', 'desc')->take(7)->get();
-        return view('dashboard.index', compact('contentCount', 'publishedTodayCount', 'waitingValidationCount',  'writersCount', 'lastSevenContents'));
+        try {
+
+            $count_cache_ttl = config('cache_ttl.hour', 3600);
+            $last_10_cache_ttl = config('cache_ttl.minute', 60);
+            $today = Carbon::today();
+
+            $contentCount = Cache::remember('content_count', $count_cache_ttl, function () {
+                return Content::where('status', '!=', 'draft')->count();
+            });
+
+            $publishedTodayCount = Cache::remember('published_today_count', $count_cache_ttl, function () use ($today) {
+                return Content::whereDate('created_at', $today)
+                    ->where('status', 'published')
+                    ->count();
+            });
+
+            $waitingValidationCount = Cache::remember('waiting_validation_count', $count_cache_ttl, function () {
+                return Content::where('status', 'draft')->count();
+            });
+
+            $writersCount = Cache::remember('writers_count', $count_cache_ttl, function () {
+                return Writer::count();
+            });
+
+            $lastTenContents = Cache::remember('last_ten_contents', $last_10_cache_ttl, function () {
+                return Content::latest()->take(10)->get();
+            });
+
+            return view('dashboard.index', [
+                'contentCount'           => $contentCount,
+                'publishedTodayCount'    => $publishedTodayCount,
+                'waitingValidationCount' => $waitingValidationCount,
+                'writersCount'           => $writersCount,
+                'lastTenContents'        => $lastTenContents,
+            ]);
+        } catch (Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', 'Unable to load dashboard data. Please try again later.');
+        }
     }
 }
+
