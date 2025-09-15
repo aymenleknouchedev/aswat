@@ -28,7 +28,7 @@
                 data-en="Add from URLs">إضافة من روابط</button>
 
             <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media-multi mt-1"
-                data-bs-toggle="modal" data-bs-target="#mediaModal" data-target="album_images" data-type="image"
+                data-bs-toggle="modal" data-bs-target="#album-mediaModal" data-target="album_images" data-type="image"
                 data-ar="اختيار من المعرض" data-en="Choose from Media">اختيار من المعرض</button>
         </div>
         <!-- ================= SINGLE IMAGE FIELDS ================= -->
@@ -50,8 +50,8 @@
                 data-bs-toggle="modal" data-bs-target="#urlModal" data-target="album_main_image" data-ar="إضافة من رابط"
                 data-en="Add from URL">إضافة من رابط</button>
             <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media mt-1" data-bs-toggle="modal"
-                data-bs-target="#mediaModal" data-target="album_main_image" data-type="image" data-ar="اختيار من المعرض"
-                data-en="Choose from Media">اختيار من المعرض</button>
+                data-bs-target="#single-mediaModal" data-target="album_main_image" data-type="image"
+                data-ar="اختيار من المعرض" data-en="Choose from Media">اختيار من المعرض</button>
         </div>
 
         <!-- MOBILE IMAGE -->
@@ -72,7 +72,7 @@
                 data-bs-toggle="modal" data-bs-target="#urlModal" data-target="album_content_image"
                 data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
             <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media mt-1"
-                data-bs-toggle="modal" data-bs-target="#mediaModal" data-target="album_content_image"
+                data-bs-toggle="modal" data-bs-target="#single-mediaModal" data-target="album_content_image"
                 data-type="image" data-ar="اختيار من المعرض" data-en="Choose from Media">اختيار من المعرض</button>
         </div>
 
@@ -96,7 +96,7 @@
                 data-bs-toggle="modal" data-bs-target="#urlModal" data-target="album_mobile_image"
                 data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
             <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media mt-1"
-                data-bs-toggle="modal" data-bs-target="#mediaModal" data-target="album_mobile_image"
+                data-bs-toggle="modal" data-bs-target="#single-mediaModal" data-target="album_mobile_image"
                 data-type="image" data-ar="اختيار من المعرض" data-en="Choose from Media">اختيار من المعرض</button>
         </div>
 
@@ -254,7 +254,7 @@
                         albumUrls.push(item.src);
                         renderAlbumImages();
                         bootstrap.Modal.getInstance(document.getElementById(
-                            "mediaModal")).hide();
+                            "album-mediaModal")).hide();
                     };
                     grid.appendChild(div);
                 });
@@ -287,3 +287,187 @@
 </script>
 
 
+<!-- ================= ALBUM MEDIA MODAL ================= -->
+<div class="modal fade" id="album-mediaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg rounded-4">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold">📚 مكتبة الوسائط (ألبوم)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Search -->
+                <div class="mb-3">
+                    <input type="text" id="album_mediaSearch" class="form-control"
+                        placeholder="🔍 ابحث عن الصور...">
+                </div>
+
+                <!-- Grid -->
+                <div id="album_mediaLibraryGrid" class="row g-3 text-center">
+                    <p class="text-muted">⏳ جاري تحميل الصور...</p>
+                </div>
+
+                <!-- Pagination -->
+                <nav>
+                    <ul id="album_mediaPagination" class="pagination justify-content-center mt-3"></ul>
+                </nav>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-light border" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    /* ================= MULTIPLE IMAGE MEDIA LIBRARY ================= */
+    let album_currentPage = 1;
+    let album_currentSearch = "";
+
+    async function loadAlbumMedia(page = 1, search = "") {
+        const grid = document.getElementById("album_mediaLibraryGrid");
+        const pagination = document.getElementById("album_mediaPagination");
+
+        grid.innerHTML = "<p>⏳ جاري تحميل الصور...</p>";
+        pagination.innerHTML = "";
+
+        try {
+            const response = await fetch(
+                `{{ route('dashboard.media.getAllMediaPaginated') }}?page=${page}&search=${encodeURIComponent(search)}`
+            );
+            const items = await response.json();
+
+            grid.innerHTML = "";
+
+            if (items.data && items.data.length > 0) {
+                items.data.forEach(item => {
+                    const div = document.createElement("div");
+                    div.className = "media-thumb col-md-3";
+                    div.innerHTML = `<img src="${item.path}" alt="">`;
+
+                    div.onclick = () => {
+                        albumUrls.push(item.path);
+                        renderAlbumImages();
+                        bootstrap.Modal.getInstance(document.getElementById("album-mediaModal")).hide();
+                    };
+
+                    grid.appendChild(div);
+                });
+
+                // TODO: لو حاب نضيف Pagination هنا ممكن أجهزلك الكود
+            } else {
+                grid.innerHTML = "<p>❌ لا توجد صور</p>";
+            }
+        } catch (e) {
+            grid.innerHTML = "<p>❌ فشل تحميل الوسائط</p>";
+            console.error(e);
+        }
+    }
+
+    // فتح المودال
+    document.querySelectorAll('.open-media-multi').forEach(btn => {
+        btn.addEventListener("click", () => {
+            album_currentPage = 1;
+            album_currentSearch = "";
+            loadAlbumMedia();
+        });
+    });
+
+    // البحث داخل المودال
+    document.getElementById("album_mediaSearch").addEventListener("keyup", (e) => {
+        album_currentSearch = e.target.value;
+        album_currentPage = 1;
+        loadAlbumMedia(album_currentPage, album_currentSearch);
+    });
+</script>
+
+
+
+<!-- ================= SINGLE IMAGE MEDIA MODAL ================= -->
+<div class="modal fade" id="single-mediaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg rounded-4">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold">🖼 مكتبة الوسائط (صورة واحدة)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <input type="text" id="single_mediaSearch" class="form-control"
+                        placeholder="🔍 ابحث عن الصور...">
+                </div>
+                <div id="single_mediaLibraryGrid" class="row g-3 text-center">
+                    <p class="text-muted">⏳ جاري تحميل الصور...</p>
+                </div>
+                <nav>
+                    <ul id="single_mediaPagination" class="pagination justify-content-center mt-3"></ul>
+                </nav>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-light border" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    let single_currentTarget = null;
+
+    async function loadSingleMedia(page = 1, search = "") {
+        const grid = document.getElementById("single_mediaLibraryGrid");
+        const pagination = document.getElementById("single_mediaPagination");
+
+        grid.innerHTML = "<p>⏳ جاري تحميل الصور...</p>";
+        pagination.innerHTML = "";
+
+        try {
+            const response = await fetch(
+                `{{ route('dashboard.media.getAllMediaPaginated') }}?page=${page}&search=${encodeURIComponent(search)}`
+                );
+            const items = await response.json();
+            grid.innerHTML = "";
+
+            if (items.data && items.data.length > 0) {
+                items.data.forEach(item => {
+                    const div = document.createElement("div");
+                    div.className = "media-thumb col-md-3";
+                    div.innerHTML = `<img src="${item.path}" alt="">`;
+
+                    div.onclick = () => {
+                        // حدد الهدف (input + preview)
+                        const inputUrl = document.getElementById(single_currentTarget + "_url");
+                        const preview = document.getElementById("preview-" + single_currentTarget);
+
+                        inputUrl.value = item.path;
+                        preview.innerHTML = `<img src="${item.path}" class="w-100 h-100 rounded">`;
+
+                        bootstrap.Modal.getInstance(document.getElementById("single-mediaModal"))
+                    .hide();
+                    };
+
+                    grid.appendChild(div);
+                });
+            } else {
+                grid.innerHTML = "<p>❌ لا توجد صور</p>";
+            }
+        } catch (e) {
+            grid.innerHTML = "<p>❌ فشل تحميل الوسائط</p>";
+            console.error(e);
+        }
+    }
+
+    // زر فتح المودال
+    document.querySelectorAll('.open-media').forEach(btn => {
+        btn.addEventListener("click", () => {
+            single_currentTarget = btn.getAttribute("data-target"); // مثال: album_main_image
+            loadSingleMedia();
+        });
+    });
+
+    // البحث داخل المودال
+    document.getElementById("single_mediaSearch").addEventListener("keyup", (e) => {
+        loadSingleMedia(1, e.target.value);
+    });
+</script>

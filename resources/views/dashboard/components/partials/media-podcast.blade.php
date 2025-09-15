@@ -21,7 +21,7 @@
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_main_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                    data-bs-target="#mediaModal" data-target="podcast_main_image" data-type="image"
+                    data-bs-target="#podcast-mediaModal" data-target="podcast_main_image" data-type="image"
                     data-ar="اختيار من المعرض" data-en="Choose from gallery">اختيار من المعرض</button>
             </div>
         </div>
@@ -46,7 +46,7 @@
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_mobile_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                    data-bs-target="#mediaModal" data-target="podcast_mobile_image" data-type="image"
+                    data-bs-target="#podcast-mediaModal" data-target="podcast_mobile_image" data-type="image"
                     data-ar="اختيار من المعرض" data-en="Choose from gallery">اختيار من المعرض</button>
             </div>
         </div>
@@ -73,7 +73,7 @@
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_content_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                    data-bs-target="#mediaModal" data-target="podcast_content_image" data-type="image"
+                    data-bs-target="#podcast-mediaModal" data-target="podcast_content_image" data-type="image"
                     data-ar="اختيار من المعرض" data-en="Choose from gallery">اختيار من المعرض</button>
             </div>
         </div>
@@ -98,7 +98,7 @@
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_file"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
-                    data-bs-target="#mediaModal" data-target="podcast_file" data-type="audio"
+                    data-bs-target="#podcast-mediaModal" data-target="podcast_file" data-type="audio"
                     data-ar="اختيار من المعرض" data-en="Choose from gallery">اختيار من المعرض</button>
             </div>
         </div>
@@ -178,3 +178,182 @@
 </script>
 
 
+<!-- ========== MODAL GALLERY (Podcast) ========== -->
+<div class="modal fade" id="podcast-mediaModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content shadow-lg rounded-4">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold">📚 مكتبة الوسائط</h5>
+        <button type="button" class="btn-close shadow-sm" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Search Bar -->
+        <div class="mb-3">
+          <input type="text" id="mediaSearchPodcast" class="form-control" placeholder="🔍 ابحث عن وسائط...">
+        </div>
+        <!-- Media Grid -->
+        <div id="mediaLibraryGridPodcast" class="row g-3 text-center">
+          <p class="text-muted text-center">اختر صورة أو بودكاست من المكتبة...</p>
+        </div>
+        <!-- Pagination -->
+        <nav>
+          <ul id="mediaPaginationPodcast" class="pagination justify-content-center mt-3"></ul>
+        </nav>
+        <input type="hidden" id="mediaTargetInputPodcast">
+      </div>
+      <div class="modal-footer border-0">
+        <button class="btn btn-light border" data-bs-dismiss="modal">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+let currentPagePodcast = 1;
+let currentSearchPodcast = "";
+
+async function loadMediaPodcast(page = 1, search = "") {
+    const grid = document.getElementById("mediaLibraryGridPodcast");
+    grid.innerHTML = `<p>⏳ جاري تحميل الوسائط...</p>`;
+
+    try {
+        const response = await fetch(`{{ route('dashboard.media.getAllMediaPaginated') }}?page=${page}&search=${encodeURIComponent(search)}`);
+        const items = await response.json();
+        grid.innerHTML = "";
+
+        if (items.data && items.data.length > 0) {
+            items.data.forEach(item => {
+                const div = document.createElement("div");
+                div.className = "media-thumb col-md-3";
+                div.setAttribute("data-label", "اختر");
+
+                const type = item.media_type?.toLowerCase() || "";
+
+                if (type.startsWith("image/")) {
+                    div.innerHTML = `<img src="${item.path}" alt="${item.name ?? ''}">`;
+                } else if (type.startsWith("audio/")) {
+                    div.innerHTML = `<div class="p-3 border rounded bg-light">🎵 ${item.name ?? 'ملف صوت'}</div>`;
+                } else {
+                    div.innerHTML = `<div class="p-3 border rounded bg-light">📂 ${item.name ?? 'ملف'}</div>`;
+                }
+
+                div.onclick = () => {
+                    const target = document.getElementById("mediaTargetInputPodcast").value;
+                    const previewBox = document.getElementById("preview-" + target);
+
+                    if (type.startsWith("image/")) {
+                        previewBox.innerHTML = `<img src="${item.path}" alt="preview">`;
+                    } else if (type.startsWith("audio/")) {
+                        previewBox.innerHTML = `<audio controls style="max-width:100%;"><source src="${item.path}"></audio>`;
+                    } else {
+                        previewBox.innerHTML = `<div class="p-3 border rounded">📂 ${item.name ?? "ملف"}</div>`;
+                    }
+
+                    document.getElementById(target + "_url").value = item.path;
+                    bootstrap.Modal.getInstance(document.getElementById("podcast-mediaModal")).hide();
+                };
+
+                grid.appendChild(div);
+            });
+        } else {
+            grid.innerHTML = `<p>❌ لا توجد وسائط</p>`;
+        }
+    } catch (error) {
+        grid.innerHTML = `<p>❌ خطأ في تحميل الوسائط</p>`;
+        console.error("Error fetching media:", error);
+    }
+}
+
+document.querySelectorAll('.open-media').forEach(btn => {
+    btn.addEventListener("click", () => {
+        if (btn.dataset.bsTarget === "#podcast-mediaModal") {
+            const target = btn.dataset.target;
+            document.getElementById("mediaTargetInputPodcast").value = target;
+            currentPagePodcast = 1;
+            currentSearchPodcast = "";
+            loadMediaPodcast();
+        }
+    });
+});
+
+document.getElementById("mediaSearchPodcast").addEventListener("keyup", (e) => {
+    currentSearchPodcast = e.target.value;
+    currentPagePodcast = 1;
+    loadMediaPodcast(currentPagePodcast, currentSearchPodcast);
+});
+</script>
+
+
+
+<style>
+    /* ====== Media Preview (where selected image shows) ====== */
+    .media-preview {
+        border: 2px dashed #ccc !important;
+        border-radius: 12px;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 140px;
+        transition: border-color 0.3s ease, background 0.3s ease;
+
+    }
+
+    .media-preview img,
+    .media-preview video {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 10px;
+        object-fit: contain;
+    }
+
+    .media-preview:hover {
+        border-color: #007bff !important;
+        background: #f0f8ff;
+    }
+
+    /* ====== Media Thumbnail (inside modal) ====== */
+    .media-thumb {
+        position: relative;
+        width: 180px;
+        height: 140px;
+        cursor: pointer;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .media-thumb img,
+    .media-thumb video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /* Hover effect */
+    .media-thumb:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .media-thumb::after {
+        content: attr(data-label);
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+
+    .media-thumb:hover::after {
+        opacity: 1;
+    }
+</style>
