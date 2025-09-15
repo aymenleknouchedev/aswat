@@ -52,8 +52,7 @@
                             </div>
                         @endif
 
-                        <form id="contentForm" action="{{ route('dashboard.content.store') }}" method="POST"
-                            enctype="multipart/form-data">
+                        <form id="contentForm" action="{{ route('dashboard.content.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <!-- Tabs nav -->
                             <ul class="nav mb-4" id="contentTabs" role="tablist">
@@ -64,6 +63,7 @@
                                         إضافة محتوى
                                     </button>
                                 </li>
+
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="template-tab" data-bs-target="#template" type="button"
                                         role="tab" aria-controls="template" aria-selected="false" data-ar="اختر القالب"
@@ -71,6 +71,7 @@
                                         اختر القالب
                                     </button>
                                 </li>
+
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="media-tab" data-bs-target="#media" type="button"
                                         role="tab" aria-controls="media" aria-selected="false" data-ar="الوسائط"
@@ -78,6 +79,7 @@
                                         الوسائط
                                     </button>
                                 </li>
+
                                 <!-- NEW Social Media tab -->
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="social-media-tab" data-bs-target="#social-media"
@@ -144,26 +146,6 @@
 
 
                                     <div class="row g-3 mt-1 ">
-                                        <div class="form-group col-lg-12 mb-2">
-                                            <label class="form-label" for="display_method" data-ar="القالب"
-                                                data-en="Content Display Method">القالب</label>
-                                            <span style="color:red;">*</span>
-                                            <div class="form-control-wrap">
-                                                <select name="display_method" id="display_method" class="form-select "
-                                                    data-search="on">
-                                                    <option value="simple" data-ar="أساسي" data-en="Simple"
-                                                        {{ old('display_method', 'simple') == 'simple' ? 'selected' : '' }}>
-                                                        أساسي</option>
-                                                    <option value="list" data-ar="قائمة" data-en="List"
-                                                        {{ old('display_method') == 'list' ? 'selected' : '' }}>قائمة
-                                                    </option>
-                                                    <option value="file" data-ar="ملف" data-en="File"
-                                                        {{ old('display_method') == 'file' ? 'selected' : '' }}>ملف
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-
                                         <div class="form-group col-md-6 col-lg-3">
                                             <label class="form-label" data-ar="القسم" data-en="Section">القسم</label>
                                             <span style="color:red;">*</span>
@@ -344,7 +326,6 @@
 
                                 </div>
 
-
                                 <!-- Template Tab -->
                                 @include('dashboard.components.template-tab')
 
@@ -355,8 +336,6 @@
                                     'existing_podcasts' => $existing_podcasts,
                                     'existing_albums' => $existing_albums,
                                 ])
-
-
 
 
                                 <!-- Message Tab -->
@@ -388,66 +367,37 @@
                                     aria-labelledby="social-media-tab">
                                     <div class="row g-3 mt-3">
 
-                                        <!-- Share Image -->
+                                        <!-- Content Image -->
                                         <div class="col-md-6">
-                                            <label class="form-label" data-ar="صورة المحتوى" data-en="Content Image">صورة
-                                                المحتوى</label>
-                                            <div class="media-preview border rounded mb-2" id="preview-share_image"
-                                                style="height: 100px; aspect-ratio: 16/9; ">
-                                                <span class="text-muted" data-ar="لا توجد صورة مختارة"
-                                                    data-en="No image selected">
-                                                    لا توجد صورة مختارة
-                                                </span>
-                                            </div>
-
-                                            <!-- File input (hidden) -->
-                                            <input type="file" id="share_image" class="d-none" accept="image/*">
-                                            <!-- Hidden URL input -->
-                                            <input type="hidden" id="share_image_url" name="share_image_url">
-
-                                            <div class="d-flex flex-column">
-                                                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
-                                                    onclick="document.getElementById('share_image').click()"
-                                                    data-ar="رفع صورة من الجهاز" data-en="Upload from device">رفع صورة من
-                                                    الجهاز</button>
-
-                                                <button type="button"
-                                                    class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
-                                                    data-bs-toggle="modal" data-bs-target="#urlModal"
-                                                    data-target="share_image" data-ar="إضافة من رابط"
-                                                    data-en="Add from URL">إضافة من رابط</button>
-
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm w-100 open-media"
-                                                    data-bs-toggle="modal" data-bs-target="#mediaModal"
-                                                    data-target="share_image" data-type="image"
-                                                    data-ar="اختيار من المعرض" data-en="Choose from gallery">اختيار من
-                                                    المعرض</button>
+                                            <label for="share_image" class="form-label" data-ar="صورة المحتوى"
+                                                data-en="Content Image">صورة المحتوى</label>
+                                            <input type="file" id="share_image" name="share_image"
+                                                class="form-control" accept="image/*">
+                                            <div class="mt-2 border rounded p-2 text-center" style="aspect-ratio: 16/9;">
+                                                <img id="share_image_preview" src="" alt=""
+                                                    style="aspect-ratio: 16/9; display:none;">
                                             </div>
                                         </div>
 
+                                        <!-- Title -->
                                         <div class="col-md-6">
-                                            <!-- Share Title -->
-                                            <div class="col-md-12 mb-3">
-                                                <label for="share_title" class="form-label" data-ar="عنوان المشاركة"
-                                                    data-en="Share Title">عنوان المشاركة</label>
-                                                <input type="text" id="share_title" name="share_title"
-                                                    class="form-control" placeholder="عنوان المشاركة"
-                                                    value="{{ old('share_title', '') }}">
-                                            </div>
+                                            <label for="share_title" class="form-label" data-ar="عنوان المشاركة"
+                                                data-en="Share Title">عنوان المشاركة</label>
+                                            <input type="text" id="share_title" name="share_title"
+                                                class="form-control" placeholder="عنوان المشاركة"
+                                                value="{{ old('share_title', '') }}">
+                                        </div>
 
-                                            <!-- Share Description -->
-                                            <div class="col-md-12">
-                                                <label for="share_description" class="form-label" data-ar="وصف المشاركة"
-                                                    data-en="Share Description">وصف المشاركة</label>
-                                                <textarea id="share_description" name="share_description" class="form-control" rows="3"
-                                                    placeholder="أدخل وصفًا للمشاركة">{{ old('share_description', '') }}</textarea>
-                                            </div>
+                                        <!-- Description -->
+                                        <div class="col-md-12">
+                                            <label for="share_description" class="form-label" data-ar="وصف المشاركة"
+                                                data-en="Share Description">وصف المشاركة</label>
+                                            <textarea id="share_description" name="share_description" class="form-control" rows="3"
+                                                placeholder="أدخل وصفًا للمشاركة">{{ old('share_description', '') }}</textarea>
                                         </div>
 
                                     </div>
                                 </div>
-
 
                                 <!-- Review Message Tab -->
                                 <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
@@ -493,12 +443,12 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script src="/dashlite/js/seo.js"></script>
     <script src="/dashlite/js/tabs.js"></script>
     <script src="/dashlite/js/album.js"></script>
     <script src="/dashlite/js/form-toggle.js"></script>
     <script src="/dashlite/js/media-tab.js"></script>
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const fields = [{
@@ -562,6 +512,8 @@
             });
         });
     </script>
+
+
 @endsection
 
 
