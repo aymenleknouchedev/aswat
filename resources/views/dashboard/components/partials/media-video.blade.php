@@ -126,6 +126,112 @@
     </div>
 </div>
 
+<!-- ========== MODAL GALLERY ========== -->
+<div class="modal fade" id="video-mediaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg rounded-4">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold">📚 مكتبة الوسائط</h5>
+                <button type="button" class="btn-close shadow-sm" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Search Bar -->
+                <div class="mb-3">
+                    <input type="text" id="mediaSearchVideo" class="form-control"
+                        placeholder="🔍 ابحث عن وسائط...">
+                </div>
+
+                <!-- Media Grid -->
+                <div id="mediaLibraryGridVideo" class="row g-3 text-center">
+                    <p class="text-muted text-center">اختر صورة أو فيديو من المكتبة...</p>
+                </div>
+
+                <!-- Pagination -->
+                <nav>
+                    <ul id="mediaPaginationVideo" class="pagination justify-content-center mt-3"></ul>
+                </nav>
+
+                <input type="hidden" id="mediaTargetInputVideo">
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-light border" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* ====== Media Preview (where selected image shows) ====== */
+    .media-preview {
+        border: 2px dashed #ccc !important;
+        border-radius: 12px;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 140px;
+        transition: border-color 0.3s ease, background 0.3s ease;
+
+    }
+
+    .media-preview img,
+    .media-preview video {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 10px;
+        object-fit: contain;
+    }
+
+    .media-preview:hover {
+        border-color: #007bff !important;
+        background: #f0f8ff;
+    }
+
+    /* ====== Media Thumbnail (inside modal) ====== */
+    .media-thumb {
+        position: relative;
+        width: 180px;
+        height: 140px;
+        cursor: pointer;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .media-thumb img,
+    .media-thumb video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /* Hover effect */
+    .media-thumb:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .media-thumb::after {
+        content: attr(data-label);
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+
+    .media-thumb:hover::after {
+        opacity: 1;
+    }
+</style>
+
 
 <script>
     // ================= FILE UPLOAD (images) =================
@@ -207,39 +313,7 @@
     }
 </script>
 
-<!-- ========== MODAL GALLERY ========== -->
-<div class="modal fade" id="video-mediaModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content shadow-lg rounded-4">
-            <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold">📚 مكتبة الوسائط</h5>
-                <button type="button" class="btn-close shadow-sm" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Search Bar -->
-                <div class="mb-3">
-                    <input type="text" id="mediaSearchVideo" class="form-control"
-                        placeholder="🔍 ابحث عن وسائط...">
-                </div>
 
-                <!-- Media Grid -->
-                <div id="mediaLibraryGridVideo" class="row g-3 text-center">
-                    <p class="text-muted text-center">اختر صورة أو فيديو من المكتبة...</p>
-                </div>
-
-                <!-- Pagination -->
-                <nav>
-                    <ul id="mediaPaginationVideo" class="pagination justify-content-center mt-3"></ul>
-                </nav>
-
-                <input type="hidden" id="mediaTargetInputVideo">
-            </div>
-            <div class="modal-footer border-0">
-                <button class="btn btn-light border" data-bs-dismiss="modal">إغلاق</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <script>
@@ -326,74 +400,3 @@
 </script>
 
 
-<style>
-    /* ====== Media Preview (where selected image shows) ====== */
-    .media-preview {
-        border: 2px dashed #ccc !important;
-        border-radius: 12px;
-        padding: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 140px;
-        transition: border-color 0.3s ease, background 0.3s ease;
-
-    }
-
-    .media-preview img,
-    .media-preview video {
-        max-width: 100%;
-        max-height: 100%;
-        border-radius: 10px;
-        object-fit: contain;
-    }
-
-    .media-preview:hover {
-        border-color: #007bff !important;
-        background: #f0f8ff;
-    }
-
-    /* ====== Media Thumbnail (inside modal) ====== */
-    .media-thumb {
-        position: relative;
-        width: 180px;
-        height: 140px;
-        cursor: pointer;
-        border-radius: 12px;
-        overflow: hidden;
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .media-thumb img,
-    .media-thumb video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 12px;
-    }
-
-    /* Hover effect */
-    .media-thumb:hover {
-        transform: scale(1.05);
-        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
-    }
-
-    .media-thumb::after {
-        content: attr(data-label);
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        color: #fff;
-        font-weight: 600;
-        font-size: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.25s ease;
-    }
-
-    .media-thumb:hover::after {
-        opacity: 1;
-    }
-</style>

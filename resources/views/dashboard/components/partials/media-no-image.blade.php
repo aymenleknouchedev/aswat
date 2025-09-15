@@ -77,6 +77,42 @@
 </div>
 
 
+<!-- ========== MODAL GALLERY ========== -->
+<div class="modal fade" id="no_image-mediaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg rounded-4">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold" data-ar="📚 مكتبة الوسائط" data-en="📚 Media Library">
+                    📚 مكتبة الوسائط
+                </h5>
+                <button type="button" class="btn-close shadow-sm" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Search Bar -->
+                <div class="mb-3">
+                    <input type="text" id="no_image_mediaSearch" class="form-control"
+                        placeholder="🔍 ابحث عن وسائط..." data-ar="🔍 ابحث عن وسائط..." data-en="🔍 Search media...">
+                </div>
+
+                <!-- Media Grid -->
+                <div id="no_image_mediaLibraryGrid" class="row g-3 text-center">
+                    <p class="text-muted text-center">اختر صورة أو فيديو من المكتبة...</p>
+                </div>
+
+                <!-- Pagination -->
+                <nav>
+                    <ul id="no_image_mediaPagination" class="pagination justify-content-center mt-3"></ul>
+                </nav>
+
+                <input type="hidden" id="no_image_mediaTargetInput">
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-light border" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <script>
@@ -118,41 +154,7 @@
     
 </script>
 
-<!-- ========== MODAL GALLERY ========== -->
-<div class="modal fade" id="no_image-mediaModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content shadow-lg rounded-4">
-            <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold" data-ar="📚 مكتبة الوسائط" data-en="📚 Media Library">
-                    📚 مكتبة الوسائط
-                </h5>
-                <button type="button" class="btn-close shadow-sm" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Search Bar -->
-                <div class="mb-3">
-                    <input type="text" id="no_image_mediaSearch" class="form-control"
-                        placeholder="🔍 ابحث عن وسائط..." data-ar="🔍 ابحث عن وسائط..." data-en="🔍 Search media...">
-                </div>
 
-                <!-- Media Grid -->
-                <div id="no_image_mediaLibraryGrid" class="row g-3 text-center">
-                    <p class="text-muted text-center">اختر صورة أو فيديو من المكتبة...</p>
-                </div>
-
-                <!-- Pagination -->
-                <nav>
-                    <ul id="no_image_mediaPagination" class="pagination justify-content-center mt-3"></ul>
-                </nav>
-
-                <input type="hidden" id="no_image_mediaTargetInput">
-            </div>
-            <div class="modal-footer border-0">
-                <button class="btn btn-light border" data-bs-dismiss="modal">إغلاق</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     // ================= MEDIA MODAL =================

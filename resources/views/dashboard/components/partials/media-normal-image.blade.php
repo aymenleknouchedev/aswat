@@ -81,48 +81,6 @@
 </div>
 
 
-<script>
-    // ================= FILE UPLOAD (preview) =================
-    ["normal_main_image", "normal_mobile_image", "normal_content_image"].forEach(id => {
-        document.getElementById(id).addEventListener("change", function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    document.getElementById("preview-" + id).innerHTML =
-                        `<img src="${event.target.result}" alt="preview">`;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    });
-
-    // ================= URL MODAL =================
-    document.querySelectorAll('.open-url-modal').forEach(btn => {
-        btn.addEventListener("click", () => {
-            const target = btn.dataset.target;
-            document.getElementById("urlTargetInput").value = target;
-            document.getElementById("imageUrlInput").value = "";
-        });
-    });
-
-    document.getElementById("saveUrlBtn").addEventListener("click", function() {
-        const url = document.getElementById("imageUrlInput").value;
-        const target = document.getElementById("urlTargetInput").value;
-        if (url && target) {
-            document.getElementById("preview-" + target).innerHTML =
-                `<img src="${url}" alt="preview">`;
-            document.getElementById(target + "_url").value = url;
-            bootstrap.Modal.getInstance(document.getElementById("urlModal")).hide();
-        }
-    });
-
-    
-</script>
-
-
-
-
 <!-- ========== MODAL GALLERY ========== -->
 <div class="modal fade" id="normal-mediaModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
@@ -136,8 +94,8 @@
             <div class="modal-body">
                 <!-- Search Bar -->
                 <div class="mb-3">
-                    <input type="text" id="mediaSearch" class="form-control"
-                        placeholder="🔍 ابحث عن وسائط..." data-ar="🔍 ابحث عن وسائط..." data-en="🔍 Search media...">
+                    <input type="text" id="mediaSearch" class="form-control" placeholder="🔍 ابحث عن وسائط..."
+                        data-ar="🔍 ابحث عن وسائط..." data-en="🔍 Search media...">
                 </div>
 
                 <!-- Media Grid -->
@@ -159,104 +117,6 @@
     </div>
 </div>
 
-<script>
-    // ================= MEDIA MODAL =================
-    let currentPage = 1;
-    let currentSearch = "";
-
-    async function loadMedia(page = 1, search = "") {
-        const grid = document.getElementById("mediaLibraryGrid");
-        const pagination = document.getElementById("mediaPagination");
-        grid.innerHTML = `<p>⏳ جاري تحميل الوسائط...</p>`;
-        pagination.innerHTML = "";
-
-        try {
-            const response = await fetch(
-                `{{ route('dashboard.media.getAllMediaPaginated') }}?page=${page}&search=${encodeURIComponent(search)}`
-            );
-            const items = await response.json();
-
-            grid.innerHTML = "";
-
-            if (items.data && items.data.length > 0) {
-                items.data.forEach(item => {
-                    const div = document.createElement("div");
-                    div.className = "media-thumb col-md-3";
-                    div.setAttribute("data-label", "اختر");
-
-                    const type = item.media_type?.toLowerCase() || "";
-
-                    // تمييز صورة أو فيديو
-                    if (type.startsWith("image/")) {
-                        div.innerHTML = `<img src="${item.path}" alt="${item.name ?? ''}">`;
-                    } else if (type.startsWith("video/")) {
-                        div.innerHTML = `<video src="${item.path}" muted></video>`;
-                    } else {
-                        div.innerHTML = `<div class="d-flex align-items-center justify-content-center bg-light h-100">
-                                            <span class="text-muted">📂 ملف</span>
-                                         </div>`;
-                    }
-
-                    div.onclick = () => {
-                        let previewBox = document.getElementById(
-                            "preview-" + document.getElementById("mediaTargetInput").value
-                        );
-
-                        if (type.startsWith("image/")) {
-                            previewBox.innerHTML = `<img src="${item.path}" alt="preview">`;
-                        } else if (type.startsWith("video/")) {
-                            previewBox.innerHTML = `<video src="${item.path}" controls></video>`;
-                        } else {
-                            previewBox.innerHTML = `<div class="p-3 border rounded">📂 ${item.name ?? "ملف"}</div>`;
-                        }
-
-                        document.getElementById(
-                            document.getElementById("mediaTargetInput").value + "_url"
-                        ).value = item.path;
-
-                        bootstrap.Modal.getInstance(document.getElementById("normal-mediaModal")).hide();
-                    };
-
-                    grid.appendChild(div);
-                });
-
-                // (Optional) Pagination restore here if needed
-                // let links = items.links;
-                // pagination.innerHTML = links.map(link =>
-                //     `<li class="page-item ${link.active ? 'active' : ''} ${!link.url ? 'disabled' : ''}">
-                //         <a class="page-link" href="#" onclick="event.preventDefault(); loadMedia(${new URL(link.url || '').searchParams.get('page') || 1}, currentSearch)">
-                //             ${link.label.replace('&laquo;', '«').replace('&raquo;', '»')}
-                //         </a>
-                //     </li>`
-                // ).join("");
-
-            } else {
-                grid.innerHTML = `<p>❌ لا توجد وسائط</p>`;
-            }
-        } catch (error) {
-            grid.innerHTML = `<p>❌ خطأ في تحميل الوسائط</p>`;
-            console.error("Error fetching media:", error);
-        }
-    }
-
-    // Open Modal
-    document.querySelectorAll('.open-media').forEach(btn => {
-        btn.addEventListener("click", () => {
-            const target = btn.dataset.target;
-            document.getElementById("mediaTargetInput").value = target;
-            currentPage = 1;
-            currentSearch = "";
-            loadMedia();
-        });
-    });
-
-    // Search Handler
-    document.getElementById("mediaSearch").addEventListener("keyup", (e) => {
-        currentSearch = e.target.value;
-        currentPage = 1;
-        loadMedia(currentPage, currentSearch);
-    });
-</script>
 
 
 <style>
@@ -270,7 +130,7 @@
         justify-content: center;
         min-height: 140px;
         transition: border-color 0.3s ease, background 0.3s ease;
-        
+
     }
 
     .media-preview img,
@@ -330,3 +190,147 @@
         opacity: 1;
     }
 </style>
+
+
+<script>
+    // ================= FILE UPLOAD (preview) =================
+    ["normal_main_image", "normal_mobile_image", "normal_content_image"].forEach(id => {
+        document.getElementById(id).addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById("preview-" + id).innerHTML =
+                        `<img src="${event.target.result}" alt="preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    // ================= URL MODAL =================
+    document.querySelectorAll('.open-url-modal').forEach(btn => {
+        btn.addEventListener("click", () => {
+            const target = btn.dataset.target;
+            document.getElementById("urlTargetInput").value = target;
+            document.getElementById("imageUrlInput").value = "";
+        });
+    });
+
+    document.getElementById("saveUrlBtn").addEventListener("click", function() {
+        const url = document.getElementById("imageUrlInput").value;
+        const target = document.getElementById("urlTargetInput").value;
+        if (url && target) {
+            document.getElementById("preview-" + target).innerHTML =
+                `<img src="${url}" alt="preview">`;
+            document.getElementById(target + "_url").value = url;
+            bootstrap.Modal.getInstance(document.getElementById("urlModal")).hide();
+        }
+    });
+</script>
+
+
+
+
+
+
+<script>
+    // ================= MEDIA MODAL =================
+    let currentPage = 1;
+    let currentSearch = "";
+
+    async function loadMedia(page = 1, search = "") {
+        const grid = document.getElementById("mediaLibraryGrid");
+        const pagination = document.getElementById("mediaPagination");
+        grid.innerHTML = `<p>⏳ جاري تحميل الوسائط...</p>`;
+        pagination.innerHTML = "";
+
+        try {
+            const response = await fetch(
+                `{{ route('dashboard.media.getAllMediaPaginated') }}?page=${page}&search=${encodeURIComponent(search)}`
+            );
+            const items = await response.json();
+
+            grid.innerHTML = "";
+
+            if (items.data && items.data.length > 0) {
+                items.data.forEach(item => {
+                    const div = document.createElement("div");
+                    div.className = "media-thumb col-md-3";
+                    div.setAttribute("data-label", "اختر");
+
+                    const type = item.media_type?.toLowerCase() || "";
+
+                    // تمييز صورة أو فيديو
+                    if (type.startsWith("image/")) {
+                        div.innerHTML = `<img src="${item.path}" alt="${item.name ?? ''}">`;
+                    } else if (type.startsWith("video/")) {
+                        div.innerHTML = `<video src="${item.path}" muted></video>`;
+                    } else {
+                        div.innerHTML = `<div class="d-flex align-items-center justify-content-center bg-light h-100">
+                                            <span class="text-muted">📂 ملف</span>
+                                         </div>`;
+                    }
+
+                    div.onclick = () => {
+                        let previewBox = document.getElementById(
+                            "preview-" + document.getElementById("mediaTargetInput").value
+                        );
+
+                        if (type.startsWith("image/")) {
+                            previewBox.innerHTML = `<img src="${item.path}" alt="preview">`;
+                        } else if (type.startsWith("video/")) {
+                            previewBox.innerHTML = `<video src="${item.path}" controls></video>`;
+                        } else {
+                            previewBox.innerHTML =
+                                `<div class="p-3 border rounded">📂 ${item.name ?? "ملف"}</div>`;
+                        }
+
+                        document.getElementById(
+                            document.getElementById("mediaTargetInput").value + "_url"
+                        ).value = item.path;
+
+                        bootstrap.Modal.getInstance(document.getElementById("normal-mediaModal"))
+                    .hide();
+                    };
+
+                    grid.appendChild(div);
+                });
+
+                // (Optional) Pagination restore here if needed
+                // let links = items.links;
+                // pagination.innerHTML = links.map(link =>
+                //     `<li class="page-item ${link.active ? 'active' : ''} ${!link.url ? 'disabled' : ''}">
+                //         <a class="page-link" href="#" onclick="event.preventDefault(); loadMedia(${new URL(link.url || '').searchParams.get('page') || 1}, currentSearch)">
+                //             ${link.label.replace('&laquo;', '«').replace('&raquo;', '»')}
+                //         </a>
+                //     </li>`
+                // ).join("");
+
+            } else {
+                grid.innerHTML = `<p>❌ لا توجد وسائط</p>`;
+            }
+        } catch (error) {
+            grid.innerHTML = `<p>❌ خطأ في تحميل الوسائط</p>`;
+            console.error("Error fetching media:", error);
+        }
+    }
+
+    // Open Modal
+    document.querySelectorAll('.open-media').forEach(btn => {
+        btn.addEventListener("click", () => {
+            const target = btn.dataset.target;
+            document.getElementById("mediaTargetInput").value = target;
+            currentPage = 1;
+            currentSearch = "";
+            loadMedia();
+        });
+    });
+
+    // Search Handler
+    document.getElementById("mediaSearch").addEventListener("keyup", (e) => {
+        currentSearch = e.target.value;
+        currentPage = 1;
+        loadMedia(currentPage, currentSearch);
+    });
+</script>
