@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use App\Models\Page;
 
+use App\Services\CacheService;
+use App\Enums\CacheKeys;
+
 class PagesController extends BaseController
 {
 
@@ -19,8 +22,15 @@ class PagesController extends BaseController
      */
     public function index()
     {
-        $pages = Page::all();
-        return view('dashboard.allpages', compact('pages'));
+        try {
+            $ttl = config('cache_ttl.pages', 3600);
+            $pages = CacheService::remember(CacheKeys::PAGES, function () {
+                return Page::all();
+            }, $ttl);
+            return view('dashboard.allpages', compact('pages'));
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to load pages: ' . $e->getMessage()]);
+        }
     }
 
     /**
@@ -44,6 +54,7 @@ class PagesController extends BaseController
         ]);
 
         Page::create($validated);
+        CacheService::forget(CacheKeys::PAGES);
 
         return redirect()->route('dashboard.page.create')
             ->with('success', 'Page created successfully!');
@@ -81,6 +92,7 @@ class PagesController extends BaseController
         ]);
 
         $page->update($validated);
+        CacheService::forget(CacheKeys::PAGES);
 
         return redirect()->route('dashboard.pages.index')
             ->with('success', 'Page updated successfully!');
@@ -93,6 +105,7 @@ class PagesController extends BaseController
     {
         $page = Page::findOrFail($id);
         $page->delete();
+        CacheService::forget(CacheKeys::PAGES);
 
         return redirect()->route('dashboard.pages.index')
             ->with('success', 'Page deleted successfully!');

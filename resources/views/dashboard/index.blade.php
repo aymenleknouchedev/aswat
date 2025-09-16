@@ -184,7 +184,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($lastSevenContents as $content)
+                                        @forelse ($lastTenContents as $content)
                                             <tr>
                                                 <td>{{ $content->id }}</td>
                                                 <td>{{ $content->mobile_title }}</td>

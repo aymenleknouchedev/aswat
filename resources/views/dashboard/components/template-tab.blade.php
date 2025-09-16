@@ -100,6 +100,9 @@
             const show = method === 'list' || method === 'file';
             dynamicSection.style.display = show ? 'block' : 'none';
 
+            items = [];
+            renderItems();
+        
             document.querySelectorAll('#template [required]').forEach(el => {
                 if (el.offsetParent === null) {
                     el.dataset.wasRequired = "true";

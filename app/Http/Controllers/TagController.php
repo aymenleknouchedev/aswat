@@ -17,7 +17,6 @@ class TagController extends BaseController
      * Display a listing of the resource.
      */
     public function index()
-
     {
         $tags = Tag::all();
         return view('dashboard.alltags', compact('tags'));

@@ -1,4 +1,6 @@
 @extends('layouts.admin')
+<!DOCTYPE html>
+
 
 @section('title', 'أصوات جزائرية | إضافة محتوى')
 
@@ -307,8 +309,7 @@
                                         </label>
                                         <span style="color:red;">*</span>
                                         <div class="form-control-wrap">
-                                            <x-forms.tinymce-editor id="myeditorinstance" name="content"
-                                                value="{{ old('content', '') }}" />
+                                                <x-forms.tinymce-editor id="myeditorinstance" :value="$post->content ?? ''"   />
                                         </div>
                                     </div>
 

@@ -17,6 +17,9 @@ use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
+use App\Services\CacheService;
+use App\Enums\CacheKeys;
+
 
 class ContentController extends BaseController
 {
@@ -39,16 +42,26 @@ class ContentController extends BaseController
 
     public function create()
     {
-        // GET DATA FROM DATABASE
-        $sections = Section::all();
-        $categories = Category::all();
-        $writers = Writer::all();
+
+        $ttl_sections = config('cache_ttl.sections', 3600);
+        $ttl_writers = config('cache_ttl.writers', 3600);
+
+        $sections = CacheService::remember(CacheKeys::SECTIONS, function () {
+            return Section::all();
+        }, $ttl_sections);
+        
+        $writers = CacheService::remember(CacheKeys::WRITERS, function () {
+            return Writer::all();
+        }, $ttl_writers);
+        
         $cities = Location::where('type', 'city')->get();
         $continents = Location::where('type', 'continent')->get();
         $countries = Location::where('type', 'country')->get();
-        $tags = Tag::all();
-        $trends = Trend::all();
-        $windows = Window::all();
+        
+        $categories = Category::take(15)->latest()->get();
+        $tags = Tag::take(15)->latest()->get();
+        $trends = Trend::take(15)->latest()->get();
+        $windows = Window::take(15)->latest()->get();
 
         $existing_images = [];
         $existing_videos = [];
