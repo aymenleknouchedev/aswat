@@ -72,7 +72,8 @@ class AuthController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $imageName = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('users', $imageName, 'public');
+            $path = asset('storage/' . $file->store('users', 'public'));
+            $imageName = $path;
         }
 
         // ✅ Create user
@@ -167,7 +168,7 @@ class AuthController extends Controller
             $user->password = Hash::make($request->password);
         }
         $user->save();
-        
+
 
         return redirect()->route('dashboard.users.index')->with('success', 'User updated successfully');
     }

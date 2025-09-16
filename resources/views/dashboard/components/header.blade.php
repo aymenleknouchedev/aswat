@@ -24,9 +24,13 @@
                     <li class="dropdown user-dropdown">
                         <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
                             <div class="user-toggle">
-                                <div class="user-avatar sm">
-                                    <em class="icon ni ni-user-alt"></em>
-                                </div>
+                                @if (Auth::user()->image === 'user.png')
+                                    <img src="{{ asset('user.png') }}" alt="default user image" width="40"
+                                        height="40" class="rounded-circle">
+                                @else
+                                    <img src="{{ Auth::user()->image }}" alt="user image" width="40" height="40"
+                                        class="rounded-circle">
+                                @endif
                                 <div class="user-info d-none d-md-block">
                                     <div class="user-status">
                                         {{ Auth::user()->roles[0]->name }}
@@ -62,19 +66,22 @@
                                     <li>
                                         <a>
                                             <em class="icon ni ni-user-alt"></em>
-                                            <span class="trans" data-en="View Profile" data-ar="عرض الملف الشخصي">View Profile</span>
+                                            <span class="trans" data-en="View Profile" data-ar="عرض الملف الشخصي">View
+                                                Profile</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a>
                                             <em class="icon ni ni-setting-alt"></em>
-                                            <span class="trans" data-en="Account Setting" data-ar="إعدادات الحساب">Account Setting</span>
+                                            <span class="trans" data-en="Account Setting"
+                                                data-ar="إعدادات الحساب">Account Setting</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a id="dark-switch" class="dark-switch" href="#">
                                             <em class="icon ni ni-moon"></em>
-                                            <span class="trans" data-en="Dark Mode" data-ar="الوضع الداكن">Dark Mode</span>
+                                            <span class="trans" data-en="Dark Mode" data-ar="الوضع الداكن">Dark
+                                                Mode</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -84,11 +91,13 @@
                                 <ul class="link-list">
                                     <li>
                                         <a href="#"
-                                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             <em class="icon ni ni-signout"></em>
-                                            <span class="trans" data-en="Sign out" data-ar="تسجيل الخروج">Sign out</span>
+                                            <span class="trans" data-en="Sign out" data-ar="تسجيل الخروج">Sign
+                                                out</span>
                                         </a>
-                                        <form id="logout-form" action="{{ route('dashboard.logout') }}" method="POST" class="d-none">
+                                        <form id="logout-form" action="{{ route('dashboard.logout') }}" method="POST"
+                                            class="d-none">
                                             @csrf
                                         </form>
                                     </li>

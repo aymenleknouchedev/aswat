@@ -54,7 +54,7 @@ class UserSeeder extends Seeder
                 'name'     => 'super',
                 'surname'  => 'admin',
                 'password' => Hash::make('123456789'),
-                'image'    => 'default.png',
+                'image'    => 'user.png',
             ]
         );
 

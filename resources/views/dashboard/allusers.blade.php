@@ -67,9 +67,15 @@
                                             @foreach ($users as $user)
                                                 <tr class="tb-odr-item">
                                                     <td>
-                                                        <img src="{{ asset('storage/users/' . $user->image) }}"
-                                                            alt="user image" width="40" height="40"
-                                                            class="rounded-circle">
+                                                        @if ($user->image === 'user.png')
+                                                            <img src="{{ asset('user.png') }}"
+                                                                alt="default user image" width="40" height="40"
+                                                                class="rounded-circle">
+                                                        @else
+                                                            <img src="{{ $user->image }}"
+                                                                alt="user image" width="40" height="40"
+                                                                class="rounded-circle">
+                                                        @endif
                                                     </td>
                                                     <td>{{ $user->name }} {{ $user->surname }}</td>
                                                     <td>{{ $user->email }}</td>
