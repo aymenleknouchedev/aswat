@@ -23,6 +23,8 @@ use App\Http\Controllers\{
     WindowController
 };
 
+use App\Http\Controllers\ApiController;
+
 // Clear cache, config, routes, views
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
@@ -75,6 +77,14 @@ Route::prefix('dashboard')->group(function () {
 
     // Routes dashboard  
     Route::middleware(['auth'])->group(function () {
+
+        // Api for select2 ajax search
+        Route::get('/api/search-categories', [ApiController::class, 'search_categories'])->name('api.search.categories');
+        Route::get('/api/search-trends', [ApiController::class, 'search_trends'])->name('api.search.trends');
+        Route::get('/api/search-windows', [ApiController::class, 'search_windows'])->name('api.search.windows');
+        Route::get('/api/search-tags', [ApiController::class, 'search_tags'])->name('api.search.tags');
+        Route::get('/api/search-writers', [ApiController::class, 'search_writers'])->name('api.search.writers');
+        Route::get('/api/search-cities', [ApiController::class, 'search_cities'])->name('api.search.cities');
 
         // Dashboard
         Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');

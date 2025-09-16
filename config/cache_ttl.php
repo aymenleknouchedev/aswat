@@ -16,5 +16,4 @@ return [
     'roles' => 3600,
     'pages' => 3600,
     'sections' => 3600,
-    'writers' => 3600,
 ];

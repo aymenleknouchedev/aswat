@@ -164,18 +164,14 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6 col-lg-3">
-                                            <label class="form-label" data-ar="التصنيف"
-                                                data-en="Category">التصنيف</label>
-                                            <div class="form-control-wrap">
-                                                <select name="category_id" class="form-select js-select2"
-                                                    data-search="on">
-                                                    <option value="">اختر التصنيف</option>
-                                                    @foreach ($categories as $category)
-                                                        <option value="{{ $category->id }}"
-                                                            {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                                            {{ $category->name }}</option>
-                                                    @endforeach
-                                                </select>
+                                            <label class="form-label" data-ar="التصنيف" data-en="Category">التصنيف</label>
+                                            <div class="form-control-wrap position-relative">
+                                                <input type="text" id="categorySearch" class="form-control" placeholder="ابحث عن التصنيف...">
+                                                <input type="hidden" name="category_id" id="categoryHidden">
+                                                <div id="categoryResults" 
+                                                    class="dropdown-menu w-100 shadow-sm" 
+                                                    style="max-height:200px; overflow-y:auto; display:none;">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6 col-lg-3">
@@ -210,52 +206,65 @@
 
                                     </div>
                                     <div class="row g-3">
-
                                         <div class="form-group col-md-6 col-lg-6">
                                             <label class="form-label" data-ar="الاتجاه" data-en="Trend">الاتجاه</label>
-                                            <div class="form-control-wrap">
-                                                <select name="trend_id" class="form-select js-select2" data-search="on">
-                                                    <option value="">اختر الاتجاه</option>
-                                                    @foreach ($trends as $trend)
-                                                        <option value="{{ $trend->id }}"
-                                                            {{ old('trend_id') == $trend->id ? 'selected' : '' }}>
-                                                            {{ $trend->title }}</option>
-                                                    @endforeach
-                                                </select>
+                                            <div class="form-control-wrap position-relative">
+                                                <input type="text" id="trendSearch" class="form-control" placeholder="ابحث عن الاتجاه...">
+                                                <input type="hidden" name="trend_id" id="trendHidden">
+                                                <div id="trendResults"
+                                                    class="dropdown-menu w-100 shadow-sm"
+                                                    style="max-height:200px; overflow-y:auto; display:none;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6 col-lg-6">
+                                            <label class="form-label" data-ar="النافذة" data-en="Window">النافذة</label>
+                                            <div class="form-control-wrap position-relative">
+                                                <input type="text" id="windowSearch" class="form-control" placeholder="ابحث عن نافذة...">
+                                                <input type="hidden" name="window_id" id="windowHidden">
+                                                <div id="windowResults"
+                                                    class="dropdown-menu w-100 shadow-sm"
+                                                    style="max-height:200px; overflow-y:auto; display:none;">
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="form-group col-md-6 col-lg-6">
-                                            <label class="form-label" data-ar="النافذة" data-en="Window">النافذة</label>
-                                            <div class="form-control-wrap">
-                                                <select name="window_id" class="form-select js-select2" data-search="on">
-                                                    <option value="">اختر النافذة</option>
-                                                    @foreach ($windows as $window)
-                                                        <option value="{{ $window->id }}"
-                                                            {{ old('window_id') == $window->id ? 'selected' : '' }}>
-                                                            {{ $window->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <div class="row g-3">
                                         <div class="form-group col-md-6 col-lg-6">
                                             <label class="form-label" data-ar="الكاتب" data-en="Writer">الكاتب</label>
-                                            <div class="form-control-wrap">
-                                                <select name="writer_id" class="form-select js-select2" data-search="on">
-                                                    <option value="">اختر الكاتب</option>
-                                                    @foreach ($writers as $writer)
-                                                        <option value="{{ $writer->id }}"
-                                                            {{ old('writer_id') == $writer->id ? 'selected' : '' }}>
-                                                            {{ $writer->name }}</option>
-                                                    @endforeach
-                                                </select>
+                                            <div class="form-control-wrap position-relative">
+                                                <input type="text" id="writerSearch" class="form-control" placeholder="اختر الكاتب">
+                                                <div id="writerResults" class="dropdown-menu w-100" style="display:none; max-height:200px; overflow-y:auto;"></div>
+                                                <input type="hidden" name="writer_id" id="writerHidden">
+                                            </div>
+                                        </div>
+{{-- 
+                                        <div class="form-group col-md-6 col-lg-6">
+                                            <label class="form-label" data-ar="موقع الكاتب" data-en="Writer Location">موقع الكاتب</label>
+                                            <div class="form-control-wrap relative w-full">
+                                                <input type="text" id="cityInput" name="city_name" placeholder="اختر الموقع"
+                                                    class="form-select w-full border rounded p-2" autocomplete="off">
+                                                <input type="hidden" id="cityId" name="city_id">
+                                                <div id="cityDropdown" class="absolute z-10 w-full bg-white border rounded hidden"></div>
+                                            </div>
+                                        </div> --}}
+
+                                        <div class="form-group col-md-6 col-lg-6">
+                                            <label class="form-label" data-ar="موقع الكاتب" data-en="Writer Location">موقع الكاتب</label>
+                                            <div class="form-control-wrap relative w-full">
+                                                <input type="text" id="cityInput" name="city_name" placeholder="اختر الموقع" class="form-control">
+                                                <input type="hidden" id="cityId" name="city_id">
+                                                <div id="cityDropdown"
+                                                    class="dropdown-menu w-100 shadow-sm"
+                                                    style="max-height:200px; overflow-y:auto; display:none;">
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="form-group col-md-6 col-lg-6">
+
+                                        {{-- <div class="form-group col-md-6 col-lg-6">
                                             <label class="form-label" data-ar="موقع الكاتب"
                                                 data-en="Writer Location">موقع الكاتب</label>
                                             <div class="form-control-wrap">
@@ -269,23 +278,22 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                     </div>
                                     <div class="row g-3">
-                                        <div class="form-group col-12">
+                                        <div class="form-group col-md-12">
                                             <label class="form-label" data-ar="الوسوم" data-en="Tags">الوسوم</label>
                                             <span style="color:red;">*</span>
-                                            <div class="form-control-wrap">
-                                                <select name="tags_id[]" multiple class="form-select js-select2"
-                                                    data-search="on" style="width: 100%;">
-                                                    @foreach ($tags as $tag)
-                                                        <option value="{{ $tag->id }}"
-                                                            {{ in_array($tag->id, old('tags_id', [])) ? 'selected' : '' }}>
-                                                            {{ $tag->name }}</option>
-                                                    @endforeach
-                                                </select>
+                                            <div class="d-flex flex-wrap align-items-center" id="tagInputBox" style="gap:5px; position:relative; cursor:text;">
+                                                <div id="tagContainer" class="d-flex flex-wrap align-items-center" style="gap:5px; flex:1;">
+                                                    <input type="text" id="tagSearch" class="form-control" style="background: transparent; color outline:none; min-width:120px;" placeholder="ابحث عن الوسوم...">
+                                                </div>
                                             </div>
+
+                                            <div id="tagResults" class="dropdown-menu w-100" style="display:none; max-height:200px; overflow-y:auto; position:absolute; z-index:1000;"></div>
+
+                                            <div id="hiddenTags"></div>
                                         </div>
 
                                     </div>
@@ -517,7 +525,34 @@
 
 @endsection
 
+<style>
+    .tag-chip {
+        background: #6576ff;
+        color: #fff;
+        padding: 3px 8px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+    }
+    .tag-chip span {
+        cursor: pointer;
+        font-weight: bold;
+    }
+    #tagSearch {
+        flex: 1;
+        min-width: 100px;
+    }
 
+</style>    
+
+<script src={{ asset('dashlite/js/apis/search-category-api.js') }}></script>
+<script src={{ asset('dashlite/js/apis/search-trend-api.js') }}></script>
+<script src={{ asset('dashlite/js/apis/search-window-api.js') }}></script>
+<script src={{ asset('dashlite/js/apis/search-tag-api.js') }}></script>
+<script src={{ asset('dashlite/js/apis/search-writer-api.js') }}></script>
+<script src={{ asset('dashlite/js/apis/search-writer-location-api.js') }}></script>
 
 <script>
     // Share image file preview

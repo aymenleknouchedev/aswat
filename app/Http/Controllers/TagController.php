@@ -8,7 +8,6 @@ use App\Models\Tag;
 
 class TagController extends BaseController
 {
-
     public function __construct()
     {
         $this->middleware(['auth', 'check:tags_access']);
@@ -16,10 +15,30 @@ class TagController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tags = Tag::all();
-        return view('dashboard.alltags', compact('tags'));
+        try {
+            $query = Tag::query();
+            $pagination = config('pagination.per20', 20);
+
+            if ($search = $request->input('search')) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            }
+
+            if (!$search) {
+                $tags = Tag::paginate($pagination)
+                           ->appends($request->all());
+            } else {
+                $tags = $query->orderBy('id', 'desc')
+                                    ->paginate($pagination)
+                                    ->appends($request->all());
+            }
+            return view('dashboard.alltags', compact('tags'));
+        } catch (\Throwable $e) {
+            return redirect()
+                ->route('dashboard.permissions.index')
+                ->withErrors(['error' => 'فشل تحميل الصلاحيات. حاول مرة أخرى.']);
+        }
     }
 
     /**
@@ -36,14 +55,15 @@ class TagController extends BaseController
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255|unique:tags,name',
-        ]);
-
-        // Create the tag
-        Tag::create($request->only('name'));
-
-        return redirect()->route('dashboard.tag.create')->with('success', 'Tag created successfully.');
+        try {
+            $request->validate([
+                'name' => 'required|string|min:3|max:255|unique:tags,name',
+            ]);
+            Tag::create($request->only('name'));
+            return redirect()->back()->with('success', 'Tag created successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors(['error' => 'فشل إنشاء الوسم. حاول مرة أخرى.']);
+        }
     }
 
     /**
@@ -68,16 +88,20 @@ class TagController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        $tag = Tag::findOrFail($id);
+        try {
+            $tag = Tag::findOrFail($id);
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+            $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
 
-        $tag->name = $request->input('name');
-        $tag->save();
+            $tag->name = $request->input('name');
+            $tag->save();
 
-        return redirect()->route('dashboard.tags.index')->with('success', 'Tag updated successfully.');
+            return redirect()->back()->with('success', 'Tag updated successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors(['error' => 'فشل تحديث الوسم. حاول مرة أخرى.']);
+        }
     }
 
     /**
@@ -85,7 +109,12 @@ class TagController extends BaseController
      */
     public function destroy(string $id)
     {
-        Tag::destroy($id);
-        return redirect()->route('dashboard.tags.index')->with('success', 'Tag deleted successfully.');
+        try {
+            $tag = Tag::findOrFail($id);
+            $tag->delete();
+            return redirect()->back()->with('success', 'Tag deleted successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors(['error' => 'فشل حذف الوسم. حاول مرة أخرى.']);
+        }
     }
 }

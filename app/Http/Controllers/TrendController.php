@@ -13,13 +13,35 @@ class TrendController extends BaseController
     {
         $this->middleware(['auth', 'check:trends_access']);
     }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $trends = Trend::all();
-        return view('dashboard.alltrends', compact('trends'));
+        try {
+            $query = Trend::query();
+            $pagination = config('pagination.per20', 20);
+
+            if ($search = $request->input('search')) {
+                $query->where('title', 'LIKE', "%{$search}%");
+            }
+
+            if (!$search) {
+                $trends = Trend::paginate($pagination)
+                           ->appends($request->all());
+            } else {
+                $trends = $query->orderBy('id', 'desc')
+                                    ->paginate($pagination)
+                                    ->appends($request->all());
+            }
+            
+            return view('dashboard.alltrends', compact('trends'));
+        } catch (\Throwable $e) {
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'فشل تحميل الترندات. حاول مرة أخرى.']);
+        }
     }
 
     /**
@@ -27,7 +49,6 @@ class TrendController extends BaseController
      */
     public function create()
     {
-        
         return view('dashboard.addtrend');
     }
 
@@ -35,15 +56,19 @@ class TrendController extends BaseController
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        $request->validate([
-            'title' => 'required|string|max:255',
-        ]);
+        try {
+            $request->validate([
+                'title' => 'required|string|min:3|max:255',
+            ]);
 
-        $trend = new Trend();
-        $trend->title = $request->input('title');
-        $trend->save();
+            $trend = new Trend();
+            $trend->title = $request->input('title');
+            $trend->save();
 
-        return redirect()->route('dashboard.trend.create')->with('success', 'Trend created successfully.');
+            return redirect()->route('dashboard.trend.create')->with('success', 'Trend created successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors(['error' => 'فشل إنشاء الترند. حاول مرة أخرى.']);
+        }
     }
 
     /**
@@ -68,16 +93,20 @@ class TrendController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        $trend = Trend::findOrFail($id);
+        try {
+            $trend = Trend::findOrFail($id);
 
-        $request->validate([
-            'title' => 'required|string|max:255',
-        ]);
+            $request->validate([
+                'title' => 'required|string|max:255',
+            ]);
 
-        $trend->title = $request->input('title');
-        $trend->save();
+            $trend->title = $request->input('title');
+            $trend->save();
 
-        return redirect()->route('dashboard.trends.index')->with('success', 'Trend updated successfully.');
+            return redirect()->route('dashboard.trends.index')->with('success', 'Trend updated successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors(['error' => 'فشل تحديث الترند. حاول مرة أخرى.']);
+        }
     }
 
     /**
@@ -85,9 +114,13 @@ class TrendController extends BaseController
      */
     public function destroy(string $id)
     {
-        $trend = Trend::findOrFail($id);
-        $trend->delete();
+        try {
+            $trend = Trend::findOrFail($id);
+            $trend->delete();
 
-        return redirect()->route('dashboard.trends.index')->with('success', 'Trend deleted successfully.');
+            return redirect()->route('dashboard.trends.index')->with('success', 'Trend deleted successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors(['error' => 'فشل حذف الترند. حاول مرة أخرى.']);
+        }
     }
 }

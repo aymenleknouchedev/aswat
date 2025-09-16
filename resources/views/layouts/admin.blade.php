@@ -55,6 +55,7 @@
     <script src="./dashlite/assets/js/charts/gd-default.js?ver=3.3.0"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
     <script>
@@ -84,40 +85,38 @@
         });
     </script>
 
-
     {{-- <script src="https://cdn.tiny.cloud/1/qwcigpkrm410kyux7b6j7rhygc758v6hviqqvkgf4878s508/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
-        tinymce.init({
-            selector: '#editor',
-            height: 400,
-            plugins: 'code link image table lists exportpdf',
-            toolbar: 'undo redo | exportpdf | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image | code',
+        <script>
+            tinymce.init({
+                selector: '#editor',
+                height: 400,
+                plugins: 'code link image table lists exportpdf',
+                toolbar: 'undo redo | exportpdf | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image | code',
 
-            // (اختياري) إعدادات إضافية للتصدير
-            exportpdf_converter_options: {
-                format: 'A4',
-                margin_top: '1in',
-                margin_right: '1in',
-                margin_bottom: '1in',
-                margin_left: '1in'
-            },
+                // (اختياري) إعدادات إضافية للتصدير
+                exportpdf_converter_options: {
+                    format: 'A4',
+                    margin_top: '1in',
+                    margin_right: '1in',
+                    margin_bottom: '1in',
+                    margin_left: '1in'
+                },
 
-            // (اختياري) إذا كان عندك سيرفر JWT
-            exportpdf_token_provider: () => {
-                return fetch('http://localhost:3000/jwt', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                }).then(response => response.json());
-            }
-        });
-    </script>
- --}}
+                // (اختياري) إذا كان عندك سيرفر JWT
+                exportpdf_token_provider: () => {
+                    return fetch('http://localhost:3000/jwt', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    }).then(response => response.json());
+                }
+            });
+        </script>
+    --}}
+
     @include('components.head.tinymce-config')
     @stack('scripts')
-
-
 </body>
 
 </html>

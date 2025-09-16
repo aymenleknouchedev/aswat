@@ -52,6 +52,27 @@
 
                             <!-- ✅ جدول الكتّاب -->
                             <div class="card card-bordered card-preview">
+
+                                <div class="card-inner">
+                                    <form method="GET" action="{{ route('dashboard.writers.index') }}" class="row g-2 align-items-center">
+                                        <div class="col-md-8 col-12">
+                                            <input type="text" name="search" value="{{ request('search') }}"
+                                                class="form-control"
+                                                placeholder="ابحث..."
+                                                data-en="Search for permission..."
+                                                data-ar="ابحث...">
+                                        </div>
+                                        <div class="col-md-2 col-6">
+                                            <button type="submit" class="btn btn-primary w-100 center"
+                                                    data-en="Search" data-ar="بحث">بحث</button>
+                                        </div>
+                                        <div class="col-md-2 col-6">
+                                            <a href="{{ route('dashboard.writers.index') }}" class="btn btn-light w-100 center"
+                                            data-en="Reset" data-ar="إعادة تعيين">إعادة تعيين</a>
+                                        </div>
+                                    </form>
+                                </div>
+                                
                                 <table class="table table-orders">
                                     <thead class="tb-odr-head">
                                         <tr class="tb-odr-item">
@@ -64,7 +85,9 @@
                                         @forelse ($writers as $writer)
                                             <tr class="tb-odr-item">
                                                 <td>{{ $writer->name }}</td>
-                                                <td>{{ $writer->bio }}</td>
+                                                <td>
+                                                    {{ \Illuminate\Support\Str::words(strip_tags($writer->bio), 15, ' ...') }}
+                                                </td>
                                                 <td>
                                                     <!-- زر تعديل -->
                                                     <a href="{{ route('dashboard.writer.edit', $writer->id) }}"
@@ -96,6 +119,9 @@
                                 </table>
                             </div>
 
+                            <div class="d-flex justify-content-center mt-4">
+                                {{ $writers->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>

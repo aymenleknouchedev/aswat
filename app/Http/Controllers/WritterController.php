@@ -6,12 +6,8 @@ use App\Models\Writer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
-use App\Services\CacheService;
-use App\Enums\CacheKeys;
-
 class WritterController extends BaseController
 {
-
     public function __construct()
     {
         $this->middleware(['auth', 'check:writers_access']);
@@ -23,10 +19,21 @@ class WritterController extends BaseController
     public function index()
     {
         try {
-            $ttl = config('cache_ttl.writers', 3600);
-            $writers = CacheService::remember(CacheKeys::WRITERS, function () {
-                return Writer::all();
-            }, $ttl);
+            $query = Writer::query();
+            $pagination = config('pagination.per20', 20);
+
+            if ($search = request()->input('search')) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            }
+
+            if (!$search) {
+                $writers = Writer::paginate($pagination)
+                           ->appends(request()->all());
+            } else {
+                $writers = $query->orderBy('id', 'desc')
+                                    ->paginate($pagination)
+                                    ->appends(request()->all());
+            }
 
             return view('dashboard.allwritters', compact('writers'));
         } catch (\Exception $e) {
@@ -60,7 +67,6 @@ class WritterController extends BaseController
             ]);
 
             $writer = Writer::create($validated);
-            CacheService::forget(CacheKeys::WRITERS);
 
             if ($request->hasFile('image')) {
                 $path = $request->file('image')->store('writers', 'public');
@@ -115,8 +121,6 @@ class WritterController extends BaseController
                 $writer->save();
             }
 
-            CacheService::forget(CacheKeys::WRITERS);
-
             return redirect()->route('dashboard.writers.index')->with('success', 'Writer updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Failed to update writer: ' . $e->getMessage());
@@ -131,8 +135,6 @@ class WritterController extends BaseController
         try {
             $writer = Writer::findOrFail($id);
             $writer->delete();
-
-            CacheService::forget(CacheKeys::WRITERS);
 
             return redirect()->route('dashboard.writers.index')->with('success', 'Writer deleted successfully.');
         } catch (\Exception $e) {

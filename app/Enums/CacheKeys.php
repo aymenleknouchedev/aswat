@@ -9,5 +9,4 @@ enum CacheKeys: string
     case ROLES = 'roles';
     case PAGES = 'pages';
     case SECTIONS = 'sections';
-    case WRITERS = 'writers';
 }

@@ -50,18 +50,20 @@ class ContentController extends BaseController
             return Section::all();
         }, $ttl_sections);
         
-        $writers = CacheService::remember(CacheKeys::WRITERS, function () {
-            return Writer::all();
-        }, $ttl_writers);
-        
+        // $writers = CacheService::remember(CacheKeys::WRITERS, function () {
+        //     return Writer::all();
+        // }, $ttl_writers);
+
         $cities = Location::where('type', 'city')->get();
         $continents = Location::where('type', 'continent')->get();
         $countries = Location::where('type', 'country')->get();
+        
         
         $categories = Category::take(15)->latest()->get();
         $tags = Tag::take(15)->latest()->get();
         $trends = Trend::take(15)->latest()->get();
         $windows = Window::take(15)->latest()->get();
+        $writers = Writer::take(15)->latest()->get();
 
         $existing_images = [];
         $existing_videos = [];
@@ -90,9 +92,6 @@ class ContentController extends BaseController
      */
     public function store(Request $request)
     {
-
-        // dd($request->all());
-
         $albumImages = [];
 
         // --- Uploaded files ---
@@ -126,6 +125,7 @@ class ContentController extends BaseController
             'seo_keyword'   => 'nullable|string|max:255',
             'status'        => 'required|in:draft,published,archived',
             'template'      => 'required|string',
+            'tags_id'      => 'required|array',
             // 'template'      => [
             //     Rule::requiredIf(fn ($input) => $input->display_method !== 'simple'),
             //     'string'
@@ -238,7 +238,6 @@ class ContentController extends BaseController
             'user_id' => Auth::id(),
         ]);
 
-        // store items here
         if (!empty($validated['items']) && is_array($validated['items'])) {
             foreach ($validated['items'] as $item) {
                 $imagePath = null;
@@ -344,7 +343,6 @@ class ContentController extends BaseController
                 }
             }
         }
-
 
         // ✅ Attach tags
         $content->tags()->sync($request->tags_id);

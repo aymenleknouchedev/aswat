@@ -17,10 +17,28 @@ class WindowController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $windows = Window::all();
-        return view('dashboard.allwindows', compact('windows'));
+        try {
+            $query = Window::query();
+            $pagination = config('pagination.per20', 20);
+            if ($search = $request->input('search')) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            }
+
+            if (!$search) {
+                $windows = Window::paginate($pagination)
+                           ->appends($request->all());
+            } else {
+                $windows = $query->orderBy('id', 'desc')
+                                    ->paginate($pagination)
+                                    ->appends($request->all());
+            }
+            
+            return view('dashboard.allwindows', compact('windows'));
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Failed to load windows: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -36,15 +54,19 @@ class WindowController extends BaseController
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
 
-        $window = new Window();
-        $window->name = $request->input('name');
-        $window->save();
+            $window = new Window();
+            $window->name = $request->input('name');
+            $window->save();
 
-        return redirect()->route('dashboard.window.create')->with('success', 'Window created successfully.');
+            return redirect()->back()->with('success', 'Window created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Failed to create window: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -69,16 +91,20 @@ class WindowController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        $window = Window::findOrFail($id);
+        try {
+            $window = Window::findOrFail($id);
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+            $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
 
-        $window->name = $request->input('name');
-        $window->save();
+            $window->name = $request->input('name');
+            $window->save();
 
-        return redirect()->route('dashboard.windows.index')->with('success', 'Window updated successfully.');
+            return redirect()->back()->with('success', 'Window updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Failed to update window: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -86,9 +112,13 @@ class WindowController extends BaseController
      */
     public function destroy(string $id)
     {
-        $window = Window::findOrFail($id);
-        $window->delete();
+        try {
+            $window = Window::findOrFail($id);
+            $window->delete();
 
-        return redirect()->route('dashboard.windows.index')->with('success', 'Window deleted successfully.');
+            return redirect()->back()->with('success', 'Window deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Failed to delete window: ' . $e->getMessage());
+        }
     }
 }
