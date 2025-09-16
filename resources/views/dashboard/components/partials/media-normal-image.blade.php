@@ -287,7 +287,6 @@
                             document.getElementById("mediaTargetInput").value + "_url"
                         ).value = item.path;
 
-                        alert("الوسيط ID: " + item.id);
                         bootstrap.Modal.getInstance(document.getElementById("normal-mediaModal"))
                             .hide();
                     };
