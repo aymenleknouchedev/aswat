@@ -275,6 +275,7 @@ class ContentController extends BaseController
                     $file = $request->file($field);
                     $path = asset('storage/' . $file->store('media', 'public'));
                     $mediatype = $file->getClientMimeType();
+                    
                     $media = ContentMedia::create([
                         'path' => $path,
                         'media_type' => $mediatype,
@@ -289,15 +290,22 @@ class ContentController extends BaseController
                 // 🎥 Video Url / 🎙️ Podcast URL
                 if ($request->filled($field)) {
 
-                    $media = ContentMedia::create([
-                        'path' => $request->input($field),
-                        'media_type' => 'url',
-                        'user_id' => Auth::id(),
-                        'name' => 'url_' . bin2hex(random_bytes(10)),
-                        'alt' => $content->title,
-                    ]);
-                    $content->media()->attach($media->id, ['type' => $type]);
+                    // Check if ContentMedia with this path already exists
+                    $existingMedia = ContentMedia::where('path', $request->input($field))->first();
+                    if ($existingMedia) {
+                        $content->media()->attach($existingMedia->id, ['type' => $type]);
+                    } else {
+                        $media = ContentMedia::create([
+                            'path' => $request->input($field),
+                            'media_type' => 'url',
+                            'user_id' => Auth::id(),
+                            'name' => 'url_' . bin2hex(random_bytes(10)),
+                            'alt' => $content->title,
+                        ]);
+                        $content->media()->attach($media->id, ['type' => $type]);
+                    }
                     continue;
+
                 }
 
 
@@ -322,20 +330,27 @@ class ContentController extends BaseController
                         }
                     }
 
-
                     // 3️⃣ Save all album media
                     foreach ($items as $path) {
                         $mediatype = $file->getClientMimeType();
                         if ($mediatype === null) {
                             $mediatype = 'url';
                         }
-                        $media = ContentMedia::create([
-                            'path' => $path,
-                            'media_type' => $mediatype,
-                            'user_id' => Auth::id(),
-                            'name' => $file->getClientOriginalName(),
-                            'alt' => $content->title,
-                        ]);
+                        // Check if ContentMedia with this path already exists
+                        $existingMedia = ContentMedia::where('path', $path)->first();
+                        if ($existingMedia) {
+                            $media = $existingMedia;
+                        } else {
+                            $media = ContentMedia::create([
+                                'path' => $path,
+                                'media_type' => $mediatype,
+                                'user_id' => Auth::id(),
+                                'name' => ($mediatype === 'url')
+                                    ? 'url_' . bin2hex(random_bytes(10))
+                                    : (isset($file) ? $file->getClientOriginalName() : basename($path)),
+                                'alt' => $content->title,
+                            ]);
+                        }
                         $content->media()->attach($media->id, ['type' => $type]);
                     }
 
