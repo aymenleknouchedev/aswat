@@ -109,6 +109,7 @@
                 </nav>
 
                 <input type="hidden" id="mediaTargetInput">
+                <input type="hidden" id="selectedAssetId" name="selected_asset_id">
             </div>
             <div class="modal-footer border-0">
                 <button class="btn btn-light border" data-bs-dismiss="modal">إغلاق</button>
@@ -230,10 +231,6 @@
 </script>
 
 
-
-
-
-
 <script>
     // ================= MEDIA MODAL =================
     let currentPage = 1;
@@ -285,13 +282,14 @@
                             previewBox.innerHTML =
                                 `<div class="p-3 border rounded">📂 ${item.name ?? "ملف"}</div>`;
                         }
-
+                        
                         document.getElementById(
                             document.getElementById("mediaTargetInput").value + "_url"
                         ).value = item.path;
 
+                        alert("الوسيط ID: " + item.id);
                         bootstrap.Modal.getInstance(document.getElementById("normal-mediaModal"))
-                    .hide();
+                            .hide();
                     };
 
                     grid.appendChild(div);

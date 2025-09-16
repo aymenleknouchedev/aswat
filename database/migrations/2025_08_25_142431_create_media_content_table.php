@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('content_id')->constrained()->cascadeOnDelete();
             $table->foreignId('content_media_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['main', 'mobile', 'detail', 'album', 'video', 'podcast']);
-            $table->primary(['content_media_id', 'content_id']);
+            $table->primary(['content_media_id', 'content_id', 'type']);
         });
     }
 

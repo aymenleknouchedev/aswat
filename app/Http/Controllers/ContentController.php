@@ -77,9 +77,6 @@ class ContentController extends BaseController
      */
     public function store(Request $request)
     {
-
-        // dd($request->all());
-
         $albumImages = [];
 
         // --- Uploaded files ---
@@ -263,6 +260,7 @@ class ContentController extends BaseController
                     $file = $request->file($field);
                     $path = asset('storage/' . $file->store('media', 'public'));
                     $mediatype = $file->getClientMimeType();
+                    
                     $media = ContentMedia::create([
                         'path' => $path,
                         'media_type' => $mediatype,
@@ -277,15 +275,22 @@ class ContentController extends BaseController
                 // 🎥 Video Url / 🎙️ Podcast URL
                 if ($request->filled($field)) {
 
-                    $media = ContentMedia::create([
-                        'path' => $request->input($field),
-                        'media_type' => 'url',
-                        'user_id' => Auth::id(),
-                        'name' => 'url_' . bin2hex(random_bytes(10)),
-                        'alt' => $content->title,
-                    ]);
-                    $content->media()->attach($media->id, ['type' => $type]);
+                    // Check if ContentMedia with this path already exists
+                    $existingMedia = ContentMedia::where('path', $request->input($field))->first();
+                    if ($existingMedia) {
+                        $content->media()->attach($existingMedia->id, ['type' => $type]);
+                    } else {
+                        $media = ContentMedia::create([
+                            'path' => $request->input($field),
+                            'media_type' => 'url',
+                            'user_id' => Auth::id(),
+                            'name' => 'url_' . bin2hex(random_bytes(10)),
+                            'alt' => $content->title,
+                        ]);
+                        $content->media()->attach($media->id, ['type' => $type]);
+                    }
                     continue;
+                    
                 }
 
 
