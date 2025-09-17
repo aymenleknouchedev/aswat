@@ -12,7 +12,7 @@
                 <div class="nk-content">
                     <div class="container-fluid">
                         <div class="nk-block nk-block-lg">
-                            <div class="nk-block-head">
+                            <div class="nk-block-head d-flex justify-content-between align-items-center">
                                 <div class="nk-block-head-content">
                                     <h4 class="nk-block-title" data-en="All Roles" data-ar="جميع الأدوار">
                                         جميع الأدوار
@@ -21,6 +21,11 @@
                                         data-ar="قائمة الأدوار وصلاحياتها.">
                                         قائمة الأدوار وصلاحياتها.
                                     </p>
+                                </div>
+                                <div>
+                                    <a href="{{ route('dashboard.role.create') }}" class="btn btn-primary" data-en="Add Role" data-ar="إضافة دور">
+                                        + إضافة دور
+                                    </a>
                                 </div>
                             </div>
 

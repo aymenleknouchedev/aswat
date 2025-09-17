@@ -49,7 +49,7 @@ class SectionController extends BaseController
     {
         try {
             $request->validate([
-                'name' => 'required|string|max:255',
+                'name' => 'required|string|max:255|unique:sections,name',
             ]);
 
             $section = new Section();       

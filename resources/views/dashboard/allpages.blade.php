@@ -16,11 +16,16 @@
 
                             <!-- ✅ رأس الصفحة -->
                             <div class="nk-block-head">
-                                <div class="nk-block-head-content">
-                                    <h4 class="nk-block-title" data-en="All Pages" data-ar="جميع الصفحات">جميع الصفحات</h4>
-                                    <p data-en="List of all site pages." data-ar="قائمة بجميع الصفحات في الموقع.">
-                                        قائمة بجميع الصفحات في الموقع.
-                                    </p>
+                                <div class="nk-block-head-content d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h4 class="nk-block-title" data-en="All Pages" data-ar="جميع الصفحات">جميع الصفحات</h4>
+                                        <p data-en="List of all site pages." data-ar="قائمة بجميع الصفحات في الموقع.">
+                                            قائمة بجميع الصفحات في الموقع.
+                                        </p>
+                                    </div>
+                                    <a href="{{ route('dashboard.page.create') }}" class="btn btn-primary" data-en="Add Page" data-ar="إضافة صفحة">
+                                        إضافة صفحة
+                                    </a>
                                 </div>
                             </div>
 

@@ -14,13 +14,18 @@
                     <div class="container-fluid">
                         <div class="nk-block nk-block-lg">
                             <div class="nk-block-head">
-                                <div class="nk-block-head-content">
-                                    <h4 class="nk-block-title" data-en="All Users" data-ar="جميع المستخدمين">
-                                        جميع المستخدمين
-                                    </h4>
-                                    <p data-en="List of all registered users." data-ar="قائمة جميع المستخدمين المسجلين.">
-                                        قائمة جميع المستخدمين المسجلين.
-                                    </p>
+                                <div class="nk-block-head-content d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h4 class="nk-block-title" data-en="All Users" data-ar="جميع المستخدمين">
+                                            جميع المستخدمين
+                                        </h4>
+                                        <p data-en="List of all registered users." data-ar="قائمة جميع المستخدمين المسجلين.">
+                                            قائمة جميع المستخدمين المسجلين.
+                                        </p>
+                                    </div>
+                                    <a href="{{ route('dashboard.user.create') }}" class="btn btn-primary" data-en="Add User" data-ar="إضافة مستخدم">
+                                        + إضافة مستخدم
+                                    </a>
                                 </div>
                             </div>
 

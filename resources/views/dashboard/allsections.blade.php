@@ -13,13 +13,18 @@
                 <div class="nk-content">
                     <div class="container-fluid">
                         <div class="nk-block nk-block-lg">
-                            <div class="nk-block-head">
+                            <div class="nk-block-head d-flex justify-content-between align-items-center">
                                 <div class="nk-block-head-content">
                                     <h4 class="nk-block-title" data-en="All Sections" data-ar="جميع الأقسام">جميع الأقسام
                                     </h4>
                                     <p data-en="Manage all sections from here" data-ar="قم بإدارة جميع الأقسام من هنا">
                                         قم بإدارة جميع الأقسام من هنا
                                     </p>
+                                </div>
+                                <div>
+                                    <a href="{{ route('dashboard.section.create') }}" class="btn btn-primary" data-en="Add Section" data-ar="إضافة قسم">
+                                        إضافة قسم
+                                    </a>
                                 </div>
                             </div>
                             <!-- رسائل النجاح -->

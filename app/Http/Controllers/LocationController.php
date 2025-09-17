@@ -63,7 +63,7 @@ class LocationController extends BaseController
     {
         try {
             Validator::validate($request->all(), [
-                'name' => 'required|string',
+                'name' => 'required|string|unique:locations,name',
                 'type' => 'required|in:city,continent,country',
             ]);
 
