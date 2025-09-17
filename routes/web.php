@@ -80,11 +80,15 @@ Route::prefix('dashboard')->group(function () {
 
         // Api for select2 ajax search
         Route::get('/api/search-categories', [ApiController::class, 'search_categories'])->name('api.search.categories');
+        Route::post('/api/add-category', [ApiController::class, 'add_category'])->name('api.add.category');
         Route::get('/api/search-trends', [ApiController::class, 'search_trends'])->name('api.search.trends');
+        Route::post('/api/add-trend', [ApiController::class, 'add_trend'])->name('api.add.trend');
         Route::get('/api/search-windows', [ApiController::class, 'search_windows'])->name('api.search.windows');
+        Route::post('/api/add-window', [ApiController::class, 'add_window'])->name('api.add.window');
         Route::get('/api/search-tags', [ApiController::class, 'search_tags'])->name('api.search.tags');
         Route::post('/api/add-tag', [ApiController::class, 'add_tag'])->name('api.add.tag');
         Route::get('/api/search-writers', [ApiController::class, 'search_writers'])->name('api.search.writers');
+        Route::post('/api/add-writer', [ApiController::class, 'add_writer'])->name('api.add.writer');
         Route::get('/api/search-cities', [ApiController::class, 'search_cities'])->name('api.search.cities');
 
         // Dashboard

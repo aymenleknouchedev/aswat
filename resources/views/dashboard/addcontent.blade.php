@@ -165,13 +165,36 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6 col-lg-3">
-                                            <label class="form-label" data-ar="التصنيف"
-                                                data-en="Category">التصنيف</label>
-                                            <div class="form-control-wrap position-relative">
-                                                <input type="text" id="categorySearch" class="form-control">
-                                                <input type="hidden" name="category_id" id="categoryHidden">
-                                                <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
-                                                    style="max-height:200px; overflow-y:auto; display:none;">
+                                            <div class="d-flex align-items-end">
+                                                <div class="w-100">
+                                                    <label class="form-label" data-ar="التصنيف"
+                                                        data-en="Category">التصنيف</label>
+                                                    <div class="form-control-wrap position-relative">
+                                                        <input type="text" id="categorySearch" class="form-control">
+                                                        <input type="hidden" name="category_id" id="categoryHidden">
+                                                        <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
+                                                            style="max-height:200px; overflow-y:auto; display:none;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button type="button" id="addCategoryButton" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                                                    <em class="icon ni ni-plus"></em>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="addCategoryModalLabel">إضافة تصنيف جديد</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="text" id="newCategoryInput" class="form-control" placeholder="أدخل التصنيف هنا...">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                                                        <button type="button" id="saveCategoryBtn" class="btn btn-primary">حفظ</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -208,41 +231,164 @@
                                     </div>
                                     <div class="row g-3">
                                         <div class="form-group col-md-6 col-lg-6">
-                                            <label class="form-label" data-ar="الاتجاه" data-en="Trend">الاتجاه</label>
-                                            <div class="form-control-wrap position-relative">
-                                                <input type="text" id="trendSearch" class="form-control"
-                                                    >
-                                                <input type="hidden" name="trend_id" id="trendHidden">
-                                                <div id="trendResults" class="dropdown-menu w-100 shadow-sm"
-                                                    style="max-height:200px; overflow-y:auto; display:none;">
+                                            <div class="d-flex align-items-end">
+                                                <div class="w-100">
+                                                    <label class="form-label" data-ar="الاتجاه" data-en="Trend">الاتجاه</label>
+                                                    <div class="form-control-wrap position-relative">
+                                                        <input type="text" id="trendSearch" class="form-control" />
+                                                        <input type="hidden" name="trend_id" id="trendHidden" />
+                                                        <div id="trendResults" class="dropdown-menu w-100 shadow-sm"
+                                                            style="max-height:200px; overflow-y:auto; display:none;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button type="button" id="addTrendButton" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addTrendModal">
+                                                    {{-- add icon --}}
+                                                    <em class="icon ni ni-plus"></em>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="modal fade" id="addTrendModal" tabindex="-1" aria-labelledby="addTrendModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="addTrendModalLabel">إضافة اتجاه جديد</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="text" id="newTrendInput" class="form-control" placeholder="أدخل الاتجاه هنا...">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                                                        <button type="button" id="saveTrendBtn" class="btn btn-primary">حفظ</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6 col-lg-6">
-                                            <label class="form-label" data-ar="النافذة" data-en="Window">النافذة</label>
-                                            <div class="form-control-wrap position-relative">
-                                                <input type="text" id="windowSearch" class="form-control"
-                                                   >
-                                                <input type="hidden" name="window_id" id="windowHidden">
-                                                <div id="windowResults" class="dropdown-menu w-100 shadow-sm"
-                                                    style="max-height:200px; overflow-y:auto; display:none;">
+                                            <div class="d-flex align-items-end">
+                                                <div class="w-100">
+                                                    <label class="form-label" data-ar="النافذة" data-en="Window">النافذة</label>
+                                                    <div class="form-control-wrap position-relative">
+                                                        <input type="text" id="windowSearch" class="form-control" />
+                                                        <input type="hidden" name="window_id" id="windowHidden" />
+                                                        <div id="windowResults" class="dropdown-menu w-100 shadow-sm"
+                                                            style="max-height:200px; overflow-y:auto; display:none;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button type="button" id="addWindowButton" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addWindowModal">
+                                                    {{-- add icon --}}
+                                                    <em class="icon ni ni-plus"></em>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="modal fade" id="addWindowModal" tabindex="-1" aria-labelledby="addWindowModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="addWindowModalLabel">إضافة نافذة جديدة</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="text" id="newWindowInput" class="form-control" placeholder="أدخل النافذة هنا...">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                                                        <button type="button" id="saveWindowBtn" class="btn btn-primary">حفظ</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
 
                                     <div class="row g-3">
                                         <div class="form-group col-md-6 col-lg-6">
-                                            <label class="form-label" data-ar="الكاتب" data-en="Writer">الكاتب</label>
-                                            <div class="form-control-wrap position-relative">
-                                                <input type="text" id="writerSearch" class="form-control"
-                                                    >
-                                                <div id="writerResults" class="dropdown-menu w-100"
-                                                    style="display:none; max-height:200px; overflow-y:auto;"></div>
-                                                <input type="hidden" name="writer_id" id="writerHidden">
+                                            <div class="d-flex align-items-end">
+                                                <div class="w-100">
+                                                    <label class="form-label" data-ar="الكاتب" data-en="Writer">الكاتب</label>
+                                                    <div class="form-control-wrap position-relative">
+                                                        <input type="text" id="writerSearch" class="form-control"
+                                                            >
+                                                        <div id="writerResults" class="dropdown-menu w-100"
+                                                            style="display:none; max-height:200px; overflow-y:auto;"></div>
+                                                        <input type="hidden" name="writer_id" id="writerHidden">
+                                                    </div>
+                                                </div>
+                                                <button type="button" id="addWriterButton" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addWriterModal">
+                                                    {{-- add icon --}}
+                                                    <em class="icon ni ni-plus"></em>
+                                                </button>
                                             </div>
                                         </div>
+
+                                        <div class="modal fade" id="addWriterModal" tabindex="-1" aria-labelledby="addWriterModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+
+                                                    <!-- Header -->
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="addWriterModalLabel">إضافة كاتب جديد</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                                                    </div>
+
+                                                    <!-- Body -->
+                                                    <div class="modal-body">
+                                                        
+                                                        <form id="writerForm" enctype="multipart/form-data">
+                                                            @csrf
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label">الاسم</label>
+                                                                <input type="text" id="writerName" name="name" class="form-control" required>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label">الرابط (Slug)</label>
+                                                                <input type="text" id="writerSlug" name="slug" class="form-control" required>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label">نبذة</label>
+                                                                <textarea id="writerBio" name="bio" class="form-control" rows="3" required></textarea>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label">الصورة</label>
+                                                                <input type="file" id="writerImage" name="image" class="form-control" accept="image/*">
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label">فيسبوك</label>
+                                                                <input type="url" id="writerFacebook" name="facebook" class="form-control" placeholder="https://facebook.com/">
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label">X</label>
+                                                                <input type="url" id="writerX" name="x" class="form-control" placeholder="https://x.com/">
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label">إنستغرام</label>
+                                                                <input type="url" id="writerInstagram" name="instagram" class="form-control" placeholder="https://instagram.com/">
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label">لينكدإن</label>
+                                                                <input type="url" id="writerLinkedin" name="linkedin" class="form-control" placeholder="https://linkedin.com/">
+                                                            </div>
+                                                        </form>
+
+                                                    </div>
+
+                                                    <!-- Footer -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                                                        <button type="button" id="saveWriterBtn" class="btn btn-primary">حفظ</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
 
                                         <div class="form-group col-md-6 col-lg-6">
                                             <label class="form-label" data-ar="موقع الكاتب"
@@ -321,8 +467,6 @@
                                         <small class="text-muted"><span id="summary-count">0</span> / 130</small>
                                     </div>
 
-
-
                                     <div class="form-group col-12 mb-3">
                                         <label class="form-label" for="body" data-ar="المتن" data-en="Body">المتن
                                         </label>
@@ -331,7 +475,6 @@
                                             <x-forms.tinymce-editor id="myeditorinstance" :value="$post->content ?? ''"  name="content"/>
                                         </div>
                                     </div>
-
 
                                     <div class="form-group col-12 mb-3">
                                         <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
@@ -557,11 +700,15 @@
 </style>
 
 <script src={{ asset('dashlite/js/apis/search-category-api.js') }}></script>
+<script src={{ asset('dashlite/js/apis/add-category-api.js') }}></script>
 <script src={{ asset('dashlite/js/apis/search-trend-api.js') }}></script>
+<script src={{ asset('dashlite/js/apis/add-trend-api.js') }}></script>
 <script src={{ asset('dashlite/js/apis/search-window-api.js') }}></script>
+<script src={{ asset('dashlite/js/apis/add-window-api.js') }}></script>
 <script src={{ asset('dashlite/js/apis/search-tag-api.js') }}></script>
 <script src={{ asset('dashlite/js/apis/add-tag-api.js') }}></script>
 <script src={{ asset('dashlite/js/apis/search-writer-api.js') }}></script>
+<script src={{ asset('dashlite/js/apis/add-writer-api.js') }}></script>
 <script src={{ asset('dashlite/js/apis/search-writer-location-api.js') }}></script>
 
 <script>
