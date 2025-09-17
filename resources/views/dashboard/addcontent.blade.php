@@ -165,19 +165,15 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6 col-lg-3">
-                                            <div class="d-flex align-items-end">
-                                                <div class="w-100">
-                                                    <label class="form-label" data-ar="التصنيف"
-                                                        data-en="Category">التصنيف</label>
-                                                    <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="categorySearch" class="form-control">
-                                                        <input type="hidden" name="category_id" id="categoryHidden">
-                                                        <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
-                                                            style="max-height:200px; overflow-y:auto; display:none;">
-                                                        </div>
-                                                    </div>
+                                            <label class="form-label" data-ar="التصنيف" data-en="Category">التصنيف</label>
+                                            <div class="form-control-wrap position-relative">
+                                                <input type="text" id="categorySearch" class="form-control pe-5">
+                                                <input type="hidden" name="category_id" id="categoryHidden">
+                                                <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
+                                                    style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>
-                                                <button type="button" id="addCategoryButton" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                                                <button type="button" id="addCategoryButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y" 
+                                                    style="height: 100%; z-index: 2; margin-left: 8px;" data-bs-toggle="modal" data-bs-target="#addCategoryModal" tabindex="-1">
                                                     <em class="icon ni ni-plus"></em>
                                                 </button>
                                             </div>
@@ -240,12 +236,12 @@
                                                         <div id="trendResults" class="dropdown-menu w-100 shadow-sm"
                                                             style="max-height:200px; overflow-y:auto; display:none;">
                                                         </div>
+                                                        <button type="button" id="addTrendButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
+                                                            style="height: 100%; z-index: 2; margin-left: 8px;" data-bs-toggle="modal" data-bs-target="#addTrendModal" tabindex="-1">
+                                                            <em class="icon ni ni-plus"></em>
+                                                        </button>
                                                     </div>
                                                 </div>
-                                                <button type="button" id="addTrendButton" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addTrendModal">
-                                                    {{-- add icon --}}
-                                                    <em class="icon ni ni-plus"></em>
-                                                </button>
                                             </div>
                                         </div>
                                         <div class="modal fade" id="addTrendModal" tabindex="-1" aria-labelledby="addTrendModalLabel" aria-hidden="true">
@@ -269,17 +265,17 @@
                                                 <div class="w-100">
                                                     <label class="form-label" data-ar="النافذة" data-en="Window">النافذة</label>
                                                     <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="windowSearch" class="form-control" />
+                                                        <input type="text" id="windowSearch" class="form-control pe-5" />
                                                         <input type="hidden" name="window_id" id="windowHidden" />
                                                         <div id="windowResults" class="dropdown-menu w-100 shadow-sm"
                                                             style="max-height:200px; overflow-y:auto; display:none;">
                                                         </div>
+                                                        <button type="button" id="addWindowButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
+                                                            style="height: 100%; z-index: 2; margin-left: 8px;" data-bs-toggle="modal" data-bs-target="#addWindowModal" tabindex="-1">
+                                                            <em class="icon ni ni-plus"></em>
+                                                        </button>
                                                     </div>
                                                 </div>
-                                                <button type="button" id="addWindowButton" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addWindowModal">
-                                                    {{-- add icon --}}
-                                                    <em class="icon ni ni-plus"></em>
-                                                </button>
                                             </div>
                                         </div>
                                         <div class="modal fade" id="addWindowModal" tabindex="-1" aria-labelledby="addWindowModalLabel" aria-hidden="true">
@@ -306,17 +302,16 @@
                                                 <div class="w-100">
                                                     <label class="form-label" data-ar="الكاتب" data-en="Writer">الكاتب</label>
                                                     <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="writerSearch" class="form-control"
-                                                            >
+                                                        <input type="text" id="writerSearch" class="form-control">
+                                                        <input type="hidden" name="writer_id" id="writerHidden">
                                                         <div id="writerResults" class="dropdown-menu w-100"
                                                             style="display:none; max-height:200px; overflow-y:auto;"></div>
-                                                        <input type="hidden" name="writer_id" id="writerHidden">
+                                                        <button type="button" id="addWriterButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
+                                                            style="height: 100%; z-index: 2; margin-left: 8px;" data-bs-toggle="modal" data-bs-target="#addWriterModal" tabindex="-1">
+                                                            <em class="icon ni ni-plus"></em>
+                                                        </button>
                                                     </div>
                                                 </div>
-                                                <button type="button" id="addWriterButton" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addWriterModal">
-                                                    {{-- add icon --}}
-                                                    <em class="icon ni ni-plus"></em>
-                                                </button>
                                             </div>
                                         </div>
 
@@ -415,22 +410,19 @@
                                                         <div id="tagContainer" class="d-flex flex-wrap align-items-center"
                                                             style="gap:5px; flex:1 ">
                                                             <input type="text" id="tagSearch" class="form-control"
-                                                                style="background: transparent; color outline:none; min-width:120px;"
-                                                                >
+                                                                style="background: transparent; color outline:none; min-width:120px;">
                                                         </div>
+                                                        <button type="button" id="addTagButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
+                                                            style="height: 100%; z-index: 2; margin-left: 8px;" data-bs-toggle="modal" data-bs-target="#addTagModal" tabindex="-1">
+                                                            <em class="icon ni ni-plus"></em>
+                                                        </button>
                                                     </div>
-        
+
                                                     <div id="tagResults" class="dropdown-menu w-100"
                                                         style="display:none; max-height:200px; overflow-y:auto; position:absolute; z-index:1000;">
                                                     </div>
-        
+
                                                     <div id="hiddenTags"></div>
-                                                </div>
-                                                <div class="">
-                                                    <button type="button" id="addTagButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTagModal">
-                                                        {{-- add icon --}}
-                                                        <em class="icon ni ni-plus"></em>
-                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
