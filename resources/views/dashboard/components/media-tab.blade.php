@@ -1,5 +1,5 @@
 <!-- Media Tab -->
-<div style="height: 800px;" class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
+<div  class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
     {{-- Template Type radios --}}
     <div class="form-group mt-3 mb-4">
         @foreach ([

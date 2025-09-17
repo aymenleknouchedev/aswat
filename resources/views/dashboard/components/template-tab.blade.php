@@ -27,7 +27,8 @@
     <div id="dynamic-items-section" class="mt-3" style="display:none;">
         <div id="items-container"></div>
         <button type="button" id="add-item-btn" class="btn btn-primary mb-2"
-                data-bs-toggle="modal" data-bs-target="#itemModal">Add Item</button>
+            data-bs-toggle="modal" data-bs-target="#itemModal"
+            data-ar="إضافة عنصر" data-en="Add Item">Add Item</button>
     </div>
 
     <div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true">
@@ -35,31 +36,31 @@
             <div class="modal-content">
                 <div id="modalFormId" enctype="multipart/form-data">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add / Edit Item</h5>
+                        <h5 class="modal-title" data-ar="إضافة / تعديل عنصر" data-en="Add / Edit Item">Add / Edit Item</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="editIndex" />
                         <div class="mb-2">
-                            <label class="form-label">Title <span style="color:red;">*</span></label>
-                            <input id="itemTitle" class="form-control" />
+                            <label class="form-label" data-ar="العنوان" data-en="Title">Title <span style="color:red;">*</span></label>
+                            <input id="itemTitle" class="form-control" data-ar="العنوان" data-en="Title" />
                         </div>
                         <div class="mb-2">
-                            <label class="form-label">Description <span style="color:red;">*</span></label>
-                            <textarea id="itemDescription" class="form-control"></textarea>
+                            <label class="form-label" data-ar="الوصف" data-en="Description">Description <span style="color:red;">*</span></label>
+                            <textarea id="itemDescription" class="form-control" data-ar="الوصف" data-en="Description"></textarea>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label">Image <span style="color:red;">*</span></label>
-                            <input id="itemImage" type="file" class="form-control" accept="image/*" />
+                            <label class="form-label" data-ar="الصورة" data-en="Image">Image <span style="color:red;">*</span></label>
+                            <input id="itemImage" type="file" class="form-control" accept="image/*" data-ar="الصورة" data-en="Image" />
                         </div>
                         <div class="mb-2">
-                            <label class="form-label">URL</label>
-                            <input id="itemUrl" type="url" class="form-control" />
+                            <label class="form-label" data-ar="الرابط" data-en="URL">URL</label>
+                            <input id="itemUrl" type="url" class="form-control" data-ar="الرابط" data-en="URL" />
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="saveItemBtn" type="button" class="btn btn-success">Save Item</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button id="saveItemBtn" type="button" class="btn btn-success" data-ar="حفظ العنصر" data-en="Save Item">Save Item</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">Cancel</button>
                     </div>
                 </div>
             </div>

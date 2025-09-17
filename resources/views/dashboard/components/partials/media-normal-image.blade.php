@@ -5,7 +5,7 @@
         <div class="col-md-4">
             <label class="form-label" data-ar="الصورة الأساسية" data-en="Main Image">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-normal_main_image"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9;">
                 <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
                     مختارة</span>
             </div>
@@ -13,11 +13,11 @@
             <input type="file" name="normal_main_image" id="normal_main_image" class="d-none" accept="image/*">
             <input type="hidden" name="normal_main_image" id="normal_main_image_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column ">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('normal_main_image').click()" data-ar="رفع صورة من الجهاز"
                     data-en="Upload from device">رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="normal_main_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
@@ -30,7 +30,7 @@
         <div class="col-md-4">
             <label class="form-label" data-ar="صورة الهاتف المحمول" data-en="Mobile Image">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-normal_mobile_image"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9;">
                 <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
                     مختارة</span>
             </div>
@@ -38,11 +38,11 @@
             <input type="file" name="normal_mobile_image" id="normal_mobile_image" class="d-none" accept="image/*">
             <input type="hidden" name="normal_mobile_image" id="normal_mobile_image_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('normal_mobile_image').click()" data-ar="رفع صورة من الجهاز"
                     data-en="Upload from device">رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="normal_mobile_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
@@ -56,7 +56,7 @@
             <label class="form-label" data-ar="صورة المحتوى التفصيلية" data-en="Content Image">صورة المحتوى
                 التفصيلية</label>
             <div class="media-preview border rounded mb-2" id="preview-normal_content_image"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9;">
                 <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
                     مختارة</span>
             </div>
@@ -64,11 +64,11 @@
             <input type="file" name="normal_content_image" id="normal_content_image" class="d-none" accept="image/*">
             <input type="hidden" name="normal_content_image" id="normal_content_image_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('normal_content_image').click()" data-ar="رفع صورة من الجهاز"
                     data-en="Upload from device">رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="normal_content_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"

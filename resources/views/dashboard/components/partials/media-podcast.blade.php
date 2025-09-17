@@ -13,11 +13,11 @@
             <input type="file" name="podcast_main_image" id="podcast_main_image" class="d-none" accept="image/*">
             <input type="hidden" name="podcast_main_image" id="podcast_main_image_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('podcast_main_image').click()" data-ar="رفع صورة من الجهاز"
                     data-en="Upload from device">رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_main_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
@@ -38,11 +38,11 @@
             <input type="file" name="podcast_mobile_image" id="podcast_mobile_image" class="d-none" accept="image/*">
             <input type="hidden" name="podcast_mobile_image" id="podcast_mobile_image_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('podcast_mobile_image').click()" data-ar="رفع صورة من الجهاز"
                     data-en="Upload from device">رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_mobile_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
@@ -65,11 +65,11 @@
                 accept="image/*">
             <input type="hidden" name="podcast_content_image" id="podcast_content_image_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('podcast_content_image').click()" data-ar="رفع صورة من الجهاز"
                     data-en="Upload from device">رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_content_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
@@ -90,11 +90,11 @@
             <input type="file" name="podcast_file" id="podcast_file" class="d-none" accept="audio/*">
             <input type="hidden" name="podcast_file" id="podcast_file_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('podcast_file').click()" data-ar="رفع بودكاست من الجهاز"
                     data-en="Upload podcast from device">رفع بودكاست من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="podcast_file"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"

@@ -5,7 +5,7 @@
         <div class="col-md-3">
             <label class="form-label" data-en="Main Image" data-ar="الصورة الأساسية">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-video_main_image"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9;">
                 <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة
                     مختارة</span>
             </div>
@@ -13,11 +13,11 @@
             <input type="file" name="video_main_image" id="video_main_image" class="d-none" accept="image/*">
             <input type="hidden" name="video_main_image" id="video_main_image_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('video_main_image').click()" data-en="Upload from device"
                     data-ar="رفع صورة من الجهاز">رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_main_image"
                     data-en="Add from URL" data-ar="إضافة من رابط">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
@@ -30,7 +30,7 @@
         <div class="col-md-3">
             <label class="form-label" data-en="Mobile Image" data-ar="صورة الهاتف المحمول">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-video_mobile_image"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9;">
                 <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة
                     مختارة</span>
             </div>
@@ -38,11 +38,11 @@
             <input type="file" name="video_mobile_image" id="video_mobile_image" class="d-none" accept="image/*">
             <input type="hidden" name="video_mobile_image" id="video_mobile_image_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('video_mobile_image').click()" data-en="Upload from device"
                     data-ar="رفع صورة من الجهاز">رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_mobile_image"
                     data-en="Add from URL" data-ar="إضافة من رابط">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
@@ -56,7 +56,7 @@
             <label class="form-label" data-en="Content Image" data-ar="صورة المحتوى التفصيلية">صورة المحتوى
                 التفصيلية</label>
             <div class="media-preview border rounded mb-2" id="preview-video_content_image"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9;">
                 <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة
                     مختارة</span>
             </div>
@@ -64,11 +64,11 @@
             <input type="file" name="video_content_image" id="video_content_image" class="d-none" accept="image/*">
             <input type="hidden" name="video_content_image" id="video_content_image_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('video_content_image').click()" data-en="Upload from device"
                     data-ar="رفع صورة من الجهاز">رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_content_image"
                     data-en="Add from URL" data-ar="إضافة من رابط">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
@@ -81,7 +81,7 @@
         <div class="col-md-3">
             <label class="form-label" data-en="Video" data-ar="الفيديو">الفيديو</label>
             <div id="preview-video_file" class="media-preview border rounded mb-2"
-                style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
+                style="aspect-ratio: 16/9;">
                 <span class="text-muted" data-en="No video selected" data-ar="لا يوجد فيديو محدد">لا يوجد فيديو
                     محدد</span>
             </div>
@@ -89,11 +89,11 @@
             <input type="file" name="video_file" id="video_file" class="d-none" accept="video/*">
             <input type="hidden" name="video_file" id="video_file_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('video_file').click()" data-en="Upload from device"
                     data-ar="رفع فيديو من الجهاز">رفع فيديو من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="video_file"
                     data-en="Add from URL" data-ar="إضافة من رابط">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"

@@ -13,11 +13,11 @@
             <input type="file" name="no_image_main_image" id="no_image_main_image" class="d-none" accept="image/*">
             <input type="hidden" name="no_image_main_image" id="no_image_main_image_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('no_image_main_image').click()" data-ar="رفع صورة من الجهاز"
                     data-en="Upload from device">رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="no_image_main_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
@@ -39,11 +39,11 @@
                 accept="image/*">
             <input type="hidden" name="no_image_mobile_image" id="no_image_mobile_image_url">
 
-            <div class="d-flex flex-column gap-2">
-                <button type="button" class="btn btn-primary btn-sm w-100"
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-primary btn-sm w-100 mb-1"
                     onclick="document.getElementById('no_image_mobile_image').click()" data-ar="رفع صورة من الجهاز"
                     data-en="Upload from device">رفع صورة من الجهاز</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal"
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 open-url-modal mb-1"
                     data-bs-toggle="modal" data-bs-target="#urlModal" data-target="no_image_mobile_image"
                     data-ar="إضافة من رابط" data-en="Add from URL">إضافة من رابط</button>
                 <button type="button" class="btn btn-outline-primary btn-sm w-100 open-media" data-bs-toggle="modal"
