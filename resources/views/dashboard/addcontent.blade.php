@@ -182,14 +182,14 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="addCategoryModalLabel">إضافة تصنيف جديد</h5>
+                                                        <h5 class="modal-title" id="addCategoryModalLabel" data-ar="إضافة تصنيف جديد" data-en="Add New Category">إضافة تصنيف جديد</h5>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <input type="text" id="newCategoryInput" class="form-control" placeholder="أدخل التصنيف هنا...">
+                                                        <input type="text" id="newCategoryInput" class="form-control" data-ar="تصنيف جديد" data-en="New Category">
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                                                        <button type="button" id="saveCategoryBtn" class="btn btn-primary">حفظ</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+                                                        <button type="button" id="saveCategoryBtn" class="btn btn-primary" data-ar="حفظ" data-en="Save">حفظ</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -248,14 +248,14 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="addTrendModalLabel">إضافة اتجاه جديد</h5>
+                                                        <h5 class="modal-title" id="addTrendModalLabel" data-ar="إضافة اتجاه جديد" data-en="Add New Trend">إضافة اتجاه جديد</h5>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <input type="text" id="newTrendInput" class="form-control" placeholder="أدخل الاتجاه هنا...">
+                                                        <input type="text" id="newTrendInput" class="form-control" data-ar="اتجاه جديد" data-en="New Trend">
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                                                        <button type="button" id="saveTrendBtn" class="btn btn-primary">حفظ</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+                                                        <button type="button" id="saveTrendBtn" class="btn btn-primary" data-ar="حفظ" data-en="Save">حفظ</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -282,14 +282,14 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="addWindowModalLabel">إضافة نافذة جديدة</h5>
+                                                        <h5 class="modal-title" id="addWindowModalLabel" data-ar="إضافة نافذة جديدة" data-en="Add New Window">إضافة نافذة جديدة</h5>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <input type="text" id="newWindowInput" class="form-control" placeholder="أدخل النافذة هنا...">
+                                                        <input type="text" id="newWindowInput" class="form-control" data-ar="نافذة جديدة" data-en="New Window">
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                                                        <button type="button" id="saveWindowBtn" class="btn btn-primary">حفظ</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+                                                        <button type="button" id="saveWindowBtn" class="btn btn-primary" data-ar="حفظ" data-en="Save">حفظ</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -321,8 +321,8 @@
 
                                                     <!-- Header -->
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="addWriterModalLabel">إضافة كاتب جديد</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                                                        <h5 class="modal-title" id="addWriterModalLabel" data-ar="إضافة كاتب جديد" data-en="Add New Writer">إضافة كاتب جديد</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق" data-ar="إغلاق" data-en="Close"></button>
                                                     </div>
 
                                                     <!-- Body -->
@@ -332,43 +332,43 @@
                                                             @csrf
 
                                                             <div class="mb-3">
-                                                                <label class="form-label">الاسم</label>
-                                                                <input type="text" id="writerName" name="name" class="form-control" required>
+                                                                <label class="form-label" data-ar="الاسم" data-en="Name">الاسم</label>
+                                                                <input type="text" id="writerName" name="name" class="form-control" required data-ar="الاسم" data-en="Name">
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label">الرابط (Slug)</label>
-                                                                <input type="text" id="writerSlug" name="slug" class="form-control" required>
+                                                                <label class="form-label" data-ar="الرابط (Slug)" data-en="Slug">الرابط (Slug)</label>
+                                                                <input type="text" id="writerSlug" name="slug" class="form-control" required data-ar="الرابط" data-en="Slug">
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label">نبذة</label>
-                                                                <textarea id="writerBio" name="bio" class="form-control" rows="3" required></textarea>
+                                                                <label class="form-label" data-ar="نبذة" data-en="Bio">نبذة</label>
+                                                                <textarea id="writerBio" name="bio" class="form-control" rows="3" required data-ar="نبذة" data-en="Bio"></textarea>
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label">الصورة</label>
-                                                                <input type="file" id="writerImage" name="image" class="form-control" accept="image/*">
+                                                                <label class="form-label" data-ar="الصورة" data-en="Image">الصورة</label>
+                                                                <input type="file" id="writerImage" name="image" class="form-control" accept="image/*" data-ar="الصورة" data-en="Image">
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label">فيسبوك</label>
-                                                                <input type="url" id="writerFacebook" name="facebook" class="form-control" placeholder="https://facebook.com/">
+                                                                <label class="form-label" data-ar="فيسبوك" data-en="Facebook">فيسبوك</label>
+                                                                <input type="url" id="writerFacebook" name="facebook" class="form-control" placeholder="https://facebook.com/" data-ar="فيسبوك" data-en="Facebook">
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label">X</label>
-                                                                <input type="url" id="writerX" name="x" class="form-control" placeholder="https://x.com/">
+                                                                <label class="form-label" data-ar="X" data-en="X">X</label>
+                                                                <input type="url" id="writerX" name="x" class="form-control" placeholder="https://x.com/" data-ar="X" data-en="X">
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label">إنستغرام</label>
-                                                                <input type="url" id="writerInstagram" name="instagram" class="form-control" placeholder="https://instagram.com/">
+                                                                <label class="form-label" data-ar="إنستغرام" data-en="Instagram">إنستغرام</label>
+                                                                <input type="url" id="writerInstagram" name="instagram" class="form-control" placeholder="https://instagram.com/" data-ar="إنستغرام" data-en="Instagram">
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label">لينكدإن</label>
-                                                                <input type="url" id="writerLinkedin" name="linkedin" class="form-control" placeholder="https://linkedin.com/">
+                                                                <label class="form-label" data-ar="لينكدإن" data-en="LinkedIn">لينكدإن</label>
+                                                                <input type="url" id="writerLinkedin" name="linkedin" class="form-control" placeholder="https://linkedin.com/" data-ar="لينكدإن" data-en="LinkedIn">
                                                             </div>
                                                         </form>
 
@@ -376,8 +376,8 @@
 
                                                     <!-- Footer -->
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                                                        <button type="button" id="saveWriterBtn" class="btn btn-primary">حفظ</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+                                                        <button type="button" id="saveWriterBtn" class="btn btn-primary" data-ar="حفظ" data-en="Save">حفظ</button>
                                                     </div>
 
                                                 </div>
@@ -431,15 +431,15 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="addTagModalLabel">إضافة وسم جديد</h5>
+                                                <h5 class="modal-title" id="addTagModalLabel" data-ar="إضافة وسم جديد" data-en="Add New Tag">إضافة وسم جديد</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <input type="text" id="newTagInput" class="form-control" placeholder="أدخل الوسم هنا...">
+                                                <input type="text" id="newTagInput" class="form-control" data-ar="وسم جديد" data-en="New Tag">
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                                                <button type="button" id="saveTagBtn" class="btn btn-primary">حفظ</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+                                                <button type="button" id="saveTagBtn" class="btn btn-primary" data-ar="حفظ" data-en="Save">حفظ</button>
                                             </div>
                                             </div>
                                         </div>
