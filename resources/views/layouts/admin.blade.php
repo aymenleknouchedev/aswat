@@ -21,7 +21,7 @@
     <link id="rtl-style" rel="stylesheet" href="./dashlite/assets/css/dashlite.rtl.css" media="not all">
     <link id="ltr-style" rel="stylesheet" href="./dashlite/assets/css/dashlite.css" media="all">
 
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link id="skin-default" rel="stylesheet" href="./dashlite/assets/css/skins/theme-egyptian.css?ver=3.3.0">
 

@@ -83,6 +83,7 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/api/search-trends', [ApiController::class, 'search_trends'])->name('api.search.trends');
         Route::get('/api/search-windows', [ApiController::class, 'search_windows'])->name('api.search.windows');
         Route::get('/api/search-tags', [ApiController::class, 'search_tags'])->name('api.search.tags');
+        Route::post('/api/add-tag', [ApiController::class, 'add_tag'])->name('api.add.tag');
         Route::get('/api/search-writers', [ApiController::class, 'search_writers'])->name('api.search.writers');
         Route::get('/api/search-cities', [ApiController::class, 'search_cities'])->name('api.search.cities');
 

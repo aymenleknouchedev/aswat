@@ -68,6 +68,25 @@ class ApiController extends Controller
         }
     }
 
+    public function add_tag(Request $request)
+    {
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255|min:3|unique:tags,name',
+            ]);
+
+            $tag = Tag::create([
+                'name' => $request->input('name'),
+            ]);
+
+            return response()->json(['id' => $tag->id, 'name' => $tag->name], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => 'Validation Error', 'messages' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Server Error'], 500);
+        }
+    }
+
     public function search_writers(Request $request)
     {
         try {
