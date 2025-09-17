@@ -42,15 +42,15 @@
                         <input type="hidden" id="editIndex" />
                         <div class="mb-2">
                             <label class="form-label">Title <span style="color:red;">*</span></label>
-                            <input id="itemTitle" class="form-control" />
+                            <input id="itemTitle" class="form-control" required />
                         </div>
                         <div class="mb-2">
                             <label class="form-label">Description <span style="color:red;">*</span></label>
-                            <textarea id="itemDescription" class="form-control"></textarea>
+                            <textarea id="itemDescription" class="form-control" required></textarea>
                         </div>
                         <div class="mb-2">
                             <label class="form-label">Image <span style="color:red;">*</span></label>
-                            <input id="itemImage" type="file" class="form-control" accept="image/*" />
+                            <input id="itemImage" type="file" class="form-control" accept="image/*" required />
                         </div>
                         <div class="mb-2">
                             <label class="form-label">URL</label>
@@ -126,15 +126,27 @@
             document.getElementById('itemImage').value = '';
         });
 
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;  
+            }
+        }
+
         saveBtn.addEventListener('click', () => {
             const title = (document.getElementById('itemTitle').value || '').trim();
             const description = (document.getElementById('itemDescription').value || '').trim();
             const imageInput = document.getElementById('itemImage');
             const imageFile = imageInput.files[0];
+            const url = (document.getElementById('itemUrl').value || '').trim();
+
 
             if (!title) { alert('Title is required.'); return; }
             if (!description) { alert('Description is required.'); return; }
             if (!imageFile) { alert('Image is required.'); return; }
+            if (url && !isValidUrl(url)) { alert('Invalid URL format.'); return; }
 
             const newItem = {
                 title,

@@ -327,7 +327,7 @@
                                         </label>
                                         <span style="color:red;">*</span>
                                         <div class="form-control-wrap">
-                                            <x-forms.tinymce-editor id="myeditorinstance" :value="$post->content ?? ''" />
+                                            <x-forms.tinymce-editor id="myeditorinstance" :value="$post->content ?? ''" name="content" />
                                         </div>
                                     </div>
 
