@@ -35,32 +35,34 @@ Route::get('/test', function () {
     dd("Test");
 })->middleware('test');
 
+// Route to run migrate:fresh
 Route::get('/migrate-fresh', function () {
-    Artisan::call('migrate:fresh', [
-        '--force' => true
-    ]);
-    return 'Database migrated fresh successfully.';
+    Artisan::call('migrate:fresh', ['--force' => true]);
+    return response('Database migrated fresh successfully.', 200);
 });
 
+// Route to (re)create the storage symlink
 Route::get('/storage-link', function () {
     $publicStorage = public_path('storage');
+    $storageTarget = storage_path('app/public');
 
-    // Delete the existing link or directory if it exists
+    // Remove existing link or directory if it exists and is a symlink or directory
     if (file_exists($publicStorage)) {
         if (is_link($publicStorage) || is_dir($publicStorage)) {
-            unlink($publicStorage);
+            app('files')->delete($publicStorage);
         } else {
-            return 'Error: "public/storage" exists and is not a symbolic link or directory.';
+            return response('Error: "public/storage" exists and is not a symbolic link or directory.', 400);
         }
     }
 
     // Create the symbolic link
-    app('files')->link(
-        storage_path('app/public'),
-        $publicStorage
-    );
+    try {
+        app('files')->link($storageTarget, $publicStorage);
+    } catch (\Exception $e) {
+        return response('Failed to create symlink: ' . $e->getMessage(), 500);
+    }
 
-    return 'The [public/storage] directory has been re-linked.';
+    return response('The [public/storage] directory has been re-linked.', 200);
 });
 
 
