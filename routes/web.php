@@ -41,7 +41,7 @@ Route::get('/migrate-fresh', function () {
     return response('Database migrated fresh successfully.', 200);
 });
 
-// Route to (re)create the storage symlink
+// Route to (re)create the storage symlink (for Hostinger or shared hosting)
 Route::get('/storage-link', function () {
     $publicStorage = public_path('storage');
     $storageTarget = storage_path('app/public');
@@ -55,11 +55,17 @@ Route::get('/storage-link', function () {
         }
     }
 
-    // Create the symbolic link
+    // Try to create the symbolic link
     try {
         app('files')->link($storageTarget, $publicStorage);
     } catch (\Exception $e) {
-        return response('Failed to create symlink: ' . $e->getMessage(), 500);
+        // If symlink fails (common on shared hosting), try to copy instead
+        try {
+            app('files')->copyDirectory($storageTarget, $publicStorage);
+            return response('Symlink failed, but files were copied instead.', 200);
+        } catch (\Exception $ex) {
+            return response('Failed to create symlink or copy files: ' . $ex->getMessage(), 500);
+        }
     }
 
     return response('The [public/storage] directory has been re-linked.', 200);
