@@ -11,7 +11,7 @@
 
                 <div class="nk-content">
                     <div class="container-fluid">
-                        <div class="nk-block-head">
+                        <div class="nk-block-head d-flex justify-content-between align-items-center">
                             <div class="nk-block-head-content">
                                 <h4 class="nk-block-title" data-en="All Locations" data-ar="جميع المواقع">
                                     جميع المواقع
@@ -20,6 +20,11 @@
                                     data-ar="هنا يمكنك إدارة جميع الدول والمناطق والمدن.">
                                     هنا يمكنك إدارة جميع الدول والمناطق والمدن.
                                 </p>
+                            </div>
+                            <div>
+                                <a href="{{ route('dashboard.location.create') }}" class="btn btn-primary" data-en="Add Location" data-ar="إضافة موقع">
+                                    إضافة موقع
+                                </a>
                             </div>
                         </div>
                         

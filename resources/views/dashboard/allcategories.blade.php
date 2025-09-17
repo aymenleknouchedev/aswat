@@ -14,7 +14,7 @@
                     <div class="container-fluid">
 
                         <div class="nk-block nk-block-lg">
-                            <div class="nk-block-head">
+                            <div class="nk-block-head d-flex justify-content-between align-items-center">
                                 <div class="nk-block-head-content">
                                     <h4 class="nk-block-title" data-en="All Categories" data-ar="جميع التصنيفات">
                                         جميع التصنيفات
@@ -22,6 +22,12 @@
                                     <p data-en="Manage all categories from here" data-ar="قم بإدارة جميع التصنيفات من هنا">
                                         قم بإدارة جميع التصنيفات من هنا
                                     </p>
+                                </div>
+                                <div>
+                                    <a href="{{ route('dashboard.categorie.create') }}" class="btn btn-primary"
+                                       data-en="Add Category" data-ar="إضافة تصنيف">
+                                        إضافة تصنيف
+                                    </a>
                                 </div>
                             </div>
 

@@ -15,12 +15,17 @@
 
                         <div class="nk-block nk-block-lg">
                             <div class="nk-block-head">
-                                <div class="nk-block-head-content">
-                                    <h4 class="nk-block-title" data-en="All Windows" data-ar="جميع النوافذ">جميع النوافذ
-                                    </h4>
-                                    <p data-en="Manage all windows from here" data-ar="قم بإدارة جميع النوافذ من هنا">
-                                        قم بإدارة جميع النوافذ من هنا
-                                    </p>
+                                <div class="nk-block-head-content d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h4 class="nk-block-title" data-en="All Windows" data-ar="جميع النوافذ">جميع النوافذ</h4>
+                                        <p data-en="Manage all windows from here" data-ar="قم بإدارة جميع النوافذ من هنا">
+                                            قم بإدارة جميع النوافذ من هنا
+                                        </p>
+                                    </div>
+                                    <a href="{{ route('dashboard.window.create') }}" class="btn btn-primary"
+                                       data-en="Add Window" data-ar="إضافة نافذة">
+                                        إضافة نافذة
+                                    </a>
                                 </div>
                             </div>
 

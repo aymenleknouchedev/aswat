@@ -15,12 +15,17 @@
                         <div class="nk-block nk-block-lg">
 
                             <!-- ✅ رأس الصفحة -->
-                            <div class="nk-block-head">
+                            <div class="nk-block-head d-flex justify-content-between align-items-center">
                                 <div class="nk-block-head-content">
                                     <h4 class="nk-block-title" data-en="All Writers" data-ar="جميع الكتاب">جميع الكتاب</h4>
                                     <p data-en="Manage all writers from here" data-ar="قم بإدارة جميع الكتّاب من هنا">
                                         قم بإدارة جميع الكتّاب من هنا
                                     </p>
+                                </div>
+                                <div class="nk-block-head-content">
+                                    <a href="{{ route('dashboard.writer.create') }}" class="btn btn-primary" data-en="Add Writer" data-ar="إضافة كاتب">
+                                        إضافة كاتب
+                                    </a>
                                 </div>
                             </div>
 
