@@ -43,8 +43,10 @@ Route::get('/migrate-fresh', function () {
 });
 
 Route::get('/storage-link', function () {
-    Artisan::call('storage:link');
-    return 'Storage link created successfully.';
+    $target = '/home/public_html/storage/app/public';
+    $shortcut = '/home/public_html/public/storage';
+    symlink($target, $shortcut);
+    return 'Symlink created successfully.';
 });
 
 Route::get('/seed', function () {
