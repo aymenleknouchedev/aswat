@@ -173,7 +173,7 @@
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>
                                                 <button type="button" id="addCategoryButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y" 
-                                                    style="height: 100%; z-index: 2; margin-left: 8px;" data-bs-toggle="modal" data-bs-target="#addCategoryModal" tabindex="-1">
+                                                    style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;" data-bs-toggle="modal" data-bs-target="#addCategoryModal" tabindex="-1">
                                                     <em class="icon ni ni-plus"></em>
                                                 </button>
                                             </div>
@@ -237,7 +237,7 @@
                                                             style="max-height:200px; overflow-y:auto; display:none;">
                                                         </div>
                                                         <button type="button" id="addTrendButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                            style="height: 100%; z-index: 2; margin-left: 8px;" data-bs-toggle="modal" data-bs-target="#addTrendModal" tabindex="-1">
+                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;" data-bs-toggle="modal" data-bs-target="#addTrendModal" tabindex="-1">
                                                             <em class="icon ni ni-plus"></em>
                                                         </button>
                                                     </div>
@@ -271,7 +271,7 @@
                                                             style="max-height:200px; overflow-y:auto; display:none;">
                                                         </div>
                                                         <button type="button" id="addWindowButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                            style="height: 100%; z-index: 2; margin-left: 8px;" data-bs-toggle="modal" data-bs-target="#addWindowModal" tabindex="-1">
+                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;" data-bs-toggle="modal" data-bs-target="#addWindowModal" tabindex="-1">
                                                             <em class="icon ni ni-plus"></em>
                                                         </button>
                                                     </div>
@@ -307,7 +307,7 @@
                                                         <div id="writerResults" class="dropdown-menu w-100"
                                                             style="display:none; max-height:200px; overflow-y:auto;"></div>
                                                         <button type="button" id="addWriterButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                            style="height: 100%; z-index: 2; margin-left: 8px;" data-bs-toggle="modal" data-bs-target="#addWriterModal" tabindex="-1">
+                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;" data-bs-toggle="modal" data-bs-target="#addWriterModal" tabindex="-1">
                                                             <em class="icon ni ni-plus"></em>
                                                         </button>
                                                     </div>
@@ -413,7 +413,7 @@
                                                                 style="background: transparent; color outline:none; min-width:120px;">
                                                         </div>
                                                         <button type="button" id="addTagButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                            style="height: 100%; z-index: 2; margin-left: 8px;" data-bs-toggle="modal" data-bs-target="#addTagModal" tabindex="-1">
+                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;" data-bs-toggle="modal" data-bs-target="#addTagModal" tabindex="-1">
                                                             <em class="icon ni ni-plus"></em>
                                                         </button>
                                                     </div>
