@@ -42,9 +42,17 @@ Route::get('/migrate-fresh', function () {
     return 'Database migrated fresh successfully.';
 });
 
-Route::get('/storage-link', function () {
-    Artisan::call('storage:link');
-    return 'link created successfully.';
+Route::get('/storage-link', function() {
+    if(file_exists(public_path('storage'))) {
+        return 'The "public/storage" directory already exists.';
+    }
+    
+    app('files')->link(
+        storage_path('app/public'), 
+        public_path('storage')
+    );
+    
+    return 'The [public/storage] directory has been linked.';
 });
 
 Route::get('/seed', function () {
