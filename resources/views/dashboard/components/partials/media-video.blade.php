@@ -184,7 +184,6 @@
 
     .media-preview:hover {
         border-color: #007bff !important;
-        background: #f0f8ff;
     }
 
     /* ====== Media Thumbnail (inside modal) ====== */

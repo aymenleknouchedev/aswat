@@ -10,7 +10,7 @@
                 @include('dashboard.components.header')
 
                 <div class="nk-content">
-                    <div class="container-fluid">
+                    <div class="container">
 
                         <div class="nk-block-head mb-4">
                             <div class="nk-block-head-content">

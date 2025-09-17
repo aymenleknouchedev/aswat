@@ -9,8 +9,8 @@
             <div class="nk-wrap">
                 @include('dashboard.components.header')
 
-                <div class="nk-content">
-                    <div class="container-fluid bg-white">
+                <div class="nk-content container">
+                    <div class="container bg-white">
                         <div class="card-inner">
                             <!-- Header Section -->
                             <div class="card-title mb-5">

@@ -10,7 +10,7 @@
                 @include('dashboard.components.sidebar')
                 <div class="nk-wrap">
                     @include('dashboard.components.header')
-                    <div class="nk-content">
+                    <div class="nk-content container">
                         <div class="container-fluid bg-white">
                             <div class="card-inner">
 

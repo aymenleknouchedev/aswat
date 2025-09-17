@@ -11,7 +11,7 @@
                 @include('dashboard.components.header')
 
                 <div class="nk-content">
-                    <div class="container-fluid">
+                    <div class="container">
                         <!-- ✅ عنوان الصفحة -->
                         <div class="nk-block-head">
                             <div class="nk-block-head-content">

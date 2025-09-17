@@ -11,7 +11,7 @@
                 @include('dashboard.components.header')
 
                 <div class="nk-content">
-                    <div class="container-fluid">
+                    <div class="container">
                         <div class="nk-block nk-block-lg">
                             <div class="nk-block-head">
                                 <div class="nk-block-head-content d-flex justify-content-between align-items-center">
