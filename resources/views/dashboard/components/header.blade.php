@@ -25,13 +25,13 @@
                         <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
                             <div class="user-toggle">
                                 @if (Auth::user()->image === 'user.png')
-                                    <img src="{{ asset('user.png') }}" alt="default user image" width="40"
-                                        height="40" class="rounded-circle">
+                                    <img src="{{ asset('user.png') }}" alt="default user image" width="30"
+                                        height="30" class="rounded-circle">
                                 @else
-                                    <img src="{{ Auth::user()->image }}" alt="user image" width="40" height="40"
+                                    <img src="{{ Auth::user()->image }}" alt="user image" width="30" height="30"
                                         class="rounded-circle">
                                 @endif
-                                <div class="user-info d-none d-md-block">
+                                <div class="user-info d-none d-md-block ms-2">
                                     <div class="user-status">
                                         {{ Auth::user()->roles[0]->name }}
                                     </div>

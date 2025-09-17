@@ -54,7 +54,8 @@
                             </div>
                         @endif
 
-                        <form id="contentForm" action="{{ route('dashboard.content.store') }}" method="POST" enctype="multipart/form-data">
+                        <form id="contentForm" action="{{ route('dashboard.content.store') }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <!-- Tabs nav -->
                             <ul class="nav mb-4" id="contentTabs" role="tablist">
@@ -164,12 +165,12 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6 col-lg-3">
-                                            <label class="form-label" data-ar="التصنيف" data-en="Category">التصنيف</label>
+                                            <label class="form-label" data-ar="التصنيف"
+                                                data-en="Category">التصنيف</label>
                                             <div class="form-control-wrap position-relative">
-                                                <input type="text" id="categorySearch" class="form-control" placeholder="ابحث عن التصنيف...">
+                                                <input type="text" id="categorySearch" class="form-control">
                                                 <input type="hidden" name="category_id" id="categoryHidden">
-                                                <div id="categoryResults" 
-                                                    class="dropdown-menu w-100 shadow-sm" 
+                                                <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>
                                             </div>
@@ -209,10 +210,10 @@
                                         <div class="form-group col-md-6 col-lg-6">
                                             <label class="form-label" data-ar="الاتجاه" data-en="Trend">الاتجاه</label>
                                             <div class="form-control-wrap position-relative">
-                                                <input type="text" id="trendSearch" class="form-control" placeholder="ابحث عن الاتجاه...">
+                                                <input type="text" id="trendSearch" class="form-control"
+                                                    >
                                                 <input type="hidden" name="trend_id" id="trendHidden">
-                                                <div id="trendResults"
-                                                    class="dropdown-menu w-100 shadow-sm"
+                                                <div id="trendResults" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>
                                             </div>
@@ -220,10 +221,10 @@
                                         <div class="form-group col-md-6 col-lg-6">
                                             <label class="form-label" data-ar="النافذة" data-en="Window">النافذة</label>
                                             <div class="form-control-wrap position-relative">
-                                                <input type="text" id="windowSearch" class="form-control" placeholder="ابحث عن نافذة...">
+                                                <input type="text" id="windowSearch" class="form-control"
+                                                   >
                                                 <input type="hidden" name="window_id" id="windowHidden">
-                                                <div id="windowResults"
-                                                    class="dropdown-menu w-100 shadow-sm"
+                                                <div id="windowResults" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>
                                             </div>
@@ -235,12 +236,14 @@
                                         <div class="form-group col-md-6 col-lg-6">
                                             <label class="form-label" data-ar="الكاتب" data-en="Writer">الكاتب</label>
                                             <div class="form-control-wrap position-relative">
-                                                <input type="text" id="writerSearch" class="form-control" placeholder="اختر الكاتب">
-                                                <div id="writerResults" class="dropdown-menu w-100" style="display:none; max-height:200px; overflow-y:auto;"></div>
+                                                <input type="text" id="writerSearch" class="form-control"
+                                                    >
+                                                <div id="writerResults" class="dropdown-menu w-100"
+                                                    style="display:none; max-height:200px; overflow-y:auto;"></div>
                                                 <input type="hidden" name="writer_id" id="writerHidden">
                                             </div>
                                         </div>
-{{-- 
+                                        {{-- 
                                         <div class="form-group col-md-6 col-lg-6">
                                             <label class="form-label" data-ar="موقع الكاتب" data-en="Writer Location">موقع الكاتب</label>
                                             <div class="form-control-wrap relative w-full">
@@ -252,12 +255,13 @@
                                         </div> --}}
 
                                         <div class="form-group col-md-6 col-lg-6">
-                                            <label class="form-label" data-ar="موقع الكاتب" data-en="Writer Location">موقع الكاتب</label>
+                                            <label class="form-label" data-ar="موقع الكاتب"
+                                                data-en="Writer Location">موقع الكاتب</label>
                                             <div class="form-control-wrap relative w-full">
-                                                <input type="text" id="cityInput" name="city_name" placeholder="اختر الموقع" class="form-control">
+                                                <input type="text" id="cityInput" name="city_name"
+                                                     class="form-control">
                                                 <input type="hidden" id="cityId" name="city_id">
-                                                <div id="cityDropdown"
-                                                    class="dropdown-menu w-100 shadow-sm"
+                                                <div id="cityDropdown" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>
                                             </div>
@@ -285,13 +289,19 @@
                                         <div class="form-group col-md-12">
                                             <label class="form-label" data-ar="الوسوم" data-en="Tags">الوسوم</label>
                                             <span style="color:red;">*</span>
-                                            <div class="d-flex flex-wrap align-items-center" id="tagInputBox" style="gap:5px; position:relative; cursor:text;">
-                                                <div id="tagContainer" class="d-flex flex-wrap align-items-center" style="gap:5px; flex:1;">
-                                                    <input type="text" id="tagSearch" class="form-control" style="background: transparent; color outline:none; min-width:120px;" placeholder="ابحث عن الوسوم...">
+                                            <div class="d-flex flex-wrap align-items-center" id="tagInputBox"
+                                                style="gap:5px; position:relative; cursor:text;">
+                                                <div id="tagContainer" class="d-flex flex-wrap align-items-center"
+                                                    style="gap:5px; flex:1; background: #fff; ">
+                                                    <input type="text" id="tagSearch" class="form-control"
+                                                        style="background: transparent; color outline:none; min-width:120px;"
+                                                        >
                                                 </div>
                                             </div>
 
-                                            <div id="tagResults" class="dropdown-menu w-100" style="display:none; max-height:200px; overflow-y:auto; position:absolute; z-index:1000;"></div>
+                                            <div id="tagResults" class="dropdown-menu w-100"
+                                                style="display:none; max-height:200px; overflow-y:auto; position:absolute; z-index:1000;">
+                                            </div>
 
                                             <div id="hiddenTags"></div>
                                         </div>
@@ -317,7 +327,7 @@
                                         </label>
                                         <span style="color:red;">*</span>
                                         <div class="form-control-wrap">
-                                                <x-forms.tinymce-editor id="myeditorinstance" :value="$post->content ?? ''"   />
+                                            <x-forms.tinymce-editor id="myeditorinstance" :value="$post->content ?? ''" />
                                         </div>
                                     </div>
 
@@ -352,8 +362,7 @@
                                     <div class="mb-3">
                                         <label for="message_text" data-ar="رسالة المراجعة" data-en="Review Message">رسالة
                                             المراجعة</label>
-                                        <textarea id="message_text" name="review_description" class="form-control form-control" rows="4"
-                                            data-ar="رسالة المراجعة" data-en="Review Message">{{ old('review_description', '') }}</textarea>
+                                        <textarea id="message_text" name="review_description" class="form-control">{{ old('review_description') }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -393,16 +402,14 @@
                                             <label for="share_title" class="form-label" data-ar="عنوان المشاركة"
                                                 data-en="Share Title">عنوان المشاركة</label>
                                             <input type="text" id="share_title" name="share_title"
-                                                class="form-control" placeholder="عنوان المشاركة"
-                                                value="{{ old('share_title', '') }}">
+                                                class="form-control" value="{{ old('share_title', '') }}">
                                         </div>
 
                                         <!-- Description -->
                                         <div class="col-md-12">
                                             <label for="share_description" class="form-label" data-ar="وصف المشاركة"
                                                 data-en="Share Description">وصف المشاركة</label>
-                                            <textarea id="share_description" name="share_description" class="form-control" rows="3"
-                                                placeholder="أدخل وصفًا للمشاركة">{{ old('share_description', '') }}</textarea>
+                                            <textarea id="share_description" name="share_description" class="form-control" rows="3">{{ old('share_description', '') }}</textarea>
                                         </div>
 
                                     </div>
@@ -536,16 +543,17 @@
         gap: 6px;
         font-size: 12px;
     }
+
     .tag-chip span {
         cursor: pointer;
         font-weight: bold;
     }
+
     #tagSearch {
         flex: 1;
         min-width: 100px;
     }
-
-</style>    
+</style>
 
 <script src={{ asset('dashlite/js/apis/search-category-api.js') }}></script>
 <script src={{ asset('dashlite/js/apis/search-trend-api.js') }}></script>
@@ -569,8 +577,3 @@
         }
     });
 </script>
-
-
-
-
-

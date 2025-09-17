@@ -23,7 +23,7 @@
 
 
 
-    <link id="skin-default" rel="stylesheet" href="./dashlite/assets/css/theme.css?ver=3.3.0">
+    <link id="skin-default" rel="stylesheet" href="./dashlite/assets/css/skins/theme-egyptian.css?ver=3.3.0">
 
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -40,7 +40,7 @@
 
 </head>
 
-<body class="nk-body bg-lighter npc-general has-sidebar">
+<body class="nk-body bg-lighter npc-general has-sidebar ui-clean">
 
 
     @yield('content')

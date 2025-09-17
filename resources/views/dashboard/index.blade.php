@@ -118,7 +118,7 @@
                                     <div class="card card-bordered text-center h-100">
                                         <div class="card-inner">
                                             <em class="icon ni ni-file-text fs-2 text-primary mb-2"></em>
-                                            <h4 class="mb-0">{{ $contentCount }}</h4>
+                                            <h2 class="mb-0">{{ $contentCount }}</h2>
                                             <p class="text-soft" data-en="Total Articles" data-ar="إجمالي المقالات">Total
                                                 Articles</p>
                                         </div>
@@ -128,7 +128,7 @@
                                     <div class="card card-bordered text-center h-100">
                                         <div class="card-inner">
                                             <em class="icon ni ni-calendar-check fs-2 text-success mb-2"></em>
-                                            <h4 class="mb-0">{{ $publishedTodayCount }}</h4>
+                                            <h2 class="mb-0">{{ $publishedTodayCount }}</h2>
                                             <p class="text-soft" data-en="Today’s Published Articles"
                                                 data-ar="مقالات اليوم المنشورة">Today’s Published Articles</p>
                                         </div>
@@ -138,7 +138,7 @@
                                     <div class="card card-bordered text-center h-100">
                                         <div class="card-inner">
                                             <em class="icon ni ni-check-circle fs-2 text-warning mb-2"></em>
-                                            <h4 class="mb-0">{{ $waitingValidationCount }}</h4>
+                                            <h2 class="mb-0">{{ $waitingValidationCount }}</h2>
                                             <p class="text-soft" data-en="Articles Pending Approval"
                                                 data-ar="مقالات في انتظار الموافقة">Articles Pending Approval</p>
                                         </div>
@@ -148,7 +148,7 @@
                                     <div class="card card-bordered text-center h-100">
                                         <div class="card-inner">
                                             <em class="icon ni ni-user-add fs-2 text-info mb-2"></em>
-                                            <h4 class="mb-0">{{ $writersCount }}</h4>
+                                            <h2 class="mb-0">{{ $writersCount }}</h2>
                                             <p class="text-soft" data-en="Number of Writers" data-ar="عدد الكُتاب">Number of Writers</p>
                                         </div>
                                     </div>
