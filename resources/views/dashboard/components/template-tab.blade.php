@@ -5,20 +5,22 @@
         <span style="color:red;">*</span>
         <div class="flex flex-column">
             <div class="custom-control custom-radio custom-control-inline">
-                <input class="custom-control-input" type="radio" name="display_method" id="display_method_simple" value="simple"
-                    {{ old('display_method', 'simple') == 'simple' ? 'checked' : '' }}>
-                <label class="custom-control-label" for="display_method_simple" data-ar="أساسي" data-en="Simple">أساسي</label>
+                <input class="custom-control-input" type="radio" name="display_method" id="display_method_simple"
+                    value="simple" {{ old('display_method', 'simple') == 'simple' ? 'checked' : '' }}>
+                <label class="custom-control-label" for="display_method_simple" data-ar="أساسي"
+                    data-en="Simple">أساسي</label>
             </div>
             <div class="mt-1"></div>
             <div class="custom-control custom-radio custom-control-inline">
-                <input class="custom-control-input" type="radio" name="display_method" id="display_method_list" value="list"
-                    {{ old('display_method') == 'list' ? 'checked' : '' }}>
-                <label class="custom-control-label" for="display_method_list" data-ar="قائمة" data-en="List">قائمة</label>
+                <input class="custom-control-input" type="radio" name="display_method" id="display_method_list"
+                    value="list" {{ old('display_method') == 'list' ? 'checked' : '' }}>
+                <label class="custom-control-label" for="display_method_list" data-ar="قائمة"
+                    data-en="List">قائمة</label>
             </div>
             <div class="mt-1"></div>
             <div class="custom-control custom-radio custom-control-inline">
-                <input class="custom-control-input" type="radio" name="display_method" id="display_method_file" value="file"
-                    {{ old('display_method') == 'file' ? 'checked' : '' }}>
+                <input class="custom-control-input" type="radio" name="display_method" id="display_method_file"
+                    value="file" {{ old('display_method') == 'file' ? 'checked' : '' }}>
                 <label class="custom-control-label" for="display_method_file" data-ar="ملف" data-en="File">ملف</label>
             </div>
         </div>
@@ -26,9 +28,8 @@
 
     <div id="dynamic-items-section" class="mt-3" style="display:none;">
         <div id="items-container"></div>
-        <button type="button" id="add-item-btn" class="btn btn-primary mb-2"
-            data-bs-toggle="modal" data-bs-target="#itemModal"
-            data-ar="إضافة عنصر" data-en="Add Item">Add Item</button>
+        <button type="button" id="add-item-btn" class="btn btn-primary mb-2" data-bs-toggle="modal"
+            data-bs-target="#itemModal" data-ar="إضافة عنصر" data-en="Add Item">Add Item</button>
     </div>
 
     <div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true">
@@ -36,35 +37,23 @@
             <div class="modal-content">
                 <div id="modalFormId" enctype="multipart/form-data">
                     <div class="modal-header">
-                        <h5 class="modal-title" data-ar="إضافة / تعديل عنصر" data-en="Add / Edit Item">Add / Edit Item</h5>
+                        <h5 class="modal-title" data-ar="إضافة / تعديل عنصر" data-en="Add / Edit Item">Add / Edit Item
+                        </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="editIndex" />
                         <div class="mb-2">
-<<<<<<< HEAD
                             <label class="form-label" data-ar="العنوان" data-en="Title">Title <span style="color:red;">*</span></label>
-                            <input id="itemTitle" class="form-control" data-ar="العنوان" data-en="Title" />
+                            <input id="itemTitle" class="form-control" required data-ar="العنوان" data-en="Title" />
                         </div>
                         <div class="mb-2">
                             <label class="form-label" data-ar="الوصف" data-en="Description">Description <span style="color:red;">*</span></label>
-                            <textarea id="itemDescription" class="form-control" data-ar="الوصف" data-en="Description"></textarea>
+                            <textarea id="itemDescription" class="form-control" required data-ar="الوصف" data-en="Description"></textarea>
                         </div>
                         <div class="mb-2">
                             <label class="form-label" data-ar="الصورة" data-en="Image">Image <span style="color:red;">*</span></label>
-                            <input id="itemImage" type="file" class="form-control" accept="image/*" data-ar="الصورة" data-en="Image" />
-=======
-                            <label class="form-label">Title <span style="color:red;">*</span></label>
-                            <input id="itemTitle" class="form-control" required />
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">Description <span style="color:red;">*</span></label>
-                            <textarea id="itemDescription" class="form-control" required></textarea>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">Image <span style="color:red;">*</span></label>
-                            <input id="itemImage" type="file" class="form-control" accept="image/*" required />
->>>>>>> 9be36fc5d527ce5ce3c4f603e48638755fe84f2b
+                            <input id="itemImage" type="file" class="form-control" accept="image/*" required data-ar="الصورة" data-en="Image" />
                         </div>
                         <div class="mb-2">
                             <label class="form-label" data-ar="الرابط" data-en="URL">URL</label>
@@ -72,8 +61,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="saveItemBtn" type="button" class="btn btn-success" data-ar="حفظ العنصر" data-en="Save Item">Save Item</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">Cancel</button>
+                        <button id="saveItemBtn" type="button" class="btn btn-success" data-ar="حفظ العنصر"
+                            data-en="Save Item">Save Item</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء"
+                            data-en="Cancel">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -96,7 +87,8 @@
         const hiddenInputsContainer = document.getElementById('list-items-hidden-inputs');
         const mainForm = document.getElementById('contentForm');
 
-        if (!displayMethodRadios.length || !dynamicSection || !addBtn || !container || !modalEl || !editIndex || !saveBtn || !hiddenInputsContainer || !mainForm) {
+        if (!displayMethodRadios.length || !dynamicSection || !addBtn || !container || !modalEl || !editIndex || !
+            saveBtn || !hiddenInputsContainer || !mainForm) {
             console.warn('Missing essential element(s) for dynamic items');
             return;
         }
@@ -116,7 +108,7 @@
 
             items = [];
             renderItems();
-        
+
             document.querySelectorAll('#template [required]').forEach(el => {
                 if (el.offsetParent === null) {
                     el.dataset.wasRequired = "true";
@@ -145,7 +137,7 @@
                 new URL(string);
                 return true;
             } catch (_) {
-                return false;  
+                return false;
             }
         }
 
@@ -157,10 +149,22 @@
             const url = (document.getElementById('itemUrl').value || '').trim();
 
 
-            if (!title) { alert('Title is required.'); return; }
-            if (!description) { alert('Description is required.'); return; }
-            if (!imageFile) { alert('Image is required.'); return; }
-            if (url && !isValidUrl(url)) { alert('Invalid URL format.'); return; }
+            if (!title) {
+                alert('Title is required.');
+                return;
+            }
+            if (!description) {
+                alert('Description is required.');
+                return;
+            }
+            if (!imageFile) {
+                alert('Image is required.');
+                return;
+            }
+            if (url && !isValidUrl(url)) {
+                alert('Invalid URL format.');
+                return;
+            }
 
             const newItem = {
                 title,
