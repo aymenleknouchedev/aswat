@@ -151,6 +151,7 @@ class ApiController extends Controller
 
             $writers = Writer::where('name', 'LIKE', "%$query%")
                 ->get(['id', 'name']);
+                
 
             return response()->json($writers);
         } catch (\Exception $e) {
