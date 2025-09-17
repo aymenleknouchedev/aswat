@@ -29,16 +29,16 @@
                                     <div class="col-md-6 col-12">
                                         <input type="text" name="search" value="{{ request('search') }}"
                                             class="form-control"
-                                            placeholder="ابحث عن تصنيف..." 
+                                           
                                             data-en="Search for category..."
                                             data-ar="ابحث عن تصنيف...">
                                     </div>
                                     <div class="col-md-2 col-12 ">
                                         <select name="type" class="form-select center">
-                                            <option value="">جميع الأنواع</option>
-                                            <option value="city" {{ request('type') === 'city' ? 'selected' : '' }}>مدينة</option>
-                                            <option value="country" {{ request('type') === 'country' ? 'selected' : '' }}>دولة</option>
-                                            <option value="continent" {{ request('type') === 'continent' ? 'selected' : '' }}>قارة</option>
+                                            <option value="" data-en="All Types" data-ar="جميع الأنواع">جميع الأنواع</option>
+                                            <option value="city" {{ request('type') === 'city' ? 'selected' : '' }} data-en="City" data-ar="مدينة">مدينة</option>
+                                            <option value="country" {{ request('type') === 'country' ? 'selected' : '' }} data-en="Country" data-ar="دولة">دولة</option>
+                                            <option value="continent" {{ request('type') === 'continent' ? 'selected' : '' }} data-en="Continent" data-ar="قارة">قارة</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2 col-6 ">
@@ -91,9 +91,9 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="2" class="text-center" data-en="No categories found"
-                                                data-ar="لا توجد تصنيفات">
-                                                لا توجد تصنيفات
+                                            <td colspan="3" class="text-center" data-en="No locations found"
+                                                data-ar="لا توجد مواقع">
+                                                لا توجد مواقع
                                             </td>
                                         </tr>
                                     @endforelse

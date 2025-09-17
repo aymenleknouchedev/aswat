@@ -55,8 +55,7 @@
 
                             <!-- اسم الترند -->
                             <div class="form-group">
-                                <label class="form-label" for="title" data-en="Trend Title" data-ar="عنوان الترند">عنوان
-                                    الترند</label>
+                                <label class="form-label" for="title" data-en="Name" data-ar="الإسم">الإسم</label>
                                 <div class="form-control-wrap">
                                     <input type="text" name="title" class="form-control" id="title"
                                         value="{{ old('title') }}" required>

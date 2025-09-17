@@ -57,7 +57,7 @@
                                         <div class="col-md-8 col-12">
                                             <input type="text" name="search" value="{{ request('search') }}"
                                                 class="form-control"
-                                                placeholder="ابحث..."
+                                               
                                                 data-en="Search for permission..."
                                                 data-ar="ابحث...">
                                         </div>

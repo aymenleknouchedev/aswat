@@ -62,19 +62,38 @@
         document.addEventListener("DOMContentLoaded", function() {
             const deleteButtons = document.querySelectorAll(".delete-btn");
 
+            // Detect current language
+            const currentLang = localStorage.getItem('siteLang') || 'en';
+
+            // Texts for both languages
+            const alertTexts = {
+                en: {
+                    title: "Are you sure?",
+                    text: "You won't be able to undo this!",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "Cancel"
+                },
+                ar: {
+                    title: "هل أنت متأكد؟",
+                    text: "لن تتمكن من التراجع عن هذا الإجراء!",
+                    confirmButtonText: "نعم، احذف!",
+                    cancelButtonText: "إلغاء"
+                }
+            };
+
             deleteButtons.forEach(button => {
                 button.addEventListener("click", function() {
                     let form = this.closest("form");
 
                     Swal.fire({
-                        title: "هل أنت متأكد؟",
-                        text: "لن تتمكن من التراجع عن هذا الإجراء!",
+                        title: alertTexts[currentLang].title,
+                        text: alertTexts[currentLang].text,
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
                         cancelButtonColor: "#d33",
-                        confirmButtonText: "نعم، احذف!",
-                        cancelButtonText: "إلغاء"
+                        confirmButtonText: alertTexts[currentLang].confirmButtonText,
+                        cancelButtonText: alertTexts[currentLang].cancelButtonText
                     }).then((result) => {
                         if (result.isConfirmed) {
                             form.submit();
@@ -84,6 +103,7 @@
             });
         });
     </script>
+
 
     {{-- <script src="https://cdn.tiny.cloud/1/qwcigpkrm410kyux7b6j7rhygc758v6hviqqvkgf4878s508/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
         <script>

@@ -57,8 +57,7 @@
                                     <form method="GET" action="{{ route('dashboard.categories.index') }}" class="row g-2 align-items-center">
                                         <div class="col-md-8 col-12">
                                             <input type="text" name="search" value="{{ request('search') }}"
-                                                class="form-control"
-                                                placeholder="ابحث عن تصنيف..." 
+                                                class="form-control"              
                                                 data-en="Search for category..."
                                                 data-ar="ابحث عن تصنيف...">
                                         </div>

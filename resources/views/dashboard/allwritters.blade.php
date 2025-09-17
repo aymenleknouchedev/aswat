@@ -57,10 +57,7 @@
                                     <form method="GET" action="{{ route('dashboard.writers.index') }}" class="row g-2 align-items-center">
                                         <div class="col-md-8 col-12">
                                             <input type="text" name="search" value="{{ request('search') }}"
-                                                class="form-control"
-                                                placeholder="ابحث..."
-                                                data-en="Search for permission..."
-                                                data-ar="ابحث...">
+                                                class="form-control">
                                         </div>
                                         <div class="col-md-2 col-6">
                                             <button type="submit" class="btn btn-primary w-100 center"

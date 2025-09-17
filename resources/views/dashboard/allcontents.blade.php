@@ -42,8 +42,8 @@
 
                                 @if ($contents->isEmpty())
                                     <div class="alert alert-info text-center my-4" role="alert">
-                                        <div>
-                                            <em class="icon ni ni-info fs-2 mb-2"></em>
+                                        <div class="mb-2">
+                                            <em class="icon ni ni-info fs-2 "></em>
                                         </div>
                                         <h5 class="mb-2" data-en="No content found" data-ar="لا يوجد محتوى">لا يوجد محتوى
                                         </h5>

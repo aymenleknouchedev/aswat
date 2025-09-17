@@ -46,7 +46,20 @@
                                     </ul>
                                 </div>
                             @endif
-                            <div class="card card-bordered card-preview">
+
+                            @if ($sections->isEmpty())
+                                <div class="alert alert-info text-center my-4" role="alert">
+                                    <div class="mb-2">
+                                        <em class="icon ni ni-info fs-2 mb-2"></em>
+                                    </div>
+                                    <h5 class="mb-2" data-en="No sections found" data-ar="لا توجد أقسام">لا توجد أقسام
+                                    </h5>
+                                    <p class="mb-0" data-en="Start by adding new sections to see them here."
+                                        data-ar="ابدأ بإضافة قسم جديد ليظهر هنا.">
+                                        ابدأ بإضافة قسم جديد ليظهر هنا.
+                                    </p>
+                                </div>
+                            @else
                                 <table class="table table-orders">
                                     <thead class="tb-odr-head">
                                         <tr class="tb-odr-item">
@@ -55,7 +68,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="tb-odr-body">
-                                        @forelse ($sections as $section)
+                                        @foreach ($sections as $section)
                                             <tr class="tb-odr-item">
                                                 <td>{{ $section->name }}</td>
                                                 <td>
@@ -75,17 +88,11 @@
                                                     </form>
                                                 </td>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="2" class="text-center" data-en="No sections found"
-                                                    data-ar="لا توجد أقسام">
-                                                    لا توجد أقسام
-                                                </td>
-                                            </tr>
-                                        @endforelse
+                                        @endforeach
                                     </tbody>
                                 </table>
-                            </div>
+                            @endif
+
 
                         </div>
                     </div>

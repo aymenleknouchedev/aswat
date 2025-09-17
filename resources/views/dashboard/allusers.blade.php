@@ -109,7 +109,9 @@
                                                             </form>
                                                         @else
                                                             <button class="btn btn-sm btn-secondary" disabled
-                                                                title="لا يمكنك حذف حسابك">
+                                                                title="لا يمكنك حذف حسابك"
+                                                                data-ar="لا يمكن الحذف"
+                                                                data-en="Cannot delete">
                                                                 لا يمكن الحذف
                                                             </button>
                                                         @endif

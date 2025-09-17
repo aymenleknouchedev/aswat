@@ -152,9 +152,8 @@ class AuthController extends Controller
 
         // Handle image upload if provided
         if ($request->hasFile('image')) {
-            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
-            $request->file('image')->storeAs('public/users', $imageName);
-            $user->image = $imageName;
+            $path = asset('storage/' . $request->file('image')->store('users', 'public'));
+            $user->image = $path;
         }
 
 

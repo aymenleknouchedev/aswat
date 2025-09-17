@@ -33,8 +33,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="name" data-en="Name" data-ar="الاسم">الاسم</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" name="name" id="name" class="form-control" required
-                                        placeholder="أدخل اسم الدولة أو المدينة أو المنطقة">
+                                    <input type="text" name="name" id="name" class="form-control" required>
                                 </div>
                             </div>
 
@@ -43,9 +42,9 @@
                                 <label class="form-label" for="type" data-en="Type" data-ar="النوع">النوع</label>
                                 <div class="form-control-wrap">
                                     <select name="type" id="type" class="form-control" required>
-                                        <option value="continent">قارة</option>
-                                        <option value="country">دولة</option>
-                                        <option value="city">مدينة</option>
+                                        <option value="continent" data-en="Continent" data-ar="قارة">قارة</option>
+                                        <option value="country" data-en="Country" data-ar="دولة">دولة</option>
+                                        <option value="city" data-en="City" data-ar="مدينة">مدينة</option>
                                     </select>
                                 </div>
                             </div>

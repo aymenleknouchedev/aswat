@@ -111,91 +111,105 @@
                                         </div>
                                     </div>
                                     <div class="nk-block">
-                                        <table class="table table-bordered table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th data-en="Preview" data-ar="معاينة">Preview</th>
-                                                    <th data-en="Name" data-ar="الاسم">Name</th>
-                                                    <th data-en="Alt Text" data-ar="النص البديل">Alt Text</th>
-                                                    <th data-en="Type" data-ar="النوع">Type</th>
-                                                    <th data-en="Created By" data-ar="أضيف بواسطة">Created By</th>
-                                                    <th data-en="Created At" data-ar="تاريخ الإنشاء">Created At</th>
-                                                    <th data-en="Actions" data-ar="إجراءات">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($medias as $media)
+                                        @if ($medias->isEmpty())
+                                            <div class="alert alert-info text-center my-4" role="alert">
+                                                <div>
+                                                    <em class="icon ni ni-info fs-2 mb-2"></em>
+                                                </div>
+                                                <br>
+                                                <h5 class="mb-2" data-en="No media found" data-ar="لا يوجد وسائط">لا يوجد وسائط</h5>
+                                                <p class="mb-0" data-en="Start by uploading new media to see it here."
+                                                    data-ar="ابدأ برفع وسائط جديدة ليظهر هنا.">
+                                                    ابدأ برفع وسائط جديدة ليظهر هنا.
+                                                </p>
+                                            </div>
+                                        @else
+                                            <table class="table table-bordered table-hover">
+                                                <thead>
                                                     <tr>
-                                                        <td style="width:150px; height:150px;">
-                                                            @if (
-                                                                $media->media_type === 'image/jpeg' ||
-                                                                    $media->media_type === 'image/png' ||
-                                                                    $media->media_type === 'image/gif' ||
-                                                                    $media->media_type === 'image/bmp' ||
-                                                                    $media->media_type === 'image/svg+xml' ||
-                                                                    $media->media_type === 'url')
-                                                                <img class="w-100" src="{{ $media->path }}"
-                                                                    alt="Media Preview">
-                                                            @elseif ($media->media_type === 'video/mp4' || $media->media_type === 'video/quicktime')
-                                                                <video class="w-100" controls>
-                                                                    <source src="{{ $media->path }}" type="video/mp4">
-                                                                    Your browser does not support the video tag.
-                                                                </video>
-                                                            @elseif ($media->media_type === 'audio/mpeg' || $media->media_type === 'audio/wav')
-                                                                <audio class="w-100" controls>
-                                                                    <source src="{{ $media->path }}" type="audio/mpeg">
-                                                                    Your browser does not support the audio element.
-                                                                </audio>
-                                                            @else
-                                                                <span data-en="Unknown" data-ar="غير معروف">Unknown</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            {{ $media->name }}
-                                                        </td>
-                                                        <td>
-                                                            {{ $media->alt }}
-                                                        </td>
-                                                        <td>
-                                                            {{ $media->media_type }}
-                                                        </td>
-                                                        <td>
-                                                            {{ $media->user ? $media->user->name : '-' }}
-                                                        </td>
-                                                        <td>
-                                                            {{ $media->created_at->format('Y-m-d H:i') }}
-                                                        </td>
-                                                        <td>
-                                                            <a data-bs-toggle="modal" href="#editMedia" aria-label="Edit"
-                                                                class="btn btn-sm btn-light-grey">
-                                                                <em class="icon ni ni-edit"></em>
-                                                                <span data-en="Edit" data-ar="تعديل">Edit</span>
-                                                            </a>
-                                                            @if ($media->contents()->count() > 0)
-                                                                <button class="btn btn-sm btn-light-grey" disabled
-                                                                    title="Cannot delete: associated with content">
-                                                                    <em class="icon ni ni-cross"></em>
-                                                                    <span data-en="Delete" data-ar="حذف">Delete</span>
-                                                                </button>
-                                                            @else
-                                                                <form
-                                                                    action="{{ route('dashboard.media.destroy', $media->id) }}"
-                                                                    method="POST" style="display:inline;">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="button"
-                                                                        class="btn btn-sm btn-light-grey delete-btn btn-delete"
-                                                                        title="Delete">
+                                                        <th data-en="Preview" data-ar="معاينة">Preview</th>
+                                                        <th data-en="Name" data-ar="الاسم">Name</th>
+                                                        <th data-en="Alt Text" data-ar="النص البديل">Alt Text</th>
+                                                        <th data-en="Type" data-ar="النوع">Type</th>
+                                                        <th data-en="Created By" data-ar="أضيف بواسطة">Created By</th>
+                                                        <th data-en="Created At" data-ar="تاريخ الإنشاء">Created At</th>
+                                                        <th data-en="Actions" data-ar="إجراءات">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($medias as $media)
+                                                        <tr>
+                                                            <td style="width:150px; height:150px;">
+                                                                @if (
+                                                                    $media->media_type === 'image/jpeg' ||
+                                                                        $media->media_type === 'image/png' ||
+                                                                        $media->media_type === 'image/gif' ||
+                                                                        $media->media_type === 'image/bmp' ||
+                                                                        $media->media_type === 'image/svg+xml' ||
+                                                                        $media->media_type === 'url')
+                                                                    <img class="w-100" src="{{ $media->path }}"
+                                                                        alt="Media Preview">
+                                                                @elseif ($media->media_type === 'video/mp4' || $media->media_type === 'video/quicktime')
+                                                                    <video class="w-100" controls>
+                                                                        <source src="{{ $media->path }}" type="video/mp4">
+                                                                        Your browser does not support the video tag.
+                                                                    </video>
+                                                                @elseif ($media->media_type === 'audio/mpeg' || $media->media_type === 'audio/wav')
+                                                                    <audio class="w-100" controls>
+                                                                        <source src="{{ $media->path }}" type="audio/mpeg">
+                                                                        Your browser does not support the audio element.
+                                                                    </audio>
+                                                                @else
+                                                                    <span data-en="Unknown" data-ar="غير معروف">Unknown</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                {{ $media->name }}
+                                                            </td>
+                                                            <td>
+                                                                {{ $media->alt }}
+                                                            </td>
+                                                            <td>
+                                                                {{ $media->media_type }}
+                                                            </td>
+                                                            <td>
+                                                                {{ $media->user ? $media->user->name : '-' }}
+                                                            </td>
+                                                            <td>
+                                                                {{ $media->created_at->format('Y-m-d H:i') }}
+                                                            </td>
+                                                            <td>
+                                                                <a data-bs-toggle="modal" href="#editMedia" aria-label="Edit"
+                                                                    class="btn btn-sm btn-light-grey">
+                                                                    <em class="icon ni ni-edit"></em>
+                                                                    <span data-en="Edit" data-ar="تعديل">Edit</span>
+                                                                </a>
+                                                                @if ($media->contents()->count() > 0)
+                                                                    <button class="btn btn-sm btn-light-grey" disabled
+                                                                        title="Cannot delete: associated with content">
                                                                         <em class="icon ni ni-cross"></em>
                                                                         <span data-en="Delete" data-ar="حذف">Delete</span>
                                                                     </button>
-                                                                </form>
-                                                            @endif
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                                @else
+                                                                    <form
+                                                                        action="{{ route('dashboard.media.destroy', $media->id) }}"
+                                                                        method="POST" style="display:inline;">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="button"
+                                                                            class="btn btn-sm btn-light-grey delete-btn btn-delete"
+                                                                            title="Delete">
+                                                                            <em class="icon ni ni-cross"></em>
+                                                                            <span data-en="Delete" data-ar="حذف">Delete</span>
+                                                                        </button>
+                                                                    </form>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        @endif
 
                                         <style>
                                             .btn-delete:hover {
