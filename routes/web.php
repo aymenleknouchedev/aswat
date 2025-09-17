@@ -42,18 +42,27 @@ Route::get('/migrate-fresh', function () {
     return 'Database migrated fresh successfully.';
 });
 
-Route::get('/storage-link', function() {
-    if(file_exists(public_path('storage'))) {
-        return 'The "public/storage" directory already exists.';
+Route::get('/storage-link', function () {
+    $publicStorage = public_path('storage');
+
+    // Delete the existing link or directory if it exists
+    if (file_exists($publicStorage)) {
+        if (is_link($publicStorage) || is_dir($publicStorage)) {
+            unlink($publicStorage);
+        } else {
+            return 'Error: "public/storage" exists and is not a symbolic link or directory.';
+        }
     }
-    
+
+    // Create the symbolic link
     app('files')->link(
-        storage_path('app/public'), 
-        public_path('storage')
+        storage_path('app/public'),
+        $publicStorage
     );
-    
-    return 'The [public/storage] directory has been linked.';
+
+    return 'The [public/storage] directory has been re-linked.';
 });
+
 
 Route::get('/seed', function () {
     Artisan::call('db:seed', [
