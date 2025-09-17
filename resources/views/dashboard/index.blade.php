@@ -18,10 +18,7 @@
                                 <h3 class="title" data-en="Welcome to Dashboard" data-ar="مرحبًا بك في لوحة التحكم">
                                     Welcome to Dashboard
                                 </h3>
-                                <p data-en="Access to some features easily using the tools below."
-                                    data-ar="أضف محتوى جديد بسهولة باستخدام الأدوات أدناه.">
-                                    Access to some features easily using the tools below.
-                                </p>
+                             
                             </div>
 
                             <!-- 3 Lists Section -->
