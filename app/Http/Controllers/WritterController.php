@@ -56,8 +56,8 @@ class WritterController extends BaseController
     {
         try {
             $validated = $request->validate([
-                'name' => 'required|string|max:150',
-                'slug' => 'required|string|max:150|unique:writers',
+                'name' => 'required|string|max:150|unique:writers,name',
+                'slug' => 'required|string|max:150',
                 'bio' => 'required|string',
                 'image.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'facebook' => 'nullable|url',

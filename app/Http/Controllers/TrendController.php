@@ -58,7 +58,7 @@ class TrendController extends BaseController
     public function store(Request $request) {
         try {
             $request->validate([
-                'title' => 'required|string|min:3|max:255',
+                'title' => 'required|string|min:3|max:255|unique:trends,title',
             ]);
 
             $trend = new Trend();

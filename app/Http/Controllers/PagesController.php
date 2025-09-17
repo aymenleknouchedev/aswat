@@ -48,7 +48,7 @@ class PagesController extends BaseController
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:pages,title',
             'slug' => 'required|string|max:255|unique:pages,slug',
             'content' => 'required|string',
         ]);

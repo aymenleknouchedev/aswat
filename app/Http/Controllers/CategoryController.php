@@ -57,7 +57,7 @@ class CategoryController extends BaseController
     {
         try {
             Validator::make($request->all(), [
-                'name' => 'required|string|min:3|max:255',
+                'name' => 'required|string|min:3|max:255|unique:categories,name',
             ])->validate();
 
             Category::create([

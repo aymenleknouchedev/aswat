@@ -56,7 +56,7 @@ class WindowController extends BaseController
     {
         try {
             $request->validate([
-                'name' => 'required|string|max:255',
+                'name' => 'required|string|max:255|unique:windows,name',
             ]);
 
             $window = new Window();
