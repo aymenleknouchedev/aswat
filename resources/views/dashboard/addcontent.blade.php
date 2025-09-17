@@ -243,16 +243,6 @@
                                                 <input type="hidden" name="writer_id" id="writerHidden">
                                             </div>
                                         </div>
-                                        {{-- 
-                                        <div class="form-group col-md-6 col-lg-6">
-                                            <label class="form-label" data-ar="موقع الكاتب" data-en="Writer Location">موقع الكاتب</label>
-                                            <div class="form-control-wrap relative w-full">
-                                                <input type="text" id="cityInput" name="city_name" placeholder="اختر الموقع"
-                                                    class="form-select w-full border rounded p-2" autocomplete="off">
-                                                <input type="hidden" id="cityId" name="city_id">
-                                                <div id="cityDropdown" class="absolute z-10 w-full bg-white border rounded hidden"></div>
-                                            </div>
-                                        </div> --}}
 
                                         <div class="form-group col-md-6 col-lg-6">
                                             <label class="form-label" data-ar="موقع الكاتب"
@@ -267,46 +257,57 @@
                                             </div>
                                         </div>
 
-
-                                        {{-- <div class="form-group col-md-6 col-lg-6">
-                                            <label class="form-label" data-ar="موقع الكاتب"
-                                                data-en="Writer Location">موقع الكاتب</label>
-                                            <div class="form-control-wrap">
-                                                <select name="city_id" class="form-select js-select2" data-search="on">
-                                                    <option value="">اختر الموقع</option>
-                                                    @foreach ($cities as $city)
-                                                        <option value="{{ $city->id }}"
-                                                            {{ old('city_id') == $city->id ? 'selected' : '' }}>
-                                                            {{ $city->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div> --}}
-
                                     </div>
                                     <div class="row g-3">
                                         <div class="form-group col-md-12">
-                                            <label class="form-label" data-ar="الوسوم" data-en="Tags">الوسوم</label>
-                                            <span style="color:red;">*</span>
-                                            <div class="d-flex flex-wrap align-items-center" id="tagInputBox"
-                                                style="gap:5px; position:relative; cursor:text;">
-                                                <div id="tagContainer" class="d-flex flex-wrap align-items-center"
-                                                    style="gap:5px; flex:1; background: #fff; ">
-                                                    <input type="text" id="tagSearch" class="form-control"
-                                                        style="background: transparent; color outline:none; min-width:120px;"
-                                                        >
+                                            <div class="d-flex align-items-end">
+                                                <div class="w-100">
+                                                    <label class="form-label" data-ar="الوسوم" data-en="Tags">الوسوم</label>
+                                                    <span style="color:red;">*</span>
+                                                    <div class="d-flex flex-wrap align-items-center" id="tagInputBox"
+                                                        style="gap:5px; position:relative; cursor:text;">
+                                                        <div id="tagContainer" class="d-flex flex-wrap align-items-center"
+                                                            style="gap:5px; flex:1; background: #fff; ">
+                                                            <input type="text" id="tagSearch" class="form-control"
+                                                                style="background: transparent; color outline:none; min-width:120px;"
+                                                                >
+                                                        </div>
+                                                    </div>
+        
+                                                    <div id="tagResults" class="dropdown-menu w-100"
+                                                        style="display:none; max-height:200px; overflow-y:auto; position:absolute; z-index:1000;">
+                                                    </div>
+        
+                                                    <div id="hiddenTags"></div>
+                                                </div>
+                                                <div class="">
+                                                    <button type="button" id="addTagButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTagModal">
+                                                        {{-- add icon --}}
+                                                        <em class="icon ni ni-plus"></em>
+                                                    </button>
                                                 </div>
                                             </div>
-
-                                            <div id="tagResults" class="dropdown-menu w-100"
-                                                style="display:none; max-height:200px; overflow-y:auto; position:absolute; z-index:1000;">
-                                            </div>
-
-                                            <div id="hiddenTags"></div>
                                         </div>
-
                                     </div>
+                                    <div class="modal fade" id="addTagModal" tabindex="-1" aria-labelledby="addTagModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addTagModalLabel">إضافة وسم جديد</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <input type="text" id="newTagInput" class="form-control" placeholder="أدخل الوسم هنا...">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                                                <button type="button" id="saveTagBtn" class="btn btn-primary">حفظ</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- TAG MODAL --}}
 
 
                                     <div class="form-group col-12 my-3">
@@ -559,6 +560,7 @@
 <script src={{ asset('dashlite/js/apis/search-trend-api.js') }}></script>
 <script src={{ asset('dashlite/js/apis/search-window-api.js') }}></script>
 <script src={{ asset('dashlite/js/apis/search-tag-api.js') }}></script>
+<script src={{ asset('dashlite/js/apis/add-tag-api.js') }}></script>
 <script src={{ asset('dashlite/js/apis/search-writer-api.js') }}></script>
 <script src={{ asset('dashlite/js/apis/search-writer-location-api.js') }}></script>
 
