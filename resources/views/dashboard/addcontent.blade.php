@@ -267,7 +267,7 @@
                                                     <div class="d-flex flex-wrap align-items-center" id="tagInputBox"
                                                         style="gap:5px; position:relative; cursor:text;">
                                                         <div id="tagContainer" class="d-flex flex-wrap align-items-center"
-                                                            style="gap:5px; flex:1; background: #fff; ">
+                                                            style="gap:5px; flex:1 ">
                                                             <input type="text" id="tagSearch" class="form-control"
                                                                 style="background: transparent; color outline:none; min-width:120px;"
                                                                 >
