@@ -24,7 +24,7 @@
                             <div class="row g-4 mb-5">
                                 <!-- List 1 -->
                                 <div class="col-sm-6 col-md-4 col-xxl-3">
-                                    <div class="card shadow-sm border-0 h-100">
+                                    <div class="card  card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
                                             <div class="d-flex align-items-center mb-3">
                                                 <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
@@ -58,7 +58,7 @@
 
                                 <!-- List 2 -->
                                 <div class="col-sm-6 col-md-4 col-xxl-3">
-                                    <div class="card shadow-sm border-0 h-100">
+                                    <div class="card  card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
                                             <div class="d-flex align-items-center mb-3">
                                                 <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
@@ -92,7 +92,7 @@
 
                                 <!-- List 3 -->
                                 <div class="col-sm-6 col-md-4 col-xxl-3">
-                                    <div class="card shadow-sm border-0 h-100">
+                                    <div class="card  card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
                                             <div class="d-flex align-items-center mb-3">
                                                 <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
@@ -124,15 +124,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <style>
-                                .hover-bg-light:hover {
-                                    background: #f8f9fa !important;
-                                    transition: background 0.2s;
-                                }
-                                .transition {
-                                    transition: background 0.2s;
-                                }
-                            </style>
+                           
 
                             <!-- 4 Stats Cards Section -->
                             <div class="row g-4 mb-5">
