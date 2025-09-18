@@ -20,94 +20,119 @@
 
                             </div>
 
-                            <!-- 3 Lists Section -->
-                            <div class="row g-gs mb-5">
+                            <!-- 3 Lists Section - Enhanced UI -->
+                            <div class="row g-4 mb-5">
                                 <!-- List 1 -->
                                 <div class="col-sm-6 col-md-4 col-xxl-3">
-                                    <div class="fake-class">
-                                        <h5 class="title" data-en="Content Management" data-ar="إدارة المحتوى">Content
-                                            Management</h5>
-                                        <ul class="link-list is-compact pb-0">
-                                            <li>
-                                                <a href="{{ route('dashboard.content.create') }}">
-                                                    <em class="icon ni ni-plus"></em>
-                                                    <span data-en="Add Content" data-ar="إضافة محتوى">Add Content</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('dashboard.medias.index') }}">
-                                                    <em class="icon ni ni-upload-cloud"></em>
-                                                    <span data-en="Upload Media" data-ar="رفع وسائط">Upload Media</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('dashboard.breakingnew.create') }}">
-                                                    <em class="icon ni ni-alert-circle-fill"></em>
-                                                    <span data-en="Add Breaking News" data-ar="إضافة خبر عاجل">Add Breaking
-                                                        News</span>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                    <div class="card shadow-sm border-0 h-100">
+                                        <div class="card-body p-4 d-flex flex-column">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
+                                                    <em class="icon ni ni-file-text fs-4"></em>
+                                                </div>
+                                                <h5 class="card-title mb-0" data-en="Content Management" data-ar="إدارة المحتوى">Content Management</h5>
+                                            </div>
+                                            <ul class="list-unstyled flex-grow-1">
+                                                <li class="mb-2">
+                                                    <a href="{{ route('dashboard.content.create') }}" class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
+                                                        <em class="icon ni ni-plus text-primary me-2"></em>
+                                                        <span data-en="Add Content" data-ar="إضافة محتوى">Add Content</span>
+                                                    </a>
+                                                </li>
+                                                <li class="mb-2">
+                                                    <a href="{{ route('dashboard.medias.index') }}" class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
+                                                        <em class="icon ni ni-upload-cloud text-success me-2"></em>
+                                                        <span data-en="Upload Media" data-ar="رفع وسائط">Upload Media</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('dashboard.breakingnew.create') }}" class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
+                                                        <em class="icon ni ni-alert-circle-fill text-danger me-2"></em>
+                                                        <span data-en="Add Breaking News" data-ar="إضافة خبر عاجل">Add Breaking News</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-
 
                                 <!-- List 2 -->
                                 <div class="col-sm-6 col-md-4 col-xxl-3">
-                                    <div class="fake-class">
-                                        <h5 class="title" data-en="Structure" data-ar="البنية">Structure</h5>
-                                        <ul class="link-list is-compact pb-0">
-                                            <li>
-                                                <a href="{{ route('dashboard.categorie.create') }}">
-                                                    <em class="icon ni ni-list-thumb"></em>
-                                                    <span data-en="Add Category" data-ar="إضافة تصنيف">Add Category</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('dashboard.trend.create') }}">
-                                                    <em class="icon ni ni-trend-up"></em>
-                                                    <span data-en="Add Trend" data-ar="إضافة ترند">Add Trend</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('dashboard.window.create') }}">
-                                                    <em class="icon ni ni-grid-alt"></em>
-                                                    <span data-en="Add Window" data-ar="إضافة نافذة">Add Window</span>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                    <div class="card shadow-sm border-0 h-100">
+                                        <div class="card-body p-4 d-flex flex-column">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
+                                                    <em class="icon ni ni-list-thumb fs-4"></em>
+                                                </div>
+                                                <h5 class="card-title mb-0" data-en="Structure" data-ar="البنية">Structure</h5>
+                                            </div>
+                                            <ul class="list-unstyled flex-grow-1">
+                                                <li class="mb-2">
+                                                    <a href="{{ route('dashboard.categorie.create') }}" class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
+                                                        <em class="icon ni ni-list-thumb text-success me-2"></em>
+                                                        <span data-en="Add Category" data-ar="إضافة تصنيف">Add Category</span>
+                                                    </a>
+                                                </li>
+                                                <li class="mb-2">
+                                                    <a href="{{ route('dashboard.trend.create') }}" class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
+                                                        <em class="icon ni ni-trend-up text-warning me-2"></em>
+                                                        <span data-en="Add Trend" data-ar="إضافة ترند">Add Trend</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('dashboard.window.create') }}" class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
+                                                        <em class="icon ni ni-grid-alt text-info me-2"></em>
+                                                        <span data-en="Add Window" data-ar="إضافة نافذة">Add Window</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-
 
                                 <!-- List 3 -->
                                 <div class="col-sm-6 col-md-4 col-xxl-3">
-                                    <div class="fake-class">
-                                        <h5 class="title" data-en="More Actions" data-ar="إجراءات أخرى">More Actions</h5>
-                                        <ul class="link-list is-compact pb-0">
-                                            <li>
-                                                <a href="{{ route('dashboard.user.create') }}">
-                                                    <em class="icon ni ni-user"></em>
-                                                    <span data-en="Add User" data-ar="إضافة مستخدم">Add User</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('dashboard.writer.create') }}">
-                                                    <em class="icon ni ni-user-add"></em>
-                                                    <span data-en="Add Writer" data-ar="إضافة كاتب">Add Writer</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('dashboard.tag.create') }}">
-                                                    <em class="icon ni ni-tag-alt"></em>
-                                                    <span data-en="Add Tag" data-ar="إضافة وسم">Add Tag</span>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                    <div class="card shadow-sm border-0 h-100">
+                                        <div class="card-body p-4 d-flex flex-column">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:40px; height:40px;">
+                                                    <em class="icon ni ni-user-add fs-4"></em>
+                                                </div>
+                                                <h5 class="card-title mb-0" data-en="More Actions" data-ar="إجراءات أخرى">More Actions</h5>
+                                            </div>
+                                            <ul class="list-unstyled flex-grow-1">
+                                                <li class="mb-2">
+                                                    <a href="{{ route('dashboard.user.create') }}" class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
+                                                        <em class="icon ni ni-user text-info me-2"></em>
+                                                        <span data-en="Add User" data-ar="إضافة مستخدم">Add User</span>
+                                                    </a>
+                                                </li>
+                                                <li class="mb-2">
+                                                    <a href="{{ route('dashboard.writer.create') }}" class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
+                                                        <em class="icon ni ni-user-add text-primary me-2"></em>
+                                                        <span data-en="Add Writer" data-ar="إضافة كاتب">Add Writer</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('dashboard.tag.create') }}" class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
+                                                        <em class="icon ni ni-tag-alt text-danger me-2"></em>
+                                                        <span data-en="Add Tag" data-ar="إضافة وسم">Add Tag</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
+                            <style>
+                                .hover-bg-light:hover {
+                                    background: #f8f9fa !important;
+                                    transition: background 0.2s;
+                                }
+                                .transition {
+                                    transition: background 0.2s;
+                                }
+                            </style>
 
                             <!-- 4 Stats Cards Section -->
                             <div class="row g-4 mb-5">
