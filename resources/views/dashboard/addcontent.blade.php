@@ -33,8 +33,9 @@
             <div class="nk-wrap">
                 @include('dashboard.components.header')
 
-                <div class="nk-content">
-                    <div class="container">
+                <div class="nk-content container row">
+
+                    <div class="col-9">
 
                         <div class="nk-block-head mb-4">
                             <div class="nk-block-head-content">
@@ -165,31 +166,43 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6 col-lg-3">
-                                            <label class="form-label" data-ar="التصنيف" data-en="Category">التصنيف</label>
+                                            <label class="form-label" data-ar="التصنيف"
+                                                data-en="Category">التصنيف</label>
                                             <div class="form-control-wrap position-relative">
                                                 <input type="text" id="categorySearch" class="form-control pe-5">
                                                 <input type="hidden" name="category_id" id="categoryHidden">
                                                 <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>
-                                                <button type="button" id="addCategoryButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y" 
-                                                    style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;" data-bs-toggle="modal" data-bs-target="#addCategoryModal" tabindex="-1">
+                                                <button type="button" id="addCategoryButton"
+                                                    class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
+                                                    style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;"
+                                                    data-bs-toggle="modal" data-bs-target="#addCategoryModal"
+                                                    tabindex="-1">
                                                     <em class="icon ni ni-plus"></em>
                                                 </button>
                                             </div>
                                         </div>
-                                        <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="addCategoryModal" tabindex="-1"
+                                            aria-labelledby="addCategoryModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="addCategoryModalLabel" data-ar="إضافة تصنيف جديد" data-en="Add New Category">إضافة تصنيف جديد</h5>
+                                                        <h5 class="modal-title" id="addCategoryModalLabel"
+                                                            data-ar="إضافة تصنيف جديد" data-en="Add New Category">إضافة
+                                                            تصنيف جديد</h5>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <input type="text" id="newCategoryInput" class="form-control" data-ar="تصنيف جديد" data-en="New Category">
+                                                        <input type="text" id="newCategoryInput" class="form-control"
+                                                            data-ar="تصنيف جديد" data-en="New Category">
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
-                                                        <button type="button" id="saveCategoryBtn" class="btn btn-primary" data-ar="حفظ" data-en="Save">حفظ</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal" data-ar="إلغاء"
+                                                            data-en="Cancel">إلغاء</button>
+                                                        <button type="button" id="saveCategoryBtn"
+                                                            class="btn btn-primary" data-ar="حفظ"
+                                                            data-en="Save">حفظ</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -229,33 +242,44 @@
                                         <div class="form-group col-md-6 col-lg-6">
                                             <div class="d-flex align-items-end">
                                                 <div class="w-100">
-                                                    <label class="form-label" data-ar="الاتجاه" data-en="Trend">الاتجاه</label>
+                                                    <label class="form-label" data-ar="الاتجاه"
+                                                        data-en="Trend">الاتجاه</label>
                                                     <div class="form-control-wrap position-relative">
                                                         <input type="text" id="trendSearch" class="form-control" />
                                                         <input type="hidden" name="trend_id" id="trendHidden" />
                                                         <div id="trendResults" class="dropdown-menu w-100 shadow-sm"
                                                             style="max-height:200px; overflow-y:auto; display:none;">
                                                         </div>
-                                                        <button type="button" id="addTrendButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;" data-bs-toggle="modal" data-bs-target="#addTrendModal" tabindex="-1">
+                                                        <button type="button" id="addTrendButton"
+                                                            class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
+                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;"
+                                                            data-bs-toggle="modal" data-bs-target="#addTrendModal"
+                                                            tabindex="-1">
                                                             <em class="icon ni ni-plus"></em>
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="modal fade" id="addTrendModal" tabindex="-1" aria-labelledby="addTrendModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="addTrendModal" tabindex="-1"
+                                            aria-labelledby="addTrendModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="addTrendModalLabel" data-ar="إضافة اتجاه جديد" data-en="Add New Trend">إضافة اتجاه جديد</h5>
+                                                        <h5 class="modal-title" id="addTrendModalLabel"
+                                                            data-ar="إضافة اتجاه جديد" data-en="Add New Trend">إضافة اتجاه
+                                                            جديد</h5>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <input type="text" id="newTrendInput" class="form-control" data-ar="اتجاه جديد" data-en="New Trend">
+                                                        <input type="text" id="newTrendInput" class="form-control"
+                                                            data-ar="اتجاه جديد" data-en="New Trend">
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
-                                                        <button type="button" id="saveTrendBtn" class="btn btn-primary" data-ar="حفظ" data-en="Save">حفظ</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal" data-ar="إلغاء"
+                                                            data-en="Cancel">إلغاء</button>
+                                                        <button type="button" id="saveTrendBtn" class="btn btn-primary"
+                                                            data-ar="حفظ" data-en="Save">حفظ</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -263,33 +287,45 @@
                                         <div class="form-group col-md-6 col-lg-6">
                                             <div class="d-flex align-items-end">
                                                 <div class="w-100">
-                                                    <label class="form-label" data-ar="النافذة" data-en="Window">النافذة</label>
+                                                    <label class="form-label" data-ar="النافذة"
+                                                        data-en="Window">النافذة</label>
                                                     <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="windowSearch" class="form-control pe-5" />
+                                                        <input type="text" id="windowSearch"
+                                                            class="form-control pe-5" />
                                                         <input type="hidden" name="window_id" id="windowHidden" />
                                                         <div id="windowResults" class="dropdown-menu w-100 shadow-sm"
                                                             style="max-height:200px; overflow-y:auto; display:none;">
                                                         </div>
-                                                        <button type="button" id="addWindowButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;" data-bs-toggle="modal" data-bs-target="#addWindowModal" tabindex="-1">
+                                                        <button type="button" id="addWindowButton"
+                                                            class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
+                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;"
+                                                            data-bs-toggle="modal" data-bs-target="#addWindowModal"
+                                                            tabindex="-1">
                                                             <em class="icon ni ni-plus"></em>
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="modal fade" id="addWindowModal" tabindex="-1" aria-labelledby="addWindowModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="addWindowModal" tabindex="-1"
+                                            aria-labelledby="addWindowModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="addWindowModalLabel" data-ar="إضافة نافذة جديدة" data-en="Add New Window">إضافة نافذة جديدة</h5>
+                                                        <h5 class="modal-title" id="addWindowModalLabel"
+                                                            data-ar="إضافة نافذة جديدة" data-en="Add New Window">إضافة
+                                                            نافذة جديدة</h5>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <input type="text" id="newWindowInput" class="form-control" data-ar="نافذة جديدة" data-en="New Window">
+                                                        <input type="text" id="newWindowInput" class="form-control"
+                                                            data-ar="نافذة جديدة" data-en="New Window">
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
-                                                        <button type="button" id="saveWindowBtn" class="btn btn-primary" data-ar="حفظ" data-en="Save">حفظ</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal" data-ar="إلغاء"
+                                                            data-en="Cancel">إلغاء</button>
+                                                        <button type="button" id="saveWindowBtn" class="btn btn-primary"
+                                                            data-ar="حفظ" data-en="Save">حفظ</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -300,14 +336,18 @@
                                         <div class="form-group col-md-6 col-lg-6">
                                             <div class="d-flex align-items-end">
                                                 <div class="w-100">
-                                                    <label class="form-label" data-ar="الكاتب" data-en="Writer">الكاتب</label>
+                                                    <label class="form-label" data-ar="الكاتب"
+                                                        data-en="Writer">الكاتب</label>
                                                     <div class="form-control-wrap position-relative">
                                                         <input type="text" id="writerSearch" class="form-control">
                                                         <input type="hidden" name="writer_id" id="writerHidden">
                                                         <div id="writerResults" class="dropdown-menu w-100"
                                                             style="display:none; max-height:200px; overflow-y:auto;"></div>
-                                                        <button type="button" id="addWriterButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;" data-bs-toggle="modal" data-bs-target="#addWriterModal" tabindex="-1">
+                                                        <button type="button" id="addWriterButton"
+                                                            class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
+                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;"
+                                                            data-bs-toggle="modal" data-bs-target="#addWriterModal"
+                                                            tabindex="-1">
                                                             <em class="icon ni ni-plus"></em>
                                                         </button>
                                                     </div>
@@ -315,60 +355,90 @@
                                             </div>
                                         </div>
 
-                                        <div class="modal fade" id="addWriterModal" tabindex="-1" aria-labelledby="addWriterModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="addWriterModal" tabindex="-1"
+                                            aria-labelledby="addWriterModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
 
                                                     <!-- Header -->
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="addWriterModalLabel" data-ar="إضافة كاتب جديد" data-en="Add New Writer">إضافة كاتب جديد</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق" data-ar="إغلاق" data-en="Close"></button>
+                                                        <h5 class="modal-title" id="addWriterModalLabel"
+                                                            data-ar="إضافة كاتب جديد" data-en="Add New Writer">إضافة كاتب
+                                                            جديد</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="إغلاق" data-ar="إغلاق" data-en="Close"></button>
                                                     </div>
 
                                                     <!-- Body -->
                                                     <div class="modal-body">
-                                                        
+
                                                         <form id="writerForm" enctype="multipart/form-data">
                                                             @csrf
 
                                                             <div class="mb-3">
-                                                                <label class="form-label" data-ar="الاسم" data-en="Name">الاسم</label>
-                                                                <input type="text" id="writerName" name="name" class="form-control" required data-ar="الاسم" data-en="Name">
+                                                                <label class="form-label" data-ar="الاسم"
+                                                                    data-en="Name">الاسم</label>
+                                                                <input type="text" id="writerName" name="name"
+                                                                    class="form-control" required data-ar="الاسم"
+                                                                    data-en="Name">
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label" data-ar="الرابط (Slug)" data-en="Slug">الرابط (Slug)</label>
-                                                                <input type="text" id="writerSlug" name="slug" class="form-control" required data-ar="الرابط" data-en="Slug">
+                                                                <label class="form-label" data-ar="الرابط (Slug)"
+                                                                    data-en="Slug">الرابط (Slug)</label>
+                                                                <input type="text" id="writerSlug" name="slug"
+                                                                    class="form-control" required data-ar="الرابط"
+                                                                    data-en="Slug">
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label" data-ar="نبذة" data-en="Bio">نبذة</label>
-                                                                <textarea id="writerBio" name="bio" class="form-control" rows="3" required data-ar="نبذة" data-en="Bio"></textarea>
+                                                                <label class="form-label" data-ar="نبذة"
+                                                                    data-en="Bio">نبذة</label>
+                                                                <textarea id="writerBio" name="bio" class="form-control" rows="3" required data-ar="نبذة"
+                                                                    data-en="Bio"></textarea>
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label" data-ar="الصورة" data-en="Image">الصورة</label>
-                                                                <input type="file" id="writerImage" name="image" class="form-control" accept="image/*" data-ar="الصورة" data-en="Image">
+                                                                <label class="form-label" data-ar="الصورة"
+                                                                    data-en="Image">الصورة</label>
+                                                                <input type="file" id="writerImage" name="image"
+                                                                    class="form-control" accept="image/*"
+                                                                    data-ar="الصورة" data-en="Image">
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label" data-ar="فيسبوك" data-en="Facebook">فيسبوك</label>
-                                                                <input type="url" id="writerFacebook" name="facebook" class="form-control" placeholder="https://facebook.com/" data-ar="فيسبوك" data-en="Facebook">
+                                                                <label class="form-label" data-ar="فيسبوك"
+                                                                    data-en="Facebook">فيسبوك</label>
+                                                                <input type="url" id="writerFacebook" name="facebook"
+                                                                    class="form-control"
+                                                                    placeholder="https://facebook.com/" data-ar="فيسبوك"
+                                                                    data-en="Facebook">
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label" data-ar="X" data-en="X">X</label>
-                                                                <input type="url" id="writerX" name="x" class="form-control" placeholder="https://x.com/" data-ar="X" data-en="X">
+                                                                <label class="form-label" data-ar="X"
+                                                                    data-en="X">X</label>
+                                                                <input type="url" id="writerX" name="x"
+                                                                    class="form-control" placeholder="https://x.com/"
+                                                                    data-ar="X" data-en="X">
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label" data-ar="إنستغرام" data-en="Instagram">إنستغرام</label>
-                                                                <input type="url" id="writerInstagram" name="instagram" class="form-control" placeholder="https://instagram.com/" data-ar="إنستغرام" data-en="Instagram">
+                                                                <label class="form-label" data-ar="إنستغرام"
+                                                                    data-en="Instagram">إنستغرام</label>
+                                                                <input type="url" id="writerInstagram"
+                                                                    name="instagram" class="form-control"
+                                                                    placeholder="https://instagram.com/"
+                                                                    data-ar="إنستغرام" data-en="Instagram">
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label" data-ar="لينكدإن" data-en="LinkedIn">لينكدإن</label>
-                                                                <input type="url" id="writerLinkedin" name="linkedin" class="form-control" placeholder="https://linkedin.com/" data-ar="لينكدإن" data-en="LinkedIn">
+                                                                <label class="form-label" data-ar="لينكدإن"
+                                                                    data-en="LinkedIn">لينكدإن</label>
+                                                                <input type="url" id="writerLinkedin" name="linkedin"
+                                                                    class="form-control"
+                                                                    placeholder="https://linkedin.com/" data-ar="لينكدإن"
+                                                                    data-en="LinkedIn">
                                                             </div>
                                                         </form>
 
@@ -376,8 +446,11 @@
 
                                                     <!-- Footer -->
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
-                                                        <button type="button" id="saveWriterBtn" class="btn btn-primary" data-ar="حفظ" data-en="Save">حفظ</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal" data-ar="إلغاء"
+                                                            data-en="Cancel">إلغاء</button>
+                                                        <button type="button" id="saveWriterBtn" class="btn btn-primary"
+                                                            data-ar="حفظ" data-en="Save">حفظ</button>
                                                     </div>
 
                                                 </div>
@@ -390,7 +463,7 @@
                                                 data-en="Writer Location">موقع الكاتب</label>
                                             <div class="form-control-wrap relative w-full">
                                                 <input type="text" id="cityInput" name="city_name"
-                                                     class="form-control">
+                                                    class="form-control">
                                                 <input type="hidden" id="cityId" name="city_id">
                                                 <div id="cityDropdown" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
@@ -403,7 +476,8 @@
                                         <div class="form-group col-md-12">
                                             <div class="d-flex align-items-end">
                                                 <div class="w-100">
-                                                    <label class="form-label" data-ar="الوسوم" data-en="Tags">الوسوم</label>
+                                                    <label class="form-label" data-ar="الوسوم"
+                                                        data-en="Tags">الوسوم</label>
                                                     <span style="color:red;">*</span>
                                                     <div class="d-flex flex-wrap align-items-center" id="tagInputBox"
                                                         style="gap:5px; position:relative; cursor:text;">
@@ -412,8 +486,11 @@
                                                             <input type="text" id="tagSearch" class="form-control"
                                                                 style="background: transparent; color outline:none; min-width:120px;">
                                                         </div>
-                                                        <button type="button" id="addTagButton" class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;" data-bs-toggle="modal" data-bs-target="#addTagModal" tabindex="-1">
+                                                        <button type="button" id="addTagButton"
+                                                            class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
+                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;"
+                                                            data-bs-toggle="modal" data-bs-target="#addTagModal"
+                                                            tabindex="-1">
                                                             <em class="icon ni ni-plus"></em>
                                                         </button>
                                                     </div>
@@ -427,20 +504,27 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal fade" id="addTagModal" tabindex="-1" aria-labelledby="addTagModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="addTagModal" tabindex="-1"
+                                        aria-labelledby="addTagModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="addTagModalLabel" data-ar="إضافة وسم جديد" data-en="Add New Tag">إضافة وسم جديد</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <input type="text" id="newTagInput" class="form-control" data-ar="وسم جديد" data-en="New Tag">
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
-                                                <button type="button" id="saveTagBtn" class="btn btn-primary" data-ar="حفظ" data-en="Save">حفظ</button>
-                                            </div>
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="addTagModalLabel"
+                                                        data-ar="إضافة وسم جديد" data-en="Add New Tag">إضافة وسم جديد</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="إغلاق"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="text" id="newTagInput" class="form-control"
+                                                        data-ar="وسم جديد" data-en="New Tag">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal" data-ar="إلغاء"
+                                                        data-en="Cancel">إلغاء</button>
+                                                    <button type="button" id="saveTagBtn" class="btn btn-primary"
+                                                        data-ar="حفظ" data-en="Save">حفظ</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -464,7 +548,8 @@
                                         </label>
                                         <span style="color:red;">*</span>
                                         <div class="form-control-wrap">
-                                            <x-forms.tinymce-editor id="myeditorinstance" :value="$post->content ?? ''"  name="content"/>
+                                            <x-forms.tinymce-editor id="myeditorinstance" :value="$post->content ?? ''"
+                                                name="content" />
                                         </div>
                                     </div>
 
@@ -585,6 +670,60 @@
 
 
                         </form>
+                    </div>
+                    <div class="col-3">
+                        <div class="card mb-3">
+                            <div class="card-header" data-ar="خيارات النشر" data-en="Publishing Options">
+                                خيارات النشر
+                            </div>
+                            <div class="card-body">
+
+                                <!-- Collapsible: Schedule Publish -->
+                                <div class="mb-3">
+                                    <button class="btn btn-link w-100 text-start p-0 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSchedule" aria-expanded="false" aria-controls="collapseSchedule">
+                                        <em class="icon ni ni-calendar"></em>
+                                        <span data-ar="جدولة النشر" data-en="Schedule Publish">جدولة النشر</span>
+                                    </button>
+                                    <div class="collapse" id="collapseSchedule">
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text bg-light">
+                                                <em class="icon ni ni-calendar"></em>
+                                            </span>
+                                            <input type="datetime-local" id="publish_at" name="publish_at" class="form-control"
+                                                value="{{ old('publish_at') }}">
+                                        </div>
+                                        <small class="text-muted" data-ar="حدد وقت النشر لاحقاً"
+                                            data-en="Set a future publish time">حدد وقت النشر لاحقاً</small>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible: Review Message -->
+                                <div class="mb-3">
+                                    <button class="btn btn-link w-100 text-start p-0 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReviewMsg" aria-expanded="false" aria-controls="collapseReviewMsg">
+                                        <em class="icon ni ni-chat"></em>
+                                        <span data-ar="رسالة المراجعة" data-en="Review Message">رسالة المراجعة</span>
+                                    </button>
+                                    <div class="collapse" id="collapseReviewMsg">
+                                        <textarea id="review_message_sidebar" name="review_description" class="form-control" rows="3">{{ old('review_description') }}</textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <script>
+                            // Duplicate content button
+                            document.getElementById('duplicateContentBtn').addEventListener('click', function() {
+                                alert('سيتم نسخ بيانات النموذج. (تنفيذ النسخ حسب الحاجة)');
+                                // يمكنك هنا تنفيذ منطق النسخ حسب الحاجة
+                            });
+
+                            // Preview content button
+                            document.getElementById('previewContentBtn').addEventListener('click', function() {
+                                alert('معاينة المحتوى غير متوفرة حالياً. (نفذ المعاينة حسب الحاجة)');
+                                // يمكنك هنا فتح نافذة معاينة أو تنفيذ منطق المعاينة
+                            });
+                        </script>
                     </div>
                 </div>
                 @include('dashboard.components.footer')
