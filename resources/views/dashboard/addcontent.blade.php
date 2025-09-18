@@ -35,7 +35,7 @@
 
                 <div class="nk-content container row">
 
-                    <div class="col-9">
+                    <div class="col-md-9">
 
                         <div class="nk-block-head mb-4">
                             <div class="nk-block-head-content">
@@ -671,7 +671,7 @@
 
                         </form>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 mt-4">
                         <div class="card mb-3">
                             <div class="card-header" data-ar="خيارات النشر" data-en="Publishing Options">
                                 خيارات النشر
