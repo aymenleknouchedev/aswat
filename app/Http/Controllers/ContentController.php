@@ -141,22 +141,13 @@ class ContentController extends BaseController
             'review_description'      => 'nullable|string',
         ];
 
-        if ($request->display_method === 'list') {
+        if (in_array($request->display_method, ['list', 'file'])) {
             $rules['items'] = 'required|array|min:1';
             $rules['items.*.title'] = 'required|string|max:255';
             $rules['items.*.description'] = 'required|string';
-            $rules['items.*.url'] = 'required|url';
             $rules['items.*.image'] = 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10000';
             $rules['items.*.index'] = 'required|integer';
-        }
-
-        if ($request->display_method === 'file') {
-            $rules['items'] = 'required|array|min:1';
-            $rules['items.*.title'] = 'required|string|max:255';
-            $rules['items.*.description'] = 'required|string';
-            $rules['items.*.url'] = 'nullable|url';
-            $rules['items.*.image'] = 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10000';
-            $rules['items.*.index'] = 'required|integer';
+            $rules['items.*.url'] = $request->display_method === 'list' ? 'required|url' : 'nullable|url';
         }
 
         $templateRules = [
@@ -377,6 +368,10 @@ class ContentController extends BaseController
             PublishContent::dispatch($content->id)->delay(
                 now()->addSeconds($delayInSeconds)
             );
+        } elseif ($request->filled('status') && $request->status === 'draft') {
+            $content->status = 'draft';
+            $content->published_at = null;
+            $content->save();
         } else {
             $content->status = 'published';
             $content->published_at = now();

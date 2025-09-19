@@ -547,7 +547,7 @@
                                         </label>
                                         <span style="color:red;">*</span>
                                         <div class="form-control-wrap">
-                                            <x-forms.tinymce-editor id="myeditorinstance" :value="$post->content ?? ''"
+                                            <x-forms.tinymce-editor id="myeditorinstance" :value="old('content', $post->content ?? '')"
                                                 name="content" />
                                         </div>
                                     </div>
@@ -576,6 +576,7 @@
                                     'existing_albums' => $existing_albums,
                                 ])
 
+                                
 
                                 <!-- Message Tab -->
                                 <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
