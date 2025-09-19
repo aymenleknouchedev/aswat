@@ -10,8 +10,15 @@
             <!-- Preview container for multiple images -->
             <div class="media-preview border rounded mb-2 p-2" id="preview-album_images"
                 style="height:150px; display:flex; flex-wrap:wrap; gap:10px;">
-                <span class="text-muted" data-ar="لا توجد صور مختارة" data-en="No images selected">لا توجد صور
-                    مختارة</span>
+                @if (!empty($albumImagePaths) && $content->template === 'album')
+                    @foreach ($albumImagePaths as $path)
+                        <div class="position-relative" style="width:120px; height:120px;">
+                            <img src="{{ $path }}" class="w-100 h-100 rounded border">
+                        </div>
+                    @endforeach
+                @else
+                    <span class="text-muted" data-ar="لا توجد صور مختارة" data-en="No images selected">لا توجد صور مختارة</span>
+                @endif
             </div>
 
             <!-- File input for multiple images (hidden) -->
@@ -37,8 +44,12 @@
             <label class="form-label" data-ar="الصورة الأساسية" data-en="Main Image">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-album_main_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
-                    مختارة</span>
+                @if (!empty($mainImagePaths[0]) && $content->template === 'album')
+                    <img src="{{ $mainImagePaths[0] }}" alt="Main Image" class="img-fluid">
+                @else
+                    <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                        مختارة</span>
+                @endif
             </div>
             <input type="file" name="album_main_image" id="album_main_image" class="d-none" accept="image/*">
             <input type="hidden" name="album_main_image" id="album_main_image_url">
@@ -59,8 +70,12 @@
             <label class="form-label" data-ar="صورة الهاتف المحمول" data-en="Mobile Image">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-album_content_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
-                    مختارة</span>
+                @if (!empty($contentImagePaths[0]) && $content->template === 'album')
+                    <img src="{{ $contentImagePaths[0] }}" alt="Content Image" class="img-fluid">
+                @else
+                    <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                        مختارة</span>
+                @endif
             </div>
             <input type="file" name="album_content_image" id="album_content_image" class="d-none" accept="image/*">
             <input type="hidden" name="album_content_image" id="album_content_image_url">
@@ -82,8 +97,12 @@
                 التفصيلية</label>
             <div class="media-preview border rounded mb-2" id="preview-album_mobile_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
-                    مختارة</span>
+                @if (!empty($mobileImagePaths[0]) && $content->template === 'album')
+                    <img src="{{ $mobileImagePaths[0] }}" alt="Mobile Image" class="img-fluid">
+                @else
+                    <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                        مختارة</span>
+                @endif
             </div>
             <input type="file" name="album_mobile_image" id="album_mobile_image" class="d-none"
                 accept="image/*">

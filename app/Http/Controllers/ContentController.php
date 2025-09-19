@@ -175,7 +175,7 @@ class ContentController extends BaseController
                 'video_main_image' => 'required|max:2048',
                 'video_mobile_image' => 'required|max:2048',
                 'video_content_image' => 'required|max:2048',
-                'video_file' => 'required|max:20480',
+                'video_file' => 'required|max:200480',
             ],
             'podcast' => [
                 'podcast_main_image' => 'required|max:2048',
@@ -442,9 +442,9 @@ class ContentController extends BaseController
 
 
         $mainImagePaths = $content->media->where('pivot.type', 'main')->pluck('path')->all();
-
         $mobileImagePaths = $content->media->where('pivot.type', 'mobile')->pluck('path')->all();
         $contentImagePaths = $content->media->where('pivot.type', 'detail')->pluck('path')->all();
+
         $albumImagePaths = $content->media->where('pivot.type', 'album')->isEmpty() ? null : $content->media->where('pivot.type', 'album')->pluck('path')->all();
         $videoPaths = $content->media->where('pivot.type', 'video')->isEmpty() ? null : $content->media->where('pivot.type', 'video')->pluck('path')->all();
         $podcastPaths = $content->media->where('pivot.type', 'podcast')->isEmpty() ? null : $content->media->where('pivot.type', 'podcast')->pluck('path')->all();

@@ -6,8 +6,11 @@
             <label class="form-label" data-en="Main Image" data-ar="الصورة الأساسية">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-video_main_image"
                 style="aspect-ratio: 16/9;">
-                <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة
-                    مختارة</span>
+                @if (!empty($mainImagePaths[0]) && $content->template === 'video')
+                    <img src="{{ $mainImagePaths[0] }}" alt="Main Image" class="img-fluid">
+                @else
+                    <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة مختارة</span>
+                @endif
             </div>
 
             <input type="file" name="video_main_image" id="video_main_image" class="d-none" accept="image/*">
@@ -31,8 +34,11 @@
             <label class="form-label" data-en="Mobile Image" data-ar="صورة الهاتف المحمول">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-video_mobile_image"
                 style="aspect-ratio: 16/9;">
-                <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة
-                    مختارة</span>
+                @if (!empty($mobileImagePaths[0]) && $content->template === 'video')
+                    <img src="{{ $mobileImagePaths[0] }}" alt="Mobile Image" class="img-fluid">
+                @else
+                    <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة مختارة</span>
+                @endif
             </div>
 
             <input type="file" name="video_mobile_image" id="video_mobile_image" class="d-none" accept="image/*">
@@ -57,8 +63,11 @@
                 التفصيلية</label>
             <div class="media-preview border rounded mb-2" id="preview-video_content_image"
                 style="aspect-ratio: 16/9;">
-                <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة
-                    مختارة</span>
+                @if (!empty($contentImagePaths[0]) && $content->template === 'video')
+                    <img src="{{ $contentImagePaths[0] }}" alt="Content Image" class="img-fluid">
+                @else
+                    <span class="text-muted" data-en="No image selected" data-ar="لا توجد صورة مختارة">لا توجد صورة مختارة</span>
+                @endif
             </div>
 
             <input type="file" name="video_content_image" id="video_content_image" class="d-none" accept="image/*">
@@ -82,8 +91,24 @@
             <label class="form-label" data-en="Video" data-ar="الفيديو">الفيديو</label>
             <div id="preview-video_file" class="media-preview border rounded mb-2"
                 style="aspect-ratio: 16/9;">
-                <span class="text-muted" data-en="No video selected" data-ar="لا يوجد فيديو محدد">لا يوجد فيديو
-                    محدد</span>
+                @if (!empty($videoPaths[0]) && $content->template === 'video')
+                    @php
+                        $videoUrl = $videoPaths[0];
+                        $youtubeMatch = preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/', $videoUrl, $matches);
+                    @endphp
+                    @if ($youtubeMatch && isset($matches[1]))
+                        <iframe width="100%" height="140"
+                            src="https://www.youtube.com/embed/{{ $matches[1] }}"
+                            frameborder="0" allowfullscreen></iframe>
+                    @else
+                        <video controls style="max-height:140px; max-width:100%;">
+                            <source src="{{ $videoUrl }}">
+                            متصفحك لا يدعم عرض الفيديو.
+                        </video>
+                    @endif
+                @else
+                    <span class="text-muted" data-en="No video selected" data-ar="لا يوجد فيديو محدد">لا يوجد فيديو محدد</span>
+                @endif
             </div>
 
             <input type="file" name="video_file" id="video_file" class="d-none" accept="video/*">

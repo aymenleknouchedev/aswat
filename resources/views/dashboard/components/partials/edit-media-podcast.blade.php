@@ -6,8 +6,12 @@
             <label class="form-label" data-ar="الصورة الأساسية" data-en="Main Image">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-podcast_main_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
-                    مختارة</span>
+                @if (!empty($mainImagePaths[0]) && $content->template === 'podcast')
+                    <img src="{{ $mainImagePaths[0] }}" alt="Main Image" class="img-fluid">
+                @else
+                    <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                        مختارة</span>
+                @endif
             </div>
 
             <input type="file" name="podcast_main_image" id="podcast_main_image" class="d-none" accept="image/*">
@@ -31,8 +35,12 @@
             <label class="form-label" data-ar="صورة الهاتف المحمول" data-en="Mobile Image">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-podcast_mobile_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
-                    مختارة</span>
+                @if (!empty($mobileImagePaths[0]) && $content->template === 'podcast')
+                    <img src="{{ $mobileImagePaths[0] }}" alt="Mobile Image" class="img-fluid">
+                @else
+                    <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                        مختارة</span>
+                @endif
             </div>
 
             <input type="file" name="podcast_mobile_image" id="podcast_mobile_image" class="d-none" accept="image/*">
@@ -57,8 +65,12 @@
                 التفصيلية</label>
             <div class="media-preview border rounded mb-2" id="preview-podcast_content_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
-                    مختارة</span>
+                @if (!empty($contentImagePaths[0]) && $content->template === 'podcast')
+                    <img src="{{ $contentImagePaths[0] }}" alt="Content Image" class="img-fluid">
+                @else
+                    <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                        مختارة</span>
+                @endif
             </div>
 
             <input type="file" name="podcast_content_image" id="podcast_content_image" class="d-none"
@@ -83,8 +95,15 @@
             <label class="form-label" data-ar="البودكاست" data-en="Podcast">البودكاست</label>
             <div id="preview-podcast_file" class="media-preview border rounded mb-2"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted" data-ar="لا يوجد بودكاست محدد" data-en="No podcast selected">لا يوجد بودكاست
-                    محدد</span>
+                @if (!empty($podcastPaths[0]) && $content->template === 'podcast')
+                    <audio controls style="max-width:100%;">
+                        <source src="{{ $podcastPaths[0] }}" type="audio/mpeg">
+                        متصفحك لا يدعم تشغيل الصوت.
+                    </audio>
+                @else
+                    <span class="text-muted" data-ar="لا يوجد بودكاست محدد" data-en="No podcast selected">لا يوجد بودكاست
+                        محدد</span>
+                @endif
             </div>
 
             <input type="file" name="podcast_file" id="podcast_file" class="d-none" accept="audio/*">

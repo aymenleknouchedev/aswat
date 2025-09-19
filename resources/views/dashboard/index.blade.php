@@ -23,7 +23,7 @@
                             <!-- 3 Lists Section - Enhanced UI -->
                             <div class="row g-4 mb-5">
                                 <!-- List 1 -->
-                                <div class="col-sm-6 col-md-4 col-xxl-3">
+                                <div class="col-sm-6 col-md-4">
                                     <div class="card  card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
                                             <div class="d-flex align-items-center mb-3">
@@ -57,7 +57,7 @@
                                 </div>
 
                                 <!-- List 2 -->
-                                <div class="col-sm-6 col-md-4 col-xxl-3">
+                                <div class="col-sm-6 col-md-4">
                                     <div class="card  card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
                                             <div class="d-flex align-items-center mb-3">
@@ -91,7 +91,7 @@
                                 </div>
 
                                 <!-- List 3 -->
-                                <div class="col-sm-6 col-md-4 col-xxl-3">
+                                <div class="col-sm-6 col-md-4">
                                     <div class="card  card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
                                             <div class="d-flex align-items-center mb-3">

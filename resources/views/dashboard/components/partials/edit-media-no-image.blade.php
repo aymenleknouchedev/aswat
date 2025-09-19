@@ -6,8 +6,12 @@
             <label class="form-label" data-ar="الصورة الأساسية" data-en="Main Image">الصورة الأساسية</label>
             <div class="media-preview border rounded mb-2" id="preview-no_image_main_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
-                    مختارة</span>
+                @if (!empty($mainImagePaths[0]) && $content->template === 'no_image')
+                    <img src="{{ $mainImagePaths[0] }}" alt="Main Image" class="img-fluid">
+                @else
+                    <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                        مختارة</span>
+                @endif
             </div>
 
             <input type="file" name="no_image_main_image" id="no_image_main_image" class="d-none" accept="image/*">
@@ -31,8 +35,12 @@
             <label class="form-label" data-ar="صورة الهاتف المحمول" data-en="Mobile Image">صورة الهاتف المحمول</label>
             <div class="media-preview border rounded mb-2" id="preview-no_image_mobile_image"
                 style="aspect-ratio: 16/9; display:flex; align-items:center; justify-content:center;">
-                <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
-                    مختارة</span>
+                @if (!empty($mobileImagePaths[0]) && $content->template === 'no_image')
+                    <img src="{{ $mobileImagePaths[0] }}" alt="Mobile Image" class="img-fluid">
+                @else
+                    <span class="text-muted" data-ar="لا توجد صورة مختارة" data-en="No image selected">لا توجد صورة
+                        مختارة</span>
+                @endif
             </div>
 
             <input type="file" name="no_image_mobile_image" id="no_image_mobile_image" class="d-none"

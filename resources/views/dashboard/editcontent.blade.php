@@ -623,7 +623,7 @@
                                             <input type="file" id="share_image" name="share_image"
                                                 class="form-control" accept="image/*">
                                             <div class="mt-2 border rounded p-2 text-center" style="aspect-ratio: 16/9;">
-                                                <img id="share_image_preview" src="{{ $content->mainImagePath }}" alt=""
+                                                <img id="share_image_preview" src="{{ $content->share_image }}" alt=""
                                                     style="aspect-ratio: 16/9; display:none;">
                                             </div>
                                         </div>
