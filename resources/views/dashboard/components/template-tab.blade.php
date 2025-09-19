@@ -6,21 +6,21 @@
         <div class="flex flex-column">
             <div class="custom-control custom-radio custom-control-inline">
                 <input class="custom-control-input" type="radio" name="display_method" id="display_method_simple"
-                    value="simple" {{ old('display_method') == 'simple' ? 'checked' : '' }}>
+                    value="simple" {{ old('display_method', 'simple') == 'simple' ? 'checked' : '' }}>
                 <label class="custom-control-label" for="display_method_simple" data-ar="أساسي"
                     data-en="Simple">أساسي</label>
             </div>
             <div class="mt-1"></div>
             <div class="custom-control custom-radio custom-control-inline">
                 <input class="custom-control-input" type="radio" name="display_method" id="display_method_list"
-                    value="list" {{ old('display_method') == 'simple' ? 'checked' : '' }}>
+                    value="list" {{ old('display_method') == 'list' ? 'checked' : '' }}>
                 <label class="custom-control-label" for="display_method_list" data-ar="قائمة"
                     data-en="List">قائمة</label>
             </div>
             <div class="mt-1"></div>
             <div class="custom-control custom-radio custom-control-inline">
                 <input class="custom-control-input" type="radio" name="display_method" id="display_method_file"
-                    value="file" {{ old('display_method') == 'simple' ? 'checked' : '' }}>
+                    value="file" {{ old('display_method') == 'file' ? 'checked' : '' }}>
                 <label class="custom-control-label" for="display_method_file" data-ar="ملف" data-en="File">ملف</label>
             </div>
         </div>
