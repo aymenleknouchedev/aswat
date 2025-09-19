@@ -257,6 +257,9 @@
                 clonedInput.name = `${prefix}[image]`;
                 clonedInput.style.display = 'none';
                 mainForm.appendChild(clonedInput);
+                
+
+                
             });
         });
 

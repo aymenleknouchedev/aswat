@@ -54,7 +54,7 @@ class ContentController extends BaseController
         $sections = CacheService::remember(CacheKeys::SECTIONS, function () {
             return Section::all();
         }, $ttl_sections);
-        
+
         // $writers = CacheService::remember(CacheKeys::WRITERS, function () {
         //     return Writer::all();
         // }, $ttl_writers);
@@ -62,8 +62,8 @@ class ContentController extends BaseController
         $cities = Location::where('type', 'city')->get();
         $continents = Location::where('type', 'continent')->get();
         $countries = Location::where('type', 'country')->get();
-        
-        
+
+
         $categories = Category::take(15)->latest()->get();
         $tags = Tag::take(15)->latest()->get();
         $trends = Trend::take(15)->latest()->get();
@@ -116,7 +116,7 @@ class ContentController extends BaseController
             'title'         => 'required|string|max:75',
             'long_title'    => 'required|string|max:210',
             'mobile_title'  => 'required|string|max:40',
-            'display_method'=> 'required|string|in:simple,list,file',
+            'display_method' => 'required|string|in:simple,list,file',
             'section_id'    => 'required|exists:sections,id',
             'category_id'   => 'nullable|exists:categories,id',
             'continent_id'  => 'nullable|exists:continents,id',
@@ -145,7 +145,23 @@ class ContentController extends BaseController
             $rules['items'] = 'required|array|min:1';
             $rules['items.*.title'] = 'required|string|max:255';
             $rules['items.*.description'] = 'required|string';
-            $rules['items.*.image'] = 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10000';
+            $rules['items.*.image'] = [
+                'required',
+                'image',
+                'mimes:jpeg,png,jpg,gif,webp',
+                'max:10000',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value instanceof \Illuminate\Http\UploadedFile) {
+                        [$width, $height] = getimagesize($value->getRealPath());
+                        // Example: require 16:9 aspect ratio (width / height ≈ 16/9)
+                        $aspectRatio = $width / $height;
+                        $expected = 9 / 16;
+                        if (abs($aspectRatio - $expected) > 0.05) {
+                            $fail('The ' . $attribute . ' must have a 9:16 aspect ratio.');
+                        }
+                    }
+                }
+            ];
             $rules['items.*.index'] = 'required|integer';
             $rules['items.*.url'] = $request->display_method === 'list' ? 'required|url' : 'nullable|url';
         }
@@ -269,7 +285,7 @@ class ContentController extends BaseController
                     $file = $request->file($field);
                     $path = asset('storage/' . $file->store('media', 'public'));
                     $mediatype = $file->getClientMimeType();
-                    
+
                     $media = ContentMedia::create([
                         'path' => $path,
                         'media_type' => $mediatype,
@@ -299,7 +315,6 @@ class ContentController extends BaseController
                         $content->media()->attach($media->id, ['type' => $type]);
                     }
                     continue;
-
                 }
 
 
@@ -364,7 +379,9 @@ class ContentController extends BaseController
             $scheduledTime = Carbon::parse($request->published_at, 'Africa/Algiers');
 
             $delayInSeconds = now()->diffInSeconds($scheduledTime, false);
-            if ($delayInSeconds < 0) { $delayInSeconds = 0; }
+            if ($delayInSeconds < 0) {
+                $delayInSeconds = 0;
+            }
             PublishContent::dispatch($content->id)->delay(
                 now()->addSeconds($delayInSeconds)
             );
@@ -404,7 +421,7 @@ class ContentController extends BaseController
         $sections = CacheService::remember(CacheKeys::SECTIONS, function () {
             return Section::all();
         }, $ttl_sections);
-        
+
 
         $scity = Location::find($content->city_id);
         $scontinent = Location::find($content->continent_id);
