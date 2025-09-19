@@ -98,8 +98,7 @@ class ContentController extends BaseController
     public function store(Request $request)
     {
         $albumImages = [];
-
-        // --- Uploaded files ---
+        
         if ($request->hasFile('album_images')) {
             foreach ($request->file('album_images') as $file) {
                 $albumImages[] = $file; // just add file object, don't save
@@ -424,10 +423,19 @@ class ContentController extends BaseController
         $windows = Window::take(15)->latest()->get();
         $writers = Writer::take(15)->latest()->get();
 
-        $existing_images = $content->media->whereIn('pivot.type', ['main', 'mobile', 'detail'])->values()->all();
-        $existing_videos = $content->media->where('pivot.type', 'video')->values()->all();
-        $existing_podcasts = $content->media->where('pivot.type', 'podcast')->values()->all();
-        $existing_albums = $content->media->where('pivot.type', 'album')->values()->all();
+        // $existing_images = $content->media->whereIn('pivot.type', ['main', 'mobile', 'detail'])->values()->all();
+        // $existing_videos = $content->media->where('pivot.type', 'video')->values()->all();
+        // $existing_podcasts = $content->media->where('pivot.type', 'podcast')->values()->all();
+        // $existing_albums = $content->media->where('pivot.type', 'album')->values()->all();
+
+
+        $mainImagePaths = $content->media->where('pivot.type', 'main')->pluck('path')->all();
+
+        $mobileImagePaths = $content->media->where('pivot.type', 'mobile')->pluck('path')->all();
+        $contentImagePaths = $content->media->where('pivot.type', 'detail')->pluck('path')->all();
+        $albumImagePaths = $content->media->where('pivot.type', 'album')->isEmpty() ? null : $content->media->where('pivot.type', 'album')->pluck('path')->all();
+        $videoPaths = $content->media->where('pivot.type', 'video')->isEmpty() ? null : $content->media->where('pivot.type', 'video')->pluck('path')->all();
+        $podcastPaths = $content->media->where('pivot.type', 'podcast')->isEmpty() ? null : $content->media->where('pivot.type', 'podcast')->pluck('path')->all();
 
 
         return view('dashboard.editcontent', compact(
@@ -443,10 +451,12 @@ class ContentController extends BaseController
             'tags',
             'trends',
             'windows',
-            'existing_images',
-            'existing_videos',
-            'existing_podcasts',
-            'existing_albums'
+            'mainImagePaths',
+            'mobileImagePaths',
+            'contentImagePaths',
+            'albumImagePaths',
+            'videoPaths',
+            'podcastPaths',
         ));
     }
 

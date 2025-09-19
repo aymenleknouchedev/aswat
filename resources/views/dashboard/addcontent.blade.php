@@ -33,7 +33,7 @@
             <div class="nk-wrap">
                 @include('dashboard.components.header')
 
-                <form class="nk-content container row"  action="{{ route('dashboard.content.store') }}" method="POST" enctype="multipart/form-data">
+                <form class="nk-content container row"  action="{{ route('dashboard.content.store') }}" method="POST" enctype="multipart/form-data" id="contentForm">
 
                     <div class="col-md-9">
 
@@ -55,7 +55,7 @@
                             </div>
                         @endif
 
-                        <div id="contentForm">
+                        <div>
                             @csrf
                             <!-- Tabs nav -->
                             <ul class="nav mb-4" id="contentTabs" role="tablist">

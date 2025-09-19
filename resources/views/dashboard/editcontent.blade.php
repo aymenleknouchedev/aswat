@@ -576,14 +576,16 @@
                                 </div>
 
                                 <!-- Template Tab -->
-                                @include('dashboard.components.template-tab')
+                                @include('dashboard.components.edit-template-tab')
 
                                 <!-- Media Tab -->
-                                @include('dashboard.components.media-tab', [
-                                    'existing_images' => $existing_images,
-                                    'existing_videos' => $existing_videos,
-                                    'existing_podcasts' => $existing_podcasts,
-                                    'existing_albums' => $existing_albums,
+                                @include('dashboard.components.edit-media-tab', [
+                                    'mainImagePaths' => $mainImagePaths,
+                                    'mobileImagePaths' => $mobileImagePaths,
+                                    'contentImagePaths' => $contentImagePaths,
+                                    'albumImagePaths' => $albumImagePaths,
+                                    'videoPaths' => $videoPaths,
+                                    'podcastPaths' => $podcastPaths,
                                 ])
 
 
@@ -614,7 +616,6 @@
                                 <div class="tab-pane fade" id="social-media" role="tabpanel"
                                     aria-labelledby="social-media-tab">
                                     <div class="row g-3 mt-3">
-
                                         <!-- Content Image -->
                                         <div class="col-md-6">
                                             <label for="share_image" class="form-label" data-ar="صورة المحتوى"
@@ -622,7 +623,7 @@
                                             <input type="file" id="share_image" name="share_image"
                                                 class="form-control" accept="image/*">
                                             <div class="mt-2 border rounded p-2 text-center" style="aspect-ratio: 16/9;">
-                                                <img id="share_image_preview" src="" alt=""
+                                                <img id="share_image_preview" src="{{ $content->mainImagePath }}" alt=""
                                                     style="aspect-ratio: 16/9; display:none;">
                                             </div>
                                         </div>
@@ -632,7 +633,7 @@
                                             <label for="share_title" class="form-label" data-ar="عنوان المشاركة"
                                                 data-en="Share Title">عنوان المشاركة</label>
                                             <input type="text" id="share_title" name="share_title"
-                                                class="form-control" value="{{ old('share_title', '') }}">
+                                                class="form-control" value="{{ $content->share_title }}">
                                         </div>
 
                                         <!-- Description -->
@@ -681,14 +682,14 @@
                         </div>
                     </div>
                     <div class="col-md-3 mt-4">
-                        <div class="card mb-3">
+                        <div class="card">
                             <div class="card-header" data-ar="خيارات النشر" data-en="Publishing Options">
                                 خيارات النشر
                             </div>
                             <div class="card-body">
 
                                 <!-- Collapsible: Schedule Publish -->
-                                <div class="mb-3">
+                                <div class="">
                                     <button class="btn btn-link w-100 text-start p-0 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSchedule" aria-expanded="false" aria-controls="collapseSchedule">
                                         <em class="icon ni ni-calendar"></em>
                                         <span data-ar="جدولة النشر" data-en="Schedule Publish">جدولة النشر</span>
@@ -699,24 +700,13 @@
                                                 <em class="icon ni ni-calendar"></em>
                                             </span>
                                             <input type="datetime-local" id="publish_at" name="published_at" class="form-control"
-                                                value="{{ old('published_at') }}">
+                                                value="{{ old('published_at') }}"
+                                                onclick="this.showPicker && this.showPicker()" onfocus="this.showPicker && this.showPicker()">
                                         </div>
                                         <small class="text-muted" data-ar="حدد وقت النشر لاحقاً"
                                             data-en="Set a future publish time">حدد وقت النشر لاحقاً</small>
                                     </div>
                                 </div>
-
-                                <!-- Collapsible: Review Message -->
-                                <div class="mb-3">
-                                    <button class="btn btn-link w-100 text-start p-0 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReviewMsg" aria-expanded="false" aria-controls="collapseReviewMsg">
-                                        <em class="icon ni ni-chat"></em>
-                                        <span data-ar="رسالة المراجعة" data-en="Review Message">رسالة المراجعة</span>
-                                    </button>
-                                    <div class="collapse" id="collapseReviewMsg">
-                                        <textarea id="review_message_sidebar" name="review_description" class="form-control" rows="3">{{ $content->review_description }}</textarea>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
 
@@ -789,16 +779,31 @@
 
     <!-- Preview Script -->
     <script>
-        document.getElementById('share_image').addEventListener('change', function(event) {
-            const file = event.target.files[0];
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show initial image if exists
             const preview = document.getElementById('share_image_preview');
-            if (file) {
-                preview.src = URL.createObjectURL(file);
+            if (preview && preview.src && preview.src.trim() !== '' && preview.src !== window.location.href) {
                 preview.style.display = 'block';
             } else {
-                preview.src = '';
                 preview.style.display = 'none';
             }
+
+            // On file change, update preview
+            document.getElementById('share_image').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    preview.src = URL.createObjectURL(file);
+                    preview.style.display = 'block';
+                } else {
+                    // If no file selected, keep initial image if exists, otherwise hide
+                    if (preview.src && preview.src.trim() !== '' && preview.src !== window.location.href) {
+                        preview.style.display = 'block';
+                    } else {
+                        preview.src = '';
+                        preview.style.display = 'none';
+                    }
+                }
+            });
         });
     </script>
 
