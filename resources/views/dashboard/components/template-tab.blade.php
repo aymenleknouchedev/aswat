@@ -6,21 +6,21 @@
         <div class="flex flex-column">
             <div class="custom-control custom-radio custom-control-inline">
                 <input class="custom-control-input" type="radio" name="display_method" id="display_method_simple"
-                    value="simple" {{ $content->display_method == 'simple' ? 'checked' : '' }}>
+                    value="simple" {{ old('display_method') == 'simple' ? 'checked' : '' }}>
                 <label class="custom-control-label" for="display_method_simple" data-ar="أساسي"
                     data-en="Simple">أساسي</label>
             </div>
             <div class="mt-1"></div>
             <div class="custom-control custom-radio custom-control-inline">
                 <input class="custom-control-input" type="radio" name="display_method" id="display_method_list"
-                    value="list" {{ $content->display_method == 'list' ? 'checked' : '' }}>
+                    value="list" {{ old('display_method') == 'simple' ? 'checked' : '' }}>
                 <label class="custom-control-label" for="display_method_list" data-ar="قائمة"
                     data-en="List">قائمة</label>
             </div>
             <div class="mt-1"></div>
             <div class="custom-control custom-radio custom-control-inline">
                 <input class="custom-control-input" type="radio" name="display_method" id="display_method_file"
-                    value="file" {{ $content->display_method == 'file' ? 'checked' : '' }}>
+                    value="file" {{ old('display_method') == 'simple' ? 'checked' : '' }}>
                 <label class="custom-control-label" for="display_method_file" data-ar="ملف" data-en="File">ملف</label>
             </div>
         </div>
@@ -44,20 +44,25 @@
                     <div class="modal-body">
                         <input type="hidden" id="editIndex" />
                         <div class="mb-2">
-                            <label class="form-label" data-ar="العنوان" data-en="Title">Title <span style="color:red;">*</span></label>
+                            <label class="form-label" data-ar="العنوان" data-en="Title">Title <span
+                                    style="color:red;">*</span></label>
                             <input id="itemTitle" class="form-control" required data-ar="العنوان" data-en="Title" />
                         </div>
                         <div class="mb-2">
-                            <label class="form-label" data-ar="الوصف" data-en="Description">Description <span style="color:red;">*</span></label>
+                            <label class="form-label" data-ar="الوصف" data-en="Description">Description <span
+                                    style="color:red;">*</span></label>
                             <textarea id="itemDescription" class="form-control" required data-ar="الوصف" data-en="Description"></textarea>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label" data-ar="الصورة" data-en="Image">Image <span style="color:red;">*</span></label>
-                            <input id="itemImage" type="file" class="form-control" accept="image/*" required data-ar="الصورة" data-en="Image" />
+                            <label class="form-label" data-ar="الصورة" data-en="Image">Image <span
+                                    style="color:red;">*</span></label>
+                            <input id="itemImage" type="file" class="form-control" accept="image/*" required
+                                data-ar="الصورة" data-en="Image" />
                         </div>
                         <div class="mb-2">
                             <label class="form-label" data-ar="الرابط" data-en="URL">URL</label>
-                            <input id="itemUrl" type="url" class="form-control" data-ar="الرابط" data-en="URL" />
+                            <input id="itemUrl" type="url" class="form-control" data-ar="الرابط"
+                                data-en="URL" />
                         </div>
                     </div>
                     <div class="modal-footer">
