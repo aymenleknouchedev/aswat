@@ -91,6 +91,12 @@
                                                             @elseif($content->status == 'draft')
                                                                 <span class="badge badge-dot bg-warning" data-en="Draft"
                                                                     data-ar="مسودة">مسودة</span>
+                                                            @elseif($content->status == 'scheduled')
+                                                                <span class="badge badge-dot bg-info" data-en="Scheduled"
+                                                                    data-ar="مجدول">مجدول</span>
+                                                            @else
+                                                                <span class="badge badge-dot bg-secondary"
+                                                                    data-en="Unknown" data-ar="غير معروف">غير معروف</span>
                                                             @endif
                                                         </td>
                                                         <td>{{ $content->created_at->format('Y-m-d') }}</td>

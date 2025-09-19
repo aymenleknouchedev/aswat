@@ -6,7 +6,22 @@ document.addEventListener("DOMContentLoaded", function () {
     let debounceTimer;
     let selectedTags = [];
 
-    // Search tags
+    function initializeSelectedTags() 
+    {
+        const existingChips = document.querySelectorAll("#tagInputBox .tag-chip");
+        existingChips.forEach(chip => {
+            const tagId = chip.querySelector(".remove-tag").getAttribute("data-tag-id");
+            selectedTags.push(tagId);
+            chip.querySelector(".remove-tag").addEventListener("click", () => {
+                selectedTags = selectedTags.filter(id => id !== tagId);
+                chip.remove();
+                document.getElementById(`hiddenTag-${tagId}`)?.remove();
+            });
+        });
+    }
+
+    initializeSelectedTags();
+
     searchInput.addEventListener("input", function () {
         clearTimeout(debounceTimer);
         const query = this.value.trim();

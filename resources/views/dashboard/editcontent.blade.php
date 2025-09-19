@@ -39,12 +39,10 @@
 
                         <div class="nk-block-head mb-4">
                             <div class="nk-block-head-content">
-                                <h4 class="nk-block-title" data-ar="إضافة محتوى جديد" data-en="Add New Content">إضافة محتوى
-                                    جديد</h4>
+                                <h4 class="nk-block-title" data-ar="تعديل المحتوى" data-en="Edit Content">تعديل المحتوى</h4>
                             </div>
                         </div>
 
-                        {{-- validation messages with problem --}}
                         @if ($errors->any())
                             <div class="alert alert-danger" role="alert">
                                 <ul>
@@ -115,7 +113,7 @@
                                             <div class="form-control-wrap">
                                                 <input required id="title" name="title" type="text"
                                                     class="form-control form-control" maxlength="75" data-ar="العنوان"
-                                                    data-en="Title" value="{{ old('title', '') }}">
+                                                    data-en="Title" value="{{ $content->title ?? old('title', '') }}">
                                             </div>
                                             <small class="text-muted"><span id="title-count">0</span> / 75</small>
                                         </div>
@@ -128,7 +126,7 @@
                                                 <input required id="long_title" name="long_title" type="text"
                                                     class="form-control form-control" maxlength="210"
                                                     data-ar="العنوان الطويل" data-en="Long Title"
-                                                    value="{{ old('long_title', '') }}">
+                                                    value="{{ $content->long_title ?? old('long_title', '') }}">
                                             </div>
                                             <small class="text-muted"><span id="long_title-count">0</span> / 210</small>
                                         </div>
@@ -141,12 +139,11 @@
                                                 <input required id="mobile_title" name="mobile_title" type="text"
                                                     class="form-control form-control" maxlength="40"
                                                     data-ar="عنوان الموبايل" data-en="Mobile Title"
-                                                    value="{{ old('mobile_title', '') }}">
+                                                    value="{{ $content->mobile_title ?? old('mobile_title', '') }}">
                                             </div>
                                             <small class="text-muted"><span id="mobile_title-count">0</span> / 40</small>
                                         </div>
                                     </div>
-
 
                                     <div class="row g-3 mt-1 ">
                                         <div class="form-group col-md-6 col-lg-3">
@@ -154,11 +151,11 @@
                                             <span style="color:red;">*</span>
                                             <div class="form-control-wrap">
                                                 <select required name="section_id" class="form-select js-select2"
-                                                    data-search="on">
+                                                    data-search="on" value="{{ $content->section_id ?? old('section_id') }}">
                                                     <option value="">اختر القسم</option>
                                                     @foreach ($sections as $section)
                                                         <option value="{{ $section->id }}"
-                                                            {{ old('section_id') == $section->id ? 'selected' : '' }}>
+                                                            {{ $content->section_id == $section->id ? 'selected' : '' }}>
                                                             {{ $section->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -168,8 +165,8 @@
                                             <label class="form-label" data-ar="التصنيف"
                                                 data-en="Category">التصنيف</label>
                                             <div class="form-control-wrap position-relative">
-                                                <input type="text" id="categorySearch" class="form-control pe-5">
-                                                <input type="hidden" name="category_id" id="categoryHidden">
+                                                <input type="text" id="categorySearch" class="form-control pe-5" value="{{ $content->category->name ?? '' }}" />
+                                                <input type="hidden" name="category_id" id="categoryHidden" value="{{ $content->category_id ?? '' }}" />
                                                 <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>
@@ -210,11 +207,11 @@
                                             <label class="form-label" data-ar="القارة" data-en="Continent">القارة</label>
                                             <div class="form-control-wrap">
                                                 <select name="continent_id" class="form-select js-select2"
-                                                    data-search="on">
+                                                    data-search="on" value="{{ old('continent_id') }}">
                                                     <option value="">اختر القارة</option>
                                                     @foreach ($continents as $continent)
                                                         <option value="{{ $continent->id }}"
-                                                            {{ old('continent_id') == $continent->id ? 'selected' : '' }}>
+                                                            {{ $content->continent_id == $continent->id ? 'selected' : '' }}>
                                                             {{ $continent->name }}
                                                         </option>
                                                     @endforeach
@@ -225,11 +222,11 @@
                                             <label class="form-label" data-ar="الدولة" data-en="Country">الدولة</label>
                                             <div class="form-control-wrap">
                                                 <select name="country_id" class="form-select js-select2"
-                                                    data-search="on">
+                                                    data-search="on" value="{{ $content->country_id ?? old('country_id') }}">
                                                     <option value="">اختر المكان</option>
                                                     @foreach ($countries as $country)
                                                         <option value="{{ $country->id }}"
-                                                            {{ old('country_id') == $country->id ? 'selected' : '' }}>
+                                                            {{ $content->country_id == $country->id ? 'selected' : '' }}>
                                                             {{ $country->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -244,8 +241,8 @@
                                                     <label class="form-label" data-ar="الاتجاه"
                                                         data-en="Trend">الاتجاه</label>
                                                     <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="trendSearch" class="form-control" />
-                                                        <input type="hidden" name="trend_id" id="trendHidden" />
+                                                        <input type="text" id="trendSearch" class="form-control" value="{{ $content->trend->title ?? '' }}">
+                                                        <input type="hidden" name="trend_id" id="trendHidden" value="{{ $content->trend_id ?? '' }}">
                                                         <div id="trendResults" class="dropdown-menu w-100 shadow-sm"
                                                             style="max-height:200px; overflow-y:auto; display:none;">
                                                         </div>
@@ -289,9 +286,8 @@
                                                     <label class="form-label" data-ar="النافذة"
                                                         data-en="Window">النافذة</label>
                                                     <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="windowSearch"
-                                                            class="form-control pe-5" />
-                                                        <input type="hidden" name="window_id" id="windowHidden" />
+                                                        <input type="text" id="windowSearch" class="form-control pe-5" value="{{ $content->window->name ?? '' }}" />
+                                                        <input type="hidden" name="window_id" id="windowHidden" value="{{ $content->window_id ?? '' }}" />
                                                         <div id="windowResults" class="dropdown-menu w-100 shadow-sm"
                                                             style="max-height:200px; overflow-y:auto; display:none;">
                                                         </div>
@@ -338,8 +334,8 @@
                                                     <label class="form-label" data-ar="الكاتب"
                                                         data-en="Writer">الكاتب</label>
                                                     <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="writerSearch" class="form-control">
-                                                        <input type="hidden" name="writer_id" id="writerHidden">
+                                                        <input type="text" id="writerSearch" class="form-control" value="{{ $content->writer->name ?? '' }}">
+                                                        <input type="hidden" name="writer_id" id="writerHidden" value="{{ $content->writer_id ?? '' }}">
                                                         <div id="writerResults" class="dropdown-menu w-100"
                                                             style="display:none; max-height:200px; overflow-y:auto;"></div>
                                                         <button type="button" id="addWriterButton"
@@ -461,15 +457,13 @@
                                             <label class="form-label" data-ar="موقع الكاتب"
                                                 data-en="Writer Location">موقع الكاتب</label>
                                             <div class="form-control-wrap relative w-full">
-                                                <input type="text" id="cityInput" name="city_name"
-                                                    class="form-control">
-                                                <input type="hidden" id="cityId" name="city_id">
+                                                <input type="text" id="cityInput" name="city_name" class="form-control" value="{{ $scity->name ?? '' }}" />
+                                                <input type="hidden" id="cityId" name="city_id" value="{{ $content->city_id ?? '' }}" />
                                                 <div id="cityDropdown" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="row g-3">
                                         <div class="form-group col-md-12">
@@ -480,6 +474,15 @@
                                                     <span style="color:red;">*</span>
                                                     <div class="d-flex flex-wrap align-items-center" id="tagInputBox"
                                                         style="gap:5px; position:relative; cursor:text;">
+                                                        @if ($content->tags)
+                                                            @foreach ($content->tags as $tag)
+                                                                <div class="tag-chip">
+                                                                    {{ $tag->name }}
+                                                                    <span class="remove-tag" style="cursor:pointer;"
+                                                                        data-tag-id="{{ $tag->id }}">&times;</span>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
                                                         <div id="tagContainer" class="d-flex flex-wrap align-items-center"
                                                             style="gap:5px; flex:1 ">
                                                             <input type="text" id="tagSearch" class="form-control"
@@ -498,7 +501,14 @@
                                                         style="display:none; max-height:200px; overflow-y:auto; position:absolute; z-index:1000;">
                                                     </div>
 
-                                                    <div id="hiddenTags"></div>
+                                                    <div id="hiddenTags">
+                                                        @if ($content->tags)
+                                                            @foreach ($content->tags as $tag)
+                                                                <input type="hidden" name="tags_id[]"
+                                                                    value="{{ $tag->id }}">
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -537,7 +547,7 @@
                                         <span style="color:red;">*</span>
                                         <div class="form-control-wrap">
                                             <textarea required id="summary" name="summary" class="form-control form-control" rows="3"
-                                                style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130">{{ old('summary', '') }}</textarea>
+                                                style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130">{{ $content->summary ?? '' }}</textarea>
                                         </div>
                                         <small class="text-muted"><span id="summary-count">0</span> / 130</small>
                                     </div>
@@ -547,7 +557,7 @@
                                         </label>
                                         <span style="color:red;">*</span>
                                         <div class="form-control-wrap">
-                                            <x-forms.tinymce-editor id="myeditorinstance" :value="$post->content ?? ''"
+                                            <x-forms.tinymce-editor id="myeditorinstance" :value="$content->content ?? ''"
                                                 name="content" />
                                         </div>
                                     </div>
@@ -559,7 +569,7 @@
                                         <div class="form-control-wrap">
                                             <input required id="seo_keyword" name="seo_keyword" type="text"
                                                 class="form-control form-control" maxlength="50"
-                                                value="{{ old('seo_keyword', '') }}">
+                                                value="{{ $content->seo_keyword ?? '' }}">
                                         </div>
                                     </div>
 
@@ -582,7 +592,7 @@
                                     <div class="mb-3">
                                         <label for="message_text" data-ar="رسالة المراجعة" data-en="Review Message">رسالة
                                             المراجعة</label>
-                                        <textarea id="message_text" name="review_description" class="form-control">{{ old('review_description') }}</textarea>
+                                        <textarea id="message_text" name="review_description" class="form-control">{{ $content->review_description }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -629,7 +639,7 @@
                                         <div class="col-md-12">
                                             <label for="share_description" class="form-label" data-ar="وصف المشاركة"
                                                 data-en="Share Description">وصف المشاركة</label>
-                                            <textarea id="share_description" name="share_description" class="form-control" rows="3">{{ old('share_description', '') }}</textarea>
+                                            <textarea id="share_description" name="share_description" class="form-control" rows="3">{{ $content->share_description }}</textarea>
                                         </div>
 
                                     </div>
@@ -703,7 +713,7 @@
                                         <span data-ar="رسالة المراجعة" data-en="Review Message">رسالة المراجعة</span>
                                     </button>
                                     <div class="collapse" id="collapseReviewMsg">
-                                        <textarea id="review_message_sidebar" name="review_description" class="form-control" rows="3">{{ old('review_description') }}</textarea>
+                                        <textarea id="review_message_sidebar" name="review_description" class="form-control" rows="3">{{ $content->review_description }}</textarea>
                                     </div>
                                 </div>
 

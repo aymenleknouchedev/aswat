@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
+use Carbon\Carbon;
+
 use App\Models\Section;
 use App\Models\Category;
 use App\Models\Writer;
@@ -16,6 +18,8 @@ use App\Models\Content;
 use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+
+use App\Jobs\PublishContent;
 
 use App\Services\CacheService;
 use App\Enums\CacheKeys;
@@ -32,7 +36,8 @@ class ContentController extends BaseController
      */
     public function index()
     {
-        $contents = Content::latest()->paginate(5);
+        $pagination = config('pagination.per15', 15);
+        $contents = Content::latest()->paginate($pagination);
         return view('dashboard.allcontents', compact('contents'));
     }
 
@@ -123,7 +128,7 @@ class ContentController extends BaseController
             'summary'       => 'nullable|string',
             'content'       => 'nullable|string',
             'seo_keyword'   => 'nullable|string|max:255',
-            'status'        => 'required|in:draft,published,archived',
+            // 'status'        => 'required|in:draft,published,scheduled',
             'template'      => 'required|string',
             'tags_id'      => 'required|array',
             // 'template'      => [
@@ -182,8 +187,6 @@ class ContentController extends BaseController
                 'no_image_mobile_image' => 'required|max:2048',
             ],
         ];
-
-
 
         $templateMediaMap = [
             'normal_image' => [
@@ -362,7 +365,26 @@ class ContentController extends BaseController
         // ✅ Attach tags
         $content->tags()->sync($request->tags_id);
 
-        return redirect()->route('dashboard.contents.index')
+        if ($request->filled('published_at') && $request->published_at > now()->toDateTimeString()) {
+            $content->status = 'scheduled';
+            $content->published_at = $request->published_at;
+            $content->save();
+
+            $scheduledTime = Carbon::parse($request->published_at, 'Africa/Algiers');
+
+            $delayInSeconds = now()->diffInSeconds($scheduledTime, false);
+            if ($delayInSeconds < 0) { $delayInSeconds = 0; }
+            PublishContent::dispatch($content->id)->delay(
+                now()->addSeconds($delayInSeconds)
+            );
+        } else {
+            $content->status = 'published';
+            $content->published_at = now();
+            $content->save();
+        }
+
+
+        return redirect()->back()
             ->with('success', 'Content created successfully.');
     }
 
@@ -379,7 +401,53 @@ class ContentController extends BaseController
      */
     public function edit(string $id)
     {
-        //
+        $content = Content::with(['media', 'tags', 'contentLists'])->findOrFail($id);
+
+        $ttl_sections = config('cache_ttl.sections', 3600);
+        $ttl_writers = config('cache_ttl.writers', 3600);
+
+        $sections = CacheService::remember(CacheKeys::SECTIONS, function () {
+            return Section::all();
+        }, $ttl_sections);
+        
+
+        $scity = Location::find($content->city_id);
+        $scontinent = Location::find($content->continent_id);
+        $scountry = Location::find($content->country_id);
+
+        $continents = Location::where('type', 'continent')->get();
+        $countries = Location::where('type', 'country')->get();
+
+        $categories = Category::take(15)->latest()->get();
+        $tags = Tag::take(15)->latest()->get();
+        $trends = Trend::take(15)->latest()->get();
+        $windows = Window::take(15)->latest()->get();
+        $writers = Writer::take(15)->latest()->get();
+
+        $existing_images = $content->media->whereIn('pivot.type', ['main', 'mobile', 'detail'])->values()->all();
+        $existing_videos = $content->media->where('pivot.type', 'video')->values()->all();
+        $existing_podcasts = $content->media->where('pivot.type', 'podcast')->values()->all();
+        $existing_albums = $content->media->where('pivot.type', 'album')->values()->all();
+
+
+        return view('dashboard.editcontent', compact(
+            'content',
+            'sections',
+            'categories',
+            'writers',
+            'scity',
+            'scontinent',
+            'scountry',
+            'continents',
+            'countries',
+            'tags',
+            'trends',
+            'windows',
+            'existing_images',
+            'existing_videos',
+            'existing_podcasts',
+            'existing_albums'
+        ));
     }
 
     /**

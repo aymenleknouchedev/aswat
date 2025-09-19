@@ -51,9 +51,10 @@ return new class extends Migration
             // Media type
             $table->enum('template', ['normal_image', 'video', 'podcast', 'album', 'no_image'])->default('normal_image');
             // Status
-            $table->enum('status', ['draft', 'published'])->default('draft');
+            $table->enum('status', ['draft', 'published', 'scheduled'])->default('draft');
 
             $table->timestamps();
+            $table->timestamp('published_at')->useCurrent();
             $table->softDeletes();
         });
     }

@@ -5,6 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\ContentMedia;
+use App\Models\Category;
+use App\Models\Trend;
+use App\Models\Window;
+use App\Models\Tag;
+use App\Models\Writer;
 
 
 class Content extends Model
