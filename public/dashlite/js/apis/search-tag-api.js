@@ -11,7 +11,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const existingChips = document.querySelectorAll("#tagInputBox .tag-chip");
         existingChips.forEach(chip => {
             const tagId = chip.querySelector(".remove-tag").getAttribute("data-tag-id");
-            selectedTags.push(tagId);
+            const name = chip.querySelector('.chip-name').innerHTML;
+            const tag = { id: tagId, name: name };
+            appendHiddenTag(tagId);
             chip.querySelector(".remove-tag").addEventListener("click", () => {
                 selectedTags = selectedTags.filter(id => id !== tagId);
                 chip.remove();
@@ -79,11 +81,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         tagContainer.insertBefore(chip, searchInput);
 
+        appendHiddenTag(tag.id);
+    }
+
+    function appendHiddenTag(id) {
         const hiddenInput = document.createElement("input");
         hiddenInput.type = "hidden";
         hiddenInput.name = "tags_id[]";
-        hiddenInput.value = tag.id;
-        hiddenInput.id = `hiddenTag-${tag.id}`;
+        hiddenInput.value = id;
+        hiddenInput.id = `hiddenTag-${id}`;
         hiddenTagsBox.appendChild(hiddenInput);
     }
 

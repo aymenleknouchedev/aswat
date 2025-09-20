@@ -480,6 +480,15 @@
                                                     <span style="color:red;">*</span>
                                                     <div class="d-flex flex-wrap align-items-center" id="tagInputBox"
                                                         style="gap:5px; position:relative; cursor:text;">
+                                                        @if (old('tags_id'))
+                                                            @foreach (old('tags_id') as $id)
+                                                                <div class="tag-chip">
+                                                                    <span class="chip-name">{{ App\Models\Tag::find(id: $id)->name ?? '' }}</span>
+                                                                    <span class="remove-tag" style="cursor:pointer;"
+                                                                        data-tag-id="{{ $id }}">&times;</span>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
                                                         <div id="tagContainer" class="d-flex flex-wrap align-items-center"
                                                             style="gap:5px; flex:1 ">
                                                             <input type="text" id="tagSearch" class="form-control"
@@ -766,7 +775,6 @@
     </script>
 
 
-    <!-- Preview Script -->
     <script>
         document.getElementById('share_image').addEventListener('change', function(event) {
             const file = event.target.files[0];
