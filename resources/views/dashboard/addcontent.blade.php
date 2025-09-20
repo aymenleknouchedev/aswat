@@ -668,7 +668,7 @@
 
                             <div class="mt-4 d-flex">
                                 <button type="submit"
-                                    class="btn btn-primary btn-lg me-3" data-ar="نشر" data-en="Publish">
+                                    class="btn btn-primary btn-lg me-3" data-ar="نشر" data-en="Publish" id="publishButton">
                                     نشر
                                 </button>
                                 <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg"
