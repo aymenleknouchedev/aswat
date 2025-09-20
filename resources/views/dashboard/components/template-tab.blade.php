@@ -27,9 +27,43 @@
     </div>
 
     <div id="dynamic-items-section" class="mt-3" style="display:none;">
-        <div id="items-container"></div>
+        <div id="items-container">
+            @if (old('items'))
+                @foreach (old('items') as $index => $item)
+                    <div class="card mt-0 mb-2">
+                        <div
+                            class="d-flex justify-content-between align-items-center p-2 rounded-2 shadow-sm border-start border-4 border-primary">
+                            <div class="d-flex align-items-center">
+                                <span class="circle-number d-flex align-items-center justify-content-center bg-primary text-white fw-bold rounded-circle"
+                                    style="width: 28px; height: 28px; font-size: 14px;">
+                                    {{ $loop->iteration }}
+                                </span>
+                                <span class="ms-3 fw-medium text-dark">{{ $item['title'] ?? 'Untitled' }}</span>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-sm btn-outline-primary me-2 edit-btn px-3">
+                                    <i class="bi bi-pencil-square me-1"></i>Edit
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger delete-btn px-3">
+                                    <i class="bi bi-trash me-1"></i>Delete
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- Preserve values --}}
+                        <input type="hidden" name="items[{{ $index }}][title]" value="{{ $item['title'] ?? '' }}">
+                        <input type="hidden" name="items[{{ $index }}][description]" value="{{ $item['description'] ?? '' }}">
+                        <input type="hidden" name="items[{{ $index }}][url]" value="{{ $item['url'] ?? '' }}">
+                        <input type="hidden" name="items[{{ $index }}][index]" value="{{ $item['index'] ?? $index }}">
+                    </div>
+                @endforeach
+            @endif
+
+        </div>
         <button type="button" id="add-item-btn" class="btn btn-primary mb-2" data-bs-toggle="modal"
-            data-bs-target="#itemModal" data-ar="إضافة عنصر" data-en="Add Item">Add Item</button>
+            data-bs-target="#itemModal" data-ar="إضافة عنصر" data-en="Add Item">
+            Add Item
+        </button>
     </div>
 
     <div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true">
@@ -125,7 +159,7 @@
             });
         }
 
-        toggleSection();
+        // toggleSection();
         displayMethodRadios.forEach(radio => radio.addEventListener('change', toggleSection));
 
         addBtn.addEventListener('click', () => {

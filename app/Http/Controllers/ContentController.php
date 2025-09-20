@@ -23,6 +23,7 @@ use App\Jobs\PublishContent;
 
 use App\Services\CacheService;
 use App\Enums\CacheKeys;
+use Validator;
 
 
 class ContentController extends BaseController
@@ -140,6 +141,7 @@ class ContentController extends BaseController
             'review_description' => 'nullable|string',
         ];
 
+        // Add conditional item rules
         if (in_array($request->display_method, ['list', 'file'])) {
             $rules['items'] = 'required|array|min:1';
             $rules['items.*.title'] = 'required|string|max:255';
@@ -149,20 +151,22 @@ class ContentController extends BaseController
                 'image',
                 'mimes:jpeg,png,jpg,gif,webp',
                 'max:10000',
-                // function ($attribute, $value, $fail) use ($request) {
+                // function ($attribute, $value, $fail) {
                 //     if ($value instanceof \Illuminate\Http\UploadedFile) {
                 //         [$width, $height] = getimagesize($value->getRealPath());
-                //         // Example: require 16:9 aspect ratio (width / height ≈ 16/9)
+                //         // Require 9:16 aspect ratio
                 //         $aspectRatio = $width / $height;
                 //         $expected = 9 / 16;
                 //         if (abs($aspectRatio - $expected) > 0.05) {
                 //             $fail('The ' . $attribute . ' must have a 9:16 aspect ratio.');
                 //         }
                 //     }
-                // }
+                // },
             ];
             $rules['items.*.index'] = 'required|integer';
-            $rules['items.*.url'] = $request->display_method === 'list' ? 'required|url' : 'nullable|url';
+            $rules['items.*.url'] = $request->display_method === 'list'
+                ? 'required|url'
+                : 'nullable|url';
         }
 
         $templateRules = [
@@ -224,8 +228,26 @@ class ContentController extends BaseController
             ],
         ];
 
-        $validated = $request->validate($rules);
-        $request->validate($templateRules[$request->template]);
+        // $validated = $request->validate($rules);
+        // $request->validate(rules: $templateRules[$request->template]);
+
+        $finalRules = array_merge(
+    $rules,
+            $templateRules[$request->template] ?? []
+        );
+
+        // Run validation
+        $validator = Validator::make($request->all(), $finalRules);
+
+        if ($validator->fails()) {
+            $v = redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+                // dd($v);
+                return $v;
+        }
+
+        $validated = $validator->validated();
         // Validate that $albumImages contains at least one file or URL
         if ($request->template == 'album') {
             if (empty($albumImages) || !is_array($albumImages) || count($albumImages) === 0) {
