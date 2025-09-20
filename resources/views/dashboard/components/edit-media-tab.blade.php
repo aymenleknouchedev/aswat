@@ -8,10 +8,10 @@
         'podcast' => ['ar' => 'بودكاست', 'en' => 'Podcast'],
         'album' => ['ar' => 'ألبوم صور', 'en' => 'Photo Album'],
         'no_image' => ['ar' => 'بدون صورة', 'en' => 'No Image'],
-    ] as $value => $texts)
+        ] as $value => $texts)
             <div class="custom-control custom-radio custom-control-inline">
                 <input type="radio" id="template_{{ $value }}" name="template" class="custom-control-input"
-                    value="{{ $value }}" {{ $value === 'normal_image' ? 'checked' : '' }}>
+                    value="{{ $value }}" {{ old('template', $content->template ?? 'normal_image') === $value ? 'checked' : '' }}>
                 <label data-en="{{ $texts['en'] }}" data-ar="{{ $texts['ar'] }}" class="custom-control-label"
                     for="template_{{ $value }}">
                     {{ $texts['ar'] }}

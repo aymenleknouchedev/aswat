@@ -679,7 +679,7 @@
                             <div class="card-body">
 
                                 <!-- Collapsible: Schedule Publish -->
-                                <div class="mb-3">
+                                <div>
                                     <button class="btn btn-link w-100 text-start p-0 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSchedule" aria-expanded="false" aria-controls="collapseSchedule">
                                         <em class="icon ni ni-calendar"></em>
                                         <span data-ar="جدولة النشر" data-en="Schedule Publish">جدولة النشر</span>
@@ -696,18 +696,6 @@
                                             data-en="Set a future publish time">حدد وقت النشر لاحقاً</small>
                                     </div>
                                 </div>
-
-                                <!-- Collapsible: Review Message -->
-                                <div class="mb-3">
-                                    <button class="btn btn-link w-100 text-start p-0 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReviewMsg" aria-expanded="false" aria-controls="collapseReviewMsg">
-                                        <em class="icon ni ni-chat"></em>
-                                        <span data-ar="رسالة المراجعة" data-en="Review Message">رسالة المراجعة</span>
-                                    </button>
-                                    <div class="collapse" id="collapseReviewMsg">
-                                        <textarea id="review_message_sidebar" name="review_description" class="form-control" rows="3">{{ old('review_description') }}</textarea>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
 

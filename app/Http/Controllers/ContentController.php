@@ -98,7 +98,7 @@ class ContentController extends BaseController
     public function store(Request $request)
     {
         $albumImages = [];
-        
+
         if ($request->hasFile('album_images')) {
             foreach ($request->file('album_images') as $file) {
                 $albumImages[] = $file; // just add file object, don't save
@@ -112,32 +112,32 @@ class ContentController extends BaseController
 
         // ✅ Basic validation rules
         $rules = [
-            'title'         => 'required|string|max:75',
-            'long_title'    => 'required|string|max:210',
-            'mobile_title'  => 'required|string|max:40',
+            'title' => 'required|string|max:75',
+            'long_title' => 'required|string|max:210',
+            'mobile_title' => 'required|string|max:40',
             'display_method' => 'required|string|in:simple,list,file',
-            'section_id'    => 'required|exists:sections,id',
-            'category_id'   => 'nullable|exists:categories,id',
-            'continent_id'  => 'nullable|exists:continents,id',
-            'country_id'    => 'nullable|exists:countries,id',
-            'trend_id'      => 'nullable|exists:trends,id',
-            'window_id'     => 'nullable|exists:windows,id',
-            'writer_id'     => 'nullable|exists:writers,id',
-            'city_id'       => 'nullable|exists:cities,id',
-            'summary'       => 'nullable|string',
-            'content'       => 'nullable|string',
-            'seo_keyword'   => 'nullable|string|max:255',
+            'section_id' => 'required|exists:sections,id',
+            'category_id' => 'nullable|exists:categories,id',
+            'continent_id' => 'nullable|exists:continents,id',
+            'country_id' => 'nullable|exists:countries,id',
+            'trend_id' => 'nullable|exists:trends,id',
+            'window_id' => 'nullable|exists:windows,id',
+            'writer_id' => 'nullable|exists:writers,id',
+            'city_id' => 'nullable|exists:cities,id',
+            'summary' => 'nullable|string',
+            'content' => 'nullable|string',
+            'seo_keyword' => 'nullable|string|max:255',
             // 'status'        => 'required|in:draft,published,scheduled',
-            'template'      => 'required|string',
-            'tags_id'      => 'required|array',
+            'template' => 'required|string',
+            'tags_id' => 'required|array',
             // 'template'      => [
             //     Rule::requiredIf(fn ($input) => $input->display_method !== 'simple'),
             //     'string'
             // ],
-            'share_image'      => 'nullable|max:2048',
-            'share_title'      => 'nullable|string',
-            'share_description'      => 'nullable|string',
-            'review_description'      => 'nullable|string',
+            'share_image' => 'nullable|max:2048',
+            'share_title' => 'nullable|string',
+            'share_description' => 'nullable|string',
+            'review_description' => 'nullable|string',
         ];
 
         if (in_array($request->display_method, ['list', 'file'])) {
@@ -149,17 +149,17 @@ class ContentController extends BaseController
                 'image',
                 'mimes:jpeg,png,jpg,gif,webp',
                 'max:10000',
-                function ($attribute, $value, $fail) use ($request) {
-                    if ($value instanceof \Illuminate\Http\UploadedFile) {
-                        [$width, $height] = getimagesize($value->getRealPath());
-                        // Example: require 16:9 aspect ratio (width / height ≈ 16/9)
-                        $aspectRatio = $width / $height;
-                        $expected = 9 / 16;
-                        if (abs($aspectRatio - $expected) > 0.05) {
-                            $fail('The ' . $attribute . ' must have a 9:16 aspect ratio.');
-                        }
-                    }
-                }
+                // function ($attribute, $value, $fail) use ($request) {
+                //     if ($value instanceof \Illuminate\Http\UploadedFile) {
+                //         [$width, $height] = getimagesize($value->getRealPath());
+                //         // Example: require 16:9 aspect ratio (width / height ≈ 16/9)
+                //         $aspectRatio = $width / $height;
+                //         $expected = 9 / 16;
+                //         if (abs($aspectRatio - $expected) > 0.05) {
+                //             $fail('The ' . $attribute . ' must have a 9:16 aspect ratio.');
+                //         }
+                //     }
+                // }
             ];
             $rules['items.*.index'] = 'required|integer';
             $rules['items.*.url'] = $request->display_method === 'list' ? 'required|url' : 'nullable|url';
@@ -184,7 +184,7 @@ class ContentController extends BaseController
                 'podcast_file' => 'required|max:20480',
             ],
             'album' => [
-                'album_main_image'   => 'required|max:2048',
+                'album_main_image' => 'required|max:2048',
                 'album_content_image' => 'required|max:2048',
                 'album_mobile_image' => 'required|max:2048',
             ],
@@ -264,11 +264,11 @@ class ContentController extends BaseController
                 }
 
                 $content->contentLists()->create([
-                    'title'       => $item['title'],
+                    'title' => $item['title'],
                     'description' => $item['description'],
-                    'url'         => $item['url'] ?? null,
-                    'image'       => $imagePath,
-                    'index'       => $item['index'],
+                    'url' => $item['url'] ?? null,
+                    'image' => $imagePath,
+                    'index' => $item['index'],
                 ]);
             }
         }
@@ -399,20 +399,20 @@ class ContentController extends BaseController
             ->with('success', 'Content created successfully.');
     }
 
-
-
-
     /**
      * Display the specified resource.
      */
-    public function show(string $id) {}
+    public function show(string $id)
+    {
+    }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        $content = Content::with(['media', 'tags', 'contentLists'])->findOrFail($id);
+        $content = Content::with(['media', 'tags'])->findOrFail($id);
+        $contentLists = $content->contentLists()->orderBy('index','asc')->get();
 
         $ttl_sections = config('cache_ttl.sections', 3600);
         $ttl_writers = config('cache_ttl.writers', 3600);
@@ -452,6 +452,7 @@ class ContentController extends BaseController
 
         return view('dashboard.editcontent', compact(
             'content',
+            'contentLists',
             'sections',
             'categories',
             'writers',
@@ -475,10 +476,308 @@ class ContentController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+
+    public function update(Request $request, $id)
     {
-        //
+
+        $content = Content::findOrFail($id);
+        $albumImages = [];
+
+        if ($request->hasFile('album_images')) {
+            foreach ($request->file('album_images') as $file) {
+                $albumImages[] = $file;
+            }
+        }
+        if ($request->album_images_urls) {
+            $urls = json_decode($request->album_images_urls, true);
+            $albumImages = array_merge($albumImages, $urls);
+        }
+
+        $rules = [
+            'title' => 'required|string|max:75',
+            'long_title' => 'required|string|max:210',
+            'mobile_title' => 'required|string|max:40',
+            'display_method' => 'required|string|in:simple,list,file',
+            'section_id' => 'required|exists:sections,id',
+            'category_id' => 'nullable|exists:categories,id',
+            'continent_id' => 'nullable|exists:continents,id',
+            'country_id' => 'nullable|exists:countries,id',
+            'trend_id' => 'nullable|exists:trends,id',
+            'window_id' => 'nullable|exists:windows,id',
+            'writer_id' => 'nullable|exists:writers,id',
+            'city_id' => 'nullable|exists:cities,id',
+            'summary' => 'nullable|string',
+            'content' => 'nullable|string',
+            'seo_keyword' => 'nullable|string|max:255',
+            'template' => 'required|string',
+            'tags_id' => 'required|array',
+            'share_image' => 'nullable|max:2048',
+            'share_title' => 'nullable|string',
+            'share_description' => 'nullable|string',
+            'review_description' => 'nullable|string',
+        ];
+
+        if (in_array($request->display_method, ['list', 'file'])) {
+            $rules['items'] = 'required|array|min:1';
+            $rules['items.*.title'] = 'required|string|max:255';
+            $rules['items.*.description'] = 'required|string';
+            $rules['items.*.image'] = 'nullable';
+            $rules['items.*.index'] = 'required|integer';
+            $rules['items.*.url'] = $request->display_method === 'list' ? 'required|url' : 'nullable|url';
+        }
+
+        if ($request->display_method === 'simple' && $content->contentLists()->count() > 0) {
+            $content->contentLists()->each(function ($item) use ($request) {
+                $item->delete();
+            });
+        }
+
+        $templateRules = [
+            'normal_image' => [
+                'normal_main_image' => 'nullable|max:2048',
+                'normal_mobile_image' => 'nullable|max:2048',
+                'normal_content_image' => 'nullable|max:2048',
+            ],
+            'video' => [
+                'video_main_image' => 'nullable|max:2048',
+                'video_mobile_image' => 'nullable|max:2048',
+                'video_content_image' => 'nullable|max:2048',
+                'video_file' => 'nullable|max:200480',
+            ],
+            'podcast' => [
+                'podcast_main_image' => 'nullable|max:2048',
+                'podcast_content_image' => 'nullable|max:2048',
+                'podcast_mobile_image' => 'nullable|max:2048',
+                'podcast_file' => 'nullable|max:20480',
+            ],
+            'album' => [
+                'album_main_image' => 'nullable|max:2048',
+                'album_content_image' => 'nullable|max:2048',
+                'album_mobile_image' => 'nullable|max:2048',
+            ],
+            'no_image' => [
+                'no_image_main_image' => 'nullable|max:2048',
+                'no_image_mobile_image' => 'nullable|max:2048',
+            ],
+        ];
+
+        $templateMediaMap = [
+            'normal_image' => [
+                'normal_main_image' => 'main',
+                'normal_mobile_image' => 'mobile',
+                'normal_content_image' => 'detail',
+            ],
+            'video' => [
+                'video_main_image' => 'main',
+                'video_mobile_image' => 'mobile',
+                'video_content_image' => 'detail',
+                'video_file' => 'video',
+            ],
+            'podcast' => [
+                'podcast_main_image' => 'main',
+                'podcast_mobile_image' => 'mobile',
+                'podcast_content_image' => 'detail',
+                'podcast_file' => 'podcast',
+            ],
+            'album' => [
+                'album_main_image' => 'main',
+                'album_mobile_image' => 'mobile',
+                'album_content_image' => 'detail',
+                'album_images' => 'album',
+            ],
+            'no_image' => [
+                'no_image_main_image' => 'main',
+                'no_image_mobile_image' => 'mobile',
+            ],
+        ];
+
+        $validated = $request->validate($rules);
+        $request->validate($templateRules[$request->template] ?? []);
+
+        // --- Album validation ---
+        if ($request->template == 'album' && empty($albumImages)) {
+            return back()->withErrors(['album_images' => 'You must provide at least one album image (file or URL).'])->withInput();
+        }
+
+        // ✅ Update basic content data
+        $content->update([
+            ...$validated,
+            'user_id' => Auth::id(),
+        ]);
+
+        // ✅ Handle template change
+        if ($request->template !== $content->getOriginal('template')) {
+            // Detach old media
+            $content->media()->detach();
+
+            // Reattach new media (like in store)
+            $this->attachMedia($request, $content, $templateMediaMap[$request->template] ?? [], $albumImages);
+        } else {
+            // Same template → only update where new files exist
+            $this->updateMedia($request, $content, $templateMediaMap[$request->template] ?? [], $albumImages);
+        }
+
+        // dd($validated['items'] ?? null);
+        if (isset($validated['items'])) {
+            $content->contentLists()->delete();
+            foreach ($validated['items'] as $item) {
+                $imagePath = null;
+                // image must be file
+                if (isset($item['image']) && $item['image'] instanceof \Illuminate\Http\UploadedFile) {
+                    $imagePath = $item['image']->store('content_list_images', 'public');
+                    $imagePath = asset('storage/' . $imagePath);
+                } elseif (isset($item['image']) && is_string($item['image'])) {
+                    $imagePath = $item['image'];
+                }
+                $content->contentLists()->create([
+                    'title' => $item['title'],
+                    'description' => $item['description'],
+                    'url' => $item['url'] ?? null,
+                    'image' => $imagePath,
+                    'index' => $item['index'],
+                ]);
+            }
+        }
+
+        // ✅ Update tags
+        $content->tags()->sync($request->tags_id);
+
+        return redirect()->back()->with('success', 'Content updated successfully.');
     }
+
+    /**
+     * Attach media fresh (when template changes)
+     */
+    protected function attachMedia(Request $request, Content $content, array $mediaMap, array $albumImages)
+    {
+        foreach ($mediaMap as $field => $type) {
+            if ($field === 'album_images') {
+                foreach ($albumImages as $img) {
+                    $path = $img instanceof \Illuminate\Http\UploadedFile
+                        ? asset('storage/' . $img->store('media', 'public'))
+                        : $img;
+
+                    $media = ContentMedia::create([
+                        'path' => $path,
+                        'media_type' => $img instanceof \Illuminate\Http\UploadedFile
+                            ? $img->getClientMimeType()
+                            : 'url',
+                        'user_id' => Auth::id(),
+                        'name' => $img instanceof \Illuminate\Http\UploadedFile
+                            ? $img->getClientOriginalName()
+                            : 'url_' . bin2hex(random_bytes(10)),
+                        'alt' => $content->title,
+                    ]);
+                    $content->media()->attach($media->id, ['type' => $type]);
+                }
+            } elseif ($request->hasFile($field)) {
+                $file = $request->file($field);
+                $path = asset('storage/' . $file->store('media', 'public'));
+                $media = ContentMedia::create([
+                    'path' => $path,
+                    'media_type' => $file->getClientMimeType(),
+                    'user_id' => Auth::id(),
+                    'name' => $file->getClientOriginalName(),
+                    'alt' => $content->title,
+                ]);
+                $content->media()->attach($media->id, ['type' => $type]);
+            } elseif ($request->filled($field)) {
+                $media = ContentMedia::firstOrCreate(
+                    ['path' => $request->input($field)],
+                    [
+                        'media_type' => 'url',
+                        'user_id' => Auth::id(),
+                        'name' => 'url_' . bin2hex(random_bytes(10)),
+                        'alt' => $content->title,
+                    ]
+                );
+                $content->media()->attach($media->id, ['type' => $type]);
+            }
+        }
+    }
+
+    /**
+     * Update media (same template, only replace where new files are given)
+     */
+    /**
+     * Update media (same template, only replace where new files/urls are given)
+     */
+    protected function updateMedia(Request $request, Content $content, array $mediaMap, array $albumImages)
+    {
+        foreach ($mediaMap as $field => $type) {
+            // Handle album images (multiple)
+            if ($field === 'album_images') {
+                if (!empty($albumImages)) {
+                    // Remove old album media
+                    $content->media()->wherePivot('type', $type)->detach();
+
+                    foreach ($albumImages as $img) {
+                        $path = $img instanceof \Illuminate\Http\UploadedFile
+                            ? asset('storage/' . $img->store('media', 'public'))
+                            : $img;
+
+                        $media = ContentMedia::firstOrCreate(
+                            ['path' => $path],
+                            [
+                                'media_type' => $img instanceof \Illuminate\Http\UploadedFile
+                                    ? $img->getClientMimeType()
+                                    : 'url',
+                                'user_id' => Auth::id(),
+                                'name' => $img instanceof \Illuminate\Http\UploadedFile
+                                    ? $img->getClientOriginalName()
+                                    : 'url_' . bin2hex(random_bytes(10)),
+                                'alt' => $content->title,
+                            ]
+                        );
+                        $content->media()->attach($media->id, ['type' => $type]);
+                    }
+                }
+                continue;
+            }
+
+            // Handle file upload (single)
+            if ($request->hasFile($field)) {
+                // Remove old media of this type
+                $content->media()->wherePivot('type', $type)->detach();
+
+                $file = $request->file($field);
+                $path = asset('storage/' . $file->store('media', 'public'));
+                $media = ContentMedia::create([
+                    'path' => $path,
+                    'media_type' => $file->getClientMimeType(),
+                    'user_id' => Auth::id(),
+                    'name' => $file->getClientOriginalName(),
+                    'alt' => $content->title,
+                ]);
+                $content->media()->attach($media->id, ['type' => $type]);
+                continue;
+            }
+
+            // Handle URL input (single)
+            if ($request->filled($field)) {
+                $url = $request->input($field);
+
+                // Only update if URL is different from current
+                $existing = $content->media()->wherePivot('type', $type)->where('path', $url)->first();
+                if (!$existing) {
+                    // Remove old media of this type
+                    $content->media()->wherePivot('type', $type)->detach();
+
+                    $media = ContentMedia::firstOrCreate(
+                        ['path' => $url],
+                        [
+                            'media_type' => 'url',
+                            'user_id' => Auth::id(),
+                            'name' => 'url_' . bin2hex(random_bytes(10)),
+                            'alt' => $content->title,
+                        ]
+                    );
+                    $content->media()->attach($media->id, ['type' => $type]);
+                }
+            }
+        }
+    }
+
 
     /**
      * Remove the specified resource from storage.

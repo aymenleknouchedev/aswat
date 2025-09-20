@@ -1,6 +1,6 @@
 @php
     // Prepare initial items safely on the server side
-    $initialItems = $content->contentLists->map(function($item) {
+    $initialItems = $contentLists->map(function($item) {
         return [
             'id' => $item->id,
             'title' => $item->title,
@@ -61,12 +61,12 @@
                         <input type="hidden" id="editIndex" />
                         <div class="mb-2">
                             <label class="form-label" data-ar="العنوان" data-en="Title">Title <span style="color:red;">*</span></label>
-                            <input id="itemTitle" class="form-control" required data-ar="العنوان" data-en="Title" />
+                            <input id="itemTitle" class="form-control" data-ar="العنوان" data-en="Title" />
                         </div>
 
                         <div class="mb-2">
                             <label class="form-label" data-ar="الوصف" data-en="Description">Description <span style="color:red;">*</span></label>
-                            <textarea id="itemDescription" class="form-control" required data-ar="الوصف" data-en="Description"></textarea>
+                            <textarea id="itemDescription" class="form-control" data-ar="الوصف" data-en="Description"></textarea>
                         </div>
 
                         <div class="mb-2">
@@ -115,6 +115,7 @@
 
         // clone initial items so we can edit in-memory
         let items = Array.isArray(window.initialItems) ? window.initialItems.slice() : [];
+
         let isEditing = false;
 
         function escapeHtml(s) {
@@ -141,7 +142,6 @@
             renderItems();
         }
 
-        // initial toggle
         toggleSection();
         displayMethodRadios.forEach(radio => radio.addEventListener('change', toggleSection));
 
@@ -217,7 +217,6 @@
             }
 
             renderItems();
-            // hide modal
             if (window.bootstrap) bootstrap.Modal.getOrCreateInstance(modalEl).hide();
         });
 
@@ -331,6 +330,7 @@
                     hiddenInputsContainer.appendChild(createHidden(prefix + '[description]', item.description));
                     hiddenInputsContainer.appendChild(createHidden(prefix + '[url]', item.url || ''));
                     hiddenInputsContainer.appendChild(createHidden(prefix + '[index]', item.index));
+                    hiddenInputsContainer.appendChild(createHidden(prefix + '[image]', item.image || ''));
                     if (item.id) {
                         hiddenInputsContainer.appendChild(createHidden(prefix + '[id]', item.id));
                     }
