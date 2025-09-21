@@ -11,12 +11,12 @@
         align-items: flex-top;
         gap: 15px;
         direction: rtl;
-        /* For Arabic alignment */
     }
 
     .files-card .files-card-image {
         flex-shrink: 0;
         width: 160px;
+        height: auto;
         /* ثابت أو نسبي حسب المساحة */
         aspect-ratio: 16/9;
     }
@@ -56,6 +56,27 @@
     .files-card .files-card-text p:hover {
         text-decoration: underline;
         cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+        .files-card {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .files-card .files-card-image {
+            flex-shrink: 0;
+            width: 100% !important;
+            height: auto;
+            /* ثابت أو نسبي حسب المساحة */
+            aspect-ratio: 16/9;
+        }
+
+        .files-card .files-card-image img {
+            width: 100%;
+            aspect-ratio: 16/9;
+        }
+
     }
 </style>
 

@@ -336,176 +336,231 @@
             cursor: pointer;
             text-decoration: underline;
         }
+
+        @media (max-width: 992px) {
+
+            .newCategory,
+            .newCategory-all-section {
+                grid-template-columns: 1fr;
+            }
+
+            .newCategory-list {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 20px;
+            }
+
+            .newCategory-list .newCategory-list-div {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .newCategory-list .newCategory-list-div .news-card-horizontal {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .newCategory-list .newCategory-list-div .news-card-horizontal img {
+                width: 100%;
+                aspect-ratio: 16/9;
+                object-fit: cover;
+                display: block;
+            }
+
+            .newCategory-list .newCategory-list-div .news-card-horizontal p {
+                font-weight: bold;
+
+            }
+        }
+
+        @media (max-width: 768px) {
+            .web {
+                display: none;
+            }
+
+            .mobile {
+                display: none;
+            }
+        }
     </style>
 
-    @include('user.components.fixed-nav')
+    <div class="web">
+        @include('user.components.fixed-nav')
 
-    {{-- Container --}}
-    <div class="container">
-
-        {{-- Title --}}
-        <div class="title">
-            <p class="section-title">الجزائر</p>
-            @include('user.components.ligne')
-            <div class="under-title-ligne-space"></div>
-        </div>
-
-        <div class="newCategory">
-            <!-- Right: big feature -->
-            <div class="newCategory-feature">
-                <img src="./user/assets/images/IMG21.jpg" alt="Feature newCategory">
-                <h3>سياسة</h3>
-                <h2>تبون: الجزائر ليست معزولة دوليًا</h2>
-                <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع سنوات
-                    على تظاهرات مناهضة للحكومة.</p>
-            </div>
-
-            <!-- Left: list -->
-            <div class="newCategory-list">
-                <div class="newCategory-feature-m">
-                    <img src="./user/assets/images/IMG22.jpg" alt="Feature newCategory small">
-                    <h3>سياسة</h3>
-                    <h2>بوادر أزمة حادة بين الجزائر والاتحاد الأوروبي بسبب «اتفاق الشراكة»</h2>
-                    <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع
-                        سنوات على تظاهرات مناهضة للحكومة.
-                    </p>
-                </div>
-
-                <div class="news-card-horizontal">
-                    <div class="news-card-image">
-                        <img src="./user/assets/images/IMG20.jpg" alt="تحلية مياه البحر">
-                    </div>
-                    <div class="news-card-text">
-                        <h3>اقتصاد جزائري</h3>
-                        <p>الجزائر تُسرّع وتيرة تحلية مياه البحر لتفكيك «قنبلة العطش»</p>
-                    </div>
-                </div>
-
-                <div class="news-card-horizontal">
-                    <div class="news-card-image">
-                        <img src="./user/assets/images/IMG19.jpg" alt="بوعلام صنصال">
-                    </div>
-                    <div class="news-card-text">
-                        <h3>سياسة</h3>
-                        <p>تثبيت الحكم بسجن الكاتب بوعلام صنصال خمس سنوات</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div>
-            <section class="art-section-hero">
-                <div class="art-section-overlay">
-                    <h2 class="art-section-title">الذاكرة الجزائرية</h2>
-
-                    <div class="art-section-grid">
-                        <div class="art-section-card">
-                            <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
-                            <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
-                        </div>
-
-                        <div class="art-section-card">
-                            <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
-                            <h2>ترمب يهدد «بريكس» مجدداً</h2>
-                        </div>
-
-                        <div class="art-section-card">
-                            <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
-                            <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
-                        </div>
-
-                        <div class="art-section-card">
-                            <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
-                            <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-
-        @include('user.components.sp60')
-
-
-        <div class="newCategory-all-section">
-            <!-- Left: Cards loop -->
-            <div class="newCategory-all-list">
-                @foreach ($titles as $title)
-                    <div class="newCategory-all-card">
-                        <div class="newCategory-all-card-image">
-                            <img src="./user/assets/images/IMG19.jpg" alt="News Image">
-                        </div>
-                        <div class="newCategory-all-card-text">
-                            <h3>سياسة</h3>
-                            <h2>{{ $title }}</h2>
-                            <p>{{ $description }}</p>
-                        </div>
-                    </div>
-                @endforeach
-                <button class="photos-load-more-btn">المزيد</button>
-
-            </div>
-
-            <!-- Right: Empty -->
-            <div class="newCategory-all-side">
-                <div>
-                    <p class="section-title">الأكثر قراءة</p>
-                    @include('user.components.ligne')
-                    <div class="newCategoryReadMore">
-                        <div class="newCategoryReadMore-list">
-                            <span class="number">1</span>
-                            <p>فاجعة في العراق.. وفاة 60 شخصًا على الأقل بحريق «مول الكوت» في واسط</p>
-                        </div>
-                        <div class="newCategoryReadMore-list">
-                            <span class="number">2</span>
-                            <p>يعاني منه دونالد ترمب.. إليك ما يجب أن تعرفه عن القصور الوريدي المزمن</p>
-                        </div>
-                        <div class="newCategoryReadMore-list">
-                            <span class="number">3</span>
-                            <p>جنبلاط طرح حلًّا لأحداث السويداء.. إليك النقاط التي عرضها</p>
-                        </div>
-                        <div class="newCategoryReadMore-list">
-                            <span class="number">4</span>
-                            <p>دماء وجثث في الأزقة.. صور تكشف انتهاكات بحق المدنيين في السويداء</p>
-                        </div>
-                        <div class="newCategoryReadMore-list">
-                            <span class="number">5</span>
-                            <p>هل تذهب إلى ألبانيزي أم ترمب؟ نوبل للسلام: تاريخ من التحيّزات</p>
-                        </div>
-                    </div>
-
-                </div>
-
-                @include('user.components.sp60')
-
-                <p class="section-title">مقترحات</p>
+        <div class="container">
+            <div class="title">
+                <p class="section-title">الجزائر</p>
                 @include('user.components.ligne')
-
-                @for ($i = 1; $i <= 5; $i++)
-                    <div class="sp20" style="margin-top: 16px;">
-                    </div>
-                    <div class="news-card-horizontal">
-                        <div class="news-card-image">
-                            <img src="./user/assets/images/IMG20.jpg" alt="تحلية مياه البحر">
-                        </div>
-                        <div class="news-card-text">
-                            <h3>اقتصاد جزائري</h3>
-                            <p>الجزائر تُسرّع وتيرة تحلية مياه البحر لتفكيك «قنبلة العطش»</p>
-                        </div>
-                    </div>
-                @endfor
+                <div class="under-title-ligne-space"></div>
             </div>
+
+            <div class="newCategory">
+                <!-- Right: big feature -->
+                <div class="newCategory-feature">
+                    <img src="./user/assets/images/IMG21.jpg" alt="Feature newCategory">
+                    <h3>سياسة</h3>
+                    <h2>تبون: الجزائر ليست معزولة دوليًا</h2>
+                    <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع
+                        سنوات
+                        على تظاهرات مناهضة للحكومة.</p>
+                </div>
+
+                <!-- Left: list -->
+                <div class="newCategory-list">
+                    <div class="newCategory-feature-m">
+                        <img src="./user/assets/images/IMG22.jpg" alt="Feature newCategory small">
+                        <h3>سياسة</h3>
+                        <h2>بوادر أزمة حادة بين الجزائر والاتحاد الأوروبي بسبب «اتفاق الشراكة»</h2>
+                        <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد
+                            أربع
+                            سنوات على تظاهرات مناهضة للحكومة.
+                        </p>
+                    </div>
+
+                    <div class="newCategory-list-div">
+                        <div class="news-card-horizontal">
+                            <div class="news-card-image">
+                                <img src="./user/assets/images/IMG20.jpg" alt="تحلية مياه البحر">
+                            </div>
+                            <div class="news-card-text">
+                                <h3>اقتصاد جزائري</h3>
+                                <p>الجزائر تُسرّع وتيرة تحلية مياه البحر لتفكيك «قنبلة العطش»</p>
+                            </div>
+                        </div>
+
+                        <div class="news-card-horizontal">
+                            <div class="news-card-image">
+                                <img src="./user/assets/images/IMG19.jpg" alt="بوعلام صنصال">
+                            </div>
+                            <div class="news-card-text">
+                                <h3>سياسة</h3>
+                                <p>تثبيت الحكم بسجن الكاتب بوعلام صنصال خمس سنوات</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div>
+                <section class="art-section-hero">
+                    <div class="art-section-overlay">
+                        <h2 class="art-section-title">الذاكرة الجزائرية</h2>
+
+                        <div class="art-section-grid">
+                            <div class="art-section-card">
+                                <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
+                                <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
+                            </div>
+
+                            <div class="art-section-card">
+                                <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
+                                <h2>ترمب يهدد «بريكس» مجدداً</h2>
+                            </div>
+
+                            <div class="art-section-card">
+                                <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
+                                <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
+                            </div>
+
+                            <div class="art-section-card">
+                                <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
+                                <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+
+            @include('user.components.sp60')
+
+
+            <div class="newCategory-all-section">
+                <!-- Left: Cards loop -->
+                <div class="newCategory-all-list">
+                    @foreach ($titles as $title)
+                        <div class="newCategory-all-card">
+                            <div class="newCategory-all-card-image">
+                                <img src="./user/assets/images/IMG19.jpg" alt="News Image">
+                            </div>
+                            <div class="newCategory-all-card-text">
+                                <h3>سياسة</h3>
+                                <h2>{{ $title }}</h2>
+                                <p>{{ $description }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                    <button class="photos-load-more-btn">المزيد</button>
+
+                </div>
+
+                <!-- Right: Empty -->
+                <div class="newCategory-all-side">
+                    <div>
+                        <p class="section-title">الأكثر قراءة</p>
+                        @include('user.components.ligne')
+                        <div class="newCategoryReadMore">
+                            <div class="newCategoryReadMore-list">
+                                <span class="number">1</span>
+                                <p>فاجعة في العراق.. وفاة 60 شخصًا على الأقل بحريق «مول الكوت» في واسط</p>
+                            </div>
+                            <div class="newCategoryReadMore-list">
+                                <span class="number">2</span>
+                                <p>يعاني منه دونالد ترمب.. إليك ما يجب أن تعرفه عن القصور الوريدي المزمن</p>
+                            </div>
+                            <div class="newCategoryReadMore-list">
+                                <span class="number">3</span>
+                                <p>جنبلاط طرح حلًّا لأحداث السويداء.. إليك النقاط التي عرضها</p>
+                            </div>
+                            <div class="newCategoryReadMore-list">
+                                <span class="number">4</span>
+                                <p>دماء وجثث في الأزقة.. صور تكشف انتهاكات بحق المدنيين في السويداء</p>
+                            </div>
+                            <div class="newCategoryReadMore-list">
+                                <span class="number">5</span>
+                                <p>هل تذهب إلى ألبانيزي أم ترمب؟ نوبل للسلام: تاريخ من التحيّزات</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    @include('user.components.sp60')
+
+                    <p class="section-title">مقترحات</p>
+                    @include('user.components.ligne')
+
+                    @for ($i = 1; $i <= 5; $i++)
+                        <div class="sp20" style="margin-top: 16px;">
+                        </div>
+                        <div class="news-card-horizontal">
+                            <div class="news-card-image">
+                                <img src="./user/assets/images/IMG20.jpg" alt="تحلية مياه البحر">
+                            </div>
+                            <div class="news-card-text">
+                                <h3>اقتصاد جزائري</h3>
+                                <p>الجزائر تُسرّع وتيرة تحلية مياه البحر لتفكيك «قنبلة العطش»</p>
+                            </div>
+                        </div>
+                    @endfor
+                </div>
+
+
+            </div>
+
+            @include('user.components.sp60')
+
 
 
         </div>
 
-        @include('user.components.sp60')
-
-
-
+        @include('user.components.footer')
     </div>
 
-    @include('user.components.footer')
+    <div class="mobile">
+    </div>
+
 
 @endsection
