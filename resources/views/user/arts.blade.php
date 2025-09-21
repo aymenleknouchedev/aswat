@@ -221,276 +221,154 @@
         .art-section-card h2:hover {
             text-decoration: underline;
         }
+
+        @media (max-width: 768px) {
+            .web {
+                display: none;
+            }
+
+            .mobile {
+                display: none;
+            }
+        }
     </style>
 
-    @include('user.components.fixed-nav')
+    <div class="web">
+        @include('user.components.fixed-nav')
 
-    {{-- Container --}}
-    <div class="container">
+        {{-- Container --}}
+        <div class="container">
 
-        {{-- Title --}}
-        <div class="title">
-            <p class="section-title">ثقافة و فنون</p>
-            @include('user.components.ligne')
-            <div class="under-title-ligne-space"></div>
-        </div>
-
-        <div class="newCategory">
-            <!-- Right: big feature -->
-            <div class="newCategory-feature">
-                <img src="./user/assets/images/IMG21.jpg" alt="Feature newCategory">
-                <h3>سياسة</h3>
-                <h2>تبون: الجزائر ليست معزولة دوليًا</h2>
-                <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع سنوات
-                    على تظاهرات مناهضة للحكومة.</p>
+            {{-- Title --}}
+            <div class="title">
+                <p class="section-title">ثقافة و فنون</p>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
             </div>
 
-            <!-- Left: list -->
-            <div class="newCategory-list">
-                <div class="newCategory-feature-m">
-                    <img src="./user/assets/images/IMG22.jpg" alt="Feature newCategory small">
+            <div class="newCategory">
+                <!-- Right: big feature -->
+                <div class="newCategory-feature">
+                    <img src="./user/assets/images/IMG21.jpg" alt="Feature newCategory">
                     <h3>سياسة</h3>
-                    <h2>بوادر أزمة حادة بين الجزائر والاتحاد الأوروبي بسبب «اتفاق الشراكة»</h2>
+                    <h2>تبون: الجزائر ليست معزولة دوليًا</h2>
                     <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع
-                        سنوات على تظاهرات مناهضة للحكومة.
-                    </p>
+                        سنوات
+                        على تظاهرات مناهضة للحكومة.</p>
                 </div>
 
-                <div class="news-card-horizontal">
-                    <div class="news-card-image">
-                        <img src="./user/assets/images/IMG20.jpg" alt="تحلية مياه البحر">
-                    </div>
-                    <div class="news-card-text">
-                        <h3>اقتصاد جزائري</h3>
-                        <p>الجزائر تُسرّع وتيرة تحلية مياه البحر لتفكيك «قنبلة العطش»</p>
-                    </div>
-                </div>
-
-                <div class="news-card-horizontal">
-                    <div class="news-card-image">
-                        <img src="./user/assets/images/IMG19.jpg" alt="بوعلام صنصال">
-                    </div>
-                    <div class="news-card-text">
+                <!-- Left: list -->
+                <div class="newCategory-list">
+                    <div class="newCategory-feature-m">
+                        <img src="./user/assets/images/IMG22.jpg" alt="Feature newCategory small">
                         <h3>سياسة</h3>
-                        <p>تثبيت الحكم بسجن الكاتب بوعلام صنصال خمس سنوات</p>
+                        <h2>بوادر أزمة حادة بين الجزائر والاتحاد الأوروبي بسبب «اتفاق الشراكة»</h2>
+                        <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد
+                            أربع
+                            سنوات على تظاهرات مناهضة للحكومة.
+                        </p>
+                    </div>
+
+                    <div class="news-card-horizontal">
+                        <div class="news-card-image">
+                            <img src="./user/assets/images/IMG20.jpg" alt="تحلية مياه البحر">
+                        </div>
+                        <div class="news-card-text">
+                            <h3>اقتصاد جزائري</h3>
+                            <p>الجزائر تُسرّع وتيرة تحلية مياه البحر لتفكيك «قنبلة العطش»</p>
+                        </div>
+                    </div>
+
+                    <div class="news-card-horizontal">
+                        <div class="news-card-image">
+                            <img src="./user/assets/images/IMG19.jpg" alt="بوعلام صنصال">
+                        </div>
+                        <div class="news-card-text">
+                            <h3>سياسة</h3>
+                            <p>تثبيت الحكم بسجن الكاتب بوعلام صنصال خمس سنوات</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        @include('user.components.sp60')
+            @include('user.components.sp60')
 
-        {{-- Title --}}
-        <div class="title">
-            <p class="section-title">أفكار</p>
-            @include('user.components.ligne')
-            <div class="under-title-ligne-space"></div>
-        </div>
-
-
-        <section class="economy-feature-grid">
-            <div class="economy-grid-container">
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
-                    <h3></h3>
-                    <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
-                    <h3></h3>
-                    <h2>ترمب يهدد «بريكس» مجدداً</h2>
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
-                    <h3></h3>
-                    <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
-                    <h3></h3>
-                    <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
-                </div>
+            {{-- Title --}}
+            <div class="title">
+                <p class="section-title">أفكار</p>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
             </div>
-        </section>
-
-        @include('user.components.sp60')
-
-        {{-- Title --}}
-        <div class="title">
-            <p class="section-title">فنون</p>
-            @include('user.components.ligne')
-            <div class="under-title-ligne-space"></div>
-        </div>
-
-        <section class="economy-feature-grid">
-            <div class="economy-grid-container">
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
-
-                    <h3>اقتصاد عالمي</h3>
-                    <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
-
-                    <h3>اقتصاد عالمي</h3>
-                    <h2>ترمب يهدد «بريكس» مجدداً</h2>
-
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
-
-                    <h3>اقتصاد عالمي</h3>
-                    <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
-
-                    <h3>اقتصاد جزائري</h3>
-                    <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
-                </div>
-            </div>
-        </section>
 
 
-        <section class="art-section-hero">
-            <div class="art-section-overlay">
-                <h2 class="art-section-title">ورق قديم</h2>
-
-                <div class="art-section-grid">
-                    <div class="art-section-card">
+            <section class="economy-feature-grid">
+                <div class="economy-grid-container">
+                    <div class="economy-card">
                         <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
+                        <h3></h3>
                         <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
                     </div>
-
-                    <div class="art-section-card">
+                    <div class="economy-card">
                         <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
+                        <h3></h3>
                         <h2>ترمب يهدد «بريكس» مجدداً</h2>
                     </div>
-
-                    <div class="art-section-card">
+                    <div class="economy-card">
                         <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
+                        <h3></h3>
                         <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
                     </div>
-
-                    <div class="art-section-card">
+                    <div class="economy-card">
                         <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
+                        <h3></h3>
                         <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
                     </div>
                 </div>
+            </section>
+
+            @include('user.components.sp60')
+
+            {{-- Title --}}
+            <div class="title">
+                <p class="section-title">فنون</p>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
             </div>
-        </section>
 
-
-
-
-        @include('user.components.sp60')
-
-        {{-- Title --}}
-        <div class="title">
-            <p class="section-title">كتب</p>
-            @include('user.components.ligne')
-            <div class="under-title-ligne-space"></div>
-        </div>
-
-        <section class="economy-feature-grid">
-            <div class="economy-grid-container">
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
-
-                    <h3>اقتصاد عالمي</h3>
-                    <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
-
-                    <h3>اقتصاد عالمي</h3>
-                    <h2>ترمب يهدد «بريكس» مجدداً</h2>
-
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
-
-                    <h3>اقتصاد عالمي</h3>
-                    <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
-
-                    <h3>اقتصاد جزائري</h3>
-                    <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
-                </div>
-            </div>
-        </section>
-
-        <section class="art-section-hero">
-            <div class="art-section-overlay">
-                <h2 class="art-section-title">ورق قديم</h2>
-
-                <div class="art-section-grid">
-                    <div class="art-section-card">
+            <section class="economy-feature-grid">
+                <div class="economy-grid-container">
+                    <div class="economy-card">
                         <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
+
+                        <h3>اقتصاد عالمي</h3>
                         <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
                     </div>
-
-                    <div class="art-section-card">
+                    <div class="economy-card">
                         <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
-                        <h2>ترمب يهدد «بريكس» مجدداً</h2>
-                    </div>
 
-                    <div class="art-section-card">
+                        <h3>اقتصاد عالمي</h3>
+                        <h2>ترمب يهدد «بريكس» مجدداً</h2>
+
+                    </div>
+                    <div class="economy-card">
                         <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
+
+                        <h3>اقتصاد عالمي</h3>
                         <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
                     </div>
-
-                    <div class="art-section-card">
+                    <div class="economy-card">
                         <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
+
+                        <h3>اقتصاد جزائري</h3>
                         <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
                     </div>
                 </div>
-            </div>
-        </section>
-        @include('user.components.sp60')
+            </section>
 
-        {{-- Title --}}
-        <div class="title">
-            <p class="section-title">شوهد من قبل</p>
-            @include('user.components.ligne')
-            <div class="under-title-ligne-space"></div>
-        </div>
-
-        <section class="economy-feature-grid">
-            <div class="economy-grid-container">
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
-
-                    <h3>اقتصاد عالمي</h3>
-                    <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
-
-                    <h3>اقتصاد عالمي</h3>
-                    <h2>ترمب يهدد «بريكس» مجدداً</h2>
-
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
-
-                    <h3>اقتصاد عالمي</h3>
-                    <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
-
-                    <h3>اقتصاد جزائري</h3>
-                    <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
-                </div>
-            </div>
 
             <section class="art-section-hero">
                 <div class="art-section-overlay">
-                    <h2 class="art-section-title">كان</h2>
+                    <h2 class="art-section-title">ورق قديم</h2>
 
                     <div class="art-section-grid">
                         <div class="art-section-card">
@@ -516,53 +394,188 @@
                 </div>
             </section>
 
-        </section>
-        @include('user.components.sp60'){{-- Title --}}
-        <div class="title">
-            <p class="section-title">نصوص</p>
-            @include('user.components.ligne')
-            <div class="under-title-ligne-space"></div>
-        </div>
 
-        <section class="economy-feature-grid">
-            <div class="economy-grid-container">
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
 
-                    <h3>اقتصاد عالمي</h3>
-                    <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
 
-                    <h3>اقتصاد عالمي</h3>
-                    <h2>ترمب يهدد «بريكس» مجدداً</h2>
+            @include('user.components.sp60')
 
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
-
-                    <h3>اقتصاد عالمي</h3>
-                    <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
-                </div>
-                <div class="economy-card">
-                    <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
-                    <h3>اقتصاد جزائري</h3>
-                    <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
-                </div>
+            {{-- Title --}}
+            <div class="title">
+                <p class="section-title">كتب</p>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
             </div>
 
+            <section class="economy-feature-grid">
+                <div class="economy-grid-container">
+                    <div class="economy-card">
+                        <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
 
-        </section>
+                        <h3>اقتصاد عالمي</h3>
+                        <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
+                    </div>
+                    <div class="economy-card">
+                        <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
 
+                        <h3>اقتصاد عالمي</h3>
+                        <h2>ترمب يهدد «بريكس» مجدداً</h2>
 
+                    </div>
+                    <div class="economy-card">
+                        <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
 
+                        <h3>اقتصاد عالمي</h3>
+                        <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
+                    </div>
+                    <div class="economy-card">
+                        <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
 
+                        <h3>اقتصاد جزائري</h3>
+                        <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
+                    </div>
+                </div>
+            </section>
 
-        @include('user.components.sp60')
+            <section class="art-section-hero">
+                <div class="art-section-overlay">
+                    <h2 class="art-section-title">ورق قديم</h2>
 
+                    <div class="art-section-grid">
+                        <div class="art-section-card">
+                            <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
+                            <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
+                        </div>
+
+                        <div class="art-section-card">
+                            <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
+                            <h2>ترمب يهدد «بريكس» مجدداً</h2>
+                        </div>
+
+                        <div class="art-section-card">
+                            <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
+                            <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
+                        </div>
+
+                        <div class="art-section-card">
+                            <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
+                            <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            @include('user.components.sp60')
+
+            {{-- Title --}}
+            <div class="title">
+                <p class="section-title">شوهد من قبل</p>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
+            </div>
+
+            <section class="economy-feature-grid">
+                <div class="economy-grid-container">
+                    <div class="economy-card">
+                        <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
+
+                        <h3>اقتصاد عالمي</h3>
+                        <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
+                    </div>
+                    <div class="economy-card">
+                        <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
+
+                        <h3>اقتصاد عالمي</h3>
+                        <h2>ترمب يهدد «بريكس» مجدداً</h2>
+
+                    </div>
+                    <div class="economy-card">
+                        <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
+
+                        <h3>اقتصاد عالمي</h3>
+                        <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
+                    </div>
+                    <div class="economy-card">
+                        <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
+
+                        <h3>اقتصاد جزائري</h3>
+                        <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
+                    </div>
+                </div>
+
+                <section class="art-section-hero">
+                    <div class="art-section-overlay">
+                        <h2 class="art-section-title">كان</h2>
+
+                        <div class="art-section-grid">
+                            <div class="art-section-card">
+                                <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
+                                <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
+                            </div>
+
+                            <div class="art-section-card">
+                                <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
+                                <h2>ترمب يهدد «بريكس» مجدداً</h2>
+                            </div>
+
+                            <div class="art-section-card">
+                                <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
+                                <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
+                            </div>
+
+                            <div class="art-section-card">
+                                <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
+                                <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </section>
+            @include('user.components.sp60'){{-- Title --}}
+            <div class="title">
+                <p class="section-title">نصوص</p>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
+            </div>
+
+            <section class="economy-feature-grid">
+                <div class="economy-grid-container">
+                    <div class="economy-card">
+                        <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
+
+                        <h3>اقتصاد عالمي</h3>
+                        <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
+                    </div>
+                    <div class="economy-card">
+                        <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
+
+                        <h3>اقتصاد عالمي</h3>
+                        <h2>ترمب يهدد «بريكس» مجدداً</h2>
+
+                    </div>
+                    <div class="economy-card">
+                        <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
+
+                        <h3>اقتصاد عالمي</h3>
+                        <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
+                    </div>
+                    <div class="economy-card">
+                        <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
+                        <h3>اقتصاد جزائري</h3>
+                        <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
+                    </div>
+                </div>
+
+            </section>
+
+            @include('user.components.sp60')
+
+        </div>
+
+        @include('user.components.footer')
     </div>
 
-    @include('user.components.footer')
+    <div class="mobile">
+    </div>
+
 
 @endsection

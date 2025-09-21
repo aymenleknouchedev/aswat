@@ -77,6 +77,8 @@
         align-items: center;
         gap: 10px;
         direction: rtl;
+        margin-bottom: 10px;
+
         /* Image right, text left for Arabic */
     }
 
@@ -169,20 +171,20 @@
         .algeria-grid-container .algeria-list {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 40px;
+            gap: 20px;
         }
 
         .algeria-grid-container .algeria-list-div {
             display: flex;
             flex-direction: column;
             gap: 20px;
+            /* Add space between the cards */
         }
 
         .algeria-grid-container .algeria-list-div .news-card-horizontal {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            align-items: flex-start
+            align-items: flex-start;
         }
 
         .algeria-grid-container .algeria-list-div .news-card-horizontal img {

@@ -61,163 +61,217 @@
             text-decoration: underline;
         }
 
-        @media (max-width: 800px) {
-            body {
-               display: none;   
+        @media (max-width: 768px) {
+            .web {
+                display: none;
+            }
+
+            .mobile {
+                display: none;
             }
         }
     </style>
 
 
+    <div class="web">
+        @include('user.components.fixed-nav')
 
+        {{-- <div style="height: 140px;"></div> --}}
 
-    @include('user.components.fixed-nav')
-
-    {{-- <div style="height: 140px;"></div> --}}
-
-    <div class="container">
-        @include('user.components.header')
-    </div>
-
-    <div class="container">
-        <section class="art-section-hero">
-            <div class="art-section-overlay">
-                <h2 class="art-section-title">الحرب على غزة</h2>
-
-                <div class="art-section-grid">
-                    <div class="art-section-card">
-                        <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
-                        <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
-                    </div>
-
-                    <div class="art-section-card">
-                        <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
-                        <h2>ترمب يهدد «بريكس» مجدداً</h2>
-                    </div>
-
-                    <div class="art-section-card">
-                        <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
-                        <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
-                    </div>
-
-                    <div class="art-section-card">
-                        <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
-                        <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    @php
-        $sections = [
-            'الجزائر' => 'algeria',
-            'عالم' => 'world',
-            'اقتصاد' => 'economy',
-            'رياضة' => 'sport',
-            'ناس' => 'people',
-            'ثقافة وفنون' => 'arts',
-            'آراء' => 'reviews',
-        ];
-    @endphp
-
-    @foreach ($sections as $title => $component)
-        @include('user.components.sp60')
         <div class="container">
-            @include('user.components.section-title', ['slot' => $title])
-            @include("user.components.$component")
+            @include('user.components.header')
         </div>
-    @endforeach
 
-    @include('user.components.sp60')
-
-    {{-- Videos Section --}}
-    <div style="background-color: #F5F5F5;">
-        @include('user.components.sp60')
         <div class="container">
-            @include('user.components.section-title', ['slot' => 'فيديو'])
-        </div>
-        @include('user.components.videos')
-        @include('user.components.sp60')
-    </div>
+            <section class="art-section-hero">
+                <div class="art-section-overlay">
+                    <h2 class="art-section-title">الحرب على غزة</h2>
 
-    @include('user.components.sp60')
-
-    {{-- Files Section --}}
-    <div class="container">
-        @include('user.components.section-title', ['slot' => 'ملفات'])
-        @include('user.components.files')
-    </div>
-
-    @include('user.components.sp60')
-
-    {{-- Many Titles --}}
-    <div class="container">
-        @include('user.components.many-titles')
-    </div>
-
-    @include('user.components.sp60')
-
-    {{-- Media Section --}}
-    <div class="container">
-        @include('user.components.section-title', ['slot' => 'ميديا'])
-        @include('user.components.media')
-    </div>
-
-    @include('user.components.sp60')
-
-    {{-- Check Section --}}
-    <div class="container">
-        @include('user.components.section-title', ['slot' => 'فحص'])
-        @include('user.components.check')
-    </div>
-
-    @include('user.components.sp60')
-
-    {{-- Podcast Section --}}
-    <div style="background-color: #F5F5F5;">
-        @include('user.components.sp60')
-        <div class="container">
-            @include('user.components.section-title', ['slot' => 'بودكاست'])
-        </div>
-        @include('user.components.podcast')
-        @include('user.components.sp60')
-    </div>
-
-    @include('user.components.sp60')
-
-    {{-- Two Titles --}}
-    <div class="container">
-        @include('user.components.two-titles')
-    </div>
-
-    @include('user.components.sp60')
-
-    {{-- Photos Section --}}
-    <div style="background-color: #F5F5F5;">
-        @include('user.components.sp60')
-        <div class="container">
-            <div class="title">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <p class="section-title">صور</p>
-                    <div style="display: flex;" class="icons">
-                        <div id="backArrow" style="height: 32px; width: 32px; cursor: pointer;">
-                            <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
-
+                    <div class="art-section-grid">
+                        <div class="art-section-card">
+                            <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
+                            <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
                         </div>
-                        <div id="nextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
-                            <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+
+                        <div class="art-section-card">
+                            <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
+                            <h2>ترمب يهدد «بريكس» مجدداً</h2>
+                        </div>
+
+                        <div class="art-section-card">
+                            <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
+                            <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
+                        </div>
+
+                        <div class="art-section-card">
+                            <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
+                            <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
                         </div>
                     </div>
                 </div>
-                @include('user.components.ligne')
-                <div class="under-title-ligne-space"></div>
-            </div>
-            @include('user.components.photos')
+            </section>
         </div>
+
+        @php
+            $sections = [
+                'algeria' => ['الجزائر', 4],
+                'world' => ['عالم', 5],
+                'economy' => ['اقتصاد', 4],
+                'sports' => ['رياضة', 6],
+                'people' => ['ناس', 3],
+                'culture' => ['ثقافة وفنون', 8],
+                'opinions' => ['آراء', 3],
+            ];
+        @endphp
+
+        @foreach ($sections as $component => [$title, $minCount])
+            @php
+                $items = ${$component} ?? [];
+            @endphp
+            @if (is_countable($items) && count($items) >= $minCount)
+                @include('user.components.sp60')
+                <div class="container">
+                    @include('user.components.section-title', ['slot' => $title])
+                    @include("user.components.$component")
+                </div>
+            @endif
+        @endforeach
+
+
+        {{-- Videos Section --}}
+        @php
+            $videosCount = isset($videos) && is_countable($videos) ? count($videos) : 0;
+        @endphp
+        @if ($videosCount >= 4)
+            <div style="background-color: #F5F5F5;">
+                @include('user.components.sp60')
+                <div class="container">
+                    @include('user.components.section-title', ['slot' => 'فيديو'])
+                </div>
+                @include('user.components.videos')
+                @include('user.components.sp60')
+            </div>
+        @endif
+
+
+        {{-- Files Section --}}
+        @php
+            $filesCount = isset($files) && is_countable($files) ? count($files) : 0;
+        @endphp
+        @if ($filesCount >= 3)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.section-title', ['slot' => 'ملفات'])
+                @include('user.components.files')
+            </div>
+        @endif
+
+
+        {{-- Many Titles --}}
+        @php
+            $manySections = [
+                'technology' => ['تكنولوجيا', 3],
+                'health' => ['صحة', 3],
+                'environment' => ['بيئة', 3],
+            ];
+            $showManyTitles = true;
+            foreach ($manySections as $key => [$title, $minCount]) {
+                $items = ${$key} ?? [];
+                if (!is_countable($items) || count($items) < $minCount) {
+                    $showManyTitles = false;
+                    break;
+                }
+            }
+        @endphp
+        @if ($showManyTitles)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.many-titles')
+            </div>
+        @endif
+
+
+        {{-- Media Section --}}
+        @php
+            $mediaCount = isset($media) && is_countable($media) ? count($media) : 0;
+        @endphp
+        @if ($mediaCount >= 4)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.section-title', ['slot' => 'ميديا'])
+                @include('user.components.media')
+            </div>
+        @endif
+
+
+        {{-- Check Section --}}
+        @php
+            $checkCount = isset($check) && is_countable($check) ? count($check) : 0;
+        @endphp
+        @if ($checkCount >= 2)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.section-title', ['slot' => 'فحص'])
+                @include('user.components.check')
+            </div>
+        @endif
+
+        {{-- Podcast Section --}}
+        @php
+            $podcastCount = isset($podcast) && is_countable($podcast) ? count($podcast) : 0;
+        @endphp
+        @if ($podcastCount >= 4)
+            <div style="background-color: #F5F5F5;">
+            @include('user.components.sp60')
+            <div class="container">
+                @include('user.components.section-title', ['slot' => 'بودكاست'])
+            </div>
+            @include('user.components.podcast')
+            @include('user.components.sp60')
+            </div>
+        @endif
+
         @include('user.components.sp60')
+
+        {{-- Two Titles --}}
+        <div class="container">
+            @include('user.components.two-titles')
+        </div>
+
+        @include('user.components.sp60')
+
+        {{-- Photos Section --}}
+        <div style="background-color: #F5F5F5;">
+            @include('user.components.sp60')
+            <div class="container">
+                <div class="title">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <p class="section-title">صور</p>
+                        <div style="display: flex;" class="icons">
+                            <div id="backArrow" style="height: 32px; width: 32px; cursor: pointer;">
+                                <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
+
+                            </div>
+                            <div id="nextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
+                                <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+                            </div>
+                        </div>
+                    </div>
+                    @include('user.components.ligne')
+                    <div class="under-title-ligne-space"></div>
+                </div>
+                @include('user.components.photos')
+            </div>
+            @include('user.components.sp60')
+        </div>
+
+        @include('user.components.footer')
+
     </div>
 
-    @include('user.components.footer')
+    <div class="mobile">
+    </div>
+
+
 
 @endsection
