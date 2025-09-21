@@ -33,15 +33,7 @@
 {{-- استدعاء سكريبت الميديا --}}
 <script src="{{ asset('js/media-handler.js') }}"></script>
 
-<script>
-    // document.addEventListener("DOMContentLoaded", function() {
-    //     const publishButton = document.getElementById("publishButton");
-    //     publishButton.addEventListener("click", function() {
-    //         const selectedTemplate = document.querySelector('input[name="template"]:checked').value;
-            
-    //     });
-    // });
-
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function () {
         const rules = {
             normal_image: [
@@ -94,4 +86,4 @@
         });
     });
 
-</script>
+</script> --}}
