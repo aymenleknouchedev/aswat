@@ -676,13 +676,8 @@
                             </div>
 
                             <div class="mt-4 d-flex">
-<<<<<<< HEAD
-                                <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر"
-                                    data-en="Publish">
-=======
                                 <button type="submit"
                                     class="btn btn-primary btn-lg me-3" data-ar="نشر" data-en="Publish" id="publishButton">
->>>>>>> e93479fd73025f659a71608ca86a959b18dff80e
                                     نشر
                                 </button>
                                 <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg"
