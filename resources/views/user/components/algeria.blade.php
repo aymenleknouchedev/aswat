@@ -160,6 +160,43 @@
         text-decoration: underline;
         cursor: pointer;
     }
+
+    @media (max-width: 992px) {
+        .algeria-grid-container {
+            grid-template-columns: 1fr;
+        }
+
+        .algeria-grid-container .algeria-list {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .algeria-grid-container .algeria-list-div {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .algeria-grid-container .algeria-list-div .news-card-horizontal {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: flex-start
+        }
+
+        .algeria-grid-container .algeria-list-div .news-card-horizontal img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+        }
+
+        .algeria-grid-container .algeria-list-div .news-card-text p {
+            font-weight: bold;
+        }
+
+    }
 </style>
 
 
@@ -186,23 +223,25 @@
                 </p>
             </div>
 
-            <div class="news-card-horizontal">
-                <div class="news-card-image">
-                    <img src="./user/assets/images/IMG20.jpg" alt="تحلية مياه البحر">
+            <div class="algeria-list-div">
+                <div class="news-card-horizontal">
+                    <div class="news-card-image">
+                        <img src="./user/assets/images/IMG20.jpg" alt="تحلية مياه البحر">
+                    </div>
+                    <div class="news-card-text">
+                        <h3>اقتصاد جزائري</h3>
+                        <p>الجزائر تُسرّع وتيرة تحلية مياه البحر لتفكيك «قنبلة العطش»</p>
+                    </div>
                 </div>
-                <div class="news-card-text">
-                    <h3>اقتصاد جزائري</h3>
-                    <p>الجزائر تُسرّع وتيرة تحلية مياه البحر لتفكيك «قنبلة العطش»</p>
-                </div>
-            </div>
 
-            <div class="news-card-horizontal">
-                <div class="news-card-image">
-                    <img src="./user/assets/images/IMG19.jpg" alt="بوعلام صنصال">
-                </div>
-                <div class="news-card-text">
-                    <h3>سياسة</h3>
-                    <p>تثبيت الحكم بسجن الكاتب بوعلام صنصال خمس سنوات</p>
+                <div class="news-card-horizontal">
+                    <div class="news-card-image">
+                        <img src="./user/assets/images/IMG19.jpg" alt="بوعلام صنصال">
+                    </div>
+                    <div class="news-card-text">
+                        <h3>سياسة</h3>
+                        <p>تثبيت الحكم بسجن الكاتب بوعلام صنصال خمس سنوات</p>
+                    </div>
                 </div>
             </div>
         </div>

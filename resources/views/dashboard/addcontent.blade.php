@@ -33,7 +33,8 @@
             <div class="nk-wrap">
                 @include('dashboard.components.header')
 
-                <form class="nk-content container row"  action="{{ route('dashboard.content.store') }}" method="POST" enctype="multipart/form-data" id="contentForm">
+                <form class="nk-content container row" action="{{ route('dashboard.content.store') }}" method="POST"
+                    enctype="multipart/form-data" id="contentForm">
 
                     <div class="col-md-9">
 
@@ -490,7 +491,8 @@
                                                         @if (old('tags_id'))
                                                             @foreach (old('tags_id') as $id)
                                                                 <div class="tag-chip">
-                                                                    <span class="chip-name">{{ App\Models\Tag::find(id: $id)->name ?? '' }}</span>
+                                                                    <span
+                                                                        class="chip-name">{{ App\Models\Tag::find(id: $id)->name ?? '' }}</span>
                                                                     <span class="remove-tag" style="cursor:pointer;"
                                                                         data-tag-id="{{ $id }}">&times;</span>
                                                                 </div>
@@ -592,7 +594,7 @@
                                     'existing_albums' => $existing_albums,
                                 ])
 
-                                
+
 
                                 <!-- Message Tab -->
                                 <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
@@ -674,8 +676,8 @@
                             </div>
 
                             <div class="mt-4 d-flex">
-                                <button type="submit"
-                                    class="btn btn-primary btn-lg me-3" data-ar="نشر" data-en="Publish">
+                                <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر"
+                                    data-en="Publish">
                                     نشر
                                 </button>
                                 <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg"
@@ -696,7 +698,9 @@
 
                                 <!-- Collapsible: Schedule Publish -->
                                 <div>
-                                    <button class="btn btn-link w-100 text-start p-0 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSchedule" aria-expanded="false" aria-controls="collapseSchedule">
+                                    <button class="btn btn-link w-100 text-start p-0 mb-2" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseSchedule"
+                                        aria-expanded="false" aria-controls="collapseSchedule">
                                         <em class="icon ni ni-calendar"></em>
                                         <span data-ar="جدولة النشر" data-en="Schedule Publish">جدولة النشر</span>
                                     </button>
@@ -705,8 +709,8 @@
                                             <span class="input-group-text bg-light">
                                                 <em class="icon ni ni-calendar"></em>
                                             </span>
-                                            <input type="datetime-local" id="publish_at" name="published_at" class="form-control"
-                                                value="{{ old('published_at') }}">
+                                            <input type="datetime-local" id="publish_at" name="published_at"
+                                                class="form-control" value="{{ old('published_at') }}">
                                         </div>
                                         <small class="text-muted" data-ar="حدد وقت النشر لاحقاً"
                                             data-en="Set a future publish time">حدد وقت النشر لاحقاً</small>

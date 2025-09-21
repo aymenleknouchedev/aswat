@@ -11,6 +11,8 @@
         gap: 20px;
     }
 
+
+
     .many-titles-feature-m {
         height: 355px;
     }
@@ -41,6 +43,8 @@
     .many-titles-feature-m .top {
         height: 291px;
     }
+
+
 
     .many-titles-feature-m p {
         font-size: 14px;
@@ -103,6 +107,16 @@
     /* Cursor pointer for main feature h3 categories */
     .many-titles-feature-m h3 {
         cursor: pointer;
+    }
+
+    @media (max-width: 1050px) {
+        .many-titles-feature-m .top {
+            height: 260px;
+        }
+
+        .many-titles-card-text p {
+            font-size: 12px;
+        }
     }
 </style>
 

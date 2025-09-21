@@ -60,7 +60,15 @@
             cursor: pointer;
             text-decoration: underline;
         }
+
+        @media (max-width: 800px) {
+            body {
+               display: none;   
+            }
+        }
     </style>
+
+
 
 
     @include('user.components.fixed-nav')
