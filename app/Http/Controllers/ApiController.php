@@ -179,7 +179,7 @@ class ApiController extends Controller
             
             if ($request->hasFile('image')) {
                 $path = $request->file('image')->store('writers', 'public');
-                $writer->image = $path;
+                $writer->image = asset($path);
                 $writer->save();
             }
 

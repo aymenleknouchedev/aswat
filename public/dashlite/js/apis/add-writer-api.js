@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = document.getElementById("writerName")?.value.trim() || "";
     const slug = document.getElementById("writerSlug")?.value.trim() || "";
     const bio = document.getElementById("writerBio")?.value.trim() || "";
-
     const imageFile = document.getElementById("writerImage")?.files[0] || null;
     const facebook = document.getElementById("writerFacebook")?.value.trim() || "";
     const x = document.getElementById("writerX")?.value.trim() || "";
@@ -47,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const data = await res.json();
-      console.log("server response:", data);
 
       if (data?.id) {
         // Reset fields
@@ -60,11 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("writerLinkedin").value = "";
 
         showToast("تمت إضافة الكاتب بنجاح ✅", "success");
+        const addWriterModal = bootstrap.Modal.getInstance(document.getElementById("addWriterModal"));
+        addWriterModal.hide();
       } else {
         showToast("حدث خطأ أثناء إضافة الكاتب ❌", "danger");
       }
     } catch (err) {
-      console.error(err);
       showToast("فشل الاتصال بالخادم ⚠️", "warning");
     } finally {
       saveWriterBtn.disabled = false;

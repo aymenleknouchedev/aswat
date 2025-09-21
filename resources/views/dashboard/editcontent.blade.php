@@ -359,17 +359,13 @@
 
                                                     <!-- Header -->
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="addWriterModalLabel"
-                                                            data-ar="إضافة كاتب جديد" data-en="Add New Writer">إضافة كاتب
-                                                            جديد</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="إغلاق" data-ar="إغلاق" data-en="Close"></button>
+                                                        <h5 class="modal-title" id="addWriterModalLabel" data-ar="إضافة كاتب جديد" data-en="Add New Writer">إضافة كاتب جديد</h5>
                                                     </div>
 
                                                     <!-- Body -->
                                                     <div class="modal-body">
 
-                                                        {{-- <form id="writerForm" enctype="multipart/form-data">
+                                                        <div id="writerForm">
                                                             @csrf
 
                                                             <div class="mb-3">
@@ -391,8 +387,7 @@
                                                             <div class="mb-3">
                                                                 <label class="form-label" data-ar="نبذة"
                                                                     data-en="Bio">نبذة</label>
-                                                                <textarea id="writerBio" name="bio" class="form-control" rows="3" required data-ar="نبذة"
-                                                                    data-en="Bio"></textarea>
+                                                                <textarea id="writerBio" name="bio" class="form-control" rows="3" required></textarea>
                                                             </div>
 
                                                             <div class="mb-3">
@@ -437,7 +432,7 @@
                                                                     placeholder="https://linkedin.com/" data-ar="لينكدإن"
                                                                     data-en="LinkedIn">
                                                             </div>
-                                                        </form> --}}
+                                                        </div>
 
                                                     </div>
 
@@ -593,10 +588,35 @@
 
                                 <!-- Message Tab -->
                                 <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
+                                    <div class="d-flex flex-column" id="reviews-container">
+                                        @foreach ($reviews as $review)
+                                            @php
+                                                $isOwner = auth()->id() === $review->reviewer_id;
+                                            @endphp
+
+                                            <div class="d-flex {{ $isOwner ? 'justify-content-end' : 'justify-content-start' }}">
+                                                <div class="py-1 {{ $isOwner ? ' text-end' : 'text-start' }}">
+                                                    
+                                                    {{-- Reviewer Info --}}
+                                                    <div class="small fw-bold mb-1 badge badge-primary">
+                                                        {{ $review->reviewer->name }} {{ $review->reviewer->surname }}
+                                                    </div>
+
+                                                    {{-- Message --}}
+                                                    <p class="mb-2">{{ $review->message }}</p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <a target="_blank" href="{{route('content.reviews.index', $content->id)}}" style="padding: 8px 0px;" class="btn btn-primary w-100 d-inline-block text-center" data-en="Check out all reviews" data-ar="اطلع على جميع المراجعات">اطلع على جميع المراجعات</a>
+                                    </div>
+
                                     <div class="mb-3">
                                         <label for="message_text" data-ar="رسالة المراجعة" data-en="Review Message">رسالة
                                             المراجعة</label>
-                                        <textarea id="message_text" name="review_description" class="form-control">{{ $content->review_description }}</textarea>
+                                        <textarea id="message_text" name="review_description" class="form-control"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -679,8 +699,6 @@
                                     حفظ كمسودة
                                 </button>
                             </div>
-
-
                         </div>
                     </div>
                     <div class="col-md-3 mt-4">
@@ -741,6 +759,7 @@
     <script src="/dashlite/js/album.js"></script>
     <script src="/dashlite/js/form-toggle.js"></script>
     <script src="/dashlite/js/media-tab.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const fields = [{
@@ -819,6 +838,69 @@
             });
         });
     </script>
+
+   <script>
+    const contentId = {{ $content->id }};
+    const messageText = document.getElementById('message_text');
+    const currentUserId = @json(auth()->id());
+    const currentUserName = @json(auth()->user()->name . ' ' . auth()->user()->surname);
+
+    messageText.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            storeReview();
+        }
+    });
+
+    async function storeReview() {
+        try {
+            const response = await fetch(`/dashboard/api/store/reviews`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    content_id: contentId,
+                    message: messageText.value
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            messageText.value = '';
+            // inside a response there is the new review
+            const data = await response.json();
+            const review = data.review;
+            const reviewsContainer = document.getElementById('reviews-container');
+            const isOwner = Number(currentUserId) === Number(review.reviewer_id);
+            const reviewDiv = document.createElement('div');
+            reviewDiv.className = `d-flex ${isOwner ? 'justify-content-end' : 'justify-content-start'}`;
+            const innerDiv = document.createElement('div');
+            innerDiv.className = `py-1  ${isOwner ? 'text-end' : 'text-start'}`;
+            // Reviewer Info
+            const reviewerInfo = document.createElement('div');
+            reviewerInfo.className = 'small fw-bold mb-1 badge badge-primary';
+            reviewerInfo.textContent = isOwner ? currentUserName : review.reviewer_name;
+            innerDiv.appendChild(reviewerInfo);
+
+            // Message
+            const messagePara = document.createElement('p');
+            messagePara.className = 'mb-2';
+            messagePara.textContent = review.message;
+            innerDiv.appendChild(messagePara);
+
+            reviewDiv.appendChild(innerDiv);
+            reviewsContainer.appendChild(reviewDiv);
+            reviewsContainer.scrollTop = reviewsContainer.scrollHeight;
+        } catch (error) {
+            console.error('Error storing review:', error);
+        }
+    }
+</script>
+
 
 
 @endsection

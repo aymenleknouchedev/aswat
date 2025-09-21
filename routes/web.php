@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContentReviewController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -115,6 +116,15 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/api/search-writers', [ApiController::class, 'search_writers'])->name('api.search.writers');
         Route::post('/api/add-writer', [ApiController::class, 'add_writer'])->name('api.add.writer');
         Route::get('/api/search-cities', [ApiController::class, 'search_cities'])->name('api.search.cities');
+
+        // Content Reviews
+        Route::get('/api/content/{id}/reviews', [ContentReviewController::class,'getContentReviews'])->name('api.content.reviews');
+        Route::post('/api/store/reviews', [ContentReviewController::class,'store'])->name('api.content.reviews.store');
+        Route::put('/api/update/reviews/{id}', [ContentReviewController::class,'update'])->name('api.content.reviews.update');
+        Route::delete('/api/delete/reviews/{id}', [ContentReviewController::class,'destroy'])->name('api.content.reviews.destroy');
+        
+        // List all content reviews
+        Route::get('/content-reviews{id}', [ContentReviewController::class, 'index'])->name('content.reviews.index');
 
         // Dashboard
         Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');

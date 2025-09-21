@@ -421,6 +421,8 @@ class ContentController extends BaseController
         $content = Content::with(['media', 'tags'])->findOrFail($id);
         $contentLists = $content->contentLists()->orderBy('index', 'asc')->get();
 
+        $reviews = $content->reviews;
+
         $ttl_sections = config('cache_ttl.sections', 3600);
         $ttl_writers = config('cache_ttl.writers', 3600);
 
@@ -460,6 +462,7 @@ class ContentController extends BaseController
         return view('dashboard.editcontent', compact(
             'content',
             'contentLists',
+            'reviews',
             'sections',
             'categories',
             'writers',
