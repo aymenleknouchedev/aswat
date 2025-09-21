@@ -372,7 +372,7 @@
                                                                 <label class="form-label" data-ar="الاسم"
                                                                     data-en="Name">الاسم</label>
                                                                 <input type="text" id="writerName" name="name"
-                                                                    class="form-control" required data-ar="الاسم"
+                                                                    class="form-control" data-ar="الاسم"
                                                                     data-en="Name">
                                                             </div>
 
@@ -380,14 +380,14 @@
                                                                 <label class="form-label" data-ar="الرابط (Slug)"
                                                                     data-en="Slug">الرابط (Slug)</label>
                                                                 <input type="text" id="writerSlug" name="slug"
-                                                                    class="form-control" required data-ar="الرابط"
+                                                                    class="form-control" data-ar="الرابط"
                                                                     data-en="Slug">
                                                             </div>
 
                                                             <div class="mb-3">
                                                                 <label class="form-label" data-ar="نبذة"
                                                                     data-en="Bio">نبذة</label>
-                                                                <textarea id="writerBio" name="bio" class="form-control" rows="3" required></textarea>
+                                                                <textarea id="writerBio" name="bio" class="form-control" rows="3"></textarea>
                                                             </div>
 
                                                             <div class="mb-3">
