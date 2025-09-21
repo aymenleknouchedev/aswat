@@ -222,12 +222,11 @@
         @endphp
         @if ($podcastCount >= 4)
             <div style="background-color: #F5F5F5;">
-            @include('user.components.sp60')
-            <div class="container">
-                @include('user.components.section-title', ['slot' => 'بودكاست'])
-            </div>
-            @include('user.components.podcast')
-            @include('user.components.sp60')
+                @include('user.components.sp60')
+                <div class="container">
+                    @include('user.components.section-title', ['slot' => 'بودكاست'])
+                </div>
+                @include('user.components.podcast')
             </div>
         @endif
 
@@ -235,10 +234,9 @@
 
         {{-- Two Titles --}}
         <div class="container">
+            @include('user.components.sp60')
             @include('user.components.two-titles')
         </div>
-
-        @include('user.components.sp60')
 
         {{-- Photos Section --}}
         <div style="background-color: #F5F5F5;">

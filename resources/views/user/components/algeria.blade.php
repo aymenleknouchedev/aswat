@@ -205,48 +205,76 @@
 
 <section class="algeria-feature-grid">
     <div class="algeria-grid-container">
-        <!-- Right: big feature -->
-        <div class="algeria-feature">
-            <img src="./user/assets/images/IMG21.jpg" alt="Feature algeria">
-            <h3>سياسة</h3>
-            <h2>تبون: الجزائر ليست معزولة دوليًا</h2>
-            <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع سنوات
-                على تظاهرات مناهضة للحكومة.</p>
-        </div>
-
-        <!-- Left: list -->
-        <div class="algeria-list">
-            <div class="algeria-feature-m">
-                <img src="./user/assets/images/IMG22.jpg" alt="Feature algeria small">
-                <h3>سياسة</h3>
-                <h2>بوادر أزمة حادة بين الجزائر والاتحاد الأوروبي بسبب «اتفاق الشراكة»</h2>
-                <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع
-                    سنوات على تظاهرات مناهضة للحكومة.
-                </p>
+        @if (isset($algeria) && count($algeria) >= 4)
+            <div class="algeria-feature">
+                <img src="{{ optional($algeria[0]->mediaContent->firstWhere('type', 'main')) }}" alt="Feature algeria">
+                <h3>
+                    @if (isset($algeria[0]->location) && $algeria[0]->location->type === 'country')
+                        {{ $algeria[0]->category }} - {{ $algeria[0]->location->name }}
+                    @elseif (isset($algeria[0]->location) && $algeria[0]->location->type === 'continent')
+                        {{ $algeria[0]->category }} - {{ $algeria[0]->location->name }}
+                    @else
+                        {{ $algeria[0]->category }}
+                </h3>
+                <h2>{{ $algeria[0]->title }}</h2>
+                <p>{{ $algeria[0]->summary }}</p>
             </div>
 
-            <div class="algeria-list-div">
-                <div class="news-card-horizontal">
-                    <div class="news-card-image">
-                        <img src="./user/assets/images/IMG20.jpg" alt="تحلية مياه البحر">
-                    </div>
-                    <div class="news-card-text">
-                        <h3>اقتصاد جزائري</h3>
-                        <p>الجزائر تُسرّع وتيرة تحلية مياه البحر لتفكيك «قنبلة العطش»</p>
-                    </div>
+            <div class="algeria-list">
+                <div class="algeria-feature-m">
+                    <img src="{{ $algeria[1]->image }}" alt="Feature algeria small">
+                    <h3>
+                        @if (isset($algeria[1]->location) && $algeria[1]->location->type === 'country')
+                            {{ $algeria[1]->category }} - {{ $algeria[1]->location->name }}
+                        @elseif (isset($algeria[1]->location) && $algeria[1]->location->type === 'continent')
+                            {{ $algeria[1]->category }} - {{ $algeria[1]->location->name }}
+                        @else
+                            {{ $algeria[1]->category }}
+                        @endif
+                    </h3>
+                    <h2>{{ $algeria[1]->title }}</h2>
+                    <p>{{ $algeria[1]->summary }}</p>
                 </div>
 
-                <div class="news-card-horizontal">
-                    <div class="news-card-image">
-                        <img src="./user/assets/images/IMG19.jpg" alt="بوعلام صنصال">
+                <div class="algeria-list-div">
+                    <div class="news-card-horizontal">
+                        <div class="news-card-image">
+                            <img src="{{ $algeria[2]->image }}" alt="{{ $algeria[2]->title }}">
+                        </div>
+                        <div class="news-card-text">
+                            <h3>
+                                @if (isset($algeria[2]->location) && $algeria[2]->location->type === 'country')
+                                    {{ $algeria[2]->category }} - {{ $algeria[2]->location->name }}
+                                @elseif (isset($algeria[2]->location) && $algeria[2]->location->type === 'continent')
+                                    {{ $algeria[2]->category }} - {{ $algeria[2]->location->name }}
+                                @else
+                                    {{ $algeria[2]->category }}
+                                @endif
+                            </h3>
+                            <p>{{ $algeria[2]->title }}</p>
+                        </div>
                     </div>
-                    <div class="news-card-text">
-                        <h3>سياسة</h3>
-                        <p>تثبيت الحكم بسجن الكاتب بوعلام صنصال خمس سنوات</p>
+
+                    <div class="news-card-horizontal">
+                        <div class="news-card-image">
+                            <img src="{{ $algeria[3]->image }}" alt="{{ $algeria[3]->title }}">
+                        </div>
+                        <div class="news-card-text">
+                            <h3>
+                                @if (isset($algeria[3]->location) && $algeria[3]->location->type === 'country')
+                                    {{ $algeria[3]->category }} - {{ $algeria[3]->location->name }}
+                                @elseif (isset($algeria[3]->location) && $algeria[3]->location->type === 'continent')
+                                    {{ $algeria[3]->category }} - {{ $algeria[3]->location->name }}
+                                @else
+                                    {{ $algeria[3]->category }}
+                                @endif
+                            </h3>
+                            <p>{{ $algeria[3]->title }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 
     <!-- Extra Titles Grid -->
