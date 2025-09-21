@@ -359,17 +359,13 @@
 
                                                     <!-- Header -->
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="addWriterModalLabel"
-                                                            data-ar="إضافة كاتب جديد" data-en="Add New Writer">إضافة كاتب
-                                                            جديد</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="إغلاق" data-ar="إغلاق" data-en="Close"></button>
+                                                        <h5 class="modal-title" id="addWriterModalLabel" data-ar="إضافة كاتب جديد" data-en="Add New Writer">إضافة كاتب جديد</h5>
                                                     </div>
 
                                                     <!-- Body -->
                                                     <div class="modal-body">
 
-                                                        {{-- <form id="writerForm" enctype="multipart/form-data">
+                                                        <div id="writerForm">
                                                             @csrf
 
                                                             <div class="mb-3">
@@ -391,8 +387,7 @@
                                                             <div class="mb-3">
                                                                 <label class="form-label" data-ar="نبذة"
                                                                     data-en="Bio">نبذة</label>
-                                                                <textarea id="writerBio" name="bio" class="form-control" rows="3" required data-ar="نبذة"
-                                                                    data-en="Bio"></textarea>
+                                                                <textarea id="writerBio" name="bio" class="form-control" rows="3" required></textarea>
                                                             </div>
 
                                                             <div class="mb-3">
@@ -437,7 +432,7 @@
                                                                     placeholder="https://linkedin.com/" data-ar="لينكدإن"
                                                                     data-en="LinkedIn">
                                                             </div>
-                                                        </form> --}}
+                                                        </div>
 
                                                     </div>
 
