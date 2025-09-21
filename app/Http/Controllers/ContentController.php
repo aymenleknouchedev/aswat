@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContentReview;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -98,6 +99,7 @@ class ContentController extends BaseController
      */
     public function store(Request $request)
     {
+
         $albumImages = [];
 
         if ($request->hasFile('album_images')) {
@@ -107,11 +109,10 @@ class ContentController extends BaseController
         }
         // --- URLs ---
         if ($request->album_images_urls) {
-            $urls = json_decode($request->album_images_urls, true); // decode JSON string
-            $albumImages = array_merge($albumImages, $urls); // combine with uploaded files
+            $urls = json_decode($request->album_images_urls, true);
+            $albumImages = array_merge($albumImages, $urls);
         }
 
-        // ✅ Basic validation rules
         $rules = [
             'title' => 'required|string|max:75',
             'long_title' => 'required|string|max:210',
@@ -128,20 +129,14 @@ class ContentController extends BaseController
             'summary' => 'nullable|string',
             'content' => 'nullable|string',
             'seo_keyword' => 'nullable|string|max:255',
-            // 'status'        => 'required|in:draft,published,scheduled',
             'template' => 'required|string',
             'tags_id' => 'required|array',
-            // 'template'      => [
-            //     Rule::requiredIf(fn ($input) => $input->display_method !== 'simple'),
-            //     'string'
-            // ],
             'share_image' => 'nullable|max:2048',
             'share_title' => 'nullable|string',
             'share_description' => 'nullable|string',
             'review_description' => 'nullable|string',
         ];
 
-        // Add conditional item rules
         if (in_array($request->display_method, ['list', 'file'])) {
             $rules['items'] = 'required|array|min:1';
             $rules['items.*.title'] = 'required|string|max:255';
@@ -228,26 +223,9 @@ class ContentController extends BaseController
             ],
         ];
 
-        // $validated = $request->validate($rules);
-        // $request->validate(rules: $templateRules[$request->template]);
+        $validated = $request->validate($rules);
+        $request->validate(rules: $templateRules[$request->template]);
 
-        $finalRules = array_merge(
-    $rules,
-            $templateRules[$request->template] ?? []
-        );
-
-        // Run validation
-        $validator = Validator::make($request->all(), $finalRules);
-
-        if ($validator->fails()) {
-            $v = redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-                // dd($v);
-                return $v;
-        }
-
-        $validated = $validator->validated();
         // Validate that $albumImages contains at least one file or URL
         if ($request->template == 'album') {
             if (empty($albumImages) || !is_array($albumImages) || count($albumImages) === 0) {
@@ -262,12 +240,19 @@ class ContentController extends BaseController
             $validated['share_image'] = $path;
         }
 
-
         // ✅ Create content
         $content = Content::create([
             ...$validated,
             'user_id' => Auth::id(),
         ]);
+
+        if ($request->review_description) {
+            ContentReview::create([
+                'reviewer_id' => Auth::id(),
+                'content_id' => $content->id,
+                'message' => $request->review_description,
+            ]);
+        }
 
         if (!empty($validated['items']) && is_array($validated['items'])) {
             foreach ($validated['items'] as $item) {
@@ -434,7 +419,7 @@ class ContentController extends BaseController
     public function edit(string $id)
     {
         $content = Content::with(['media', 'tags'])->findOrFail($id);
-        $contentLists = $content->contentLists()->orderBy('index','asc')->get();
+        $contentLists = $content->contentLists()->orderBy('index', 'asc')->get();
 
         $ttl_sections = config('cache_ttl.sections', 3600);
         $ttl_writers = config('cache_ttl.writers', 3600);

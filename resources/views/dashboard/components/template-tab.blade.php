@@ -49,12 +49,6 @@
                                 </button>
                             </div>
                         </div>
-
-                        {{-- Preserve values --}}
-                        <input type="hidden" name="items[{{ $index }}][title]" value="{{ $item['title'] ?? '' }}">
-                        <input type="hidden" name="items[{{ $index }}][description]" value="{{ $item['description'] ?? '' }}">
-                        <input type="hidden" name="items[{{ $index }}][url]" value="{{ $item['url'] ?? '' }}">
-                        <input type="hidden" name="items[{{ $index }}][index]" value="{{ $item['index'] ?? $index }}">
                     </div>
                 @endforeach
             @endif
@@ -159,7 +153,7 @@
             });
         }
 
-        // toggleSection();
+        toggleSection();
         displayMethodRadios.forEach(radio => radio.addEventListener('change', toggleSection));
 
         addBtn.addEventListener('click', () => {
@@ -291,8 +285,6 @@
                 clonedInput.name = `${prefix}[image]`;
                 clonedInput.style.display = 'none';
                 mainForm.appendChild(clonedInput);
-                
-
                 
             });
         });

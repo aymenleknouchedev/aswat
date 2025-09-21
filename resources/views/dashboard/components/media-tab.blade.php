@@ -32,3 +32,58 @@
 
 {{-- استدعاء سكريبت الميديا --}}
 <script src="{{ asset('js/media-handler.js') }}"></script>
+
+{{-- <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const rules = {
+            normal_image: [
+                "normal_main_image",
+                "normal_mobile_image",
+                "normal_content_image",
+            ],
+            video: [
+                "video_main_image",
+                "video_mobile_image",
+                "video_content_image",
+                "video_file",
+            ],
+            podcast: [
+                "podcast_main_image",
+                "podcast_content_image",
+                "podcast_mobile_image",
+                "podcast_file",
+            ],
+            album: [
+                "album_main_image",
+                "album_content_image",
+                "album_mobile_image",
+            ],
+            no_image: [
+                "no_image_main_image",
+                "no_image_mobile_image",
+            ],
+        };
+
+        const form = document.getElementById("contentForm");
+        const publishButton = document.getElementById("publishButton");
+
+        publishButton.addEventListener("click", function (e) {
+            const selectedTemplate = document.querySelector('input[name="template"]:checked').value;
+            const requiredFields = rules[selectedTemplate] || [];
+            const errors = [];
+
+            requiredFields.forEach(fieldName => {
+                const input = document.querySelector(`[name="${fieldName}"]`);
+                if (!input || !input.files || input.files.length === 0) {
+                    errors.push(`${fieldName} is required`);
+                }
+            });
+
+            if (errors.length > 0) {
+                e.preventDefault();
+                alert("Validation failed:\n\n" + errors.join("\n"));
+            }
+        });
+    });
+
+</script> --}}
