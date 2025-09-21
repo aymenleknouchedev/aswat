@@ -114,78 +114,122 @@
 
         @php
             $sections = [
-                'الجزائر' => 'algeria',
-                'عالم' => 'world',
-                'اقتصاد' => 'economy',
-                'رياضة' => 'sport',
-                'ناس' => 'people',
-                'ثقافة وفنون' => 'arts',
-                'آراء' => 'reviews',
+                'algeria' => ['الجزائر', 4],
+                'world' => ['عالم', 5],
+                'economy' => ['اقتصاد', 4],
+                'sports' => ['رياضة', 6],
+                'people' => ['ناس', 3],
+                'culture' => ['ثقافة وفنون', 8],
+                'opinions' => ['آراء', 3],
             ];
         @endphp
 
-        @foreach ($sections as $title => $component)
-            @include('user.components.sp60')
-            <div class="container">
-                @include('user.components.section-title', ['slot' => $title])
-                @include("user.components.$component")
-            </div>
+        @foreach ($sections as $component => [$title, $minCount])
+            @php
+                $items = ${$component} ?? [];
+            @endphp
+            @if (is_countable($items) && count($items) >= $minCount)
+                @include('user.components.sp60')
+                <div class="container">
+                    @include('user.components.section-title', ['slot' => $title])
+                    @include("user.components.$component")
+                </div>
+            @endif
         @endforeach
 
-        @include('user.components.sp60')
 
         {{-- Videos Section --}}
-        <div style="background-color: #F5F5F5;">
-            @include('user.components.sp60')
-            <div class="container">
-                @include('user.components.section-title', ['slot' => 'فيديو'])
+        @php
+            $videosCount = isset($videos) && is_countable($videos) ? count($videos) : 0;
+        @endphp
+        @if ($videosCount >= 4)
+            <div style="background-color: #F5F5F5;">
+                @include('user.components.sp60')
+                <div class="container">
+                    @include('user.components.section-title', ['slot' => 'فيديو'])
+                </div>
+                @include('user.components.videos')
+                @include('user.components.sp60')
             </div>
-            @include('user.components.videos')
-            @include('user.components.sp60')
-        </div>
+        @endif
 
-        @include('user.components.sp60')
 
         {{-- Files Section --}}
-        <div class="container">
-            @include('user.components.section-title', ['slot' => 'ملفات'])
-            @include('user.components.files')
-        </div>
+        @php
+            $filesCount = isset($files) && is_countable($files) ? count($files) : 0;
+        @endphp
+        @if ($filesCount >= 3)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.section-title', ['slot' => 'ملفات'])
+                @include('user.components.files')
+            </div>
+        @endif
 
-        @include('user.components.sp60')
 
         {{-- Many Titles --}}
-        <div class="container">
-            @include('user.components.many-titles')
-        </div>
+        @php
+            $manySections = [
+                'technology' => ['تكنولوجيا', 3],
+                'health' => ['صحة', 3],
+                'environment' => ['بيئة', 3],
+            ];
+            $showManyTitles = true;
+            foreach ($manySections as $key => [$title, $minCount]) {
+                $items = ${$key} ?? [];
+                if (!is_countable($items) || count($items) < $minCount) {
+                    $showManyTitles = false;
+                    break;
+                }
+            }
+        @endphp
+        @if ($showManyTitles)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.many-titles')
+            </div>
+        @endif
 
-        @include('user.components.sp60')
 
         {{-- Media Section --}}
-        <div class="container">
-            @include('user.components.section-title', ['slot' => 'ميديا'])
-            @include('user.components.media')
-        </div>
+        @php
+            $mediaCount = isset($media) && is_countable($media) ? count($media) : 0;
+        @endphp
+        @if ($mediaCount >= 4)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.section-title', ['slot' => 'ميديا'])
+                @include('user.components.media')
+            </div>
+        @endif
 
-        @include('user.components.sp60')
 
         {{-- Check Section --}}
-        <div class="container">
-            @include('user.components.section-title', ['slot' => 'فحص'])
-            @include('user.components.check')
-        </div>
-
-        @include('user.components.sp60')
+        @php
+            $checkCount = isset($check) && is_countable($check) ? count($check) : 0;
+        @endphp
+        @if ($checkCount >= 2)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.section-title', ['slot' => 'فحص'])
+                @include('user.components.check')
+            </div>
+        @endif
 
         {{-- Podcast Section --}}
-        <div style="background-color: #F5F5F5;">
+        @php
+            $podcastCount = isset($podcast) && is_countable($podcast) ? count($podcast) : 0;
+        @endphp
+        @if ($podcastCount >= 4)
+            <div style="background-color: #F5F5F5;">
             @include('user.components.sp60')
             <div class="container">
                 @include('user.components.section-title', ['slot' => 'بودكاست'])
             </div>
             @include('user.components.podcast')
             @include('user.components.sp60')
-        </div>
+            </div>
+        @endif
 
         @include('user.components.sp60')
 
