@@ -122,10 +122,10 @@
                                             <span style="color:red;">*</span>
                                             <div class="form-control-wrap">
                                                 <input required id="title" name="title" type="text"
-                                                    class="form-control form-control" maxlength="75" data-ar="العنوان"
+                                                    class="form-control form-control" maxlength="68" data-ar="العنوان"
                                                     data-en="Title" value="{{ old('title', '') }}">
                                             </div>
-                                            <small class="text-muted"><span id="title-count">0</span> / 75</small>
+                                            <small class="text-muted"><span id="title-count">0</span> / 68</small>
                                         </div>
 
                                         <div class="form-group col-12">

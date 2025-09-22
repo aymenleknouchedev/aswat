@@ -14,16 +14,16 @@ class HomePageController extends Controller
             'algeria' => ['الجزائر', 4],
             'world' => ['عالم', 5],
             'economy' => ['اقتصاد', 4],
-            'sports' => ['رياضة', 6],
+            'sport' => ['رياضة', 6],
             'people' => ['ناس', 3],
-            'culture' => ['ثقافة وفنون', 8],
-            'opinions' => ['آراء', 3],
+            'arts' => ['ثقافة وفنون', 8],
+            'reviews' => ['آراء', 3],
             'videos' => ['فيديو', 4],
             'files' => ['ملفات', 3],
             'technology' => ['تكنولوجيا', 3],
             'health' => ['صحة', 3],
             'environment' => ['بيئة', 3],
-            'media' => ['ميديا', 2],
+            'media' => ['ميديا', 4],
             'check' => ['فحص', 2],
             'podcasts' => ['بودكاست', 4],
             'variety' => ['منوعات', 5],
@@ -38,7 +38,7 @@ class HomePageController extends Controller
                 ->get();
         }
 
-        return view('user.home', compact('algeria', 'world', 'economy', 'sports', 'people', 'culture', 'opinions', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'check', 'podcasts', 'variety', 'photos'));
+        return view('user.home', compact('algeria', 'world', 'economy', 'sport', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'check', 'podcasts', 'variety', 'photos'));
     }
 
     public function reviews()

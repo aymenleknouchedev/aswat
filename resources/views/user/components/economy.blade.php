@@ -53,30 +53,23 @@
 
 <section class="economy-feature-grid">
     <div class="economy-grid-container">
-        <div class="economy-card">
-            <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
+        @foreach ($economy as $item)
+            <div class="economy-card">
+                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="{{ $item->title ?? '' }}">
 
-            <h3>اقتصاد عالمي</h3>
-            <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
-        </div>
-        <div class="economy-card">
-            <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
-
-            <h3>اقتصاد عالمي</h3>
-            <h2>ترمب يهدد «بريكس» مجدداً</h2>
-
-        </div>
-        <div class="economy-card">
-            <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
-
-            <h3>اقتصاد عالمي</h3>
-            <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
-        </div>
-        <div class="economy-card">
-            <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
-
-            <h3>اقتصاد جزائري</h3>
-            <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
-        </div>
+                <h3>
+                    @if (isset($item->location) && $item->location->type === 'country')
+                        {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                    @elseif (isset($item->location) && $item->location->type === 'continent')
+                        {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                    @else
+                        {{ $item->category->name ?? '' }}
+                    @endif
+                </h3>
+                <h2>{{ $item->title ?? '' }}</h2>
+                <p>{{ $item->summary ?? '' }}</p>
+            </div>
+        @endforeach
     </div>
 </section>

@@ -117,10 +117,10 @@
                 'algeria' => ['الجزائر', 4],
                 'world' => ['عالم', 5],
                 'economy' => ['اقتصاد', 4],
-                'sports' => ['رياضة', 6],
+                'sport' => ['رياضة', 6],
                 'people' => ['ناس', 3],
-                'culture' => ['ثقافة وفنون', 8],
-                'opinions' => ['آراء', 3],
+                'arts' => ['ثقافة وفنون', 8],
+                'reviews' => ['آراء', 3],
             ];
         @endphp
 
@@ -218,24 +218,27 @@
 
         {{-- Podcast Section --}}
         @php
-            $podcastCount = isset($podcast) && is_countable($podcast) ? count($podcast) : 0;
+            $podcastCount = isset($podcasts) && is_countable($podcasts) ? count($podcasts) : 0;
         @endphp
         @if ($podcastCount >= 4)
+            @include('user.components.sp60')
             <div style="background-color: #F5F5F5;">
                 @include('user.components.sp60')
                 <div class="container">
                     @include('user.components.section-title', ['slot' => 'بودكاست'])
                 </div>
                 @include('user.components.podcast')
+                @include('user.components.sp60')
             </div>
         @endif
 
-        @include('user.components.sp60')
 
         {{-- Two Titles --}}
         <div class="container">
             @include('user.components.sp60')
             @include('user.components.two-titles')
+            @include('user.components.sp60')
+
         </div>
 
         {{-- Photos Section --}}

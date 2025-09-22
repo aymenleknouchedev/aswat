@@ -89,43 +89,102 @@
     <div class="world-grid-container">
         <!-- Right column: big feature -->
         <div class="world-feature">
-            <img src="./user/assets/images/IMG17.webp" alt="Feature world">
+            <img src="{{ $world[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                alt="{{ $world[0]->title ?? '' }}">
 
-            <h3>سوريا</h3>
-            <h2>عودة المواجهات إلى السويداء رغم إعلان وقف إطلاق النار
-            </h2>
-            <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع سنوات
-                على تظاهرات مناهضة للحكومة.
-            </p>
+            <h3>
+                @if (isset($world[0]->location) && $world[0]->location->type === 'country')
+                    {{ $world[0]->category->name ?? '' }} - {{ $world[0]->location->name ?? '' }}
+                @elseif (isset($world[0]->location) && $world[0]->location->type === 'continent')
+                    {{ $world[0]->category->name ?? '' }} - {{ $world[0]->location->name ?? '' }}
+                @else
+                    {{ $world[0]->category->name ?? '' }}
+                @endif
+            </h3>
+            <h2>{{ $world[0]->title ?? '' }}</h2>
+            <p>{{ $world[0]->summary ?? '' }}</p>
         </div>
 
         <!-- Left column: small world cards -->
         <div class="world-list">
-            <div class="world-feature-m">
-                <img src="./user/assets/images/IMG14.webp" alt="Feature world">
-                <h3>فلسطين</h3>
-                <h2>استشهاد 68 فلسطينيًا في غارات إسرائيلية متواصلة على غزة</h2>
-            </div>
-            <div class="world-feature-m">
-                <img src="./user/assets/images/IMG13.webp" alt="Feature world">
-                <h3>إيران</h3>
-                <h2>عراقجي: مستعدون للتفاوض مع أميركا إذا عوّضتنا عن الأضرار التي لحقت بنا</h2>
-            </div>
-        </div>
+            @if (isset($world[1]))
+                @php $item = $world[1]; @endphp
+                <div class="world-feature-m">
+                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $item->title ?? '' }}">
+                    <h3>
+                        @if (isset($item->location) && $item->location->type === 'country')
+                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                        @elseif (isset($item->location) && $item->location->type === 'continent')
+                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                        @else
+                            {{ $item->category->name ?? '' }}
+                        @endif
+                    </h3>
+                    <h2>{{ $item->title ?? '' }}</h2>
+                </div>
+            @endif
 
+            @if (isset($world[2]))
+                @php $item = $world[2]; @endphp
+                <div class="world-feature-m">
+                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $item->title ?? '' }}">
+                    <h3>
+                        @if (isset($item->location) && $item->location->type === 'country')
+                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                        @elseif (isset($item->location) && $item->location->type === 'continent')
+                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                        @else
+                            {{ $item->category->name ?? '' }}
+                        @endif
+                    </h3>
+                    <h2>{{ $item->title ?? '' }}</h2>
+                </div>
+            @endif
+
+        </div>
         <!-- Left column: small world cards -->
         <div class="world-list">
-            <div class="world-feature-m">
-                <img src="./user/assets/images/IMG18.jpg" alt="Feature world">
-                <h3>أفريقيا</h3>
-                <h2>اتفاق لوقف النار بين الكونغو والمتمردين</h2>
-            </div>
-            <div class="world-feature-m">
-                <img src="./user/assets/images/IMG16.jpg" alt="Feature world">
-                <h3>آسيا</h3>
-                <h2>اتهام رئيس كوريا الجنوبية السابق بإساءة استخدام السلطة</h2>
-            </div>
+            @if (isset($world[3]))
+                @php $item = $world[3]; @endphp
+                <div class="world-feature-m">
+                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $item->title ?? '' }}">
+                    <h3>
+                        @if (isset($item->location) && $item->location->type === 'country')
+                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                        @elseif (isset($item->location) && $item->location->type === 'continent')
+                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                        @else
+                            {{ $item->category->name ?? '' }}
+                        @endif
+                    </h3>
+                    <h2>{{ $item->title ?? '' }}</h2>
+                </div>
+            @endif
+
+            @if (isset($world[4]))
+                @php $item = $world[4]; @endphp
+                <div class="world-feature-m">
+                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $item->title ?? '' }}">
+                    <h3>
+                        @if (isset($item->location) && $item->location->type === 'country')
+                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                        @elseif (isset($item->location) && $item->location->type === 'continent')
+                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                        @else
+                            {{ $item->category->name ?? '' }}
+                        @endif
+                    </h3>
+                    <h2>{{ $item->title ?? '' }}</h2>
+                </div>
+            @endif
+
         </div>
+
+
 
     </div>
 </section>

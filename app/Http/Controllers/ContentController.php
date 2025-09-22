@@ -50,6 +50,7 @@ class ContentController extends BaseController
     public function create()
     {
 
+
         $ttl_sections = config('cache_ttl.sections', 3600);
         $ttl_writers = config('cache_ttl.writers', 3600);
 
@@ -99,7 +100,7 @@ class ContentController extends BaseController
      */
     public function store(Request $request)
     {
-
+      
         $albumImages = [];
 
         if ($request->hasFile('album_images')) {
@@ -119,7 +120,7 @@ class ContentController extends BaseController
             'mobile_title' => 'required|string|max:40',
             'display_method' => 'required|string|in:simple,list,file',
             'section_id' => 'required|exists:sections,id',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => 'required|exists:categories,id',
             'continent_id' => 'nullable|exists:locations,id',
             'country_id' => 'nullable|exists:locations,id',
             'trend_id' => 'nullable|exists:trends,id',
@@ -409,9 +410,7 @@ class ContentController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.

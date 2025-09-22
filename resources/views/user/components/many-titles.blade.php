@@ -129,36 +129,50 @@
             <div class="many-titles-column">
                 @include('user.components.ligne')
 
-                <div class="many-titles-feature-m">
-                    <div class="top">
-                        <img src="./user/assets/images/IMG48.jpg" alt="Feature people small">
-                        <h3>تقنية</h3>
-                        <h2>«أوبن إيه آي» تطلق «تشات جي بي تي» الجديد.. يتصفح ويحلل ويقرر</h2>
+                @if (isset($technology[0]))
+                    <div class="many-titles-feature-m">
+                        <div class="top">
+                            <img src="{{ $technology[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                alt="{{ $technology[0]->title ?? '' }}">
+                            <h3>
+                                @if (isset($technology[0]->location) && $technology[0]->location->type === 'country')
+                                    {{ $technology[0]->category->name ?? '' }} -
+                                    {{ $technology[0]->location->name ?? '' }}
+                                @elseif (isset($technology[0]->location) && $technology[0]->location->type === 'continent')
+                                    {{ $technology[0]->category->name ?? '' }} -
+                                    {{ $technology[0]->location->name ?? '' }}
+                                @else
+                                    {{ $technology[0]->category->name ?? '' }}
+                                @endif
+                            </h3>
+                            <h2>{{ $technology[0]->title ?? '' }}</h2>
+                            <p>{{ $technology[0]->summary ?? '' }}</p>
+                        </div>
+                        {{-- <p>{{ $technology[0]->summary ?? '' }}</p> --}}
                     </div>
-                    <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد
-                        أربع سنوات
-                        على تظاهرات مناهضة للحكومة.</p>
-                </div>
+                @endif
 
-                <div class="many-titles-card">
-                    <div class="many-titles-card-image">
-                        <img src="./user/assets/images/IMG49.jpg" alt="كاتب الخبر">
+                @foreach ($technology->slice(1, 2) as $item)
+                    <div class="many-titles-card">
+                        <div class="many-titles-card-image">
+                            <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                alt="{{ $item->title ?? '' }}">
+                        </div>
+                        <div class="many-titles-card-text">
+                            <span>
+                                @if (isset($item->location) && $item->location->type === 'country')
+                                    {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                                @elseif (isset($item->location) && $item->location->type === 'continent')
+                                    {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                                @else
+                                    {{ $item->category->name ?? '' }}
+                                @endif
+                            </span>
+                            <p>{{ $item->title ?? '' }}</p>
+                            {{-- <p>{{ $item->summary ?? '' }}</p> --}}
+                        </div>
                     </div>
-                    <div class="many-titles-card-text">
-                        <span>تقنية</span>
-                        <p>السباق نحو «الأطفال الخارقين» يُشعل وادي السيليكون</p>
-                    </div>
-                </div>
-
-                <div class="many-titles-card">
-                    <div class="many-titles-card-image">
-                        <img src="./user/assets/images/IMG50.jpeg" alt="كاتب الخبر">
-                    </div>
-                    <div class="many-titles-card-text">
-                        <span>تقنية</span>
-                        <p>"نتفليكس" تستخدم الذكاء الاصطناعي لأول مرة في أحد مسلسلاتها</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
 
@@ -169,38 +183,49 @@
             <div class="many-titles-column">
                 @include('user.components.ligne')
 
-                <div class="many-titles-feature-m">
-                    <div class="top">
-                        <img src="./user/assets/images/IMG51.webp" alt="Feature people small">
-                        <h3>تغذية</h3>
-                        <h2>هل يجب التوقف عن أكل البيض لحماية القلب؟</h2>
+                @if (isset($health[0]))
+                    <div class="many-titles-feature-m">
+                        <div class="top">
+                            <img src="{{ $health[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                alt="{{ $health[0]->title ?? '' }}">
+                            <h3>
+                                @if (isset($health[0]->location) && $health[0]->location->type === 'country')
+                                    {{ $health[0]->category->name ?? '' }} - {{ $health[0]->location->name ?? '' }}
+                                @elseif (isset($health[0]->location) && $health[0]->location->type === 'continent')
+                                    {{ $health[0]->category->name ?? '' }} - {{ $health[0]->location->name ?? '' }}
+                                @else
+                                    {{ $health[0]->category->name ?? '' }}
+                                @endif
+                            </h3>
+                            <h2>{{ $health[0]->title ?? '' }}</h2>
+                            <p>{{ $health[0]->summary ?? '' }}</p>
+                        </div>
+                        {{-- <p>{{ $health[0]->summary ?? '' }}</p> --}}
                     </div>
-                    <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد
-                        أربع سنوات
-                        على تظاهرات مناهضة للحكومة.</p>
-                </div>
+                @endif
 
-                <div class="many-titles-card">
-                    <div class="many-titles-card-image">
-                        <img src="./user/assets/images/IMG52.jpg" alt="كاتب الخبر">
+                @foreach ($health->slice(1, 2) as $item)
+                    <div class="many-titles-card">
+                        <div class="many-titles-card-image">
+                            <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                alt="{{ $item->title ?? '' }}">
+                        </div>
+                        <div class="many-titles-card-text">
+                            <span>
+                                @if (isset($item->location) && $item->location->type === 'country')
+                                    {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                                @elseif (isset($item->location) && $item->location->type === 'continent')
+                                    {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                                @else
+                                    {{ $item->category->name ?? '' }}
+                                @endif
+                            </span>
+                            <p>{{ $item->title ?? '' }}</p>
+                            {{-- <p>{{ $item->summary ?? '' }}</p> --}}
+                        </div>
                     </div>
-                    <div class="many-titles-card-text">
-                        <span>الصحة العالمية</span>
-                        <p>أكثر من 14 مليون طفل حُرموا من اللقاحات عام 2024</p>
-                    </div>
-                </div>
-
-                <div class="many-titles-card">
-                    <div class="many-titles-card-image">
-                        <img src="./user/assets/images/IMG53.jpg" alt="كاتب الخبر">
-                    </div>
-                    <div class="many-titles-card-text">
-                        <span>تغذية</span>
-                        <p>سبعة آثار جانبية خطيرة للكرياتين</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
-
         </div>
 
         <!-- Column 3 -->
@@ -209,38 +234,51 @@
             <div class="many-titles-column">
                 @include('user.components.ligne')
 
-                <div class="many-titles-feature-m">
-                    <div class="top">
-                        <img src="./user/assets/images/IMG54.webp" alt="Feature people small">
-                        <h3>مناخ</h3>
-                        <h2>موجة الحر في أوروبا أودت بحياة 2300 شخص</h2>
+                @if (isset($environment[0]))
+                    <div class="many-titles-feature-m">
+                        <div class="top">
+                            <img src="{{ $environment[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                alt="{{ $environment[0]->title ?? '' }}">
+                            <h3>
+                                @if (isset($environment[0]->location) && $environment[0]->location->type === 'country')
+                                    {{ $environment[0]->category->name ?? '' }} -
+                                    {{ $environment[0]->location->name ?? '' }}
+                                @elseif (isset($environment[0]->location) && $environment[0]->location->type === 'continent')
+                                    {{ $environment[0]->category->name ?? '' }} -
+                                    {{ $environment[0]->location->name ?? '' }}
+                                @else
+                                    {{ $environment[0]->category->name ?? '' }}
+                                @endif
+                            </h3>
+                            <h2>{{ $environment[0]->title ?? '' }}</h2>
+                            <p>{{ $environment[0]->summary ?? '' }}</p>
+                        </div>
+                        {{-- <p>{{ $environment[0]->summary ?? '' }}</p> --}}
                     </div>
-                    <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد
-                        أربع سنوات
-                        على تظاهرات مناهضة للحكومة.</p>
-                </div>
+                @endif
 
-                <div class="many-titles-card">
-                    <div class="many-titles-card-image">
-                        <img src="./user/assets/images/IMG55.webp" alt="كاتب الخبر">
+                @foreach ($environment->slice(1, 2) as $item)
+                    <div class="many-titles-card">
+                        <div class="many-titles-card-image">
+                            <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                alt="{{ $item->title ?? '' }}">
+                        </div>
+                        <div class="many-titles-card-text">
+                            <span>
+                                @if (isset($item->location) && $item->location->type === 'country')
+                                    {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                                @elseif (isset($item->location) && $item->location->type === 'continent')
+                                    {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                                @else
+                                    {{ $item->category->name ?? '' }}
+                                @endif
+                            </span>
+                            <p>{{ $item->title ?? '' }}</p>
+                            {{-- <p>{{ $item->summary ?? '' }}</p> --}}
+                        </div>
                     </div>
-                    <div class="many-titles-card-text">
-                        <span>مناخ</span>
-                        <p>«ناسا»: مستويات سطح البحار ارتفعت أكثر من المتوقع عام 2024</p>
-                    </div>
-                </div>
-
-                <div class="many-titles-card">
-                    <div class="many-titles-card-image">
-                        <img src="./user/assets/images/IMG56.webp" alt="كاتب الخبر">
-                    </div>
-                    <div class="many-titles-card-text">
-                        <span>بيئة</span>
-                        <p>طيور الكركي الرمادية تعاود الظهور في مستنقعات رواندا بفضل طبيب بيطري</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
-
         </div>
 
     </div>

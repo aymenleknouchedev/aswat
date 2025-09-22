@@ -51,46 +51,22 @@
 
 <section class="arts-feature-grid">
     <div class="arts-grid-container">
-        <div class="arts-card">
-            <img src="./user/assets/images/IMG15.jpg" alt="Feature arts">
-            <h3>سينما</h3>
-            <h2>حين حاكم يوسف شاهين نفسه</h2>
-        </div>
-
-        <div class="arts-card">
-            <img src="./user/assets/images/IMG1.webp" alt="Feature arts">
-            <h3>تشكيل</h3>
-            <h2>ملهمة بيكاسو.. غوغل يحتفل بذكرى ميلاد باية</h2>
-        </div>
-        <div class="arts-card">
-            <img src="./user/assets/images/IMG5.webp" alt="Feature arts">
-            <h3>كتب</h3>
-            <h2>من قلب المركز إلى هامش العالم.. كيف تعيد الرأسمالية إنتاج الهيمنة؟</h2>
-        </div>
-        <div class="arts-card">
-            <img src="./user/assets/images/IMG3.webp" alt="Feature arts">
-            <h3>أدب</h3>
-            <h2>أبناء الشبكة العنكبوتية.. الكافكاوية كما نعيشها اليوم</h2>
-        </div>
-        <div class="arts-card">
-            <img src="./user/assets/images/IMG6.webp" alt="Feature arts">
-            <h3>كتاب</h3>
-            <h2>صحيفة «فلسطين» اليافوية تعود لتروي قصة الوطن بين عامي 1911 و1948</h2>
-        </div>
-        <div class="arts-card">
-            <img src="./user/assets/images/IMG4.webp" alt="Feature arts">
-            <h3>آثار</h3>
-            <h2>داكار- جيبوتي.. بعثة فرنسية سرقت كنوز أفريقيا الفنية</h2>
-        </div>
-        <div class="arts-card">
-            <img src="./user/assets/images/IMG7.webp" alt="Feature arts">
-            <h3>نقد</h3>
-            <h2>هل ما زال الأدب قادرًا على تغيير العالم؟</h2>
-        </div>
-        <div class="arts-card">
-            <img src="./user/assets/images/IMG2.webp" alt="Feature arts">
-            <h3>فكر</h3>
-            <h2>«معذبو الأرض».. لماذا لا تزال أفكار فرانتز فانون ملهمة؟</h2>
-        </div>
+        @foreach($arts as $item)
+            <div class="arts-card">
+                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="{{ $item->title ?? '' }}">
+                <h3>
+                    @if (isset($item->location) && $item->location->type === 'country')
+                        {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                    @elseif (isset($item->location) && $item->location->type === 'continent')
+                        {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                    @else
+                        {{ $item->category->name ?? '' }}
+                    @endif
+                </h3>
+                <h2>{{ $item->title ?? '' }}</h2>
+                {{-- <p>{{ $item->summary ?? '' }}</p> --}}
+            </div>
+        @endforeach
     </div>
 </section>
