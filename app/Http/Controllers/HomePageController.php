@@ -39,7 +39,12 @@ class HomePageController extends Controller
         }
 
 
-        return view('user.home', compact('algeria', 'world', 'economy', 'sport', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'check', 'podcasts', 'variety', 'photos'));
+        $topViewed = Content::where('section_id', $sections['منوعات'] ?? null)
+            ->orderByDesc('read_count')
+            ->take(5)
+            ->get();
+
+        return view('user.home', compact('algeria', 'world', 'economy', 'sport', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'check', 'podcasts', 'variety', 'photos', 'topViewed'));
     }
 
     public function reviews()
@@ -65,5 +70,18 @@ class HomePageController extends Controller
     public function newCategory()
     {
         return view('user.newCategory');
+    }
+
+    public function openArticle($id)
+    {
+        $article = Content::findOrFail($id);
+        $articleKey = 'article_' . $id . '_read';
+
+        if (!session()->has($articleKey)) {
+            $article->increment('view_reads');
+            session()->put($articleKey, true);
+        }
+
+        return view('user.article', compact('article'));
     }
 }

@@ -55,6 +55,7 @@ return new class extends Migration
 
             $table->timestamps();
             $table->timestamp('published_at')->useCurrent();
+            $table->unsignedBigInteger('read_count')->default(0);
             $table->softDeletes();
         });
     }

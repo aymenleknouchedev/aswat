@@ -234,37 +234,49 @@
 
 
         {{-- Two Titles --}}
-        <div class="container">
-            @include('user.components.sp60')
-            @include('user.components.two-titles')
-            @include('user.components.sp60')
+        @php
+            $twoTitlesCount = isset($variety) && is_countable($variety) ? count($variety) : 0;
+        @endphp
+        @if ($twoTitlesCount >= 5)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.two-titles')
+            </div>
+        @endif
 
-        </div>
+
 
         {{-- Photos Section --}}
-        <div style="background-color: #F5F5F5;">
+        @php
+            $photosCount = isset($photos) && is_countable($photos) ? count($photos) : 0;
+        @endphp
+        @if ($photosCount >= 3)
             @include('user.components.sp60')
-            <div class="container">
-                <div class="title">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <p class="section-title">صور</p>
-                        <div style="display: flex;" class="icons">
-                            <div id="backArrow" style="height: 32px; width: 32px; cursor: pointer;">
-                                <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
-
-                            </div>
-                            <div id="nextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
-                                <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+            <div style="background-color: #F5F5F5;">
+                @include('user.components.sp60')
+                <div class="container">
+                    <div class="title">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <p class="section-title">صور</p>
+                            <div style="display: flex;" class="icons">
+                                <div id="backArrow" style="height: 32px; width: 32px; cursor: pointer;">
+                                    <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
+                                </div>
+                                <div id="nextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
+                                    <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+                                </div>
                             </div>
                         </div>
+                        @include('user.components.ligne')
+                        <div class="under-title-ligne-space"></div>
                     </div>
-                    @include('user.components.ligne')
-                    <div class="under-title-ligne-space"></div>
+                    @include('user.components.photos')
                 </div>
-                @include('user.components.photos')
+                @include('user.components.sp60')
             </div>
+        @else
             @include('user.components.sp60')
-        </div>
+        @endif
 
         @include('user.components.footer')
 

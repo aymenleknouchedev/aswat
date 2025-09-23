@@ -181,26 +181,12 @@
         <p class="section-title">الأكثر قراءة</p>
         @include('user.components.ligne')
         <div class="two-titles-list">
-            <div class="two-titles-list-ite">
-                <span class="number">1</span>
-                <p>فاجعة في العراق.. وفاة 60 شخصًا على الأقل بحريق «مول الكوت» في واسط</p>
-            </div>
-            <div class="two-titles-list-ite">
-                <span class="number">2</span>
-                <p>يعاني منه دونالد ترمب.. إليك ما يجب أن تعرفه عن القصور الوريدي المزمن</p>
-            </div>
-            <div class="two-titles-list-ite">
-                <span class="number">3</span>
-                <p>جنبلاط طرح حلًّا لأحداث السويداء.. إليك النقاط التي عرضها</p>
-            </div>
-            <div class="two-titles-list-ite">
-                <span class="number">4</span>
-                <p>دماء وجثث في الأزقة.. صور تكشف انتهاكات بحق المدنيين في السويداء</p>
-            </div>
-            <div class="two-titles-list-ite">
-                <span class="number">5</span>
-                <p>هل تذهب إلى ألبانيزي أم ترمب؟ نوبل للسلام: تاريخ من التحيّزات</p>
-            </div>
+            @foreach ($topViewed as $index => $item)
+                <div class="two-titles-list-ite">
+                    <span class="number">{{ $index + 1 }}</span>
+                    <p>{{ $item->title }}</p>
+                </div>
+            @endforeach
         </div>
     </div>
 
@@ -212,55 +198,43 @@
         <div style="height: 20px;"></div>
         <div class="two-titles-right-card">
             <div class="second-grid">
-                <div>
-                    <img src="./user/assets/images/A1.jpg" alt="خبر">
-                    <h3>مصر</h3>
-                    <h2>دعوى قضائية لإلغاء حفل "سكوربيونز" بسبب دعمها الاحتلال الإسرائيلي</h2>
-                    <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد
-                        أربع سنوات
-                        على تظاهرات مناهضة للحكومة.</p>
+                <div class="sport-feature">
+                    <img src="{{ $variety[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $variety[0]->title ?? '' }}">
+                    <h3>
+                        @if (isset($variety[0]->country))
+                            {{ $variety[0]->category->name ?? '' }} - {{ $variety[0]->country->name ?? '' }}
+                        @elseif (isset($variety[0]->continent))
+                            {{ $variety[0]->category->name ?? '' }} - {{ $variety[0]->continent->name ?? '' }}
+                        @else
+                            {{ $variety[0]->category->name ?? '' }}
+                        @endif
+                    </h3>
+                    <h2>{{ $variety[1]->title ?? '' }}</h2>
+                    <p>{{ $variety[1]->summary ?? '' }}</p>
                 </div>
 
                 <div class="two-titles-files-card-list">
-                    <div class="two-titles-files-card">
-                        <div class="two-titles-files-card-image">
-                            <img src="./user/assets/images/A2.jpg" alt="كاتب الخبر">
+                    @foreach ($variety->slice(1, 4) as $variet)
+                        <div class="two-titles-files-card">
+                            <div class="two-titles-files-card-image">
+                                <img src="{{ $variet->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $variet->title ?? '' }}">
+                            </div>
+                            <div class="two-titles-files-card-text">
+                                <span>
+                                    @if (isset($variet->country))
+                                        {{ $variet->category->name ?? '' }} - {{ $variet->country->name ?? '' }}
+                                    @elseif (isset($variet->continent))
+                                        {{ $variet->category->name ?? '' }} - {{ $variet->continent->name ?? '' }}
+                                    @else
+                                        {{ $variet->category->name ?? '' }}
+                                    @endif
+                                </span>
+                                <p>{{ $variet->title ?? '' }}</p>
+                            </div>
                         </div>
-                        <div class="two-titles-files-card-text">
-                            <span>موسيقى</span>
-                            <p>آمال ماهر تعود بألبوم "حاجة غير" بعد ست سنوات من الغياب</p>
-                        </div>
-                    </div>
-
-                    <div class="two-titles-files-card">
-                        <div class="two-titles-files-card-image">
-                            <img src="./user/assets/images/A3.jpeg" alt="كاتب الخبر">
-                        </div>
-                        <div class="two-titles-files-card-text">
-                            <span>ذكرى</span>
-                            <p>نصف قرن على المصافحة السوفييتية الأميركية في الفضاء</p>
-                        </div>
-                    </div>
-
-                    <div class="two-titles-files-card">
-                        <div class="two-titles-files-card-image">
-                            <img src="./user/assets/images/A4.jpg" alt="كاتب الخبر">
-                        </div>
-                        <div class="two-titles-files-card-text">
-                            <span>فرنسا</span>
-                            <p>فتح تحقيق في شيكات قدمها مبابي لضباط في الشرطة الفرنسية</p>
-                        </div>
-                    </div>
-
-                    <div class="two-titles-files-card">
-                        <div class="two-titles-files-card-image">
-                            <img src="./user/assets/images/A5.jpeg" alt="كاتب الخبر">
-                        </div>
-                        <div class="two-titles-files-card-text">
-                            <span>بريطانيا</span>
-                            <p>لغز اختفاء أميرين صغيرين في برج لندن يعود إلى الواجهة بعد خمسة قرون</p>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

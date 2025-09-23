@@ -32,9 +32,6 @@ Route::get('/clear-cache', function () {
     return 'Cache, config, routes, and views cleared successfully.';
 });
 
-Route::get('/test', function () {
-    dd("Test");
-})->middleware('test');
 
 // Route to run migrate:fresh
 Route::get('/migrate-fresh', function () {
@@ -118,11 +115,11 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/api/search-cities', [ApiController::class, 'search_cities'])->name('api.search.cities');
 
         // Content Reviews
-        Route::get('/api/content/{id}/reviews', [ContentReviewController::class,'getContentReviews'])->name('api.content.reviews');
-        Route::post('/api/store/reviews', [ContentReviewController::class,'store'])->name('api.content.reviews.store');
-        Route::put('/api/update/reviews/{id}', [ContentReviewController::class,'update'])->name('api.content.reviews.update');
-        Route::delete('/api/delete/reviews/{id}', [ContentReviewController::class,'destroy'])->name('api.content.reviews.destroy');
-        
+        Route::get('/api/content/{id}/reviews', [ContentReviewController::class, 'getContentReviews'])->name('api.content.reviews');
+        Route::post('/api/store/reviews', [ContentReviewController::class, 'store'])->name('api.content.reviews.store');
+        Route::put('/api/update/reviews/{id}', [ContentReviewController::class, 'update'])->name('api.content.reviews.update');
+        Route::delete('/api/delete/reviews/{id}', [ContentReviewController::class, 'destroy'])->name('api.content.reviews.destroy');
+
         // List all content reviews
         Route::get('/content-reviews{id}', [ContentReviewController::class, 'index'])->name('content.reviews.index');
 

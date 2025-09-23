@@ -488,7 +488,7 @@ class ContentController extends BaseController
 
     public function update(Request $request, $id)
     {
-        
+
 
         $content = Content::findOrFail($id);
         $albumImages = [];
