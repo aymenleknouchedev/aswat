@@ -98,10 +98,10 @@
             <img src="{{ $sport[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                 alt="{{ $sport[0]->title ?? '' }}">
             <h3>
-                @if (isset($sport[0]->location) && $sport[0]->location->type === 'country')
-                    {{ $sport[0]->category->name ?? '' }} - {{ $sport[0]->location->name ?? '' }}
-                @elseif (isset($sport[0]->location) && $sport[0]->location->type === 'continent')
-                    {{ $sport[0]->category->name ?? '' }} - {{ $sport[0]->location->name ?? '' }}
+                @if (isset($sport[0]->country))
+                    {{ $sport[0]->category->name ?? '' }} - {{ $sport[0]->country->name ?? '' }}
+                @elseif (isset($sport[0]->continent))
+                    {{ $sport[0]->category->name ?? '' }} - {{ $sport[0]->continent->name ?? '' }}
                 @else
                     {{ $sport[0]->category->name ?? '' }}
                 @endif
@@ -115,10 +115,10 @@
             <img src="{{ $sport[1]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                 alt="{{ $sport[1]->title ?? '' }}">
             <h3>
-                @if (isset($sport[1]->location) && $sport[1]->location->type === 'country')
-                    {{ $sport[1]->category->name ?? '' }} - {{ $sport[1]->location->name ?? '' }}
-                @elseif (isset($sport[1]->location) && $sport[1]->location->type === 'continent')
-                    {{ $sport[1]->category->name ?? '' }} - {{ $sport[1]->location->name ?? '' }}
+                @if (isset($sport[1]->country))
+                    {{ $sport[1]->category->name ?? '' }} - {{ $sport[1]->country->name ?? '' }}
+                @elseif (isset($sport[1]->continent))
+                    {{ $sport[1]->category->name ?? '' }} - {{ $sport[1]->continent->name ?? '' }}
                 @else
                     {{ $sport[1]->category->name ?? '' }}
                 @endif
@@ -138,10 +138,10 @@
                         </div>
                         <div class="sport-card-text">
                             <h3>
-                                @if (isset($sport[$i]->location) && $sport[$i]->location->type === 'country')
-                                    {{ $sport[$i]->category->name ?? '' }} - {{ $sport[$i]->location->name ?? '' }}
-                                @elseif (isset($sport[$i]->location) && $sport[$i]->location->type === 'continent')
-                                    {{ $sport[$i]->category->name ?? '' }} - {{ $sport[$i]->location->name ?? '' }}
+                                @if (isset($sport[$i]->country))
+                                    {{ $sport[$i]->category->name ?? '' }} - {{ $sport[$i]->country->name ?? '' }}
+                                @elseif (isset($sport[$i]->continent))
+                                    {{ $sport[$i]->category->name ?? '' }} - {{ $sport[$i]->continent->name ?? '' }}
                                 @else
                                     {{ $sport[$i]->category->name ?? '' }}
                                 @endif

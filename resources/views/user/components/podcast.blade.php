@@ -70,19 +70,20 @@
 </style>
 <section class="podcasts-feature-grid">
     <div class="podcasts-grid-container container">
-        @foreach($podcasts as $podcast)
+        @foreach ($podcasts as $podcast)
             <div class="podcasts-card">
                 <div class="image-wrapper">
-                    <img src="{{ $podcast->media()->wherePivot('type', 'main')->first()->path ?? '' }}" alt="{{ $podcast->title ?? '' }}">
+                    <img src="{{ $podcast->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $podcast->title ?? '' }}">
                     <div class="video-icon">
                         @include('user.icons.headphones')
                     </div>
                 </div>
                 <h3>
-                    @if (isset($podcast->location) && $podcast->location->type === 'country')
-                        {{ $podcast->category->name ?? '' }} - {{ $podcast->location->name ?? '' }}
-                    @elseif (isset($podcast->location) && $podcast->location->type === 'continent')
-                        {{ $podcast->category->name ?? '' }} - {{ $podcast->location->name ?? '' }}
+                    @if (!empty($podcast->country))
+                        {{ $podcast->category->name ?? '' }} - {{ $podcast->country->name ?? '' }}
+                    @elseif (!empty($podcast->continent))
+                        {{ $podcast->category->name ?? '' }} - {{ $podcast->continent->name ?? '' }}
                     @else
                         {{ $podcast->category->name ?? '' }}
                     @endif

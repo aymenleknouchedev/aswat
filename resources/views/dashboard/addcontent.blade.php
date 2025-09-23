@@ -175,9 +175,10 @@
                                         <div class="form-group col-md-6 col-lg-3">
                                             <label class="form-label" data-ar="التصنيف"
                                                 data-en="Category">التصنيف</label>
+                                            <span style="color:red;">*</span>
                                             <div class="form-control-wrap position-relative">
-                                                <input type="text" id="categorySearch" class="form-control pe-5">
-                                                <input type="hidden" name="category_id" id="categoryHidden">
+                                                <input type="text" id="categorySearch" class="form-control pe-5" required>
+                                                <input type="hidden" name="category_id" id="categoryHidden" required>
                                                 <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>

@@ -93,10 +93,10 @@
                 alt="{{ $world[0]->title ?? '' }}">
 
             <h3>
-                @if (isset($world[0]->location) && $world[0]->location->type === 'country')
-                    {{ $world[0]->category->name ?? '' }} - {{ $world[0]->location->name ?? '' }}
-                @elseif (isset($world[0]->location) && $world[0]->location->type === 'continent')
-                    {{ $world[0]->category->name ?? '' }} - {{ $world[0]->location->name ?? '' }}
+                @if (isset($world[0]->country))
+                    {{ $world[0]->category->name ?? '' }} - {{ $world[0]->country->name ?? '' }}
+                @elseif (isset($world[0]->continent))
+                    {{ $world[0]->category->name ?? '' }} - {{ $world[0]->continent->name ?? '' }}
                 @else
                     {{ $world[0]->category->name ?? '' }}
                 @endif
@@ -113,10 +113,10 @@
                     <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                         alt="{{ $item->title ?? '' }}">
                     <h3>
-                        @if (isset($item->location) && $item->location->type === 'country')
-                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
-                        @elseif (isset($item->location) && $item->location->type === 'continent')
-                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                        @if (isset($item->country))
+                            {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
+                        @elseif (isset($item->continent))
+                            {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
                         @else
                             {{ $item->category->name ?? '' }}
                         @endif
@@ -131,10 +131,10 @@
                     <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                         alt="{{ $item->title ?? '' }}">
                     <h3>
-                        @if (isset($item->location) && $item->location->type === 'country')
-                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
-                        @elseif (isset($item->location) && $item->location->type === 'continent')
-                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                        @if (isset($item->country))
+                            {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
+                        @elseif (isset($item->continent))
+                            {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
                         @else
                             {{ $item->category->name ?? '' }}
                         @endif
@@ -152,10 +152,10 @@
                     <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                         alt="{{ $item->title ?? '' }}">
                     <h3>
-                        @if (isset($item->location) && $item->location->type === 'country')
-                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
-                        @elseif (isset($item->location) && $item->location->type === 'continent')
-                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                        @if (isset($item->country))
+                            {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
+                        @elseif (isset($item->continent))
+                            {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
                         @else
                             {{ $item->category->name ?? '' }}
                         @endif
@@ -170,10 +170,10 @@
                     <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                         alt="{{ $item->title ?? '' }}">
                     <h3>
-                        @if (isset($item->location) && $item->location->type === 'country')
-                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
-                        @elseif (isset($item->location) && $item->location->type === 'continent')
-                            {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                        @if (isset($item->country))
+                            {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
+                        @elseif (isset($item->continent))
+                            {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
                         @else
                             {{ $item->category->name ?? '' }}
                         @endif

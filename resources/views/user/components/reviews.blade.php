@@ -59,13 +59,14 @@
 
 <section class="review-feature-grid">
     <div class="review-grid-container">
-        @foreach($reviews as $review)
+        @foreach ($reviews as $review)
             <div class="review-card">
                 <div class="review-card-image">
-                    <img src="storage/{{ $review->writer->image ?? '' }}" alt="{{ $review->writer->name ?? 'كاتب الخبر' }}">
+                    <img src="storage/{{ $review->writer->image ?? '' }}"
+                        alt="{{ $review->writer->name ?? 'كاتب الخبر' }}">
                 </div>
                 <div class="review-card-text">
-                    <span>{{ $review->writer->name ?? '' }}</span>
+                    {{ $review->writer->name ?? '' }}{{ !empty($review->city) ? ' - ' . ($review->city->name ?? '') : '' }}
                     <p>{{ $review->title ?? '' }}</p>
                 </div>
             </div>

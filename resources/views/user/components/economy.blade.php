@@ -59,10 +59,10 @@
                     alt="{{ $item->title ?? '' }}">
 
                 <h3>
-                    @if (isset($item->location) && $item->location->type === 'country')
-                        {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
-                    @elseif (isset($item->location) && $item->location->type === 'continent')
-                        {{ $item->category->name ?? '' }} - {{ $item->location->name ?? '' }}
+                    @if (isset($item->country))
+                        {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
+                    @elseif (isset($item->continent))
+                        {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
                     @else
                         {{ $item->category->name ?? '' }}
                     @endif

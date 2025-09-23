@@ -38,6 +38,7 @@ class HomePageController extends Controller
                 ->get();
         }
 
+
         return view('user.home', compact('algeria', 'world', 'economy', 'sport', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'check', 'podcasts', 'variety', 'photos'));
     }
 

@@ -135,10 +135,10 @@
                 alt="{{ $people[0]->title ?? '' }}">
             <div class="buttom-side">
                 <h3>
-                    @if (isset($people[0]->location) && $people[0]->location->type === 'country')
-                        {{ $people[0]->category->name ?? '' }} - {{ $people[0]->location->name ?? '' }}
-                    @elseif (isset($people[0]->location) && $people[0]->location->type === 'continent')
-                        {{ $people[0]->category->name ?? '' }} - {{ $people[0]->location->name ?? '' }}
+                    @if (isset($people[0]->country))
+                        {{ $people[0]->category->name ?? '' }} - {{ $people[0]->country->name ?? '' }}
+                    @elseif (isset($people[0]->continent))
+                        {{ $people[0]->category->name ?? '' }} - {{ $people[0]->continent->name ?? '' }}
                     @else
                         {{ $people[0]->category->name ?? '' }}
                     @endif
@@ -155,10 +155,10 @@
                     <img src="{{ $person->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                         alt="{{ $person->title ?? '' }}">
                     <h3>
-                        @if (isset($person->location) && $person->location->type === 'country')
-                            {{ $person->category->name ?? '' }} - {{ $person->location->name ?? '' }}
-                        @elseif (isset($person->location) && $person->location->type === 'continent')
-                            {{ $person->category->name ?? '' }} - {{ $person->location->name ?? '' }}
+                        @if (isset($person->country))
+                            {{ $person->category->name ?? '' }} - {{ $person->country->name ?? '' }}
+                        @elseif (isset($person->continent))
+                            {{ $person->category->name ?? '' }} - {{ $person->continent->name ?? '' }}
                         @else
                             {{ $person->category->name ?? '' }}
                         @endif

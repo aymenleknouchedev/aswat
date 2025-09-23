@@ -91,6 +91,22 @@ class Content extends Model
     {
         return $this->belongsTo(Location::class, 'location_id');
     }
+
+    public function continent()
+    {
+        return $this->belongsTo(Location::class, 'continent_id');
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Location::class, 'country_id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(Location::class, 'city_id');
+    }
+    
     public function trend()
     {
         return $this->belongsTo(Trend::class);
