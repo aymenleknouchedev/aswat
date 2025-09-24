@@ -91,9 +91,18 @@ class TopContentController extends Controller
         try {
             $content = TopContent::findOrFail($id);
             $content->delete();
-            return back()->with('success', 'Content removed from top contents successfully.');
+            // return back()->with('success', 'Content removed from top contents successfully.');
+             return response()->json([
+                'success' => true,
+                'message' => 'Content removed successfully',
+                'id' => $id,
+            ]);
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Failed to remove content from top contents']);
+             return response()->json([
+                'success' => false,
+                'message' => 'Failed to remove content',
+                'error' => $e->getMessage(),
+            ]);
         }
     }
 }

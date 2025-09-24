@@ -14,7 +14,6 @@
                     <div class="container">
                         <div class="nk-block nk-block-lg">
 
-                            <!-- ✅ رأس الصفحة -->
                             <div class="nk-block-head">
                                 <div class="nk-block-head-content d-flex justify-content-between align-items-center">
                                     <div>
@@ -28,7 +27,6 @@
                                 </div>
                             </div>
 
-                            <!-- رسائل النجاح -->
                             @if (session('success'))
                                 <div class="alert alert-fill alert-success alert-icon">
                                     <em class="icon ni ni-check-circle"></em>
@@ -54,7 +52,6 @@
                         </div>
                         
                         <div class="mt-4">
-                            <!-- Search Form -->
                             <form id="topContentSearchForm" class="mb-3">
                                 <div class="row g-2">
                                     <div class="col-md-6 col-lg-3">
@@ -73,7 +70,6 @@
                                 </div>
                             </form>
 
-                            <!-- Two Lists -->
                             <div class="row g-3">
                                 <!-- Left -->
                                 <div class="col-lg-6">
@@ -85,8 +81,7 @@
                                                     <li class="list-group-item d-flex align-items-center justify-content-between">
                                                         <span style="font-size: 12px">{{ $content->title }}</span>
                                                         @if (count($topContents) < 10)
-                                                            <a href="#" class="btn btn-link btn-sm add-content-btn p-0"
-                                                            data-id="{{ $content->id }}">
+                                                            <a href="#" class="btn btn-link btn-sm add-content-btn p-0" data-id="{{ $content->id }}">
                                                                 <em class="icon ni ni-plus text-secondary"></em>
                                                             </a>
                                                         @endif
@@ -106,10 +101,15 @@
                                                     <li class="list-group-item d-flex align-items-center justify-content-between"
                                                         data-id="{{ $id }}">
                                                         <div class="d-flex align-items-center gap-2">
-                                                            <span class="badge badge-primary">{{ $loop->iteration }}</span>
+                                                            <span class="badge bg-primary d-inline-flex align-items-center justify-content-center"
+                                                                style="width: 28px; height: 28px; border-radius: 50%; font-size: 14px;">
+                                                                {{ $loop->iteration }}
+                                                            </span>
                                                             <span style="font-size: 13px">{{ $item }}</span>
                                                         </div>
-                                                        <form method="POST" class="d-inline mb-0"
+                                                        <form method="POST" 
+                                                            class="d-inline mb-0 delete-top-content-form" 
+                                                            data-id="{{ $id }}" 
                                                             action="{{ route('dashboard.topcontents.destroy', $id) }}">
                                                             @csrf
                                                             @method('DELETE')
@@ -135,11 +135,9 @@
 @endsection
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-        // ✅ helper to update badge numbers dynamically
         function updateBadges() {
             document.querySelectorAll("#sortable-list li").forEach((li, index) => {
                 let badge = li.querySelector(".badge");
@@ -156,7 +154,6 @@
                     ids.push(li.getAttribute("data-id"));
                 });
 
-                // ✅ update badges immediately
                 updateBadges();
 
                 fetch("{{ route('dashboard.topcontents.updateOrder') }}", {
@@ -255,7 +252,10 @@
                                         <span class="badge badge-primary"></span>
                                         <span>${title}</span>
                                     </div>
-                                    <form method="POST" action="{{ url('/dashboard/top-contents') }}/${id}" class="d-inline mb-0">
+                                    <form method="POST" 
+                                          action="{{ url('/dashboard/top-contents') }}/${id}" 
+                                          class="d-inline mb-0 delete-top-content-form" 
+                                          data-id="${id}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-link text-danger p-0">
@@ -264,14 +264,12 @@
                                     </form>
                                 `;
 
-                                // remove the added content from the left list
                                 this.closest("li").remove();
 
-                                // add new item to the top list
                                 document.getElementById("sortable-list").appendChild(li);
 
-                                // update badge numbers
                                 updateBadges();
+                                bindDeleteButtons();
                             } else {
                                 alert(response.error ?? "❌ لم يتمكن من إضافة المحتوى.");
                             }
@@ -284,10 +282,45 @@
             });
         }
 
-        // initial bind
-        bindAddButtons();
+        function bindDeleteButtons() {
+            document.querySelectorAll(".delete-top-content-form").forEach(form => {
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
 
-        // initial badge numbers
+                    let id = this.dataset.id;
+                    let url = this.getAttribute("action");
+                    let li = this.closest("li");
+
+                    fetch(url, {
+                        method: "DELETE",
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                            "Accept": "application/json",
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(response => {
+                        if (response.success) {
+                            li.style.transition = "opacity 0.3s";
+                            li.style.opacity = "0";
+                            setTimeout(() => {
+                                li.remove();
+                                updateBadges();
+                            }, 300);
+                        } else {
+                            alert(response.error ?? "❌ فشل حذف المحتوى.");
+                        }
+                    })
+                    .catch(err => {
+                        alert("⚠️ حدث خطأ أثناء الحذف.");
+                        console.error(err);
+                    });
+                });
+            });
+        }
+
+        bindAddButtons();
+        bindDeleteButtons();
         updateBadges();
     });
 </script>
