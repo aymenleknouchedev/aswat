@@ -85,6 +85,9 @@ if (env('COMING_SOON', true)) {
     // client
     Route::get('/', [HomePageController::class, 'index'])->name('index');
     Route::get('/photos', [HomePageController::class, 'photos'])->name('photos');
+    Route::get('/api/photos', [HomePageController::class, 'photosApi'])->name('api.photos');
+    Route::get('/api/breaking-news', [HomePageController::class, 'breakingNewsApi'])->name('api.breaking.news');
+    Route::get('/api/latest-news', [HomePageController::class, 'latestNewsApi'])->name('api.latest.news');
     Route::get('/reviews', [HomePageController::class, 'reviews'])->name('reviews');
     Route::get('/podcasts', [HomePageController::class, 'podcasts'])->name('podcasts');
     Route::get('/arts', [HomePageController::class, 'arts'])->name('arts');

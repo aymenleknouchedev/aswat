@@ -1,19 +1,25 @@
- <div class="photos-feature">
-     <div class="image-wrapper">
-         <img id="photoImage" src="./user/assets/images/b1.jpeg" alt="Feature Algeria">
-         <div class="corner-icon">
-             @include('user.icons.image')
-         </div>
-     </div>
+<div class="photos-feature">
+    <div class="image-wrapper">
+        <img id="photoImage" src="{{ $photos[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature Algeria">
+        <div class="corner-icon">
+            @include('user.icons.image')
+        </div>
+    </div>
 
-     <div class="content">
-         <h3 id="photoCategory">البرتغال</h3>
-         <h2 id="photoTitle">يوم حزين لكرة القدم.. دموع وانهيارات في وداع ديوغو جوتا الأخير</h2>
-         <p id="photoDescription">أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل
-             دياز-كانيل، بعد أربع سنوات
-             على تظاهرات مناهضة للحكومة.</p>
-     </div>
- </div>
+    <div class="content">
+        <h3 id="photoCategory">
+            @if (isset($photos[0]->country))
+                {{ $photos[0]->category->name ?? '' }} - {{ $photos[0]->country->name ?? '' }}
+            @elseif (isset($photos[0]->continent))
+                {{ $photos[0]->category->name ?? '' }} - {{ $photos[0]->continent->name ?? '' }}
+            @else
+                {{ $photos[0]->category->name ?? '' }}
+            @endif
+        </h3>
+        <h2 id="photoTitle">{{ $photos[0]->title }}</h2>
+        <p id="photoDescription">{{ $photos[0]->summary }}</p>
+    </div>
+</div>
 
  <style>
      .photos-feature img,

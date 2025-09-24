@@ -18,13 +18,11 @@ use App\Models\Window;
 use App\Models\Content;
 use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
 use App\Jobs\PublishContent;
 
 use App\Services\CacheService;
 use App\Enums\CacheKeys;
-use Validator;
 
 
 class ContentController extends BaseController

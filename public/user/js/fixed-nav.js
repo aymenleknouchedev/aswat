@@ -1,6 +1,8 @@
 // === Subnav toggle ===
 const siteFirstNavLink = document.getElementById('site-show-subnav');
 const siteSubnav = document.getElementById('site-subnav');
+const siteSecondaryNav = document.getElementById('site-secondary-nav');
+const newsFeatureGrid = document.getElementById('news-feature-grid');
 
 let isHoveringLink = false;
 let isHoveringSubnav = false;
@@ -134,11 +136,24 @@ function startHideTimeout() {
 
 const element = document.getElementById('site-breaking-text');
 
+const texts = [''];
 
-const texts = [
-    "واشنطن تعلن فرض عقوبات على المقررة الأممية لحقوق الإنسان في فلسطين",
-    "الأمم المتحدة ترد على العقوبات الجديدة بلهجة حادة"
-];
+fetch('/api/breaking-news')
+    .then(response => response.json())
+    .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+            texts.length = 0;
+            texts.push(...data);
+            siteBreakingNews.style.display = '';
+            document.body.classList.remove('site-breaking-closed');
+        } else {
+            siteBreakingNews.style.display = 'none';
+            document.body.classList.add('site-breaking-closed');
+        }
+    })
+    .catch(err => {
+        console.error('Failed to fetch texts:', err);
+    });
 
 let textIndex = 0;
 let charIndex = 0;
@@ -167,14 +182,19 @@ typeWriter();
 const element2 = document.getElementById('site-latest-text');
 
 
-const texts2 = [
-    "واشنطن تعلن فرض عقوبات على المقررة الأممية لحقوق الإنسان في فلسطين",
-    "الأمم المتحدة ترد على العقوبات الجديدة بلهجة حادة",
-    "مجلس الأمن يعقد جلسة طارئة لمناقشة التصعيد الأخير في الشرق الأوسط",
-    "وزارة الخارجية الروسية تدين الإجراءات الأمريكية وتدعو للحوار",
-    "الاتحاد الأوروبي يطالب بوقف التصعيد ويحذر من تداعيات خطيرة",
-    "إيران تعلن استعدادها للرد على أي خطوات تعتبرها استفزازية"
-];
+const texts2 = [''];
+
+fetch('/api/latest-news')
+    .then(response => response.json())
+    .then(data2 => {
+        if (Array.isArray(data2) && data2.length > 0) {
+            texts2.length = 0;
+            texts2.push(...data2);
+        } 
+    })
+    .catch(err => {
+        console.error('Failed to fetch texts:', err);
+    });
 
 let textIndex2 = 0;
 let charIndex2 = 0;

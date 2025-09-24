@@ -43,7 +43,7 @@ return new class extends Migration
             $table->longText('share_description')->nullable();
             $table->string('share_title')->nullable();
             $table->longText('share_image')->nullable();
-            
+
             // SEO
             $table->string('seo_keyword')->nullable();
 
