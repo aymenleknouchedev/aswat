@@ -94,7 +94,7 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="/featured/manage" class="nk-menu-link">
+                                <a href="{{ route('dashboard.topcontents') }}" class="nk-menu-link">
                                     <span class="nk-menu-text" data-en="Manage Featured" data-ar="إدارة الأولى">
                                         Manage Featured
                                     </span>

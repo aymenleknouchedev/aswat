@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TopContent;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Trend;
@@ -9,9 +10,43 @@ use App\Models\Window;
 use App\Models\Writer;
 use App\Models\Tag;
 use App\Models\Location;
+use App\Models\Content;
 
 class ApiController extends Controller
 {
+    public function search_contents(Request $request)
+    {
+        try {
+            $query = $request->query('search_all', '');
+            $sq = $request->query('section_filter', null);
+
+            $existingContentIds = TopContent::pluck('content_id')->toArray();
+
+            $contents = Content::query()
+                ->whereNotIn('id', $existingContentIds);
+
+            if (!empty($sq)) {
+                $contents->where('section_id', $sq);
+            }
+
+            if (!empty($query)) {
+                $contents->where(function ($q2) use ($query) {
+                    $q2->where('title', 'LIKE', "%$query%")
+                    ->orWhere('long_title', 'LIKE', "%$query%");
+                });
+            }
+
+            $results = $contents->orderBy('created_at', 'desc')
+                ->take(30)
+                ->get(['id', 'title']);
+
+            return response()->json($results, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Server Error'], 500);
+        }
+    }
+
+
     public function search_categories(Request $request)
     {
         try {

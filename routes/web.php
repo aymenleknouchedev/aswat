@@ -105,6 +105,7 @@ Route::prefix('dashboard')->group(function () {
     Route::middleware(['auth'])->group(function () {
 
         // Api for select2 ajax search
+        Route::get('/api/search-contents', [ApiController::class, 'search_contents'])->name('api.search.contents');
         Route::get('/api/search-categories', [ApiController::class, 'search_categories'])->name('api.search.categories');
         Route::post('/api/add-category', [ApiController::class, 'add_category'])->name('api.add.category');
         Route::get('/api/search-trends', [ApiController::class, 'search_trends'])->name('api.search.trends');
@@ -164,6 +165,11 @@ Route::prefix('dashboard')->group(function () {
             Route::put("/{$entity}-{id}", [$controller, 'update'])->name("dashboard.{$entity}.update");
             Route::delete("/{$entity}-{id}", [$controller, 'destroy'])->name("dashboard.{$entity}.destroy");
         }
+
+        // Top Content
+        Route::get('/top-contents', [App\Http\Controllers\TopContentController::class,'index'])->name('dashboard.topcontents');
+        Route::post('/top-contents/{id}', [App\Http\Controllers\TopContentController::class,'store'])->name(name: 'dashboard.topcontents.store');
+        Route::delete('/top-contents/{id}', [App\Http\Controllers\TopContentController::class,'destroy'])->name(name: 'dashboard.topcontents.destroy');
 
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');

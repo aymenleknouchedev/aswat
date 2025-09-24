@@ -1,0 +1,80 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Section;
+use App\Http\Controllers\Controller;
+use App\Models\TopContent;
+use App\Models\Content;
+
+class TopContentController extends Controller
+{
+    public function index()
+    {
+        try {
+            $sections = Section::all();
+            // $topContents = TopContent::with("content")->get();
+            $topContents = TopContent::with('content')
+                ->orderBy('order', 'desc')
+                ->get()
+                ->pluck('content.title', 'id')
+                ->toArray();
+
+            
+            $existingContentIds = TopContent::pluck('content_id')->toArray();
+
+            $recentContents = Content::whereNotIn('id', $existingContentIds)
+                ->orderBy('created_at', 'desc')
+                ->take(30)
+                ->get();
+
+                return view("dashboard.topcontents", compact("topContents", "sections", "recentContents"));
+        } catch (\Exception $e) {
+            // Handle exception
+            return back()->withErrors(['error' => 'Failed to retrieve content']);
+        }
+    }
+
+    public function store($id)
+    {
+        try {
+            // Check if content already exists in top contents
+            $existing = TopContent::where('content_id', $id)->first();
+            if ($existing) {
+                return back()->withErrors(['error' => 'Content already exists in top contents']);
+            }
+
+            $count = TopContent::count();
+            // max TopContent is 10 cant be more
+            if ($count >= 10) {
+                return back()->withErrors(['error' => 'Maximum of 10 top contents allowed']);
+            }
+
+            $topContent = new TopContent();
+            $topContent->content_id = $id;
+            $topContent->order = (TopContent::max('order') ?? 0) + 1;
+            $topContent->save();
+
+            return response()->json([
+                'success' => true,
+                'content' => [
+                    $topContent->id => $topContent->content->title
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Failed to add content to top contents']);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $content = TopContent::findOrFail($id);
+            $content->delete();
+            return back()->with('success', 'Content removed from top contents successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Failed to remove content from top contents']);
+        }
+    }
+}
