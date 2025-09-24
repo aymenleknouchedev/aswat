@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContentReviewController;
+use App\Http\Controllers\TopContentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -167,9 +168,10 @@ Route::prefix('dashboard')->group(function () {
         }
 
         // Top Content
-        Route::get('/top-contents', [App\Http\Controllers\TopContentController::class,'index'])->name('dashboard.topcontents');
-        Route::post('/top-contents/{id}', [App\Http\Controllers\TopContentController::class,'store'])->name(name: 'dashboard.topcontents.store');
-        Route::delete('/top-contents/{id}', [App\Http\Controllers\TopContentController::class,'destroy'])->name(name: 'dashboard.topcontents.destroy');
+        Route::get('/top-contents', [TopContentController::class,'index'])->name('dashboard.topcontents');
+        Route::post('/top-contents/{id}', [TopContentController::class,'store'])->name('dashboard.topcontents.store');
+        Route::post('/dashboard/top-contents/update-order', [TopContentController::class, 'updateOrder'])->name('dashboard.topcontents.updateOrder');
+        Route::delete('/top-contents/{id}', [TopContentController::class,'destroy'])->name('dashboard.topcontents.destroy');
 
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');

@@ -52,67 +52,76 @@
                                 </div>
                             @endif
                         </div>
-
-                        <!-- ✅ Search Form -->
+                        
                         <div class="mt-4">
-                            <form id="topContentSearchForm" class="mb-2">
-                                <div class="row">
-                                    <div class="col-12 row g-2">
-                                        <div class="col-3">
-                                            <input type="text" name="search_all" id="searchAllInput" class="form-control"
-                                                placeholder="ابحث في جميع المحتويات...">
-                                        </div>
-                                        <div class="col-3">
-                                            <select name="section_filter" id="sectionFilter" class="form-select">
-                                                <option value="">{{ __('اختر القسم') }}</option>
-                                                @foreach ($sections as $section)
-                                                    <option value="{{ $section->id }}">
-                                                        {{ $section->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                            <!-- Search Form -->
+                            <form id="topContentSearchForm" class="mb-3">
+                                <div class="row g-2">
+                                    <div class="col-md-6 col-lg-3">
+                                        <input type="text" name="search_all" id="searchAllInput" 
+                                            class="form-control"
+                                            placeholder="ابحث في جميع المحتويات...">
+                                    </div>
+                                    <div class="col-md-6 col-lg-3">
+                                        <select name="section_filter" id="sectionFilter" class="form-select">
+                                            <option value="">{{ __('اختر القسم') }}</option>
+                                            @foreach ($sections as $section)
+                                                <option value="{{ $section->id }}">{{ $section->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </form>
 
-                            <div class="row">
-                                <!-- ✅ Left: Recent Contents / Search Results -->
-                                <div class="col-6">
-                                    <ul id="recentContentsList" class="list-group custom-scroll"
-                                        style="direction: rtl; max-height: 500px; overflow-y: auto;">
-                                        @foreach ($recentContents as $content)
-                                            <li class="list-group-item d-flex align-items-center justify-content-between">
-                                                <span>{{ $content->title }}</span>
-                                                @if (count($topContents) < 10)
-                                                <a href="#" class="btn btn-link btn-sm add-content-btn"
-                                                   data-id="{{ $content->id }}">
-                                                    <em class="icon ni ni-plus text-secondary"></em>
-                                                </a>
-                                                @endif
-                                            </li>
-                                        @endforeach
-                                    </ul>
+                            <!-- Two Lists -->
+                            <div class="row g-3">
+                                <!-- Left -->
+                                <div class="col-lg-6">
+                                    <div class="card h-100">
+                                        <div class="card-body p-0">
+                                            <ul id="recentContentsList" class="list-group custom-scroll"
+                                                style="direction: rtl; max-height: 500px; overflow-y: auto;">
+                                                @foreach ($recentContents as $content)
+                                                    <li class="list-group-item d-flex align-items-center justify-content-between">
+                                                        <span style="font-size: 12px">{{ $content->title }}</span>
+                                                        @if (count($topContents) < 10)
+                                                            <a href="#" class="btn btn-link btn-sm add-content-btn p-0"
+                                                            data-id="{{ $content->id }}">
+                                                                <em class="icon ni ni-plus text-secondary"></em>
+                                                            </a>
+                                                        @endif
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <!-- ✅ Right: Top Contents -->
-                                <div class="col-6">
-                                    <ul id="sortable-list" class="list-group">
-                                        @foreach ($topContents as $id => $item)
-                                            <li class="list-group-item d-flex align-items-center justify-content-between"
-                                                data-id="{{ $id }}">
-                                                <span>📝 {{ $item }}</span>
-                                                <form method="POST" class="d-inline"
-                                                    action="{{ route('dashboard.topcontents.destroy', $id) }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-link text-danger p-0">
-                                                        <em class="icon ni ni-trash"></em>
-                                                    </button>
-                                                </form>
-                                            </li>
-                                        @endforeach
-                                    </ul>
+                                <!-- Right -->
+                                <div class="col-lg-6">
+                                    <div class="card h-100">
+                                        <div class="card-body p-0">
+                                            <ul id="sortable-list" class="list-group">
+                                                @foreach ($topContents as $id => $item)
+                                                    <li class="list-group-item d-flex align-items-center justify-content-between"
+                                                        data-id="{{ $id }}">
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <span class="badge badge-primary">{{ $loop->iteration }}</span>
+                                                            <span style="font-size: 13px">{{ $item }}</span>
+                                                        </div>
+                                                        <form method="POST" class="d-inline mb-0"
+                                                            action="{{ route('dashboard.topcontents.destroy', $id) }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-link text-danger p-0">
+                                                                <em class="icon ni ni-minus"></em>
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -130,14 +139,50 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
+        // ✅ helper to update badge numbers dynamically
+        function updateBadges() {
+            document.querySelectorAll("#sortable-list li").forEach((li, index) => {
+                let badge = li.querySelector(".badge");
+                if (badge) badge.textContent = index + 1;
+            });
+        }
+
         new Sortable(document.getElementById('sortable-list'), {
             animation: 150,
-            ghostClass: 'bg-light'
+            ghostClass: 'bg-light',
+            onEnd: function () {
+                let ids = [];
+                document.querySelectorAll("#sortable-list li").forEach((li, index) => {
+                    ids.push(li.getAttribute("data-id"));
+                });
+
+                // ✅ update badges immediately
+                updateBadges();
+
+                fetch("{{ route('dashboard.topcontents.updateOrder') }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ ids: ids })
+                })
+                .then(res => res.json())
+                .then(response => {
+                    if (!response.success) {
+                        alert("⚠️ لم يتم حفظ الترتيب!");
+                    }
+                })
+                .catch(err => {
+                    alert("⚠️ حدث خطأ أثناء حفظ الترتيب.");
+                    console.error(err);
+                });
+            }
         });
 
         const form = document.getElementById("topContentSearchForm");
         const resultsDiv = document.getElementById("recentContentsList");
-
         const originalContents = resultsDiv.innerHTML;
 
         form.addEventListener("input", function () {
@@ -166,11 +211,9 @@
                         li.className = "list-group-item d-flex align-items-center justify-content-between";
                         li.innerHTML = `
                             <span>${item.title}</span>
-                            ${data.length < 10 ? `
                             <a href="#" class="btn btn-sm btn-link add-content-btn" data-id="${item.id}">
                                 <em class="icon ni ni-plus text-secondary"></em>
                             </a>
-                            ` : ''}
                         `;
                         resultsDiv.appendChild(li);
                     });
@@ -208,16 +251,27 @@
                                 li.className = "list-group-item d-flex align-items-center justify-content-between";
                                 li.setAttribute("data-id", id);
                                 li.innerHTML = `
-                                    <span>📝 ${title}</span>
-                                    <form method="POST" action="{{ url('/dashboard/top-contents') }}/${id}" class="d-inline">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="badge badge-primary"></span>
+                                        <span>${title}</span>
+                                    </div>
+                                    <form method="POST" action="{{ url('/dashboard/top-contents') }}/${id}" class="d-inline mb-0">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-link text-danger p-0" onclick="return confirm('هل أنت متأكد من حذف هذا المحتوى؟')">
-                                            <em class="icon ni ni-trash"></em>
+                                        <button type="submit" class="btn btn-link text-danger p-0">
+                                            <em class="icon ni ni-minus"></em>
                                         </button>
                                     </form>
                                 `;
-                                document.getElementById("sortable-list").prepend(li);
+
+                                // remove the added content from the left list
+                                this.closest("li").remove();
+
+                                // add new item to the top list
+                                document.getElementById("sortable-list").appendChild(li);
+
+                                // update badge numbers
+                                updateBadges();
                             } else {
                                 alert(response.error ?? "❌ لم يتمكن من إضافة المحتوى.");
                             }
@@ -229,7 +283,11 @@
                 });
             });
         }
-        
+
+        // initial bind
         bindAddButtons();
+
+        // initial badge numbers
+        updateBadges();
     });
 </script>

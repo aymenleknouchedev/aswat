@@ -6,6 +6,7 @@ use App\Models\Section;
 use App\Http\Controllers\Controller;
 use App\Models\TopContent;
 use App\Models\Content;
+use Illuminate\Http\Request;
 
 class TopContentController extends Controller
 {
@@ -63,9 +64,27 @@ class TopContentController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Failed to add content to top contents']);
+            return response()->json(['error' => 'Failed to add content to top contents'], 500);
         }
     }
+
+    public function updateOrder(Request $request)
+    {
+        try {
+            $ids = $request->input('ids', []); 
+
+            foreach ($ids as $index => $id) {
+                TopContent::where('id', $id)->update([
+                    'order' => count($ids) - $index 
+                ]);
+            }
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => 'Failed to update order'], 500);
+    }
+}
+
 
     public function destroy($id)
     {

@@ -91,7 +91,8 @@ class LocationController extends BaseController
      */
     public function edit(string $id)
     {
-        //
+        $location = Location::findOrFail($id);
+        return view('dashboard.editlocation', compact('location'));
     }
 
     /**
@@ -99,7 +100,19 @@ class LocationController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            Validator::validate($request->all(), [
+                'name' => 'required|string|unique:locations,name,' . $id,
+                'type' => 'required|in:city,continent,country',
+            ]);
+
+            $location = Location::findOrFail($id);
+            $location->update($request->only('name', 'type'));
+
+            return redirect()->back()->with('success', 'Location updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update location: ' . $e->getMessage());
+        }
     }
 
     /**
