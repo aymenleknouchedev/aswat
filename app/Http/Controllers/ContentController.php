@@ -18,13 +18,11 @@ use App\Models\Window;
 use App\Models\Content;
 use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
 use App\Jobs\PublishContent;
 
 use App\Services\CacheService;
 use App\Enums\CacheKeys;
-use Validator;
 
 
 class ContentController extends BaseController
@@ -49,6 +47,7 @@ class ContentController extends BaseController
 
     public function create()
     {
+
 
         $ttl_sections = config('cache_ttl.sections', 3600);
         $ttl_writers = config('cache_ttl.writers', 3600);
@@ -119,7 +118,7 @@ class ContentController extends BaseController
             'mobile_title' => 'required|string|max:40',
             'display_method' => 'required|string|in:simple,list,file',
             'section_id' => 'required|exists:sections,id',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => 'required|exists:categories,id',
             'continent_id' => 'nullable|exists:locations,id',
             'country_id' => 'nullable|exists:locations,id',
             'trend_id' => 'nullable|exists:trends,id',
@@ -409,9 +408,7 @@ class ContentController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -490,6 +487,7 @@ class ContentController extends BaseController
     public function update(Request $request, $id)
     {
 
+
         $content = Content::findOrFail($id);
         $albumImages = [];
 
@@ -510,12 +508,12 @@ class ContentController extends BaseController
             'display_method' => 'required|string|in:simple,list,file',
             'section_id' => 'required|exists:sections,id',
             'category_id' => 'nullable|exists:categories,id',
-            'continent_id' => 'nullable|exists:continents,id',
-            'country_id' => 'nullable|exists:countries,id',
+            'continent_id' => 'nullable|exists:locations,id',
+            'country_id' => 'nullable|exists:locations,id',
             'trend_id' => 'nullable|exists:trends,id',
             'window_id' => 'nullable|exists:windows,id',
             'writer_id' => 'nullable|exists:writers,id',
-            'city_id' => 'nullable|exists:cities,id',
+            'city_id' => 'nullable|exists:locations,id',
             'summary' => 'nullable|string',
             'content' => 'nullable|string',
             'seo_keyword' => 'nullable|string|max:255',

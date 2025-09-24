@@ -82,34 +82,25 @@
 
 <section class="files-feature-grid">
     <div class="files-grid-container">
-        <div class="files-card">
-            <div class="files-card-image">
-                <img src="./user/assets/images/IMG45.jpg" alt="كاتب الخبر">
+        @foreach ($files as $item)
+            <div class="files-card">
+                <div class="files-card-image">
+                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $item->title ?? '' }}">
+                </div>
+                <div class="files-card-text">
+                    <span>
+                        @if (isset($item->country))
+                            {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
+                        @elseif (isset($item->continent))
+                            {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
+                        @else
+                            {{ $item->category->name ?? '' }}
+                        @endif
+                    </span>
+                    <p>{{ $item->title ?? '' }}</p>
+                </div>
             </div>
-            <div class="files-card-text">
-                <span>مسار</span>
-                <p>نيلسون مانديلا... من النضال السرّي إلى إسقاط نظام الفصل العنصري</p>
-            </div>
-        </div>
-
-        <div class="files-card">
-            <div class="files-card-image">
-                <img src="./user/assets/images/IMG46.webp" alt="كاتب الخبر">
-            </div>
-            <div class="files-card-text">
-                <span>سياسة</span>
-                <p>موريتانيا والتطبيع.. هل ينطلق قطار «اتفاقيات أبراهام» من نواكشوط مجددًا؟</p>
-            </div>
-        </div>
-
-        <div class="files-card">
-            <div class="files-card-image">
-                <img src="./user/assets/images/IMG47.webp" alt="كاتب الخبر">
-            </div>
-            <div class="files-card-text">
-                <span>أسئلة</span>
-                <p>التقارب الجزائري الأميركي.. هل ينهي الهيمنة الاقتصادية الصينية؟</p>
-            </div>
-        </div>
+        @endforeach
     </div>
 </section>

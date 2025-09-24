@@ -71,52 +71,26 @@
 
 <section class="videos-feature-grid">
     <div class="videos-grid-container container">
-        <div class="videos-card">
-            <div class="image-wrapper">
-                <img src="./user/assets/images/IMG41.jpg" alt="Feature videos">
-                <div class="video-icon">
-                    <!-- أيقونة تشغيل SVG -->
-                    @include('user.icons.play')
+        @foreach ($videos as $item)
+            <div class="videos-card">
+                <div class="image-wrapper">
+                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $item->title ?? '' }}">
+                    <div class="video-icon">
+                        @include('user.icons.play')
+                    </div>
                 </div>
+                <h3>
+                    @if (isset($item->country))
+                        {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
+                    @elseif (isset($item->continent))
+                        {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
+                    @else
+                        {{ $item->category->name ?? '' }}
+                    @endif
+                </h3>
+                <h2>{{ $item->title ?? '' }}</h2>
             </div>
-            <h3>تركيا</h3>
-            <h2>«العمال الكردستاني».. من صعود الجبل حتى إنزال البندقية</h2>
-        </div>
-
-        <div class="videos-card">
-            <div class="image-wrapper">
-                <img src="./user/assets/images/IMG42.jpg" alt="Feature videos">
-                <div class="video-icon">
-                    <!-- أيقونة تشغيل SVG -->
-                    @include('user.icons.play')
-                </div>
-            </div>
-            <h3>فلسطين</h3>
-            <h2>غزة.. ترجيح هدنة مؤقتة</h2>
-        </div>
-
-        <div class="videos-card">
-            <div class="image-wrapper">
-                <img src="./user/assets/images/IMG43.jpg" alt="Feature videos">
-                <div class="video-icon">
-                    <!-- أيقونة تشغيل SVG -->
-                    @include('user.icons.play')
-                </div>
-            </div>
-            <h3>آسيا</h3>
-            <h2>الهند وباكستان تتراجعان عن حافة الهاوية</h2>
-        </div>
-
-        <div class="videos-card">
-            <div class="image-wrapper">
-                <img src="./user/assets/images/IMG44.jpg" alt="Feature videos">
-                <div class="video-icon">
-                    <!-- أيقونة تشغيل SVG -->
-                    @include('user.icons.play')
-                </div>
-            </div>
-            <h3>السودان</h3>
-            <h2>البرهان من القصر الرئاسي: الخرطوم حرة</h2>
-        </div>
+        @endforeach
     </div>
 </section>

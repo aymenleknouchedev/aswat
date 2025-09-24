@@ -70,52 +70,26 @@
 </style>
 <section class="podcasts-feature-grid">
     <div class="podcasts-grid-container container">
-        <div class="podcasts-card">
-            <div class="image-wrapper">
-                <img src="./user/assets/images/IMG90.jpg" alt="Feature podcasts">
-                <div class="video-icon">
-                    <!-- أيقونة تشغيل SVG -->
-                    @include('user.icons.headphones')
+        @foreach ($podcasts as $podcast)
+            <div class="podcasts-card">
+                <div class="image-wrapper">
+                    <img src="{{ $podcast->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $podcast->title ?? '' }}">
+                    <div class="video-icon">
+                        @include('user.icons.headphones')
+                    </div>
                 </div>
+                <h3>
+                    @if (!empty($podcast->country))
+                        {{ $podcast->category->name ?? '' }} - {{ $podcast->country->name ?? '' }}
+                    @elseif (!empty($podcast->continent))
+                        {{ $podcast->category->name ?? '' }} - {{ $podcast->continent->name ?? '' }}
+                    @else
+                        {{ $podcast->category->name ?? '' }}
+                    @endif
+                </h3>
+                <h2>{{ $podcast->title ?? '' }}</h2>
             </div>
-            <h3>منوعات</h3>
-            <h2>أطعمة نحبها قد تختفي من حياتنا في المستقبل</h2>
-        </div>
-
-        <div class="podcasts-card">
-            <div class="image-wrapper">
-                <img src="./user/assets/images/IMG91.webp" alt="Feature podcasts">
-                <div class="video-icon">
-                    <!-- أيقونة تشغيل SVG -->
-                    @include('user.icons.headphones')
-                </div>
-            </div>
-            <h3>طفولة</h3>
-            <h2>قصة محمد مع التعنيف الجسدي</h2>
-        </div>
-
-        <div class="podcasts-card">
-            <div class="image-wrapper">
-                <img src="./user/assets/images/IMG92.webp" alt="Feature podcasts">
-                <div class="video-icon">
-                    <!-- أيقونة تشغيل SVG -->
-                    @include('user.icons.headphones')
-                </div>
-            </div>
-            <h3>غزة اليوم</h3>
-            <h2>قصف إسرائيلي يستهدف كنيسة العائلة المقدسة</h2>
-        </div>
-
-        <div class="podcasts-card">
-            <div class="image-wrapper">
-                <img src="./user/assets/images/IMG93.jpg" alt="Feature podcasts">
-                <div class="video-icon">
-                    <!-- أيقونة تشغيل SVG -->
-                    @include('user.icons.headphones')
-                </div>
-            </div>
-            <h3>خرافات</h3>
-            <h2>الجانب المظلم للشبكة العنكبوتية</h2>
-        </div>
+        @endforeach
     </div>
 </section>

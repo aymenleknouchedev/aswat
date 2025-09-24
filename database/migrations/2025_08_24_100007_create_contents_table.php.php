@@ -43,7 +43,7 @@ return new class extends Migration
             $table->longText('share_description')->nullable();
             $table->string('share_title')->nullable();
             $table->longText('share_image')->nullable();
-            
+
             // SEO
             $table->string('seo_keyword')->nullable();
 
@@ -55,6 +55,7 @@ return new class extends Migration
 
             $table->timestamps();
             $table->timestamp('published_at')->useCurrent();
+            $table->unsignedBigInteger('read_count')->default(0);
             $table->softDeletes();
         });
     }

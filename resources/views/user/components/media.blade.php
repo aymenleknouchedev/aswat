@@ -51,28 +51,21 @@
 
 <section class="media-feature-grid">
     <div class="media-grid-container">
-        <div class="media-card">
-            <img src="./user/assets/images/IMG57.webp" alt="Feature media">
-            <h3>مشهد</h3>
-            <h2>كيف يؤطّر الإعلام المعارك ويتلاعب بسردياتها؟</h2>
-        </div>
-
-        <div class="media-card">
-            <img src="./user/assets/images/IMG58.webp" alt="Feature media">
-            <h3>منصات</h3>
-            <h2>قنوات «فيسبوك».. هل تنجح في دعم الأخبار وتعزيز التفاعل؟</h2>
-        </div>
-
-        <div class="media-card">
-            <img src="./user/assets/images/IMG59.jpg" alt="Feature media">
-            <h3>صحافة</h3>
-            <h2>دراسة أوروبية: الإعلام التقليدي محكوم عليه بالزوال</h2>
-        </div>
-
-        <div class="media-card">
-            <img src="./user/assets/images/IMG60.jpg" alt="Feature media">
-            <h3>الولايات المتحدة</h3>
-            <h2>ترامب يقاضي "وول ستريت جورنال" ويطلب تعويضًا بعشرة مليارات دولار</h2>
-        </div>
+        @foreach ($media as $item)
+            <div class="media-card">
+                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="{{ $item->title ?? '' }}">
+                <h3>
+                    @if (isset($item->country))
+                        {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
+                    @elseif (isset($item->continent))
+                        {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
+                    @else
+                        {{ $item->category->name ?? '' }}
+                    @endif
+                </h3>
+                <h2>{{ $item->title ?? '' }}</h2>
+            </div>
+        @endforeach
     </div>
 </section>

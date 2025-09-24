@@ -59,33 +59,17 @@
 
 <section class="review-feature-grid">
     <div class="review-grid-container">
-        <div class="review-card">
-            <div class="review-card-image">
-                <img src="./user/assets/images/IMG38.jpg" alt="كاتب الخبر">
+        @foreach ($reviews as $review)
+            <div class="review-card">
+                <div class="review-card-image">
+                    <img src="storage/{{ $review->writer->image ?? '' }}"
+                        alt="{{ $review->writer->name ?? 'كاتب الخبر' }}">
+                </div>
+                <div class="review-card-text">
+                    {{ $review->writer->name ?? '' }}{{ !empty($review->city) ? ' - ' . ($review->city->name ?? '') : '' }}
+                    <p>{{ $review->title ?? '' }}</p>
+                </div>
             </div>
-            <div class="review-card-text">
-                <span>بثينة العيسى</span>
-                <p>أركيولوجيا العقول المُحتلة.. يورغن هابرماس نموذجًا</p>
-            </div>
-        </div>
-
-        <div class="review-card">
-            <div class="review-card-image">
-                <img src="./user/assets/images/IMG39.jpg" alt="كاتب الخبر">
-            </div>
-            <div class="review-card-text">
-                <span>محمد علاوة حاجي</span>
-                <p>هل تسهم رؤوس الأموال العربية في تنمية الثقافة؟</p>
-            </div>
-        </div>
-        <div class="review-card">
-            <div class="review-card-image">
-                <img src="./user/assets/images/IMG40.jpg" alt="كاتب الخبر">
-            </div>
-            <div class="review-card-text">
-                <span>نجوان درويش</span>
-                <p>ملاحظات في ساعة الإبادة</p>
-            </div>
-        </div>
+        @endforeach
     </div>
 </section>

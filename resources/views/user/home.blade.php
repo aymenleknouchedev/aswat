@@ -117,10 +117,10 @@
                 'algeria' => ['الجزائر', 4],
                 'world' => ['عالم', 5],
                 'economy' => ['اقتصاد', 4],
-                'sports' => ['رياضة', 6],
+                'sport' => ['رياضة', 6],
                 'people' => ['ناس', 3],
-                'culture' => ['ثقافة وفنون', 8],
-                'opinions' => ['آراء', 3],
+                'arts' => ['ثقافة وفنون', 8],
+                'reviews' => ['آراء', 3],
             ];
         @endphp
 
@@ -218,50 +218,65 @@
 
         {{-- Podcast Section --}}
         @php
-            $podcastCount = isset($podcast) && is_countable($podcast) ? count($podcast) : 0;
+            $podcastCount = isset($podcasts) && is_countable($podcasts) ? count($podcasts) : 0;
         @endphp
         @if ($podcastCount >= 4)
+            @include('user.components.sp60')
             <div style="background-color: #F5F5F5;">
                 @include('user.components.sp60')
                 <div class="container">
                     @include('user.components.section-title', ['slot' => 'بودكاست'])
                 </div>
                 @include('user.components.podcast')
+                @include('user.components.sp60')
             </div>
         @endif
 
-        @include('user.components.sp60')
 
         {{-- Two Titles --}}
-        <div class="container">
-            @include('user.components.sp60')
-            @include('user.components.two-titles')
-        </div>
+        @php
+            $twoTitlesCount = isset($variety) && is_countable($variety) ? count($variety) : 0;
+        @endphp
+        @if ($twoTitlesCount >= 5)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.two-titles')
+            </div>
+        @endif
+
+
 
         {{-- Photos Section --}}
-        <div style="background-color: #F5F5F5;">
+        @php
+            $photosCount = isset($photos) && is_countable($photos) ? count($photos) : 0;
+        @endphp
+        @if ($photosCount >= 3)
             @include('user.components.sp60')
-            <div class="container">
-                <div class="title">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <p class="section-title">صور</p>
-                        <div style="display: flex;" class="icons">
-                            <div id="backArrow" style="height: 32px; width: 32px; cursor: pointer;">
-                                <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
-
-                            </div>
-                            <div id="nextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
-                                <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+            <div style="background-color: #F5F5F5;">
+                @include('user.components.sp60')
+                <div class="container">
+                    <div class="title">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <p class="section-title">صور</p>
+                            <div style="display: flex;" class="icons">
+                                <div id="backArrow" style="height: 32px; width: 32px; cursor: pointer;">
+                                    <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
+                                </div>
+                                <div id="nextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
+                                    <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+                                </div>
                             </div>
                         </div>
+                        @include('user.components.ligne')
+                        <div class="under-title-ligne-space"></div>
                     </div>
-                    @include('user.components.ligne')
-                    <div class="under-title-ligne-space"></div>
+                    @include('user.components.photos')
                 </div>
-                @include('user.components.photos')
+                @include('user.components.sp60')
             </div>
+        @else
             @include('user.components.sp60')
-        </div>
+        @endif
 
         @include('user.components.footer')
 

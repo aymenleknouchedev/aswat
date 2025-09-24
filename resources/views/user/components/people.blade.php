@@ -131,29 +131,41 @@
     <div class="people-grid-container">
         <!-- Right: big feature -->
         <div class="people-feature">
-            <img src="./user/assets/images/IMG35.jpeg" alt="Feature people">
+            <img src="{{ $people[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                alt="{{ $people[0]->title ?? '' }}">
             <div class="buttom-side">
-                <h3>فلسطين</h3>
-                <h2>وسائل التواصل الاجتماعي تنتفض: الجوع يفتك بقطاع غزة</h2>
-                <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع
-                    سنوات
-                    على تظاهرات مناهضة للحكومة.</p>
+                <h3>
+                    @if (isset($people[0]->country))
+                        {{ $people[0]->category->name ?? '' }} - {{ $people[0]->country->name ?? '' }}
+                    @elseif (isset($people[0]->continent))
+                        {{ $people[0]->category->name ?? '' }} - {{ $people[0]->continent->name ?? '' }}
+                    @else
+                        {{ $people[0]->category->name ?? '' }}
+                    @endif
+                </h3>
+                <h2>{{ $people[0]->title ?? '' }}</h2>
+                <p>{{ $people[0]->summary ?? '' }}</p>
             </div>
         </div>
 
         <!-- Left: list -->
         <div class="people-list">
-            <div class="people-feature-m">
-                <img src="./user/assets/images/IMG36.jpg" alt="Feature people small">
-                <h3>مجتمعات</h3>
-                <h2>الصين تعلن خطة لتحفيز الإنجاب: 500 دولار سنويًا لكل طفل حتى سن الثالثة</h2>
-            </div>
-
-            <div class="people-feature-m">
-                <img src="./user/assets/images/IMG37.jpg" alt="Feature people small">
-                <h3>مجتمعات</h3>
-                <h2>القاديانية.. 135 عامًا من الجدل حول النبوة والانتماء للإسلام</h2>
-            </div>
+            @foreach($people->slice(1, 2) as $person)
+                <div class="people-feature-m">
+                    <img src="{{ $person->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $person->title ?? '' }}">
+                    <h3>
+                        @if (isset($person->country))
+                            {{ $person->category->name ?? '' }} - {{ $person->country->name ?? '' }}
+                        @elseif (isset($person->continent))
+                            {{ $person->category->name ?? '' }} - {{ $person->continent->name ?? '' }}
+                        @else
+                            {{ $person->category->name ?? '' }}
+                        @endif
+                    </h3>
+                    <h2>{{ $person->title ?? '' }}</h2>
+                </div>
+            @endforeach
         </div>
     </div>
 </section>

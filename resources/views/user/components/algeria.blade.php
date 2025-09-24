@@ -207,14 +207,15 @@
     <div class="algeria-grid-container">
         @if (isset($algeria) && count($algeria) >= 4)
             <div class="algeria-feature">
-                <img src="{{ optional($algeria[0]->mediaContent->firstWhere('type', 'main')) }}" alt="Feature algeria">
+                <img src="{{ $algeria[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature algeria">
                 <h3>
-                    @if (isset($algeria[0]->location) && $algeria[0]->location->type === 'country')
-                        {{ $algeria[0]->category }} - {{ $algeria[0]->location->name }}
-                    @elseif (isset($algeria[0]->location) && $algeria[0]->location->type === 'continent')
-                        {{ $algeria[0]->category }} - {{ $algeria[0]->location->name }}
+                    @if (isset($algeria[0]->country))
+                        {{ $algeria[0]->category->name ?? '' }} - {{ $algeria[0]->country->name ?? '' }}
+                    @elseif (isset($algeria[0]->continent))
+                        {{ $algeria[0]->category->name ?? '' }} - {{ $algeria[0]->continent->name ?? '' }}
                     @else
-                        {{ $algeria[0]->category }}
+                        {{ $algeria[0]->category->name ?? '' }}
+                    @endif
                 </h3>
                 <h2>{{ $algeria[0]->title }}</h2>
                 <p>{{ $algeria[0]->summary }}</p>
@@ -222,14 +223,15 @@
 
             <div class="algeria-list">
                 <div class="algeria-feature-m">
-                    <img src="{{ $algeria[1]->image }}" alt="Feature algeria small">
+                    <img src="{{ $algeria[1]->media()->wherePivot('type', 'main')->first()->path }}"
+                        alt="Feature algeria small">
                     <h3>
-                        @if (isset($algeria[1]->location) && $algeria[1]->location->type === 'country')
-                            {{ $algeria[1]->category }} - {{ $algeria[1]->location->name }}
-                        @elseif (isset($algeria[1]->location) && $algeria[1]->location->type === 'continent')
-                            {{ $algeria[1]->category }} - {{ $algeria[1]->location->name }}
+                        @if (isset($algeria[1]->country))
+                            {{ $algeria[1]->category->name ?? '' }} - {{ $algeria[1]->country->name ?? '' }}
+                        @elseif (isset($algeria[1]->continent))
+                            {{ $algeria[1]->category->name ?? '' }} - {{ $algeria[1]->continent->name ?? '' }}
                         @else
-                            {{ $algeria[1]->category }}
+                            {{ $algeria[1]->category->name ?? '' }}
                         @endif
                     </h3>
                     <h2>{{ $algeria[1]->title }}</h2>
@@ -239,16 +241,17 @@
                 <div class="algeria-list-div">
                     <div class="news-card-horizontal">
                         <div class="news-card-image">
-                            <img src="{{ $algeria[2]->image }}" alt="{{ $algeria[2]->title }}">
+                            <img src="{{ $algeria[2]->media()->wherePivot('type', 'main')->first()->path }}"
+                                alt="{{ $algeria[2]->title }}">
                         </div>
                         <div class="news-card-text">
                             <h3>
-                                @if (isset($algeria[2]->location) && $algeria[2]->location->type === 'country')
-                                    {{ $algeria[2]->category }} - {{ $algeria[2]->location->name }}
-                                @elseif (isset($algeria[2]->location) && $algeria[2]->location->type === 'continent')
-                                    {{ $algeria[2]->category }} - {{ $algeria[2]->location->name }}
+                                @if (isset($algeria[2]->country))
+                                    {{ $algeria[2]->category->name ?? '' }} - {{ $algeria[2]->country->name ?? '' }}
+                                @elseif (isset($algeria[2]->continent))
+                                    {{ $algeria[2]->category->name ?? '' }} - {{ $algeria[2]->continent->name ?? '' }}
                                 @else
-                                    {{ $algeria[2]->category }}
+                                    {{ $algeria[2]->category->name ?? '' }}
                                 @endif
                             </h3>
                             <p>{{ $algeria[2]->title }}</p>
@@ -257,16 +260,17 @@
 
                     <div class="news-card-horizontal">
                         <div class="news-card-image">
-                            <img src="{{ $algeria[3]->image }}" alt="{{ $algeria[3]->title }}">
+                            <img src="{{ $algeria[3]->media()->wherePivot('type', 'main')->first()->path }}"
+                                alt="{{ $algeria[3]->title }}">
                         </div>
                         <div class="news-card-text">
                             <h3>
-                                @if (isset($algeria[3]->location) && $algeria[3]->location->type === 'country')
-                                    {{ $algeria[3]->category }} - {{ $algeria[3]->location->name }}
-                                @elseif (isset($algeria[3]->location) && $algeria[3]->location->type === 'continent')
-                                    {{ $algeria[3]->category }} - {{ $algeria[3]->location->name }}
+                                @if (isset($algeria[3]->country))
+                                    {{ $algeria[3]->category->name ?? '' }} - {{ $algeria[3]->country->name ?? '' }}
+                                @elseif (isset($algeria[3]->continent))
+                                    {{ $algeria[3]->category->name ?? '' }} - {{ $algeria[3]->continent->name ?? '' }}
                                 @else
-                                    {{ $algeria[3]->category }}
+                                    {{ $algeria[3]->category->name ?? '' }}
                                 @endif
                             </h3>
                             <p>{{ $algeria[3]->title }}</p>

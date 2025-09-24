@@ -146,7 +146,7 @@
 
 
 
-<section class="news-feature-grid">
+<section class="news-feature-grid" id="news-feature-grid">
     <div class="news-grid-container">
         <!-- Right column: big feature -->
         <div class="news-feature">

@@ -91,68 +91,66 @@
         cursor: pointer;
     }
 </style>
-
 <section class="sport-feature-grid">
     <div class="sport-grid-container">
         <!-- Column 1 -->
         <div class="sport-feature">
-            <img src="./user/assets/images/IMG30.webp" alt="Feature sport">
-            <h3>كرة قدم</h3>
-            <h2>ريان آيت نوري أمام فرصة العمر في «سيتي»</h2>
-            <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع سنوات
-                على تظاهرات مناهضة للحكومة.</p>
+            <img src="{{ $sport[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                alt="{{ $sport[0]->title ?? '' }}">
+            <h3>
+                @if (isset($sport[0]->country))
+                    {{ $sport[0]->category->name ?? '' }} - {{ $sport[0]->country->name ?? '' }}
+                @elseif (isset($sport[0]->continent))
+                    {{ $sport[0]->category->name ?? '' }} - {{ $sport[0]->continent->name ?? '' }}
+                @else
+                    {{ $sport[0]->category->name ?? '' }}
+                @endif
+            </h3>
+            <h2>{{ $sport[0]->title ?? '' }}</h2>
+            <p>{{ $sport[0]->summary ?? '' }}</p>
         </div>
 
         <!-- Column 2 -->
         <div class="sport-feature">
-            <img src="./user/assets/images/IMG31.jpg" alt="Feature sport">
-            <h3>كرة قدم</h3>
-            <h2>«مانشستر يونايتد» يلاحق هشام بوداوي.. وسبب غريب يمنع إتمام الصفقة</h2>
-            <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع سنوات
-                على تظاهرات مناهضة للحكومة.</p>
+            <img src="{{ $sport[1]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                alt="{{ $sport[1]->title ?? '' }}">
+            <h3>
+                @if (isset($sport[1]->country))
+                    {{ $sport[1]->category->name ?? '' }} - {{ $sport[1]->country->name ?? '' }}
+                @elseif (isset($sport[1]->continent))
+                    {{ $sport[1]->category->name ?? '' }} - {{ $sport[1]->continent->name ?? '' }}
+                @else
+                    {{ $sport[1]->category->name ?? '' }}
+                @endif
+            </h3>
+            <h2>{{ $sport[1]->title ?? '' }}</h2>
+            <p>{{ $sport[1]->summary ?? '' }}</p>
         </div>
 
         <!-- Column 3: 4 stacked rows -->
         <div class="sport-column">
-            <div class="sport-card-horizontal">
-                <div class="sport-card-image">
-                    <img src="./user/assets/images/IMG33.jpg" alt="خبر">
-                </div>
-                <div class="sport-card-text">
-                    <h3>ألعاب أولمبية</h3>
-                    <p>«الدوري الماسي»: الجامايكي سيفيل يفاجئ لايلز في لندن</p>
-                </div>
-            </div>
-
-            <div class="sport-card-horizontal">
-                <div class="sport-card-image">
-                    <img src="./user/assets/images/IMG29.jpg" alt="خبر">
-                </div>
-                <div class="sport-card-text">
-                    <h3>كرة قدم</h3>
-                    <p>تفاصيل أزمة يوسف بلايلي مع «الترجي»</p>
-                </div>
-            </div>
-
-            <div class="sport-card-horizontal">
-                <div class="sport-card-image">
-                    <img src="./user/assets/images/IMG34.webp" alt="خبر">
-                </div>
-                <div class="sport-card-text">
-                    <h3>كرة قدم</h3>
-                    <p>أخيراً... مبيومو إلى «مانشستر يونايتد»</p>
-                </div>
-            </div>
-
-            <div class="sport-card-horizontal">
-                <div class="sport-card-image">
-                    <img src="./user/assets/images/IMG32.jpg" alt="خبر">
-                </div>
-                <div class="sport-card-text">
-                    <h3>كرة قدم</h3>
-                    <p>برشلونة يقترب من التعاقد مع ماركوس راشفورد</p>
-                </div>
-            </div>
+            @for ($i = 2; $i < 6; $i++)
+                @if (isset($sport[$i]))
+                    <div class="sport-card-horizontal">
+                        <div class="sport-card-image">
+                            <img src="{{ $sport[$i]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                alt="{{ $sport[$i]->title ?? '' }}">
+                        </div>
+                        <div class="sport-card-text">
+                            <h3>
+                                @if (isset($sport[$i]->country))
+                                    {{ $sport[$i]->category->name ?? '' }} - {{ $sport[$i]->country->name ?? '' }}
+                                @elseif (isset($sport[$i]->continent))
+                                    {{ $sport[$i]->category->name ?? '' }} - {{ $sport[$i]->continent->name ?? '' }}
+                                @else
+                                    {{ $sport[$i]->category->name ?? '' }}
+                                @endif
+                            </h3>
+                            <p>{{ $sport[$i]->title ?? '' }}</p>
+                        </div>
+                    </div>
+                @endif
+            @endfor
         </div>
     </div>
 </section>

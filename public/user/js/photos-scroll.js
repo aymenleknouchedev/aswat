@@ -1,28 +1,17 @@
-const photos = [
-    {
-        image: './user/assets/images/b1.jpeg',
-        category: 'البرتغال',
-        title: 'يوم حزين لكرة القدم.. دموع وانهيارات في وداع ديوغو جوتا الأخير',
-        description:     'أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع سنوات على تظاهرات مناهضة للحكومة'
+const photos = []; // Will be populated from API
 
-    },
-
-    {
-        image: './user/assets/images/b2.jpeg',
-        category: 'السعودية',
-        title: 'الركن الأعظم في مناسك الحج بالصور.. خشوع وسكينة على جبل عرفة',
-        description: 'وثقت عدسات المصورين لحظات الخشوع والسكينة للحجاج أثناء وقوفهم على جبل عرفة لأداء الركن الأعظم من مناسك الحج.'
-    },
-    {
-        image: './user/assets/images/b3.jpeg',
-        category: 'فلسطين المحتلة',
-        title: 'جراء الصواريخ الإيرانية.. مشاهد موثقة لدمار واسع في تل أبيب',
-        description: 'تسببت الصواريخ الإيرانية في دمار كبير بمناطق متعددة من تل أبيب، وأظهرت الصور مشاهد مروعة لآثار الهجمات.'
-    }
-];
-
-
-
+// Fetch photos from API and replace initial photos array
+fetch('/api/photos')
+    .then(response => response.json())
+    .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+            photos.length = 0;
+            photos.push(...data);
+        }
+    })
+    .catch(err => {
+        console.error('Failed to fetch photos:', err);
+    });
 
 
 let currentIndex = 0;
@@ -81,7 +70,7 @@ function changePhoto(next = true) {
             photoImage.src = nextPhoto.image;
             photoCategory.textContent = nextPhoto.category;
             photoTitle.textContent = nextPhoto.title;
-            photoDescription.textContent = nextPhoto.description;
+            photoDescription.textContent = nextPhoto.summary;
 
             // Fade back in
             photoImage.classList.remove('fade-out');
