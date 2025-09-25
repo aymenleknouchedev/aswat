@@ -99,6 +99,9 @@ class UserSeeder extends Seeder
 
         // 9. الوسوم المتعلقة بموقع إخباري، مستوحاة من الأقسام
         $tags = [
+            'tag',
+            'tag 1',
+            'tag 2',
             'سياسة',
             'انتخابات',
             'حكومة',
@@ -207,7 +210,9 @@ class UserSeeder extends Seeder
 
         // 14. الفئات (أمثلة)
         $categories = [
-            // إضافات تفصيلية مستوحاة من الأقسام
+            'category',
+            'category 1',
+            'category 2',
             'سياسة',
             'انتخابات',
             'حكومة',

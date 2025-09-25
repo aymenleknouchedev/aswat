@@ -15,8 +15,8 @@
                             <div class="nk-content-body">
                                 <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
                                     <div>
-                                        <h4 class="nk-title">مراجعات المحتوى</h4>
-                                        <p class="text-soft">إدارة وتتبع جميع المراجعات والتعليقات</p>
+                                        <h4 class="nk-title" data-en="Content Reviews" data-ar="مراجعات المحتوى">مراجعات المحتوى</h4>
+                                        <p class="text-soft" data-en="Manage and track all reviews and comments" data-ar="إدارة وتتبع جميع المراجعات والتعليقات">إدارة وتتبع جميع المراجعات والتعليقات</p>
                                     </div>
                                 </div>
 
@@ -45,7 +45,6 @@
                                                                 @if($isOwner)
                                                                 <a href="#" class="delete-review text-danger" data-id="{{ $review->id }}">
                                                                     <em class="icon ni ni-trash"></em>
-                                                                    <span>حذف الرسالة</span>
                                                                 </a>
                                                                 @endif
                                                             </div>
@@ -59,7 +58,7 @@
                                             @else
                                                 <div class="text-center py-5">
                                                     <em class="icon ni ni-chat-round fs-2 text-light"></em>
-                                                    <p class="mt-2 text-muted">لا توجد مراجعات حتى الآن</p>
+                                                    <p class="mt-2 text-muted" data-en="No reviews yet" data-ar="لا توجد مراجعات حتى الآن">لا توجد مراجعات حتى الآن</p>
                                                 </div>
                                             @endif
                                         </div>
@@ -233,7 +232,6 @@
                                     </div>
                                     <a href="#" class="delete-review text-danger" data-id="${data.review.id}">
                                         <em class="icon ni ni-trash"></em>
-                                        <span>حذف الرسالة</span>
                                     </a>
                                 </div>
                                 <div class="message-content">
