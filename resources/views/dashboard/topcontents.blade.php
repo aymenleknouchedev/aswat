@@ -249,8 +249,11 @@
                                 li.setAttribute("data-id", id);
                                 li.innerHTML = `
                                     <div class="d-flex align-items-center gap-2">
-                                        <span class="badge badge-primary"></span>
-                                        <span>${title}</span>
+                                        <span class="badge bg-primary d-inline-flex align-items-center justify-content-center"
+                                            style="width: 28px; height: 28px; border-radius: 50%; font-size: 14px;">
+                                            <!-- will be updated -->
+                                        </span>
+                                        <span style="font-size: 13px">${title}</span>
                                     </div>
                                     <form method="POST" 
                                           action="{{ url('/dashboard/top-contents') }}/${id}" 
