@@ -362,7 +362,7 @@ class UserSeeder extends Seeder
                 'continent_id' => $continentId,
                 'writer_id' => $writerId,
                 'user_id' => 1,
-                'summary' => "شنت قوات الاحتلال الإسرائيلي هجمات برية وجوية عنيفة في عدة مناطق من مدينة غزة خلال الساعات الأخيرة، وسط قصف متواصل يطاول مختلف الأحياء",
+                'summary' => "نت قوات الاحتلال الإسرائيلي هجمات برية وجوية عنيفة في عدة مناطق من مدينة غزة خلال الساعات الأخيرة.",
                 'content' => "هذا نص خبر {$i} في قسم {$sectionName}.",
                 'status' => 'published',
                 'template' => 'normal_image',
