@@ -10,6 +10,7 @@ use App\Models\Section;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Tag;
 use App\Models\Location;
+use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
 {
@@ -298,8 +299,91 @@ class UserSeeder extends Seeder
 
         foreach ($categories as $category) {
             \App\Models\Category::firstOrCreate(
-            ['name' => $category],
+                ['name' => $category],
             );
+        }
+
+
+        // 15. محتوى تجريبي لكل قسم (6 أخبار لكل قسم)
+        $sectionsModels = Section::all()->keyBy('name');
+        $categoryId = \App\Models\Category::where('name', 'سياسة')->first()?->id;
+        $continentId = Location::where('type', 'continent')->where('name', 'أفريقيا')->first()?->id;
+        $writerId = \App\Models\Writer::firstOrCreate(
+            ['name' => 'كاتب تجريبي'],
+            ['slug' => 'katib-tajreebi']
+        )->id;
+
+        $mediaIds = [];
+        $contentMedia = [
+            [
+            'name' => 'صورة تجريبية',
+            'alt' => 'صورة توضيحية',
+            'media_type' => 'image',
+            'path' => 'https://www.alaraby.co.uk/sites/default/files/styles/large_16_9/public/2236249571.jpeg?h=40d8988c&itok=6IjF68uM',
+            'user_id' => 1,
+            ],
+            [
+            'name' => 'فيديو تجريبي',
+            'alt' => 'فيديو توضيحي',
+            'media_type' => 'image',
+            'path' => 'https://www.alaraby.co.uk/sites/default/files/styles/large_16_9/public/2236249571.jpeg?h=40d8988c&itok=6IjF68uM',
+            'user_id' => 1,
+            ],
+            [
+            'name' => 'ميديا إضافية',
+            'alt' => 'ميديا إضافية',
+            'media_type' => 'image',
+            'path' => 'https://www.alaraby.co.uk/sites/default/files/styles/large_16_9/public/2236249571.jpeg?h=40d8988c&itok=6IjF68uM',
+            'user_id' => 1,
+            ],
+        ];
+        foreach ($contentMedia as $media) {
+            $mediaModel = \App\Models\ContentMedia::firstOrCreate(
+            ['name' => $media['name'], 'user_id' => $media['user_id']],
+            $media
+            );
+            $mediaIds[] = $mediaModel->id;
+        }
+        $pivotTypes = ['main', 'mobile', 'detail'];
+
+        foreach ($sectionsModels as $sectionName => $section) {
+            for ($i = 1; $i <= 6; $i++) {
+            $contentModel = \App\Models\Content::firstOrCreate(
+                [
+                'title' => "خبر {$i} في قسم {$sectionName}",
+                ],
+                [
+                'title' => "خبر {$i} في قسم {$sectionName}",
+                'long_title' => "عنوان طويل لخبر {$i} في قسم {$sectionName}",
+                'mobile_title' => "خبر {$i} - {$sectionName}",
+                'display_method' => 'simple',
+                'section_id' => $section->id,
+                'category_id' => $categoryId,
+                'continent_id' => $continentId,
+                'writer_id' => $writerId,
+                'user_id' => 1,
+                'summary' => "ملخص خبر {$i} في قسم {$sectionName}.",
+                'content' => "هذا نص خبر {$i} في قسم {$sectionName}.",
+                'status' => 'published',
+                'template' => 'normal_image',
+                'seo_keyword' => "{$sectionName}, خبر, {$i}",
+                'share_title' => "شارك خبر {$i} في قسم {$sectionName}",
+                'share_description' => "وصف مشاركة خبر {$i} في قسم {$sectionName}.",
+                'share_image' => 'default_share_image.png',
+                ]
+            );
+            foreach ($mediaIds as $idx => $mediaId) {
+                $type = $pivotTypes[$idx] ?? 'detail';
+                DB::table('media_content')->updateOrInsert(
+                [
+                    'content_id' => $contentModel->id,
+                    'content_media_id' => $mediaId,
+                    'type' => $type,
+                ],
+                []
+                );
+            }
+            }
         }
     }
 }
