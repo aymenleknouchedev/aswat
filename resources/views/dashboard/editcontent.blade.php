@@ -33,7 +33,9 @@
             <div class="nk-wrap">
                 @include('dashboard.components.header')
 
-                <form id="contentForm" class="nk-content container row" action="{{ route('dashboard.content.update', $content->id) }}" method="POST" enctype="multipart/form-data">
+                <form id="contentForm" class="nk-content container row"
+                    action="{{ route('dashboard.content.update', $content->id) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -55,7 +57,7 @@
                             </div>
                         @endif
 
-                        <div >
+                        <div>
                             @csrf
                             <!-- Tabs nav -->
                             <ul class="nav mb-4" id="contentTabs" role="tablist">
@@ -153,7 +155,8 @@
                                             <span style="color:red;">*</span>
                                             <div class="form-control-wrap">
                                                 <select required name="section_id" class="form-select js-select2"
-                                                    data-search="on" value="{{ $content->section_id ?? old('section_id') }}">
+                                                    data-search="on"
+                                                    value="{{ $content->section_id ?? old('section_id') }}">
                                                     <option value="">اختر القسم</option>
                                                     @foreach ($sections as $section)
                                                         <option value="{{ $section->id }}"
@@ -167,8 +170,10 @@
                                             <label class="form-label" data-ar="التصنيف"
                                                 data-en="Category">التصنيف</label>
                                             <div class="form-control-wrap position-relative">
-                                                <input type="text" id="categorySearch" class="form-control pe-5" value="{{ $content->category->name ?? '' }}" />
-                                                <input type="hidden" name="category_id" id="categoryHidden" value="{{ $content->category_id ?? '' }}" />
+                                                <input type="text" id="categorySearch" class="form-control pe-5"
+                                                    value="{{ $content->category->name ?? '' }}" />
+                                                <input type="hidden" name="category_id" id="categoryHidden"
+                                                    value="{{ $content->category_id ?? '' }}" />
                                                 <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>
@@ -223,8 +228,8 @@
                                         <div class="form-group col-md-6 col-lg-3">
                                             <label class="form-label" data-ar="الدولة" data-en="Country">الدولة</label>
                                             <div class="form-control-wrap">
-                                                <select name="country_id" class="form-select js-select2"
-                                                    data-search="on" value="{{ $content->country_id ?? old('country_id') }}">
+                                                <select name="country_id" class="form-select js-select2" data-search="on"
+                                                    value="{{ $content->country_id ?? old('country_id') }}">
                                                     <option value="">اختر المكان</option>
                                                     @foreach ($countries as $country)
                                                         <option value="{{ $country->id }}"
@@ -243,8 +248,10 @@
                                                     <label class="form-label" data-ar="الاتجاه"
                                                         data-en="Trend">الاتجاه</label>
                                                     <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="trendSearch" class="form-control" value="{{ $content->trend->title ?? '' }}">
-                                                        <input type="hidden" name="trend_id" id="trendHidden" value="{{ $content->trend_id ?? '' }}">
+                                                        <input type="text" id="trendSearch" class="form-control"
+                                                            value="{{ $content->trend->title ?? '' }}">
+                                                        <input type="hidden" name="trend_id" id="trendHidden"
+                                                            value="{{ $content->trend_id ?? '' }}">
                                                         <div id="trendResults" class="dropdown-menu w-100 shadow-sm"
                                                             style="max-height:200px; overflow-y:auto; display:none;">
                                                         </div>
@@ -288,8 +295,10 @@
                                                     <label class="form-label" data-ar="النافذة"
                                                         data-en="Window">النافذة</label>
                                                     <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="windowSearch" class="form-control pe-5" value="{{ $content->window->name ?? '' }}" />
-                                                        <input type="hidden" name="window_id" id="windowHidden" value="{{ $content->window_id ?? '' }}" />
+                                                        <input type="text" id="windowSearch" class="form-control pe-5"
+                                                            value="{{ $content->window->name ?? '' }}" />
+                                                        <input type="hidden" name="window_id" id="windowHidden"
+                                                            value="{{ $content->window_id ?? '' }}" />
                                                         <div id="windowResults" class="dropdown-menu w-100 shadow-sm"
                                                             style="max-height:200px; overflow-y:auto; display:none;">
                                                         </div>
@@ -336,8 +345,10 @@
                                                     <label class="form-label" data-ar="الكاتب"
                                                         data-en="Writer">الكاتب</label>
                                                     <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="writerSearch" class="form-control" value="{{ $content->writer->name ?? '' }}">
-                                                        <input type="hidden" name="writer_id" id="writerHidden" value="{{ $content->writer_id ?? '' }}">
+                                                        <input type="text" id="writerSearch" class="form-control"
+                                                            value="{{ $content->writer->name ?? '' }}">
+                                                        <input type="hidden" name="writer_id" id="writerHidden"
+                                                            value="{{ $content->writer_id ?? '' }}">
                                                         <div id="writerResults" class="dropdown-menu w-100"
                                                             style="display:none; max-height:200px; overflow-y:auto;"></div>
                                                         <button type="button" id="addWriterButton"
@@ -359,7 +370,9 @@
 
                                                     <!-- Header -->
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="addWriterModalLabel" data-ar="إضافة كاتب جديد" data-en="Add New Writer">إضافة كاتب جديد</h5>
+                                                        <h5 class="modal-title" id="addWriterModalLabel"
+                                                            data-ar="إضافة كاتب جديد" data-en="Add New Writer">إضافة كاتب
+                                                            جديد</h5>
                                                     </div>
 
                                                     <!-- Body -->
@@ -372,16 +385,14 @@
                                                                 <label class="form-label" data-ar="الاسم"
                                                                     data-en="Name">الاسم</label>
                                                                 <input type="text" id="writerName" name="name"
-                                                                    class="form-control" data-ar="الاسم"
-                                                                    data-en="Name">
+                                                                    class="form-control" data-ar="الاسم" data-en="Name">
                                                             </div>
 
                                                             <div class="mb-3">
                                                                 <label class="form-label" data-ar="الرابط (Slug)"
                                                                     data-en="Slug">الرابط (Slug)</label>
                                                                 <input type="text" id="writerSlug" name="slug"
-                                                                    class="form-control" data-ar="الرابط"
-                                                                    data-en="Slug">
+                                                                    class="form-control" data-ar="الرابط" data-en="Slug">
                                                             </div>
 
                                                             <div class="mb-3">
@@ -454,8 +465,10 @@
                                             <label class="form-label" data-ar="موقع الكاتب"
                                                 data-en="Writer Location">موقع الكاتب</label>
                                             <div class="form-control-wrap relative w-full">
-                                                <input type="text" id="cityInput" name="city_name" class="form-control" value="{{ $scity->name ?? '' }}" />
-                                                <input type="hidden" id="cityId" name="city_id" value="{{ $content->city_id ?? '' }}" />
+                                                <input type="text" id="cityInput" name="city_name"
+                                                    class="form-control" value="{{ $scity->name ?? '' }}" />
+                                                <input type="hidden" id="cityId" name="city_id"
+                                                    value="{{ $content->city_id ?? '' }}" />
                                                 <div id="cityDropdown" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>
@@ -593,31 +606,32 @@
                                             @php
                                                 $isOwner = auth()->id() === $review->reviewer_id;
                                             @endphp
-
-                                            <div class="d-flex {{ $isOwner ? 'justify-content-end' : 'justify-content-start' }}">
-                                                <div class="py-1 {{ $isOwner ? ' text-end' : 'text-start' }}">
-                                                    
-                                                    {{-- Reviewer Info --}}
-                                                    <div class="small fw-bold mb-1 badge badge-primary">
-                                                        {{ $review->reviewer->name }} {{ $review->reviewer->surname }}
+                                            <div class="d-flex {{ $isOwner ? 'justify-content-end' : 'justify-content-start' }} mb-2">
+                                                <div class="review-message-card p-2 rounded shadow-sm {{ $isOwner ? 'bg-secondary text-white' : 'bg-light text-dark' }}"
+                                                    style="max-width: 100%;">
+                                                    <div class="d-flex align-items-center mb-1">
+                                                        <div class="small fw-bold badge {{ $isOwner ? 'bg-dark text-white' : 'bg-secondary text-white' }}">
+                                                            {{ $review->reviewer->name }} {{ $review->reviewer->surname }}
+                                                        </div>
+                                                        <span class="ms-2 text-muted small">{{ $review->created_at->diffForHumans() }}</span>
                                                     </div>
-
-                                                    {{-- Message --}}
-                                                    <p class="mb-2">{{ $review->message }}</p>
+                                                    <p class="mb-0" style="white-space: pre-line;">
+                                                        {{ $review->message }}
+                                                    </p>
                                                 </div>
                                             </div>
                                         @endforeach
                                     </div>
 
                                     <div class="mb-3">
-                                        <a target="_blank" href="{{route('content.reviews.index', $content->id)}}" style="padding: 8px 0px;" class="btn btn-primary w-100 d-inline-block text-center" data-en="Check out all reviews" data-ar="اطلع على جميع المراجعات">اطلع على جميع المراجعات</a>
+                                        <a target="_blank" href="{{ route('content.reviews.index', $content->id) }}"
+                                            style="padding: 8px 0px;"
+                                            class="btn btn-primary w-100 d-inline-block text-center"
+                                            data-en="Check out all reviews" data-ar="اطلع على جميع المراجعات">اطلع على
+                                            جميع المراجعات</a>
                                     </div>
 
-                                    <div class="mb-3">
-                                        <label for="message_text" data-ar="رسالة المراجعة" data-en="Review Message">رسالة
-                                            المراجعة</label>
-                                        <textarea id="message_text" name="review_description" class="form-control"></textarea>
-                                    </div>
+
                                 </div>
                             </div>
 
@@ -645,8 +659,8 @@
                                             <input type="file" id="share_image" name="share_image"
                                                 class="form-control" accept="image/*">
                                             <div class="mt-2 border rounded p-2 text-center" style="aspect-ratio: 16/9;">
-                                                <img id="share_image_preview" src="{{ $content->share_image }}" alt=""
-                                                    style="aspect-ratio: 16/9; display:none;">
+                                                <img id="share_image_preview" src="{{ $content->share_image }}"
+                                                    alt="" style="aspect-ratio: 16/9; display:none;">
                                             </div>
                                         </div>
 
@@ -690,8 +704,8 @@
                             </div>
 
                             <div class="mt-4 d-flex">
-                                <button type="submit"
-                                    class="btn btn-primary btn-lg me-3" data-ar="نشر" data-en="Publish">
+                                <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر"
+                                    data-en="Publish">
                                     نشر
                                 </button>
                                 <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg"
@@ -710,7 +724,9 @@
 
                                 <!-- Collapsible: Schedule Publish -->
                                 <div class="">
-                                    <button class="btn btn-link w-100 text-start p-0 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSchedule" aria-expanded="false" aria-controls="collapseSchedule">
+                                    <button class="btn btn-link w-100 text-start p-0 mb-2" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseSchedule"
+                                        aria-expanded="false" aria-controls="collapseSchedule">
                                         <em class="icon ni ni-calendar"></em>
                                         <span data-ar="جدولة النشر" data-en="Schedule Publish">جدولة النشر</span>
                                     </button>
@@ -719,9 +735,10 @@
                                             <span class="input-group-text bg-light">
                                                 <em class="icon ni ni-calendar"></em>
                                             </span>
-                                            <input type="datetime-local" id="publish_at" name="published_at" class="form-control"
-                                                value="{{ old('published_at') }}"
-                                                onclick="this.showPicker && this.showPicker()" onfocus="this.showPicker && this.showPicker()">
+                                            <input type="datetime-local" id="publish_at" name="published_at"
+                                                class="form-control" value="{{ old('published_at') }}"
+                                                onclick="this.showPicker && this.showPicker()"
+                                                onfocus="this.showPicker && this.showPicker()">
                                         </div>
                                         <small class="text-muted" data-ar="حدد وقت النشر لاحقاً"
                                             data-en="Set a future publish time">حدد وقت النشر لاحقاً</small>
@@ -839,67 +856,67 @@
         });
     </script>
 
-   <script>
-    const contentId = {{ $content->id }};
-    const messageText = document.getElementById('message_text');
-    const currentUserId = @json(auth()->id());
-    const currentUserName = @json(auth()->user()->name . ' ' . auth()->user()->surname);
+    <script>
+        const contentId = {{ $content->id }};
+        const messageText = document.getElementById('message_text');
+        const currentUserId = @json(auth()->id());
+        const currentUserName = @json(auth()->user()->name . ' ' . auth()->user()->surname);
 
-    messageText.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault();
-            storeReview();
-        }
-    });
-
-    async function storeReview() {
-        try {
-            const response = await fetch(`/dashboard/api/store/reviews`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    content_id: contentId,
-                    message: messageText.value
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+        messageText.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                storeReview();
             }
+        });
 
-            messageText.value = '';
-            // inside a response there is the new review
-            const data = await response.json();
-            const review = data.review;
-            const reviewsContainer = document.getElementById('reviews-container');
-            const isOwner = Number(currentUserId) === Number(review.reviewer_id);
-            const reviewDiv = document.createElement('div');
-            reviewDiv.className = `d-flex ${isOwner ? 'justify-content-end' : 'justify-content-start'}`;
-            const innerDiv = document.createElement('div');
-            innerDiv.className = `py-1  ${isOwner ? 'text-end' : 'text-start'}`;
-            // Reviewer Info
-            const reviewerInfo = document.createElement('div');
-            reviewerInfo.className = 'small fw-bold mb-1 badge badge-primary';
-            reviewerInfo.textContent = isOwner ? currentUserName : review.reviewer_name;
-            innerDiv.appendChild(reviewerInfo);
+        async function storeReview() {
+            try {
+                const response = await fetch(`/dashboard/api/store/reviews`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        content_id: contentId,
+                        message: messageText.value
+                    })
+                });
 
-            // Message
-            const messagePara = document.createElement('p');
-            messagePara.className = 'mb-2';
-            messagePara.textContent = review.message;
-            innerDiv.appendChild(messagePara);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
 
-            reviewDiv.appendChild(innerDiv);
-            reviewsContainer.appendChild(reviewDiv);
-            reviewsContainer.scrollTop = reviewsContainer.scrollHeight;
-        } catch (error) {
-            console.error('Error storing review:', error);
+                messageText.value = '';
+                // inside a response there is the new review
+                const data = await response.json();
+                const review = data.review;
+                const reviewsContainer = document.getElementById('reviews-container');
+                const isOwner = Number(currentUserId) === Number(review.reviewer_id);
+                const reviewDiv = document.createElement('div');
+                reviewDiv.className = `d-flex ${isOwner ? 'justify-content-end' : 'justify-content-start'}`;
+                const innerDiv = document.createElement('div');
+                innerDiv.className = `py-1  ${isOwner ? 'text-end' : 'text-start'}`;
+                // Reviewer Info
+                const reviewerInfo = document.createElement('div');
+                reviewerInfo.className = 'small fw-bold mb-1 badge badge-primary';
+                reviewerInfo.textContent = isOwner ? currentUserName : review.reviewer_name;
+                innerDiv.appendChild(reviewerInfo);
+
+                // Message
+                const messagePara = document.createElement('p');
+                messagePara.className = 'mb-2';
+                messagePara.textContent = review.message;
+                innerDiv.appendChild(messagePara);
+
+                reviewDiv.appendChild(innerDiv);
+                reviewsContainer.appendChild(reviewDiv);
+                reviewsContainer.scrollTop = reviewsContainer.scrollHeight;
+            } catch (error) {
+                console.error('Error storing review:', error);
+            }
         }
-    }
-</script>
+    </script>
 
 
 
