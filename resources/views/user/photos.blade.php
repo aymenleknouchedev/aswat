@@ -6,7 +6,6 @@
 
 
 
-
     <style>
         @media (max-width: 768px) {
             .web {

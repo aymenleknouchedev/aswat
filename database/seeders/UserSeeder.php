@@ -348,7 +348,7 @@ class UserSeeder extends Seeder
         $pivotTypes = ['main', 'mobile', 'detail'];
 
         foreach ($sectionsModels as $sectionName => $section) {
-            for ($i = 1; $i <= 6; $i++) {
+            for ($i = 1; $i <= 9; $i++) {
                 $contentModel = \App\Models\Content::firstOrCreate(
                     [
                         'title' => "خبر {$i} في قسم {$sectionName}",

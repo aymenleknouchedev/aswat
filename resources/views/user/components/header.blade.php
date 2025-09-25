@@ -123,7 +123,8 @@
             flex-direction: row;
             gap: 40px;
         }
-        .news-list > * {
+
+        .news-list>* {
             flex: 1 1 0;
             max-width: 33.33%;
         }
@@ -131,12 +132,15 @@
         .news-list .news-item {
             height: 100px;
         }
+
         .news-list .news-item img {
             display: none;
         }
+
         .news-list .news-item p {
             font-size: 15px;
         }
+
         .news-list .news-item-noimage p {
             font-size: 15px;
         }
@@ -150,48 +154,121 @@
     <div class="news-grid-container">
         <!-- Right column: big feature -->
         <div class="news-feature">
-            <img src="./user/assets/images/IMG27.webp" alt="Feature News">
-            <h3>ذاكرة</h3>
-            <h2>عودة بصرية إلى «المهرجان الثقافي الأفريقي» في الجزائر عام 1969</h2>
-            <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع سنوات
-                على تظاهرات مناهضة للحكومة.
-            </p>
+            <img src="{{ $topContents[0]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                alt="{{ $topContents[0]->content->title ?? '' }}">
+            <h3>
+                @if (isset($topContents[0]->content->country))
+                    {{ $topContents[0]->content->category->name ?? '' }} -
+                    {{ $topContents[0]->content->country->name ?? '' }}
+                @elseif (isset($topContents[0]->content->continent))
+                    {{ $topContents[0]->content->category->name ?? '' }} -
+                    {{ $topContents[0]->content->continent->name ?? '' }}
+                @else
+                    {{ $topContents[0]->content->category->name ?? '' }}
+                @endif
+            </h3>
+            <h2>{{ $topContents[0]->content->title ?? '' }}</h2>
+            <p>{{ $topContents[0]->content->summary ?? '' }}</p>
         </div>
 
         <!-- Left column: small news cards -->
         <div class="news-list">
             <div class="news-item">
-                <img src="./user/assets/images/IMG23.jpg" alt="News 1">
-                <h3>سياسة</h3>
-                <p>ترمب: المواقع النووية الثلاثة في إيران دُمّرت بالكامل</p>
+                <img src="{{ $topContents[1]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="News 1">
+                <h3>
+                    @if (isset($topContents[1]->content->country))
+                        {{ $topContents[1]->content->category->name ?? '' }} -
+                        {{ $topContents[1]->content->country->name ?? '' }}
+                    @elseif (isset($topContents[1]->content->continent))
+                        {{ $topContents[1]->content->category->name ?? '' }} -
+                        {{ $topContents[1]->content->continent->name ?? '' }}
+                    @else
+                        {{ $topContents[1]->content->category->name ?? '' }}
+                    @endif
+                </h3>
+                <p>{{ $topContents[1]->content->title ?? '' }}</p>
             </div>
             <div class="news-item">
-                <img src="./user/assets/images/IMG25.jpg" alt="News 2">
-                <h3>تاريخ</h3>
-                <p>الثورة الجزائرية في ذكرى انتصارها الثالثة والسبعين</p>
+                <img src="{{ $topContents[2]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="News 2">
+                <h3>
+                    @if (isset($topContents[2]->content->country))
+                        {{ $topContents[2]->content->category->name ?? '' }} -
+                        {{ $topContents[2]->content->country->name ?? '' }}
+                    @elseif (isset($topContents[2]->content->continent))
+                        {{ $topContents[2]->content->category->name ?? '' }} -
+                        {{ $topContents[2]->content->continent->name ?? '' }}
+                    @else
+                        {{ $topContents[2]->content->category->name ?? '' }}
+                    @endif
+                </h3>
+                <p>{{ $topContents[2]->content->title ?? '' }}</p>
             </div>
             <div class="news-item-noimage">
-                <h3>القضية الفلسطينية</h3>
-                <p>الشرطة البريطانية تُوقف عشرات من أنصار مجموعة «فلسطين أكشن»</p>
+                <h3>
+                    @if (isset($topContents[3]->content->country))
+                        {{ $topContents[3]->content->category->name ?? '' }} -
+                        {{ $topContents[3]->content->country->name ?? '' }}
+                    @elseif (isset($topContents[3]->content->continent))
+                        {{ $topContents[3]->content->category->name ?? '' }} -
+                        {{ $topContents[3]->content->continent->name ?? '' }}
+                    @else
+                        {{ $topContents[3]->content->category->name ?? '' }}
+                    @endif
+                </h3>
+                <p>{{ $topContents[3]->content->title ?? '' }}</p>
             </div>
         </div>
-
         <!-- Left column: small news cards -->
         <div class="news-list">
             <div class="news-item">
-                <img src="./user/assets/images/IMG26.jpg" alt="News 3">
-                <h3>القضية الفلسطينية</h3>
-                <p>جورج عبد الله يشيد ﺑ«التعبئة» التي أدت إلى الإفراج عنه</p>
+                <img src="{{ $topContents[4]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="News 1">
+                <h3>
+                    @if (isset($topContents[4]->content->country))
+                        {{ $topContents[4]->content->category->name ?? '' }} -
+                        {{ $topContents[4]->content->country->name ?? '' }}
+                    @elseif (isset($topContents[4]->content->continent))
+                        {{ $topContents[4]->content->category->name ?? '' }} -
+                        {{ $topContents[4]->content->continent->name ?? '' }}
+                    @else
+                        {{ $topContents[4]->content->category->name ?? '' }}
+                    @endif
+                </h3>
+                <p>{{ $topContents[4]->content->title ?? '' }}</p>
             </div>
             <div class="news-item">
-                <img src="./user/assets/images/IMG24.webp" alt="News 4">
-                <h3>الحرب على غزة</h3>
-                <p>الفاتيكان يشكك في التصريحات الإسرائيلية بشأن الهجوم على كنيسة بغزة</p>
+                <img src="{{ $topContents[5]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="News 2">
+                <h3>
+                    @if (isset($topContents[5]->content->country))
+                        {{ $topContents[5]->content->category->name ?? '' }} -
+                        {{ $topContents[5]->content->country->name ?? '' }}
+                    @elseif (isset($topContents[5]->content->continent))
+                        {{ $topContents[5]->content->category->name ?? '' }} -
+                        {{ $topContents[5]->content->continent->name ?? '' }}
+                    @else
+                        {{ $topContents[5]->content->category->name ?? '' }}
+                    @endif
+                </h3>
+                <p>{{ $topContents[5]->content->title ?? '' }}</p>
             </div>
             <div class="news-item-noimage">
-                <h3>الولايات المتحدة</h3>
-                <p>بعد عودته إلى الواجهة.. ما الملاحقات القضائية بحق إبستين وتداعياتها؟</p>
+                <h3>
+                    @if (isset($topContents[6]->content->country))
+                        {{ $topContents[6]->content->category->name ?? '' }} -
+                        {{ $topContents[6]->content->country->name ?? '' }}
+                    @elseif (isset($topContents[6]->content->continent))
+                        {{ $topContents[6]->content->category->name ?? '' }} -
+                        {{ $topContents[6]->content->continent->name ?? '' }}
+                    @else
+                        {{ $topContents[6]->content->category->name ?? '' }}
+                    @endif
+                </h3>
+                <p>{{ $topContents[6]->content->title ?? '' }}</p>
             </div>
         </div>
+
     </div>
 </section>

@@ -78,9 +78,14 @@
 
         {{-- <div style="height: 140px;"></div> --}}
 
-        <div class="container">
-            @include('user.components.header')
-        </div>
+        @php
+            $topContentsCount = isset($topContents) && is_countable($topContents) ? count($topContents) : 0;
+        @endphp
+        @if ($topContentsCount >= 7)
+            <div class="container">
+                @include('user.components.header')
+            </div>
+        @endif
 
         <div class="container">
             <section class="art-section-hero">
