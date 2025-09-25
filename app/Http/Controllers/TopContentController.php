@@ -46,7 +46,6 @@ class TopContentController extends Controller
             }
 
             $count = TopContent::count();
-            // max TopContent is 10 cant be more
             if ($count >= 10) {
                 return response()->json(['error' => 'Maximum of 10 top contents allowed'], 400);
             }

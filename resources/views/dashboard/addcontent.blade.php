@@ -508,8 +508,7 @@
                                                         </button>
                                                     </div>
 
-                                                    <div id="tagResults" class="dropdown-menu w-100"
-                                                        style="display:none; max-height:200px; overflow-y:auto; position:absolute; z-index:1000;">
+                                                    <div id="tagResults" class="dropdown-menu w-100" style="display:none; max-height:200px; overflow-y:auto; position:absolute; z-index:1000;">
                                                     </div>
 
                                                     <div id="hiddenTags"></div>
