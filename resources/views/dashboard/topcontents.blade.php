@@ -110,7 +110,8 @@
                                                         <form method="POST" 
                                                             class="d-inline mb-0 delete-top-content-form" 
                                                             data-id="{{ $id }}" 
-                                                            action="{{ route('dashboard.topcontents.destroy', $id) }}">
+                                                            action="{{ route('dashboard.topcontents.destroy', $id) }}"
+                                                        >
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-link text-danger p-0">
@@ -241,8 +242,8 @@
                         .then(res => res.json().catch(() => ({})))
                         .then(response => {
                             if (response.success) {
-                                let id = Object.keys(response.content)[0];
-                                let title = response.content[id];
+                                let id = response.content.id;
+                                let title = response.content.title;
 
                                 let li = document.createElement("li");
                                 li.className = "list-group-item d-flex align-items-center justify-content-between";
@@ -251,15 +252,15 @@
                                     <div class="d-flex align-items-center gap-2">
                                         <span class="badge bg-primary d-inline-flex align-items-center justify-content-center"
                                             style="width: 28px; height: 28px; border-radius: 50%; font-size: 14px;">
-                                            <!-- will be updated -->
                                         </span>
                                         <span style="font-size: 13px">${title}</span>
                                     </div>
+                                    
                                     <form method="POST" 
-                                          action="{{ url('/dashboard/top-contents') }}/${id}" 
-                                          class="d-inline mb-0 delete-top-content-form" 
-                                          data-id="${id}">
-                                        @csrf
+                                        action="/dashboard/top-contents/delete/${id}"
+                                        class="d-inline mb-0 delete-top-content-form" 
+                                        data-id="${id}"
+                                    >
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-link text-danger p-0">
                                             <em class="icon ni ni-minus"></em>
@@ -267,9 +268,17 @@
                                     </form>
                                 `;
 
-                                this.closest("li").remove();
+                                this.closest("li")?.remove();
 
-                                document.getElementById("sortable-list").appendChild(li);
+                                const sortableList = document.getElementById("sortable-list");
+                                if (!sortableList) return console.error('#sortable-list not found');
+
+                                // Use prepend (works in modern browsers). Fallback to insertBefore with firstElementChild.
+                                if (sortableList.prepend) {
+                                    sortableList.prepend(li);
+                                } else {
+                                    sortableList.insertBefore(li, sortableList.firstElementChild || null);
+                                }
 
                                 updateBadges();
                                 bindDeleteButtons();
@@ -285,6 +294,7 @@
             });
         }
 
+        var isDeleting = false;
         function bindDeleteButtons() {
             document.querySelectorAll(".delete-top-content-form").forEach(form => {
                 form.addEventListener("submit", function (e) {
@@ -293,6 +303,9 @@
                     let id = this.dataset.id;
                     let url = this.getAttribute("action");
                     let li = this.closest("li");
+
+                    if (isDeleting) return;
+                    isDeleting = true;
 
                     fetch(url, {
                         method: "DELETE",
@@ -306,13 +319,18 @@
                         if (response.success) {
                             li.style.transition = "opacity 0.3s";
                             li.style.opacity = "0";
-                            setTimeout(() => {
-                                li.remove();
-                                updateBadges();
-                            }, 300);
+                            li.remove(this);
+                            updateBadges();
+                            // setTimeout(() => {
+                            //     li.remove();
+                            //     updateBadges();
+                            // }, 300);
                         } else {
                             alert(response.error ?? "❌ فشل حذف المحتوى.");
                         }
+                    })
+                    .finally(() => {
+                        isDeleting = false;
                     })
                     .catch(err => {
                         alert("⚠️ حدث خطأ أثناء الحذف.");

@@ -42,13 +42,13 @@ class TopContentController extends Controller
             // Check if content already exists in top contents
             $existing = TopContent::where('content_id', $id)->first();
             if ($existing) {
-                return back()->withErrors(['error' => 'Content already exists in top contents']);
+                return response()->json(['error'=> 'Content already exists in top contents'], 400);
             }
 
             $count = TopContent::count();
             // max TopContent is 10 cant be more
             if ($count >= 10) {
-                return back()->withErrors(['error' => 'Maximum of 10 top contents allowed']);
+                return response()->json(['error' => 'Maximum of 10 top contents allowed'], 400);
             }
 
             $topContent = new TopContent();
@@ -59,8 +59,9 @@ class TopContentController extends Controller
             return response()->json([
                 'success' => true,
                 'content' => [
-                    $topContent->id => $topContent->content->title
-                ]
+                    'id' => $topContent->id,
+                    'title' => $topContent->content->title,
+                ],
             ]);
 
         } catch (\Exception $e) {
@@ -89,9 +90,12 @@ class TopContentController extends Controller
     public function destroy($id)
     {
         try {
-            $content = TopContent::findOrFail($id);
-            $content->delete();
-            // return back()->with('success', 'Content removed from top contents successfully.');
+            $content = TopContent::find($id);
+            if ($content) {
+                $content->delete();
+            } else {
+                return response()->json(['error' => 'Top Content not found', 'success' => false], 404);
+            }
              return response()->json([
                 'success' => true,
                 'message' => 'Content removed successfully',
