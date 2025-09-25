@@ -106,7 +106,7 @@ class Content extends Model
     {
         return $this->belongsTo(Location::class, 'city_id');
     }
-    
+
     public function trend()
     {
         return $this->belongsTo(Trend::class);

@@ -207,7 +207,7 @@
 
         {{-- Check Section --}}
         @php
-            $checkCount = isset($check) && is_countable($check) ? count($check) : 0;
+            $checkCount = isset($cheeck) && is_countable($cheeck) ? count($cheeck) : 0;
         @endphp
         @if ($checkCount >= 2)
             <div class="container">

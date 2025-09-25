@@ -51,20 +51,22 @@
 
 <section class="check-feature-grid">
     <div class="check-grid-container">
-        <div class="check-card">
-            <img src="./user/assets/images/IMG80.webp" alt="Feature check">
-            <h3>ذاكرة</h3>
-            <h2>أم كلثوم.. هل غنت للثورة الجزائرية؟</h2>
-            <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع سنوات
-                على تظاهرات مناهضة للحكومة.</p>
-        </div>
-
-        <div class="check-card">
-            <img src="./user/assets/images/IMG81.jpg" alt="Feature check">
-            <h3>منصات</h3>
-            <h2>العلاجات المتداولة على تيك توك: تضليل يفاقم معاناة المرضى</h2>
-            <p>أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل دياز-كانيل، بعد أربع سنوات
-                على تظاهرات مناهضة للحكومة.</p>
-        </div>
+        @foreach ($cheeck as $item)
+            <div class="check-card">
+                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="{{ $item->title ?? '' }}">
+                <h3>
+                    @if (isset($item->country))
+                        {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
+                    @elseif (isset($item->continent))
+                        {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
+                    @else
+                        {{ $item->category->name ?? '' }}
+                    @endif
+                </h3>
+                <h2>{{ $item->title ?? '' }}</h2>
+                <p>{{ $item->description ?? '' }}</p>
+            </div>
+        @endforeach
     </div>
 </section>

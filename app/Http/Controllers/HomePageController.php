@@ -26,7 +26,7 @@ class HomePageController extends Controller
             'health' => ['صحة', 3],
             'environment' => ['بيئة', 3],
             'media' => ['ميديا', 4],
-            'check' => ['فحص', 2],
+            'cheeck' => ['فحص', 2],
             'podcasts' => ['بودكاست', 4],
             'variety' => ['منوعات', 5],
             'photos' => ['صور', 5],
@@ -46,7 +46,7 @@ class HomePageController extends Controller
             ->take(5)
             ->get();
 
-        return view('user.home', compact('algeria', 'world', 'economy', 'sport', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'check', 'podcasts', 'variety', 'photos', 'topViewed'));
+        return view('user.home', compact('algeria', 'world', 'economy', 'sport', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed'));
     }
 
     public function photosApi()
