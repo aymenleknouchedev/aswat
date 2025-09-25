@@ -18,4 +18,9 @@ class TopContent extends Model
     {
         return $this->belongsTo(Content::class);
     }
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
 }
