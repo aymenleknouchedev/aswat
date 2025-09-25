@@ -143,6 +143,7 @@
             $videosCount = isset($videos) && is_countable($videos) ? count($videos) : 0;
         @endphp
         @if ($videosCount >= 4)
+            @include('user.components.sp60')
             <div style="background-color: #F5F5F5;">
                 @include('user.components.sp60')
                 <div class="container">

@@ -310,37 +310,38 @@ class UserSeeder extends Seeder
         $continentId = Location::where('type', 'continent')->where('name', 'أفريقيا')->first()?->id;
         $writerId = \App\Models\Writer::firstOrCreate(
             ['name' => 'كاتب تجريبي'],
-            ['slug' => 'katib-tajreebi']
+            ['slug' => 'katib-tajreebi'],
+            ['image' => 'https://www.alaraby.co.uk/sites/default/files/styles/large_16_9/public/2236249571.jpeg?h=40d8988c&itok=6IjF68uM'],
         )->id;
 
         $mediaIds = [];
         $contentMedia = [
             [
-            'name' => 'صورة تجريبية',
-            'alt' => 'صورة توضيحية',
-            'media_type' => 'image',
-            'path' => 'https://www.alaraby.co.uk/sites/default/files/styles/large_16_9/public/2236249571.jpeg?h=40d8988c&itok=6IjF68uM',
-            'user_id' => 1,
+                'name' => 'صورة تجريبية',
+                'alt' => 'صورة توضيحية',
+                'media_type' => 'image',
+                'path' => 'https://www.alaraby.co.uk/sites/default/files/styles/large_16_9/public/2236249571.jpeg?h=40d8988c&itok=6IjF68uM',
+                'user_id' => 1,
             ],
             [
-            'name' => 'فيديو تجريبي',
-            'alt' => 'فيديو توضيحي',
-            'media_type' => 'image',
-            'path' => 'https://www.alaraby.co.uk/sites/default/files/styles/large_16_9/public/2236249571.jpeg?h=40d8988c&itok=6IjF68uM',
-            'user_id' => 1,
+                'name' => 'فيديو تجريبي',
+                'alt' => 'فيديو توضيحي',
+                'media_type' => 'image',
+                'path' => 'https://www.alaraby.co.uk/sites/default/files/styles/large_16_9/public/2236249571.jpeg?h=40d8988c&itok=6IjF68uM',
+                'user_id' => 1,
             ],
             [
-            'name' => 'ميديا إضافية',
-            'alt' => 'ميديا إضافية',
-            'media_type' => 'image',
-            'path' => 'https://www.alaraby.co.uk/sites/default/files/styles/large_16_9/public/2236249571.jpeg?h=40d8988c&itok=6IjF68uM',
-            'user_id' => 1,
+                'name' => 'ميديا إضافية',
+                'alt' => 'ميديا إضافية',
+                'media_type' => 'image',
+                'path' => 'https://www.alaraby.co.uk/sites/default/files/styles/large_16_9/public/2236249571.jpeg?h=40d8988c&itok=6IjF68uM',
+                'user_id' => 1,
             ],
         ];
         foreach ($contentMedia as $media) {
             $mediaModel = \App\Models\ContentMedia::firstOrCreate(
-            ['name' => $media['name'], 'user_id' => $media['user_id']],
-            $media
+                ['name' => $media['name'], 'user_id' => $media['user_id']],
+                $media
             );
             $mediaIds[] = $mediaModel->id;
         }
@@ -348,41 +349,41 @@ class UserSeeder extends Seeder
 
         foreach ($sectionsModels as $sectionName => $section) {
             for ($i = 1; $i <= 6; $i++) {
-            $contentModel = \App\Models\Content::firstOrCreate(
-                [
-                'title' => "خبر {$i} في قسم {$sectionName}",
-                ],
-                [
-                'title' => "جيش الاحتلال يتقدّم في محاور جديدة بمدينة غزة على وقع قصف مستمرّ",
-                'long_title' => "عنوان طويل لخبر {$i} في قسم {$sectionName}",
-                'mobile_title' => "خبر {$i} - {$sectionName}",
-                'display_method' => 'simple',
-                'section_id' => $section->id,
-                'category_id' => $categoryId,
-                'continent_id' => $continentId,
-                'writer_id' => $writerId,
-                'user_id' => 1,
-                'summary' => "نت قوات الاحتلال الإسرائيلي هجمات برية وجوية عنيفة في عدة مناطق من مدينة غزة خلال الساعات الأخيرة.",
-                'content' => "هذا نص خبر {$i} في قسم {$sectionName}.",
-                'status' => 'published',
-                'template' => 'normal_image',
-                'seo_keyword' => "{$sectionName}, خبر, {$i}",
-                'share_title' => "شارك خبر {$i} في قسم {$sectionName}",
-                'share_description' => "وصف مشاركة خبر {$i} في قسم {$sectionName}.",
-                'share_image' => 'default_share_image.png',
-                ]
-            );
-            foreach ($mediaIds as $idx => $mediaId) {
-                $type = $pivotTypes[$idx] ?? 'detail';
-                DB::table('media_content')->updateOrInsert(
-                [
-                    'content_id' => $contentModel->id,
-                    'content_media_id' => $mediaId,
-                    'type' => $type,
-                ],
-                []
+                $contentModel = \App\Models\Content::firstOrCreate(
+                    [
+                        'title' => "خبر {$i} في قسم {$sectionName}",
+                    ],
+                    [
+                        'title' => "جيش الاحتلال يتقدّم في محاور جديدة بمدينة غزة على وقع قصف مستمرّ",
+                        'long_title' => "عنوان طويل لخبر {$i} في قسم {$sectionName}",
+                        'mobile_title' => "خبر {$i} - {$sectionName}",
+                        'display_method' => 'simple',
+                        'section_id' => $section->id,
+                        'category_id' => $categoryId,
+                        'continent_id' => $continentId,
+                        'writer_id' => $writerId,
+                        'user_id' => 1,
+                        'summary' => "نت قوات الاحتلال الإسرائيلي هجمات برية وجوية عنيفة في عدة مناطق من مدينة غزة خلال الساعات الأخيرة.",
+                        'content' => "هذا نص خبر {$i} في قسم {$sectionName}.",
+                        'status' => 'published',
+                        'template' => 'normal_image',
+                        'seo_keyword' => "{$sectionName}, خبر, {$i}",
+                        'share_title' => "شارك خبر {$i} في قسم {$sectionName}",
+                        'share_description' => "وصف مشاركة خبر {$i} في قسم {$sectionName}.",
+                        'share_image' => 'default_share_image.png',
+                    ]
                 );
-            }
+                foreach ($mediaIds as $idx => $mediaId) {
+                    $type = $pivotTypes[$idx] ?? 'detail';
+                    DB::table('media_content')->updateOrInsert(
+                        [
+                            'content_id' => $contentModel->id,
+                            'content_media_id' => $mediaId,
+                            'type' => $type,
+                        ],
+                        []
+                    );
+                }
             }
         }
     }

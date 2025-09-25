@@ -62,7 +62,7 @@
         @foreach ($reviews as $review)
             <div class="review-card">
                 <div class="review-card-image">
-                    <img src="storage/{{ $review->writer->image ?? '' }}"
+                    <img style="background-color: black" src="storage/{{ $review->writer->image ?? '' }}"
                         alt="{{ $review->writer->name ?? 'كاتب الخبر' }}">
                 </div>
                 <div class="review-card-text">

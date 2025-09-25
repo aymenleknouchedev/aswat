@@ -68,7 +68,6 @@
                     @endif
                 </h3>
                 <h2>{{ $item->title ?? '' }}</h2>
-                <p>{{ $item->summary ?? '' }}</p>
             </div>
         @endforeach
     </div>
