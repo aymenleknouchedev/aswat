@@ -57,7 +57,50 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const forms = document.querySelectorAll("validate-form-on-submit");
 
+            // Detect current language
+            const currentLang = localStorage.getItem('siteLang') || 'en';
+
+            // Texts for both languages
+            const alertTexts = {
+                en: {
+                    title: "Missing Required Fields",
+                    text: "Please fill in all required fields before submitting.",
+                    confirmButtonText: "OK"
+                },
+                ar: {
+                    title: "حقول مطلوبة مفقودة",
+                    text: "يرجى ملء جميع الحقول المطلوبة قبل الإرسال.",
+                    confirmButtonText: "حسناً"
+                }
+            };
+
+            forms.forEach(form => {
+                form.addEventListener("submit", function(e) {
+                    const requiredInputs = form.querySelectorAll("[required]");
+                    let allFilled = true;
+                    requiredInputs.forEach(input => {
+                        if (!input.value.trim()) {
+                            allFilled = false;
+                        }
+                    });
+
+                    if (!allFilled) {
+                        e.preventDefault();
+                        Swal.fire({
+                            title: alertTexts[currentLang].title,
+                            text: alertTexts[currentLang].text,
+                            icon: "warning",
+                            confirmButtonText: alertTexts[currentLang].confirmButtonText
+                        });
+                    }
+                });
+            });
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const deleteButtons = document.querySelectorAll(".delete-btn");

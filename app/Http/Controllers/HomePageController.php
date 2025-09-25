@@ -5,11 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Content;
 use App\Models\Section;
 use App\Models\BreakingContent;
+use App\Models\TopContent;
 
 class HomePageController extends Controller
 {
+
     public function index()
     {
+
+        $topContents = TopContent::orderByDesc('order')
+            ->take(7)
+            ->get();
+
 
 
         $sectionNames = [
@@ -33,20 +40,22 @@ class HomePageController extends Controller
         ];
 
         $sections = Section::pluck('id', 'name');
+        $topContentIds = $topContents->pluck('content_id')->toArray();
+
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
-                ->latest()
-                ->take($count)
-                ->get();
+            ->whereNotIn('id', $topContentIds)
+            ->latest()
+            ->take($count)
+            ->get();
         }
-
 
         $topViewed = Content::where('section_id', $sections['منوعات'] ?? null)
             ->orderByDesc('read_count')
             ->take(5)
             ->get();
 
-        return view('user.home', compact('algeria', 'world', 'economy', 'sport', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed'));
+        return view('user.home', compact('topContents', 'algeria', 'world', 'economy', 'sport', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed'));
     }
 
     public function photosApi()
@@ -97,7 +106,9 @@ class HomePageController extends Controller
         return view('user.reviews');
     }
 
-    public function photos() {}
+    public function photos() {
+        return view('user.photos');
+    }
 
     public function podcasts()
     {
