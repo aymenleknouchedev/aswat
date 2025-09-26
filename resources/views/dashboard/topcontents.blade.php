@@ -79,7 +79,7 @@
                                                 style="direction: rtl; max-height: 500px; overflow-y: auto;">
                                                 @foreach ($recentContents as $content)
                                                     <li class="list-group-item d-flex align-items-center justify-content-between">
-                                                        <span style="font-size: 12px">{{ $content->title }}</span>
+                                                        <span style="font-size: 13px">{{ $content->title }}</span>
                                                         @if (count($topContents) < 10)
                                                             <a href="#" class="btn btn-link btn-sm add-content-btn p-0" data-id="{{ $content->id }}">
                                                                 <em class="icon ni ni-plus text-secondary"></em>
@@ -208,8 +208,8 @@
                         let li = document.createElement("li");
                         li.className = "list-group-item d-flex align-items-center justify-content-between";
                         li.innerHTML = `
-                            <span>${item.title}</span>
-                            <a href="#" class="btn btn-sm btn-link add-content-btn" data-id="${item.id}">
+                            <span style="font-size: 13px">${item.title}</span>
+                            <a href="#" class="btn btn-sm btn-link add-content-btn p-0" data-id="${item.id}">
                                 <em class="icon ni ni-plus text-secondary"></em>
                             </a>
                         `;

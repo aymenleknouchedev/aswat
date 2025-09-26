@@ -167,13 +167,11 @@ Route::prefix('dashboard')->group(function () {
             Route::delete("/{$entity}-{id}", [$controller, 'destroy'])->name("dashboard.{$entity}.destroy");
         }
 
-        // Top Content
         Route::get('/top-contents', [TopContentController::class,'index'])->name('dashboard.topcontents');
         Route::post('/top-contents/{id}', [TopContentController::class,'store'])->name('dashboard.topcontents.store');
         Route::post('/dashboard/top-contents/update-order', [TopContentController::class, 'updateOrder'])->name('dashboard.topcontents.updateOrder');
         Route::delete('/top-contents/delete/{id}', [TopContentController::class,'destroy'])->name('dashboard.topcontents.destroy');
 
-        // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
     });
 });

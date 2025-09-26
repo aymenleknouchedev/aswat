@@ -99,6 +99,7 @@ class ContentController extends BaseController
     public function store(Request $request)
     {
 
+        // dd($request->all());
         $albumImages = [];
 
         if ($request->hasFile('album_images')) {
@@ -137,30 +138,35 @@ class ContentController extends BaseController
         ];
 
         if (in_array($request->display_method, ['list', 'file'])) {
-            $rules['items'] = 'required|array|min:1';
-            $rules['items.*.title'] = 'required|string|max:255';
-            $rules['items.*.description'] = 'required|string';
-            $rules['items.*.image'] = [
-                'required',
-                'image',
-                'mimes:jpeg,png,jpg,gif,webp',
-                'max:10000',
-                // function ($attribute, $value, $fail) {
-                //     if ($value instanceof \Illuminate\Http\UploadedFile) {
-                //         [$width, $height] = getimagesize($value->getRealPath());
-                //         // Require 9:16 aspect ratio
-                //         $aspectRatio = $width / $height;
-                //         $expected = 9 / 16;
-                //         if (abs($aspectRatio - $expected) > 0.05) {
-                //             $fail('The ' . $attribute . ' must have a 9:16 aspect ratio.');
-                //         }
-                //     }
-                // },
-            ];
-            $rules['items.*.index'] = 'required|integer';
-            $rules['items.*.url'] = $request->display_method === 'list'
-                ? 'required|url'
-                : 'nullable|url';
+
+            if (empty(($request->items))) {
+                $request->items = [];
+            } else {
+            // $rules['items'] = 'required|array|min:1';
+                $rules['items.*.title'] = 'required|string|max:255';
+                $rules['items.*.description'] = 'required|string';
+                $rules['items.*.image'] = [
+                    'required',
+                    'image',
+                    'mimes:jpeg,png,jpg,gif,webp',
+                    'max:10000',
+                    // function ($attribute, $value, $fail) {
+                    //     if ($value instanceof \Illuminate\Http\UploadedFile) {
+                    //         [$width, $height] = getimagesize($value->getRealPath());
+                    //         // Require 9:16 aspect ratio
+                    //         $aspectRatio = $width / $height;
+                    //         $expected = 9 / 16;
+                    //         if (abs($aspectRatio - $expected) > 0.05) {
+                    //             $fail('The ' . $attribute . ' must have a 9:16 aspect ratio.');
+                    //         }
+                    //     }
+                    // },
+                ];
+                $rules['items.*.index'] = 'required|integer';
+                $rules['items.*.url'] = $request->display_method === 'list'
+                    ? 'required|url'
+                    : 'nullable|url';
+            }
         }
 
         $templateRules = [
@@ -239,9 +245,16 @@ class ContentController extends BaseController
             $validated['share_image'] = $path;
         }
 
-        // ✅ Create content
+        if (in_array($validated['display_method'], ['list', 'file']) && (empty($validated['items']) || !is_array($validated['items']))) {
+            $validated['display_method'] = 'simple';
+        }
+
+        // dd($request->input('is_latest'), $request->input('importance'));
+
         $content = Content::create([
             ...$validated,
+            'is_latest' => $request->has(key: 'is_latest') ? (bool)$request->is_latest : false,
+            'importance' => $request->input('importance'),
             'user_id' => Auth::id(),
         ]);
 
@@ -610,6 +623,8 @@ class ContentController extends BaseController
         // ✅ Update basic content data
         $content->update([
             ...$validated,
+            "is_latest" => $request->has('is_latest') ? (bool)$request->is_latest : false,
+            'importance' => $request->input('importance'),
             'user_id' => Auth::id(),
         ]);
 

@@ -67,6 +67,21 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("contentForm");
     const publishButton = document.getElementById("publishButton");
 
+    // Detect current language
+    const currentLang = localStorage.getItem('siteLang') || 'en';
+
+    // Texts for both languages
+    const alertTexts = {
+        en: {
+            title: "Validation failed",
+            confirmButtonText: "OK"
+        },
+        ar: {
+            title: "فشل التحقق",
+            confirmButtonText: "حسناً"
+        }
+    };
+
     publishButton.addEventListener("click", function (e) {
         const selectedTemplate = document.querySelector('input[name="template"]:checked').value;
         const requiredFields = rules[selectedTemplate] || [];
@@ -84,9 +99,19 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
+        const tags = document.getElementById("hiddenTags").children;
+        if (tags.length === 0) {
+            errors.push(currentLang === "ar" ? "يجب إضافة وسم واحد على الأقل" : "At least one tag is required");
+        }
+
         if (errors.length > 0) {
             e.preventDefault();
-            alert("Validation failed:\n\n" + errors.join("\n"));
+            Swal.fire({
+                title: alertTexts[currentLang].title,
+                html: "<ul style='text-align: center;'>" + errors.map(e => "<li class=''>" + e + "</li>").join("") + "</ul>",
+                icon: "error",
+                confirmButtonText: alertTexts[currentLang].confirmButtonText
+            });
         }
     });
 });
