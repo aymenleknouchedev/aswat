@@ -34,7 +34,7 @@
                 @include('dashboard.components.header')
 
                 <form class="nk-content container row" action="{{ route('dashboard.content.store') }}" method="POST"
-                    enctype="multipart/form-data" id="contentForm validate-form-on-submit">
+                    enctype="multipart/form-data" id="contentForm">
 
                     <div class="col-md-9">
 
