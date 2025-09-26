@@ -159,14 +159,29 @@ class HomePageController extends Controller
             ->skip(4)
             ->paginate(10);
 
+        $topViewed = Content::where('section_id', $sectionId)
+            ->orderByDesc('read_count')
+            ->take(5)
+            ->get();
 
+        // Fetch 5 random articles from the last month for the section
+        $suggestions = Content::where('section_id', $sectionId)
+            ->where('created_at', '>=', now()->subMonth())
+            ->inRandomOrder()
+            ->take(5)
+            ->get();
 
-        return view('user.section', [
-            'section' => $section,
-            'arabicName' => $arabicName,
-            'contents' => $contents,
-            'moreContents' => $moreContents,
-        ]);
+        return view(
+            'user.section',
+            [
+                'section' => $section,
+                'arabicName' => $arabicName,
+                'contents' => $contents,
+                'moreContents' => $moreContents,
+                'topViewed' => $topViewed,
+                'suggestions' => $suggestions,
+            ],
+        );
     }
 
     public function openArticle($id)
