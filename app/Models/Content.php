@@ -66,9 +66,14 @@ class Content extends Model
         'album_mobile_image',
         'album_content_image',
         'album_images',
+
         // No Image
         'no_image_content_image',
         'no_image_mobile_image',
+
+        // Additional Fields
+        'is_latest',
+        'importance',
     ];
 
     public function topContent()

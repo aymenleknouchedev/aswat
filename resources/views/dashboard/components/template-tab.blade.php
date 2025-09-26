@@ -74,17 +74,17 @@
                         <div class="mb-2">
                             <label class="form-label" data-ar="العنوان" data-en="Title">Title <span
                                     style="color:red;">*</span></label>
-                            <input id="itemTitle" class="form-control" required data-ar="العنوان" data-en="Title" />
+                            <input id="itemTitle" class="form-control" data-ar="العنوان" data-en="Title" />
                         </div>
                         <div class="mb-2">
                             <label class="form-label" data-ar="الوصف" data-en="Description">Description <span
                                     style="color:red;">*</span></label>
-                            <textarea id="itemDescription" class="form-control" required data-ar="الوصف" data-en="Description"></textarea>
+                            <textarea id="itemDescription" class="form-control" data-ar="الوصف" data-en="Description"></textarea>
                         </div>
                         <div class="mb-2">
                             <label class="form-label" data-ar="الصورة" data-en="Image">Image <span
                                     style="color:red;">*</span></label>
-                            <input id="itemImage" type="file" class="form-control" accept="image/*" required
+                            <input id="itemImage" type="file" class="form-control" accept="image/*"
                                 data-ar="الصورة" data-en="Image" />
                         </div>
                         <div class="mb-2">

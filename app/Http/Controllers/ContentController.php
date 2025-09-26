@@ -99,6 +99,7 @@ class ContentController extends BaseController
     public function store(Request $request)
     {
 
+        // dd($request->all());
         $albumImages = [];
 
         if ($request->hasFile('album_images')) {
@@ -248,8 +249,12 @@ class ContentController extends BaseController
             $validated['display_method'] = 'simple';
         }
 
+        // dd($request->input('is_latest'), $request->input('importance'));
+
         $content = Content::create([
             ...$validated,
+            'is_latest' => $request->has(key: 'is_latest') ? (bool)$request->is_latest : false,
+            'importance' => $request->input('importance'),
             'user_id' => Auth::id(),
         ]);
 
