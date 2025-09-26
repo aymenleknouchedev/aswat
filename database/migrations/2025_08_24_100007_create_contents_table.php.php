@@ -57,7 +57,7 @@ return new class extends Migration
             $table->timestamp('published_at')->useCurrent();
             $table->unsignedBigInteger('read_count')->default(0);
 
-            $table->boolean('is_latest')->default(true);
+            $table->boolean('is_latest')->default(false);
             $table->integer('importance')->default(1);
             
             $table->softDeletes();

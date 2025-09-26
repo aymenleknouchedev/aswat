@@ -690,15 +690,16 @@
                                 <!-- Collapsible: Schedule Publish -->
                                 <div>
                                     <label class="form-label" for="publish_at">
-                                        <em class="icon ni ni-calendar"></em>
                                         <span data-ar="جدولة النشر" data-en="Schedule Publish">جدولة النشر</span>
                                     </label>
                                     <div class="input-group mb-2">
-                                        <span class="input-group-text bg-light">
+                                        {{-- <span class="input-group-text bg-light">
                                             <em class="icon ni ni-calendar"></em>
-                                        </span>
+                                        </span> --}}
                                         <input type="datetime-local" id="publish_at" name="published_at"
-                                            class="form-control" value="{{ old('published_at') }}">
+                                            class="form-control" value="{{ old('published_at') }}"
+                                            onclick="this.showPicker && this.showPicker()"
+                                            onfocus="this.showPicker && this.showPicker()">
                                     </div>
                                 </div>
 
