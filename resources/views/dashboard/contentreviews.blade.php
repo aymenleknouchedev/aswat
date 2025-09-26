@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('title', 'أصوات جزائرية | تعديل خبر عاجل')
-
 @section('content')
     <div class="nk-app-root">
         <div class="nk-main">
@@ -29,35 +28,27 @@
                                                         $isOwner = auth()->id() === $review->reviewer_id;
                                                     @endphp
 
-                                                    <div class="d-flex {{ $isOwner ? 'justify-content-end' : 'justify-content-start' }}">
-                                                        <div class="message-bubble {{ $isOwner ? 'message-owner' : 'message-other' }}">
-                                                            <div class="d-flex align-items-center justify-content-between mb-1">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="user-avatar sm">
-                                                                        {{ substr($review->reviewer->name, 0, 1) }}{{ substr($review->reviewer->surname, 0, 1) }}
-                                                                    </div>
-                                                                    
-                                                                    <div class="d-flex flex-column mx-2">
-                                                                        <span class="fw-bold">{{ $review->reviewer->name }} {{ $review->reviewer->surname }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                                @if($isOwner)
-                                                                <a href="#" class="delete-review text-danger" data-id="{{ $review->id }}">
+                                                    <div class="note-item {{ $isOwner ? 'note-owner' : 'note-other' }}">
+                                                        <div class="note-header d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                <span class="fw-bold">{{ $review->reviewer->name }} {{ $review->reviewer->surname }}</span>
+                                                                <small class="text-light ms-2">{{ $review->created_at->format('Y-m-d H:i') }}</small>
+                                                            </div>
+                                                            @if($isOwner)
+                                                                <a href="#" class="delete-review text-light" data-id="{{ $review->id }}">
                                                                     <em class="icon ni ni-trash"></em>
                                                                 </a>
-                                                                @endif
-                                                            </div>
-                                                            
-                                                            <div class="message-content">
-                                                                <p class="mb-0">{{ $review->message }}</p>
-                                                            </div>
+                                                            @endif
+                                                        </div>
+                                                        <div class="note-body">
+                                                            <p class="mb-0">{{ $review->message }}</p>
                                                         </div>
                                                     </div>
+
                                                 @endforeach
                                             @else
                                                 <div class="text-center py-5">
-                                                    <em class="icon ni ni-chat-round fs-2 text-light"></em>
+                                                    <em class="icon ni ni-file-text fs-2 text-light"></em>
                                                     <p class="mt-2 text-muted" data-en="No reviews yet" data-ar="لا توجد مراجعات حتى الآن">لا توجد مراجعات حتى الآن</p>
                                                 </div>
                                             @endif
@@ -69,13 +60,14 @@
                                     <div class="card-inner">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 position-relative">
-                                                <input id="message_text" name="review_description" class="form-control form-control-lg" />
+                                                <input id="message_text" name="review_description" class="form-control form-control-lg" placeholder="أضف ملاحظة جديدة..." />
                                                 <input type="hidden" id="content_id" value="{{ $id }}" />
                                                 <button 
                                                     id="send_message" 
                                                     class="btn btn-primary position-absolute"
+                                                    style="right: 5px; top: 5px; height: calc(100% - 10px);"
                                                 >
-                                                    <em class="icon ni ni-send"></em>
+                                                    <em class="icon ni ni-plus"></em>
                                                 </button>
                                             </div>
                                         </div>
@@ -92,97 +84,79 @@
     </div>
 @endsection
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const siteLang = localStorage.getItem('siteLang') || 'en';
-        const sendBtn = document.getElementById("send_message");
-
-        if (siteLang === "ar") {
-            sendBtn.classList.add("send-btn-rtl");
-        } else {
-            sendBtn.classList.add("send-btn-ltr");
-        }
-    });
-</script>
-
 <style>
-    /* LTR (default) */
-    .send-btn-ltr {
-        right: 5px;
-        top: 5px;
-        height: calc(100% - 10px);
-    }
-
-    /* RTL */
-    .send-btn-rtl {
-        left: 5px;
-        top: 5px;
-        height: calc(100% - 10px);
-    }
-
-
-    .message-bubble {
-        max-width: 70%;
-        padding: 12px 16px;
-        border-radius: 18px;
-        margin-bottom: 8px;
-        position: relative;
-    }
-    
-    .message-owner {
-        background-color: #e3f2fd;
-        border-bottom-right-radius: 4px;
-    }
-    
-    .message-other {
-        background-color: #f5f5f5;
-        border-bottom-left-radius: 4px;
-    }
-    
-    .user-avatar {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background-color: #4a6cf7;
-        color: white;
+    .note-item {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        flex-shrink: 0;
+        flex-direction: column;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #e5e5e5;
+        max-width: 60%;
     }
-    
-    .user-avatar.sm {
-        width: 32px;
-        height: 32px;
-        font-size: 12px;
+
+    @media (max-width: 768px) {
+        .note-item {
+            max-width: 90%;
+        }
     }
-    
-    .message-content {
-        word-wrap: break-word;
+
+    .note-owner {
+        align-self: flex-start;
+        width: 100%;
     }
-    
+
+    .note-other {
+        align-self: flex-end;
+        width: 100%;
+    }
+
+    .note-header {
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 5px 5px 0 0;
+    }
+
+    .note-body {
+        padding: 10px;
+        font-size: 13px;
+        color: #333;
+        border-radius: 0 0 5px 5px;
+    }
+
+    .note-owner .note-header {
+        background: #4a6cf7;
+        color: #fff;
+    }
+    .note-owner .note-body {
+        background: #eaf0ff;
+    }
+
+    .note-other .note-header {
+        background: #6c757d;
+        color: #fff;
+    }
+    .note-other .note-body {
+        background: #f5f5f5;
+    }
+
     #reviews-container {
-        min-height: 400px;
+        min-height: 300px;
         max-height: 60vh;
         overflow-y: auto;
         padding: 10px;
     }
-    
     #reviews-container::-webkit-scrollbar {
         width: 6px;
     }
-    
     #reviews-container::-webkit-scrollbar-track {
         background: #f1f1f1;
         border-radius: 10px;
     }
-    
     #reviews-container::-webkit-scrollbar-thumb {
         background: #c5c5c5;
         border-radius: 10px;
     }
-    
     #reviews-container::-webkit-scrollbar-thumb:hover {
         background: #a8a8a8;
     }
@@ -219,24 +193,18 @@
                 if (data.review) {
                     const reviewsContainer = document.getElementById("reviews-container");
                     const newReviewHTML = `
-                        <div class="d-flex justify-content-end">
-                            <div class="message-bubble message-owner">
-                                <div class="d-flex align-items-center justify-content-between mb-1">
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-avatar sm">
-                                            {{ substr(auth()->user()->name, 0, 1) }}{{ substr(auth()->user()->surname, 0, 1) }}
-                                        </div>
-                                        <div class="d-flex flex-column mx-2">
-                                            <span class="fw-bold">{{ auth()->user()->name }} {{ auth()->user()->surname }}</span>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="delete-review text-danger" data-id="${data.review.id}">
-                                        <em class="icon ni ni-trash"></em>
-                                    </a>
+                        <div class="note-item note-owner">
+                            <div class="note-header d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="fw-bold">{{ auth()->user()->name }} {{ auth()->user()->surname }}</span>
+                                    <small class="text-light ms-2">${new Date().toLocaleString()}</small>
                                 </div>
-                                <div class="message-content">
-                                    <p class="mb-0">${data.review.message}</p>
-                                </div>
+                                <a href="#" class="delete-review text-light" data-id="${data.review.id}">
+                                    <em class="icon ni ni-trash"></em>
+                                </a>
+                            </div>
+                            <div class="note-body">
+                                <p class="mb-0">${data.review.message}</p>
                             </div>
                         </div>
                     `;
