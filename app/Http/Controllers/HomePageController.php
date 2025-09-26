@@ -44,10 +44,10 @@ class HomePageController extends Controller
 
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
-            ->whereNotIn('id', $topContentIds)
-            ->latest()
-            ->take($count)
-            ->get();
+                ->whereNotIn('id', $topContentIds)
+                ->latest()
+                ->take($count)
+                ->get();
         }
 
         $topViewed = Content::where('section_id', $sections['منوعات'] ?? null)
@@ -106,7 +106,8 @@ class HomePageController extends Controller
         return view('user.reviews');
     }
 
-    public function photos() {
+    public function photos()
+    {
         return view('user.photos');
     }
 
@@ -120,9 +121,52 @@ class HomePageController extends Controller
         return view('user.arts');
     }
 
-    public function newCategory()
+    public function newSection($section)
     {
-        return view('user.newCategory');
+        // Map English section keys to Arabic names and number of items to fetch
+        $sectionNames = [
+            'algeria' => ['الجزائر', 4],
+            'world' => ['عالم', 4],
+            'economy' => ['اقتصاد', 4],
+            'sports' => ['رياضة', 4],
+            'people' => ['ناس', 4],
+            'technology' => ['تكنولوجيا', 4],
+            'health' => ['صحة', 4],
+            'environment' => ['بيئة', 4],
+            'media' => ['ميديا', 4],
+            'variety' => ['منوعات', 4],
+        ];
+
+        if (!array_key_exists($section, $sectionNames)) {
+            abort(404);
+        }
+
+        [$arabicName, $count] = $sectionNames[$section];
+
+        $sectionId = \App\Models\Section::where('name', $arabicName)->value('id');
+
+        if (!$sectionId) {
+            abort(404);
+        }
+
+        $contents = \App\Models\Content::where('section_id', $sectionId)
+            ->latest()
+            ->take(4)
+            ->get();
+
+        $moreContents = \App\Models\Content::where('section_id', $sectionId)
+            ->latest()
+            ->skip(4)
+            ->paginate(10);
+
+
+
+        return view('user.section', [
+            'section' => $section,
+            'arabicName' => $arabicName,
+            'contents' => $contents,
+            'moreContents' => $moreContents,
+        ]);
     }
 
     public function openArticle($id)

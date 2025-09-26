@@ -2,9 +2,9 @@
     <nav id="site-main-nav">
         <div class="site-container">
             <div class="site-nav-right">
-                <a href="{{ route('index') }}"> <img class="site-logo" src="./user/assets/images/logo.svg" alt="Logo">
-                </a>
-                <ul class="site-nav-links">
+                <a href="{{ route('index') }}">
+                    <img class="site-logo" src="{{ asset('user/assets/images/logo.svg') }}" alt="Logo">
+                </a>    <ul class="site-nav-links">
                     <li class="site-nav-link" id="site-show-subnav"><a href="{{ route('index') }}">أخبار</a></li>
                     <li class="site-nav-link"> <a href="{{ route('reviews') }}">آراء</a></li>
                     <li class="site-nav-link">نوافذ</li>
@@ -47,12 +47,12 @@
                 <div class="site-weather-widget">
                     <div class="site-weather-location">الجزائر</div>
                     <div class="site-weather-item">
-                        <img src="./user/assets/icons/day-mode.png" alt="نهار">
+                        <img src="{{ asset('user/assets/icons/day-mode.png') }}" alt="نهار">
                         <span>25°</span>
                     </div>
                     <div class="site-weather-divider"></div>
                     <div class="site-weather-item">
-                        <img src="./user/assets/icons/night-mode.png" alt="ليل">
+                        <img src="{{ asset('user/assets/icons/night-mode.png') }}" alt="ليل">
                         <span>15°</span>
                     </div>
                 </div>
@@ -64,17 +64,17 @@
     <nav id="site-subnav">
         <div class="site-container">
             <ul class="site-subnav-links">
-                <li class="site-subnav-link"><a href="{{ route('newCategory') }}">الجزائر</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newCategory') }}">عالم</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newCategory') }}">اقتصاد</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newCategory') }}">رياضة</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newCategory') }}">ناس</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'world']) }}">عالم</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'people']) }}">ناس</a></li>
                 <li class="site-subnav-link"><a href="{{ route('arts') }}">ثقافة وفنون</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newCategory') }}">تكنولوجيا</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newCategory') }}">صحة</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newCategory') }}">بيئة</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newCategory') }}">ميديا</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newCategory') }}">منوعات</a></li>
-            </ul>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'media']) }}">ميديا</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a></li>   
+             </ul>
         </div>
     </nav>

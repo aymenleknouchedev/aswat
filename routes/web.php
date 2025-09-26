@@ -92,7 +92,7 @@ if (env('COMING_SOON', true)) {
     Route::get('/reviews', [HomePageController::class, 'reviews'])->name('reviews');
     Route::get('/podcasts', [HomePageController::class, 'podcasts'])->name('podcasts');
     Route::get('/arts', [HomePageController::class, 'arts'])->name('arts');
-    Route::get('/newCategory', [HomePageController::class, 'newCategory'])->name('newCategory');
+    Route::get('/section/{section}', [HomePageController::class, 'newSection'])->name('newSection');
 }
 
 Route::prefix('dashboard')->group(function () {

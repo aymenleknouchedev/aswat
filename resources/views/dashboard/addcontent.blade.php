@@ -177,7 +177,8 @@
                                                 data-en="Category">التصنيف</label>
                                             <span style="color:red;">*</span>
                                             <div class="form-control-wrap position-relative">
-                                                <input type="text" id="categorySearch" class="form-control pe-5" required>
+                                                <input type="text" id="categorySearch" class="form-control pe-5"
+                                                    required>
                                                 <input type="hidden" name="category_id" id="categoryHidden" required>
                                                 <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
@@ -370,7 +371,9 @@
 
                                                     <!-- Header -->
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="addWriterModalLabel" data-ar="إضافة كاتب جديد" data-en="Add New Writer">إضافة كاتب جديد</h5>
+                                                        <h5 class="modal-title" id="addWriterModalLabel"
+                                                            data-ar="إضافة كاتب جديد" data-en="Add New Writer">إضافة كاتب
+                                                            جديد</h5>
                                                     </div>
 
                                                     <!-- Body -->
@@ -383,16 +386,14 @@
                                                                 <label class="form-label" data-ar="الاسم"
                                                                     data-en="Name">الاسم</label>
                                                                 <input type="text" id="writerName" name="name"
-                                                                    class="form-control" data-ar="الاسم"
-                                                                    data-en="Name">
+                                                                    class="form-control" data-ar="الاسم" data-en="Name">
                                                             </div>
 
                                                             <div class="mb-3">
                                                                 <label class="form-label" data-ar="الرابط (Slug)"
                                                                     data-en="Slug">الرابط (Slug)</label>
                                                                 <input type="text" id="writerSlug" name="slug"
-                                                                    class="form-control" data-ar="الرابط"
-                                                                    data-en="Slug">
+                                                                    class="form-control" data-ar="الرابط" data-en="Slug">
                                                             </div>
 
                                                             <div class="mb-3">
@@ -672,8 +673,8 @@
                             </div>
 
                             <div class="mt-4 d-flex">
-                                <button type="submit"
-                                    class="btn btn-primary btn-lg me-3" data-ar="نشر" data-en="Publish" id="publishButton">
+                                <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر"
+                                    data-en="Publish" id="publishButton">
                                     نشر
                                 </button>
                                 <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg"
