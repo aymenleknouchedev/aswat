@@ -623,6 +623,8 @@ class ContentController extends BaseController
         // ✅ Update basic content data
         $content->update([
             ...$validated,
+            "is_latest" => $request->has('is_latest') ? (bool)$request->is_latest : false,
+            'importance' => $request->input('importance'),
             'user_id' => Auth::id(),
         ]);
 
