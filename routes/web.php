@@ -111,7 +111,9 @@ Route::prefix('dashboard')->group(function () {
     Route::middleware(['auth'])->group(function () {
 
         // Coming soon
-        Route::get('/cvs', [ComingSoonController::class,'index'])->name('dashboard.join-team');
+        Route::get('/cvs', [ComingSoonController::class,'index'])->name( 'dashboard.join-team');
+        Route::post('/cv/{id}/update-status', [ComingSoonController::class, 'update_status'])->name('dashboard.join-team.update_status');
+        Route::delete('/delete-cv/{id}', [ComingSoonController::class,'destroy'])->name( 'dashboard.join-team.delete');
 
         // Api for select2 ajax search
         Route::get('/api/search-contents', [ApiController::class, 'search_contents'])->name('api.search.contents');
