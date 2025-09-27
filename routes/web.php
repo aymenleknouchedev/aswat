@@ -4,6 +4,7 @@ use App\Http\Controllers\ComingSoonController;
 use App\Http\Controllers\ContentReviewController;
 use App\Http\Controllers\JoinTeamController;
 use App\Http\Controllers\TopContentController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -82,6 +83,8 @@ Route::get('/seed', function () {
     ]);
     return 'Database seeded successfully.';
 });
+
+Route::get('/o-auth', [AuthController::class, 'auth'])->name('dashboard.user.auth');
 
 if (env('COMING_SOON', true)) {
     Route::get('/{any}', function () {

@@ -65,19 +65,29 @@
                         <div class="card card-bordered card-preview">
                             <div class="card-inner">
                                 <form method="GET" action="{{ route('dashboard.join-team') }}" class="row g-2">
-                                    <div class="col-md-7 col-12">
+                                    <div class="col-md-6 col-12">
                                         <input type="text" name="search" value="{{ request('search') }}"
                                             class="form-control"
                                             placeholder="ابحث عن تصنيف..."
                                             data-en="Search for category..."
                                             data-ar="ابحث عن تصنيف...">
                                     </div>
-                                    <div class="col-md-3 col-12">
+                                    <div class="col-md-2 col-12">
                                         <select name="status" class="form-select">
                                             <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>قيد الانتظار</option>
                                             <option value="checked" {{ request('status') === 'checked' ? 'selected' : '' }}>تم التحقق</option>
                                             <option value="accepted" {{ request('status') === 'accepted' ? 'selected' : '' }}>مقبول</option>
                                             <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>مرفوض</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 col-12">
+                                        <select name="reason" class="form-select">
+                                            <option value="journalist" {{ request('reason') === 'journalist' ? 'selected' : '' }} data-ar="صحفي" data-en="Journalist">صحفي</option>
+                                            <option value="infographic" {{ request('reason') === 'infographic' ? 'selected' : '' }} data-ar="أنفوغراف/ مركّب فيديو" data-en="Infographic/ Video Composite">أنفوغراف/ مركّب فيديو</option>
+                                            <option value="voiceover" {{ request('reason') === 'voiceover' ? 'selected' : '' }} data-ar="معلّق صوتي" data-en="Voiceover">معلّق صوتي</option>
+                                            <option value="audiovisual" {{ request('reason') === 'audiovisual' ? 'selected' : '' }} data-ar="صانع محتوى سمعي بصري" data-en="Audiovisual Content Creator">صانع محتوى سمعي بصري</option>
+                                            <option value="translator" {{ request('reason') === 'translator' ? 'selected' : '' }} data-ar="مترجم" data-en="Translator">مترجم</option>
+                                            <option value="proofreader" {{ request('reason') === 'proofreader' ? 'selected' : '' }} data-ar="مدقّق لغوي" data-en="Proofreader">مدقّق لغوي</option>
                                         </select>
                                     </div>
                                     <div class="col-md-1 col-6">
@@ -102,6 +112,7 @@
                                             <th data-ar="السيرة الذاتية" data-en="CV">السيرة الذاتية</th>
                                             <th data-ar="تاريخ الإرسال" data-en="submission date">تاريخ الإرسال</th>
                                             <th data-ar="الحالة" data-en="status">الحالة</th>
+                                            <th data-ar="الوظيفة" data-en="job" class="text-center">الوظيفة</th>
                                             <th data-ar="الإجراءات" data-en="Actions" class="text-center">الإجراءات</th>
                                         </tr>
                                     </thead>
@@ -138,6 +149,8 @@
                                                         </option>
                                                     </select>
                                                 </td>
+
+                                                <td class="text-center">{{ ucfirst($cv->reason) }}</td>
 
                                                 <td class="text-center">
                                                     <button type="button" class="btn btn-info btn-sm view-message-btn" data-message="{{ $cv->message }}">

@@ -15,7 +15,8 @@ class JoinTeamController extends Controller
             'fullname' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'message' => 'required|string',
-            'cv' => 'nullable|file|mimes:pdf,doc,docx|max:10000',
+            'cv' => 'required|file|mimes:pdf,doc,docx|max:10000',
+            'reason' => 'required|in:journalist,infographic,voiceover,audiovisual,translator,proofreader',
         ]);
 
         if ($validator->fails()) {
@@ -27,6 +28,7 @@ class JoinTeamController extends Controller
             $join_team->fullname = $request->input('fullname');
             $join_team->email = $request->input('email');
             $join_team->message = $request->input('message');
+            $join_team->reason = $request->input('reason');
 
             if ($request->hasFile('cv')) {
                 $path = $request->file('cv')->store('cvs');

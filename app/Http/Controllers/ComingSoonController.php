@@ -12,12 +12,16 @@ class ComingSoonController extends Controller
         $pagination = config("pagination.per15", 15);
         $search = $request->search ?? "";
         $status = $request->status ?? "pending";
+        $reason = $request->reason ?? "journalist";
 
         $cvs = JoinTeam::where('status', $status)
+            ->when($reason, function ($query, $reason) {
+                $query->where('reason', $reason);
+            })
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('fullname', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
+                      ->orWhere('email', 'like', "%{$search}%");
                 });
             })
             ->paginate($pagination);
