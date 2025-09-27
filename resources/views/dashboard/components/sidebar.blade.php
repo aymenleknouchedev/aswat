@@ -80,6 +80,20 @@
                     </li>
                     @endcanDo
 
+                    @canDo('coming_soon_access')
+                    <!-- Media Library -->
+                    <li class="nk-menu-item">
+                        <a href="{{ route('dashboard.join-team') }}" class="nk-menu-link">
+                            <span class="nk-menu-icon">
+                                <em class="icon ni ni-clock"></em>
+                            </span>
+                            <span class="nk-menu-text" data-en="Coming soon" data-ar="قريباً">
+                                Coming soon
+                            </span>
+                        </a>
+                    </li>
+                    @endcanDo
+
 
                     @canDo('content_management_access')
                     <!-- Content Management -->

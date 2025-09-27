@@ -71,8 +71,18 @@
                                                     <th style="font-weight: bold;" data-en="Status" data-ar="الحالة">الحالة</th>
                                                     <th style="font-weight: bold;" data-en="Date" data-ar="التاريخ">التاريخ</th>
                                                     <th style="font-weight: bold;" data-en="Author" data-ar="الكاتب">الكاتب</th>
-                                                    <th style="font-weight: bold;" data-en="Actions" data-ar="إجراءات">إجراءات
+                                                    <th style="font-weight: bold; text-align: right;" data-en="Actions" data-ar="الإجراءات">الإجراءات
+                                                        <script>
+                                                            document.addEventListener('DOMContentLoaded', function() {
+                                                                var lang = localStorage.getItem('siteLang');
+                                                                var th = document.querySelector('th[data-en="Actions"]');
+                                                                if (th && lang) {
+                                                                    th.style.textAlign = (lang === 'ar') ? 'left' : 'right';
+                                                                }
+                                                            });
+                                                        </script>
                                                     </th>
+                                                  
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -101,21 +111,36 @@
                                                         </td>
                                                         <td>{{ $content->created_at->format('Y-m-d') }}</td>
                                                         <td>{{ $content->writer->name ?? '-' }}</td>
-                                                        <td>
-                                                            <a href="{{ route('dashboard.content.show', $content->id) }}"
-                                                                class="btn btn-sm btn-primary" data-en="View"
-                                                                data-ar="عرض">عرض</a>
+                                                        <td style="text-align: right;" id="actionsCell{{ $content->id }}">
+                                                        <script>
+                                                            document.addEventListener('DOMContentLoaded', function() {
+                                                                var lang = localStorage.getItem('siteLang');
+                                                                var cell = document.getElementById('actionsCell{{ $content->id }}');
+                                                                if (cell && lang) {
+                                                                    cell.style.textAlign = (lang === 'ar') ? 'left' : 'right';
+                                                                }
+                                                            });
+                                                        </script>
                                                             <a href="{{ route('dashboard.content.edit', $content->id) }}"
                                                                 class="btn btn-sm btn-warning" data-en="Edit"
                                                                 data-ar="تعديل">تعديل</a>
-                                                            <form
-                                                                action="{{ route('dashboard.content.destroy', $content->id) }}"
-                                                                method="POST" style="display:inline;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button" class="btn btn-sm btn-danger delete-btn"
-                                                                    data-en="Delete" data-ar="حذف">حذف</button>
-                                                            </form>
+                                                            <div class="dropdown d-inline">
+                                                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="actionsDropdown{{ $content->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <em class="icon ni ni-more-h"></em>
+                                                                </button>
+                                                                <ul class="dropdown-menu" aria-labelledby="actionsDropdown{{ $content->id }}">
+                                                                    <li>
+                                                                        <a class="dropdown-item" href="{{ route('dashboard.content.show', $content->id) }}" data-en="View" data-ar="عرض">عرض</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <form action="{{ route('dashboard.content.destroy', $content->id) }}" method="POST" style="display:inline;">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="button" class="dropdown-item delete-btn" data-en="Delete" data-ar="حذف">حذف</button>
+                                                                        </form>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
