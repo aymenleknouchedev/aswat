@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ComingSoonController;
 use App\Http\Controllers\ContentReviewController;
+use App\Http\Controllers\JoinTeamController;
 use App\Http\Controllers\TopContentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -26,6 +28,9 @@ use App\Http\Controllers\{
 };
 
 use App\Http\Controllers\ApiController;
+
+// Coming soon
+Route::post('/store-join-team', [JoinTeamController::class,'store_join_team'])->name('dashboard.store-join-team');
 
 // Clear cache, config, routes, views
 Route::get('/clear-cache', function () {
@@ -105,6 +110,9 @@ Route::prefix('dashboard')->group(function () {
     // Routes dashboard  
     Route::middleware(['auth'])->group(function () {
 
+        // Coming soon
+        Route::get('/cvs', [ComingSoonController::class,'index'])->name('dashboard.join-team');
+
         // Api for select2 ajax search
         Route::get('/api/search-contents', [ApiController::class, 'search_contents'])->name('api.search.contents');
         Route::get('/api/search-categories', [ApiController::class, 'search_categories'])->name('api.search.categories');
@@ -174,4 +182,6 @@ Route::prefix('dashboard')->group(function () {
 
         Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
     });
+
+
 });
