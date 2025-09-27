@@ -6,6 +6,7 @@ use App\Models\Content;
 use App\Models\Section;
 use App\Models\BreakingContent;
 use App\Models\TopContent;
+use Illuminate\Http\Request;
 
 class HomePageController extends Controller
 {
@@ -121,9 +122,8 @@ class HomePageController extends Controller
         return view('user.arts');
     }
 
-    public function newSection($section)
+    public function newSection(Request $request, $section)
     {
-        // Map English section keys to Arabic names and number of items to fetch
         $sectionNames = [
             'algeria' => ['الجزائر', 4],
             'world' => ['عالم', 4],
@@ -142,47 +142,55 @@ class HomePageController extends Controller
         }
 
         [$arabicName, $count] = $sectionNames[$section];
-
         $sectionId = \App\Models\Section::where('name', $arabicName)->value('id');
 
         if (!$sectionId) {
             abort(404);
         }
 
+        // === أول 4 مقالات ثابتة ===
         $contents = \App\Models\Content::where('section_id', $sectionId)
             ->latest()
-            ->take(4)
+            ->take($count)
             ->get();
+
+        // === باقي المقالات بالـ AJAX ===
+        $perPage = 10;
+        $page = $request->get('page', 1);
+        $skip = $count + (($page - 1) * $perPage);
 
         $moreContents = \App\Models\Content::where('section_id', $sectionId)
             ->latest()
-            ->skip(4)
-            ->paginate(10);
+            ->skip($skip)
+            ->take($perPage)
+            ->get();
 
+        // Top viewed + suggestions
         $topViewed = Content::where('section_id', $sectionId)
             ->orderByDesc('read_count')
             ->take(5)
             ->get();
 
-        // Fetch 5 random articles from the last month for the section
         $suggestions = Content::where('section_id', $sectionId)
             ->where('created_at', '>=', now()->subMonth())
             ->inRandomOrder()
             ->take(5)
             ->get();
 
-        return view(
-            'user.section',
-            [
-                'section' => $section,
-                'arabicName' => $arabicName,
-                'contents' => $contents,
-                'moreContents' => $moreContents,
-                'topViewed' => $topViewed,
-                'suggestions' => $suggestions,
-            ],
-        );
+        if ($request->ajax()) {
+            return view('user.partials.section-items', compact('moreContents'))->render();
+        }
+
+        return view('user.section', compact(
+            'section',
+            'arabicName',
+            'contents',
+            'moreContents',
+            'topViewed',
+            'suggestions'
+        ));
     }
+
 
     public function openArticle($id)
     {

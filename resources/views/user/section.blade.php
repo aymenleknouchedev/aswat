@@ -442,21 +442,16 @@
             <div class="newCategory-all-section">
                 <!-- Left: Cards loop -->
                 <div class="newCategory-all-list">
-                    @foreach ($moreContents as $content)
-                        <div class="newCategory-all-card">
-                            <div class="newCategory-all-card-image">
-                                <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG19.jpg' }}"
-                                    alt="{{ $content->title ?? 'News Image' }}">
-                            </div>
-                            <div class="newCategory-all-card-text">
-                                <h3>{{ $content->category->name ?? 'سياسة' }}</h3>
-                                <h2>{{ $content->title ?? '' }}</h2>
-                                <p>{{ $content->summary ?? '' }}</p>
-                            </div>
-                        </div>
-                    @endforeach
-                    <button class="photos-load-more-btn">المزيد</button>
+                    <div id="content-container">
+                        @include('user.partials.section-items', ['moreContents' => $moreContents])
+                    </div>
 
+                    <div class="text-center mt-3" id="load-more-container">
+                        <button class="photos-load-more-btn btn btn-primary" data-page="1"
+                            data-section="{{ $section }}">
+                            المزيد
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Right: Empty -->
@@ -513,3 +508,48 @@
 
 
 @endsection
+
+
+<script>
+    let loading = false;
+
+    document.addEventListener("click", async function(e) {
+        if (e.target.classList.contains("photos-load-more-btn")) {
+            if (loading) return;
+
+            let btn = e.target;
+            let page = parseInt(btn.getAttribute("data-page")) + 1;
+            let section = btn.getAttribute("data-section");
+
+            loading = true;
+            btn.disabled = true;
+            btn.textContent = "جاري التحميل...";
+
+            try {
+                let response = await fetch(`/section/${section}?page=${page}`, {
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                });
+                if (!response.ok) throw new Error("خطأ في السيرفر");
+
+                let data = await response.text();
+
+                if (data.trim().length === 0) {
+                    btn.closest("#load-more-container").remove();
+                } else {
+                    document.querySelector("#content-container").insertAdjacentHTML("beforeend", data);
+                    btn.setAttribute("data-page", page);
+                    btn.disabled = false;
+                    btn.textContent = "المزيد";
+                }
+            } catch (error) {
+                alert("خطأ في تحميل المزيد");
+                btn.disabled = false;
+                btn.textContent = "المزيد";
+            }
+
+            loading = false;
+        }
+    });
+</script>
