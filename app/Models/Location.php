@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model
 {
-    protected $fillable = ['name', 'type'];
+    protected $fillable = ['name', 'slug', 'type'];
 
     public function contents()
     {

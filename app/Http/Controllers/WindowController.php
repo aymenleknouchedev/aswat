@@ -57,10 +57,12 @@ class WindowController extends BaseController
         try {
             $request->validate([
                 'name' => 'required|string|max:255|unique:windows,name',
+                'slug' => 'required|string|max:255|unique:windows,slug',
             ]);
 
             $window = new Window();
             $window->name = $request->input('name');
+            $window->slug = $request->input('slug');
             $window->save();
 
             return redirect()->back()->with('success', 'Window created successfully.');
@@ -96,9 +98,11 @@ class WindowController extends BaseController
 
             $request->validate([
                 'name' => 'required|string|max:255',
+                'slug'=> 'required|string|max:255|unique:windows,slug,'.$window->id,
             ]);
 
             $window->name = $request->input('name');
+            $window->slug = $request->input('slug');
             $window->save();
 
             return redirect()->back()->with('success', 'Window updated successfully.');

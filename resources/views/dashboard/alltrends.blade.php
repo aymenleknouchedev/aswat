@@ -79,6 +79,7 @@
                                     <thead class="tb-odr-head">
                                         <tr class="tb-odr-item">
                                             <th data-en="Title" data-ar="العنوان">العنوان</th>
+                                            <th data-en="Slug" data-ar="الرابط المختصر">الرابط المختصر</th>
                                             <th data-en="Actions" data-ar="الإجراءات">الإجراءات</th>
                                         </tr>
                                     </thead>
@@ -86,6 +87,7 @@
                                         @forelse ($trends as $trend)
                                             <tr class="tb-odr-item">
                                                 <td>{{ $trend->title }}</td>
+                                                <td>{{ $trend->slug }}</td>
                                                 <td>
                                                     <a href="{{ route('dashboard.trend.edit', $trend->id) }}"
                                                         class="btn btn-sm btn-primary" data-en="Edit"

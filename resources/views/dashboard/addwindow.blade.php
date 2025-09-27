@@ -68,6 +68,18 @@
                                 </div>
                             </div>
 
+                            <!-- الرابط المختصر -->
+                            <div class="form-group">
+                                <label class="form-label" for="slug" data-en="Slug" data-ar="الرابط المختصر">الرابط المختصر</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" name="slug" class="form-control" id="slug"
+                                        value="{{ old('slug') }}" required>
+                                </div>
+                                @error('slug')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                             <!-- زر الإرسال -->
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary" data-en="Add Window"

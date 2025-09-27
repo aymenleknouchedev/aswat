@@ -68,6 +68,18 @@
                                     @enderror
                                 </div>
 
+                                <div class="form-group">
+                                    <label class="form-label" for="slug" data-en="Slug" data-ar="الرابط المختصر">الرابط المختصر</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" name="slug" id="slug"
+                                               class="form-control"
+                                               value="{{ old('slug', $category->slug) }}" required>
+                                    </div>
+                                    @error('slug')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
                                 <div class="form-group mt-3">
                                     <button type="submit" class="btn btn-primary"
                                             data-en="Update Category" data-ar="تحديث التصنيف">

@@ -59,6 +59,7 @@
                                 <thead class="tb-odr-head">
                                     <tr class="tb-odr-item">
                                         <th data-en="Name" data-ar="الإسم">الإسم</th>
+                                        <th data-en="Slug" data-ar="الرابط المختصر">الرابط المختصر</th>
                                         <th data-en="Type" data-ar="النوع">النوع</th>
                                         <th data-en="Actions" data-ar="الإجراءات">الإجراءات</th>
                                     </tr>
@@ -67,6 +68,7 @@
                                     @forelse ($locations as $location)
                                         <tr class="tb-odr-item">
                                             <td>{{ $location->name }}</td>
+                                            <td>{{ $location->slug }}</td>
                                             <td>
                                                 @if ($location->type === 'city')
                                                     <span class="badge bg-info">{{ ucfirst($location->type) }}</span>

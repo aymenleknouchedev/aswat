@@ -59,10 +59,12 @@ class TrendController extends BaseController
         try {
             $request->validate([
                 'title' => 'required|string|min:3|max:255|unique:trends,title',
+                'slug' => 'required|string|min:3|max:255|unique:trends,slug',
             ]);
 
             $trend = new Trend();
             $trend->title = $request->input('title');
+            $trend->slug = $request->input('slug');
             $trend->save();
 
             return redirect()->route('dashboard.trend.create')->with('success', 'Trend created successfully.');
@@ -98,9 +100,11 @@ class TrendController extends BaseController
 
             $request->validate([
                 'title' => 'required|string|max:255',
+                'slug'=> 'required|string|max:255|unique:trends,slug,'.$trend->id,
             ]);
 
             $trend->title = $request->input('title');
+            $trend->slug = $request->input('slug');
             $trend->save();
 
             return redirect()->route('dashboard.trends.index')->with('success', 'Trend updated successfully.');
