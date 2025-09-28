@@ -95,58 +95,58 @@
     <div class="sport-grid-container">
         <!-- Column 1 -->
         <div class="sport-feature">
-            <img src="{{ $sport[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                alt="{{ $sport[0]->title ?? '' }}">
+            <img src="{{ $sports[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                alt="{{ $sports[0]->title ?? '' }}">
             <h3>
-                @if (isset($sport[0]->country))
-                    {{ $sport[0]->category->name ?? '' }} - {{ $sport[0]->country->name ?? '' }}
-                @elseif (isset($sport[0]->continent))
+                @if (isset($sports[0]->country))
+                    {{ $sports[0]->category->name ?? '' }} - {{ $sports[0]->country->name ?? '' }}
+                @elseif (isset($sports[0]->continent))
                     {{ $sport[0]->category->name ?? '' }} - {{ $sport[0]->continent->name ?? '' }}
                 @else
                     {{ $sport[0]->category->name ?? '' }}
                 @endif
             </h3>
-            <h2>{{ $sport[0]->title ?? '' }}</h2>
-            <p>{{ $sport[0]->summary ?? '' }}</p>
+            <h2>{{ $sports[0]->title ?? '' }}</h2>
+            <p>{{ $sports[0]->summary ?? '' }}</p>
         </div>
 
         <!-- Column 2 -->
         <div class="sport-feature">
-            <img src="{{ $sport[1]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                alt="{{ $sport[1]->title ?? '' }}">
+            <img src="{{ $sports[1]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                alt="{{ $sports[1]->title ?? '' }}">
             <h3>
-                @if (isset($sport[1]->country))
-                    {{ $sport[1]->category->name ?? '' }} - {{ $sport[1]->country->name ?? '' }}
-                @elseif (isset($sport[1]->continent))
-                    {{ $sport[1]->category->name ?? '' }} - {{ $sport[1]->continent->name ?? '' }}
+                @if (isset($sports[1]->country))
+                    {{ $sports[1]->category->name ?? '' }} - {{ $sports[1]->country->name ?? '' }}
+                @elseif (isset($sports[1]->continent))
+                    {{ $sports[1]->category->name ?? '' }} - {{ $sports[1]->continent->name ?? '' }}
                 @else
-                    {{ $sport[1]->category->name ?? '' }}
+                    {{ $sports[1]->category->name ?? '' }}
                 @endif
             </h3>
-            <h2>{{ $sport[1]->title ?? '' }}</h2>
-            <p>{{ $sport[1]->summary ?? '' }}</p>
+            <h2>{{ $sports[1]->title ?? '' }}</h2>
+            <p>{{ $sports[1]->summary ?? '' }}</p>
         </div>
 
         <!-- Column 3: 4 stacked rows -->
         <div class="sport-column">
             @for ($i = 2; $i < 6; $i++)
-                @if (isset($sport[$i]))
+                @if (isset($sports[$i]))
                     <div class="sport-card-horizontal">
                         <div class="sport-card-image">
-                            <img src="{{ $sport[$i]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                alt="{{ $sport[$i]->title ?? '' }}">
+                            <img src="{{ $sports[$i]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                alt="{{ $sports[$i]->title ?? '' }}">
                         </div>
                         <div class="sport-card-text">
                             <h3>
-                                @if (isset($sport[$i]->country))
-                                    {{ $sport[$i]->category->name ?? '' }} - {{ $sport[$i]->country->name ?? '' }}
-                                @elseif (isset($sport[$i]->continent))
-                                    {{ $sport[$i]->category->name ?? '' }} - {{ $sport[$i]->continent->name ?? '' }}
+                                @if (isset($sports[$i]->country))
+                                    {{ $sports[$i]->category->name ?? '' }} - {{ $sports[$i]->country->name ?? '' }}
+                                @elseif (isset($sports[$i]->continent))
+                                    {{ $sports[$i]->category->name ?? '' }} - {{ $sports[$i]->continent->name ?? '' }}
                                 @else
-                                    {{ $sport[$i]->category->name ?? '' }}
+                                    {{ $sports[$i]->category->name ?? '' }}
                                 @endif
                             </h3>
-                            <p>{{ $sport[$i]->title ?? '' }}</p>
+                            <p>{{ $sports[$i]->title ?? '' }}</p>
                         </div>
                     </div>
                 @endif

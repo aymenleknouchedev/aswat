@@ -154,7 +154,6 @@
                     </li>
                     @endcanDo
 
-
                     @canDo('categories_access')
                     <!-- Backup: Categories -->
                     <li class="nk-menu-item has-sub">

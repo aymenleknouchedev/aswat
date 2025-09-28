@@ -120,12 +120,21 @@
     }
 </style>
 
+@php
+    $manySections = [
+        'technology' => ['تكنولوجيا'],
+        'health' => ['صحة'],
+        'environment' => ['بيئة'],
+    ];
+@endphp
+
 <section class="many-titles-feature-grid">
     <div class="many-titles-grid-container">
 
         <!-- Column 1 -->
         <div>
-            <p class="section-title">تكنولوجيا</p>
+            <p class="section-title"><a href="{{ route('newSection', ['section' => 'technology']) }}"
+                    style="color: inherit; text-decoration: none;">تكنولوجيا</a></p>
             <div class="many-titles-column">
                 @include('user.components.ligne')
 
@@ -136,9 +145,11 @@
                                 alt="{{ $technology[0]->title ?? '' }}">
                             <h3>
                                 @if (isset($technology[0]->country))
-                                    {{ $technology[0]->category->name ?? '' }} - {{ $technology[0]->country->name ?? '' }}
+                                    {{ $technology[0]->category->name ?? '' }} -
+                                    {{ $technology[0]->country->name ?? '' }}
                                 @elseif (isset($technology[0]->continent))
-                                    {{ $technology[0]->category->name ?? '' }} - {{ $technology[0]->continent->name ?? '' }}
+                                    {{ $technology[0]->category->name ?? '' }} -
+                                    {{ $technology[0]->continent->name ?? '' }}
                                 @else
                                     {{ $technology[0]->category->name ?? '' }}
                                 @endif
@@ -177,7 +188,10 @@
 
         <!-- Column 2 -->
         <div>
-            <p class="section-title">صحة</p>
+            <p class="section-title">
+                <a href="{{ route('newSection', ['section' => 'health']) }}"
+                    style="color: inherit; text-decoration: none;">صحة</a>
+            </p>
             <div class="many-titles-column">
                 @include('user.components.ligne')
 
@@ -228,7 +242,10 @@
 
         <!-- Column 3 -->
         <div>
-            <p class="section-title">بيئة</p>
+            <p class="section-title">
+                <a href="{{ route('newSection', ['section' => 'environment']) }}"
+                    style="color: inherit; text-decoration: none;">بيئة</a>
+            </p>
             <div class="many-titles-column">
                 @include('user.components.ligne')
 
@@ -239,9 +256,11 @@
                                 alt="{{ $environment[0]->title ?? '' }}">
                             <h3>
                                 @if (isset($environment[0]->country))
-                                    {{ $environment[0]->category->name ?? '' }} - {{ $environment[0]->country->name ?? '' }}
+                                    {{ $environment[0]->category->name ?? '' }} -
+                                    {{ $environment[0]->country->name ?? '' }}
                                 @elseif (isset($environment[0]->continent))
-                                    {{ $environment[0]->category->name ?? '' }} - {{ $environment[0]->continent->name ?? '' }}
+                                    {{ $environment[0]->category->name ?? '' }} -
+                                    {{ $environment[0]->continent->name ?? '' }}
                                 @else
                                     {{ $environment[0]->category->name ?? '' }}
                                 @endif

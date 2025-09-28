@@ -18,13 +18,11 @@ class HomePageController extends Controller
             ->take(7)
             ->get();
 
-
-
         $sectionNames = [
             'algeria' => ['الجزائر', 4],
             'world' => ['عالم', 5],
             'economy' => ['اقتصاد', 4],
-            'sport' => ['رياضة', 6],
+            'sports' => ['رياضة', 6],
             'people' => ['ناس', 3],
             'arts' => ['ثقافة وفنون', 8],
             'reviews' => ['آراء', 3],
@@ -56,7 +54,8 @@ class HomePageController extends Controller
             ->take(5)
             ->get();
 
-        return view('user.home', compact('topContents', 'algeria', 'world', 'economy', 'sport', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed'));
+
+        return view('user.home', compact('topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed'));
     }
 
     public function photosApi()
@@ -203,5 +202,11 @@ class HomePageController extends Controller
         }
 
         return view('user.article', compact('article'));
+    }
+
+    public function showNews($id)
+    {
+        $news = Content::findOrFail($id);
+        return view('user.news', compact('news'));
     }
 }

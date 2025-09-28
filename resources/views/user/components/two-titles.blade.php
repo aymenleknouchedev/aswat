@@ -178,7 +178,7 @@
 
     <!-- العمود 1 -->
     <div>
-        <p class="section-title">الأكثر قراءة</p>
+        <a class="section-title">الأكثر قراءة</a>
         @include('user.components.ligne')
         <div class="two-titles-list">
             @foreach ($topViewed as $index => $item)
@@ -193,7 +193,7 @@
 
     <!-- العمود 2 -->
     <div>
-        <p class="section-title">منوعات</p>
+        <a href="{{ route('newSection', ['section' => 'variety']) }}" class="section-title">منوعات</a>
         @include('user.components.ligne')
         <div style="height: 20px;"></div>
         <div class="two-titles-right-card">
