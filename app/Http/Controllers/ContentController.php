@@ -359,10 +359,10 @@ class ContentController extends BaseController
 
                     // 3️⃣ Save all album media
                     foreach ($items as $path) {
-                        $mediatype = $file->getClientMimeType();
-                        if ($mediatype === null) {
-                            $mediatype = 'url';
-                        }
+                        // $mediatype = $file->getClientMimeType();
+                        // if ($mediatype === null) {
+                        //     $mediatype = 'url';
+                        // }
                         // Check if ContentMedia with this path already exists
                         $existingMedia = ContentMedia::where('path', $path)->first();
                         if ($existingMedia) {

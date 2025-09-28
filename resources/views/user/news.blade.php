@@ -257,7 +257,7 @@
                     {{ \Carbon\Carbon::parse($news->published_at)->format('d-m-Y') }}
                 </div>
 
-                @if ($news->template !== 'no-image')
+                @if ($news->template !== 'no_image')
                     {{-- الصورة --}}
                     <div class="custom-article-image-wrapper">
                         <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="Feature Algeria">
@@ -265,6 +265,56 @@
                             {{ $news->media()->wherePivot('type', 'detail')->first()->alt ?? 'لا توجد رسالة وصفية للصورة.' }}
                         </div>
                     </div>
+                @endif
+
+                @if ($news->template == 'album' && $news->media()->wherePivot('type', 'album')->count())
+                    @php
+                        $albumImages = $news->media()->wherePivot('type', 'album')->get();
+                    @endphp
+                    <div style="margin-bottom: 30px;">
+                        <h3
+                            style="font-family:asswat-bold; font-size:22px; color:#222; margin-bottom:15px; text-align:right;">
+                            📷 ألبوم الصور
+                        </h3>
+                        <div id="album-slider"
+                            style="position:relative; width:100%; max-width:100%; height:400px; background:#fafafa; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px #eee; display:flex; align-items:center; justify-content:center;">
+                            @foreach ($albumImages as $index => $image)
+                                <div class="album-slide"
+                                    style="position:absolute; top:0; left:0; width:100%; height:100%; display:{{ $index === 0 ? 'block' : 'none' }};">
+                                    <img src="{{ $image->path }}" alt="{{ $image->alt ?? 'صورة من الألبوم' }}"
+                                        style="width:100%; height:100%; object-fit:cover;">
+                                    <div
+                                        style="position:absolute; bottom:0; right:0; left:0; background:rgba(255,255,255,0.85); padding:10px; font-size:15px; color:#555; text-align:right;">
+                                        {{ $image->alt ?? 'لا توجد رسالة وصفية للصورة.' }}
+                                    </div>
+                                </div>
+                            @endforeach
+                            <button id="album-prev"
+                                style="position:absolute; left:10px; top:50%; transform:translateY(-50%); background:#fff; border:none; border-radius:50%; width:40px; height:40px; font-size:22px; cursor:pointer; box-shadow:0 2px 8px #ccc;">&#8592;</button>
+                            <button id="album-next"
+                                style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:#fff; border:none; border-radius:50%; width:40px; height:40px; font-size:22px; cursor:pointer; box-shadow:0 2px 8px #ccc;">&#8594;</button>
+                        </div>
+                    </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const slides = document.querySelectorAll('.album-slide');
+                            let current = 0;
+
+                            function showSlide(idx) {
+                                slides.forEach((slide, i) => {
+                                    slide.style.display = (i === idx) ? 'block' : 'none';
+                                });
+                            }
+                            document.getElementById('album-prev').onclick = function() {
+                                current = (current - 1 + slides.length) % slides.length;
+                                showSlide(current);
+                            };
+                            document.getElementById('album-next').onclick = function() {
+                                current = (current + 1) % slides.length;
+                                showSlide(current);
+                            };
+                        });
+                    </script>
                 @endif
 
 
