@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->enum('type', ['city', 'continent', 'country'])->default('city');
+            $table->string('slug', 100)->unique();
             $table->timestamps();
         });
     }

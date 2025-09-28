@@ -25,6 +25,31 @@
                             </div>
                         </div>
 
+                                             <!-- رسائل النجاح -->
+                        @if (session('success'))
+                            <div class="alert alert-fill alert-success alert-icon">
+                                <em class="icon ni ni-check-circle"></em>
+                                <span class="translatable" data-ar="تمت العملية بنجاح"
+                                    data-en="Operation completed successfully">
+                                    {{ session('success') ?? 'تمت العملية بنجاح' }}
+                                </span>
+                            </div>
+                        @endif
+
+                        <!-- رسائل الخطأ -->
+                        @if ($errors->any())
+                            <div class="alert alert-fill alert-danger alert-icon">
+                                <em class="icon ni ni-cross-circle"></em>
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li class="translatable" data-ar="حدث خطأ ما" data-en="An error occurred">
+                                            {{ $error ?? 'حدث خطأ ما' }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <!-- ✅ النموذج -->
                         <form action="{{ route('dashboard.location.store') }}" method="POST">
                             @csrf
@@ -35,6 +60,16 @@
                                 <div class="form-control-wrap">
                                     <input type="text" name="name" id="name" class="form-control" required>
                                 </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="slug" data-en="Slug" data-ar="الرابط المختصر">الرابط المختصر</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" name="slug" id="slug" class="form-control" required>
+                                </div>
+                                @error('slug')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <!-- نوع الموقع (enum) -->

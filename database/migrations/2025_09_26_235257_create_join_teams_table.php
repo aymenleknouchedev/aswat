@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('message');
             $table->string('cv')->nullable();
             $table->enum('status', ['pending', 'checked', 'accepted', 'rejected'])->default('pending');
+            $table->enum('reason', ['journalist', 'infographic', 'voiceover', 'audiovisual', 'translator', 'proofreader'])->default('journalist');
             $table->timestamps();
         });
     }

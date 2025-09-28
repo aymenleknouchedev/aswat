@@ -231,15 +231,18 @@
     }
 
     .modal input, 
-    .modal textarea {
+    .modal textarea,
+    .modal select {
       padding: 12px 15px;
       border: 1px solid #ddd;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 13px;
       transition: all 0.3s ease;
+      font-family: 'asswat-regular';
     }
     .modal input:focus,
-    .modal textarea:focus {
+    .modal textarea:focus,
+    .modal select:focus {
       border-color: #52B788;
       box-shadow: 0 0 0 3px rgba(82,183,136,0.3);
       outline: none;
@@ -286,7 +289,7 @@
       border: none;
       padding: 14px;
       border-radius: 8px;
-      font-family: 'asswat-bold';
+      font-family: 'asswat-regular';
       cursor: pointer;
       transition: 0.3s;
     }
@@ -334,6 +337,10 @@
       h1 { font-size: 32px; }
       .animation-text { font-size: 22px; }
       input[type="email"], button { width: 100%; }
+    }
+
+    .red-color {
+      color: red;
     }
   </style>
 </head>
@@ -384,16 +391,27 @@
             <h2>انضم إلى فريقنا</h2>
             <form id="career-form" class="w-100">
                 <div class="form-group" style="width:calc(100% - 35px);">
-                    <label>الاسم الكامل</label>
+                    <label>الاسم الكامل <span class="red-color">*</span></label>
                     <input type="text" name="fullname" required style="width:100%;">
                 </div>
                 <div class="form-group" style="width:calc(100% - 35px);">
-                    <label>البريد الإلكتروني</label>
+                    <label>البريد الإلكتروني <span class="red-color">*</span></label>
                     <input type="email" name="email" required style="width:100%;">
                 </div>
+                <div class="form-group" style="width:calc(100%);">
+                    <label>نوع الوظيفة <span class="red-color">*</span></label>
+                    <select name="reason" required style="width:100%;" class="form-group">
+                      <option value="journalist">صحافي/ محرّر</option>
+                      <option value="infographic">أنفوغراف/ مركّب فيديو</option>
+                      <option value="voiceover">معلّق صوتي </option>                      
+                      <option value="audiovisual">صانع محتوى سمعي بصري</option>                      
+                      <option value="translator">مترجم</option>                      
+                      <option value="proofreader">مدقّق لغوي</option>                      
+                    </select>
+                </div>
                 <div class="form-group" style="width:calc(100% - 35px);">
-                    <label>لماذا تريد الانضمام إلى فريقنا؟</label>
-                    <textarea name="message" required style="width:100%;"></textarea>
+                    <label>لماذا تريد الانضمام إلى فريقنا؟ <span class="red-color">*</span></label>
+                    <textarea name="message" required style="width:100%; resize: none;"></textarea>
                 </div>
 
                 <div class="file-input-container" style="width:100%;">
@@ -449,6 +467,7 @@
                 formData.append('email', this.querySelector('input[name="email"]').value);
                 formData.append('message', this.querySelector('textarea[name="message"]').value);
                 formData.append('cv', this.querySelector('input[name="cv"]').files[0]);
+                formData.append('reason', this.querySelector('select[name="reason"]').value);
 
                 fetch("{{ route('dashboard.store-join-team') }}", {
                     method: "POST",

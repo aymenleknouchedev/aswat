@@ -64,13 +64,11 @@ class LocationController extends BaseController
         try {
             Validator::validate($request->all(), [
                 'name' => 'required|string|unique:locations,name',
+                'slug' => 'required|string|unique:locations,slug',
                 'type' => 'required|in:city,continent,country',
             ]);
 
-            Location::create([
-                'name' => $request->name,
-                'type' => $request->type,
-            ]);
+            Location::create($request->all());
 
             return redirect()->back()->with('success', 'Location created successfully.');
         } catch (\Exception $e) {
@@ -103,11 +101,12 @@ class LocationController extends BaseController
         try {
             Validator::validate($request->all(), [
                 'name' => 'required|string|unique:locations,name,' . $id,
+                'slug' => 'required|string|unique:locations,slug,' . $id,
                 'type' => 'required|in:city,continent,country',
             ]);
 
             $location = Location::findOrFail($id);
-            $location->update($request->only('name', 'type'));
+            $location->update($request->only('name', 'slug', 'type'));
 
             return redirect()->back()->with('success', 'Location updated successfully.');
         } catch (\Exception $e) {

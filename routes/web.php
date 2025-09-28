@@ -4,6 +4,7 @@ use App\Http\Controllers\ComingSoonController;
 use App\Http\Controllers\ContentReviewController;
 use App\Http\Controllers\JoinTeamController;
 use App\Http\Controllers\TopContentController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -83,6 +84,8 @@ Route::get('/seed', function () {
     return 'Database seeded successfully.';
 });
 
+Route::get('/o-auth', [AuthController::class, 'auth'])->name('dashboard.user.auth');
+
 if (env('COMING_SOON', true)) {
     Route::get('/{any}', function () {
         return view('coming-soon');
@@ -112,7 +115,9 @@ Route::prefix('dashboard')->group(function () {
     Route::middleware(['auth'])->group(function () {
 
         // Coming soon
-        Route::get('/cvs', [ComingSoonController::class, 'index'])->name('dashboard.join-team');
+        Route::get('/cvs', [ComingSoonController::class,'index'])->name( 'dashboard.join-team');
+        Route::post('/cv/{id}/update-status', [ComingSoonController::class, 'update_status'])->name('dashboard.join-team.update_status');
+        Route::delete('/delete-cv/{id}', [ComingSoonController::class,'destroy'])->name( 'dashboard.join-team.delete');
 
         // Api for select2 ajax search
         Route::get('/api/search-contents', [ApiController::class, 'search_contents'])->name('api.search.contents');

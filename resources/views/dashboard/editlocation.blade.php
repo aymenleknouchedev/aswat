@@ -57,6 +57,16 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="form-label" for="slug" data-en="Slug" data-ar="الرابط المختصر">الرابط المختصر</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" name="slug" id="slug" value="{{ $location->slug }}" class="form-control" required>
+                                </div>
+                                @error('slug')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                             <!-- نوع الموقع (enum) -->
                             <div class="form-group">
                                 <label class="form-label" for="type" data-en="Type" data-ar="النوع">النوع</label>

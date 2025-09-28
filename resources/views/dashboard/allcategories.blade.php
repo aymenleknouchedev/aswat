@@ -81,6 +81,7 @@
                                     <thead class="tb-odr-head">
                                         <tr class="tb-odr-item">
                                             <th data-en="Name" data-ar="الإسم">الإسم</th>
+                                            <th data-en="Slug" data-ar="الرابط المختصر">الرابط المختصر</th>
                                             <th data-en="Actions" data-ar="الإجراءات">الإجراءات</th>
                                         </tr>
                                     </thead>
@@ -88,6 +89,7 @@
                                         @forelse ($categories as $category)
                                             <tr class="tb-odr-item">
                                                 <td>{{ $category->name }}</td>
+                                                <td>{{ $category->slug }}</td>
                                                 <td>
                                                     <a href="{{ route('dashboard.categorie.edit', $category->id) }}"
                                                         class="btn btn-sm btn-primary" data-en="Edit" data-ar="تعديل">

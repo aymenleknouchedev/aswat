@@ -60,9 +60,7 @@ class CategoryController extends BaseController
                 'name' => 'required|string|min:3|max:255|unique:categories,name',
             ])->validate();
 
-            Category::create([
-                'name' => $request->input('name'),
-            ]);
+            Category::create($request->all());
 
             return redirect()->back()->with('success', 'Category created successfully.');
         } catch (\Exception $e) {
@@ -99,9 +97,7 @@ class CategoryController extends BaseController
                 'name' => 'required|string|max:255',
             ])->validate();
 
-            $category->update([
-                'name' => $request->input('name'),
-            ]);
+            $category->update($request->all());
 
             return redirect()->route('dashboard.categories.index')->with('success', 'Category updated successfully.');
         } catch (\Exception $e) {
