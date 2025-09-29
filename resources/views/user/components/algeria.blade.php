@@ -206,20 +206,23 @@
 <section class="algeria-feature-grid">
     <div class="algeria-grid-container">
         @if (isset($algeria) && count($algeria) >= 4)
-            <div class="algeria-feature">
-                <img src="{{ $algeria[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature algeria">
-                <h3>
-                    @if (isset($algeria[0]->country))
-                        {{ $algeria[0]->category->name ?? '' }} - {{ $algeria[0]->country->name ?? '' }}
-                    @elseif (isset($algeria[0]->continent))
-                        {{ $algeria[0]->category->name ?? '' }} - {{ $algeria[0]->continent->name ?? '' }}
-                    @else
-                        {{ $algeria[0]->category->name ?? '' }}
-                    @endif
-                </h3>
-                <h2>{{ $algeria[0]->title }}</h2>
-                <p>{{ $algeria[0]->summary }}</p>
-            </div>
+            <a href="{{ route('news.show', $algeria[0]->id) }}" style="text-decoration: none; color: inherit;">
+                <div class="algeria-feature">
+                    <img src="{{ $algeria[0]->media()->wherePivot('type', 'main')->first()->path }}"
+                        alt="Feature algeria">
+                    <h3>
+                        @if (isset($algeria[0]->country))
+                            {{ $algeria[0]->category->name ?? '' }} - {{ $algeria[0]->country->name ?? '' }}
+                        @elseif (isset($algeria[0]->continent))
+                            {{ $algeria[0]->category->name ?? '' }} - {{ $algeria[0]->continent->name ?? '' }}
+                        @else
+                            {{ $algeria[0]->category->name ?? '' }}
+                        @endif
+                    </h3>
+                    <h2>{{ $algeria[0]->title }}</h2>
+                    <p>{{ $algeria[0]->summary }}</p>
+                </div>
+            </a>
 
             <div class="algeria-list">
                 <div class="algeria-feature-m">

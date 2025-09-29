@@ -122,8 +122,26 @@
                 'algeria' => ['الجزائر', 4],
                 'world' => ['عالم', 5],
                 'economy' => ['اقتصاد', 4],
-                'sport' => ['رياضة', 6],
+                'sports' => ['رياضة', 6],
                 'people' => ['ناس', 3],
+            ];
+        @endphp
+
+        @foreach ($sections as $component => [$title, $minCount])
+            @php
+                $items = ${$component} ?? [];
+            @endphp
+            @if (is_countable($items) && count($items) >= $minCount)
+                @include('user.components.sp60')
+                <div class="container">
+                    @include('user.components.section-title', ['slot' => $title, 'key' => $component])
+                    @include("user.components.$component")
+                </div>
+            @endif
+        @endforeach
+
+        @php
+            $sections = [
                 'arts' => ['ثقافة وفنون', 8],
                 'reviews' => ['آراء', 3],
             ];
@@ -204,7 +222,7 @@
         @if ($mediaCount >= 4)
             <div class="container">
                 @include('user.components.sp60')
-                @include('user.components.section-title', ['slot' => 'ميديا'])
+                @include('user.components.section-title', ['slot' => 'ميديا', 'component' => 'media'])
                 @include('user.components.media')
             </div>
         @endif

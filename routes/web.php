@@ -31,7 +31,7 @@ use App\Http\Controllers\{
 use App\Http\Controllers\ApiController;
 
 // Coming soon
-Route::post('/store-join-team', [JoinTeamController::class,'store_join_team'])->name('dashboard.store-join-team');
+Route::post('/store-join-team', [JoinTeamController::class, 'store_join_team'])->name('dashboard.store-join-team');
 
 // Clear cache, config, routes, views
 Route::get('/clear-cache', function () {
@@ -76,6 +76,7 @@ if (env('COMING_SOON', true)) {
     Route::get('/podcasts', [HomePageController::class, 'podcasts'])->name('podcasts');
     Route::get('/arts', [HomePageController::class, 'arts'])->name('arts');
     Route::get('/section/{section}', [HomePageController::class, 'newSection'])->name('newSection');
+    Route::get('/news/{news}', [HomePageController::class, 'showNews'])->name('news.show');
 }
 
 Route::prefix('dashboard')->group(function () {
@@ -155,13 +156,11 @@ Route::prefix('dashboard')->group(function () {
             Route::delete("/{$entity}-{id}", [$controller, 'destroy'])->name("dashboard.{$entity}.destroy");
         }
 
-        Route::get('/top-contents', [TopContentController::class,'index'])->name('dashboard.topcontents');
-        Route::post('/top-contents/{id}', [TopContentController::class,'store'])->name('dashboard.topcontents.store');
+        Route::get('/top-contents', [TopContentController::class, 'index'])->name('dashboard.topcontents');
+        Route::post('/top-contents/{id}', [TopContentController::class, 'store'])->name('dashboard.topcontents.store');
         Route::post('/dashboard/top-contents/update-order', [TopContentController::class, 'updateOrder'])->name('dashboard.topcontents.updateOrder');
-        Route::delete('/top-contents/delete/{id}', [TopContentController::class,'destroy'])->name('dashboard.topcontents.destroy');
+        Route::delete('/top-contents/delete/{id}', [TopContentController::class, 'destroy'])->name('dashboard.topcontents.destroy');
 
         Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
     });
-
-
 });

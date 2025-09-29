@@ -69,7 +69,8 @@
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a></li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a></li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'people']) }}">ناس</a></li>
-                <li class="site-subnav-link"><a href="{{ route('arts') }}">ثقافة وفنون</a></li>
+                <li class="site-subnav-link"><a href="">ثقافة وفنون</a></li>
+                <li class="site-subnav-link"><a href="">آراء</a></li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a></li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a></li>
