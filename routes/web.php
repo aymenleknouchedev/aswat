@@ -59,9 +59,8 @@ Route::get('/seed', function () {
     return 'Database seeded successfully.';
 });
 
-Route::get('/o-auth', [AuthController::class, 'auth'])->name('dashboard.user.auth');
-
-if (env('COMING_SOON', true)) {
+if (!Auth::check()) {
+    Route::get('/dashboard/auth', [AuthController::class, 'auth'])->name('dashboard.user.auth');
     Route::get('/{any}', function () {
         return view('coming-soon');
     })->where('any', '.*');
