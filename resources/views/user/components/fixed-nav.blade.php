@@ -17,10 +17,13 @@
                 </ul>
             </div>
             <div class="site-nav-left">
-                <input type="text" class="site-search-input" placeholder="ابحث...">
-                <div class="search-icon">
-                    @include('user.icons.search')
-                </div>
+                <form action="{{ route('search') }}" method="GET" class="site-search-form">
+                    <input name="query" type="text" class="site-search-input" placeholder="ابحث...">
+                    <button type="submit" class="search" style="background:none;border:none;padding:0;">
+                    <button type="button" class="search-icon" style="background:none;border:none;padding:0;">
+                        @include('user.icons.search')
+                    </button>
+                </form>
 
             </div>
         </div>

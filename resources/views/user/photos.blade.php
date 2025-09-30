@@ -90,22 +90,22 @@
             }
         </style>
 
-        <div class="custom-photos-feature">
-            <div class="custom-image-wrapper">
-                <img id="photoImage" src="./user/assets/images/b1.jpeg" alt="Feature Algeria">
-                <div class="custom-corner-icon">
-                    @include('user.icons.image')
+        @if ($featured)
+            <div class="custom-photos-feature">
+                <div class="custom-image-wrapper">
+                    <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
+                        alt="{{ $featured->title }}">
+                    <div class="custom-corner-icon">
+                        @include('user.icons.image')
+                    </div>
+                </div>
+                <div class="custom-content">
+                    <h3>{{ $featured->category->name ?? '' }} - {{ $featured->country->name ?? '' }}</h3>
+                    <h2>{{ $featured->title }}</h2>
+                    <p>{{ $featured->summary }}</p>
                 </div>
             </div>
-
-            <div class="custom-content">
-                <h3 id="photoCategory">البرتغال</h3>
-                <h2 id="photoTitle">يوم حزين لكرة القدم.. دموع وانهيارات في وداع ديوغو جوتا الأخير</h2>
-                <p id="photoDescription">أعلنت الولايات المتحدة، الجمعة، فرض عقوبات غير مسبوقة على الرئيس الكوبي ميغيل
-                    دياز-كانيل، بعد أربع سنوات
-                    على تظاهرات مناهضة للحكومة.</p>
-            </div>
-        </div>
+        @endif
 
         {{-- Photos Grid --}}
         <style>
@@ -171,41 +171,16 @@
             }
         </style>
 
+        {{-- Photos Grid --}}
         <div class="photos-section-wrapper">
             <div>
-                <div class="photos-section-grid">
-                    <div class="photos-section-item">
-                        <img src="./user/assets/images/IMG22.jpg" alt="">
-                        <h3>سياسة</h3>
-                        <h2>تبون يؤكد: الجزائر ليست معزولة عن العالم</h2>
-                    </div>
-                    <div class="photos-section-item">
-                        <img src="./user/assets/images/IMG22.jpg" alt="">
-                        <h3>سياسة</h3>
-                        <h2>أزمة جديدة بين الجزائر والاتحاد الأوروبي بشأن اتفاق الشراكة</h2>
-                    </div>
-                    <div class="photos-section-item">
-                        <img src="./user/assets/images/IMG22.jpg" alt="">
-                        <h3>اقتصاد</h3>
-                        <h2>الحكومة تسرع مشاريع تحلية مياه البحر لمواجهة العطش</h2>
-                    </div>
-                    <div class="photos-section-item">
-                        <img src="./user/assets/images/IMG22.jpg" alt="">
-                        <h3>سياسة</h3>
-                        <h2>تثبيت الحكم ضد الكاتب بوعلام صنصال بالسجن خمس سنوات</h2>
-                    </div>
-                    <div class="photos-section-item">
-                        <img src="./user/assets/images/IMG22.jpg" alt="">
-                        <h3>رياضة</h3>
-                        <h2>المنتخب الجزائري يواجه السنغال في مباراة ودية</h2>
-                    </div>
-                    <div class="photos-section-item">
-                        <img src="./user/assets/images/IMG22.jpg" alt="">
-                        <h3>ثقافة</h3>
-                        <h2>افتتاح مهرجان الفيلم الجزائري في باريس</h2>
-                    </div>
+                <div class="photos-section-grid" id="photos-container">
+                    @include('user.partials.photo-items', ['otherPhotos' => $otherPhotos])
                 </div>
-                <button class="photos-load-more-btn">المزيد</button>
+
+                <div class="text-center mt-3" id="load-more-container">
+                    <button class="photos-load-more-btn" data-page="1">المزيد</button>
+                </div>
             </div>
             <div class="photos-section-empty"></div>
         </div>
@@ -215,3 +190,46 @@
     @include('user.components.footer')
 
 @endsection
+
+
+<script>
+    let loading = false;
+
+    document.addEventListener("click", async function(e) {
+        if (e.target.classList.contains("photos-load-more-btn")) {
+            if (loading) return;
+
+            let btn = e.target;
+            let page = parseInt(btn.getAttribute("data-page")) + 1;
+
+            loading = true;
+            btn.disabled = true;
+            btn.textContent = "جاري التحميل...";
+
+            try {
+                let response = await fetch(`/section/photos?page=${page}`, {
+                    headers: { "X-Requested-With": "XMLHttpRequest" }
+                });
+
+                if (!response.ok) throw new Error("خطأ في السيرفر");
+
+                let data = await response.text();
+
+                if (data.trim().length === 0) {
+                    btn.closest("#load-more-container").remove();
+                } else {
+                    document.querySelector("#photos-container").insertAdjacentHTML("beforeend", data);
+                    btn.setAttribute("data-page", page);
+                    btn.disabled = false;
+                    btn.textContent = "المزيد";
+                }
+            } catch (error) {
+                alert("خطأ في تحميل المزيد");
+                btn.disabled = false;
+                btn.textContent = "المزيد";
+            }
+
+            loading = false;
+        }
+    });
+</script>

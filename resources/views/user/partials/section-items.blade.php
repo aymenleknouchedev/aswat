@@ -5,9 +5,10 @@
                 alt="{{ $content->title ?? 'News Image' }}">
         </div>
         <div class="newCategory-all-card-text">
-            <h3>{{ $content->category->name ?? 'سياسة' }}</h3>
+            <h3>{{ $content->category->name }}</h3>
             <h2>{{ $content->title ?? '' }}</h2>
             <p>{{ $content->summary ?? '' }}</p>
+            
         </div>
     </div>
 @endforeach

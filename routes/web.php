@@ -70,6 +70,7 @@ if (env('COMING_SOON', true)) {
     Route::get('/api/photos', [HomePageController::class, 'photosApi'])->name('api.photos');
     Route::get('/api/breaking-news', [HomePageController::class, 'breakingNewsApi'])->name('api.breaking.news');
     Route::get('/api/latest-news', [HomePageController::class, 'latestNewsApi'])->name('api.latest.news');
+    Route::get('/search', [HomePageController::class, 'search'])->name('search');
     Route::get('/section/reviews', [HomePageController::class, 'reviews'])->name('reviews');
     Route::get('/section/windows', [HomePageController::class, 'windows'])->name('windows');
     Route::get('/section/files', [HomePageController::class, 'files'])->name('files');

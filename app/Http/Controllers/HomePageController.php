@@ -11,6 +11,24 @@ use Illuminate\Http\Request;
 class HomePageController extends Controller
 {
 
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $results = collect();
+
+        if ($query) {
+            $results = Content::where('title', 'like', '%' . $query . '%')
+                ->orWhere('summary', 'like', '%' . $query . '%')
+                ->latest()
+                ->take(20)
+                ->get();
+        }
+
+        return view('user.search', compact('query', 'results'));
+    }
+
+
     public function index()
     {
 
@@ -101,11 +119,41 @@ class HomePageController extends Controller
         return response()->json($latestContents);
     }
 
-    public function reviews()
+    public function reviews(Request $request)
     {
-        dd('reviews');
-        return view('user.reviews');
+        $sectionId = Section::where('name', 'آراء')->value('id');
+
+        if (!$sectionId) {
+            abort(404);
+        }
+
+        // المقالة الأولى فقط للـ featured
+        $featured = Content::where('section_id', $sectionId)
+            ->latest()
+            ->first();
+
+        // باقي المقالات
+        $perPage = 10;
+        $page = $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        $otherReviews = Content::where('section_id', $sectionId)
+            ->latest()
+            ->skip(1 + $skip) // نتجاوز المقالة الأولى
+            ->take($perPage)
+            ->get();
+
+        if ($request->ajax()) {
+            return view('user.partials.review-items', compact('otherReviews'))->render();
+        }
+
+        return view('user.reviews', [
+            'reviews' => [$featured],
+            'otherReviews' => $otherReviews
+        ]);
     }
+
+
 
     public function windows()
     {
@@ -126,22 +174,93 @@ class HomePageController extends Controller
     }
 
 
-    public function videos()
+    public function videos(Request $request)
     {
-        dd('videos');
-        return view('user.videos');
+        $sectionId = Section::where('name', 'فيديو')->value('id');
+
+        if (!$sectionId) {
+            abort(404);
+        }
+
+        $perPage = 10;
+        $page = $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        $videos = Content::where('section_id', $sectionId)
+            ->latest()
+            ->skip($skip)
+            ->take($perPage)
+            ->get();
+
+        if ($request->ajax()) {
+            return view('user.partials.video-items', compact('videos'))->render();
+        }
+
+        return view('user.videos', [
+            'videos' => $videos
+        ]);
     }
 
-    public function podcasts()
+    public function podcasts(Request $request)
     {
-        dd('podcasts');
-        return view('user.podcasts');
+        $sectionId = Section::where('name', 'بودكاست')->value('id');
+
+        if (!$sectionId) {
+            abort(404);
+        }
+
+        $perPage = 10;
+        $page = $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        $podcasts = Content::where('section_id', $sectionId)
+            ->latest()
+            ->skip($skip)
+            ->take($perPage)
+            ->get();
+
+        if ($request->ajax()) {
+            return view('user.partials.podcast-items', compact('podcasts'))->render();
+        }
+
+        return view('user.podcasts', [
+            'podcasts' => $podcasts
+        ]);
     }
 
-    public function photos()
+
+    public function photos(Request $request)
     {
-        dd('photos');
-        return view('user.photos');
+        $sectionId = Section::where('name', 'صور')->value('id');
+
+        if (!$sectionId) {
+            abort(404);
+        }
+
+        // المقالة الأولى كـ Featured
+        $featured = Content::where('section_id', $sectionId)
+            ->latest()
+            ->first();
+
+        // باقي الصور
+        $perPage = 9;
+        $page = $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        $otherPhotos = Content::where('section_id', $sectionId)
+            ->latest()
+            ->skip(1 + $skip) // نتجاوز الـ featured
+            ->take($perPage)
+            ->get();
+
+        if ($request->ajax()) {
+            return view('user.partials.photo-items', compact('otherPhotos'))->render();
+        }
+
+        return view('user.photos', [
+            'featured' => $featured,
+            'otherPhotos' => $otherPhotos
+        ]);
     }
 
     public function arts()
@@ -149,10 +268,6 @@ class HomePageController extends Controller
         dd('arts');
         return view('user.arts');
     }
-
-
-
-
 
     public function newSection(Request $request, $section)
     {

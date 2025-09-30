@@ -62,8 +62,8 @@
         @foreach ($reviews as $review)
             <div class="review-card">
                 <div class="review-card-image">
-                    <img style="background-color: black" src="storage/{{ $review->writer->image ?? '' }}"
-                        alt="{{ $review->writer->name ?? 'كاتب الخبر' }}">
+                  <img src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
+                    alt="خبر">
                 </div>
                 <div class="review-card-text">
                     {{ $review->writer->name ?? '' }}{{ !empty($review->city) ? ' - ' . ($review->city->name ?? '') : '' }}
