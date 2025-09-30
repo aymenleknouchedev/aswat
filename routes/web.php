@@ -32,7 +32,7 @@ use App\Http\Controllers\{
 use App\Http\Controllers\ApiController;
 
 // Coming soon
-Route::post('/store-join-team', [JoinTeamController::class,'store_join_team'])->name('dashboard.store-join-team');
+Route::post('/store-join-team', [JoinTeamController::class, 'store_join_team'])->name('dashboard.store-join-team');
 
 // Clear cache, config, routes, views
 Route::get('/clear-cache', function () {
@@ -81,16 +81,19 @@ Route::get('/seed', function () {
 Route::middleware(['coming.soon'])->group(function () {
     // client
     Route::get('/', [HomePageController::class, 'index'])->name('index');
-    Route::get('/photos', [HomePageController::class, 'photos'])->name('photos');
     Route::get('/api/photos', [HomePageController::class, 'photosApi'])->name('api.photos');
     Route::get('/api/breaking-news', [HomePageController::class, 'breakingNewsApi'])->name('api.breaking.news');
     Route::get('/api/latest-news', [HomePageController::class, 'latestNewsApi'])->name('api.latest.news');
-    Route::get('/reviews', [HomePageController::class, 'reviews'])->name('reviews');
-    Route::get('/podcasts', [HomePageController::class, 'podcasts'])->name('podcasts');
-    Route::get('/arts', [HomePageController::class, 'arts'])->name('arts');
+    Route::get('/search', [HomePageController::class, 'search'])->name('search');
+    Route::get('/section/reviews', [HomePageController::class, 'reviews'])->name('reviews');
+    Route::get('/section/windows', [HomePageController::class, 'windows'])->name('windows');
+    Route::get('/section/files', [HomePageController::class, 'files'])->name('files');
+    Route::get('/section/investigation', [HomePageController::class, 'investigation'])->name('investigation');
+    Route::get('/section/videos', [HomePageController::class, 'videos'])->name('videos');
+    Route::get('/section/podcasts', [HomePageController::class, 'podcasts'])->name('podcasts');
+    Route::get('/section/photos', [HomePageController::class, 'photos'])->name('photos');
+    Route::get('/section/culture', [HomePageController::class, 'arts'])->name('arts');
     Route::get('/section/{section}', [HomePageController::class, 'newSection'])->name('newSection');
-    Route::get('/section/{culture}', [HomePageController::class, 'artSection'])->name('artSection');
-    Route::get('/section/{sectionn}', [HomePageController::class, 'reviewSection'])->name('reviewSection');
     Route::get('/news/{news}', [HomePageController::class, 'showNews'])->name('news.show');
 });
 
@@ -171,15 +174,13 @@ Route::prefix('dashboard')->group(function () {
             Route::delete("/{$entity}-{id}", [$controller, 'destroy'])->name("dashboard.{$entity}.destroy");
         }
 
-        Route::get('/top-contents', [TopContentController::class,'index'])->name('dashboard.topcontents');
-        Route::post('/top-contents/{id}', [TopContentController::class,'store'])->name('dashboard.topcontents.store');
+        Route::get('/top-contents', [TopContentController::class, 'index'])->name('dashboard.topcontents');
+        Route::post('/top-contents/{id}', [TopContentController::class, 'store'])->name('dashboard.topcontents.store');
         Route::post('/dashboard/top-contents/update-order', [TopContentController::class, 'updateOrder'])->name('dashboard.topcontents.updateOrder');
-        Route::delete('/top-contents/delete-{id}', [TopContentController::class,'destroy'])->name('dashboard.topcontents.destroy');
+        Route::delete('/top-contents/delete-{id}', [TopContentController::class, 'destroy'])->name('dashboard.topcontents.destroy');
 
         Route::get('/{id}', [ContentActionController::class, 'content_actions'])->name('dashboard.content.actions');
 
         Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
     });
-
-
 });

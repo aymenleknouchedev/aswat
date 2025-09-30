@@ -4,22 +4,26 @@
             <div class="site-nav-right">
                 <a href="{{ route('index') }}">
                     <img class="site-logo" src="{{ asset('user/assets/images/logo.svg') }}" alt="Logo">
-                </a>    <ul class="site-nav-links">
+                </a>
+                <ul class="site-nav-links">
                     <li class="site-nav-link" id="site-show-subnav"><a href="{{ route('index') }}">أخبار</a></li>
                     <li class="site-nav-link"> <a href="{{ route('reviews') }}">آراء</a></li>
-                    <li class="site-nav-link">نوافذ</li>
-                    <li class="site-nav-link">ملفات</li>
-                    <li class="site-nav-link">فحص</li>
-                    <li class="site-nav-link">فيديو</li>
+                    <li class="site-nav-link"> <a href="{{ route('windows') }}">نوافذ</a></li>
+                    <li class="site-nav-link"> <a href="{{ route('files') }}">ملفات</a></li>
+                    <li class="site-nav-link"> <a href="{{ route('investigation') }}">فحص</a></li>
+                    <li class="site-nav-link"> <a href="{{ route('videos') }}">فيديو</a></li>
                     <li class="site-nav-link"> <a href="{{ route('podcasts') }}">بودكاست</a></li>
                     <li class="site-nav-link"> <a href="{{ route('photos') }}">صور</a></li>
                 </ul>
             </div>
             <div class="site-nav-left">
-                <input type="text" class="site-search-input" placeholder="ابحث...">
-                <div class="search-icon">
-                    @include('user.icons.search')
-                </div>
+                <form action="{{ route('search') }}" method="GET" class="site-search-form">
+                    <input name="query" type="text" class="site-search-input" placeholder="ابحث...">
+                    <button type="submit" class="search" style="background:none;border:none;padding:0;">
+                    <button type="button" class="search-icon" style="background:none;border:none;padding:0;">
+                        @include('user.icons.search')
+                    </button>
+                </form>
 
             </div>
         </div>
@@ -64,17 +68,23 @@
     <nav id="site-subnav">
         <div class="site-container">
             <ul class="site-subnav-links">
-                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a>
+                </li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'world']) }}">عالم</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a>
+                </li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a>
+                </li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'people']) }}">ناس</a></li>
-                <li class="site-subnav-link"><a href="{{ route('artSection', ['culture' => 'culture']) }}">ثقافة وفنون</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a></li>
+                <li class="site-subnav-link"><a href="{{ route('arts') }}">ثقافة وفنون</a></li>
+                <li class="site-subnav-link"><a
+                        href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a></li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a>
+                </li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'media']) }}">ميديا</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a></li>
-             </ul>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a>
+                </li>
+            </ul>
         </div>
     </nav>

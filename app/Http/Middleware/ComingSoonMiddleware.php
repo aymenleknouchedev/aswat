@@ -23,7 +23,7 @@ class ComingSoonMiddleware
             }
 
             if (Auth::check()) {
-                return redirect()->route('dashboard.user.auth');
+                return $next($request);
             }
 
             return response()->view('coming-soon');

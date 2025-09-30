@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'أصوات جزائرية | بودكاست')
+@section('title', 'أصوات جزائرية | فيديوهات')
 
 @section('content')
 
@@ -24,7 +24,7 @@
 
             {{-- Title --}}
             <div class="title">
-                <p class="section-title">بودكاست</p>
+                <p class="section-title">فيديوهات</p>
                 @include('user.components.ligne')
                 <div class="under-title-ligne-space"></div>
             </div>
@@ -64,9 +64,7 @@
                 .custom-media-group {
                     display: flex;
                     flex-direction: row;
-                    /* الصورة + التاريخ جنب بعض */
                     align-items: center;
-                    /* متمركزين عموديًا */
                     gap: 10px;
                 }
 
@@ -77,7 +75,8 @@
                     overflow: hidden;
                 }
 
-                .custom-image img {
+                .custom-image img,
+                .custom-image video {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
@@ -126,7 +125,7 @@
                     cursor: pointer;
                 }
 
-                .podcasts-load-more-btn {
+                .videos-load-more-btn {
                     display: block;
                     width: 100%;
                     text-align: center;
@@ -141,34 +140,31 @@
                     transition: .3s ease;
                 }
 
-                .podcasts-load-more-btn:hover {
+                .videos-load-more-btn:hover {
                     background: #ddd;
                 }
             </style>
 
             {{-- Grid Section --}}
             <div class="custom-grid">
-                <div class="podcasts-section-wrapper">
+                <div class="videos-section-wrapper">
                     <div>
-                        <div class="custom-cards-wrapper" id="podcast-list">
-                            @include('user.partials.podcast-items', ['podcasts' => $podcasts])
+                        <div class="custom-cards-wrapper" id="video-list">
+                            @include('user.partials.video-items', ['videos' => $videos])
                         </div>
 
-                        @if ($podcasts->count() >= 10)
+                        @if ($videos->count() >= 10)
                             <div class="text-center mt-3" id="load-more-container">
-                                <button class="podcasts-load-more-btn" data-page="1">المزيد</button>
+                                <button class="videos-load-more-btn" data-page="1">المزيد</button>
                             </div>
                         @endif
                     </div>
-                    <div class="podcasts-section-empty"></div>
+                    <div class="videos-section-empty"></div>
                 </div>
-
-
 
                 {{-- Sidebar 3/12 --}}
                 <div></div>
             </div>
-
 
         </div>
 
@@ -181,13 +177,11 @@
 
 @endsection
 
-
-
 <script>
     let loading = false;
 
     document.addEventListener("click", async function(e) {
-        if (e.target.classList.contains("podcasts-load-more-btn")) {
+        if (e.target.classList.contains("videos-load-more-btn")) {
             if (loading) return;
 
             let btn = e.target;
@@ -198,8 +192,7 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                // ✨ غيّر المسار من podcasts إلى podcasts
-                let response = await fetch(`/section/podcasts?page=${page}`, {
+                let response = await fetch(`/section/videos?page=${page}`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
@@ -210,11 +203,9 @@
                 let data = await response.text();
 
                 if (data.trim().length === 0) {
-                    // ✨ نفس الشي لازم تغير الـ container للبودكاست
                     btn.closest("#load-more-container").remove();
                 } else {
-                    // ✨ container الصحيح للبودكاست
-                    document.querySelector("#podcast-list").insertAdjacentHTML("beforeend", data);
+                    document.querySelector("#video-list").insertAdjacentHTML("beforeend", data);
                     btn.setAttribute("data-page", page);
                     btn.disabled = false;
                     btn.textContent = "المزيد";
