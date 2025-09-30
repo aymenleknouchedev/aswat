@@ -40,7 +40,6 @@ Route::get('/clear-cache', function () {
     return 'Cache, config, routes, and views cleared successfully.';
 });
 
-
 // Route to run migrate:fresh
 Route::get('/migrate-fresh', function () {
     Artisan::call('migrate:fresh', ['--force' => true]);
@@ -52,7 +51,6 @@ Route::get('/storage-link', function () {
     return response('The [public/storage] directory has been re-linked.', 200);
 });
 
-
 Route::get('/seed', function () {
     Artisan::call('db:seed', [
         '--force' => true
@@ -60,11 +58,27 @@ Route::get('/seed', function () {
     return 'Database seeded successfully.';
 });
 
-if (env('COMING_SOON', true)) {
-    Route::get('/{any}', function () {
-        return view('coming-soon');
-    })->where('any', '.*');
-} else {
+// if (env('COMING_SOON', true)) {
+//     Route::get('/{any}', function () {
+//         return view('coming-soon');
+//     })->where('any', '.*');
+// } else {
+//     // client
+//     Route::get('/', [HomePageController::class, 'index'])->name('index');
+//     Route::get('/photos', [HomePageController::class, 'photos'])->name('photos');
+//     Route::get('/api/photos', [HomePageController::class, 'photosApi'])->name('api.photos');
+//     Route::get('/api/breaking-news', [HomePageController::class, 'breakingNewsApi'])->name('api.breaking.news');
+//     Route::get('/api/latest-news', [HomePageController::class, 'latestNewsApi'])->name('api.latest.news');
+//     Route::get('/reviews', [HomePageController::class, 'reviews'])->name('reviews');
+//     Route::get('/podcasts', [HomePageController::class, 'podcasts'])->name('podcasts');
+//     Route::get('/arts', [HomePageController::class, 'arts'])->name('arts');
+//     Route::get('/section/{section}', [HomePageController::class, 'newSection'])->name('newSection');
+//     Route::get('/section/{culture}', [HomePageController::class, 'artSection'])->name('artSection');
+//     Route::get('/section/{sectionn}', [HomePageController::class, 'reviewSection'])->name('reviewSection');
+//     Route::get('/news/{news}', [HomePageController::class, 'showNews'])->name('news.show');
+// }
+
+Route::middleware(['coming.soon'])->group(function () {
     // client
     Route::get('/', [HomePageController::class, 'index'])->name('index');
     Route::get('/photos', [HomePageController::class, 'photos'])->name('photos');
@@ -78,7 +92,7 @@ if (env('COMING_SOON', true)) {
     Route::get('/section/{culture}', [HomePageController::class, 'artSection'])->name('artSection');
     Route::get('/section/{sectionn}', [HomePageController::class, 'reviewSection'])->name('reviewSection');
     Route::get('/news/{news}', [HomePageController::class, 'showNews'])->name('news.show');
-}
+});
 
 Route::prefix('dashboard')->group(function () {
 
