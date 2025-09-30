@@ -190,6 +190,16 @@ class HomePageController extends Controller
         ));
     }
 
+    public function artSection(Request $request, $section)
+    {
+        return view('user.arts', compact('section'));
+    }
+
+    public function reviewSection(Request $request, $section)
+    {
+        return view('user.reviews', compact('section'));
+    }
+
 
     public function openArticle($id)
     {
