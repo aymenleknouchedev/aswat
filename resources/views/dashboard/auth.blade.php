@@ -139,7 +139,7 @@
                                         <label class="form-label" for="email">البريد الإلكتروني</label>
                                         <div class="form-control-wrap">
                                             <input type="email" name="email" class="form-control form-control-lg"
-                                                id="email" placeholder="أدخل بريدك الإلكتروني" required>
+                                                id="email" placeholder="أدخل بريدك الإلكتروني" required value="{{ old('email') }}">
                                         </div>
                                         @error('email')
                                             <span class="text-danger small">{{ $message }}</span>
