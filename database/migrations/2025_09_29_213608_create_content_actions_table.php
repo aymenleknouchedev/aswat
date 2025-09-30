@@ -15,7 +15,11 @@ return new class extends Migration
             $table->id();
             $table->enum('action_type', ['update', 'delete']);
             $table->foreignId('content_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('SET NULL');
+            // $table->foreignId('user_id')->constrained()->onDelete('SET NULL');
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
             $table->timestamps();
         });
     }
