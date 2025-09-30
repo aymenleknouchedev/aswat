@@ -103,23 +103,56 @@ class HomePageController extends Controller
 
     public function reviews()
     {
+        dd('reviews');
         return view('user.reviews');
     }
 
-    public function photos()
+    public function windows()
     {
-        return view('user.photos');
+        dd('windows');
+        return view('user.windows');
+    }
+
+    public function files()
+    {
+        dd('files');
+        return view('user.files');
+    }
+
+    public function investigation()
+    {
+        dd('investigation');
+        return view('user.investigation');
+    }
+
+
+    public function videos()
+    {
+        dd('videos');
+        return view('user.videos');
     }
 
     public function podcasts()
     {
+        dd('podcasts');
         return view('user.podcasts');
+    }
+
+    public function photos()
+    {
+        dd('photos');
+        return view('user.photos');
     }
 
     public function arts()
     {
+        dd('arts');
         return view('user.arts');
     }
+
+
+
+
 
     public function newSection(Request $request, $section)
     {
@@ -188,11 +221,6 @@ class HomePageController extends Controller
             'topViewed',
             'suggestions'
         ));
-    }
-
-    public function artSection(Request $request, $section)
-    {
-        return view('user.arts', compact('section'));
     }
 
     public function reviewSection(Request $request, $section)

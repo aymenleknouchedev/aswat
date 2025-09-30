@@ -140,25 +140,33 @@
             @endif
         @endforeach
 
+        {{-- Arts Section --}}
         @php
-            $sections = [
-                'arts' => ['ثقافة وفنون', 8],
-                'reviews' => ['آراء', 3],
-            ];
+            $artsCount = isset($arts) && is_countable($arts) ? count($arts) : 0;
         @endphp
+        @if ($artsCount >= 8)
+            @include('user.components.sp60')
+            <div class="container">
+                <a href="{{ route('arts') }}" class="section-title">ثقافة وفنون</a>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
+                @include('user.components.arts')
+            </div>
+        @endif
 
-        @foreach ($sections as $component => [$title, $minCount])
-            @php
-                $items = ${$component} ?? [];
-            @endphp
-            @if (is_countable($items) && count($items) >= $minCount)
-                @include('user.components.sp60')
-                <div class="container">
-                    @include('user.components.section-title', ['slot' => $title])
-                    @include("user.components.$component")
-                </div>
-            @endif
-        @endforeach
+        {{-- Reviews Section --}}
+        @php
+            $reviewsCount = isset($reviews) && is_countable($reviews) ? count($reviews) : 0;
+        @endphp
+        @if ($reviewsCount >= 3)
+            @include('user.components.sp60')
+            <div class="container">
+                <a href="{{ route('reviews') }}" class="section-title">آراء</a>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
+                @include('user.components.reviews')
+            </div>
+        @endif
 
 
         {{-- Videos Section --}}
@@ -170,7 +178,9 @@
             <div style="background-color: #F5F5F5;">
                 @include('user.components.sp60')
                 <div class="container">
-                    @include('user.components.section-title', ['slot' => 'فيديو'])
+                    <a href="{{ route('videos') }}" class="section-title">فيديو</a>
+                    @include('user.components.ligne')
+                    <div class="under-title-ligne-space"></div>
                 </div>
                 @include('user.components.videos')
                 @include('user.components.sp60')
@@ -185,7 +195,9 @@
         @if ($filesCount >= 3)
             <div class="container">
                 @include('user.components.sp60')
-                @include('user.components.section-title', ['slot' => 'ملفات'])
+                <a href="{{ route('files') }}" class="section-title">ملفات</a>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
                 @include('user.components.files')
             </div>
         @endif
@@ -235,7 +247,9 @@
         @if ($checkCount >= 2)
             <div class="container">
                 @include('user.components.sp60')
-                @include('user.components.section-title', ['slot' => 'فحص'])
+                <a href="{{ route('investigation') }}" class="section-title">فحص</a>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
                 @include('user.components.check')
             </div>
         @endif
@@ -249,7 +263,9 @@
             <div style="background-color: #F5F5F5;">
                 @include('user.components.sp60')
                 <div class="container">
-                    @include('user.components.section-title', ['slot' => 'بودكاست'])
+                    <a href="{{ route('podcasts') }}" class="section-title">بودكاست</a>
+                    @include('user.components.ligne')
+                    <div class="under-title-ligne-space"></div>
                 </div>
                 @include('user.components.podcast')
                 @include('user.components.sp60')
@@ -281,7 +297,9 @@
                 <div class="container">
                     <div class="title">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <p class="section-title">صور</p>
+                            <a href="{{ route('photos') }}" class="section-title">صور</a>
+                            @include('user.components.ligne')
+                            <div class="under-title-ligne-space"></div>
                             <div style="display: flex;" class="icons">
                                 <div id="backArrow" style="height: 32px; width: 32px; cursor: pointer;">
                                     <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
