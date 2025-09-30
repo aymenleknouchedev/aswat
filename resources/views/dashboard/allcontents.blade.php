@@ -15,11 +15,27 @@
                             <div class="card-inner">
 
                                 <!-- Table Header with Title & Button -->
-                                <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                                <div class="d-flex justify-content-between align-items-center">
                                     <h5 class="mb-0" data-en="All Contents" data-ar="جميع المحتوى">جميع المحتوى</h5>
                                     <a href="{{ route('dashboard.content.create') }}" class="btn btn-sm btn-outline-primary"
                                         data-en="Add New Content" data-ar="إضافة محتوى جديد">إضافة محتوى جديد</a>
                                 </div>
+
+                                <form action="{{ route('dashboard.contents.index') }}" method="GET" class="my-3">
+                                    <div class="input-group">
+                                        <input type="text" name="search" class="form-control" value="{{ request('search') }}">
+                                        <select name="section" id="sectionFilter" class="form-select">
+                                            <option value="" data-en="All Sections" data-ar="جميع الأقسام">جميع الأقسام</option>
+                                            @foreach($sections as $section)
+                                                <option value="{{ $section->id }}" {{ request('section') == $section->id ? 'selected' : '' }}>{{ $section->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <input type="text" id="date_range" name="date_range" value="{{ request('date_range') }}"
+                                            class="form-control rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+                                        <button class="btn btn-outline-secondary" type="submit" data-en="Filter" data-ar="تصفية">تصفية</button>
+                                        <a href="{{ route('dashboard.contents.index') }}" class="btn " data-en="X" data-ar="X">ْX</a>
+                                    </div>
+                                </form>
 
                                 <!-- ✅ Alerts -->
                                 @if (session('success'))
@@ -71,6 +87,8 @@
                                                     <th style="font-weight: bold;" data-en="Status" data-ar="الحالة">الحالة</th>
                                                     <th style="font-weight: bold;" data-en="Date" data-ar="التاريخ">التاريخ</th>
                                                     <th style="font-weight: bold;" data-en="Author" data-ar="الكاتب">الكاتب</th>
+                                                    <th style="font-weight: bold;" data-en="Reviews" data-ar="المراجعات">المراجعات</th>
+                                                    <th style="font-weight: bold;" data-en="Actions" data-ar="الإجراءات">-</th> 
                                                     <th style="font-weight: bold; text-align: right;" data-en="Actions" data-ar="الإجراءات">الإجراءات
                                                         <script>
                                                             document.addEventListener('DOMContentLoaded', function() {
@@ -82,7 +100,6 @@
                                                             });
                                                         </script>
                                                     </th>
-                                                  
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -111,21 +128,34 @@
                                                         </td>
                                                         <td>{{ $content->created_at->format('Y-m-d') }}</td>
                                                         <td>{{ $content->writer->name ?? '-' }}</td>
+                                                        <td>
+                                                            <a href="{{ route('content.reviews.index', $content->id) }}" class="badge rounded-pill bg-danger px-3 py-1" style="font-size: 1rem;" title="المراجعات">
+                                                                <em class="icon ni ni-chat-fill me-1"></em>
+                                                                {{ $content->reviews ? $content->reviews->count() : 0 }}
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            @if ($content->contentActions && $content->contentActions->count() > 0)
+                                                                <a href="{{ route('dashboard.content.actions', $content->id) }}" title="View Actions" target="_blank">
+                                                                    <em class="icon ni ni-eye"></em>
+                                                                </a>
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
                                                         <td style="text-align: right;" id="actionsCell{{ $content->id }}">
-                                                        <script>
-                                                            document.addEventListener('DOMContentLoaded', function() {
-                                                                var lang = localStorage.getItem('siteLang');
-                                                                var cell = document.getElementById('actionsCell{{ $content->id }}');
-                                                                if (cell && lang) {
-                                                                    cell.style.textAlign = (lang === 'ar') ? 'left' : 'right';
-                                                                }
-                                                            });
-                                                        </script>
-                                                            <a href="{{ route('dashboard.content.edit', $content->id) }}"
-                                                                class="btn btn-sm btn-warning" data-en="Edit"
-                                                                data-ar="تعديل">تعديل</a>
+                                                            <script>
+                                                                document.addEventListener('DOMContentLoaded', function() {
+                                                                    var lang = localStorage.getItem('siteLang');
+                                                                    var cell = document.getElementById('actionsCell{{ $content->id }}');
+                                                                    if (cell && lang) {
+                                                                        cell.style.textAlign = (lang === 'ar') ? 'left' : 'right';
+                                                                    }
+                                                                });
+                                                            </script>
+                                                            <a href="{{ route('dashboard.content.edit', $content->id) }}" class="btn btn-sm btn-warning" data-en="Edit" data-ar="تعديل">تعديل</a>
                                                             <div class="dropdown d-inline">
-                                                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="actionsDropdown{{ $content->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="actionsDropdown{{ $content->id }}" data-bs-toggle="dropdown" aria-expanded="true">
                                                                     <em class="icon ni ni-more-h"></em>
                                                                 </button>
                                                                 <ul class="dropdown-menu" aria-labelledby="actionsDropdown{{ $content->id }}">
@@ -147,7 +177,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-
                                 @endif
 
                                 <!-- Pagination Links -->
@@ -162,3 +191,22 @@
             </div>
         </div>
     @endsection
+
+    <!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("#date_range", {
+            mode: "range",
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "F j, Y", // prettier display
+            allowInput: true,
+            defaultDate: "{{ request('date_range') }}"
+                ? "{{ str_replace(' - ', ' to ', request('date_range')) }}"
+                : null,
+        });
+    });
+</script>
+

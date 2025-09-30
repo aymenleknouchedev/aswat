@@ -654,13 +654,10 @@
                                     <div class="row g-3 mt-3">
                                         <!-- Content Image -->
                                         <div class="col-md-6">
-                                            <label for="share_image" class="form-label" data-ar="صورة المحتوى"
-                                                data-en="Content Image">صورة المحتوى</label>
-                                            <input type="file" id="share_image" name="share_image"
-                                                class="form-control" accept="image/*">
+                                            <label for="share_image" class="form-label" data-ar="صورة المحتوى" data-en="Content Image">صورة المحتوى</label>
+                                            <input type="file" id="share_image" name="share_image" class="form-control" accept="image/*">
                                             <div class="mt-2 border rounded p-2 text-center" style="aspect-ratio: 16/9;">
-                                                <img id="share_image_preview" src="{{ $content->share_image }}"
-                                                    alt="" style="aspect-ratio: 16/9; display:none;">
+                                                <img id="share_image_preview" src="{{ $content->share_image }}" style="aspect-ratio: 16/9; display:none;">
                                             </div>
                                         </div>
 

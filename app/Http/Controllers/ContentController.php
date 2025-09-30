@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContentAction;
 use App\Models\ContentReview;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -34,11 +35,47 @@ class ContentController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $pagination = config('pagination.per15', 15);
-        $contents = Content::latest()->paginate($pagination);
-        return view('dashboard.allcontents', compact('contents'));
+
+        $query = Content::query()->latest();
+
+        // 🔍 Search filter
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('mobile_title', 'like', "%{$search}%")
+                ->orWhere('title', 'like', "%{$search}%")
+                ->orWhere("long_title", "like", "%{$search}%");
+            });
+        }
+
+        // 📂 Section filter
+        if ($request->filled('section')) {
+            $query->where('section_id', $request->section);
+        }
+
+        // 📅 Date range filter
+        if ($request->filled('date_range')) {
+            $dates = explode(" to ", $request->date_range);
+
+            if (count($dates) === 2) {
+                [$start, $end] = $dates;
+
+                $query->whereBetween('created_at', [
+                    $start . " 00:00:00",
+                    $end . " 23:59:59"
+                ]);
+            }
+        }
+
+        // ⏳ Paginate
+        $contents = $query->paginate($pagination)->appends($request->query());
+
+        $sections = Section::all();
+
+        return view('dashboard.allcontents', compact('contents', 'sections'));
     }
 
     /**
@@ -499,8 +536,6 @@ class ContentController extends BaseController
 
     public function update(Request $request, $id)
     {
-
-
         $content = Content::findOrFail($id);
         $albumImages = [];
 
@@ -665,6 +700,12 @@ class ContentController extends BaseController
         // ✅ Update tags
         $content->tags()->sync($request->tags_id);
 
+        ContentAction::create([
+            'user_id' => Auth::id(),
+            'content_id' => $content->id,
+            'action' => 'updated',
+        ]);
+
         return redirect()->back()->with('success', 'Content updated successfully.');
     }
 
@@ -807,12 +848,34 @@ class ContentController extends BaseController
      */
     public function destroy(string $id)
     {
-        $content = Content::findOrFail($id);
-        $content->media()->detach();
-        $content->tags()->detach();
-        $content->delete();
+        try {
+            $content = Content::findOrFail($id);
 
-        return redirect()->route('dashboard.contents.index')
-            ->with('success', 'Content deleted successfully.');
+            // Detach related media and tags
+            $content->media()->detach();
+            $content->tags()->detach();
+
+            // Delete related content lists
+            $content->contentLists()->delete();
+
+            // Delete related reviews
+            $content->reviews()->delete();
+
+            // Delete the content itself
+            $content->delete();
+
+            // Log the action
+            ContentAction::create([
+                'user_id' => Auth::id(),
+                'content_id' => $id,
+                'action' => 'deleted',
+            ]);
+
+            return redirect()->route('dashboard.contents.index')
+                ->with('success', 'Content deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('dashboard.contents.index')
+                ->with('error', 'Failed to delete content: ' . $e->getMessage());
+        }
     }
 }

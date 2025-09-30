@@ -157,4 +157,9 @@ class Content extends Model
     {
         return $this->hasMany(ContentList::class);
     }
+
+    public function contentActions()
+    {
+        return $this->hasMany(ContentAction::class);
+    }
 }

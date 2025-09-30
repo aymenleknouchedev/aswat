@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ComingSoonController;
+use App\Http\Controllers\ContentActionController;
 use App\Http\Controllers\ContentReviewController;
 use App\Http\Controllers\JoinTeamController;
 use App\Http\Controllers\TopContentController;
@@ -31,7 +32,7 @@ use App\Http\Controllers\{
 use App\Http\Controllers\ApiController;
 
 // Coming soon
-Route::post('/store-join-team', [JoinTeamController::class, 'store_join_team'])->name('dashboard.store-join-team');
+Route::post('/store-join-team', [JoinTeamController::class,'store_join_team'])->name('dashboard.store-join-team');
 
 // Clear cache, config, routes, views
 Route::get('/clear-cache', function () {
@@ -46,33 +47,8 @@ Route::get('/migrate-fresh', function () {
     return response('Database migrated fresh successfully.', 200);
 });
 
-// Route to (re)create the storage symlink (for Hostinger or shared hosting)
 Route::get('/storage-link', function () {
-    $publicStorage = public_path('storage');
-    $storageTarget = storage_path('app/public');
-
-    // Remove existing link or directory if it exists and is a symlink or directory
-    if (file_exists($publicStorage)) {
-        if (is_link($publicStorage) || is_dir($publicStorage)) {
-            app('files')->delete($publicStorage);
-        } else {
-            return response('Error: "public/storage" exists and is not a symbolic link or directory.', 400);
-        }
-    }
-
-    // Try to create the symbolic link
-    try {
-        app('files')->link($storageTarget, $publicStorage);
-    } catch (\Exception $e) {
-        // If symlink fails (common on shared hosting), try to copy instead
-        try {
-            app('files')->copyDirectory($storageTarget, $publicStorage);
-            return response('Symlink failed, but files were copied instead.', 200);
-        } catch (\Exception $ex) {
-            return response('Failed to create symlink or copy files: ' . $ex->getMessage(), 500);
-        }
-    }
-
+    Artisan::call('storage:link');
     return response('The [public/storage] directory has been re-linked.', 200);
 });
 
@@ -83,8 +59,6 @@ Route::get('/seed', function () {
     ]);
     return 'Database seeded successfully.';
 });
-
-Route::get('/o-auth', [AuthController::class, 'auth'])->name('dashboard.user.auth');
 
 if (env('COMING_SOON', true)) {
     Route::get('/{any}', function () {
@@ -183,11 +157,15 @@ Route::prefix('dashboard')->group(function () {
             Route::delete("/{$entity}-{id}", [$controller, 'destroy'])->name("dashboard.{$entity}.destroy");
         }
 
-        Route::get('/top-contents', [TopContentController::class, 'index'])->name('dashboard.topcontents');
-        Route::post('/top-contents/{id}', [TopContentController::class, 'store'])->name('dashboard.topcontents.store');
+        Route::get('/top-contents', [TopContentController::class,'index'])->name('dashboard.topcontents');
+        Route::post('/top-contents/{id}', [TopContentController::class,'store'])->name('dashboard.topcontents.store');
         Route::post('/dashboard/top-contents/update-order', [TopContentController::class, 'updateOrder'])->name('dashboard.topcontents.updateOrder');
-        Route::delete('/top-contents/delete/{id}', [TopContentController::class, 'destroy'])->name('dashboard.topcontents.destroy');
+        Route::delete('/top-contents/delete-{id}', [TopContentController::class,'destroy'])->name('dashboard.topcontents.destroy');
+
+        Route::get('/{id}', [ContentActionController::class, 'content_actions'])->name('dashboard.content.actions');
 
         Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
     });
+
+
 });

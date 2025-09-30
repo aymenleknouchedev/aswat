@@ -38,6 +38,7 @@ class UserSeeder extends Seeder
             'writers_access',
             'pages_access',
             'settings_access',
+            'view_actions_access',
             'coming_soon_access',
         ];
 
