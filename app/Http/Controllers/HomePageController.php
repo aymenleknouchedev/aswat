@@ -173,58 +173,71 @@ class HomePageController extends Controller
         return view('user.investigation');
     }
 
-
     public function videos(Request $request)
     {
-        $sectionId = Section::where('name', 'فيديو')->value('id');
-
-        if (!$sectionId) {
+        $otherVideos = Section::where('name', 'فيديو')->value('id');
+        if (!$otherVideos) {
             abort(404);
         }
 
-        $perPage = 10;
+        // المقالة الأولى كـ Featured
+        $featured = Content::where('section_id', $otherVideos)
+            ->latest()
+            ->first();
+
+        // باقي الفيديوهات
+        $perPage = 9;
         $page = $request->get('page', 1);
         $skip = ($page - 1) * $perPage;
 
-        $videos = Content::where('section_id', $sectionId)
+        $otherVideos = Content::where('section_id', $otherVideos)
             ->latest()
-            ->skip($skip)
+            ->skip(1 + $skip) // نتجاوز الـ featured
             ->take($perPage)
             ->get();
 
         if ($request->ajax()) {
-            return view('user.partials.video-items', compact('videos'))->render();
+            return view('user.partials.video-items', compact('otherVideos'))->render();
         }
 
         return view('user.videos', [
-            'videos' => $videos
+            'featured' => $featured,
+            'otherVideos' => $otherVideos
         ]);
     }
 
+
     public function podcasts(Request $request)
     {
-        $sectionId = Section::where('name', 'بودكاست')->value('id');
+        $otherPodcasts = Section::where('name', 'بودكاست')->value('id');
 
-        if (!$sectionId) {
+        if (!$otherPodcasts) {
             abort(404);
         }
 
-        $perPage = 10;
+        // المقالة الأولى كـ Featured
+        $featured = Content::where('section_id', $otherPodcasts)
+            ->latest()
+            ->first();
+
+        // باقي البودكاست
+        $perPage = 9;
         $page = $request->get('page', 1);
         $skip = ($page - 1) * $perPage;
 
-        $podcasts = Content::where('section_id', $sectionId)
+        $otherPodcasts = Content::where('section_id', $otherPodcasts)
             ->latest()
-            ->skip($skip)
+            ->skip(1 + $skip) // نتجاوز الـ featured
             ->take($perPage)
             ->get();
 
         if ($request->ajax()) {
-            return view('user.partials.podcast-items', compact('podcasts'))->render();
+            return view('user.partials.podcast-items', compact('otherPodcasts'))->render();
         }
 
         return view('user.podcasts', [
-            'podcasts' => $podcasts
+            'featured' => $featured,
+            'otherPodcasts' => $otherPodcasts
         ]);
     }
 

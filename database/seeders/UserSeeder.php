@@ -374,7 +374,7 @@ class UserSeeder extends Seeder
                         'continent_id' => $continentId,
                         'writer_id' => $writerId,
                         'user_id' => 1,
-                        'summary' => "نت قوات الاحتلال الإسرائيلي هجمات برية وجوية عنيفة في عدة مناطق من مدينة غزة خلال الساعات الأخيرة.",
+                        'summary' => "طرح الرئيس الأميركي، دونالد ترامب، اليوم، خطته لإنهاء الحرب على غزة وتضمنت بنوداً عدة؛ أبرزها: الانسحاب التدريجي للجيش الإسرائيلي.",
                         'content' => "هذا نص خبر {$i} في قسم {$sectionName}.",
                         'status' => 'published',
                         'template' => 'normal_image',

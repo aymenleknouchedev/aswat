@@ -4,183 +4,192 @@
 
 @section('content')
 
-    <style>
-        @media (max-width: 768px) {
-            .web {
-                display: none;
-            }
+    @include('user.components.fixed-nav')
 
-            .mobile {
-                display: none;
-            }
-        }
-    </style>
+    {{-- Container --}}
+    <div class="container">
 
-    <div class="web">
-        @include('user.components.fixed-nav')
-
-        {{-- Container --}}
-        <div class="container">
-
-            {{-- Title --}}
-            <div class="title">
-                <p class="section-title">بودكاست</p>
-                @include('user.components.ligne')
-                <div class="under-title-ligne-space"></div>
-            </div>
-
-            <style>
-                .custom-grid {
-                    display: grid;
-                    grid-template-columns: 9fr 3fr;
-                    gap: 40px;
-                    margin-bottom: 60px;
-                    align-items: flex-start;
-                }
-
-                .custom-cards-wrapper {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 40px;
-                }
-
-                .custom-card {
-                    display: flex;
-                    flex-direction: row;
-                    gap: 20px;
-                    justify-content: space-between;
-                    align-items: flex-start;
-                    border-bottom: 1px solid #eee;
-                    padding-bottom: 20px;
-                }
-
-                .custom-card-left {
-                    display: flex;
-                    flex-direction: row;
-                    gap: 20px;
-                    align-items: flex-start;
-                }
-
-                .custom-media-group {
-                    display: flex;
-                    flex-direction: row;
-                    /* الصورة + التاريخ جنب بعض */
-                    align-items: center;
-                    /* متمركزين عموديًا */
-                    gap: 10px;
-                }
-
-                .custom-image {
-                    width: 300px;
-                    aspect-ratio: 16 / 9;
-                    flex-shrink: 0;
-                    overflow: hidden;
-                }
-
-                .custom-image img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    display: block;
-                }
-
-                .custom-card-date {
-                    color: black;
-                    font-size: 12px;
-                    font-family: asswat-light;
-                    padding: 5px 10px;
-                    border-radius: 5px;
-                    white-space: nowrap;
-                }
-
-                .custom-texts {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                }
-
-                .custom-texts h2 {
-                    margin: 0;
-                    font-size: 20px;
-                    line-height: 1.4;
-                    font-family: asswat-bold;
-                    cursor: pointer;
-                    transition: .2s;
-                }
-
-                .custom-texts h2:hover {
-                    text-decoration: underline;
-                }
-
-                .custom-texts p {
-                    margin: 0;
-                    font-size: 15px;
-                    line-height: 1.6;
-                    color: #555;
-                }
-
-                .custom-texts span {
-                    font-size: 11px;
-                    color: #999;
-                    font-family: asswat-light;
-                    cursor: pointer;
-                }
-
-                .podcasts-load-more-btn {
-                    display: block;
-                    width: 100%;
-                    text-align: center;
-                    padding: 12px 0;
-                    margin: 60px auto;
-                    background: #f5f5f5;
-                    color: #000;
-                    font-family: asswat-medium;
-                    font-size: 16px;
-                    border: none;
-                    cursor: pointer;
-                    transition: .3s ease;
-                }
-
-                .podcasts-load-more-btn:hover {
-                    background: #ddd;
-                }
-            </style>
-
-            {{-- Grid Section --}}
-            <div class="custom-grid">
-                <div class="podcasts-section-wrapper">
-                    <div>
-                        <div class="custom-cards-wrapper" id="podcast-list">
-                            @include('user.partials.podcast-items', ['podcasts' => $podcasts])
-                        </div>
-
-                        @if ($podcasts->count() >= 10)
-                            <div class="text-center mt-3" id="load-more-container">
-                                <button class="podcasts-load-more-btn" data-page="1">المزيد</button>
-                            </div>
-                        @endif
-                    </div>
-                    <div class="podcasts-section-empty"></div>
-                </div>
-
-
-
-                {{-- Sidebar 3/12 --}}
-                <div></div>
-            </div>
-
-
+        {{-- Title --}}
+        <div class="title">
+            <p class="section-title">بودكاست</p>
+            @include('user.components.ligne')
+            <div class="under-title-ligne-space"></div>
         </div>
 
-        @include('user.components.footer')
+        {{-- Feature podcasts --}}
+        <style>
+            .custom-podcasts-feature {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+                margin-bottom: 60px;
+            }
 
-        <div class="mobile">
+            .custom-podcasts-feature .custom-image-wrapper {
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
+
+            .custom-podcasts-feature img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+            .custom-podcasts-feature .custom-corner-icon {
+                position: absolute;
+                bottom: 15px;
+                left: 20px;
+                width: 45px;
+                height: 45px;
+                color: white;
+            }
+
+            .custom-podcasts-feature .custom-corner-icon img {
+                width: 100%;
+                height: 100%;
+            }
+
+            .custom-podcasts-feature .custom-content {
+                margin-top: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 20px;
+            }
+
+            .custom-podcasts-feature .custom-content h3 {
+                margin: 0;
+                color: #999;
+                font-size: 12px;
+                font-family: asswat-light;
+                font-weight: lighter;
+                cursor: pointer;
+            }
+
+            .custom-podcasts-feature .custom-content h2 {
+                margin: 10px 0 10px;
+                font-size: 24px;
+                line-height: 1.3;
+                font-family: asswat-bold;
+                cursor: pointer;
+                transition: .2s;
+            }
+
+            .custom-podcasts-feature .custom-content p {
+                margin: 0;
+                font-size: 17px;
+                line-height: 1.6;
+                color: #555;
+            }
+
+            .custom-podcasts-feature .custom-content h2:hover {
+                text-decoration: underline;
+            }
+        </style>
+
+        @if ($featured)
+            <div class="custom-podcasts-feature">
+                <div class="custom-image-wrapper">
+                    <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
+                        alt="{{ $featured->title }}">
+                    <div class="custom-corner-icon">
+                        @include('user.icons.podcast')
+                    </div>
+                </div>
+                <div class="custom-content">
+                    <h3>{{ $featured->category->name ?? '' }} - {{ $featured->country->name ?? '' }}</h3>
+                    <h2>{{ $featured->title }}</h2>
+                    <p>{{ $featured->summary }}</p>
+                </div>
+            </div>
+        @endif
+
+        {{-- podcasts Grid --}}
+        <style>
+            .podcasts-section-wrapper {
+                display: grid;
+                grid-template-columns: 10fr 2fr;
+                /* 8/12 محتوى + 4/12 فارغ */
+                gap: 20px;
+            }
+
+            .podcasts-section-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+
+            .podcasts-section-item img {
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                object-fit: cover;
+                display: block;
+            }
+
+            .podcasts-section-item h2 {
+                font-size: 18px;
+                margin: 0 0 8px 0;
+                font-family: asswat-bold;
+                line-height: 1.4;
+                cursor: pointer;
+                transition: .2s;
+            }
+
+            .podcasts-section-item h3 {
+                font-size: 12px;
+                margin: 8px 0 4px;
+                color: #74747C;
+                font-family: asswat-light;
+                font-weight: lighter;
+                cursor: pointer;
+            }
+
+            .podcasts-section-item h2:hover {
+                text-decoration: underline;
+            }
+
+            .podcasts-load-more-btn {
+                display: block;
+                width: 100%;
+                text-align: center;
+                padding: 12px 0;
+                margin: 60px auto;
+                background: #f5f5f5;
+                color: #000;
+                font-family: asswat-medium;
+                font-size: 16px;
+                border: none;
+                cursor: pointer;
+                transition: .3s ease;
+            }
+
+            .podcasts-load-more-btn:hover {
+                background: #ddd;
+            }
+        </style>
+
+        {{-- podcasts Grid --}}
+        <div class="podcasts-section-wrapper">
+            <div>
+                <div class="podcasts-section-grid" id="podcasts-container">
+                    @include('user.partials.podcast-items', ['otherPodcasts' => $otherPodcasts])
+                </div>
+
+                <div class="text-center mt-3" id="load-more-container">
+                    <button class="podcasts-load-more-btn" data-page="1">المزيد</button>
+                </div>
+            </div>
+            <div class="podcasts-section-empty"></div>
         </div>
 
     </div>
 
-@endsection
+    @include('user.components.footer')
 
+@endsection
 
 
 <script>
@@ -198,7 +207,6 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                // ✨ غيّر المسار من podcasts إلى podcasts
                 let response = await fetch(`/section/podcasts?page=${page}`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
@@ -210,11 +218,9 @@
                 let data = await response.text();
 
                 if (data.trim().length === 0) {
-                    // ✨ نفس الشي لازم تغير الـ container للبودكاست
                     btn.closest("#load-more-container").remove();
                 } else {
-                    // ✨ container الصحيح للبودكاست
-                    document.querySelector("#podcast-list").insertAdjacentHTML("beforeend", data);
+                    document.querySelector("#podcasts-container").insertAdjacentHTML("beforeend", data);
                     btn.setAttribute("data-page", page);
                     btn.disabled = false;
                     btn.textContent = "المزيد";
