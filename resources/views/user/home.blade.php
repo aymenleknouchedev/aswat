@@ -147,7 +147,7 @@
         @if ($artsCount >= 8)
             @include('user.components.sp60')
             <div class="container">
-                <a href="{{ route('arts') }}" class="section-title">ثقافة وفنون</a>
+                <a href="{{ route('newSection', ['section' => 'culture']) }}" class="section-title">ثقافة وفنون</a>
                 @include('user.components.ligne')
                 <div class="under-title-ligne-space"></div>
                 @include('user.components.arts')

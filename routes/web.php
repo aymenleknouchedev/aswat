@@ -81,6 +81,7 @@ Route::get('/seed', function () {
 Route::middleware(['coming.soon'])->group(function () {
     // client
     Route::get('/', [HomePageController::class, 'index'])->name('index');
+    Route::get('/latestNews', [HomePageController::class, 'latestNews'])->name('latestNews');
     Route::get('/api/photos', [HomePageController::class, 'photosApi'])->name('api.photos');
     Route::get('/api/breaking-news', [HomePageController::class, 'breakingNewsApi'])->name('api.breaking.news');
     Route::get('/api/latest-news', [HomePageController::class, 'latestNewsApi'])->name('api.latest.news');
@@ -92,7 +93,6 @@ Route::middleware(['coming.soon'])->group(function () {
     Route::get('/section/videos', [HomePageController::class, 'videos'])->name('videos');
     Route::get('/section/podcasts', [HomePageController::class, 'podcasts'])->name('podcasts');
     Route::get('/section/photos', [HomePageController::class, 'photos'])->name('photos');
-    Route::get('/section/culture', [HomePageController::class, 'arts'])->name('arts');
     Route::get('/section/{section}', [HomePageController::class, 'newSection'])->name('newSection');
     Route::get('/news/{news}', [HomePageController::class, 'showNews'])->name('news.show');
 });

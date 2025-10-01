@@ -76,6 +76,15 @@ class HomePageController extends Controller
         return view('user.home', compact('topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed'));
     }
 
+    public function latestNews()
+    {
+        $latestContents = Content::latest()
+            ->take(20)
+            ->get();
+
+        return view('user.latest-news', compact('latestContents'));
+    }
+
     public function photosApi()
     {
         $photos = Content::where('section_id', Section::where('name', 'صور')->value('id'))
@@ -278,7 +287,6 @@ class HomePageController extends Controller
 
     public function arts()
     {
-        dd('arts');
         return view('user.arts');
     }
 
@@ -295,6 +303,7 @@ class HomePageController extends Controller
             'environment' => ['بيئة', 4],
             'media' => ['ميديا', 4],
             'variety' => ['منوعات', 4],
+            'culture' => ['ثقافة وفنون', 4],
         ];
 
         if (!array_key_exists($section, $sectionNames)) {
