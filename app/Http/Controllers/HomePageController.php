@@ -170,16 +170,71 @@ class HomePageController extends Controller
         return view('user.windows');
     }
 
-    public function files()
+    public function files(Request $request)
     {
-        dd('files');
-        return view('user.files');
+        $sectionId = Section::where('name', 'ملفات')->value('id');
+
+        if (!$sectionId) {
+            abort(404);
+        }
+
+        // المقالة الأولى كـ Featured
+        $featured = Content::where('section_id', $sectionId)
+            ->latest()
+            ->first();
+
+        // باقي الملفات
+        $perPage = 9;
+        $page = $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        $otherFiles = Content::where('section_id', $sectionId)
+            ->latest()
+            ->skip(1 + $skip) // نتجاوز الـ featured
+            ->take($perPage)
+            ->get();
+
+        if ($request->ajax()) {
+            return view('user.partials.file-items', compact('otherFiles'))->render();
+        }
+
+        return view('user.files', [
+            'featured' => $featured,
+            'otherFiles' => $otherFiles
+        ]);
     }
 
-    public function investigation()
+    public function investigation(Request $request)
     {
-        dd('investigation');
-        return view('user.investigation');
+        $sectionId = Section::where('name', 'فحص')->value('id');
+        if (!$sectionId) {
+            abort(404);
+        }
+
+        // المقالة الأولى كـ Featured
+        $featured = Content::where('section_id', $sectionId)
+            ->latest()
+            ->first();
+
+        // باقي التحقيقات
+        $perPage = 9;
+        $page = $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        $otherInvestigations = Content::where('section_id', $sectionId)
+            ->latest()
+            ->skip(1 + $skip) // نتجاوز الـ featured
+            ->take($perPage)
+            ->get();
+
+        if ($request->ajax()) {
+            return view('user.partials.investigation-items', compact('otherInvestigations'))->render();
+        }
+
+        return view('user.investigation', [
+            'featured' => $featured,
+            'otherInvestigations' => $otherInvestigations
+        ]);
     }
 
     public function videos(Request $request)
