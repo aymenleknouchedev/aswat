@@ -40,6 +40,7 @@ class UserSeeder extends Seeder
             'settings_access',
             'view_actions_access',
             'coming_soon_access',
+            'email_access',
         ];
 
 

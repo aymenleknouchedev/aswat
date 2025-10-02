@@ -400,6 +400,18 @@
                     </li>
                     @endcanDo
 
+                    <!-- Emailing -->
+                    @canDo('email_access')
+                    <li class="nk-menu-item">
+                        <a href="{{ route('dashboard.mail.send-mail') }}" class="nk-menu-link">
+                            <span class="nk-menu-icon">
+                                <em class="icon ni ni-mail"></em>
+                            </span>
+                            <span class="nk-menu-text" data-en="Emailing" data-ar="البريد الإلكتروني">Emailing</span>
+                        </a>
+                    </li>
+                    @endcanDo
+
                     <!-- Settings -->
                     @canDo('settings_access')
                     <li class="nk-menu-item">

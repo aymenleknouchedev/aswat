@@ -24,6 +24,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link id="skin-default" rel="stylesheet" href="./dashlite/assets/css/skins/theme-egyptian.css?ver=3.3.0">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <script>
         window.dataLayer = window.dataLayer || [];
