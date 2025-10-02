@@ -34,5 +34,3 @@ Route::get('/seed', function () {
     ]);
     return 'Database seeded successfully.';
 });
-
-

@@ -177,8 +177,8 @@
                                                 data-en="Category">التصنيف</label>
                                             <span style="color:red;">*</span>
                                             <div class="form-control-wrap position-relative">
-                                                <input type="text" id="categorySearch" class="form-control pe-5" required autocomplete="off">
-                                                <input type="hidden" name="category_id" id="categoryHidden" required>
+                                                <input type="text" id="categorySearch" class="form-control pe-5" required autocomplete="off" value="{{ old('category_name') }}">
+                                                <input type="hidden" name="category_id" id="categoryHidden" required value="{{ old('category_id') }}">
                                                 <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>

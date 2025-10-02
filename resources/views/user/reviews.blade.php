@@ -96,7 +96,7 @@
             gap: 20px;
             padding: 20px 0;
             border-bottom: 1px solid #ddd;
-            align-items: center;
+            align-items: align-start;
         }
 
         .custom-card:last-child {
@@ -104,8 +104,8 @@
         }
 
         .custom-card .custom-image {
-            width: 75px;
-            height: 75px;
+            width: 90px;
+            height: 90px;
             flex-shrink: 0;
         }
 

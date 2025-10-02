@@ -1,4 +1,4 @@
-@foreach ($otherReviews as $review)
+@foreach ($otherReviews as $index => $review)
     <a href="{{ route('news.show', $review->id) }}" style="text-decoration: none; color: inherit;">
         <div class="custom-card">
             <div class="custom-image">
@@ -6,7 +6,7 @@
                     alt="خبر">
             </div>
             <div class="custom-texts">
-                <span>
+                <span style="font-size: 1.1em;">
                     @if (isset($review->author))
                         بقلم: {{ $review->author->name }}
                     @else
@@ -14,7 +14,11 @@
                     @endif
                 </span>
                 <h3>{{ $review->title }}</h3>
+                <p>{{ $review->summary }}</p>
             </div>
         </div>
     </a>
+    @if ($index < count($otherReviews) - 1)
+        <hr style="margin: 20px 0; border-color: #f4f4f4; border-width: 1px;">
+    @endif
 @endforeach
