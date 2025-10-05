@@ -124,7 +124,7 @@
                                                 <td>{{ Str::limit($cv->message, 50) }}</td>
                                                 <td>
                                                     <a href="{{ $cv->cv }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                                        <em class="icon ni ni-eye"></em>
+                                                        <em class="icon ni ni-file"></em>
                                                     </a>
                                                 </td>
                                                 <td>{{ $cv->created_at->format('Y-m-d H:i') }}</td>
