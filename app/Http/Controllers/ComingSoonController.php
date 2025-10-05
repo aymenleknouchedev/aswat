@@ -24,6 +24,7 @@ class ComingSoonController extends Controller
                       ->orWhere('email', 'like', "%{$search}%");
                 });
             })
+            ->latest()
             ->paginate($pagination);
 
         return view('dashboard.allcvs', compact('cvs'));
