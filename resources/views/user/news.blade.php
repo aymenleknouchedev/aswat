@@ -109,37 +109,77 @@
             object-fit: cover;
         }
 
-        /* Content */
+        /* ===================== CONTENT ===================== */
         .custom-article-content {
             font-size: 16px;
             font-family: asswat-regular;
             color: #333;
-            line-height: 1.8;
+            line-height: 1.9;
             text-align: right;
             margin-bottom: 30px;
         }
 
         .custom-article-content * {
-            font-size: 16px !important;
             font-family: asswat-regular !important;
             text-align: justify !important;
+            direction: rtl !important;
+            box-sizing: border-box;
         }
 
+        .custom-article-content p {
+            margin-bottom: 18px !important;
+            line-height: 1.9 !important;
+        }
+
+        .custom-article-content h2,
+        .custom-article-content h3,
+        .custom-article-content h4 {
+            font-family: asswat-bold !important;
+            color: #111 !important;
+            text-align: right !important;
+            margin-top: 35px !important;
+            margin-bottom: 18px !important;
+        }
+
+        /* Make h2 more visible */
+        .custom-article-content h2 {
+            font-size: 26px !important;
+            border-right: 4px solid #222;
+            padding-right: 10px;
+            line-height: 1.4;
+        }
+
+        .custom-article-content h3 {
+            font-size: 22px !important;
+            color: #333 !important;
+        }
+
+        /* Image spacing and captions */
         .custom-article-content img {
+            display: block;
             max-width: 100% !important;
             height: auto !important;
-            display: block;
+            margin: 25px auto !important;
         }
 
-        .custom-article-content img+.caption,
-        .custom-article-content figcaption {
-            display: block;
-            background: #eee;
+        .custom-article-content .caption {
+            background: #f6f6f6;
             color: #555;
-            font-size: 15px;
-            padding: 10px;
-            text-align: right;
-            margin-top: 0;
+            padding: 8px 12px;
+            font-size: 15px !important;
+            text-align: center !important;
+            margin-top: -12px;
+            margin-bottom: 25px;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .custom-article-content figcaption {
+            background: #f6f6f6;
+            color: #555;
+            padding: 8px 12px;
+            font-size: 15px !important;
+            margin-top: -12px;
+            margin-bottom: 25px;
         }
 
         /* Blockquote */
@@ -158,6 +198,9 @@
             font-size: 1.2rem;
             color: #222;
             line-height: 1.6;
+            font-family: asswat-bold !important;
+            font-weight: bold !important;
+            text-align: center !important;
         }
 
         .custom-article-content blockquote::before {
@@ -169,6 +212,7 @@
             height: 32px;
             background: url('/user/assets/icons/quote-top.png') no-repeat center;
             background-size: contain;
+            transform: scaleY(-1);
         }
 
         .custom-article-content blockquote::after {
@@ -218,6 +262,7 @@
             width: 60px;
             height: 60px;
             object-fit: cover;
+            border-radius: 50%;
         }
 
         .writer-info {
@@ -249,11 +294,9 @@
             border-radius: 12px;
             padding: 16px 24px;
             display: none;
-            /* hidden by default */
             align-items: center;
             gap: 16px;
             width: 80%;
-            /* 80% width */
             max-width: 800px;
             border: 1px solid #ddd;
         }
@@ -292,19 +335,41 @@
                 <div class="custom-article-summary">{{ $news->summary }}</div>
 
                 {{-- الكاتب --}}
-                <div class="custom-meta">{{ $news->writer->name ?? 'غير معروف' }}</div>
+                <div class="custom-meta">
+                    {{ $news->writer->name }} - {{ $news->city->name }}
+                </div>
 
                 {{-- التاريخ --}}
-                <div class="custom-meta-date">
-                    {{ \Carbon\Carbon::parse($news->published_at)->format('d-m-Y') }}
-                </div>
+                @php
+                    $months = [
+                        '01' => 'يناير',
+                        '02' => 'فبراير',
+                        '03' => 'مارس',
+                        '04' => 'أبريل',
+                        '05' => 'مايو',
+                        '06' => 'يونيو',
+                        '07' => 'يوليو',
+                        '08' => 'أغسطس',
+                        '09' => 'سبتمبر',
+                        '10' => 'أكتوبر',
+                        '11' => 'نوفمبر',
+                        '12' => 'ديسمبر',
+                    ];
+                    $date = $news->created_at;
+                    $day = $date->format('d');
+                    $month = $months[$date->format('m')];
+                    $year = $date->format('Y');
+                @endphp
+                <p style="margin-top: auto; color: #888; margin-bottom: 16px;">{{ $day }} {{ $month }}
+                    {{ $year }}</p>
 
                 {{-- صورة --}}
                 @if ($news->template !== 'no_image')
                     <div class="custom-article-image-wrapper">
-                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="Feature Algeria">
+                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="Feature Algeria"
+                            loading="lazy">
                         <div style="background:#eee; color:#555; font-size:15px; padding:10px; text-align:right;">
-                            {{ $news->media()->wherePivot('type', 'detail')->first()->alt ?? 'لا توجد رسالة وصفية للصورة.' }}
+                            {{ $news->media()->wherePivot('type', 'detail')->first()->alt ?? $news->mobile_title }}
                         </div>
                     </div>
                 @endif
@@ -320,6 +385,7 @@
                 @if ($news->template == 'video' && $news->media()->wherePivot('type', 'video')->first())
                     @include('user.components.video-player', [
                         'video' => $news->media()->wherePivot('type', 'video')->first()->path,
+                        'caption' => $news->media()->wherePivot('type', 'video')->first()->alt ?? 'فيديو',
                     ])
                 @endif
 
@@ -354,14 +420,16 @@
                 </div>
 
                 {{-- بطاقة الكاتب --}}
-                <div class="writer-card">
-                    <img src="{{ $news->writer && $news->writer->path ? '/storage/' . $news->writer->path : asset('user.png') }}"
-                        alt="Writer">
-                    <div class="writer-info">
-                        <div class="name">{{ $news->writer->name ?? 'غير معروف' }}</div>
-                        <div class="bio">{{ $news->writer->bio ?? 'لا توجد نبذة عن الكاتب.' }}</div>
+                @if ($news->writer->bio)
+                    <div class="writer-card">
+                        <img src="{{ $news->writer->path ? '/storage/' . $news->writer->path : asset('user.png') }}"
+                            alt="Writer" loading="lazy">
+                        <div class="writer-info">
+                            <div class="name">{{ $news->writer->name }}</div>
+                            <div class="bio">{{ $news->writer->bio }}</div>
+                        </div>
                     </div>
-                </div>
+                @endif
 
             </div>
         </div>
@@ -379,14 +447,12 @@
         const floatingAudio = document.getElementById("floatingAudio");
         const closeFloating = document.getElementById("closeFloating");
 
-        // When page podcast plays -> show floating player
         pagePodcast?.addEventListener("play", () => {
             floatingPodcast.style.display = "flex";
             floatingAudio.play();
             pagePodcast.pause();
         });
 
-        // When closing floating player -> pause audio
         closeFloating?.addEventListener("click", () => {
             floatingAudio.pause();
             floatingPodcast.style.display = "none";
