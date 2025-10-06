@@ -14,12 +14,12 @@ class NormalEmail extends Mailable
     use Queueable, SerializesModels;
 
     protected MailModel $mail;
-    protected array $attachments;
+    // protected array $attachments;
 
     public function __construct(MailModel $mail, array $attachments = [])
     {
         $this->mail = $mail;
-        $this->attachments = $attachments;
+        // $this->attachments = $attachments;
     }
 
     /**
@@ -41,8 +41,8 @@ class NormalEmail extends Mailable
         return new Content(
             view: 'emails.normal',
             with: [
-                'body' => $this->mail->body, 
-                'attachments' => $this->attachments,
+                'body' => $this->mail->body,
+                // 'attachments' => $this->attachments,
             ],
         );
     }
