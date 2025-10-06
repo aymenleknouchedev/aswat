@@ -163,6 +163,29 @@
             margin: 25px auto !important;
         }
 
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            /* optional, for soft edges */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            /* optional */
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+
         /* Blockquote */
         .custom-article-content blockquote {
             width: 100%;
