@@ -119,6 +119,15 @@
             margin-bottom: 30px;
         }
 
+        .custom-article-content span {
+            font-size: 18px;
+            font-family: asswat-regular;
+            color: #333;
+            line-height: 1.9;
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
         .custom-article-content * {
             font-family: asswat-regular !important;
             text-align: justify !important;
