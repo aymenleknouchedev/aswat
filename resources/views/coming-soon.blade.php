@@ -667,14 +667,18 @@
     <div class="header">
         <img class="logo" src="./user/assets/images/white_logo.svg" alt="شعار" />
         <div class="social-icons">
-            <a href="https://www.facebook.com/asswatdjazairia" target="_blank"><img
-                    src="./user/assets/icons/facebook.png" width="24" height="24" alt="فيسبوك" /></a>
-            <a href="https://x.com/asswatdjazairia" target="_blank"><img src="./user/assets/icons/x.png" width="24"
-                    height="24" alt="إكس" /></a>
-            <a href="https://www.instagram.com/asswatdjazairia" target="_blank"><img
-                    src="./user/assets/icons/instagram.png" width="24" height="24" alt="إنستغرام" /></a>
-            <a href="https://www.youtube.com/@asswatdjazairia" target="_blank"><img
-                    src="./user/assets/icons/youtube.png" width="24" height="24" alt="يوتيوب" /></a>
+            <a href="https://www.youtube.com/@asswatdjazairia" target="_blank" aria-label="يوتيوب">
+                <img src="./user/assets/icons/youtube.png" width="24" height="24" alt="يوتيوب" />
+            </a>
+            <a href="https://www.facebook.com/asswatdjazairia" target="_blank" aria-label="فيسبوك">
+                <img src="./user/assets/icons/facebook.png" width="24" height="24" alt="فيسبوك" />
+            </a>
+            <a href="https://www.instagram.com/asswatdjazairia" target="_blank" aria-label="إنستغرام">
+                <img src="./user/assets/icons/instagram.png" width="24" height="24" alt="إنستغرام" />
+            </a>
+            <a href="https://x.com/asswatdjazairia" target="_blank" aria-label="إكس">
+                <img src="./user/assets/icons/x.png" width="24" height="24" alt="إكس" />
+            </a>
         </div>
     </div>
 
@@ -743,10 +747,14 @@
 
                 // Update labels on countdown tick
                 function updateCountdownLabels() {
-                    document.getElementById('days-label').textContent = getArabicLabel('days', document.getElementById('days').textContent);
-                    document.getElementById('hours-label').textContent = getArabicLabel('hours', document.getElementById('hours').textContent);
-                    document.getElementById('minutes-label').textContent = getArabicLabel('minutes', document.getElementById('minutes').textContent);
-                    document.getElementById('seconds-label').textContent = getArabicLabel('seconds', document.getElementById('seconds').textContent);
+                    document.getElementById('days-label').textContent = getArabicLabel('days', document.getElementById('days')
+                        .textContent);
+                    document.getElementById('hours-label').textContent = getArabicLabel('hours', document.getElementById('hours')
+                        .textContent);
+                    document.getElementById('minutes-label').textContent = getArabicLabel('minutes', document.getElementById(
+                        'minutes').textContent);
+                    document.getElementById('seconds-label').textContent = getArabicLabel('seconds', document.getElementById(
+                        'seconds').textContent);
                 }
 
                 // Patch the existing countdown update function
