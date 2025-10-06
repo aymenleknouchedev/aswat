@@ -37,16 +37,9 @@ class JoinTeamController extends Controller
 
             $join_team->save();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'تم تقديم طلب الانضمام بنجاح.'
-            ]);
+            return redirect()->back()->with('success', 'تم تقديم طلب الانضمام بنجاح.');
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'حدث خطأ أثناء تقديم الطلب.',
-                'error' => $e->getMessage()
-            ], 500);
+            return redirect()->back()->with('error', 'حدث خطأ أثناء تقديم الطلب.');
         }
     }
 }
