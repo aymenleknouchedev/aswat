@@ -3,13 +3,13 @@
 <div style="font-family: Arial, sans-serif; line-height: 1.6; font-size: 15px;">
     {!! $body !!}
 </div>
-{{-- 
-@if(!empty($attachments) && count($attachments) > 0)
+
+@if(!empty($files) && count($files) > 0)
     <hr>
     <p><strong>Attached Files:</strong></p>
     <ul>
-        @foreach ($attachments as $file)
-            <li>{{ $file->file_name }}</li>
+        @foreach ($files as $file)
+            <li><a href="{{ $file }}">{{ $file }}</a></li>
         @endforeach
     </ul>
 @endif

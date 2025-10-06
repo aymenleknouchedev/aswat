@@ -55,8 +55,12 @@ class SendMailController extends Controller
                 }
             }
 
-            Mail::to($mail->email)->send(new NormalEmail($mail));
-            // Mail::to($mail->email)->send(new NormalEmail($mail, $attachments));
+            $files = [];
+            foreach ($attachments as $attachment) {
+                $files[] = $attachment->file_path;
+            }
+
+            Mail::to($mail->email)->send(new NormalEmail($mail, $files));
 
             return response()->json(['message' => 'Email sent successfully!', 'success' => true], 200);
         } catch (\Exception $e) {
