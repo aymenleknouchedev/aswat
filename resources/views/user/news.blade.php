@@ -109,38 +109,82 @@
             object-fit: cover;
         }
 
-        /* Content */
+        /* ===================== CONTENT ===================== */
         .custom-article-content {
-            font-size: 16px;
+            font-size: 16px !important;
             font-family: asswat-regular;
             color: #333;
-            line-height: 1.8;
+            line-height: 1.9;
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .custom-article-content p span {
+            font-size: 16px !important;
+            font-family: asswat-regular;
+            color: #333;
+            line-height: 1.9;
             text-align: right;
             margin-bottom: 30px;
         }
 
         .custom-article-content * {
-            font-size: 16px !important;
             font-family: asswat-regular !important;
             text-align: justify !important;
+            direction: rtl !important;
+            box-sizing: border-box;
         }
 
+        .custom-article-content p {
+            margin-bottom: 18px !important;
+            line-height: 1.9 !important;
+        }
+
+        .custom-article-content h2,
+        .custom-article-content h3,
+        .custom-article-content h4 {
+            font-family: asswat-bold !important;
+            color: #111 !important;
+            text-align: right !important;
+            margin-top: 35px !important;
+            margin-bottom: 18px !important;
+        }
+
+        .custom-article-content h3 {
+            font-size: 22px !important;
+            color: #333 !important;
+        }
+
+        /* Image spacing and captions */
         .custom-article-content img {
+            display: block;
             max-width: 100% !important;
             height: auto !important;
-            display: block;
+            margin: 25px auto !important;
         }
 
-        .custom-article-content img+.caption,
-        .custom-article-content figcaption {
-            display: block;
-            background: #eee;
-            color: #555;
-            font-size: 15px;
-            padding: 10px;
-            text-align: right;
-            margin-top: 0;
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            /* optional, for soft edges */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            /* optional */
         }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
 
         /* Blockquote */
         .custom-article-content blockquote {
@@ -158,6 +202,9 @@
             font-size: 1.2rem;
             color: #222;
             line-height: 1.6;
+            font-family: asswat-bold !important;
+            font-weight: bold !important;
+            text-align: center !important;
         }
 
         .custom-article-content blockquote::before {
@@ -169,6 +216,7 @@
             height: 32px;
             background: url('/user/assets/icons/quote-top.png') no-repeat center;
             background-size: contain;
+            transform: scaleY(-1);
         }
 
         .custom-article-content blockquote::after {
@@ -218,6 +266,7 @@
             width: 60px;
             height: 60px;
             object-fit: cover;
+            border-radius: 50%;
         }
 
         .writer-info {
@@ -249,11 +298,9 @@
             border-radius: 12px;
             padding: 16px 24px;
             display: none;
-            /* hidden by default */
             align-items: center;
             gap: 16px;
             width: 80%;
-            /* 80% width */
             max-width: 800px;
             border: 1px solid #ddd;
         }
@@ -275,6 +322,75 @@
         }
     </style>
 
+    {{-- ===== Social Share Section ===== --}}
+    <style>
+        .custom-date-share {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .date-text {
+            color: #888;
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .share-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            position: relative;
+        }
+
+        .share-icons {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transform: translateX(10px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .share-container.active .share-icons {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .share-icons a {
+            border-radius: 50%;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .share-icons img {
+            width: 26px;
+            height: 26px;
+        }
+
+        .share-btn {
+            background: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .share-btn:hover {
+            background: #f5f5f5;
+        }
+    </style>
+
     {{-- ================= WEB ================= --}}
     <div class="web">
         @include('user.components.fixed-nav')
@@ -292,19 +408,88 @@
                 <div class="custom-article-summary">{{ $news->summary }}</div>
 
                 {{-- الكاتب --}}
-                <div class="custom-meta">{{ $news->writer->name ?? 'غير معروف' }}</div>
+                <div class="custom-meta">
+                    @if ($news->writer)
+                        {{ $news->writer->name }}
+                    @endif
+                    @if ($news->city)
+                        - {{ $news->city->name }}
+                    @endif
+
+                </div>
 
                 {{-- التاريخ --}}
-                <div class="custom-meta-date">
-                    {{ \Carbon\Carbon::parse($news->published_at)->format('d-m-Y') }}
+                @php
+                    $months = [
+                        '01' => 'يناير',
+                        '02' => 'فبراير',
+                        '03' => 'مارس',
+                        '04' => 'أبريل',
+                        '05' => 'مايو',
+                        '06' => 'يونيو',
+                        '07' => 'يوليو',
+                        '08' => 'أغسطس',
+                        '09' => 'سبتمبر',
+                        '10' => 'أكتوبر',
+                        '11' => 'نوفمبر',
+                        '12' => 'ديسمبر',
+                    ];
+                    $date = $news->created_at;
+                    $day = $date->format('d');
+                    $month = $months[$date->format('m')];
+                    $year = $date->format('Y');
+                @endphp
+
+
+                @php
+                    $shareTitle = $news->share_title ?: $news->long_title;
+                    $shareDescription = $news->share_description ?: $news->summary;
+                    $shareImage = $news->share_image ?: $news->main_image;
+                @endphp
+
+
+
+                <div class="custom-date-share">
+                    {{-- Date on the RIGHT --}}
+                    <p class="date-text">{{ $day }} {{ $month }} {{ $year }}</p>
+
+                    {{-- Share on the LEFT --}}
+                    <div class="share-container" id="shareContainer">
+                        <div class="share-icons">
+                            {{-- Facebook --}}
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
+                                target="_blank" title="مشاركة على فيسبوك" rel="noopener">
+                                <img src="{{ asset('user/assets/icons/facebook.png') }}" alt="Facebook">
+                            </a>
+
+                            {{-- X (Twitter) --}}
+                            <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($shareTitle . ' - ' . $shareDescription) }}"
+                                target="_blank" title="مشاركة على X" rel="noopener">
+                                <img src="{{ asset('user/assets/icons/twitter.png') }}" alt="X">
+                            </a>
+
+                            {{-- WhatsApp --}}
+                            <a href="https://wa.me/?text={{ urlencode($shareTitle . ' - ' . $shareDescription . ' ' . request()->fullUrl()) }}"
+                                target="_blank" title="مشاركة على واتساب" rel="noopener">
+                                <img src="{{ asset('user/assets/icons/whatsapp.png') }}" alt="WhatsApp">
+                            </a>
+                        </div>
+
+
+                        <button class="share-btn" id="shareToggle" title="مشاركة">
+                            <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
+                        </button>
+                    </div>
                 </div>
+
 
                 {{-- صورة --}}
                 @if ($news->template !== 'no_image')
                     <div class="custom-article-image-wrapper">
-                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="Feature Algeria">
+                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="Feature Algeria"
+                            loading="lazy">
                         <div style="background:#eee; color:#555; font-size:15px; padding:10px; text-align:right;">
-                            {{ $news->media()->wherePivot('type', 'detail')->first()->alt ?? 'لا توجد رسالة وصفية للصورة.' }}
+                            {{ $news->media()->wherePivot('type', 'detail')->first()->alt ?? $news->mobile_title }}
                         </div>
                     </div>
                 @endif
@@ -320,6 +505,7 @@
                 @if ($news->template == 'video' && $news->media()->wherePivot('type', 'video')->first())
                     @include('user.components.video-player', [
                         'video' => $news->media()->wherePivot('type', 'video')->first()->path,
+                        'caption' => $news->media()->wherePivot('type', 'video')->first()->alt ?? 'فيديو',
                     ])
                 @endif
 
@@ -354,14 +540,16 @@
                 </div>
 
                 {{-- بطاقة الكاتب --}}
-                <div class="writer-card">
-                    <img src="{{ $news->writer && $news->writer->path ? '/storage/' . $news->writer->path : asset('user.png') }}"
-                        alt="Writer">
-                    <div class="writer-info">
-                        <div class="name">{{ $news->writer->name ?? 'غير معروف' }}</div>
-                        <div class="bio">{{ $news->writer->bio ?? 'لا توجد نبذة عن الكاتب.' }}</div>
+                @if ($news->writer->bio)
+                    <div class="writer-card">
+                        <img src="{{ $news->writer->path ? '/storage/' . $news->writer->path : asset('user.png') }}"
+                            alt="Writer" loading="lazy">
+                        <div class="writer-info">
+                            <div class="name">{{ $news->writer->name }}</div>
+                            <div class="bio">{{ $news->writer->bio }}</div>
+                        </div>
                     </div>
-                </div>
+                @endif
 
             </div>
         </div>
@@ -379,18 +567,28 @@
         const floatingAudio = document.getElementById("floatingAudio");
         const closeFloating = document.getElementById("closeFloating");
 
-        // When page podcast plays -> show floating player
         pagePodcast?.addEventListener("play", () => {
             floatingPodcast.style.display = "flex";
             floatingAudio.play();
             pagePodcast.pause();
         });
 
-        // When closing floating player -> pause audio
         closeFloating?.addEventListener("click", () => {
             floatingAudio.pause();
             floatingPodcast.style.display = "none";
         });
+    </script>
+
+    <script>
+        const toggle = document.getElementById('shareToggle');
+        const text = document.getElementById('shareText');
+
+        function toggleShare() {
+            toggle.parentElement.classList.toggle('active');
+        }
+
+        toggle.addEventListener('click', toggleShare);
+        text.addEventListener('click', toggleShare);
     </script>
 
 @endsection
