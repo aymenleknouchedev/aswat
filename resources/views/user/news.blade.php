@@ -336,7 +336,9 @@
 
                 {{-- الكاتب --}}
                 <div class="custom-meta">
-                    {{ $news->writer->name }} - {{ $news->city->name }}
+                    @if ($news->writer && $news->city)
+                        {{ $news->writer->name }} - {{ $news->city->name }}
+                    @endif
                 </div>
 
                 {{-- التاريخ --}}
