@@ -31,7 +31,7 @@
                                         <div class="form-group">
                                             <label class="form-label" data-en="Recipient Email" data-ar="البريد المرسل إليه">البريد المرسل إليه</label>
                                             <div class="form-control-wrap">
-                                                <input type="email" name="email" class="form-control" placeholder="example@email.com" required>
+                                                <input type="email" name="email" class="form-control" placeholder="example@email.com" value="{{ $email }}" required @if($email) disabled @endif>
                                             </div>
                                         </div>
 
