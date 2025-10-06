@@ -26,8 +26,6 @@ class ComingSoonMiddleware
                 return $next($request);
             }
 
-
-
             if (!$request->is('/')) {
                 return redirect('/');
             }

@@ -242,7 +242,7 @@
             z-index: 1000;
             animation: fadeIn 0.3s ease;
             overflow-y: auto;
-            padding: 20px;
+            padding: 5px;
         }
 
         .modal-content {
