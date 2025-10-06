@@ -8,13 +8,13 @@
     <hr>
     <p><strong>Attached Files:</strong></p>
     <ul>
-        @foreach ($files as $file)
-            <li><a href="{{ $file }}">{{ $file }}</a></li>
+        @foreach ($files as $index => $file)
+            <li><a href="{{ $file }}" target="_blank">Attachment {{ $index + 1 }}</a></li>
         @endforeach
     </ul>
 @endif
 
 <p style="margin-top:20px;">
     Thank you,<br>
-    <strong>The Team</strong>
-</p> --}}
+    <strong>Asswat Team</strong>
+</p>

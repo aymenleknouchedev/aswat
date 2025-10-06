@@ -47,8 +47,8 @@ class SendMailController extends Controller
 
                     $mailAttachment = MailAttachement::create([
                         'mail_id'   => $mail->id,
-                        'file_path' => asset($path),
-                        'file_name' => time() . '_' . rand(1000, 9999),
+                        'file_path' => asset('storage/' . $path),
+                        'file_name' => $uniqueName,
                     ]);
 
                     $attachments[] = $mailAttachment;
