@@ -318,6 +318,75 @@
         }
     </style>
 
+    {{-- ===== Social Share Section ===== --}}
+    <style>
+        .custom-date-share {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .date-text {
+            color: #888;
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .share-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            position: relative;
+        }
+
+        .share-icons {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transform: translateX(10px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .share-container.active .share-icons {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .share-icons a {
+            border-radius: 50%;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .share-icons img {
+            width: 26px;
+            height: 26px;
+        }
+
+        .share-btn {
+            background: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .share-btn:hover {
+            background: #f5f5f5;
+        }
+    </style>
+
     {{-- ================= WEB ================= --}}
     <div class="web">
         @include('user.components.fixed-nav')
@@ -362,8 +431,45 @@
                     $month = $months[$date->format('m')];
                     $year = $date->format('Y');
                 @endphp
-                <p style="margin-top: auto; color: #888; margin-bottom: 16px;">{{ $day }} {{ $month }}
-                    {{ $year }}</p>
+
+
+                @php
+                    $shareTitle = $news->share_title ?: $news->long_title;
+                    $shareDescription = $news->share_description ?: $news->summary;
+                    $shareImage = $news->share_image ?: $news->main_image;
+                @endphp
+
+
+
+                <div class="custom-date-share">
+                    {{-- Date on the RIGHT --}}
+                    <p class="date-text">{{ $day }} {{ $month }} {{ $year }}</p>
+
+                    {{-- Share on the LEFT --}}
+                    <div class="share-container" id="shareContainer">
+                        <div class="share-icons">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}&quote={{ urlencode($shareTitle) }}"
+                                target="_blank" title="مشاركة على فيسبوك">
+                                <img src="{{ asset('user/assets/icons/facebook.png') }}" alt="Facebook">
+                            </a>
+
+                            <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($shareTitle) }}"
+                                target="_blank" title="مشاركة على X">
+                                <img src="{{ asset('user/assets/icons/twitter.png') }}" alt="X">
+                            </a>
+
+                            <a href="https://wa.me/?text={{ urlencode(request()->fullUrl()) }}"
+                                target="_blank" title="مشاركة على واتساب">
+                                <img src="{{ asset('user/assets/icons/whatsapp.png') }}" alt="WhatsApp">
+                            </a>
+                        </div>
+
+                        <button class="share-btn" id="shareToggle" title="مشاركة">
+                            <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
+                        </button>
+                    </div>
+                </div>
+
 
                 {{-- صورة --}}
                 @if ($news->template !== 'no_image')
@@ -459,6 +565,18 @@
             floatingAudio.pause();
             floatingPodcast.style.display = "none";
         });
+    </script>
+
+    <script>
+        const toggle = document.getElementById('shareToggle');
+        const text = document.getElementById('shareText');
+
+        function toggleShare() {
+            toggle.parentElement.classList.toggle('active');
+        }
+
+        toggle.addEventListener('click', toggleShare);
+        text.addEventListener('click', toggleShare);
     </script>
 
 @endsection
