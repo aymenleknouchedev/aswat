@@ -156,6 +156,9 @@
                                                     <button type="button" class="btn btn-info btn-sm view-message-btn" data-message="{{ $cv->message }}">
                                                         <em class="icon ni ni-eye"></em>
                                                     </button>
+                                                    <a href="{{ route('dashboard.mail.send-mail', ["email" => $cv->email]) }}" class="btn btn-success btn-sm">
+                                                        <em class="icon ni ni-mail"></em>
+                                                    </a>
                                                     <form action="{{ route('dashboard.join-team.delete', $cv->id) }}" method="POST" onsubmit="return confirm('هل أنت متأكد من الحذف؟');" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')

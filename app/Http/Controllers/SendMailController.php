@@ -13,9 +13,10 @@ use Illuminate\Support\Facades\Validator;
 
 class SendMailController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('dashboard.sendmail');
+        $email = $request->query('email');
+        return view('dashboard.sendmail', compact('email'));
     }
 
     public function send(Request $request)
