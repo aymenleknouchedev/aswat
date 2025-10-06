@@ -111,7 +111,7 @@
 
         /* ===================== CONTENT ===================== */
         .custom-article-content {
-            font-size: 16px;
+            font-size: 18px;
             font-family: asswat-regular;
             color: #333;
             line-height: 1.9;
@@ -152,17 +152,6 @@
             max-width: 100% !important;
             height: auto !important;
             margin: 25px auto !important;
-        }
-
-        .custom-article-content .caption {
-            background: #f6f6f6;
-            color: #555;
-            padding: 8px 12px;
-            font-size: 15px !important;
-            text-align: center !important;
-            margin-top: -12px;
-            margin-bottom: 25px;
-            border-radius: 0 0 8px 8px;
         }
 
         /* Blockquote */
