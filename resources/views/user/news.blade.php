@@ -111,7 +111,7 @@
 
         /* ===================== CONTENT ===================== */
         .custom-article-content {
-            font-size: 18px;
+            font-size: 16px !important;
             font-family: asswat-regular;
             color: #333;
             line-height: 1.9;
@@ -119,8 +119,8 @@
             margin-bottom: 30px;
         }
 
-        .custom-article-content span {
-            font-size: 18px;
+        .custom-article-content p span {
+            font-size: 16px !important;
             font-family: asswat-regular;
             color: #333;
             line-height: 1.9;
