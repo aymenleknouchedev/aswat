@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class SendMailController extends Controller
 {
@@ -19,12 +20,15 @@ class SendMailController extends Controller
 
     public function send(Request $request)
     {
-        // Validate the request data
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'subject' => 'required|string|max:255',
             'body' => 'required|string',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'success' => false], 422);
+        }
 
         try {
             $mail = new MailModel();
@@ -44,14 +48,19 @@ class SendMailController extends Controller
                     $mailAttachment = MailAttachement::create([
                         'mail_id'   => $mail->id,
                         'file_path' => asset($path),
-                        'file_name' => $file->getClientOriginalName(),
+                        'file_name' => time() . '_' . rand(1000, 9999),
                     ]);
 
                     $attachments[] = $mailAttachment;
                 }
             }
 
-            Mail::to($mail->email)->send(new NormalEmail($mail, $attachments));
+            $files = [];
+            foreach ($attachments as $attachment) {
+                $files[] = $attachment->file_path;
+            }
+
+            Mail::to($mail->email)->send(new NormalEmail($mail, $files));
 
             return response()->json(['message' => 'Email sent successfully!', 'success' => true], 200);
         } catch (\Exception $e) {
