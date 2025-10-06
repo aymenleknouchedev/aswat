@@ -26,8 +26,12 @@ class ComingSoonMiddleware
                 return $next($request);
             }
 
-            return response()->view('coming-soon');
 
+
+            if (!$request->is('/')) {
+                return redirect('/');
+            }
+            return response()->view('coming-soon');
         } else {
             return $next($request);
         }
