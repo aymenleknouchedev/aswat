@@ -2,701 +2,873 @@
 <html lang="ar" dir="rtl">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>أصوات جزائرية - قريباً</title>
-  <style>
-    /* ✅ استدعاء الخطوط */
-    @font-face {
-      font-family: 'asswat-bold';
-      src: url('./user/fonts/reith_qalam_bold.ttf') format('truetype');
-      font-weight: bold;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>أصوات جزائرية - قريباً</title>
 
-    @font-face {
-      font-family: 'asswat-regular';
-      src: url('./user/fonts/reith_qalam_regular.ttf') format('truetype');
-      font-weight: normal;
-    }
+    <style>
+        /* ================== Fonts ================== */
+        @font-face {
+            font-family: 'asswat-bold';
+            src: url('./user/fonts/reith_qalam_bold.ttf') format('truetype');
+            font-weight: bold;
+        }
 
-    body,
-    html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'asswat-regular', sans-serif;
-      color: #fff;
-      overflow: hidden;
-    }
+        @font-face {
+            font-family: 'asswat-regular';
+            src: url('./user/fonts/reith_qalam_regular.ttf') format('truetype');
+            font-weight: normal;
+        }
 
-    .video-bg {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -2;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.3);
-      z-index: -1;
-    }
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'asswat-regular', sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
 
-    /* ✅ رأس الصفحة */
-    .header {
-      position: fixed;
-      top: 20px;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 40px;
-      z-index: 10;
-    }
+        /* ================== Video Background ================== */
+        .video-bg {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
 
-    .logo {
-      width: 90px;
-      animation: fadeInDown 1.2s ease;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-    }
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: -1;
+        }
 
-    .social-icons a {
-      margin: 0 8px;
-      display: inline-block;
-      transition: transform 0.3s;
-    }
+        /* ================== Header ================== */
+        .header {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 10;
+        }
 
-    .social-icons a:hover {
-      transform: scale(1.1);
-    }
+        .logo {
+            width: 90px;
+            animation: fadeInDown 1s ease;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+        }
 
-    .container {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      padding: 20px;
-    }
+        .social-icons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .glass-box {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 60px;
-      max-width: 600px;
-      width: 100%;
-      animation: fadeInUp 1.5s ease;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      text-align: center;
-    }
+        .social-icons a {
+            display: inline-flex;
+            transition: transform 0.3s ease;
+        }
 
-    h1 {
-      font-size: 42px;
-      font-family: 'asswat-bold', sans-serif;
-      margin-bottom: 25px;
-      animation: fadeInDown 1.5s ease;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    }
+        .social-icons a:hover {
+            transform: scale(1.15);
+        }
 
-    .tagline {
-      font-size: 20px;
-      margin-bottom: 20px;
-      line-height: 1.6;
-      animation: fadeIn 2s ease;
-    }
+        /* ================== Main Section ================== */
+        .container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            text-align: center;
+            z-index: 1;
+        }
 
-    .animation-text {
-      font-size: 20px;
-      font-family: 'asswat-bold', sans-serif;
-      margin: 40px 0;
-      background: linear-gradient(90deg, #fff, #52B788, #fff);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: gradientMove 3s linear infinite;
-    }
+        .glass-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 50px 40px;
+            max-width: 600px;
+            width: 100%;
+            animation: fadeInUp 1.2s ease;
+        }
 
-    form {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 25px;
-    }
+        h1 {
+            font-family: 'asswat-bold';
+            font-size: 42px;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
 
-    input[type="email"] {
-      padding: 14px 18px;
-      border: none;
-      width: 250px;
-      font-size: 16px;
-      background: rgba(255, 255, 255, 0.9);
-      transition: all 0.3s ease;
-      font-family: 'asswat-regular';
-    }
+        .tagline {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
 
-    input[type="email"]:focus {
-      background: #fff;
-      box-shadow: 0 0 0 2px rgba(82, 183, 136, 0.5);
-      outline: none;
-    }
+        .animation-text {
+            font-size: 22px;
+            font-family: 'asswat-bold';
+            background: linear-gradient(90deg, #fff, #52B788, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 3s linear infinite;
+            margin: 30px 0;
+        }
 
-    button {
-      padding: 14px 28px;
-      background: #52B788;
-      color: #fff;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-      font-family: 'asswat-bold', sans-serif;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: 0.3s;
-    }
+        /* ================== Countdown Styles ================== */
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
 
-    button:hover {
-      background: #3d9e6c;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-    }
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 15px 10px;
+            min-width: 70px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-    .career-btn {
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      margin-top: 10px;
-    }
+        .countdown-number {
+            font-family: 'asswat-bold';
+            font-size: 32px;
+            color: #52B788;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
 
-    .career-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
+        .countdown-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+        }
 
-    /* ✅ نافذة التوظيف */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 1000;
-      animation: fadeIn 0.3s ease;
-    }
+        /* ================== Forms ================== */
+        form {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
 
-    .modal-content {
-      position: relative;
-      background: #fff;
-      margin: 5% auto;
-      padding: 40px;
-      width: 90%;
-      max-width: 500px;
-      color: #333;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-      animation: slideIn 0.4s ease;
-    }
+        input[type="email"] {
+            padding: 14px 18px;
+            border: none;
+            width: 260px;
+            border-radius: 12px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: box-shadow 0.3s ease;
+            border: 2px solid #e2e8f0;
 
-    .close-btn {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      font-size: 28px;
-      cursor: pointer;
-      color: #555;
-      transition: color 0.3s;
-    }
+        }
 
-    .close-btn:hover {
-      color: #52B788;
-    }
+        input[type="email"]:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.4);
+            background: #fff;
 
-    .modal h2 {
-      font-family: 'asswat-bold';
-      color: #52B788;
-      margin-bottom: 20px;
-      font-size: 24px;
-      text-align: center;
-    }
+        }
 
-    .modal form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+        button {
+            padding: 14px 26px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'asswat-bold';
+            transition: 0.3s ease;
+        }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      text-align: right;
-    }
+        button[type="submit"] {
+            background: #52B788;
+            color: #fff;
+        }
 
-    .form-group label {
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 6px;
-      color: #333;
-    }
+        button[type="submit"]:hover {
+            background: #3d9e6c;
+            transform: translateY(-2px);
+        }
 
-    .modal input,
-    .modal textarea,
-    .modal select {
-      padding: 12px 15px;
-      border: 1px solid #ddd;
-      font-size: 13px;
-      transition: all 0.3s ease;
-      font-family: 'asswat-regular';
-    }
+        .career-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            margin-top: 15px;
+        }
 
-    .modal input:focus,
-    .modal textarea:focus,
-    .modal select:focus {
-      border-color: #52B788;
-      box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.3);
-      outline: none;
-    }
+        .career-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+        }
 
-    .modal textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
+        /* ================== Enhanced Modal ================== */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+            padding: 20px;
+        }
 
-    .file-input-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        .modal-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            color: #333;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            animation: slideIn 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            margin: auto;
+        }
 
-    .file-input-label {
-      background: #ffffff;
-      color: #2e2e2e;
-      padding: 10px 15px;
-      cursor: pointer;
-      font-family: 'asswat-regular';
-      font-size: 13px;
-      transition: 0.3s;
-      border: #cecece solid 1px;
-    }
+        .modal-header {
+            background: linear-gradient(135deg, #52B788 0%, #3d9e6c 100%);
+            padding: 25px 30px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
 
-    .file-input-label:hover {
-      background: #e9e9e9;
-      border: #e9e9e9 solid 1px;
+        .modal-header h2 {
+            font-family: 'asswat-bold';
+            margin: 0;
+            font-size: 24px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
 
-    }
+        .modal-header p {
+            margin: 8px 0 0;
+            opacity: 0.9;
+            font-size: 15px;
+        }
 
-    .file-input {
-      display: none;
-    }
+        .close-btn {
+            position: absolute;
+            top: 18px;
+            left: 22px;
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
 
-    .file-name {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ddd;
-      background: #f9f9f9;
-      font-size: 14px;
-      color: #666;
-    }
+        .close-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
 
-    .submit-btn {
-      background: #52B788;
-      color: #fff;
-      border: none;
-      padding: 14px;
-      font-family: 'asswat-regular';
-      cursor: pointer;
-      box-shadow: none;
-      transition: 0.3s;
-    }
+        .modal-body {
+            padding: 30px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
 
-    .submit-btn:hover {
-      background: #52B788;
-      box-shadow: none;
-    }
+        /* ================== NEW FORM STYLES ================== */
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
 
-    /* ✅ Animations */
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        .form-label {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
 
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
+        }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        .required-star {
+            color: #e53e3e;
+            font-size: 18px;
+        }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
+        .form-input {
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #ffffff;
+            font-family: 'asswat-regular';
+            width: 100% !important;
 
-      to {
-        opacity: 1;
-      }
-    }
+        }
 
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
+        .form-input:focus {
+            border-color: #52B788;
+            box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.2);
+            outline: none;
+        }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.5;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #ffffff;
+            font-family: 'asswat-regular';
+            width: 100%;
+        }
 
-    @keyframes gradientMove {
-      0% {
-        background-position: 0% center;
-      }
+        .form-textarea:focus {
+            border-color: #52B788;
+            outline: none;
+        }
 
-      100% {
-        background-position: 200% center;
-      }
-    }
+        .form-select {
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #ffffff;
+            font-family: 'asswat-regular';
+            width: 100%;
+            cursor: pointer;
+        }
 
-    /* ✅ Responsive */
-    @media (max-width: 600px) {
-      .header {
-        flex-direction: column;
-        gap: 10px;
-        padding: 0 20px;
-      }
+        .form-select:focus {
+            border-color: #52B788;
+            outline: none;
+        }
 
-      .logo {
-        width: 120px;
-      }
+        .file-upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-      .glass-box {
-        padding: 40px 20px;
-      }
+        .file-input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
 
-      h1 {
-        font-size: 32px;
-      }
+        .file-display {
+            flex: 1;
+            background: #f7fafc;
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 15px;
+            color: #718096;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
 
-      .animation-text {
-        font-size: 22px;
-      }
+        .file-display.has-file {
+            border-color: #52B788;
+            background: #f0fff4;
+            color: #2d3748;
+        }
 
-      input[type="email"],
-      button {
-        width: 100%;
-      }
-    }
+        .file-upload-btn {
+            background: #52B788;
+            color: #fff;
+            padding: 14px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'asswat-bold';
+            font-size: 15px;
+            white-space: nowrap;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .red-color {
-      color: red;
-    }
-  </style>
+        .file-upload-btn:hover {
+            background: #3d9e6c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(82, 183, 136, 0.3);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 18px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #52B788 0%, #3d9e6c 100%);
+            color: #fff;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-family: 'asswat-bold';
+            font-size: 17px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(82, 183, 136, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(82, 183, 136, 0.4);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #718096;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* ================== Animations ================== */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-25px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* ================== Responsive ================== */
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                gap: 12px;
+                padding: 0 20px;
+            }
+
+            .logo {
+                width: 110px;
+            }
+
+            .glass-box {
+                padding: 35px 20px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            input[type="email"],
+            button {
+                width: 100%;
+            }
+
+            .modal-content {
+                max-width: 100%;
+                margin: 20px;
+            }
+
+            .modal-body {
+                padding: 20px;
+                max-height: 65vh;
+            }
+
+            .file-input-wrapper {
+                flex-direction: column;
+            }
+
+            .file-upload-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .countdown-container {
+                gap: 10px;
+            }
+
+            .countdown-item {
+                min-width: 60px;
+                padding: 12px 8px;
+            }
+
+            .countdown-number {
+                font-size: 26px;
+            }
+
+            .countdown-label {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .modal-content {
+                margin: 10px;
+            }
+
+            .modal-body {
+                padding: 15px;
+                max-height: 60vh;
+            }
+
+            .form-container {
+                gap: 18px;
+            }
+
+            .countdown-item {
+                min-width: 50px;
+                padding: 10px 6px;
+            }
+
+            .countdown-number {
+                font-size: 22px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <video autoplay muted loop playsinline class="video-bg">
-    <source src="metro.mp4" type="video/mp4">
-  </video>
-  <div class="overlay"></div>
+    @if (session('success'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'تم بنجاح',
+                    text: @json(session('success')),
+                    confirmButtonText: 'حسناً',
+                    customClass: {
+                        popup: 'swal2-arabic'
+                    }
+                });
+            });
+        </script>
+    @endif
 
-  <!-- ✅ رأس الصفحة -->
-  <div class="header">
-    <img class="logo" src="./user/assets/images/white_logo.svg" alt="شعار">
-    <div class="social-icons">
-      <a href="https://www.facebook.com/asswatdjazairia" target="_blank">
-        <img src="./user/assets/icons/facebook.png" width="24" height="24" alt="فيسبوك">
-      </a>
-      <a href="https://x.com/asswatdjazairia" target="_blank">
-        <img src="./user/assets/icons/x.png" width="24" height="24" alt="إكس">
-      </a>
-      <a href="https://www.instagram.com/asswatdjazairia" target="_blank">
-        <img src="./user/assets/icons/instagram.png" width="24" height="24" alt="إنستغرام">
-      </a>
-      <a href="https://www.youtube.com/@asswatdjazairia" target="_blank">
-        <img src="./user/assets/icons/youtube.png" width="24" height="24" alt="يوتيوب">
-      </a>
+    <video autoplay muted loop playsinline class="video-bg">
+        <source src="metro.mp4" type="video/mp4" />
+    </video>
+    <div class="overlay"></div>
+
+    <div class="header">
+        <img class="logo" src="./user/assets/images/white_logo.svg" alt="شعار" />
+        <div class="social-icons">
+            <a href="https://www.facebook.com/asswatdjazairia" target="_blank"><img
+                    src="./user/assets/icons/facebook.png" width="24" height="24" alt="فيسبوك" /></a>
+            <a href="https://x.com/asswatdjazairia" target="_blank"><img src="./user/assets/icons/x.png" width="24"
+                    height="24" alt="إكس" /></a>
+            <a href="https://www.instagram.com/asswatdjazairia" target="_blank"><img
+                    src="./user/assets/icons/instagram.png" width="24" height="24" alt="إنستغرام" /></a>
+            <a href="https://www.youtube.com/@asswatdjazairia" target="_blank"><img
+                    src="./user/assets/icons/youtube.png" width="24" height="24" alt="يوتيوب" /></a>
+        </div>
     </div>
-  </div>
 
-  <div class="container">
-    <div class="glass-box">
-      <h1>أصوات جزائرية</h1>
-      <p class="tagline">موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين</p>
-      <div class="animation-text" id="countdown"></div>
+    <div class="container">
+        <div class="glass-box">
+            <h1>أصوات جزائرية</h1>
+            <p class="tagline">موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين</p>
 
-      <form id="email-form">
-        <input class="form-control" type="email" placeholder="أدخل بريدك الإلكتروني" required>
-        <button type="submit">أعلمني</button>
-      </form>
-
-      <button class="career-btn" id="career-btn">انضم إلى فريقنا</button>
-    </div>
-  </div>
-
-  <div id="career-modal" class="modal">
-    <div class="modal-content" style="max-width:650px; padding:20px;">
-      <span class="close-btn" id="close-modal">&times;</span>
-      <h2>انضم إلى فريقنا</h2>
-      <form id="career-form" class="w-100">
-        <div class="form-group" style="width:calc(100% - 35px);">
-          <label>الاسم الكامل <span class="red-color">*</span></label>
-          <input type="text" name="fullname" required style="width:100%;">
-        </div>
-        <div class="form-group" style="width:calc(100% - 35px);">
-          <label>البريد الإلكتروني <span class="red-color">*</span></label>
-          <input type="email" name="email" required style="width:100%;">
-        </div>
-        <div class="form-group" style="width:calc(100%);">
-          <label>نوع الوظيفة <span class="red-color">*</span></label>
-          <select name="reason" required style="width:100%;" class="form-group">
-            <option value="journalist">صحافي/ محرّر</option>
-            <option value="infographic">أنفوغراف/ مركّب فيديو</option>
-            <option value="voiceover">معلّق صوتي </option>
-            <option value="audiovisual">صانع محتوى سمعي بصري</option>
-            <option value="translator">مترجم</option>
-            <option value="proofreader">مدقّق لغوي</option>
-          </select>
-        </div>
-        <div class="form-group" style="width:calc(100% - 35px);">
-          <label>لماذا تريد الانضمام إلى فريقنا؟ <span class="red-color">*</span></label>
-          <span style="font-size: 13px; color: gray; margin-bottom: 10px;">تحدّث عن نفسك ومهاراتك وإنجازاتك بشكل موجز،
-            وما الذي تعتقد أنّ بإمكانك تقديمه لمشروع "أصوات جزائرية".</span>
-          <textarea name="message" required style="width:100%; resize: none;"></textarea>
-        </div>
-
-        <div class="file-input-container" style="width:100%;">
-          <span class="file-name" id="file-name" style="width:100%;">لم يتم اختيار ملف</span>
-          <label for="resume" class="file-input-label">رفع السيرة الذاتية</label>
-          <input type="file" name="cv" id="resume" class="file-input" accept=".pdf,.doc,.docx">
-        </div>
-
-        <button type="submit" class="submit-btn" style="width:100%;">إرسال الطلب</button>
-      </form>
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const careerBtn = document.getElementById('career-btn');
-      const modal = document.getElementById('career-modal');
-      const closeModal = document.getElementById('close-modal');
-      const fileInput = document.getElementById('resume');
-      const fileName = document.getElementById('file-name');
-
-      // فتح النافذة
-      careerBtn.addEventListener('click', () => {
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-      });
-
-      // إغلاق النافذة
-      closeModal.addEventListener('click', () => {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'hidden';
-      });
-
-      // إغلاق عند النقر خارج المحتوى
-      window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.style.display = 'none';
-          document.body.style.overflow = 'hidden';
-        }
-      });
-
-      // عرض اسم الملف
-      fileInput.addEventListener('change', function () {
-        fileName.textContent = this.files.length ? this.files[0].name : 'لم يتم اختيار ملف';
-      });
-
-      // معالجة نموذج التوظيف
-      document.getElementById('career-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        // if there is no file selected, alert the user
-        if (!this.querySelector('input[name="cv"]').files.length) {
-          alert('يرجى رفع سيرتك الذاتية للمتابعة.');
-          return;
-        }
-
-        const formData = new FormData();
-        formData.append('_token', '{{ csrf_token() }}');
-        formData.append('fullname', this.querySelector('input[name="fullname"]').value);
-        formData.append('email', this.querySelector('input[name="email"]').value);
-        formData.append('message', this.querySelector('textarea[name="message"]').value);
-        formData.append('cv', this.querySelector('input[name="cv"]').files[0]);
-        formData.append('reason', this.querySelector('select[name="reason"]').value);
-
-        fetch("{{ route('dashboard.store-join-team') }}", {
-          method: "POST",
-          body: formData
-        })
-          .then(response => response.json())
-          .then(data => {
-            if (data.success) {
-              // عرض رسالة نجاح جميلة داخل نافذة منبثقة
-              const successMsg = document.createElement('div');
-              successMsg.style.position = 'fixed';
-              successMsg.style.top = '50%';
-              successMsg.style.left = '50%';
-              successMsg.style.transform = 'translate(-50%, -50%)';
-              successMsg.style.background = '#fff';
-              successMsg.style.color = '#52B788';
-              successMsg.style.padding = '40px 30px';
-              successMsg.style.borderRadius = '18px';
-              successMsg.style.boxShadow = '0 8px 24px rgba(0,0,0,0.18)';
-              successMsg.style.fontFamily = "'asswat-bold', sans-serif";
-              successMsg.style.fontSize = '22px';
-              successMsg.style.textAlign = 'center';
-              successMsg.style.zIndex = '2000';
-              successMsg.innerHTML = 'شكراً لتقديم طلبك!<br>سنتواصل معك قريباً.';
-
-              document.body.appendChild(successMsg);
-
-              setTimeout(() => {
-                successMsg.remove();
-                document.body.style.overflow = 'hidden';
-              }, 3500);
-            } else {
-              alert('حدث خطأ أثناء تقديم الطلب: ' + data.message);
-            }
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
-        modal.style.display = 'none';
-        document.body.style.overflow = 'hidden';
-        this.reset();
-      });
-
-      // معالجة نموذج البريد الإلكتروني
-      document.getElementById('email-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const email = this.querySelector('input[type="email"]').value;
-        if (email) {
-          alert('شكراً لك! سنقوم بإعلامك عند إطلاق الموقع.');
-          this.reset();
-        }
-      });
-    });
-  </script>
-
-  <!-- عدّاد تنازلي بسيط -->
-  <style>
-    /* ✅ Countdown Styling */
-    .countdown-container {
-      margin: 40px 0;
-      display: flex;
-      justify-content: center;
-    }
-
-    .countdown {
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-      font-family: 'asswat-bold', sans-serif;
-      text-align: center;
-      background: linear-gradient(90deg, #fff, #52B788, #fff);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: gradientMove 3s linear infinite;
-    }
-
-    .countdown .line {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .countdown .time-box {
-      min-width: 90px;
-      padding: 18px 12px;
-      border-radius: 15px;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: transform 0.3s;
-    }
-
-    .countdown .time-box:hover {
-      transform: translateY(-5px) scale(1.05);
-    }
-
-    .countdown .number {
-      font-size: 36px;
-      margin-bottom: 5px;
-    }
-
-    .countdown .label {
-      font-size: 15px;
-      color: rgba(255, 255, 255, 0.85);
-    }
-  </style>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const countdownElement = document.getElementById("countdown");
-      const launchDate = new Date("Nov 1, 2025 00:00:00").getTime();
-
-      const interval = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = launchDate - now;
-
-        if (distance <= 0) {
-          clearInterval(interval);
-          countdownElement.innerHTML = `
-                <div class="line">
-                    <div class="time-box">
-                        <span class="number">🚀</span>
-                        <span class="label">تم الإطلاق!</span>
-                    </div>
-                </div>`;
-          return;
-        }
-
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        countdownElement.innerHTML = `
-            <div class="line" style="font-size: 30px; margin-bottom:10px;">
-                <div class="time-box">
-                <span class="number"> باق ${days}</span>
-                <span class="label">${days === 1
-            ? 'يوم واحد'
-            : days <= 3
-              ? 'أيام'
-              : days < 10
-                ? 'أيام'
-                : 'يومًا'
-          }</span>
+            <!-- Countdown Timer -->
+            <div class="countdown-container" id="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">00</div>
+                    <div class="countdown-label">أيام</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-label">ساعات</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-label">دقائق</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div class="countdown-label">ثواني</div>
                 </div>
             </div>
-            <div class="line">
-              <div class="time-box">
-                <span class="number">${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}</span>
-              </div>
-            </div>
-          `;
-      }, 1000);
-    });
-  </script>
 
+            <form id="email-form">
+                <input type="email" placeholder="أدخل بريدك الإلكتروني" required />
+                <button type="submit">أعلمني</button>
+            </form>
+
+            <button class="career-btn" id="career-btn">انضم إلى فريقنا</button>
+        </div>
+    </div>
+
+    <!-- Enhanced Modal -->
+    <div id="career-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close-btn" id="close-modal">&times;</span>
+                <h2>انضم إلى فريقنا</h2>
+                <p>شاركنا رحلتنا الإعلامية وكن جزءًا من فريقنا المتميز</p>
+            </div>
+            <div class="modal-body">
+                <form action="/store-join-team" method="POST" enctype="multipart/form-data" id="career-form"
+                    class="form-container">
+                    @csrf
+                    <!-- الاسم الكامل -->
+                    <div class="form-row">
+                        <label class="form-label">
+                            الاسم الكامل
+                            <span class="required-star">*</span>
+                        </label>
+                        <input type="text" name="fullname" class="form-input" placeholder="أدخل اسمك الكامل"
+                            required />
+                    </div>
+
+                    <!-- البريد الإلكتروني -->
+                    <div class="form-row">
+                        <label class="form-label">
+                            البريد الإلكتروني
+                            <span class="required-star">*</span>
+                        </label>
+                        <input type="email" name="email" class="form-input" placeholder="example@email.com"
+                            required />
+                    </div>
+
+                    <!-- نوع الوظيفة -->
+                    <div class="form-row">
+                        <label class="form-label">
+                            نوع الوظيفة
+                            <span class="required-star">*</span>
+                        </label>
+                        <select name="reason" class="form-select" required>
+                            <option value="" disabled selected>اختر نوع الوظيفة المناسبة لك</option>
+                            <option value="journalist">صحافي/ محرّر</option>
+                            <option value="infographic">أنفوغراف/ مركّب فيديو</option>
+                            <option value="voiceover">معلّق صوتي</option>
+                            <option value="audiovisual">صانع محتوى سمعي بصري</option>
+                            <option value="translator">مترجم</option>
+                            <option value="proofreader">مدقّق لغوي</option>
+                        </select>
+                    </div>
+
+                    <!-- رسالة التقديم -->
+                    <div class="form-row">
+                        <label class="form-label">
+                            لماذا تريد الانضمام إلى فريقنا؟
+                            <span class="required-star">*</span>
+                        </label>
+                        <textarea name="message" class="form-textarea"
+                            placeholder="أخبرنا عن دوافعك للانضمام إلى فريقنا، وخبراتك السابقة، وما الذي يمكنك تقديمه..." required></textarea>
+                    </div>
+
+                    <!-- رفع السيرة الذاتية -->
+                    <div class="form-row">
+                        <label class="form-label">السيرة الذاتية</label>
+                        <div class="file-upload-container">
+                            <div class="file-input-wrapper">
+                                <div class="file-display" id="file-display">لم يتم اختيار ملف</div>
+                                <label for="resume" class="file-upload-btn">
+                                    <span class="upload-icon">📁</span>
+                                    رفع الملف
+                                </label>
+                                <input required name="cv" type="file" id="resume" class="file-input"
+                                    accept=".pdf,.doc,.docx" />
+                            </div>
+                            <div style="font-size: 13px; color: #718096;">
+                                يُسمح بملفات PDF, DOC, DOCX بحد أقصى 5MB
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- زر الإرسال -->
+                    <button type="submit" class="submit-btn">إرسال الطلب</button>
+                </form>
+                <div class="form-footer">
+                    سنقوم بمراجعة طلبك والاتصال بك في أقرب وقت ممكن
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const modal = document.getElementById("career-modal");
+            const openBtn = document.getElementById("career-btn");
+            const closeBtn = document.getElementById("close-modal");
+            const fileInput = document.getElementById("resume");
+            const fileDisplay = document.getElementById("file-display");
+
+            // ✅ Set the target date ONCE (e.g., 30 days from page load)
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + 24);
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = targetDate.getTime() - now;
+
+                if (distance <= 0) {
+                    document.getElementById("days").textContent = "00";
+                    document.getElementById("hours").textContent = "00";
+                    document.getElementById("minutes").textContent = "00";
+                    document.getElementById("seconds").textContent = "00";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("days").textContent = days.toString().padStart(2, '0');
+                document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
+                document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
+                document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
+
+                // Pulse animation when seconds update
+                const secondsEl = document.getElementById("seconds");
+                secondsEl.style.animation = 'pulse 0.5s ease';
+                setTimeout(() => (secondsEl.style.animation = ''), 500);
+            }
+
+            // Initialize countdown
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // ================= Modal =================
+            openBtn.onclick = () => {
+                modal.style.display = "flex";
+                modal.scrollTop = 0;
+            };
+
+            closeBtn.onclick = () => (modal.style.display = "none");
+            window.onclick = e => {
+                if (e.target === modal) modal.style.display = "none";
+            };
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') modal.style.display = "none";
+            });
+
+            // ================= File upload =================
+            fileInput.onchange = () => {
+                if (fileInput.files.length > 0) {
+                    fileDisplay.textContent = fileInput.files[0].name;
+                    fileDisplay.classList.add('has-file');
+                } else {
+                    fileDisplay.textContent = "لم يتم اختيار ملف";
+                    fileDisplay.classList.remove('has-file');
+                }
+            };
+        });
+    </script>
 
 </body>
 
