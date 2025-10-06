@@ -686,21 +686,72 @@
             <div class="countdown-container" id="countdown">
                 <div class="countdown-item">
                     <div class="countdown-number" id="days">00</div>
-                    <div class="countdown-label">أيام</div>
+                    <div class="countdown-label">
+                        <span id="days-label">يوم</span>
+                    </div>
                 </div>
                 <div class="countdown-item">
                     <div class="countdown-number" id="hours">00</div>
-                    <div class="countdown-label">ساعات</div>
+                    <div class="countdown-label">
+                        <span id="hours-label">ساعة</span>
+                    </div>
                 </div>
                 <div class="countdown-item">
                     <div class="countdown-number" id="minutes">00</div>
-                    <div class="countdown-label">دقائق</div>
+                    <div class="countdown-label">
+                        <span id="minutes-label">دقيقة</span>
+                    </div>
                 </div>
                 <div class="countdown-item">
                     <div class="countdown-number" id="seconds">00</div>
-                    <div class="countdown-label">ثواني</div>
+                    <div class="countdown-label">
+                        <span id="seconds-label">ثانية</span>
+                    </div>
                 </div>
             </div>
+            <script>
+                // Arabic pluralization helper
+                function getArabicLabel(unit, value) {
+                    value = Number(value);
+                    if (unit === 'days') {
+                        if (value === 1) return 'يوم';
+                        if (value === 2) return 'يومان';
+                        if (value >= 3 && value <= 10) return 'أيام';
+                        return 'يوماً';
+                    }
+                    if (unit === 'hours') {
+                        if (value === 1) return 'ساعة';
+                        if (value === 2) return 'ساعتان';
+                        if (value >= 3 && value <= 10) return 'ساعات';
+                        return 'ساعة';
+                    }
+                    if (unit === 'minutes') {
+                        if (value === 1) return 'دقيقة';
+                        if (value === 2) return 'دقيقتان';
+                        if (value >= 3 && value <= 10) return 'دقائق';
+                        return 'دقيقة';
+                    }
+                    if (unit === 'seconds') {
+                        if (value === 1) return 'ثانية';
+                        if (value === 2) return 'ثانيتان';
+                        if (value >= 3 && value <= 10) return 'ثواني';
+                        return 'ثانية';
+                    }
+                    return '';
+                }
+
+                // Update labels on countdown tick
+                function updateCountdownLabels() {
+                    document.getElementById('days-label').textContent = getArabicLabel('days', document.getElementById('days').textContent);
+                    document.getElementById('hours-label').textContent = getArabicLabel('hours', document.getElementById('hours').textContent);
+                    document.getElementById('minutes-label').textContent = getArabicLabel('minutes', document.getElementById('minutes').textContent);
+                    document.getElementById('seconds-label').textContent = getArabicLabel('seconds', document.getElementById('seconds').textContent);
+                }
+
+                // Patch the existing countdown update function
+                setInterval(updateCountdownLabels, 1000);
+                document.addEventListener("DOMContentLoaded", updateCountdownLabels);
+            </script>
 
             <form id="email-form">
                 <input type="email" placeholder="أدخل بريدك الإلكتروني" required />
