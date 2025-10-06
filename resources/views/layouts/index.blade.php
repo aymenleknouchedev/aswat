@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="{{ asset('user/css/section-title.css') }}">
 
 
-    <meta property="og:title" content="{{ $shareTitle }}" />
-    <meta property="og:description" content="{{ $shareDescription }}" />
-    <meta property="og:image" content="{{ asset($shareImage) }}" />
+    <meta property="og:title" content="{{ $shareTitle ?? '' }}" />
+    <meta property="og:description" content="{{ $shareDescription ?? '' }}" />
+    <meta property="og:image" content="{{ isset($shareImage) ? asset($shareImage) : '' }}" />
     <meta property="og:url" content="{{ request()->fullUrl() }}" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="أصوات جزائرية" />
