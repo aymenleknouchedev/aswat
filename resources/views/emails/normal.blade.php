@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <style>
@@ -9,6 +9,8 @@
       color: #333;
       margin: 0;
       padding: 0;
+      direction: rtl;
+      text-align: right;
     }
     .email-container {
       max-width: 650px;
@@ -20,7 +22,7 @@
       border: 1px solid #e6e8ec;
     }
     .header {
-      background-color: #1a237e;
+      background-color: #1b5e20; /* 🌿 Deep Green */
       color: #ffffff;
       padding: 20px 30px;
       text-align: center;
@@ -32,7 +34,7 @@
     }
     .body {
       padding: 30px;
-      line-height: 1.7;
+      line-height: 1.8;
       font-size: 15px;
       color: #444;
     }
@@ -42,11 +44,15 @@
       padding-top: 20px;
     }
     .attachments ul {
-      padding-left: 20px;
+      padding-right: 20px;
       margin: 10px 0 0;
+      list-style-type: none;
+    }
+    .attachments li::before {
+      content: "📎 ";
     }
     .attachments a {
-      color: #1a73e8;
+      color: #2e7d32;
       text-decoration: none;
       font-weight: 500;
     }
@@ -62,14 +68,14 @@
       font-size: 14px;
     }
     .footer strong {
-      color: #1a237e;
+      color: #1b5e20;
     }
   </style>
 </head>
 <body>
   <div class="email-container">
     <div class="header">
-      <h2>Hello,</h2>
+      <h2>مرحباً،</h2>
     </div>
 
     <div class="body">
@@ -77,12 +83,12 @@
 
       @if(!empty($files) && count($files) > 0)
         <div class="attachments">
-          <h4 style="margin-bottom: 8px; color: #1a237e;">Attachments</h4>
+          <h4 style="margin-bottom: 8px; color: #1b5e20;">المرفقات</h4>
           <ul>
             @foreach ($files as $index => $file)
               <li>
                 <a href="{{ $file }}" target="_blank">
-                  Attachment {{ $index + 1 }}
+                  المرفق {{ $index + 1 }}
                 </a>
               </li>
             @endforeach
@@ -93,8 +99,8 @@
 
     <div class="footer">
       <p>
-        Thank you,<br>
-        <strong>Asswat Team</strong>
+        شكراً لك،<br>
+        <strong>فريق أصوات</strong>
       </p>
     </div>
   </div>
