@@ -187,6 +187,7 @@
             background: rgba(255, 255, 255, 0.9);
             transition: box-shadow 0.3s ease;
             border: 2px solid #e2e8f0;
+            font-family: 'asswat-regular', sans-serif;
 
         }
 
