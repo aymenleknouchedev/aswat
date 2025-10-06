@@ -141,14 +141,6 @@
             margin-bottom: 18px !important;
         }
 
-        /* Make h2 more visible */
-        .custom-article-content h2 {
-            font-size: 26px !important;
-            border-right: 4px solid #222;
-            padding-right: 10px;
-            line-height: 1.4;
-        }
-
         .custom-article-content h3 {
             font-size: 22px !important;
             color: #333 !important;
@@ -171,15 +163,6 @@
             margin-top: -12px;
             margin-bottom: 25px;
             border-radius: 0 0 8px 8px;
-        }
-
-        .custom-article-content figcaption {
-            background: #f6f6f6;
-            color: #555;
-            padding: 8px 12px;
-            font-size: 15px !important;
-            margin-top: -12px;
-            margin-bottom: 25px;
         }
 
         /* Blockquote */
