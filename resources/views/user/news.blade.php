@@ -448,17 +448,17 @@
                     {{-- Share on the LEFT --}}
                     <div class="share-container" id="shareContainer">
                         <div class="share-icons">
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}&quote={{ urlencode($shareTitle) }}"
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}&quote={{ urlencode($shareTitle) }}&description={{ urlencode($shareDescription) }}&picture={{ urlencode($shareImage) }}"
                                 target="_blank" title="مشاركة على فيسبوك">
                                 <img src="{{ asset('user/assets/icons/facebook.png') }}" alt="Facebook">
                             </a>
 
-                            <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($shareTitle) }}"
+                            <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($shareTitle) }}&description={{ urlencode($shareDescription) }}&image={{ urlencode($shareImage) }}"
                                 target="_blank" title="مشاركة على X">
                                 <img src="{{ asset('user/assets/icons/twitter.png') }}" alt="X">
                             </a>
 
-                            <a href="https://wa.me/?text={{ urlencode(request()->fullUrl()) }}"
+                            <a href="https://wa.me/?text={{ urlencode($shareTitle . ' - ' . $shareDescription . ' ' . request()->fullUrl()) }}"
                                 target="_blank" title="مشاركة على واتساب">
                                 <img src="{{ asset('user/assets/icons/whatsapp.png') }}" alt="WhatsApp">
                             </a>
