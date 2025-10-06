@@ -832,7 +832,9 @@
 
                     <!-- رفع السيرة الذاتية -->
                     <div class="form-row">
-                        <label class="form-label">السيرة الذاتية</label>
+                        <label class="form-label">السيرة الذاتية
+                            <span class="required-star">*</span>
+                        </label>
                         <div class="file-upload-container">
                             <div class="file-input-wrapper">
                                 <div class="file-display" id="file-display">لم يتم اختيار ملف</div>
