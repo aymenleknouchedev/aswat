@@ -448,21 +448,25 @@
                     {{-- Share on the LEFT --}}
                     <div class="share-container" id="shareContainer">
                         <div class="share-icons">
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}&quote={{ urlencode($shareTitle) }}&description={{ urlencode($shareDescription) }}&picture={{ urlencode($shareImage) }}"
-                                target="_blank" title="مشاركة على فيسبوك">
+                            {{-- Facebook --}}
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
+                                target="_blank" title="مشاركة على فيسبوك" rel="noopener">
                                 <img src="{{ asset('user/assets/icons/facebook.png') }}" alt="Facebook">
                             </a>
 
-                            <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($shareTitle) }}&description={{ urlencode($shareDescription) }}&image={{ urlencode($shareImage) }}"
-                                target="_blank" title="مشاركة على X">
+                            {{-- X (Twitter) --}}
+                            <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($shareTitle . ' - ' . $shareDescription) }}"
+                                target="_blank" title="مشاركة على X" rel="noopener">
                                 <img src="{{ asset('user/assets/icons/twitter.png') }}" alt="X">
                             </a>
 
+                            {{-- WhatsApp --}}
                             <a href="https://wa.me/?text={{ urlencode($shareTitle . ' - ' . $shareDescription . ' ' . request()->fullUrl()) }}"
-                                target="_blank" title="مشاركة على واتساب">
+                                target="_blank" title="مشاركة على واتساب" rel="noopener">
                                 <img src="{{ asset('user/assets/icons/whatsapp.png') }}" alt="WhatsApp">
                             </a>
                         </div>
+
 
                         <button class="share-btn" id="shareToggle" title="مشاركة">
                             <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
