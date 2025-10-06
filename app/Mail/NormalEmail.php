@@ -29,7 +29,7 @@ class NormalEmail extends Mailable
     {
         return new Envelope(
             subject: $this->mail->subject,
-            from: 'bouzit@example.com',
+            from: 'contact@asswatdjazairia.com',
         );
     }
 
