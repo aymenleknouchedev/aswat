@@ -30,8 +30,7 @@ class HomePageController extends Controller
 
 
     public function index()
-    {
-
+    { 
         $topContents = TopContent::orderByDesc('order')
             ->take(7)
             ->get();
@@ -61,25 +60,31 @@ class HomePageController extends Controller
 
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
-            ->whereNotIn('id', $topContentIds)
-            ->where('importance', 1)
-            ->latest()
-            ->take($count)
-            ->get();
+                ->whereNotIn('id', $topContentIds)
+                ->where('importance', 1)
+                ->latest()
+                ->take($count)
+                ->get();
         }
+
+        $algeriaLatestImportant = Content::where('section_id', $sections['الجزائر'] ?? null)
+            ->where('importance', 2)
+            ->latest()
+            ->take(4)
+            ->get();
 
         $topViewed = Content::where('section_id', $sections['منوعات'] ?? null)
             ->orderByDesc('read_count')
             ->take(5)
             ->get();
 
-
-        return view('user.home', compact('topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed'));
+        return view('user.home', compact('topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant'));
     }
 
     public function latestNews()
     {
-        $latestContents = Content::latest()
+        $latestContents = Content::where('is_latest', 1)
+            ->latest()
             ->take(20)
             ->get();
 
@@ -122,7 +127,8 @@ class HomePageController extends Controller
 
     public function latestNewsApi()
     {
-        $latestContents = Content::latest()
+        $latestContents = Content::where('is_latest', 1)
+            ->latest()
             ->take(5)
             ->pluck('title');
 

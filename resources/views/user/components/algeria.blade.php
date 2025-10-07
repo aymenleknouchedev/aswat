@@ -294,22 +294,16 @@
 
     <!-- Extra Titles Grid -->
     <div class="algeria-extra-grid">
-        <div class="extra-item">
-            <h3>سياسة</h3>
-            <p>الحكومة الجزائرية تعتمد قانونًا جديدًا لمكافحة غسل الأموال</p>
-        </div>
-        <div class="extra-item">
-            <h3>سياسة</h3>
-            <p>الجزائر وموريتانيا تتفقان على إطلاق «آلية تنسيق» بالحدود</p>
-        </div>
-        <div class="extra-item">
-            <h3>سياسة</h3>
-            <p>تعزيز التعاون الجزائري - السويسري لاسترداد ثروات مهربة في فترة بوتفليقة</p>
-        </div>
-        <div class="extra-item">
-            <h3>سياسة</h3>
-            <p>سجن ثلاثة مترشحين سابقين للرئاسة بتهم فساد مالي</p>
-        </div>
+        @if(isset($algeriaLatestImportant) && count($algeriaLatestImportant) > 3)
+            @foreach($algeriaLatestImportant as $item)
+                <div class="extra-item">
+                    <h3>{{ $item->category->name ?? '' }}</h3>
+                    <a href="{{ route('news.show', $item->title) }}" styl   e="text-decoration: none; color: inherit;">
+                        <p>{{ $item->title }}</p>
+                    </a>
+                </div>
+            @endforeach
+        @endif
     </div>
 </section>
 
