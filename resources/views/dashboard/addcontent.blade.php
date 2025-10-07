@@ -704,24 +704,24 @@
                                 </div>
 
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" value="1" id="is_latest" name="is_latest" {{ old('is_latest', '1') == '1' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="is_latest" data-ar="أخر الاخبار" data-en="Latest news">
-                                        أخر الاخبار
+                                    <input class="form-check-input" type="checkbox" value="1" id="is_latest" name="is_latest">
+                                    <label class="form-check-label" for="is_latest" data-ar="آخر الاخبار" data-en="Latest news">
+                                        آخر الاخبار
                                     </label>
                                 </div>
                                 
                                 <div class="mb-2">
-                                    <label class="form-label d-block mb-1" for="importance" data-ar="أهمية الخبر" data-en="Importance of News">أهمية الخبر</label>
+                                    <label class="form-label d-block mb-1" for="importance" data-ar="الظهور في الواجهة" data-en="Display on Frontend">الظهور في الواجهة</label>
                                     <div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="importance" id="importance1" value="1"
                                                 {{ old('importance', '1') == '1' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="importance1" data-ar="خبر اولي" data-en="First news">خبر اولي</label>
+                                            <label class="form-check-label" for="importance1" data-ar="صف أول" data-en="First Row">صف أول</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="importance" id="importance2" value="2"
                                                 {{ old('importance') == '2' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="importance2" data-ar="خبر ثانوي" data-en="Secondary news">خبر ثانوي</label>
+                                            <label class="form-check-label" for="importance2" data-ar="صف ثانٍ" data-en="Second Row">صف ثانٍ</label>
                                         </div>
                                     </div>
                                 </div>
