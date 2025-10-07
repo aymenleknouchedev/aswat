@@ -13,7 +13,9 @@
                         بقلم: غير معروف
                     @endif
                 </span>
-                <h3>{{ $review->title }}</h3>
+                <a href="{{ route('news.show', $review->title) }}" style="text-decoration: none; color: inherit;">
+                    <h3>{{ $review->title }}</h3>
+                </a>
                 <p>{{ $review->summary }}</p>
             </div>
         </div>

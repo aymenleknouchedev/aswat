@@ -101,7 +101,9 @@
                 </div>
                 <div class="custom-content">
                     <h3>{{ $featured->category->name ?? '' }} - {{ $featured->country->name ?? '' }}</h3>
-                    <h2>{{ $featured->title }}</h2>
+                    <a href="{{ route('news.show', $featured->title) }}" style="text-decoration: none; color: inherit;">
+                        <h2>{{ $featured->title }}</h2>
+                    </a>
                     <p>{{ $featured->summary }}</p>
                 </div>
             </div>

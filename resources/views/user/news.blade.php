@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'أصوات جزائرية | صور')
+@section('title', 'أصوات جزائرية | تفاصيل الخبر')
 
 @section('content')
 

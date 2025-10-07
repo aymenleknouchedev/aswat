@@ -434,9 +434,9 @@ class HomePageController extends Controller
         return view('user.article', compact('article'));
     }
 
-    public function showNews($id)
+    public function showNews($title)
     {
-        $news = Content::findOrFail($id);
+        $news = Content::where('title', $title)->latest()->firstOrFail();
         return view('user.news', compact('news'));
     }
 }

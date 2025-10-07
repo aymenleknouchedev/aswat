@@ -206,89 +206,87 @@
 <section class="algeria-feature-grid">
     <div class="algeria-grid-container">
         @if (isset($algeria) && count($algeria) >= 4)
-            <a href="{{ route('news.show', $algeria[0]->id) }}" style="text-decoration: none; color: inherit;">
-                <div class="algeria-feature">
-                    <img src="{{ $algeria[0]->media()->wherePivot('type', 'main')->first()->path }}"
-                        alt="Feature algeria">
-                    <h3>
-                        @if (isset($algeria[0]->country))
-                            {{ $algeria[0]->category->name ?? '' }} - {{ $algeria[0]->country->name ?? '' }}
-                        @elseif (isset($algeria[0]->continent))
-                            {{ $algeria[0]->category->name ?? '' }} - {{ $algeria[0]->continent->name ?? '' }}
-                        @else
-                            {{ $algeria[0]->category->name ?? '' }}
-                        @endif
-                    </h3>
+            <div class="algeria-feature">
+                <img src="{{ $algeria[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature algeria">
+                <h3>
+                    @if (isset($algeria[0]->country))
+                        {{ $algeria[0]->category->name ?? '' }} - {{ $algeria[0]->country->name ?? '' }}
+                    @elseif (isset($algeria[0]->continent))
+                        {{ $algeria[0]->category->name ?? '' }} - {{ $algeria[0]->continent->name ?? '' }}
+                    @else
+                        {{ $algeria[0]->category->name ?? '' }}
+                    @endif
+                </h3>
+                <a href="{{ route('news.show', $algeria[0]->title) }}" style="text-decoration: none; color: inherit;">
                     <h2>{{ $algeria[0]->title }}</h2>
-                    <p>{{ $algeria[0]->summary }}</p>
-                </div>
-            </a>
+                </a>
+                <p>{{ $algeria[0]->summary }}</p>
+            </div>
 
             <div class="algeria-list">
-                <a href="{{ route('news.show', $algeria[1]->id) }}" style="text-decoration: none; color: inherit;">
-                    <div class="algeria-feature-m">
-                        <img src="{{ $algeria[1]->media()->wherePivot('type', 'main')->first()->path }}"
-                            alt="Feature algeria small">
-                        <h3>
-                            @if (isset($algeria[1]->country))
-                                {{ $algeria[1]->category->name ?? '' }} - {{ $algeria[1]->country->name ?? '' }}
-                            @elseif (isset($algeria[1]->continent))
-                                {{ $algeria[1]->category->name ?? '' }} - {{ $algeria[1]->continent->name ?? '' }}
-                            @else
-                                {{ $algeria[1]->category->name ?? '' }}
-                            @endif
-                        </h3>
+                <div class="algeria-feature-m">
+                    <img src="{{ $algeria[1]->media()->wherePivot('type', 'main')->first()->path }}"
+                        alt="Feature algeria small">
+                    <h3>
+                        @if (isset($algeria[1]->country))
+                            {{ $algeria[1]->category->name ?? '' }} - {{ $algeria[1]->country->name ?? '' }}
+                        @elseif (isset($algeria[1]->continent))
+                            {{ $algeria[1]->category->name ?? '' }} - {{ $algeria[1]->continent->name ?? '' }}
+                        @else
+                            {{ $algeria[1]->category->name ?? '' }}
+                        @endif
+                    </h3>
+                    <a href="{{ route('news.show', $algeria[1]->title) }}"
+                        style="text-decoration: none; color: inherit;">
                         <h2>{{ $algeria[1]->title }}</h2>
-                        <p>{{ $algeria[1]->summary }}</p>
-                    </div>
-                </a>
+                    </a>
+                    <p>{{ $algeria[1]->summary }}</p>
+                </div>
 
                 <div class="algeria-list-div">
-                    <a href="{{ route('news.show', $algeria[2]->id) }}" style="text-decoration: none; color: inherit;">
-                        <div class="news-card-horizontal">
-                            <div class="news-card-image">
-                                <img src="{{ $algeria[2]->media()->wherePivot('type', 'main')->first()->path }}"
-                                    alt="{{ $algeria[2]->title }}">
-                            </div>
-                            <div class="news-card-text">
-                                <h3>
-                                    @if (isset($algeria[2]->country))
-                                        {{ $algeria[2]->category->name ?? '' }} -
-                                        {{ $algeria[2]->country->name ?? '' }}
-                                    @elseif (isset($algeria[2]->continent))
-                                        {{ $algeria[2]->category->name ?? '' }} -
-                                        {{ $algeria[2]->continent->name ?? '' }}
-                                    @else
-                                        {{ $algeria[2]->category->name ?? '' }}
-                                    @endif
-                                </h3>
+                    <div class="news-card-horizontal">
+                        <div class="news-card-image">
+                            <img src="{{ $algeria[2]->media()->wherePivot('type', 'main')->first()->path }}"
+                                alt="{{ $algeria[2]->title }}">
+                        </div>
+                        <div class="news-card-text">
+                            <h3>
+                                @if (isset($algeria[2]->country))
+                                    {{ $algeria[2]->category->name ?? '' }} - {{ $algeria[2]->country->name ?? '' }}
+                                @elseif (isset($algeria[2]->continent))
+                                    {{ $algeria[2]->category->name ?? '' }} - {{ $algeria[2]->continent->name ?? '' }}
+                                @else
+                                    {{ $algeria[2]->category->name ?? '' }}
+                                @endif
+                            </h3>
+                            <a href="{{ route('news.show', $algeria[2]->title) }}"
+                                style="text-decoration: none; color: inherit;">
                                 <p>{{ $algeria[2]->title }}</p>
-                            </div>
+                            </a>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="{{ route('news.show', $algeria[3]->id) }}" style="text-decoration: none; color: inherit;">
-                        <div class="news-card-horizontal">
-                            <div class="news-card-image">
-                                <img src="{{ $algeria[3]->media()->wherePivot('type', 'main')->first()->path }}"
-                                    alt="{{ $algeria[3]->title }}">
-                            </div>
-                            <div class="news-card-text">
-                                <h3>
-                                    @if (isset($algeria[3]->country))
-                                        {{ $algeria[3]->category->name ?? '' }} -
-                                        {{ $algeria[3]->country->name ?? '' }}
-                                    @elseif (isset($algeria[3]->continent))
-                                        {{ $algeria[3]->category->name ?? '' }} -
-                                        {{ $algeria[3]->continent->name ?? '' }}
-                                    @else
-                                        {{ $algeria[3]->category->name ?? '' }}
-                                    @endif
-                                </h3>
-                                <p>{{ $algeria[3]->title }}</p>
-                            </div>
+                    <div class="news-card-horizontal">
+                        <div class="news-card-image">
+                            <img src="{{ $algeria[3]->media()->wherePivot('type', 'main')->first()->path }}"
+                                alt="{{ $algeria[3]->title }}">
                         </div>
-                    </a>
+                        <div class="news-card-text">
+                            <h3>
+                                @if (isset($algeria[3]->country))
+                                    {{ $algeria[3]->category->name ?? '' }} - {{ $algeria[3]->country->name ?? '' }}
+                                @elseif (isset($algeria[3]->continent))
+                                    {{ $algeria[3]->category->name ?? '' }} - {{ $algeria[3]->continent->name ?? '' }}
+                                @else
+                                    {{ $algeria[3]->category->name ?? '' }}
+                                @endif
+                            </h3>
+                            <a href="{{ route('news.show', $algeria[3]->title) }}"
+                                style="text-decoration: none; color: inherit;">
+                                <p>{{ $algeria[3]->title }}</p>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         @endif

@@ -101,7 +101,9 @@
                     {{ $world[0]->category->name ?? '' }}
                 @endif
             </h3>
-            <h2>{{ $world[0]->title ?? '' }}</h2>
+            <a href="{{ route('news.show', $world[0]->title) }}" style="text-decoration: none; color: inherit;">
+                <h2>{{ $world[0]->title ?? '' }}</h2>
+            </a>
             <p>{{ $world[0]->summary ?? '' }}</p>
         </div>
 
@@ -121,7 +123,9 @@
                             {{ $item->category->name ?? '' }}
                         @endif
                     </h3>
-                    <h2>{{ $item->title ?? '' }}</h2>
+                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                        <h2>{{ $item->title ?? '' }}</h2>
+                    </a>
                 </div>
             @endif
 
@@ -139,7 +143,9 @@
                             {{ $item->category->name ?? '' }}
                         @endif
                     </h3>
-                    <h2>{{ $item->title ?? '' }}</h2>
+                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                        <h2>{{ $item->title ?? '' }}</h2>
+                    </a>
                 </div>
             @endif
 
@@ -160,7 +166,9 @@
                             {{ $item->category->name ?? '' }}
                         @endif
                     </h3>
-                    <h2>{{ $item->title ?? '' }}</h2>
+                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                        <h2>{{ $item->title ?? '' }}</h2>
+                    </a>
                 </div>
             @endif
 
@@ -178,7 +186,9 @@
                             {{ $item->category->name ?? '' }}
                         @endif
                     </h3>
-                    <h2>{{ $item->title ?? '' }}</h2>
+                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                        <h2>{{ $item->title ?? '' }}</h2>
+                    </a>
                 </div>
             @endif
 

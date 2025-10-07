@@ -78,7 +78,10 @@
                             <div class="newCategory-all-card-text"
                                 style="display: flex; flex-direction: column; height: 100%;">
                                 <h3>{{ $item->category->name ?? '' }}</h3>
-                                <h2>{{ $item->title }}</h2>
+                                <a href="{{ route('news.show', $item->title) }}"
+                                    style="text-decoration: none; color: inherit;">
+                                    <h2>{{ $item->title }}</h2>
+                                </a>
                                 <p>{{ $item->summary }}</p>
                                 @php
                                     $months = [

@@ -353,7 +353,9 @@
                             {{ $contents[0]->category->name ?? '' }}
                         @endif
                     </h3>
-                    <h2>{{ $contents[0]->title ?? '' }}</h2>
+                    <a href="{{ route('news.show', $contents[0]->title) }}" style="text-decoration: none; color: inherit;">
+                        <h2>{{ $contents[0]->title ?? '' }}</h2>
+                    </a>
                     <p>{{ $contents[0]->summary ?? '' }}</p>
                 </div>
 
@@ -371,7 +373,10 @@
                                 {{ $contents[1]->category->name ?? '' }}
                             @endif
                         </h3>
-                        <h2>{{ $contents[1]->title ?? '' }}</h2>
+                        <a href="{{ route('news.show', $contents[1]->title) }}"
+                            style="text-decoration: none; color: inherit;">
+                            <h2>{{ $contents[1]->title ?? '' }}</h2>
+                        </a>
                         <p>{{ $contents[1]->summary ?? '' }}</p>
                     </div>
 
@@ -395,7 +400,10 @@
                                                 {{ $contents[$i]->category->name ?? '' }}
                                             @endif
                                         </h3>
-                                        <p>{{ $contents[$i]->title ?? '' }}</p>
+                                        <a href="{{ route('news.show', $contents[$i]->title) }}"
+                                            style="text-decoration: none; color: inherit;">
+                                            <p>{{ $contents[$i]->title ?? '' }}</p>
+                                        </a>
                                     </div>
                                 </div>
                             @endif
@@ -463,7 +471,10 @@
                             @foreach ($topViewed as $index => $item)
                                 <div class="newCategoryReadMore-list">
                                     <span class="number">{{ $index + 1 }}</span>
-                                    <p>{{ $item->title }}</p>
+                                    <a href="{{ route('news.show', $item->title) }}"
+                                        style="text-decoration: none; color: inherit;">
+                                        <p>{{ $item->title }}</p>
+                                    </a>
                                 </div>
                             @endforeach
                         </div>
@@ -484,8 +495,10 @@
                             </div>
                             <div class="news-card-text">
                                 <h3>{{ $content->category->name ?? 'اقتصاد جزائري' }}</h3>
-                                <p>{{ $content->title ?? 'الجزائر تُسرّع وتيرة تحلية مياه البحر لتفكيك «قنبلة العطش»' }}
-                                </p>
+                                <a href="{{ route('news.show', $content->title) }}"
+                                    style="text-decoration: none; color: inherit;">
+                                    <p>{{ $content->title ?? '' }}</p>
+                                </a>
                             </div>
                         </div>
                     @endforeach

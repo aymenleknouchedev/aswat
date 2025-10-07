@@ -143,7 +143,9 @@
                         {{ $people[0]->category->name ?? '' }}
                     @endif
                 </h3>
-                <h2>{{ $people[0]->title ?? '' }}</h2>
+                <a href="{{ route('news.show', $people[0]->title) }}" style="text-decoration: none; color: inherit;">
+                    <h2>{{ $people[0]->title ?? '' }}</h2>
+                </a>
                 <p>{{ $people[0]->summary ?? '' }}</p>
             </div>
         </div>
@@ -163,7 +165,9 @@
                             {{ $person->category->name ?? '' }}
                         @endif
                     </h3>
-                    <h2>{{ $person->title ?? '' }}</h2>
+                    <a href="{{ route('news.show', $person->title) }}" style="text-decoration: none; color: inherit;">
+                        <h2>{{ $person->title ?? '' }}</h2>
+                    </a>
                 </div>
             @endforeach
         </div>
