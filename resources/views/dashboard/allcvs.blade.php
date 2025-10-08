@@ -82,6 +82,7 @@
                                     </div>
                                     <div class="col-md-2 col-12">
                                         <select name="reason" class="form-select">
+                                            <option value="" {{ request('reason') === null ? 'selected' : '' }} data-ar="جميع الوظائف" data-en="All Jobs">جميع الوظائف</option>
                                             <option value="journalist" {{ request('reason') === 'journalist' ? 'selected' : '' }} data-ar="صحفي" data-en="Journalist">صحفي</option>
                                             <option value="infographic" {{ request('reason') === 'infographic' ? 'selected' : '' }} data-ar="أنفوغراف/ مركّب فيديو" data-en="Infographic/ Video Composite">أنفوغراف/ مركّب فيديو</option>
                                             <option value="voiceover" {{ request('reason') === 'voiceover' ? 'selected' : '' }} data-ar="معلّق صوتي" data-en="Voiceover">معلّق صوتي</option>
