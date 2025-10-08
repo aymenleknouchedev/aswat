@@ -184,7 +184,9 @@
             @foreach ($topViewed as $index => $item)
                 <div class="two-titles-list-ite">
                     <span class="number">{{ $index + 1 }}</span>
-                    <p>{{ $item->title }}</p>
+                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                        <p>{{ $item->title }}</p>
+                    </a>
                 </div>
             @endforeach
         </div>
@@ -210,7 +212,9 @@
                             {{ $variety[0]->category->name ?? '' }}
                         @endif
                     </h3>
-                    <h2>{{ $variety[1]->title ?? '' }}</h2>
+                    <a href="{{ route('news.show', $variety[0]->title) }}" style="text-decoration: none; color: inherit;">
+                        <h2>{{ $variety[0]->title ?? '' }}</h2>
+                    </a>
                     <p>{{ $variety[1]->summary ?? '' }}</p>
                 </div>
 
@@ -231,7 +235,9 @@
                                         {{ $variet->category->name ?? '' }}
                                     @endif
                                 </span>
-                                <p>{{ $variet->title ?? '' }}</p>
+                                <a href="{{ route('news.show', $variet->title) }}" style="text-decoration: none; color: inherit;">
+                                    <p>{{ $variet->title ?? '' }}</p>
+                                </a>
                             </div>
                         </div>
                     @endforeach

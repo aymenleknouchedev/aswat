@@ -98,7 +98,9 @@
                             {{ $item->category->name ?? '' }}
                         @endif
                     </span>
-                    <p>{{ $item->title ?? '' }}</p>
+                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                        <p>{{ $item->title ?? '' }}</p>
+                    </a>
                 </div>
             </div>
         @endforeach

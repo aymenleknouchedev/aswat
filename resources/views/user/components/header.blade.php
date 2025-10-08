@@ -167,7 +167,9 @@
                     {{ $topContents[0]->content->category->name ?? '' }}
                 @endif
             </h3>
-            <h2>{{ $topContents[0]->content->title ?? '' }}</h2>
+            <a href="{{ route('news.show', $topContents[0]->content->title) }}" style="text-decoration: none; color: inherit;">
+                <h2>{{ $topContents[0]->content->title ?? '' }}</h2>
+            </a>
             <p>{{ $topContents[0]->content->summary ?? '' }}</p>
         </div>
 
@@ -187,7 +189,9 @@
                         {{ $topContents[1]->content->category->name ?? '' }}
                     @endif
                 </h3>
-                <p>{{ $topContents[1]->content->title ?? '' }}</p>
+                <a href="{{ route('news.show', $topContents[1]->content->title) }}" style="text-decoration: none; color: inherit;">
+                    <p>{{ $topContents[1]->content->title ?? '' }}</p>
+                </a>
             </div>
             <div class="news-item">
                 <img src="{{ $topContents[2]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
@@ -203,7 +207,9 @@
                         {{ $topContents[2]->content->category->name ?? '' }}
                     @endif
                 </h3>
-                <p>{{ $topContents[2]->content->title ?? '' }}</p>
+                <a href="{{ route('news.show', $topContents[2]->content->title) }}" style="text-decoration: none; color: inherit;">
+                    <p>{{ $topContents[2]->content->title ?? '' }}</p>
+                </a>
             </div>
             <div class="news-item-noimage">
                 <h3>
@@ -217,7 +223,9 @@
                         {{ $topContents[3]->content->category->name ?? '' }}
                     @endif
                 </h3>
-                <p>{{ $topContents[3]->content->title ?? '' }}</p>
+                <a href="{{ route('news.show', $topContents[3]->content->title) }}" style="text-decoration: none; color: inherit;">
+                    <p>{{ $topContents[3]->content->title ?? '' }}</p>
+                </a>
             </div>
         </div>
         <!-- Left column: small news cards -->
@@ -236,7 +244,9 @@
                         {{ $topContents[4]->content->category->name ?? '' }}
                     @endif
                 </h3>
-                <p>{{ $topContents[4]->content->title ?? '' }}</p>
+                <a href="{{ route('news.show', $topContents[4]->content->title) }}" style="text-decoration: none; color: inherit;">
+                    <p>{{ $topContents[4]->content->title ?? '' }}</p>
+                </a>
             </div>
             <div class="news-item">
                 <img src="{{ $topContents[5]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
@@ -252,7 +262,9 @@
                         {{ $topContents[5]->content->category->name ?? '' }}
                     @endif
                 </h3>
-                <p>{{ $topContents[5]->content->title ?? '' }}</p>
+                <a href="{{ route('news.show', $topContents[5]->content->title) }}" style="text-decoration: none; color: inherit;">
+                    <p>{{ $topContents[5]->content->title ?? '' }}</p>
+                </a>
             </div>
             <div class="news-item-noimage">
                 <h3>
@@ -266,7 +278,9 @@
                         {{ $topContents[6]->content->category->name ?? '' }}
                     @endif
                 </h3>
-                <p>{{ $topContents[6]->content->title ?? '' }}</p>
+                <a href="{{ route('news.show', $topContents[6]->content->title) }}" style="text-decoration: none; color: inherit;">
+                    <p>{{ $topContents[6]->content->title ?? '' }}</p>
+                </a>
             </div>
         </div>
 

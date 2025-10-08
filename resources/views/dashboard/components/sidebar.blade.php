@@ -66,19 +66,7 @@
                     @endcanDo
 
 
-                    @canDo('media_access')
-                    <!-- Media Library -->
-                    <li class="nk-menu-item">
-                        <a href="dashboard/medias" class="nk-menu-link">
-                            <span class="nk-menu-icon">
-                                <em class="icon ni ni-img"></em>
-                            </span>
-                            <span class="nk-menu-text" data-en="Media Library" data-ar="مكتبة الوسائط">
-                                Media Library
-                            </span>
-                        </a>
-                    </li>
-                    @endcanDo
+
 
 
 
@@ -110,6 +98,20 @@
                                 </a>
                             </li>
                         </ul>
+                    </li>
+                    @endcanDo
+
+                    @canDo('media_access')
+                    <!-- Media Library -->
+                    <li class="nk-menu-item">
+                        <a href="dashboard/medias" class="nk-menu-link">
+                            <span class="nk-menu-icon">
+                                <em class="icon ni ni-img"></em>
+                            </span>
+                            <span class="nk-menu-text" data-en="Media Library" data-ar="مكتبة الوسائط">
+                                Media Library
+                            </span>
+                        </a>
                     </li>
                     @endcanDo
 

@@ -95,7 +95,6 @@
             flex-direction: row;
             gap: 20px;
             padding: 20px 0;
-            border-bottom: 1px solid #ddd;
             align-items: align-start;
         }
 
@@ -214,7 +213,9 @@
                                 {{ $reviews[0]->category->name ?? '' }}
                             @endif
                         </h3>
-                        <h2>{{ $reviews[0]->title }}</h2>
+                        <a href="{{ route('news.show', $reviews[0]->title) }}" style="text-decoration: none; color: inherit;">
+                            <h2>{{ $reviews[0]->title }}</h2>
+                        </a>
                         <p>{{ $reviews[0]->summary }}</p>
                     </div>
                 </div>

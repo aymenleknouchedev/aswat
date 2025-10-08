@@ -66,7 +66,7 @@
         }
 
         .logo {
-            width: 90px;
+            width: 110px;
             animation: fadeInDown 1s ease;
             filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
         }
@@ -242,7 +242,7 @@
             z-index: 1000;
             animation: fadeIn 0.3s ease;
             overflow-y: auto;
-            padding: 20px;
+            padding: 5px;
         }
 
         .modal-content {
@@ -870,8 +870,9 @@
             const fileDisplay = document.getElementById("file-display");
 
             // ✅ Set the target date ONCE (e.g., 30 days from page load)
-            const targetDate = new Date();
-            targetDate.setDate(targetDate.getDate() + 24);
+            // Set countdown target to November 1st of the current year
+            const nowDate = new Date();
+            const targetDate = new Date(nowDate.getFullYear(), 10, 1, 0, 0, 0, 0); // Month is 0-indexed (10 = November)
 
             function updateCountdown() {
                 const now = new Date().getTime();

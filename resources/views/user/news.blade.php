@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'أصوات جزائرية | صور')
+@section('title', 'أصوات جزائرية | تفاصيل الخبر')
 
 @section('content')
 
@@ -459,7 +459,7 @@
                             {{-- Facebook --}}
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
                                 target="_blank" title="مشاركة على فيسبوك" rel="noopener">
-                                <img src="{{ asset('user/assets/icons/facebook.png') }}" alt="Facebook">
+                                <img src="{{ asset('user/assets/icons/fb.png') }}" alt="Facebook">
                             </a>
 
                             {{-- X (Twitter) --}}

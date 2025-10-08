@@ -6,7 +6,9 @@
         </div>
         <div class="newCategory-all-card-text">
             <h3>{{ $content->category->name }}</h3>
-            <h2>{{ $content->title ?? '' }}</h2>
+            <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
+                <h2>{{ $content->title ?? '' }}</h2>
+            </a>
             <p>{{ $content->summary ?? '' }}</p>
             
         </div>

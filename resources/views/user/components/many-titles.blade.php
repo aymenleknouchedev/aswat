@@ -154,7 +154,9 @@
                                     {{ $technology[0]->category->name ?? '' }}
                                 @endif
                             </h3>
-                            <h2>{{ $technology[0]->title ?? '' }}</h2>
+                            <a href="{{ route('news.show', $technology[0]->title) }}" style="text-decoration: none; color: inherit;">
+                                <h2>{{ $technology[0]->title ?? '' }}</h2>
+                            </a>
                             <p>{{ $technology[0]->summary ?? '' }}</p>
                         </div>
                         {{-- <p>{{ $technology[0]->summary ?? '' }}</p> --}}
@@ -177,7 +179,9 @@
                                     {{ $item->category->name ?? '' }}
                                 @endif
                             </span>
-                            <p>{{ $item->title ?? '' }}</p>
+                            <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                                <p>{{ $item->title ?? '' }}</p>
+                            </a>
                             {{-- <p>{{ $item->summary ?? '' }}</p> --}}
                         </div>
                     </div>
@@ -209,7 +213,9 @@
                                     {{ $health[0]->category->name ?? '' }}
                                 @endif
                             </h3>
-                            <h2>{{ $health[0]->title ?? '' }}</h2>
+                            <a href="{{ route('news.show', $health[0]->title) }}" style="text-decoration: none; color: inherit;">
+                                <h2>{{ $health[0]->title ?? '' }}</h2>
+                            </a>
                             <p>{{ $health[0]->summary ?? '' }}</p>
                         </div>
                         {{-- <p>{{ $health[0]->summary ?? '' }}</p> --}}
@@ -232,7 +238,9 @@
                                     {{ $item->category->name ?? '' }}
                                 @endif
                             </span>
-                            <p>{{ $item->title ?? '' }}</p>
+                            <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                                <p>{{ $item->title ?? '' }}</p>
+                            </a>
                             {{-- <p>{{ $item->summary ?? '' }}</p> --}}
                         </div>
                     </div>
@@ -265,7 +273,9 @@
                                     {{ $environment[0]->category->name ?? '' }}
                                 @endif
                             </h3>
-                            <h2>{{ $environment[0]->title ?? '' }}</h2>
+                            <a href="{{ route('news.show', $environment[0]->title) }}" style="text-decoration: none; color: inherit;">
+                                <h2>{{ $environment[0]->title ?? '' }}</h2>
+                            </a>
                             <p>{{ $environment[0]->summary ?? '' }}</p>
                         </div>
                         {{-- <p>{{ $environment[0]->summary ?? '' }}</p> --}}
@@ -288,7 +298,9 @@
                                     {{ $item->category->name ?? '' }}
                                 @endif
                             </span>
-                            <p>{{ $item->title ?? '' }}</p>
+                            <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                                <p>{{ $item->title ?? '' }}</p>
+                            </a>
                             {{-- <p>{{ $item->summary ?? '' }}</p> --}}
                         </div>
                     </div>

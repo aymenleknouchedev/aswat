@@ -67,7 +67,9 @@
                 </div>
                 <div class="review-card-text">
                     {{ $review->writer->name ?? '' }}{{ !empty($review->city) ? ' - ' . ($review->city->name ?? '') : '' }}
-                    <p>{{ $review->title ?? '' }}</p>
+                    <a href="{{ route('news.show', $review->title) }}" style="text-decoration: none; color: inherit;">
+                        <p>{{ $review->title ?? '' }}</p>
+                    </a>
                 </div>
             </div>
         @endforeach

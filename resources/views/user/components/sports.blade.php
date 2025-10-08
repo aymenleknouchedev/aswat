@@ -106,7 +106,9 @@
                     {{ $sport[0]->category->name ?? '' }}
                 @endif
             </h3>
-            <h2>{{ $sports[0]->title ?? '' }}</h2>
+            <a href="{{ route('news.show', $sports[0]->title) }}" style="text-decoration: none; color: inherit;">
+                <h2>{{ $sports[0]->title ?? '' }}</h2>
+            </a>
             <p>{{ $sports[0]->summary ?? '' }}</p>
         </div>
 
@@ -123,7 +125,9 @@
                     {{ $sports[1]->category->name ?? '' }}
                 @endif
             </h3>
-            <h2>{{ $sports[1]->title ?? '' }}</h2>
+            <a href="{{ route('news.show', $sports[1]->title) }}" style="text-decoration: none; color: inherit;">
+                <h2>{{ $sports[1]->title ?? '' }}</h2>
+            </a>
             <p>{{ $sports[1]->summary ?? '' }}</p>
         </div>
 
@@ -146,7 +150,9 @@
                                     {{ $sports[$i]->category->name ?? '' }}
                                 @endif
                             </h3>
-                            <p>{{ $sports[$i]->title ?? '' }}</p>
+                            <a href="{{ route('news.show', $sports[$i]->title) }}" style="text-decoration: none; color: inherit;">
+                                <p>{{ $sports[$i]->title ?? '' }}</p>
+                            </a>
                         </div>
                     </div>
                 @endif
