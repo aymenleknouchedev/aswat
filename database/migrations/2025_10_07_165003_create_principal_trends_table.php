@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('principal_trends', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('trend_id')->constrained('trends')->onDelete('cascade');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

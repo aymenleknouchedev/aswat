@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 
 <head>
+    <link rel="icon" type="image/svg+xml" href="./user/assets/images/icon-logo.svg" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>أصوات جزائرية - قريباً</title>
@@ -684,9 +685,17 @@
 
     <div class="container">
         <div class="glass-box">
-            <h1>أصوات جزائرية</h1>
-            <p class="tagline">موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين</p>
+            <p>
+                <b>«</b>
+                <b>أصوات جزائرية</b>
+                <b>»</b>
+                <b>..</b>
+                <span>موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين. قُم بالتسجيل ليصلك إشعار على
+                    بريدك الإلكتروني عند الانطلاق، أو أرسِل سيرتك الذاتية وحدّثنا عنك إن كنت مهتمًّا بالانضمام إلى
+                    فريقنا.
+                </span>
 
+            </p>
             <!-- Countdown Timer -->
             <div class="countdown-container" id="countdown">
                 <div class="countdown-item">
@@ -776,8 +785,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close-btn" id="close-modal">&times;</span>
-                <h2>انضم إلى فريقنا</h2>
-                <p>شاركنا رحلتنا الإعلامية وكن جزءًا من فريقنا المتميز</p>
+                <h2>كُن جزءًا من فريق «أصوات جزائرية»</h2>
+                <p>يُرجى ملأ الاستمارة وإرسالها</p>
             </div>
             <div class="modal-body">
                 <form action="/store-join-team" method="POST" enctype="multipart/form-data" id="career-form"
@@ -826,8 +835,10 @@
                             لماذا تريد الانضمام إلى فريقنا؟
                             <span class="required-star">*</span>
                         </label>
-                        <textarea name="message" class="form-textarea"
-                            placeholder="أخبرنا عن دوافعك للانضمام إلى فريقنا، وخبراتك السابقة، وما الذي يمكنك تقديمه..." required></textarea>
+                        <div style="font-size:16px; color:#2d3748; margin-bottom:14px; text-align:right;">
+                            حدّثنا عن نفسك وعن مهاراتك وإنجازاتك بشكل موجز، وما الذي تريد تقديمه لمشروع «أصوات جزائرية».
+                        </div>
+                        <textarea name="message" class="form-textarea" required></textarea>
                     </div>
 
                     <!-- رفع السيرة الذاتية -->
@@ -839,7 +850,6 @@
                             <div class="file-input-wrapper">
                                 <div class="file-display" id="file-display">لم يتم اختيار ملف</div>
                                 <label for="resume" class="file-upload-btn">
-                                    <span class="upload-icon">📁</span>
                                     رفع الملف
                                 </label>
                                 <input required name="cv" type="file" id="resume" class="file-input"
@@ -872,7 +882,8 @@
             // ✅ Set the target date ONCE (e.g., 30 days from page load)
             // Set countdown target to November 1st of the current year
             const nowDate = new Date();
-            const targetDate = new Date(nowDate.getFullYear(), 10, 1, 0, 0, 0, 0); // Month is 0-indexed (10 = November)
+            const targetDate = new Date(nowDate.getFullYear(), 10, 1, 0, 0, 0,
+                0); // Month is 0-indexed (10 = November)
 
             function updateCountdown() {
                 const now = new Date().getTime();

@@ -29,13 +29,13 @@ class TrendController extends BaseController
 
             if (!$search) {
                 $trends = Trend::paginate($pagination)
-                           ->appends($request->all());
+                    ->appends($request->all());
             } else {
                 $trends = $query->orderBy('id', 'desc')
-                                    ->paginate($pagination)
-                                    ->appends($request->all());
+                    ->paginate($pagination)
+                    ->appends($request->all());
             }
-            
+
             return view('dashboard.alltrends', compact('trends'));
         } catch (\Throwable $e) {
             return redirect()
@@ -55,16 +55,24 @@ class TrendController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         try {
             $request->validate([
                 'title' => 'required|string|min:3|max:255|unique:trends,title',
                 'slug' => 'required|string|min:3|max:255|unique:trends,slug',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:6000',
             ]);
 
             $trend = new Trend();
             $trend->title = $request->input('title');
             $trend->slug = $request->input('slug');
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $path = asset('storage/' . $file->store('media', 'public'));
+                $trend->image = $path;
+            }
             $trend->save();
 
             return redirect()->route('dashboard.trend.create')->with('success', 'Trend created successfully.');
@@ -100,7 +108,7 @@ class TrendController extends BaseController
 
             $request->validate([
                 'title' => 'required|string|max:255',
-                'slug'=> 'required|string|max:255|unique:trends,slug,'.$trend->id,
+                'slug' => 'required|string|max:255|unique:trends,slug,' . $trend->id,
             ]);
 
             $trend->title = $request->input('title');

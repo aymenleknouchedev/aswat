@@ -50,7 +50,7 @@
 
 
                         <!-- ✅ النموذج -->
-                        <form action="{{ route('dashboard.trend.store') }}" method="POST">
+                        <form action="{{ route('dashboard.trend.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <!-- اسم الترند -->
@@ -73,6 +73,17 @@
                                         value="{{ old('slug') }}" required>
                                 </div>
                                 @error('slug')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- صورة الترند -->
+                            <div class="form-group">
+                                <label class="form-label" for="image" data-en="Image" data-ar="الصورة">الصورة</label>
+                                <div class="form-control-wrap">
+                                    <input type="file" name="image" class="form-control" id="image" accept="image/*">
+                                </div>
+                                @error('image')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>

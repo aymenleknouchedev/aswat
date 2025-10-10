@@ -8,8 +8,8 @@
         .art-section-hero {
             position: relative;
             margin-top: 60px;
-            background: linear-gradient(rgba(0, 0, 0, 0.155), rgba(0, 0, 0, 0.851)),
-                url('./user/assets/images/gaza.jpg') center/cover no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)),
+                url('{{ asset($principalTrend->trend->image) }}') center/cover no-repeat;
             color: #fff;
             direction: rtl;
             overflow: hidden;
@@ -87,35 +87,26 @@
             </div>
         @endif
 
-        <div class="container">
-            <section class="art-section-hero">
-                <div class="art-section-overlay">
-                    <h2 class="art-section-title">الحرب على غزة</h2>
+        @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 4 and $principalTrend->is_active)
+            <div class="container">
+                <section class="art-section-hero">
+                    <div class="art-section-overlay">
+                        <h2 class="art-section-title">{{ $principalTrend->trend->title ?? '' }}</h2>
 
-                    <div class="art-section-grid">
-                        <div class="art-section-card">
-                            <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
-                            <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
-                        </div>
-
-                        <div class="art-section-card">
-                            <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
-                            <h2>ترمب يهدد «بريكس» مجدداً</h2>
-                        </div>
-
-                        <div class="art-section-card">
-                            <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
-                            <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
-                        </div>
-
-                        <div class="art-section-card">
-                            <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
-                            <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
+                        <div class="art-section-grid">
+                            @foreach ($principalTrend->trend->contents ?? [] as $content)
+                                <div class="art-section-card">
+                                    <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}" alt="{{ $content->title }}">
+                                    <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
+                                        <h2>{{ $content->title }}</h2>
+                                    </a>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
-                </div>
-            </section>
-        </div>
+                </section>
+            </div>
+        @endif
 
         @php
             $sections = [

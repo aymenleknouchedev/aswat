@@ -11,11 +11,50 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Tag;
 use App\Models\Location;
 use Illuminate\Support\Facades\DB;
+use App\Models\PrincipalTrend;
+use App\Models\Trend;
 
 class UserSeeder extends Seeder
 {
     public function run()
     {
+
+        $trends = [
+            ['name' => 'ترند الجزائر', 'slug' => 'algeria-trend', 'image' => 'algeria.png'],
+            ['name' => 'ترند كأس العالم', 'slug' => 'world-cup-trend', 'image' => 'world-cup.png'],
+            ['name' => 'ترند الانتخابات', 'slug' => 'elections-trend', 'image' => 'elections.png'],
+            ['name' => 'ترند الحكومة', 'slug' => 'government-trend', 'image' => 'government.png'],
+            ['name' => 'ترند التعليم', 'slug' => 'education-trend', 'image' => 'education.png'],
+            ['name' => 'ترند الاقتصاد', 'slug' => 'economy-trend', 'image' => 'economy.png'],
+            ['name' => 'ترند الرياضة', 'slug' => 'sports-trend', 'image' => 'sports.png'],
+            ['name' => 'ترند كرة القدم', 'slug' => 'football-trend', 'image' => 'football.png'],
+            ['name' => 'ترند المشاهير', 'slug' => 'celebrities-trend', 'image' => 'celebrities.png'],
+            ['name' => 'ترند الفن', 'slug' => 'art-trend', 'image' => 'art.png'],
+            ['name' => 'ترند الموسيقى', 'slug' => 'music-trend', 'image' => 'music.png'],
+            ['name' => 'ترند التكنولوجيا', 'slug' => 'technology-trend', 'image' => 'technology.png'],
+            ['name' => 'ترند الصحة', 'slug' => 'health-trend', 'image' => 'health.png'],
+            ['name' => 'ترند البيئة', 'slug' => 'environment-trend', 'image' => 'environment.png'],
+            ['name' => 'ترند المناخ', 'slug' => 'climate-trend', 'image' => 'climate.png'],
+            ['name' => 'ترند عاجل', 'slug' => 'breaking-trend', 'image' => 'breaking.png'],
+            ['name' => 'ترند محلي', 'slug' => 'local-trend', 'image' => 'local.png'],
+            ['name' => 'ترند دولي', 'slug' => 'international-trend', 'image' => 'international.png'],
+            ['name' => 'ترند الثقافة', 'slug' => 'culture-trend', 'image' => 'culture.png'],
+            ['name' => 'ترند الميديا', 'slug' => 'media-trend', 'image' => 'media.png'],
+        ];
+
+        foreach ($trends as $trend) {
+            Trend::firstOrCreate([
+            'title' => $trend['name'],
+            'slug' => $trend['slug'],
+            ], [
+            'image' => $trend['image'],
+            ]);
+        }
+
+        PrincipalTrend::firstOrCreate(
+            ['trend_id' => 1]
+        );
+
         // 1. إنشاء الدور admin إذا لم يكن موجود
         $adminRole = Role::firstOrCreate(
             ['name' => 'admin'],
@@ -169,7 +208,7 @@ class UserSeeder extends Seeder
         foreach ($continents as $continent) {
             Location::firstOrCreate([
                 'name' => $continent['name'],
-                'slug'=> $continent['slug'],
+                'slug' => $continent['slug'],
                 'type' => 'continent',
             ]);
         }
@@ -311,7 +350,8 @@ class UserSeeder extends Seeder
 
         foreach ($categories as $category) {
             \App\Models\Category::firstOrCreate(
-                ['name'=> $category['name']], ['slug' => $category['slug']]
+                ['name' => $category['name']],
+                ['slug' => $category['slug']]
             );
         }
 

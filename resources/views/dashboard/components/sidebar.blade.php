@@ -65,11 +65,6 @@
                     </li>
                     @endcanDo
 
-
-
-
-
-
                     @canDo('content_management_access')
                     <!-- Content Management -->
                     <li class="nk-menu-item has-sub">
@@ -89,11 +84,11 @@
                                     </span>
                                 </a>
                             </li>
-
                             <li class="nk-menu-item">
-                                <a href="/sections/manage" class="nk-menu-link">
-                                    <span class="nk-menu-text" data-en="Manage Sections" data-ar="إدارة الأقسام">
-                                        Manage Sections
+                                <a href="{{ route('dashboard.principal_trend') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Manage Main Trend"
+                                        data-ar="إدارة الترند الرئيسي">
+                                        إدارة الترند الرئيسي
                                     </span>
                                 </a>
                             </li>

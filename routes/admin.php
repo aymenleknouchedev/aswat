@@ -13,6 +13,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PrincipalTrendController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SettingsController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\TopContentController;
 use App\Http\Controllers\TrendController;
 use App\Http\Controllers\WindowController;
 use App\Http\Controllers\WritterController;
+use App\Models\PrincipalTrend;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('dashboard')->group(function () {
@@ -104,6 +106,10 @@ Route::prefix('dashboard')->group(function () {
         Route::post('/top-contents/{id}', [TopContentController::class, 'store'])->name('dashboard.topcontents.store');
         Route::post('/dashboard/top-contents/update-order', [TopContentController::class, 'updateOrder'])->name('dashboard.topcontents.updateOrder');
         Route::delete('/top-contents/delete-{id}', [TopContentController::class, 'destroy'])->name('dashboard.topcontents.destroy');
+
+        Route::get('/principal-trend', [PrincipalTrendController::class, 'index'])->name('dashboard.principal_trend');
+        Route::put('/update-principal-trend', [PrincipalTrendController::class, 'update'])->name('dashboard.principal_trend.update');
+
 
         Route::get('/{id}', [ContentActionController::class, 'content_actions'])->name('dashboard.content.actions');
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Content;
 use App\Models\Section;
 use App\Models\BreakingContent;
+use App\Models\PrincipalTrend;
 use App\Models\TopContent;
 use Illuminate\Http\Request;
 
@@ -31,6 +32,9 @@ class HomePageController extends Controller
 
     public function index()
     { 
+
+        $principalTrend = PrincipalTrend::latest()->first();
+
         $topContents = TopContent::orderByDesc('order')
             ->take(7)
             ->get();
@@ -78,7 +82,7 @@ class HomePageController extends Controller
             ->take(5)
             ->get();
 
-        return view('user.home', compact('topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant'));
+        return view('user.home', compact('topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant' , 'principalTrend'));
     }
 
     public function latestNews()
