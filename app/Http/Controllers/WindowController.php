@@ -125,4 +125,8 @@ class WindowController extends BaseController
             return redirect()->back()->withErrors('Failed to delete window: ' . $e->getMessage());
         }
     }
+
+
+
+
 }

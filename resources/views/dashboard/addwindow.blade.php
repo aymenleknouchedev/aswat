@@ -80,6 +80,17 @@
                                 @enderror
                             </div>
 
+                            <!-- صورة الترند -->
+                            <div class="form-group">
+                                <label class="form-label" for="image" data-en="Window Image" data-ar="صورة النافذة">صورة النافذة</label>
+                                <div class="form-control-wrap">
+                                    <input type="file" name="image" class="form-control" id="image" accept="image/*">
+                                </div>
+                                @error('image')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                             <!-- زر الإرسال -->
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary" data-en="Add Window"

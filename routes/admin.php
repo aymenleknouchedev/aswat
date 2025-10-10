@@ -21,9 +21,11 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\TopContentController;
 use App\Http\Controllers\TrendController;
 use App\Http\Controllers\WindowController;
+use App\Http\Controllers\WindowManagementController;
 use App\Http\Controllers\WritterController;
 use App\Models\PrincipalTrend;
 use Illuminate\Support\Facades\Route;
+
 
 Route::prefix('dashboard')->group(function () {
 
@@ -109,6 +111,8 @@ Route::prefix('dashboard')->group(function () {
 
         Route::get('/principal-trend', [PrincipalTrendController::class, 'index'])->name('dashboard.principal_trend');
         Route::put('/update-principal-trend', [PrincipalTrendController::class, 'update'])->name('dashboard.principal_trend.update');
+
+        Route::get('/windows-management', [WindowManagementController::class, 'windows_management'])->name('dashboard.windows_management');
 
 
         Route::get('/{id}', [ContentActionController::class, 'content_actions'])->name('dashboard.content.actions');

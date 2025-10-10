@@ -86,9 +86,16 @@
                             </li>
                             <li class="nk-menu-item">
                                 <a href="{{ route('dashboard.principal_trend') }}" class="nk-menu-link">
-                                    <span class="nk-menu-text" data-en="Manage Main Trend"
-                                        data-ar="إدارة الترند الرئيسي">
-                                        إدارة الترند الرئيسي
+                                    <span class="nk-menu-text" data-en="Manage Trend"
+                                        data-ar="إدارة الترند">
+                                        إدارة الترند
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('dashboard.windows_management') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text" data-en="Windows Management" data-ar="إدارة النوافذ">
+                                        إدارة النوافذ
                                     </span>
                                 </a>
                             </li>
