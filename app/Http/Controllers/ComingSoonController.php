@@ -12,7 +12,7 @@ class ComingSoonController extends Controller
         $pagination = config("pagination.per15", 15);
         $search = $request->search ?? "";
         $status = $request->status ?? "pending";
-        $reason = $request->reason ?? "journalist";
+        $reason = $request->reason ?? null;
 
         $cvs = JoinTeam::where('status', $status)
             ->when($reason, function ($query, $reason) {
