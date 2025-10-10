@@ -556,9 +556,10 @@
         /* ================== Responsive ================== */
         @media (max-width: 600px) {
             .header {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 12px;
                 padding: 0 20px;
+                margin-bottom: 30px;
             }
 
             .logo {
@@ -666,7 +667,45 @@
     <div class="overlay"></div>
 
     <div class="header">
-        <img class="logo" src="./user/assets/images/white_logo.svg" alt="شعار" />
+        <div class="logo" id="animated-logo" style="width:110px; height:48px; position:relative; overflow:hidden;">
+            @php
+                $logoFrames = [];
+                $logoPath = public_path('user/assets/images/loop');
+                if (is_dir($logoPath)) {
+                    foreach (scandir($logoPath) as $file) {
+                        if (preg_match('/^Loop _\d{5}\.png$/', $file)) {
+                            $logoFrames[] = $file;
+                        }
+                    }
+                    sort($logoFrames, SORT_NATURAL);
+                }
+            @endphp
+
+            @foreach ($logoFrames as $i => $frame)
+                <img src="{{ asset('user/assets/images/loop/' . $frame) }}" alt="شعار"
+                    style="position:absolute;top:0;left:0;width:100%;display:{{ $i === 0 ? 'block' : 'none' }};" />
+            @endforeach
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const frames = document.querySelectorAll('#animated-logo img');
+                let idx = 0;
+                const total = frames.length;
+                const fps = 30; // smoother speed (30 frames/sec)
+                const frameDuration = 1000 / fps;
+
+                function animate() {
+                    frames[idx].style.display = 'none';
+                    idx = (idx + 1) % total;
+                    frames[idx].style.display = 'block';
+                    setTimeout(() => requestAnimationFrame(animate), frameDuration);
+                }
+
+                requestAnimationFrame(animate);
+            });
+        </script>
+
         <div class="social-icons">
             <a href="https://www.youtube.com/@asswatdjazairia" target="_blank" aria-label="يوتيوب">
                 <img src="./user/assets/icons/youtube.png" width="24" height="24" alt="يوتيوب" />
@@ -686,10 +725,7 @@
     <div class="container">
         <div class="glass-box">
             <p>
-                <b>«</b>
-                <b>أصوات جزائرية</b>
-                <b>»</b>
-                <b>..</b>
+                <span><b>«</b><b>أصوات جزائرية</b><b>»</b><b>..</b></span>
                 <span>موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين. قُم بالتسجيل ليصلك إشعار على
                     بريدك الإلكتروني عند الانطلاق، أو أرسِل سيرتك الذاتية وحدّثنا عنك إن كنت مهتمًّا بالانضمام إلى
                     فريقنا.
@@ -786,7 +822,7 @@
             <div class="modal-header">
                 <span class="close-btn" id="close-modal">&times;</span>
                 <h2>كُن جزءًا من فريق «أصوات جزائرية»</h2>
-                <p>يُرجى ملأ الاستمارة وإرسالها</p>
+                <p>يُرجى ملء الاستمارة وإرسالها</p>
             </div>
             <div class="modal-body">
                 <form action="/store-join-team" method="POST" enctype="multipart/form-data" id="career-form"
@@ -865,7 +901,7 @@
                     <button type="submit" class="submit-btn">إرسال الطلب</button>
                 </form>
                 <div class="form-footer">
-                    سنقوم بمراجعة طلبك والاتصال بك في أقرب وقت ممكن
+                    سنراجع طلبك ونتصل بك في وقت قريب إذا جرى اختيارك
                 </div>
             </div>
         </div>
