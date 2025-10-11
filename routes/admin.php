@@ -23,7 +23,6 @@ use App\Http\Controllers\TrendController;
 use App\Http\Controllers\WindowController;
 use App\Http\Controllers\WindowManagementController;
 use App\Http\Controllers\WritterController;
-use App\Models\PrincipalTrend;
 use Illuminate\Support\Facades\Route;
 
 
@@ -93,6 +92,9 @@ Route::prefix('dashboard')->group(function () {
             'permission' => PermissionController::class,
         ];
 
+        Route::get('/window-management', [WindowManagementController::class, 'windows_management'])->name('dashboard.windows_management');
+        Route::put('/dashboard/sections/{section}/update-window', [WindowManagementController::class, 'updateWindow'])->name('dashboard.sections.updateWindow');
+
         foreach ($entities as $entity => $controller) {
             $plural = $entity . 's'; // مثال: user => users
             Route::get("/{$plural}", [$controller, 'index'])->name("dashboard.{$plural}.index");
@@ -108,15 +110,9 @@ Route::prefix('dashboard')->group(function () {
         Route::post('/top-contents/{id}', [TopContentController::class, 'store'])->name('dashboard.topcontents.store');
         Route::post('/dashboard/top-contents/update-order', [TopContentController::class, 'updateOrder'])->name('dashboard.topcontents.updateOrder');
         Route::delete('/top-contents/delete-{id}', [TopContentController::class, 'destroy'])->name('dashboard.topcontents.destroy');
-
         Route::get('/principal-trend', [PrincipalTrendController::class, 'index'])->name('dashboard.principal_trend');
         Route::put('/update-principal-trend', [PrincipalTrendController::class, 'update'])->name('dashboard.principal_trend.update');
-
-        Route::get('/windows-management', [WindowManagementController::class, 'windows_management'])->name('dashboard.windows_management');
-
-
         Route::get('/{id}', [ContentActionController::class, 'content_actions'])->name('dashboard.content.actions');
-
         Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
     });
 });

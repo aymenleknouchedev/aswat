@@ -28,13 +28,13 @@ class WindowController extends BaseController
 
             if (!$search) {
                 $windows = Window::paginate($pagination)
-                           ->appends($request->all());
+                    ->appends($request->all());
             } else {
                 $windows = $query->orderBy('id', 'desc')
-                                    ->paginate($pagination)
-                                    ->appends($request->all());
+                    ->paginate($pagination)
+                    ->appends($request->all());
             }
-            
+
             return view('dashboard.allwindows', compact('windows'));
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Failed to load windows: ' . $e->getMessage());
@@ -58,11 +58,19 @@ class WindowController extends BaseController
             $request->validate([
                 'name' => 'required|string|max:255|unique:windows,name',
                 'slug' => 'required|string|max:255|unique:windows,slug',
+                'image' => 'required|max:6000',
             ]);
 
             $window = new Window();
             $window->name = $request->input('name');
             $window->slug = $request->input('slug');
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $path = asset('storage/' . $file->store('media', 'public'));
+                $window->image = $path;
+            }
+
             $window->save();
 
             return redirect()->back()->with('success', 'Window created successfully.');
@@ -98,7 +106,7 @@ class WindowController extends BaseController
 
             $request->validate([
                 'name' => 'required|string|max:255',
-                'slug'=> 'required|string|max:255|unique:windows,slug,'.$window->id,
+                'slug' => 'required|string|max:255|unique:windows,slug,' . $window->id,
             ]);
 
             $window->name = $request->input('name');
@@ -125,8 +133,4 @@ class WindowController extends BaseController
             return redirect()->back()->withErrors('Failed to delete window: ' . $e->getMessage());
         }
     }
-
-
-
-
 }

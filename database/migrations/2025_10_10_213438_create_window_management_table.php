@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('window_id');
             $table->unsignedBigInteger('section_id')->nullable();
-            $table->boolean('state')->default(false);
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

@@ -40,8 +40,8 @@
                                 <em class="icon ni ni-cross-circle"></em>
                                 <ul class="mb-0">
                                     @foreach ($errors->all() as $error)
-                                        <li class="translatable" data-ar="حدث خطأ ما" data-en="An error occurred">
-                                            {{ $error ?? 'حدث خطأ ما' }}
+                                        <li>
+                                            {{ $error }}
                                         </li>
                                     @endforeach
                                 </ul>
@@ -49,7 +49,7 @@
                         @endif
 
                         <!-- ✅ النموذج -->
-                        <form action="{{ route('dashboard.window.store') }}" method="POST">
+                        <form action="{{ route('dashboard.window.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <!-- الاسم -->

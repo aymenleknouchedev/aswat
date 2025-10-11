@@ -61,7 +61,7 @@ class TrendController extends BaseController
             $request->validate([
                 'title' => 'required|string|min:3|max:255|unique:trends,title',
                 'slug' => 'required|string|min:3|max:255|unique:trends,slug',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:6000',
+                'image' => 'required|max:6000',
             ]);
 
             $trend = new Trend();

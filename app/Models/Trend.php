@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Trend extends Model
 {
-    protected $fillable = ['title', 'slug'];
+    protected $fillable = ['title', 'slug', 'image'];
 
     public function contents()
     {

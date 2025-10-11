@@ -13,16 +13,13 @@
                     <div class="container">
 
                         <!-- ✅ عنوان الصفحة -->
-                        <div class="nk-block-head">
-                            <div class="nk-block-head-content">
-                                <h4 class="nk-block-title" data-en="Window Management" data-ar="إدارة النوافذ">
-                                    إدارة النوافذ
-                                </h4>
-                                <p data-en="Manage all windows for each dashboard section below."
-                                   data-ar="قم بإدارة جميع النوافذ لكل قسم من لوحة التحكم أدناه.">
-                                    قم بإدارة جميع النوافذ لكل قسم من لوحة التحكم أدناه.
-                                </p>
-                            </div>
+                        <div class="nk-block-head mb-4">
+                            <h4 class="nk-block-title mb-2" data-en="Window Management" data-ar="إدارة النوافذ">إدارة النوافذ
+                            </h4>
+                            <p class="text-muted" data-en="Manage all windows for each dashboard section below."
+                                data-ar="قم بإدارة جميع النوافذ لكل قسم من لوحة التحكم أدناه.">
+                                قم بإدارة جميع النوافذ لكل قسم من لوحة التحكم أدناه.
+                            </p>
                         </div>
 
                         <!-- ✅ رسائل النجاح -->
@@ -47,48 +44,76 @@
                             </div>
                         @endif
 
-                        <!-- ✅ قائمة النوافذ لكل قسم -->
-                        @foreach ($sections as $section)
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <h5 class="card-title" data-ar="{{ $section->title_ar }}" data-en="{{ $section->title_en }}">
-                                        {{ $section->title_ar }}
-                                    </h5>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-bordered">
-                                        <thead>
+                        <!-- ✅ الجدول -->
+                        <div class="card shadow-sm">
+                            <div class="card-inner">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="thead-light">
                                             <tr>
-                                                <th data-ar="اسم النافذة" data-en="Window Name">اسم النافذة</th>
+                                                <th data-ar="القسم" data-en="Section">القسم</th>
+                                                <th data-ar="النافذة" data-en="Window">النافذة</th>
                                                 <th data-ar="الحالة" data-en="Status">الحالة</th>
-                                                <th data-ar="إجراءات" data-en="Actions">إجراءات</th>
+                                                <th data-ar="تحديث" data-en="Update">تحديث</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($section->windows as $window)
+                                            @foreach ($sections as $section)
                                                 <tr>
-                                                    <td>{{ $window->name }}</td>
-                                                    <td>
-                                                        <span class="badge {{ $window->is_active ? 'badge-success' : 'badge-danger' }}">
-                                                            {{ $window->is_active ? 'مفعلة' : 'غير مفعلة' }}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('dashboard.windows.edit', $window->id) }}" class="btn btn-sm btn-primary" data-ar="تعديل" data-en="Edit">تعديل</a>
-                                                        <form action="{{ route('dashboard.windows.destroy', $window->id) }}" method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger" data-ar="حذف" data-en="Delete" onclick="return confirm('هل أنت متأكد من حذف النافذة؟');">حذف</button>
-                                                        </form>
-                                                    </td>
+                                                    <td><strong>{{ $section->name }}</strong></td>
+
+                                                    <form
+                                                        action="{{ route('dashboard.sections.updateWindow', $section->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <td style="min-width:180px;">
+                                                            <div class="form-group mb-0">
+                                                                <select name="window_id" class="form-control js-select2"   
+                                                                    data-search="on" required>
+                                                                    @php
+                                                                        $availableWindows =
+                                                                            !empty($section->window) &&
+                                                                            $section->window->count() > 0
+                                                                                ? $section->window
+                                                                                : $windows;
+                                                                    @endphp
+                                                                    @foreach ($availableWindows as $window)
+                                                                        <option value="{{ $window->id }}"
+                                                                            {{ $section->selected_window_id == $window->id ? 'selected' : '' }}>
+                                                                            {{ $window->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </td>
+
+                                                        <td style="min-width:140px;">
+                                                            <div class="form-group mb-0">
+                                                                <div class="custom-control custom-switch">
+                                                                    <input type="checkbox" class="custom-control-input"
+                                                                        name="is_active" id="site-off-{{ $section->id }}"
+                                                                        value="1"
+                                                                        {{ $section->is_active ? 'checked' : '' }}>
+                                                                    <label class="custom-control-label"
+                                                                        for="site-off-{{ $section->id }}"></label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <button type="submit" class="btn btn-primary btn-sm px-3">
+                                                                تحديث
+                                                            </button>
+                                                        </td>
+                                                    </form>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
-                                    <a href="{{ route('dashboard.windows.create', ['section_id' => $section->id]) }}" class="btn btn-success mt-2" data-ar="إضافة نافذة جديدة" data-en="Add New Window">إضافة نافذة جديدة</a>
                                 </div>
                             </div>
-                        @endforeach
+                        </div>
 
                     </div>
                 </div>
@@ -97,4 +122,26 @@
             </div>
         </div>
     </div>
+
+    <!-- ✅ تحسينات شكل الجدول -->
+    <style>
+        .table th {
+            font-weight: 600;
+            background: #f9fafb;
+        }
+
+        .table td,
+        .table th {
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f5f6fa;
+            transition: background 0.2s ease;
+        }
+
+        .card {
+            border-radius: 12px;
+        }
+    </style>
 @endsection
