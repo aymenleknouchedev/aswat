@@ -84,6 +84,7 @@
                                                                             {{ $window->name }}
                                                                         </option>
                                                                     @endforeach
+                                                                    
                                                                 </select>
                                                             </div>
                                                         </td>
