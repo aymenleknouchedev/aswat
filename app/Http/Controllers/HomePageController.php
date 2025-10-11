@@ -376,15 +376,10 @@ class HomePageController extends Controller
         ];
 
         $arabicName = $sectionTopArabic[$section] ?? null;
-        if (!$arabicName) {
-            abort(404);
-        }
 
         $sectionId = Section::where('name', $arabicName)->value('id');
         $windowmanagement = WindowManagement::where('section_id', $sectionId)->first();
-        if (!$windowmanagement) {
-            abort(404);
-        }
+      
 
         $window = Window::where('id', $windowmanagement->window_id)
             ->first();
