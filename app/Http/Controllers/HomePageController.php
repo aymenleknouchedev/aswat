@@ -360,7 +360,34 @@ class HomePageController extends Controller
 
     public function newSection(Request $request, $section)
     {
-        $window = WindowManagement::where('section_id', $section)->first();
+        // Find the Arabic name for the given English section
+        $sectionTopArabic = [
+            'algeria' => 'الجزائر',
+            'world' => 'عالم',
+            'economy' => 'اقتصاد',
+            'sports' => 'رياضة',
+            'people' => 'ناس',
+            'technology' => 'تكنولوجيا',
+            'health' => 'صحة',
+            'environment' => 'بيئة',
+            'media' => 'ميديا',
+            'variety' => 'منوعات',
+            'culture' => 'ثقافة وفنون',
+        ];
+
+        $arabicName = $sectionTopArabic[$section] ?? null;
+        if (!$arabicName) {
+            abort(404);
+        }
+
+        $sectionId = Section::where('name', $arabicName)->value('id');
+        $windowmanagement = WindowManagement::where('section_id', $sectionId)->first();
+        if (!$windowmanagement) {
+            abort(404);
+        }
+
+        $window = Window::where('id', $windowmanagement->window_id)
+            ->first();
 
         $sectionNames = [
             'algeria' => ['الجزائر', 4],
@@ -428,6 +455,7 @@ class HomePageController extends Controller
             'topViewed',
             'suggestions',
             'window',
+            'windowmanagement'
         ));
     }
 

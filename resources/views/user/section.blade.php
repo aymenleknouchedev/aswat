@@ -263,8 +263,8 @@
         .art-section-hero {
             position: relative;
             margin-top: 60px;
-            background: linear-gradient(rgba(0, 0, 0, 0.155), rgba(0, 0, 0, 0.851)),
-                url('./user/assets/images/dz.jpg') center/cover no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)),
+                url('{{ asset($window->image) }}') center/cover no-repeat;
             color: #fff;
             direction: rtl;
             overflow: hidden;
@@ -412,36 +412,26 @@
                 </div>
             </div>
 
-
-            <div>
-                <section class="art-section-hero">
-                    <div class="art-section-overlay">
-                        <h2 class="art-section-title">الذاكرة الجزائرية</h2>
-
-                        <div class="art-section-grid">
+            @if (count($window->contents ?? []) >= 0 && $windowmanagement->status === 1)
+            <section class="art-section-hero">
+                <div class="art-section-overlay">
+                    <h2 class="art-section-title">{{ $window->name }}</h2>
+                    <div class="art-section-grid">
+                        @foreach ($window->contents ?? [] as $content)
                             <div class="art-section-card">
-                                <img src="./user/assets/images/IMG9.webp" alt="Feature economy">
-                                <h2>البنك الدولي يتوقع أسوأ عقد للنمو العالمي منذ الستينيات</h2>
+                                <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
+                                    alt="{{ $content->title }}">
+                                <a href="{{ route('news.show', $content->title) }}"
+                                    style="text-decoration: none; color: inherit;">
+                                    <h2>{{ $content->title }}</h2>
+                                </a>
                             </div>
-
-                            <div class="art-section-card">
-                                <img src="./user/assets/images/IMG10.webp" alt="Feature economy">
-                                <h2>ترمب يهدد «بريكس» مجدداً</h2>
-                            </div>
-
-                            <div class="art-section-card">
-                                <img src="./user/assets/images/IMG11.webp" alt="Feature economy">
-                                <h2>«بلاكستون» تنسحب من صفقة شراء «تيك توك»</h2>
-                            </div>
-
-                            <div class="art-section-card">
-                                <img src="./user/assets/images/IMG12.webp" alt="Feature economy">
-                                <h2>الرئيس الجزائري: احتياطي النقد الأجنبي عند 70 مليار دولار</h2>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
+            @endif
+
 
 
             @include('user.components.sp60')
