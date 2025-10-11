@@ -12,4 +12,9 @@ class Section extends Model
     {
         return $this->hasMany(Content::class);
     }
+
+    public function windowManagement()
+    {
+        return $this->hasOne(WindowManagement::class);
+    }
 }

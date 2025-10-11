@@ -21,3 +21,4 @@ class WindowManagement extends Model
     {
         return $this->belongsTo(Window::class);
     }
+}

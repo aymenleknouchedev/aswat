@@ -51,57 +51,52 @@
                                     <table class="table table-hover align-middle">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th data-ar="القسم" data-en="Section">القسم</th>
-                                                <th data-ar="النافذة" data-en="Window">النافذة</th>
-                                                <th data-ar="الحالة" data-en="Status">الحالة</th>
-                                                <th data-ar="تحديث" data-en="Update">تحديث</th>
+                                                <th>القسم</th>
+                                                <th>النافذة</th>
+                                                <th>الحالة</th>
+                                                <th>تحديث</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($sections as $section)
                                                 <tr>
-                                                    <td><strong>{{ $section->name }}</strong></td>
-
                                                     <form
                                                         action="{{ route('dashboard.sections.updateWindow', $section->id) }}"
-                                                        method="POST">
+                                                        method="POST" class="d-flex align-items-center">
                                                         @csrf
                                                         @method('PUT')
-                                                        <td style="min-width:180px;">
-                                                            <div class="form-group mb-0">
-                                                                <select name="window_id" class="form-control js-select2"   
-                                                                    data-search="on" required>
-                                                                    @php
-                                                                        $availableWindows =
-                                                                            !empty($section->window) &&
-                                                                            $section->window->count() > 0
-                                                                                ? $section->window
-                                                                                : $windows;
-                                                                    @endphp
-                                                                    @foreach ($availableWindows as $window)
-                                                                        <option value="{{ $window->id }}"
-                                                                            {{ $section->selected_window_id == $window->id ? 'selected' : '' }}>
-                                                                            {{ $window->name }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                    
-                                                                </select>
-                                                            </div>
+
+                                                        {{-- Section name --}}
+                                                        <td><strong>{{ $section->name }}</strong></td>
+
+                                                        {{-- Window selector --}}
+                                                        <td style="min-width:200px;">
+                                                            <select name="window_id" class="form-select js-select2"
+                                                                data-search="on" required>
+                                                                <option value="">اختر نافذة</option>
+                                                                @foreach ($windows as $window_item)
+                                                                    <option value="{{ $window_item->id }}"
+                                                                        {{ $section->window }}
+                                                                        {{ optional($section->windowManagement)->window_id == $window_item->id ? 'selected' : '' }}>
+                                                                        {{ $window_item->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
                                                         </td>
 
+                                                        {{-- Status switch --}}
                                                         <td style="min-width:140px;">
-                                                            <div class="form-group mb-0">
-                                                                <div class="custom-control custom-switch">
-                                                                    <input type="checkbox" class="custom-control-input"
-                                                                        name="is_active" id="site-off-{{ $section->id }}"
-                                                                        value="1"
-                                                                        {{ $section->is_active ? 'checked' : '' }}>
-                                                                    <label class="custom-control-label"
-                                                                        for="site-off-{{ $section->id }}"></label>
-                                                                </div>
+                                                            <div class="form-check form-switch">
+                                                                <input type="checkbox" class="form-check-input"
+                                                                    id="status-{{ $section->id }}" name="status"
+                                                                    value="1"
+                                                                    {{ optional($section->windowManagement)->status ? 'checked' : '' }}>
+                                                                <label class="form-check-label"
+                                                                    for="status-{{ $section->id }}"></label>
                                                             </div>
                                                         </td>
 
+                                                        {{-- Update button --}}
                                                         <td>
                                                             <button type="submit" class="btn btn-primary btn-sm px-3">
                                                                 تحديث
@@ -115,6 +110,7 @@
                                 </div>
                             </div>
                         </div>
+
 
                     </div>
                 </div>

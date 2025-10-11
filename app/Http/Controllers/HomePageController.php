@@ -7,6 +7,7 @@ use App\Models\Section;
 use App\Models\BreakingContent;
 use App\Models\PrincipalTrend;
 use App\Models\TopContent;
+use App\Models\Window;
 use App\Models\WindowManagement;
 use Illuminate\Http\Request;
 
@@ -359,7 +360,7 @@ class HomePageController extends Controller
 
     public function newSection(Request $request, $section)
     {
-        $window = WindowManagement::where('section_id', $section->id)->first();
+        $window = WindowManagement::where('section_id', $section)->first();
 
         $sectionNames = [
             'algeria' => ['الجزائر', 4],

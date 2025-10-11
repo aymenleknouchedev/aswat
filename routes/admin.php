@@ -93,7 +93,8 @@ Route::prefix('dashboard')->group(function () {
         ];
 
         Route::get('/window-management', [WindowManagementController::class, 'windows_management'])->name('dashboard.windows_management');
-        Route::put('/dashboard/sections/{section}/update-window', [WindowManagementController::class, 'updateWindow'])->name('dashboard.sections.updateWindow');
+        Route::put('/dashboard/sections/{section}/update-window', [WindowManagementController::class, 'updateWindow'])
+            ->name('dashboard.sections.updateWindow');
 
         foreach ($entities as $entity => $controller) {
             $plural = $entity . 's'; // مثال: user => users
