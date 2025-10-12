@@ -46,8 +46,8 @@ class ContentController extends BaseController
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('mobile_title', 'like', "%{$search}%")
-                ->orWhere('title', 'like', "%{$search}%")
-                ->orWhere("long_title", "like", "%{$search}%");
+                    ->orWhere('title', 'like', "%{$search}%")
+                    ->orWhere("long_title", "like", "%{$search}%");
             });
         }
 
@@ -135,7 +135,6 @@ class ContentController extends BaseController
      */
     public function store(Request $request)
     {
-
         // dd($request->all());
         $albumImages = [];
 
@@ -172,6 +171,7 @@ class ContentController extends BaseController
             'share_title' => 'nullable|string',
             'share_description' => 'nullable|string',
             'review_description' => 'nullable|string',
+            'created_at' => 'nullable|date',
         ];
 
         if (in_array($request->display_method, ['list', 'file'])) {
@@ -179,7 +179,7 @@ class ContentController extends BaseController
             if (empty(($request->items))) {
                 $request->items = [];
             } else {
-            // $rules['items'] = 'required|array|min:1';
+                // $rules['items'] = 'required|array|min:1';
                 $rules['items.*.title'] = 'required|string|max:255';
                 $rules['items.*.description'] = 'required|string';
                 $rules['items.*.image'] = [

@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl" class="js">
 
 <head>
+
     <meta charset="utf-8">
     <meta name="author" content="Softnio">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,6 +11,8 @@
     <title>تسجيل الدخول</title>
     <link rel="stylesheet" href="../dashlite/assets/css/dashlite.css?ver=3.3.0">
     <link id="skin-default" rel="stylesheet" href="../dashlite/assets/css/theme.css?ver=3.3.0">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('user/assets/images/icon-logo.svg') }}" />
+
     <style>
         :root {
             --primary-color: #52B788;
@@ -139,7 +142,8 @@
                                         <label class="form-label" for="email">البريد الإلكتروني</label>
                                         <div class="form-control-wrap">
                                             <input type="email" name="email" class="form-control form-control-lg"
-                                                id="email" placeholder="أدخل بريدك الإلكتروني" required value="{{ old('email') }}">
+                                                id="email" placeholder="أدخل بريدك الإلكتروني" required
+                                                value="{{ old('email') }}">
                                         </div>
                                         @error('email')
                                             <span class="text-danger small">{{ $message }}</span>

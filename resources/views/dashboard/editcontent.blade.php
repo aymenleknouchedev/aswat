@@ -6,6 +6,31 @@
 
 @section('content')
 
+    <script>
+        window.scrollTo(0, 0);
+        window.onload = function() {
+            window.scrollTo(0, 0);
+            setTimeout(function() {
+                window.scrollTo(0, 0);
+            }, 1);
+        };
+    </script>
+    <style>
+        .select2-dropdown-rtl {
+            direction: rtl !important;
+            text-align: right !important;
+        }
+
+        .select2-container--default .select2-selection--single {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .select2-container--default .select2-results>.select2-results__options {
+            direction: rtl;
+            text-align: right;
+        }
+    </style>
     <style>
         #contentTabs .nav-link {
             color: #b0b0b0 !important;
@@ -606,14 +631,17 @@
                                             @php
                                                 $isOwner = auth()->id() === $review->reviewer_id;
                                             @endphp
-                                            <div class="d-flex {{ $isOwner ? 'justify-content-end' : 'justify-content-start' }} mb-2">
+                                            <div
+                                                class="d-flex {{ $isOwner ? 'justify-content-end' : 'justify-content-start' }} mb-2">
                                                 <div class="review-message-card p-2 rounded shadow-sm {{ $isOwner ? 'bg-secondary text-white' : 'bg-light text-dark' }}"
                                                     style="max-width: 100%;">
                                                     <div class="d-flex align-items-center mb-1">
-                                                        <div class="small fw-bold badge {{ $isOwner ? 'bg-dark text-white' : 'bg-secondary text-white' }}">
+                                                        <div
+                                                            class="small fw-bold badge {{ $isOwner ? 'bg-dark text-white' : 'bg-secondary text-white' }}">
                                                             {{ $review->reviewer->name }} {{ $review->reviewer->surname }}
                                                         </div>
-                                                        <span class="ms-2 text-muted small">{{ $review->created_at->diffForHumans() }}</span>
+                                                        <span
+                                                            class="ms-2 text-muted small">{{ $review->created_at->diffForHumans() }}</span>
                                                     </div>
                                                     <p class="mb-0" style="white-space: pre-line;">
                                                         {{ $review->message }}
@@ -654,10 +682,13 @@
                                     <div class="row g-3 mt-3">
                                         <!-- Content Image -->
                                         <div class="col-md-6">
-                                            <label for="share_image" class="form-label" data-ar="صورة المحتوى" data-en="Content Image">صورة المحتوى</label>
-                                            <input type="file" id="share_image" name="share_image" class="form-control" accept="image/*">
+                                            <label for="share_image" class="form-label" data-ar="صورة المحتوى"
+                                                data-en="Content Image">صورة المحتوى</label>
+                                            <input type="file" id="share_image" name="share_image"
+                                                class="form-control" accept="image/*">
                                             <div class="mt-2 border rounded p-2 text-center" style="aspect-ratio: 16/9;">
-                                                <img id="share_image_preview" src="{{ $content->share_image }}" style="aspect-ratio: 16/9; display:none;">
+                                                <img id="share_image_preview" src="{{ $content->share_image }}"
+                                                    style="aspect-ratio: 16/9; display:none;">
                                             </div>
                                         </div>
 
@@ -717,7 +748,8 @@
                             <div class="card-body">
 
                                 <div class="mb-3">
-                                    <label for="publish_at" class="form-label" data-ar="جدولة النشر" data-en="Schedule Publish">
+                                    <label for="publish_at" class="form-label" data-ar="جدولة النشر"
+                                        data-en="Schedule Publish">
                                         <em class="icon ni ni-calendar"></em>
                                         جدولة النشر
                                     </label>
@@ -733,25 +765,31 @@
                                 </div>
 
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" value="1" id="is_latest" name="is_latest" 
-                                    {{ $content->is_latest ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="is_latest" data-ar="أخر الاخبار" data-en="Latest news">
-                                        أخر الاخبار
+                                    <input class="form-check-input" type="checkbox" value="1" id="is_latest"
+                                        name="is_latest" {{ $content->is_latest ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="is_latest" data-ar="آخر الاخبار"
+                                        data-en="Latest news">
+                                        آخر الاخبار
                                     </label>
                                 </div>
-                                
+
                                 <div class="mb-2">
-                                    <label class="form-label d-block mb-1" for="importance" data-ar="أهمية الخبر" data-en="Importance of News">أهمية الخبر</label>
+                                    <label class="form-label d-block mb-1" for="importance" data-ar="أهمية الخبر"
+                                        data-en="Importance of News">أهمية الخبر</label>
                                     <div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="importance" id="importance1" value="1"
+                                            <input class="form-check-input" type="radio" name="importance"
+                                                id="importance1" value="1"
                                                 {{ $content->importance == 1 ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="importance1" data-ar="خبر اولي" data-en="First news">خبر اولي</label>
+                                            <label class="form-check-label" for="importance1" data-ar="صف أول"
+                                                data-en="First news">صف أول</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="importance" id="importance2" value="2"
+                                            <input class="form-check-input" type="radio" name="importance"
+                                                id="importance2" value="2"
                                                 {{ $content->importance == 2 ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="importance2" data-ar="خبر ثانوي" data-en="Secondary news">خبر ثانوي</label>
+                                            <label class="form-check-label" for="importance2" data-ar="خبر ثاني"
+                                                data-en="Secondary news">خبر ثاني</label>
                                         </div>
                                     </div>
                                 </div>

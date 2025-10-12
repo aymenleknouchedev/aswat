@@ -10,7 +10,7 @@
             </a>
         </div>
         <div class="nk-sidebar-brand">
-            <a href="/dashboard/home" class="logo-link nk-sidebar-logo">
+            <a href="/" target="_blank" class="logo-link nk-sidebar-logo">
                 <img id="site-logo" class="logo-img" src="" alt="logo">
             </a>
         </div>
@@ -24,7 +24,7 @@
 
                     @canDo('dashboard_access')
                     <li class="nk-menu-item">
-                        <a href="/dashboard/home" class="nk-menu-link">
+                        <a href="/" target="_blank" class="nk-menu-link">
                             <span class="nk-menu-icon">
                                 <em class="icon ni ni-dashboard"></em>
                             </span>

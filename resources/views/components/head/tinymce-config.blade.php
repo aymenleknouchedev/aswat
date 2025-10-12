@@ -10,6 +10,10 @@
         promotion: false,
         onboarding: false,
 
+
+        // 🚫 Disable automatic focus
+        auto_focus: '',
+
         // Dark/light mode
         skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
         content_css: theme === 'dark' ? 'dark' : 'default',

@@ -76,7 +76,6 @@
     <div class="web">
         @include('user.components.fixed-nav')
 
-        {{-- <div style="height: 140px;"></div> --}}
 
         @php
             $topContentsCount = isset($topContents) && is_countable($topContents) ? count($topContents) : 0;
@@ -84,6 +83,7 @@
         @if ($topContentsCount >= 7)
             <div class="container">
                 @include('user.components.header')
+                @include('user.components.sp60')
             </div>
         @endif
 
@@ -96,8 +96,10 @@
                         <div class="art-section-grid">
                             @foreach ($principalTrend->trend->contents ?? [] as $content)
                                 <div class="art-section-card">
-                                    <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}" alt="{{ $content->title }}">
-                                    <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
+                                    <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
+                                        alt="{{ $content->title }}">
+                                    <a href="{{ route('news.show', $content->title) }}"
+                                        style="text-decoration: none; color: inherit;">
                                         <h2>{{ $content->title }}</h2>
                                     </a>
                                 </div>
@@ -105,6 +107,7 @@
                         </div>
                     </div>
                 </section>
+                @include('user.components.sp60')
             </div>
         @endif
 
@@ -123,7 +126,6 @@
                 $items = ${$component} ?? [];
             @endphp
             @if (is_countable($items) && count($items) >= $minCount)
-                @include('user.components.sp60')
                 <div class="container">
                     @include('user.components.section-title', ['slot' => $title, 'key' => $component])
                     @include("user.components.$component")

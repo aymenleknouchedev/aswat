@@ -6,6 +6,32 @@
 
 @section('content')
 
+    <script>
+        window.scrollTo(0, 0);
+        window.onload = function() {
+            window.scrollTo(0, 0);
+            setTimeout(function() {
+                window.scrollTo(0, 0);
+            }, 1);
+        };
+    </script>
+    <style>
+        .select2-dropdown-rtl {
+            direction: rtl !important;
+            text-align: right !important;
+        }
+
+        .select2-container--default .select2-selection--single {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .select2-container--default .select2-results>.select2-results__options {
+            direction: rtl;
+            text-align: right;
+        }
+    </style>
+
     <style>
         #contentTabs .nav-link {
             color: #b0b0b0 !important;
@@ -177,8 +203,10 @@
                                                 data-en="Category">التصنيف</label>
                                             <span style="color:red;">*</span>
                                             <div class="form-control-wrap position-relative">
-                                                <input type="text" id="categorySearch" class="form-control pe-5" required autocomplete="off" value="{{ old('category_name') }}">
-                                                <input type="hidden" name="category_id" id="categoryHidden" required value="{{ old('category_id') }}">
+                                                <input type="text" id="categorySearch" class="form-control pe-5"
+                                                    required autocomplete="off" value="{{ old('category_name') }}">
+                                                <input type="hidden" name="category_id" id="categoryHidden" required
+                                                    value="{{ old('category_id') }}">
                                                 <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
                                                     style="max-height:200px; overflow-y:auto; display:none;">
                                                 </div>
@@ -508,7 +536,8 @@
                                                         </button>
                                                     </div>
 
-                                                    <div id="tagResults" class="dropdown-menu w-100" style="display:none; max-height:200px; overflow-y:auto; position:absolute; z-index:1000;">
+                                                    <div id="tagResults" class="dropdown-menu w-100"
+                                                        style="display:none; max-height:200px; overflow-y:auto; position:absolute; z-index:1000;">
                                                     </div>
 
                                                     <div id="hiddenTags"></div>
@@ -686,7 +715,12 @@
                     <div class="col-md-3 mt-4">
                         <div class="card mb-3">
                             <div class="card-body">
-
+                                <div class="mb-2">
+                                    <label class="form-label d-block mb-1" for="created_at" data-ar="تاريخ الإنشاء"
+                                        data-en="Created At">تاريخ الإنشاء</label>
+                                    <input type="datetime-local" id="created_at" name="created_at" class="form-control"
+                                        value="{{ old('created_at') }}">
+                                </div>
                                 <!-- Collapsible: Schedule Publish -->
                                 <div>
                                     <label class="form-label" for="publish_at">
@@ -704,27 +738,36 @@
                                 </div>
 
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" value="1" id="is_latest" name="is_latest">
-                                    <label class="form-check-label" for="is_latest" data-ar="آخر الاخبار" data-en="Latest news">
+                                    <input class="form-check-input" type="checkbox" value="1" id="is_latest"
+                                        name="is_latest">
+                                    <label class="form-check-label" for="is_latest" data-ar="آخر الاخبار"
+                                        data-en="Latest news">
                                         آخر الاخبار
                                     </label>
                                 </div>
-                                
+
                                 <div class="mb-2">
-                                    <label class="form-label d-block mb-1" for="importance" data-ar="الظهور في الواجهة" data-en="Display on Frontend">الظهور في الواجهة</label>
+                                    <label class="form-label d-block mb-1" for="importance" data-ar="الظهور في الواجهة"
+                                        data-en="Display on Frontend">الظهور في الواجهة</label>
                                     <div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="importance" id="importance1" value="1"
+                                            <input class="form-check-input" type="radio" name="importance"
+                                                id="importance1" value="1"
                                                 {{ old('importance', '1') == '1' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="importance1" data-ar="صف أول" data-en="First Row">صف أول</label>
+                                            <label class="form-check-label" for="importance1" data-ar="صف أول"
+                                                data-en="First Row">صف أول</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="importance" id="importance2" value="2"
+                                            <input class="form-check-input" type="radio" name="importance"
+                                                id="importance2" value="2"
                                                 {{ old('importance') == '2' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="importance2" data-ar="صف ثانٍ" data-en="Second Row">صف ثانٍ</label>
+                                            <label class="form-check-label" for="importance2" data-ar="صف ثانٍ"
+                                                data-en="Second Row">صف ثانٍ</label>
                                         </div>
                                     </div>
                                 </div>
+
+
                             </div>
                         </div>
 
