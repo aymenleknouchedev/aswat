@@ -19,6 +19,7 @@ Route::middleware(['coming.soon'])->group(function () {
     Route::get('/section/videos', [HomePageController::class, 'videos'])->name('videos');
     Route::get('/section/podcasts', [HomePageController::class, 'podcasts'])->name('podcasts');
     Route::get('/section/photos', [HomePageController::class, 'photos'])->name('photos');
+    Route::get('/section/windows', [HomePageController::class, 'windows'])->name('windows');
     Route::get('/section/{section}', [HomePageController::class, 'newSection'])->name('newSection');
     Route::get('/news/{news}', [HomePageController::class, 'showNews'])->name('news.show');
 });

@@ -24,7 +24,7 @@
 
                     @canDo('dashboard_access')
                     <li class="nk-menu-item">
-                        <a href="/" target="_blank" class="nk-menu-link">
+                        <a href="/dashboard/home" class="nk-menu-link">
                             <span class="nk-menu-icon">
                                 <em class="icon ni ni-dashboard"></em>
                             </span>

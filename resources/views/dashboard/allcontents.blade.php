@@ -153,7 +153,7 @@
                                                                     }
                                                                 });
                                                             </script>
-                                                            <a href="{{ route('dashboard.content.edit', $news->id) }}" class="btn btn-sm btn-warning" data-en="Edit" data-ar="تعديل">تعديل</a>
+                                                            <a href="{{ route('dashboard.content.edit', $content->id) }}" class="btn btn-sm btn-warning" data-en="Edit" data-ar="تعديل">تعديل</a>
                                                             <div class="dropdown d-inline">
                                                                 <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="actionsDropdown{{ $content->id }}" data-bs-toggle="dropdown" aria-expanded="true">
                                                                     <em class="icon ni ni-more-h"></em>

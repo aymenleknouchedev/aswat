@@ -175,12 +175,22 @@ class HomePageController extends Controller
         ]);
     }
 
-
-
-    public function windows()
+    public function windows(Request $request)
     {
-        dd('windows');
-        return view('user.windows');
+        $perPage = 9;
+        $page = $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        $windows = Window::latest()
+            ->skip($skip)
+            ->take($perPage)
+            ->get();
+
+        if ($request->ajax()) {
+            return view('user.partials.window-items', compact('windows'))->render();
+        }
+
+        return view('user.window', compact('windows'));
     }
 
     public function files(Request $request)

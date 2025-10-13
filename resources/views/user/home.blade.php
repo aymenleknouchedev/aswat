@@ -94,7 +94,7 @@
                         <h2 class="art-section-title">{{ $principalTrend->trend->title ?? '' }}</h2>
 
                         <div class="art-section-grid">
-                            @foreach ($principalTrend->trend->contents ?? [] as $content)
+                            @foreach (($principalTrend->trend->contents ?? [])->sortByDesc('created_at')->take(4) as $content)
                                 <div class="art-section-card">
                                     <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
                                         alt="{{ $content->title }}">
@@ -127,6 +127,7 @@
             @endphp
             @if (is_countable($items) && count($items) >= $minCount)
                 <div class="container">
+                    @include('user.components.sp60')
                     @include('user.components.section-title', ['slot' => $title, 'key' => $component])
                     @include("user.components.$component")
                 </div>

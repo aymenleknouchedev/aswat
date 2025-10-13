@@ -540,7 +540,7 @@
                 </div>
 
                 {{-- بطاقة الكاتب --}}
-                @if ($news->writer->bio)
+                @if (optional($news->writer)->bio)
                     <div class="writer-card">
                         <img src="{{ $news->writer->path ? '/storage/' . $news->writer->path : asset('user.png') }}"
                             alt="Writer" loading="lazy">

@@ -26,14 +26,14 @@ return new class extends Migration
             $table->enum('display_method', ['simple', 'list', 'file'])->default('simple');
 
             // Foreign keys
-            $table->foreignId('section_id')->nullable()->constrained('sections')->nullOnDelete();
-            $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
-            $table->foreignId('continent_id')->nullable()->constrained('locations')->nullOnDelete();
-            $table->foreignId('country_id')->nullable()->constrained('locations')->nullOnDelete();
-            $table->foreignId('trend_id')->nullable()->constrained('trends')->nullOnDelete();
-            $table->foreignId('window_id')->nullable()->constrained('windows')->nullOnDelete();
-            $table->foreignId('writer_id')->nullable()->constrained('writers')->nullOnDelete();
-            $table->foreignId('city_id')->nullable()->constrained('locations')->nullOnDelete();
+            $table->foreignId('section_id')->nullable()->constrained('sections')->restrictOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained('categories')->restrictOnDelete();
+            $table->foreignId('continent_id')->nullable()->constrained('locations')->restrictOnDelete();
+            $table->foreignId('country_id')->nullable()->constrained('locations')->restrictOnDelete();
+            $table->foreignId('trend_id')->nullable()->constrained('trends')->restrictOnDelete();
+            $table->foreignId('window_id')->nullable()->constrained('windows')->restrictOnDelete();
+            $table->foreignId('writer_id')->nullable()->constrained('writers')->restrictOnDelete();
+            $table->foreignId('city_id')->nullable()->constrained('locations')->restrictOnDelete();
 
             // Body
             $table->string('summary', 130);

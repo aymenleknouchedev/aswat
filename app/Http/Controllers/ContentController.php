@@ -396,22 +396,22 @@ class ContentController extends BaseController
 
                     // 3️⃣ Save all album media
                     foreach ($items as $path) {
-                        // $mediatype = $file->getClientMimeType();
-                        // if ($mediatype === null) {
-                        //     $mediatype = 'url';
-                        // }
-                        // Check if ContentMedia with this path already exists
                         $existingMedia = ContentMedia::where('path', $path)->first();
                         if ($existingMedia) {
                             $media = $existingMedia;
                         } else {
+                            if ($path instanceof \Illuminate\Http\UploadedFile) {
+                                $mediatype = $path->getClientMimeType();
+                                $name = $path->getClientOriginalName();
+                            } else {
+                                $mediatype = 'url';
+                                $name = 'url_' . bin2hex(random_bytes(10));
+                            }
                             $media = ContentMedia::create([
                                 'path' => $path,
                                 'media_type' => $mediatype,
                                 'user_id' => Auth::id(),
-                                'name' => ($mediatype === 'url')
-                                    ? 'url_' . bin2hex(random_bytes(10))
-                                    : (isset($file) ? $file->getClientOriginalName() : basename($path)),
+                                'name' => $name,
                                 'alt' => $content->title,
                             ]);
                         }
