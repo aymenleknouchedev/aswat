@@ -144,9 +144,10 @@
                         alt="{{ $item->title ?? '' }}">
                     <h3>
                         <x-category-links :content="$item" />
-                        <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
-                            <h2>{{ $item->title ?? '' }}</h2>
-                        </a>
+                    </h3>
+                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                        <h2>{{ $item->title ?? '' }}</h2>
+                    </a>
                 </div>
             @endif
 
