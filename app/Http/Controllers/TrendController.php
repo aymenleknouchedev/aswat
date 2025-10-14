@@ -104,17 +104,20 @@ class TrendController extends BaseController
     public function update(Request $request, string $id)
     {
         try {
-            $trend = Trend::findOrFail($id);
-
             $request->validate([
-                'title' => 'required|string|max:255',
-                'slug' => 'required|string|max:255|unique:trends,slug,' . $trend->id,
+                'title' => 'required|string|min:3|max:255|unique:trends,title,' . $id,
+                'slug' => 'required|string|min:3|max:255|unique:trends,slug,' . $id,
+                'image' => 'nullable|max:6000',
             ]);
-
+            $trend = Trend::findOrFail($id);
             $trend->title = $request->input('title');
             $trend->slug = $request->input('slug');
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $path = asset('storage/' . $file->store('media', 'public'));
+                $trend->image = $path;
+            }
             $trend->save();
-
             return redirect()->route('dashboard.trends.index')->with('success', 'Trend updated successfully.');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors(['error' => 'فشل تحديث الترند. حاول مرة أخرى.']);

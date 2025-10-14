@@ -10,6 +10,9 @@ use App\Models\TopContent;
 use App\Models\Window;
 use App\Models\WindowManagement;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Location;
+use App\Models\Writer;
 
 class HomePageController extends Controller
 {
@@ -30,7 +33,6 @@ class HomePageController extends Controller
 
         return view('user.search', compact('query', 'results'));
     }
-
 
     public function index()
     {
@@ -492,5 +494,60 @@ class HomePageController extends Controller
     {
         $news = Content::where('title', $title)->latest()->firstOrFail();
         return view('user.news', compact('news'));
+    }
+
+    public function category(Request $request, $id, $type)
+    {
+        $current_id = $id;
+
+        // ✅ التحقق من النوع
+        switch ($type) {
+            case 'Category':
+                $theme = Category::findOrFail($id);
+                $column = 'category_id';
+                break;
+            case 'Continent':
+                $theme = Location::findOrFail($id);
+                $column = 'continent_id';
+                break;
+            case 'Country':
+                $theme = Location::findOrFail($id);
+                $column = 'country_id';
+                break;
+            case 'Writer':
+                $theme = Writer::findOrFail($id);
+                $column = 'writer_id';
+                break;
+            default:
+                abort(404, 'نوع القسم غير صالح.');
+        }
+
+        $perPage = 10;
+        $page = $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        // ✅ جلب المقالات حسب النوع
+        $articles = Content::where($column, $id)
+            ->latest()
+            ->skip($skip)
+            ->take($perPage)
+            ->get();
+
+        // ✅ إذا الطلب AJAX → نرجع جزء المقالات فقط
+        if ($request->ajax()) {
+            return view('user.partials.category-items', [
+                'articles' => $articles,
+            ])->render();
+        }
+
+        // ✅ إذا الطلب عادي → نعرض الصفحة الكاملة
+        $articles = Content::where($column, $id)->latest()->take($perPage)->get();
+
+        return view('user.category', [
+            'theme' => $theme,
+            'articles' => $articles,
+            'type' => $type,
+            'current_id' => $current_id,
+        ]);
     }
 }

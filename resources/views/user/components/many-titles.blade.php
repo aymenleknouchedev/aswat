@@ -144,17 +144,11 @@
                             <img src="{{ $technology[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                 alt="{{ $technology[0]->title ?? '' }}">
                             <h3>
-                                @if (isset($technology[0]->country))
-                                    {{ $technology[0]->category->name ?? '' }} -
-                                    {{ $technology[0]->country->name ?? '' }}
-                                @elseif (isset($technology[0]->continent))
-                                    {{ $technology[0]->category->name ?? '' }} -
-                                    {{ $technology[0]->continent->name ?? '' }}
-                                @else
-                                    {{ $technology[0]->category->name ?? '' }}
-                                @endif
+                                <x-category-links :content="$technology[0]" />
+
                             </h3>
-                            <a href="{{ route('news.show', $technology[0]->title) }}" style="text-decoration: none; color: inherit;">
+                            <a href="{{ route('news.show', $technology[0]->title) }}"
+                                style="text-decoration: none; color: inherit;">
                                 <h2>{{ $technology[0]->title ?? '' }}</h2>
                             </a>
                             <p>{{ $technology[0]->summary ?? '' }}</p>
@@ -171,15 +165,11 @@
                         </div>
                         <div class="many-titles-card-text">
                             <span>
-                                @if (isset($item->country))
-                                    {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
-                                @elseif (isset($item->continent))
-                                    {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
-                                @else
-                                    {{ $item->category->name ?? '' }}
-                                @endif
+                                <x-category-links :content="$item" />
+
                             </span>
-                            <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                            <a href="{{ route('news.show', $item->title) }}"
+                                style="text-decoration: none; color: inherit;">
                                 <p>{{ $item->title ?? '' }}</p>
                             </a>
                             {{-- <p>{{ $item->summary ?? '' }}</p> --}}
@@ -205,15 +195,11 @@
                             <img src="{{ $health[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                 alt="{{ $health[0]->title ?? '' }}">
                             <h3>
-                                @if (isset($health[0]->country))
-                                    {{ $health[0]->category->name ?? '' }} - {{ $health[0]->country->name ?? '' }}
-                                @elseif (isset($health[0]->continent))
-                                    {{ $health[0]->category->name ?? '' }} - {{ $health[0]->continent->name ?? '' }}
-                                @else
-                                    {{ $health[0]->category->name ?? '' }}
-                                @endif
+                                <x-category-links :content="$health[0]" />
+
                             </h3>
-                            <a href="{{ route('news.show', $health[0]->title) }}" style="text-decoration: none; color: inherit;">
+                            <a href="{{ route('news.show', $health[0]->title) }}"
+                                style="text-decoration: none; color: inherit;">
                                 <h2>{{ $health[0]->title ?? '' }}</h2>
                             </a>
                             <p>{{ $health[0]->summary ?? '' }}</p>
@@ -230,15 +216,11 @@
                         </div>
                         <div class="many-titles-card-text">
                             <span>
-                                @if (isset($item->country))
-                                    {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
-                                @elseif (isset($item->continent))
-                                    {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
-                                @else
-                                    {{ $item->category->name ?? '' }}
-                                @endif
+                                <x-category-links :content="$item" />
+
                             </span>
-                            <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                            <a href="{{ route('news.show', $item->title) }}"
+                                style="text-decoration: none; color: inherit;">
                                 <p>{{ $item->title ?? '' }}</p>
                             </a>
                             {{-- <p>{{ $item->summary ?? '' }}</p> --}}
@@ -263,17 +245,11 @@
                             <img src="{{ $environment[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                 alt="{{ $environment[0]->title ?? '' }}">
                             <h3>
-                                @if (isset($environment[0]->country))
-                                    {{ $environment[0]->category->name ?? '' }} -
-                                    {{ $environment[0]->country->name ?? '' }}
-                                @elseif (isset($environment[0]->continent))
-                                    {{ $environment[0]->category->name ?? '' }} -
-                                    {{ $environment[0]->continent->name ?? '' }}
-                                @else
-                                    {{ $environment[0]->category->name ?? '' }}
-                                @endif
+                                <x-category-links :content="$environment[0]" />
+
                             </h3>
-                            <a href="{{ route('news.show', $environment[0]->title) }}" style="text-decoration: none; color: inherit;">
+                            <a href="{{ route('news.show', $environment[0]->title) }}"
+                                style="text-decoration: none; color: inherit;">
                                 <h2>{{ $environment[0]->title ?? '' }}</h2>
                             </a>
                             <p>{{ $environment[0]->summary ?? '' }}</p>
@@ -290,15 +266,11 @@
                         </div>
                         <div class="many-titles-card-text">
                             <span>
-                                @if (isset($item->country))
-                                    {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
-                                @elseif (isset($item->continent))
-                                    {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
-                                @else
-                                    {{ $item->category->name ?? '' }}
-                                @endif
+                                <x-category-links :content="$item" />
+
                             </span>
-                            <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                            <a href="{{ route('news.show', $item->title) }}"
+                                style="text-decoration: none; color: inherit;">
                                 <p>{{ $item->title ?? '' }}</p>
                             </a>
                             {{-- <p>{{ $item->summary ?? '' }}</p> --}}

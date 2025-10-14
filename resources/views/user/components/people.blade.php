@@ -135,13 +135,8 @@
                 alt="{{ $people[0]->title ?? '' }}">
             <div class="buttom-side">
                 <h3>
-                    @if (isset($people[0]->country))
-                        {{ $people[0]->category->name ?? '' }} - {{ $people[0]->country->name ?? '' }}
-                    @elseif (isset($people[0]->continent))
-                        {{ $people[0]->category->name ?? '' }} - {{ $people[0]->continent->name ?? '' }}
-                    @else
-                        {{ $people[0]->category->name ?? '' }}
-                    @endif
+                    <x-category-links :content="$people[0]" />
+
                 </h3>
                 <a href="{{ route('news.show', $people[0]->title) }}" style="text-decoration: none; color: inherit;">
                     <h2>{{ $people[0]->title ?? '' }}</h2>
@@ -152,18 +147,13 @@
 
         <!-- Left: list -->
         <div class="people-list">
-            @foreach($people->slice(1, 2) as $person)
+            @foreach ($people->slice(1, 2) as $person)
                 <div class="people-feature-m">
                     <img src="{{ $person->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                         alt="{{ $person->title ?? '' }}">
                     <h3>
-                        @if (isset($person->country))
-                            {{ $person->category->name ?? '' }} - {{ $person->country->name ?? '' }}
-                        @elseif (isset($person->continent))
-                            {{ $person->category->name ?? '' }} - {{ $person->continent->name ?? '' }}
-                        @else
-                            {{ $person->category->name ?? '' }}
-                        @endif
+                        <x-category-links :content="$person" />
+
                     </h3>
                     <a href="{{ route('news.show', $person->title) }}" style="text-decoration: none; color: inherit;">
                         <h2>{{ $person->title ?? '' }}</h2>

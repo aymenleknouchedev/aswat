@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PrincipalTrend;
+use App\Models\Trend;
 
 class PrincipalTrendController extends Controller
 {
@@ -12,10 +13,9 @@ class PrincipalTrendController extends Controller
      */
     public function index()
     {
-        // Get all trends
-        $allTrends = \App\Models\Trend::all();
-        // Assuming you have a PrincipalTrend model
-        $principalTrend = \App\Models\PrincipalTrend::find(1);
+        $principalTrend = PrincipalTrend::first();
+        $allTrends = Trend::all();
+
         return view('dashboard.principal_trend', compact('principalTrend', 'allTrends'));
     }
 
@@ -58,16 +58,16 @@ class PrincipalTrendController extends Controller
     {
         $request->validate([
             'trend_id' => 'required|exists:trends,id',
+            'is_active' => 'required|boolean',
         ]);
 
-        // Delete all principal trends
-        PrincipalTrend::truncate();
+        $principalTrend = PrincipalTrend::first();
+        if (!$principalTrend) {
+            $principalTrend = new PrincipalTrend();
+        }
 
-        // Create a new principal trend with id = 1
-        $principalTrend = new PrincipalTrend();
-        $principalTrend->id = 1;
         $principalTrend->trend_id = $request->trend_id;
-        $principalTrend->is_active = $request->has('is_active');
+        $principalTrend->is_active = $request->is_active;
         $principalTrend->save();
 
         return redirect()->back()->with('success', 'تم تحديث الترند الرئيسي بنجاح');

@@ -98,13 +98,7 @@
             <img src="{{ $sports[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                 alt="{{ $sports[0]->title ?? '' }}">
             <h3>
-                @if (isset($sports[0]->country))
-                    {{ $sports[0]->category->name ?? '' }} - {{ $sports[0]->country->name ?? '' }}
-                @elseif (isset($sports[0]->continent))
-                    {{ $sport[0]->category->name ?? '' }} - {{ $sport[0]->continent->name ?? '' }}
-                @else
-                    {{ $sport[0]->category->name ?? '' }}
-                @endif
+                <x-category-links :content="$sports[0]" />
             </h3>
             <a href="{{ route('news.show', $sports[0]->title) }}" style="text-decoration: none; color: inherit;">
                 <h2>{{ $sports[0]->title ?? '' }}</h2>
@@ -117,13 +111,7 @@
             <img src="{{ $sports[1]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                 alt="{{ $sports[1]->title ?? '' }}">
             <h3>
-                @if (isset($sports[1]->country))
-                    {{ $sports[1]->category->name ?? '' }} - {{ $sports[1]->country->name ?? '' }}
-                @elseif (isset($sports[1]->continent))
-                    {{ $sports[1]->category->name ?? '' }} - {{ $sports[1]->continent->name ?? '' }}
-                @else
-                    {{ $sports[1]->category->name ?? '' }}
-                @endif
+                <x-category-links :content="$sports[1]" />
             </h3>
             <a href="{{ route('news.show', $sports[1]->title) }}" style="text-decoration: none; color: inherit;">
                 <h2>{{ $sports[1]->title ?? '' }}</h2>
@@ -142,15 +130,11 @@
                         </div>
                         <div class="sport-card-text">
                             <h3>
-                                @if (isset($sports[$i]->country))
-                                    {{ $sports[$i]->category->name ?? '' }} - {{ $sports[$i]->country->name ?? '' }}
-                                @elseif (isset($sports[$i]->continent))
-                                    {{ $sports[$i]->category->name ?? '' }} - {{ $sports[$i]->continent->name ?? '' }}
-                                @else
-                                    {{ $sports[$i]->category->name ?? '' }}
-                                @endif
+                                <x-category-links :content="$sports[$i]" />
+
                             </h3>
-                            <a href="{{ route('news.show', $sports[$i]->title) }}" style="text-decoration: none; color: inherit;">
+                            <a href="{{ route('news.show', $sports[$i]->title) }}"
+                                style="text-decoration: none; color: inherit;">
                                 <p>{{ $sports[$i]->title ?? '' }}</p>
                             </a>
                         </div>

@@ -157,17 +157,11 @@
             <img src="{{ $topContents[0]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                 alt="{{ $topContents[0]->content->title ?? '' }}">
             <h3>
-                @if (isset($topContents[0]->content->country))
-                    {{ $topContents[0]->content->category->name ?? '' }} -
-                    {{ $topContents[0]->content->country->name ?? '' }}
-                @elseif (isset($topContents[0]->content->continent))
-                    {{ $topContents[0]->content->category->name ?? '' }} -
-                    {{ $topContents[0]->content->continent->name ?? '' }}
-                @else
-                    {{ $topContents[0]->content->category->name ?? '' }}
-                @endif
+                <x-category-links :content="$topContents[0]->content" />
+
             </h3>
-            <a href="{{ route('news.show', $topContents[0]->content->title) }}" style="text-decoration: none; color: inherit;">
+            <a href="{{ route('news.show', $topContents[0]->content->title) }}"
+                style="text-decoration: none; color: inherit;">
                 <h2>{{ $topContents[0]->content->title ?? '' }}</h2>
             </a>
             <p>{{ $topContents[0]->content->summary ?? '' }}</p>
@@ -179,17 +173,11 @@
                 <img src="{{ $topContents[1]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="News 1">
                 <h3>
-                    @if (isset($topContents[1]->content->country))
-                        {{ $topContents[1]->content->category->name ?? '' }} -
-                        {{ $topContents[1]->content->country->name ?? '' }}
-                    @elseif (isset($topContents[1]->content->continent))
-                        {{ $topContents[1]->content->category->name ?? '' }} -
-                        {{ $topContents[1]->content->continent->name ?? '' }}
-                    @else
-                        {{ $topContents[1]->content->category->name ?? '' }}
-                    @endif
+                    <x-category-links :content="$topContents[1]->content" />
+
                 </h3>
-                <a href="{{ route('news.show', $topContents[1]->content->title) }}" style="text-decoration: none; color: inherit;">
+                <a href="{{ route('news.show', $topContents[1]->content->title) }}"
+                    style="text-decoration: none; color: inherit;">
                     <p>{{ $topContents[1]->content->title ?? '' }}</p>
                 </a>
             </div>
@@ -197,33 +185,21 @@
                 <img src="{{ $topContents[2]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="News 2">
                 <h3>
-                    @if (isset($topContents[2]->content->country))
-                        {{ $topContents[2]->content->category->name ?? '' }} -
-                        {{ $topContents[2]->content->country->name ?? '' }}
-                    @elseif (isset($topContents[2]->content->continent))
-                        {{ $topContents[2]->content->category->name ?? '' }} -
-                        {{ $topContents[2]->content->continent->name ?? '' }}
-                    @else
-                        {{ $topContents[2]->content->category->name ?? '' }}
-                    @endif
+                    <x-category-links :content="$topContents[2]->content" />
+
                 </h3>
-                <a href="{{ route('news.show', $topContents[2]->content->title) }}" style="text-decoration: none; color: inherit;">
+                <a href="{{ route('news.show', $topContents[2]->content->title) }}"
+                    style="text-decoration: none; color: inherit;">
                     <p>{{ $topContents[2]->content->title ?? '' }}</p>
                 </a>
             </div>
             <div class="news-item-noimage">
                 <h3>
-                    @if (isset($topContents[3]->content->country))
-                        {{ $topContents[3]->content->category->name ?? '' }} -
-                        {{ $topContents[3]->content->country->name ?? '' }}
-                    @elseif (isset($topContents[3]->content->continent))
-                        {{ $topContents[3]->content->category->name ?? '' }} -
-                        {{ $topContents[3]->content->continent->name ?? '' }}
-                    @else
-                        {{ $topContents[3]->content->category->name ?? '' }}
-                    @endif
+                    <x-category-links :content="$topContents[3]->content" />
+
                 </h3>
-                <a href="{{ route('news.show', $topContents[3]->content->title) }}" style="text-decoration: none; color: inherit;">
+                <a href="{{ route('news.show', $topContents[3]->content->title) }}"
+                    style="text-decoration: none; color: inherit;">
                     <p>{{ $topContents[3]->content->title ?? '' }}</p>
                 </a>
             </div>
@@ -234,17 +210,10 @@
                 <img src="{{ $topContents[4]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="News 1">
                 <h3>
-                    @if (isset($topContents[4]->content->country))
-                        {{ $topContents[4]->content->category->name ?? '' }} -
-                        {{ $topContents[4]->content->country->name ?? '' }}
-                    @elseif (isset($topContents[4]->content->continent))
-                        {{ $topContents[4]->content->category->name ?? '' }} -
-                        {{ $topContents[4]->content->continent->name ?? '' }}
-                    @else
-                        {{ $topContents[4]->content->category->name ?? '' }}
-                    @endif
+                    <x-category-links :content="$topContents[4]->content" />
                 </h3>
-                <a href="{{ route('news.show', $topContents[4]->content->title) }}" style="text-decoration: none; color: inherit;">
+                <a href="{{ route('news.show', $topContents[4]->content->title) }}"
+                    style="text-decoration: none; color: inherit;">
                     <p>{{ $topContents[4]->content->title ?? '' }}</p>
                 </a>
             </div>
@@ -252,33 +221,19 @@
                 <img src="{{ $topContents[5]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="News 2">
                 <h3>
-                    @if (isset($topContents[5]->content->country))
-                        {{ $topContents[5]->content->category->name ?? '' }} -
-                        {{ $topContents[5]->content->country->name ?? '' }}
-                    @elseif (isset($topContents[5]->content->continent))
-                        {{ $topContents[5]->content->category->name ?? '' }} -
-                        {{ $topContents[5]->content->continent->name ?? '' }}
-                    @else
-                        {{ $topContents[5]->content->category->name ?? '' }}
-                    @endif
+                    <x-category-links :content="$topContents[5]->content" />
                 </h3>
-                <a href="{{ route('news.show', $topContents[5]->content->title) }}" style="text-decoration: none; color: inherit;">
+                <a href="{{ route('news.show', $topContents[5]->content->title) }}"
+                    style="text-decoration: none; color: inherit;">
                     <p>{{ $topContents[5]->content->title ?? '' }}</p>
                 </a>
             </div>
             <div class="news-item-noimage">
                 <h3>
-                    @if (isset($topContents[6]->content->country))
-                        {{ $topContents[6]->content->category->name ?? '' }} -
-                        {{ $topContents[6]->content->country->name ?? '' }}
-                    @elseif (isset($topContents[6]->content->continent))
-                        {{ $topContents[6]->content->category->name ?? '' }} -
-                        {{ $topContents[6]->content->continent->name ?? '' }}
-                    @else
-                        {{ $topContents[6]->content->category->name ?? '' }}
-                    @endif
+                    <x-category-links :content="$topContents[6]->content" />
                 </h3>
-                <a href="{{ route('news.show', $topContents[6]->content->title) }}" style="text-decoration: none; color: inherit;">
+                <a href="{{ route('news.show', $topContents[6]->content->title) }}"
+                    style="text-decoration: none; color: inherit;">
                     <p>{{ $topContents[6]->content->title ?? '' }}</p>
                 </a>
             </div>

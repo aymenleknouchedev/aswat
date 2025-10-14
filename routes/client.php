@@ -20,6 +20,7 @@ Route::middleware(['coming.soon'])->group(function () {
     Route::get('/section/podcasts', [HomePageController::class, 'podcasts'])->name('podcasts');
     Route::get('/section/photos', [HomePageController::class, 'photos'])->name('photos');
     Route::get('/section/windows', [HomePageController::class, 'windows'])->name('windows');
+    Route::get('/category/{id}/{type}', [HomePageController::class, 'category'])->name('category.show');
     Route::get('/section/{section}', [HomePageController::class, 'newSection'])->name('newSection');
     Route::get('/news/{news}', [HomePageController::class, 'showNews'])->name('news.show');
 });

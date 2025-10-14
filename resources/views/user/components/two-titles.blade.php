@@ -204,18 +204,14 @@
                     <img src="{{ $variety[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                         alt="{{ $variety[0]->title ?? '' }}">
                     <h3>
-                        @if (isset($variety[0]->country))
-                            {{ $variety[0]->category->name ?? '' }} - {{ $variety[0]->country->name ?? '' }}
-                        @elseif (isset($variety[0]->continent))
-                            {{ $variety[0]->category->name ?? '' }} - {{ $variety[0]->continent->name ?? '' }}
-                        @else
-                            {{ $variety[0]->category->name ?? '' }}
-                        @endif
+                        <x-category-links :content="$variety[0]" />
+
                     </h3>
-                    <a href="{{ route('news.show', $variety[0]->title) }}" style="text-decoration: none; color: inherit;">
+                    <a href="{{ route('news.show', $variety[0]->title) }}"
+                        style="text-decoration: none; color: inherit;">
                         <h2>{{ $variety[0]->title ?? '' }}</h2>
                     </a>
-                    <p>{{ $variety[1]->summary ?? '' }}</p>
+                    <p>{{ $variety[0]->summary ?? '' }}</p>
                 </div>
 
                 <div class="two-titles-files-card-list">
@@ -227,15 +223,10 @@
                             </div>
                             <div class="two-titles-files-card-text">
                                 <span>
-                                    @if (isset($variet->country))
-                                        {{ $variet->category->name ?? '' }} - {{ $variet->country->name ?? '' }}
-                                    @elseif (isset($variet->continent))
-                                        {{ $variet->category->name ?? '' }} - {{ $variet->continent->name ?? '' }}
-                                    @else
-                                        {{ $variet->category->name ?? '' }}
-                                    @endif
+                                    <x-category-links :content="$variet" />
                                 </span>
-                                <a href="{{ route('news.show', $variet->title) }}" style="text-decoration: none; color: inherit;">
+                                <a href="{{ route('news.show', $variet->title) }}"
+                                    style="text-decoration: none; color: inherit;">
                                     <p>{{ $variet->title ?? '' }}</p>
                                 </a>
                             </div>

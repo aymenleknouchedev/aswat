@@ -209,13 +209,8 @@
             <div class="algeria-feature">
                 <img src="{{ $algeria[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature algeria">
                 <h3>
-                    @if (isset($algeria[0]->country))
-                        {{ $algeria[0]->category->name ?? '' }} - {{ $algeria[0]->country->name ?? '' }}
-                    @elseif (isset($algeria[0]->continent))
-                        {{ $algeria[0]->category->name ?? '' }} - {{ $algeria[0]->continent->name ?? '' }}
-                    @else
-                        {{ $algeria[0]->category->name ?? '' }}
-                    @endif
+                    <x-category-links :content="$algeria[0]" />
+
                 </h3>
                 <a href="{{ route('news.show', $algeria[0]->title) }}" style="text-decoration: none; color: inherit;">
                     <h2>{{ $algeria[0]->title }}</h2>
@@ -228,13 +223,8 @@
                     <img src="{{ $algeria[1]->media()->wherePivot('type', 'main')->first()->path }}"
                         alt="Feature algeria small">
                     <h3>
-                        @if (isset($algeria[1]->country))
-                            {{ $algeria[1]->category->name ?? '' }} - {{ $algeria[1]->country->name ?? '' }}
-                        @elseif (isset($algeria[1]->continent))
-                            {{ $algeria[1]->category->name ?? '' }} - {{ $algeria[1]->continent->name ?? '' }}
-                        @else
-                            {{ $algeria[1]->category->name ?? '' }}
-                        @endif
+                        <x-category-links :content="$algeria[1]" />
+
                     </h3>
                     <a href="{{ route('news.show', $algeria[1]->title) }}"
                         style="text-decoration: none; color: inherit;">
@@ -251,13 +241,8 @@
                         </div>
                         <div class="news-card-text">
                             <h3>
-                                @if (isset($algeria[2]->country))
-                                    {{ $algeria[2]->category->name ?? '' }} - {{ $algeria[2]->country->name ?? '' }}
-                                @elseif (isset($algeria[2]->continent))
-                                    {{ $algeria[2]->category->name ?? '' }} - {{ $algeria[2]->continent->name ?? '' }}
-                                @else
-                                    {{ $algeria[2]->category->name ?? '' }}
-                                @endif
+                                <x-category-links :content="$algeria[2]" />
+
                             </h3>
                             <a href="{{ route('news.show', $algeria[2]->title) }}"
                                 style="text-decoration: none; color: inherit;">
@@ -273,13 +258,8 @@
                         </div>
                         <div class="news-card-text">
                             <h3>
-                                @if (isset($algeria[3]->country))
-                                    {{ $algeria[3]->category->name ?? '' }} - {{ $algeria[3]->country->name ?? '' }}
-                                @elseif (isset($algeria[3]->continent))
-                                    {{ $algeria[3]->category->name ?? '' }} - {{ $algeria[3]->continent->name ?? '' }}
-                                @else
-                                    {{ $algeria[3]->category->name ?? '' }}
-                                @endif
+                                <x-category-links :content="$algeria[3]" />
+
                             </h3>
                             <a href="{{ route('news.show', $algeria[3]->title) }}"
                                 style="text-decoration: none; color: inherit;">
@@ -294,11 +274,11 @@
 
     <!-- Extra Titles Grid -->
     <div class="algeria-extra-grid">
-        @if(isset($algeriaLatestImportant) && count($algeriaLatestImportant) > 3)
-            @foreach($algeriaLatestImportant as $item)
+        @if (isset($algeriaLatestImportant) && count($algeriaLatestImportant) > 3)
+            @foreach ($algeriaLatestImportant as $item)
                 <div class="extra-item">
                     <h3>{{ $item->category->name ?? '' }}</h3>
-                    <a href="{{ route('news.show', $item->title) }}" styl   e="text-decoration: none; color: inherit;">
+                    <a href="{{ route('news.show', $item->title) }}" styl e="text-decoration: none; color: inherit;">
                         <p>{{ $item->title }}</p>
                     </a>
                 </div>

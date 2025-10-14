@@ -71,6 +71,7 @@ function changePhoto(next = true) {
             photoCategory.textContent = nextPhoto.category;
             photoTitle.textContent = nextPhoto.title;
             photoDescription.textContent = nextPhoto.summary;
+            
 
             // Fade back in
             photoImage.classList.remove('fade-out');

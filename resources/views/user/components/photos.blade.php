@@ -9,13 +9,7 @@
 
     <div class="content">
         <h3 id="photoCategory">
-            @if (isset($photos[0]->country))
-                {{ $photos[0]->category->name ?? '' }} - {{ $photos[0]->country->name ?? '' }}
-            @elseif (isset($photos[0]->continent))
-                {{ $photos[0]->category->name ?? '' }} - {{ $photos[0]->continent->name ?? '' }}
-            @else
-                {{ $photos[0]->category->name ?? '' }}
-            @endif
+            <x-category-links :content="$photos[0]" />
         </h3>
         <a href="{{ route('news.show', $photos[0]->title) }}" style="text-decoration: none; color: inherit;">
             <h2 id="photoTitle">{{ $photos[0]->title }}</h2>

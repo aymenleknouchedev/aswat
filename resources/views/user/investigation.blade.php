@@ -11,7 +11,7 @@
 
         {{-- Title --}}
         <div class="title">
-            <p class="section-title">تحقيقات</p>
+            <p class="section-title">فحص</p>
             @include('user.components.ligne')
             <div class="under-title-ligne-space"></div>
         </div>
@@ -97,7 +97,7 @@
                         alt="{{ $featured->title }}">
                 </div>
                 <div class="custom-content">
-                    <h3>{{ $featured->category->name ?? '' }} - {{ $featured->country->name ?? '' }}</h3>
+                    <h3><x-category-links :content="$featured" /></h3>
                     <a href="{{ route('news.show', $featured->title) }}" style="text-decoration: none; color: inherit;">
                         <h2>{{ $featured->title }}</h2>
                     </a>
@@ -173,7 +173,9 @@
         <div class="investigations-section-wrapper">
             <div>
                 <div class="investigations-section-grid" id="investigations-container">
-                    @include('user.partials.investigation-items', ['otherInvestigations' => $otherInvestigations])
+                    @include('user.partials.investigation-items', [
+                        'otherInvestigations' => $otherInvestigations,
+                    ])
                 </div>
 
                 <div class="text-center mt-3" id="load-more-container">
@@ -218,7 +220,8 @@
                 if (data.trim().length === 0) {
                     btn.closest("#load-more-container").remove();
                 } else {
-                    document.querySelector("#investigations-container").insertAdjacentHTML("beforeend", data);
+                    document.querySelector("#investigations-container").insertAdjacentHTML("beforeend",
+                        data);
                     btn.setAttribute("data-page", page);
                     btn.disabled = false;
                     btn.textContent = "المزيد";

@@ -17,7 +17,7 @@
                             <div class="nk-block-head-content">
                                 <h4 class="nk-block-title" data-en="Edit Trend" data-ar="تعديل ترند">تعديل ترند</h4>
                                 <p data-en="Update the form below to edit the trend."
-                                   data-ar="قم بتحديث النموذج أدناه لتعديل الترند.">
+                                    data-ar="قم بتحديث النموذج أدناه لتعديل الترند.">
                                     قم بتحديث النموذج أدناه لتعديل الترند.
                                 </p>
                             </div>
@@ -27,8 +27,7 @@
                         @if (session('success'))
                             <div class="alert alert-fill alert-success alert-icon">
                                 <em class="icon ni ni-check-circle"></em>
-                                <span class="translatable" data-ar="تم التعديل بنجاح"
-                                    data-en="Updated successfully">
+                                <span class="translatable" data-ar="تم التعديل بنجاح" data-en="Updated successfully">
                                     {{ session('success') ?? 'تم التعديل بنجاح' }}
                                 </span>
                             </div>
@@ -49,7 +48,7 @@
                         @endif
 
                         <!-- ✅ النموذج -->
-                        <form action="{{ route('dashboard.trend.update', $trend->id) }}" method="POST">
+                        <form action="{{ route('dashboard.trend.update', $trend->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -60,7 +59,7 @@
                                 </label>
                                 <div class="form-control-wrap">
                                     <input type="text" name="title" class="form-control" id="title"
-                                           value="{{ old('title', $trend->title) }}" required>
+                                        value="{{ old('title', $trend->title) }}" required>
                                 </div>
                                 @error('title')
                                     <span class="text-danger small">{{ $message }}</span>
@@ -69,20 +68,41 @@
 
                             <!-- Slug -->
                             <div class="form-group">
-                                <label class="form-label" for="slug" data-en="Slug" data-ar="الرابط المختصر">الرابط المختصر</label>
+                                <label class="form-label" for="slug" data-en="Slug" data-ar="الرابط المختصر">الرابط
+                                    المختصر</label>
                                 <div class="form-control-wrap">
                                     <input type="text" name="slug" class="form-control" id="slug"
-                                           value="{{ old('slug', $trend->slug) }}" required>
+                                        value="{{ old('slug', $trend->slug) }}" required>
                                 </div>
                                 @error('slug')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
 
+                            <!-- صورة الترند -->
+                            <div class="form-group">
+                                <label class="form-label" for="image" data-en="Trend Image" data-ar="صورة الترند">
+                                    صورة الترند
+                                </label>
+                                <div class="form-control-wrap">
+                                    @if ($trend->image)
+                                        <div class="mb-2">
+                                            <img src="{{ asset('storage/' . $trend->image) }}" alt="Trend Image"
+                                                style="max-width: 200px;">
+                                        </div>
+                                    @endif
+                                    <input type="file" name="image" class="form-control" id="image"
+                                        accept="image/*">
+                                </div>
+                                @error('image')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                             <!-- زر التحديث -->
                             <div class="form-group mt-3">
-                                <button type="submit" class="btn btn-primary"
-                                        data-en="Update Trend" data-ar="تحديث الترند">
+                                <button type="submit" class="btn btn-primary" data-en="Update Trend"
+                                    data-ar="تحديث الترند">
                                     تحديث الترند
                                 </button>
                             </div>

@@ -56,13 +56,7 @@
                 <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="{{ $item->title ?? '' }}">
                 <h3>
-                    @if (isset($item->country))
-                        {{ $item->category->name ?? '' }} - {{ $item->country->name ?? '' }}
-                    @elseif (isset($item->continent))
-                        {{ $item->category->name ?? '' }} - {{ $item->continent->name ?? '' }}
-                    @else
-                        {{ $item->category->name ?? '' }}
-                    @endif
+                    <x-category-links :content="$item" />
                 </h3>
                 <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
                     <h2>{{ $item->title ?? '' }}</h2>

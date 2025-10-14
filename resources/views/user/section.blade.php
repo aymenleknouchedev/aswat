@@ -345,13 +345,8 @@
                     <img src="{{ $contents[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                         alt="{{ $contents[0]->title ?? '' }}">
                     <h3>
-                        @if (isset($contents[0]->country))
-                            {{ $contents[0]->category->name ?? '' }} - {{ $contents[0]->country->name ?? '' }}
-                        @elseif (isset($contents[0]->continent))
-                            {{ $contents[0]->category->name ?? '' }} - {{ $contents[0]->continent->name ?? '' }}
-                        @else
-                            {{ $contents[0]->category->name ?? '' }}
-                        @endif
+                        <x-category-links :content="$contents[0]" />
+
                     </h3>
                     <a href="{{ route('news.show', $contents[0]->title) }}" style="text-decoration: none; color: inherit;">
                         <h2>{{ $contents[0]->title ?? '' }}</h2>
@@ -365,13 +360,8 @@
                         <img src="{{ $contents[1]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $contents[1]->title ?? '' }}">
                         <h3>
-                            @if (isset($contents[1]->country))
-                                {{ $contents[1]->category->name ?? '' }} - {{ $contents[1]->country->name ?? '' }}
-                            @elseif (isset($contents[1]->continent))
-                                {{ $contents[1]->category->name ?? '' }} - {{ $contents[1]->continent->name ?? '' }}
-                            @else
-                                {{ $contents[1]->category->name ?? '' }}
-                            @endif
+                            <x-category-links :content="$contents[1]" />
+
                         </h3>
                         <a href="{{ route('news.show', $contents[1]->title) }}"
                             style="text-decoration: none; color: inherit;">
@@ -390,15 +380,8 @@
                                     </div>
                                     <div class="news-card-text">
                                         <h3>
-                                            @if (isset($contents[$i]->country))
-                                                {{ $contents[$i]->category->name ?? '' }} -
-                                                {{ $contents[$i]->country->name ?? '' }}
-                                            @elseif (isset($contents[$i]->continent))
-                                                {{ $contents[$i]->category->name ?? '' }} -
-                                                {{ $contents[$i]->continent->name ?? '' }}
-                                            @else
-                                                {{ $contents[$i]->category->name ?? '' }}
-                                            @endif
+                                            <x-category-links :content="$contents[$i]" />
+
                                         </h3>
                                         <a href="{{ route('news.show', $contents[$i]->title) }}"
                                             style="text-decoration: none; color: inherit;">
@@ -413,23 +396,23 @@
             </div>
 
             @if (count($window->contents ?? []) >= 0 && $windowmanagement->status === 1)
-            <section class="art-section-hero">
-                <div class="art-section-overlay">
-                    <h2 class="art-section-title">{{ $window->name }}</h2>
-                    <div class="art-section-grid">
-                        @foreach ($window->contents ?? [] as $content)
-                            <div class="art-section-card">
-                                <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
-                                    alt="{{ $content->title }}">
-                                <a href="{{ route('news.show', $content->title) }}"
-                                    style="text-decoration: none; color: inherit;">
-                                    <h2>{{ $content->title }}</h2>
-                                </a>
-                            </div>
-                        @endforeach
+                <section class="art-section-hero">
+                    <div class="art-section-overlay">
+                        <h2 class="art-section-title">{{ $window->name }}</h2>
+                        <div class="art-section-grid">
+                            @foreach ($window->contents ?? [] as $content)
+                                <div class="art-section-card">
+                                    <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
+                                        alt="{{ $content->title }}">
+                                    <a href="{{ route('news.show', $content->title) }}"
+                                        style="text-decoration: none; color: inherit;">
+                                        <h2>{{ $content->title }}</h2>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
             @endif
 
 
@@ -484,7 +467,7 @@
                                     alt="{{ $content->title ?? 'تحلية مياه البحر' }}">
                             </div>
                             <div class="news-card-text">
-                                <h3>{{ $content->category->name ?? 'اقتصاد جزائري' }}</h3>
+                                <x-category-links :content="$content" fallback="اقتصاد جزائري" />
                                 <a href="{{ route('news.show', $content->title) }}"
                                     style="text-decoration: none; color: inherit;">
                                     <p>{{ $content->title ?? '' }}</p>

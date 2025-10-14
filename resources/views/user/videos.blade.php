@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'أصوات جزائرية | فيديوهات')
+@section('title', 'أصوات جزائرية | فيديو')
 
 @section('content')
 
@@ -11,7 +11,7 @@
 
         {{-- Title --}}
         <div class="title">
-            <p class="section-title">فيديوهات</p>
+            <p class="section-title">فيديو</p>
             @include('user.components.ligne')
             <div class="under-title-ligne-space"></div>
         </div>
@@ -100,7 +100,7 @@
                     </div>
                 </div>
                 <div class="custom-content">
-                    <h3>{{ $featured->category->name ?? '' }} - {{ $featured->country->name ?? '' }}</h3>
+                    <h3><x-category-links :content="$featured" /></h3>
                     <a href="{{ route('news.show', $featured->title) }}" style="text-decoration: none; color: inherit;">
                         <h2>{{ $featured->title }}</h2>
                     </a>

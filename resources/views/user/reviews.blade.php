@@ -205,13 +205,7 @@
                     </div>
                     <div class="custom-content">
                         <h3>
-                            @if (isset($reviews[0]->country))
-                                {{ $reviews[0]->category->name ?? '' }} - {{ $reviews[0]->country->name ?? '' }}
-                            @elseif (isset($reviews[0]->continent))
-                                {{ $reviews[0]->category->name ?? '' }} - {{ $reviews[0]->continent->name ?? '' }}
-                            @else
-                                {{ $reviews[0]->category->name ?? '' }}
-                            @endif
+                          <x-category-links :content="$reviews[0]" />
                         </h3>
                         <a href="{{ route('news.show', $reviews[0]->title) }}" style="text-decoration: none; color: inherit;">
                             <h2>{{ $reviews[0]->title }}</h2>

@@ -76,18 +76,18 @@
     <div class="web">
         @include('user.components.fixed-nav')
 
-
+        {{-- topContents --}}
         @php
             $topContentsCount = isset($topContents) && is_countable($topContents) ? count($topContents) : 0;
         @endphp
         @if ($topContentsCount >= 7)
             <div class="container">
                 @include('user.components.header')
-                @include('user.components.sp60')
             </div>
         @endif
 
-        @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 4 and $principalTrend->is_active)
+        {{-- Principal Trend Section --}}
+        @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
             <div class="container">
                 <section class="art-section-hero">
                     <div class="art-section-overlay">
@@ -113,13 +113,38 @@
 
         @php
             $sections = [
-                'algeria' => ['الجزائر', 4],
                 'world' => ['عالم', 5],
                 'economy' => ['اقتصاد', 4],
                 'sports' => ['رياضة', 6],
                 'people' => ['ناس', 3],
             ];
+
+            $algeriaItems = $algeria ?? [];
         @endphp
+
+        {{-- Algeria section separately --}}
+        @if (is_countable($algeriaItems) && count($algeriaItems) >= 4)
+            @php $component = 'algeria'; @endphp {{-- define $component --}}
+            <div class="container">
+                @include('user.components.section-title', ['slot' => 'الجزائر', 'key' => $component])
+                @include('user.components.algeria')
+            </div>
+        @endif
+
+        {{-- Loop for the other sections --}}
+        @foreach ($sections as $component => [$title, $minCount])
+            @php
+                $items = ${$component} ?? [];
+            @endphp
+            @if (is_countable($items) && count($items) >= $minCount)
+                <div class="container">
+                    @include('user.components.sp60')
+                    @include('user.components.section-title', ['slot' => $title, 'key' => $component])
+                    @include("user.components.$component")
+                </div>
+            @endif
+        @endforeach
+
 
         @foreach ($sections as $component => [$title, $minCount])
             @php

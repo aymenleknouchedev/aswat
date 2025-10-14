@@ -21,6 +21,16 @@
             display: flex;
             gap: 20px;
             direction: rtl;
+            align-items: center;
+            /* vertically center */
+        }
+
+        .newCategory-all-card-date {
+            color: #333;
+            /* dark grey */
+            font-size: 14px;
+            min-width: 70px;
+            text-align: center;
         }
 
         .newCategory-all-card-image img {
@@ -32,6 +42,8 @@
 
         .newCategory-all-card-text {
             flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .newCategory-all-card-text h3 {
@@ -54,6 +66,22 @@
             line-height: 1.5;
             margin: 0;
         }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .newCategory-all-section {
+                grid-template-columns: 1fr;
+            }
+
+            .newCategory-all-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .newCategory-all-card-date {
+                margin-bottom: 10px;
+            }
+        }
     </style>
 
     <div class="web">
@@ -71,18 +99,8 @@
                 <div class="newCategory-all-list">
                     @forelse ($results as $item)
                         <div class="newCategory-all-card">
-                            <div class="newCategory-all-card-image">
-                                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                                    alt="{{ $item->title }}">
-                            </div>
-                            <div class="newCategory-all-card-text"
-                                style="display: flex; flex-direction: column; height: 100%;">
-                                <h3>{{ $item->category->name ?? '' }}</h3>
-                                <a href="{{ route('news.show', $item->title) }}"
-                                    style="text-decoration: none; color: inherit;">
-                                    <h2>{{ $item->title }}</h2>
-                                </a>
-                                <p>{{ $item->summary }}</p>
+                            <!-- Date on the left -->
+                            <div class="newCategory-all-card-date">
                                 @php
                                     $months = [
                                         '01' => 'يناير',
@@ -103,8 +121,23 @@
                                     $month = $months[$date->format('m')];
                                     $year = $date->format('Y');
                                 @endphp
-                                <p style="margin-top: auto; color: #888;">{{ $day }} {{ $month }}
-                                    {{ $year }}</p>
+                                <h4>{{ $day }} {{ $month }} {{ $year }}</h4>
+                            </div>
+
+                            <!-- Image -->
+                            <div class="newCategory-all-card-image">
+                                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
+                                    alt="{{ $item->title }}">
+                            </div>
+
+                            <!-- Text -->
+                            <div class="newCategory-all-card-text">
+                                <h3><x-category-links :content="$item" /></h3>
+                                <a href="{{ route('news.show', $item->title) }}"
+                                    style="text-decoration: none; color: inherit;">
+                                    <h2>{{ $item->title }}</h2>
+                                </a>
+                                <h3>{{ $item->summary }}</h3>
                             </div>
                         </div>
                     @empty
@@ -121,7 +154,6 @@
             @include('user.components.sp60')
         </div>
         @include('user.components.footer')
-
     </div>
 
     <div class="mobile"></div>
