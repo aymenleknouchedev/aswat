@@ -467,7 +467,7 @@
                                     alt="{{ $content->title ?? 'تحلية مياه البحر' }}">
                             </div>
                             <div class="news-card-text">
-                                <x-category-links :content="$content" fallback="اقتصاد جزائري" />
+                                <h3> <x-category-links :content="$content" fallback="اقتصاد جزائري" /></h3>
                                 <a href="{{ route('news.show', $content->title) }}"
                                     style="text-decoration: none; color: inherit;">
                                     <p>{{ $content->title ?? '' }}</p>
