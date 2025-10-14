@@ -7,7 +7,6 @@
     <style>
         .art-section-hero {
             position: relative;
-            margin-top: 60px;
             background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)),
                 url('{{ asset($principalTrend->trend->image) }}') center/cover no-repeat;
             color: #fff;
