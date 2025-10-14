@@ -1,5 +1,5 @@
   @foreach ($windows as $item)
-      @if ($item->contents->count() > 1)
+      @if ($item->contents->count() > 0)
           <section class="art-section-hero"
               style="background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)), url('{{ asset($item->image) }}') center/cover no-repeat;">
               <div class="art-section-overlay">
