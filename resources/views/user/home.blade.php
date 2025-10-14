@@ -83,6 +83,7 @@
         @if ($topContentsCount >= 7)
             <div class="container">
                 @include('user.components.header')
+                @include('user.components.sp60')
             </div>
         @endif
 
