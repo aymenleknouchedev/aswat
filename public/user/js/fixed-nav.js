@@ -144,19 +144,26 @@ function startTyping() {
 function fetchBreakingNews() {
     fetch('/api/breaking-news')
         .then(response => response.json())
-        .then(data => {
-            if (!Array.isArray(data) || data.length === 0) return;
+        .then(res => {
+            const data = res.data || []; // ✅ use the new structure
 
             const dataString = JSON.stringify(data);
             if (dataString !== lastFetchedData) {
-                // Data changed (added/deleted) → update
                 lastFetchedData = dataString;
+
                 texts.length = 0;
                 texts.push(...data);
 
-                siteBreakingNews.style.display = 'flex';
-                document.body.classList.remove('site-breaking-closed');
-                startTyping();
+                if (data.length > 0) {
+                    siteBreakingNews.style.display = 'flex';
+                    document.body.classList.remove('site-breaking-closed');
+                    startTyping();
+                } else {
+                    // ✅ Hide immediately when no data
+                    clearTypingTimers();
+                    element.textContent = '';
+                    siteBreakingNews.style.display = 'none';
+                }
             }
         })
         .catch(err => console.error('Failed to fetch breaking news:', err));
@@ -165,9 +172,9 @@ function fetchBreakingNews() {
 // Initial fetch
 fetchBreakingNews();
 
-// Fetch every 30s, but only update if changed
+// Fetch every 5 seconds (not 1s — safer for performance)
 if (siteBreakingNews) {
-    breakingNewsInterval = setInterval(fetchBreakingNews, 1000);
+    breakingNewsInterval = setInterval(fetchBreakingNews, 5000);
 
     siteCloseBreaking.addEventListener('click', () => {
         clearInterval(breakingNewsInterval);
@@ -175,6 +182,7 @@ if (siteBreakingNews) {
         clearTypingTimers();
     });
 }
+
 
 
 // === Latest news typing ===

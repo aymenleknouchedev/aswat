@@ -125,15 +125,22 @@ class HomePageController extends Controller
 
     public function breakingNewsApi()
     {
-        return Cache::remember('breaking-news', 5, function () {
-            $tenMinutesAgo = now()->subMinutes(10);
+        $tenMinutesAgo = now()->subMinutes(10);
 
+        // Always fetch fresh data if cache is missing or expired
+        $breakingNews = Cache::remember('breaking-news', 5, function () use ($tenMinutesAgo) {
             $breakingContent = BreakingContent::where('created_at', '>=', $tenMinutesAgo)
                 ->latest()
                 ->get();
 
             return $breakingContent->pluck('text');
         });
+
+        // ✅ Always return consistent JSON structure
+        return response()->json([
+            'data' => $breakingNews,
+            'updated_at' => now()->timestamp, // helps frontend detect change
+        ]);
     }
 
 
