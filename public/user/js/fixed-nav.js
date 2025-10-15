@@ -102,17 +102,30 @@ document.addEventListener('click', (e) => {
 // === Breaking news typing ===
 const element = document.getElementById('site-breaking-text');
 const texts = [];
+let lastFetchedData = null; // cache last result
 let textIndex = 0;
 let charIndex = 0;
 const speed = 20;
 
+let typingTimeout = null;
+let switchingTimeout = null;
+let breakingNewsInterval = null;
+
+function clearTypingTimers() {
+    clearTimeout(typingTimeout);
+    clearTimeout(switchingTimeout);
+}
+
 function typeWriter() {
+    if (!texts.length) return;
+
     if (charIndex < texts[textIndex].length) {
         element.textContent += texts[textIndex].charAt(charIndex++);
-        setTimeout(typeWriter, speed);
+        typingTimeout = setTimeout(typeWriter, speed);
     } else {
-        textIndex = (textIndex + 1) % texts.length;
-        setTimeout(() => {
+        // Wait 3 seconds before switching to next text
+        switchingTimeout = setTimeout(() => {
+            textIndex = (textIndex + 1) % texts.length;
             element.textContent = '';
             charIndex = 0;
             typeWriter();
@@ -120,37 +133,49 @@ function typeWriter() {
     }
 }
 
+function startTyping() {
+    clearTypingTimers();
+    element.textContent = '';
+    charIndex = 0;
+    textIndex = 0;
+    typeWriter();
+}
+
 function fetchBreakingNews() {
     fetch('/api/breaking-news')
         .then(response => response.json())
         .then(data => {
-            if (Array.isArray(data) && data.length > 0) {
+            if (!Array.isArray(data) || data.length === 0) return;
+
+            const dataString = JSON.stringify(data);
+            if (dataString !== lastFetchedData) {
+                // Data changed (added/deleted) → update
+                lastFetchedData = dataString;
                 texts.length = 0;
                 texts.push(...data);
+
                 siteBreakingNews.style.display = 'flex';
                 document.body.classList.remove('site-breaking-closed');
-                textIndex = 0;
-                charIndex = 0;
-                element.textContent = '';
-                typeWriter(); // Start typing after data loads
+                startTyping();
             }
         })
-        .catch(err => console.error('Failed to fetch texts:', err));
+        .catch(err => console.error('Failed to fetch breaking news:', err));
 }
 
 // Initial fetch
 fetchBreakingNews();
 
-let breakingNewsInterval = null;
+// Fetch every 30s, but only update if changed
 if (siteBreakingNews) {
-    breakingNewsInterval = setInterval(fetchBreakingNews, 30000);
+    breakingNewsInterval = setInterval(fetchBreakingNews, 5000);
+
     siteCloseBreaking.addEventListener('click', () => {
-        if (breakingNewsInterval) {
-            clearInterval(breakingNewsInterval);
-            breakingNewsInterval = null;
-        }
+        clearInterval(breakingNewsInterval);
+        breakingNewsInterval = null;
+        clearTypingTimers();
     });
 }
+
 
 // === Latest news typing ===
 const element2 = document.getElementById('site-latest-text');

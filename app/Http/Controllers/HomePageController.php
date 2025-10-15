@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\Writer;
+use Illuminate\Support\Facades\Cache;
 
 class HomePageController extends Controller
 {
@@ -120,18 +121,21 @@ class HomePageController extends Controller
         return response()->json($photos);
     }
 
+
+
     public function breakingNewsApi()
     {
-        $tenMinutesAgo = now()->subMinutes(10);
+        return Cache::remember('breaking-news', 5, function () {
+            $tenMinutesAgo = now()->subMinutes(10);
 
-        $breakingContent = BreakingContent::where('created_at', '>=', $tenMinutesAgo)
-            ->latest()
-            ->get();
+            $breakingContent = BreakingContent::where('created_at', '>=', $tenMinutesAgo)
+                ->latest()
+                ->get();
 
-        $breakingNews = $breakingContent->pluck('text');
-
-        return response()->json($breakingNews);
+            return $breakingContent->pluck('text');
+        });
     }
+
 
     public function latestNewsApi()
     {
