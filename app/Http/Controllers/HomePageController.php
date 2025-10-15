@@ -504,6 +504,13 @@ class HomePageController extends Controller
     public function showNews($title)
     {
         $news = Content::where('title', $title)->latest()->firstOrFail();
+        $newsKey = 'news_' . $news->id . '_read';
+        if (!session()->has($newsKey)) {
+            $news->increment('read_count');
+            session()->put($newsKey, true);
+        }
+
+
         return view('user.news', compact('news'));
     }
 
