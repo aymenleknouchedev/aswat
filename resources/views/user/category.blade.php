@@ -157,7 +157,6 @@
 
                             <!-- Text -->
                             <div class="newCategory-all-card-text">
-                                <h3>{{ $item->category->name ?? '' }}</h3>
                                 <a href="{{ route('news.show', $item->title) }}"
                                     style="text-decoration: none; color: inherit;">
                                     <h2>{{ $item->title }}</h2>

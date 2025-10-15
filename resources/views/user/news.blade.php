@@ -545,13 +545,15 @@
 
                 {{-- بطاقة الكاتب --}}
                 @if (optional($news->writer))
-                    <div class="writer-card">
-                        <img src="{{ $news->writer->image ?? asset('user.png') }}" alt="Writer" loading="lazy">
-                        <div class="writer-info">
-                            <span> <span style="font-weight:bold;">{{ $news->writer->name }}</span>
-                                {{ $news->writer->bio }}</span>
+                    <a href="{{ route('writer.show', $news->writer->id) }}">
+                        <div class="writer-card">
+                            <img src="{{ $news->writer->image ?? asset('user.png') }}" alt="Writer" loading="lazy">
+                            <div class="writer-info">
+                                <span> <span style="font-weight:bold;">{{ $news->writer->name }}</span>
+                                    {{ $news->writer->bio }}</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 @endif
 
             </div>
