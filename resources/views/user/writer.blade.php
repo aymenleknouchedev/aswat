@@ -214,7 +214,7 @@
         <div class="container">
             <!-- Writer Info -->
             <div class="writer-header">
-                <img src="{{ $writer->image ?? 'default-image-path.jpg' }}" alt="{{ $writer->name }}">
+                <img src="{{ $writer->image ?? 'user.png' }}" alt="{{ $writer->name }}">
                 <div class="writer-info">
                     <h1>{{ $writer->name }}</h1>
                     <p>{{ $writer->bio ?? 'لا توجد سيرة ذاتية متوفرة.' }}</p>
