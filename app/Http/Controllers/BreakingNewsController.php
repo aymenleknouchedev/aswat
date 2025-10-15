@@ -28,7 +28,7 @@ class BreakingNewsController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    
+
 
     public function store(Request $request)
     {
@@ -93,6 +93,11 @@ class BreakingNewsController extends BaseController
         $news = BreakingContent::findOrFail($id);
         $news->delete();
 
-        return redirect()->route('dashboard.breakingnew.create')->with('success', 'Breaking news deleted successfully.');
+        // 🧹 Clear cache so API updates instantly
+        Cache::forget('breaking-news');
+
+        return redirect()
+            ->route('dashboard.breakingnew.create')
+            ->with('success', 'Breaking news deleted successfully.');
     }
 }

@@ -167,7 +167,7 @@ fetchBreakingNews();
 
 // Fetch every 30s, but only update if changed
 if (siteBreakingNews) {
-    breakingNewsInterval = setInterval(fetchBreakingNews, 5000);
+    breakingNewsInterval = setInterval(fetchBreakingNews, 1000);
 
     siteCloseBreaking.addEventListener('click', () => {
         clearInterval(breakingNewsInterval);
