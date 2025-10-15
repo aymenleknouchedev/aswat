@@ -120,17 +120,28 @@ function typeWriter() {
     }
 }
 
-fetch('/api/breaking-news')
-    .then(response => response.json())
-    .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-            texts.push(...data);
-            siteBreakingNews.style.display = 'flex';
-            document.body.classList.remove('site-breaking-closed');
-            typeWriter(); // ✅ Start typing after data loads
-        }
-    })
-    .catch(err => console.error('Failed to fetch texts:', err));
+function fetchBreakingNews() {
+    fetch('/api/breaking-news')
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data) && data.length > 0) {
+                texts.length = 0;
+                texts.push(...data);
+                siteBreakingNews.style.display = 'flex';
+                document.body.classList.remove('site-breaking-closed');
+                textIndex = 0;
+                charIndex = 0;
+                element.textContent = '';
+                typeWriter(); // Start typing after data loads
+            }
+        })
+        .catch(err => console.error('Failed to fetch texts:', err));
+}
+
+// Initial fetch
+fetchBreakingNews();
+
+setInterval(fetchBreakingNews, 10000);
 
 // === Latest news typing ===
 const element2 = document.getElementById('site-latest-text');
