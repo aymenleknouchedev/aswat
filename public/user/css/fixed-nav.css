@@ -32,7 +32,7 @@
     right: 0;
     left: 0;
     height: 48px;
-    display: flex;
+    display: none;
     align-items: center;
     background: #C1121F;
     color: #fff;

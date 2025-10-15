@@ -31,12 +31,14 @@ siteSubnav.addEventListener('mouseleave', () => {
 
 function showSubnav() {
     siteSubnav.style.display = 'flex'; // Flex لو التصميم يحتاج ذلك
+    siteFirstNavLink.classList.add('active'); // أضف الكلاس عند الفتح
 }
 
 function startHideTimeout() {
     hideTimeout = setTimeout(() => {
         if (!isHoveringLink && !isHoveringSubnav) {
             siteSubnav.style.display = 'none';
+            siteFirstNavLink.classList.remove('active'); // أزل الكلاس عند الإخفاء
         }
     }, 200); // تأخير 200ms لتفادي اختفاء مفاجئ
 }
@@ -75,7 +77,7 @@ function triggerFade(element) {
     element.classList.add('fade-in');
 }
 
-
+// === Search toggle ===
 const searchInput = document.querySelector('.site-search-input');
 const searchButton = document.querySelector('.search-icon');
 
@@ -97,126 +99,66 @@ document.addEventListener('click', (e) => {
     }
 });
 
-
-siteFirstNavLink.addEventListener('mouseenter', () => {
-    isHoveringLink = true;
-    clearTimeout(hideTimeout);
-    showSubnav();
-});
-
-siteFirstNavLink.addEventListener('mouseleave', () => {
-    isHoveringLink = false;
-    startHideTimeout();
-});
-
-siteSubnav.addEventListener('mouseenter', () => {
-    isHoveringSubnav = true;
-    clearTimeout(hideTimeout);
-    siteFirstNavLink.classList.add('active'); // إبقاء الـ link فعالًا بصريًا
-});
-
-siteSubnav.addEventListener('mouseleave', () => {
-    isHoveringSubnav = false;
-    startHideTimeout();
-});
-
-function showSubnav() {
-    siteSubnav.style.display = 'flex';
-    siteFirstNavLink.classList.add('active'); // أضف الكلاس عند الفتح
-}
-
-function startHideTimeout() {
-    hideTimeout = setTimeout(() => {
-        if (!isHoveringLink && !isHoveringSubnav) {
-            siteSubnav.style.display = 'none';
-            siteFirstNavLink.classList.remove('active'); // أزل الكلاس عند الإخفاء
-        }
-    }, 200);
-}
-
+// === Breaking news typing ===
 const element = document.getElementById('site-breaking-text');
-
-const texts = [''];
-
-fetch('/api/breaking-news')
-    .then(response => response.json())
-    .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-            texts.length = 0;
-            texts.push(...data);
-            siteBreakingNews.style.display = '';
-            document.body.classList.remove('site-breaking-closed');
-        } else {
-            siteBreakingNews.style.display = 'none';
-            document.body.classList.add('site-breaking-closed');
-        }
-    })
-    .catch(err => {
-        console.error('Failed to fetch texts:', err);
-    });
-
+const texts = [];
 let textIndex = 0;
 let charIndex = 0;
 const speed = 20;
 
 function typeWriter() {
     if (charIndex < texts[textIndex].length) {
-        element.textContent += texts[textIndex].charAt(charIndex);
-        charIndex++;
+        element.textContent += texts[textIndex].charAt(charIndex++);
         setTimeout(typeWriter, speed);
     } else {
-        textIndex++;
-        if (textIndex >= texts.length) {
-            textIndex = 0; // إعادة التكرار
-        }
+        textIndex = (textIndex + 1) % texts.length;
         setTimeout(() => {
-            element.textContent = ''; // امسح النص القديم
+            element.textContent = '';
             charIndex = 0;
             typeWriter();
-        }, 3000); // انتظر 3 ثوانٍ قبل كتابة النص التالي
+        }, 3000);
     }
 }
 
-typeWriter();
-
-const element2 = document.getElementById('site-latest-text');
-
-
-const texts2 = [''];
-
-fetch('/api/latest-news')
+fetch('/api/breaking-news')
     .then(response => response.json())
-    .then(data2 => {
-        if (Array.isArray(data2) && data2.length > 0) {
-            texts2.length = 0;
-            texts2.push(...data2);
-        } 
+    .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+            texts.push(...data);
+            siteBreakingNews.style.display = 'flex';
+            document.body.classList.remove('site-breaking-closed');
+            typeWriter(); // ✅ Start typing after data loads
+        }
     })
-    .catch(err => {
-        console.error('Failed to fetch texts:', err);
-    });
+    .catch(err => console.error('Failed to fetch texts:', err));
 
+// === Latest news typing ===
+const element2 = document.getElementById('site-latest-text');
+const texts2 = [];
 let textIndex2 = 0;
 let charIndex2 = 0;
 const speed2 = 20;
 
 function typeWriter2() {
     if (charIndex2 < texts2[textIndex2].length) {
-        element2.textContent += texts2[textIndex2].charAt(charIndex2);
-        charIndex2++;
+        element2.textContent += texts2[textIndex2].charAt(charIndex2++);
         setTimeout(typeWriter2, speed2);
     } else {
-        textIndex2++;
-        if (textIndex2 >= texts2.length) {
-            textIndex2 = 0; // إعادة التكرار
-        }
+        textIndex2 = (textIndex2 + 1) % texts2.length;
         setTimeout(() => {
-            element2.textContent = ''; // امسح النص القديم
+            element2.textContent = '';
             charIndex2 = 0;
             typeWriter2();
-        }, 3000); // انتظر 3 ثوانٍ قبل النص التالي
+        }, 3000);
     }
 }
 
-typeWriter2();
-
+fetch('/api/latest-news')
+    .then(response => response.json())
+    .then(data2 => {
+        if (Array.isArray(data2) && data2.length > 0) {
+            texts2.push(...data2);
+            typeWriter2(); // ✅ Start typing after data loads
+        }
+    })
+    .catch(err => console.error('Failed to fetch texts:', err));
