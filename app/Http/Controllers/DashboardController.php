@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 
 use App\Models\Content;
 use App\Models\Writer;
+use App\Models\ContentDailyView;
 use Illuminate\Support\Carbon;
 use Exception;
 
@@ -50,21 +51,22 @@ class DashboardController extends Controller
                 return Content::latest()->take(10)->get();
             });
 
-            $viewsLastDay = Content::where('status', 'published')
-                ->where('created_at', '>=', Carbon::now()->subDay())
-                ->sum('read_count');
 
-            $viewsLast3Days = Content::where('status', 'published')
-                ->where('created_at', '>=', Carbon::now()->subDays(3))
-                ->sum('read_count');
+            // عدد المشاهدات في آخر يوم
+            $viewsLastDay = ContentDailyView::where('date', '>=', Carbon::now()->subDay()->toDateString())
+                ->sum('views');
 
-            $viewsLast7Days = Content::where('status', 'published')
-                ->where('created_at', '>=', Carbon::now()->subDays(7))
-                ->sum('read_count');
+            // عدد المشاهدات في آخر 3 أيام
+            $viewsLast3Days = ContentDailyView::where('date', '>=', Carbon::now()->subDays(3)->toDateString())
+                ->sum('views');
 
-            $viewsLastMonth = Content::where('status', 'published')
-                ->where('created_at', '>=', Carbon::now()->subMonth())
-                ->sum('read_count');
+            // عدد المشاهدات في آخر 7 أيام
+            $viewsLast7Days = ContentDailyView::where('date', '>=', Carbon::now()->subDays(7)->toDateString())
+                ->sum('views');
+
+            // عدد المشاهدات في آخر شهر
+            $viewsLastMonth = ContentDailyView::where('date', '>=', Carbon::now()->subMonth()->toDateString())
+                ->sum('views');
 
             return view('dashboard.index', [
                 'contentCount'           => $contentCount,
