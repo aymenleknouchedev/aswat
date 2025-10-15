@@ -151,13 +151,13 @@ class HomePageController extends Controller
             abort(404);
         }
 
-        // المقالة الأولى فقط للـ featured
-        $featured = Content::where('section_id', $sectionId)
+        // المقالة الأولى فقط للـ reviews
+        $reviews = Content::where('section_id', $sectionId)
             ->latest()
             ->first();
 
         // باقي المقالات
-        $perPage = 10;
+        $perPage = 5;
         $page = $request->get('page', 1);
         $skip = ($page - 1) * $perPage;
 
@@ -168,11 +168,11 @@ class HomePageController extends Controller
             ->get();
 
         if ($request->ajax()) {
-            return view('user.partials.review-items', compact('otherReviews'))->render();
+            return view('user.partials.review-items', compact('otherReviews', 'reviews'))->render();
         }
 
         return view('user.reviews', [
-            'reviews' => [$featured],
+            'reviews' => [$reviews],
             'otherReviews' => $otherReviews
         ]);
     }
@@ -514,10 +514,6 @@ class HomePageController extends Controller
                 $theme = Location::findOrFail($id);
                 $column = 'country_id';
                 break;
-            case 'Writer':
-                $theme = Writer::findOrFail($id);
-                $column = 'writer_id';
-                break;
             default:
                 abort(404, 'نوع القسم غير صالح.');
         }
@@ -549,5 +545,24 @@ class HomePageController extends Controller
             'type' => $type,
             'current_id' => $current_id,
         ]);
+    }
+
+
+    public function writer(Request $request, $id)
+    {
+        $writer = Writer::findOrFail($id);
+        $perPage = 10;
+
+        $articles = Content::where('writer_id', $id)
+            ->latest()
+            ->paginate($perPage);
+
+        // If it's an AJAX request, return only the articles list partial
+        if ($request->ajax()) {
+            return view('user.partials.writer-items', compact('articles'))->render();
+        }
+
+        // Otherwise return full page
+        return view('user.writer', compact('writer', 'articles'));
     }
 }

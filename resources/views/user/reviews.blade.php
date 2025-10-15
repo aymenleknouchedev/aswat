@@ -133,16 +133,16 @@
         }
 
         .custom-card .custom-texts p {
-            margin: 0 0 5px;
+            margin: 20px 0 0 0;
             font-size: 17px;
             line-height: 1.5;
             color: #555;
         }
 
         .custom-card .custom-texts span {
-            font-size: 10px;
+            font-size: 17px;
             color: #999;
-            font-family: asswat-light;
+            font-family: asswat-regular;
             cursor: pointer;
         }
 
@@ -150,7 +150,7 @@
             text-decoration: underline;
         }
 
-        .photos-load-more-btn {
+        .reviews-load-more-btn {
             display: block;
             width: 100%;
             text-align: center;
@@ -194,37 +194,40 @@
             </div>
 
             {{-- Feature Section --}}
-            <a href="{{ route('news.show', $reviews[0]->id) }}" style="text-decoration: none; color: inherit;">
-                <div class="custom-photos-feature">
-                    <div class="custom-image-wrapper">
-                        <img src="{{ $reviews[0]->media()->wherePivot('type', 'main')->first()->path }}"
-                            alt="Feature reviews">
-                        <div class="custom-corner-icon">
-                            @include('user.icons.image')
-                        </div>
-                    </div>
-                    <div class="custom-content">
-                        <h3>
-                          <x-category-links :content="$reviews[0]" />
-                        </h3>
-                        <a href="{{ route('news.show', $reviews[0]->title) }}" style="text-decoration: none; color: inherit;">
-                            <h2>{{ $reviews[0]->title }}</h2>
-                        </a>
-                        <p>{{ $reviews[0]->summary }}</p>
+            <div class="custom-photos-feature">
+                <div class="custom-image-wrapper">
+                    <img src="{{ $reviews[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature reviews">
+                    <div class="custom-corner-icon">
+                        @include('user.icons.image')
                     </div>
                 </div>
-            </a>
+                <div class="custom-content">
+                    <h3>
+                        @if ($reviews[0]->writer && $reviews[0]->writer->name)
+                            <a
+                                href="{{ route('writer.show', $reviews[0]->writer->id) }}">{{ $reviews[0]->writer->name }}</a>
+                        @else
+                            بدون كاتب
+                        @endif
+                    </h3>
+                    <a href="{{ route('news.show', $reviews[0]->title) }}" style="text-decoration: none; color: inherit;">
+                        <h2>{{ $reviews[0]->title }}</h2>
+                    </a>
+                    <p>{{ $reviews[0]->summary }}</p>
+                </div>
+            </div>
+
 
             <div style="display: flex; width: 100%; gap: 40px;">
                 <div style="flex: 7;">
                     {{-- Grid Section --}}
                     <div class="custom-cards-wrapper" id="reviews-container">
                         {{-- Cards 1-10 --}}
-                        @include('user.partials.review-items', ['review' => $otherReviews])
+                        @include('user.partials.review-items', ['otherReviews' => $otherReviews])
                     </div>
                     {{-- Pagination Button --}}
                     <div class="text-center mt-3" id="load-more-container">
-                        <button class="photos-load-more-btn btn btn-primary" data-page="1">
+                        <button class="reviews-load-more-btn btn btn-primary" data-page="1">
                             المزيد
                         </button>
                     </div>
@@ -245,7 +248,7 @@
     let loading = false;
 
     document.addEventListener("click", async function(e) {
-        if (e.target.classList.contains("photos-load-more-btn")) {
+        if (e.target.classList.contains("reviews-load-more-btn")) {
             if (loading) return;
 
             let btn = e.target;
@@ -256,11 +259,12 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`/section/reviews?page=${page}`, {
+                let response = await fetch(`{{ route('reviews') }}?page=${page}`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
                 });
+
 
                 if (!response.ok) throw new Error("خطأ في السيرفر");
 

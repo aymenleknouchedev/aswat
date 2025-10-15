@@ -409,8 +409,12 @@
 
                 {{-- الكاتب --}}
                 <div class="custom-meta">
-                    @if ($news->writer)
-                        {{ $news->writer->name }}
+                    @if ($news->writer && $news->writer->name)
+                        <a href="{{ route('writer.show', $news->writer->id) }}">
+                            <span>{{ $news->writer->name }}</span>
+                        </a>
+                    @else
+                        <span>بدون كاتب</span>
                     @endif
                     @if ($news->city)
                         - {{ $news->city->name }}
@@ -540,13 +544,12 @@
                 </div>
 
                 {{-- بطاقة الكاتب --}}
-                @if (optional($news->writer)->bio)
+                @if (optional($news->writer))
                     <div class="writer-card">
-                        <img src="{{ $news->writer->path ? '/storage/' . $news->writer->path : asset('user.png') }}"
-                            alt="Writer" loading="lazy">
+                        <img src="{{ $news->writer->image ?? asset('user.png') }}" alt="Writer" loading="lazy">
                         <div class="writer-info">
-                            <div class="name">{{ $news->writer->name }}</div>
-                            <div class="bio">{{ $news->writer->bio }}</div>
+                            <span> <span style="font-weight:bold;">{{ $news->writer->name }}</span>
+                                {{ $news->writer->bio }}</span>
                         </div>
                     </div>
                 @endif

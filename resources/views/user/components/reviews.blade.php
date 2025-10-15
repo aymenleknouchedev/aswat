@@ -62,11 +62,17 @@
         @foreach ($reviews as $review)
             <div class="review-card">
                 <div class="review-card-image">
-                  <img src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
-                    alt="خبر">
+                    <img src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
+                        alt="خبر">
                 </div>
                 <div class="review-card-text">
-                    {{ $review->writer->name ?? '' }}{{ !empty($review->city) ? ' - ' . ($review->city->name ?? '') : '' }}
+                    @if ($review->writer && $review->writer->name)
+                        <a href="{{ route('writer.show', $review->writer->id) }}">
+                            <span>{{ $review->writer->name }}</span>
+                        </a>
+                    @else
+                        <span>بدون كاتب</span>
+                    @endif
                     <a href="{{ route('news.show', $review->title) }}" style="text-decoration: none; color: inherit;">
                         <p>{{ $review->title ?? '' }}</p>
                     </a>

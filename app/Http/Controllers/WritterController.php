@@ -59,7 +59,7 @@ class WritterController extends BaseController
                 'name' => 'required|string|max:150|unique:writers,name',
                 'slug' => 'required|string|max:150',
                 'bio' => 'required|string',
-                'image.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'image.*' => 'required',
                 'facebook' => 'nullable|url',
                 'x' => 'nullable|url',
                 'instagram' => 'nullable|url',
@@ -70,6 +70,7 @@ class WritterController extends BaseController
 
             if ($request->hasFile('image')) {
                 $path = $request->file('image')->store('writers', 'public');
+                $path = asset('storage/' . $path);
                 $writer->image = $path;
                 $writer->save();
             }
@@ -115,8 +116,10 @@ class WritterController extends BaseController
 
             $writer->update($validated);
 
+           
             if ($request->hasFile('image')) {
                 $path = $request->file('image')->store('writers', 'public');
+                $path = asset('storage/' . $path);
                 $writer->image = $path;
                 $writer->save();
             }
