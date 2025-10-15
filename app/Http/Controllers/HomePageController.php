@@ -14,6 +14,7 @@ use App\Models\Category;
 use App\Models\Location;
 use App\Models\Writer;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class HomePageController extends Controller
 {
@@ -504,14 +505,38 @@ class HomePageController extends Controller
     public function showNews($title)
     {
         $news = Content::where('title', $title)->latest()->firstOrFail();
-        $newsKey = 'news_' . $news->id . '_read';
-        if (!session()->has($newsKey)) {
-            $news->increment('read_count');
-            session()->put($newsKey, true);
-        }
 
+        $this->recordView($news);
 
         return view('user.news', compact('news'));
+    }
+
+    protected function recordView($content)
+    {
+        $ip = request()->ip();
+        $agent = request()->header('User-Agent');
+        $key = 'news_view_' . md5($content->id . $ip . $agent);
+
+        // منع تكرار نفس الزيارة خلال 6 ساعات
+        if (!Cache::has($key)) {
+            Cache::put($key, true, now()->addHours(6));
+
+            // زيادة العدد العام في جدول المحتوى
+            $content->increment('read_count');
+
+            // زيادة عدد المشاهدات اليومية في جدول content_daily_views
+            DB::table('content_daily_views')->updateOrInsert(
+                [
+                    'content_id' => $content->id,
+                    'date' => now()->toDateString(),
+                ],
+                [
+                    'views' => DB::raw('views + 1'),
+                    'updated_at' => now(),
+                    'created_at' => now(),
+                ]
+            );
+        }
     }
 
     public function category(Request $request, $id, $type)
