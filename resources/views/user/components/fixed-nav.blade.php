@@ -99,8 +99,9 @@
                 <div class="admin-actions">
                     <a target="_blank" href="{{ route('dashboard.index') }}">لوحة التحكم</a>
                     @if (isset($news))
-                        <a target="_blank" href="{{ route('dashboard.content.edit', $news->id) }}" class="btn btn-sm btn-warning" data-en="Edit" data-ar="تعديل">تعديل</a>
-                    @endif 
+                        <a target="_blank" href="{{ route('dashboard.content.edit', $news->id) }}"
+                            class="btn btn-sm btn-warning" data-en="Edit" data-ar="تعديل">تعديل</a>
+                    @endif
                     <a href="{{ route('dashboard.logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         تسجيل الخروج
@@ -163,6 +164,10 @@
 
             #site-breaking-news {
                 margin-top: 36px;
+            }
+
+            .site-nav-left {
+                margin-top: 16px;
             }
         </style>
     @endif
