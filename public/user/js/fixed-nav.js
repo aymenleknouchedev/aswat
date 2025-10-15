@@ -141,7 +141,16 @@ function fetchBreakingNews() {
 // Initial fetch
 fetchBreakingNews();
 
-setInterval(fetchBreakingNews, 10000);
+let breakingNewsInterval = null;
+if (siteBreakingNews) {
+    breakingNewsInterval = setInterval(fetchBreakingNews, 30000);
+    siteCloseBreaking.addEventListener('click', () => {
+        if (breakingNewsInterval) {
+            clearInterval(breakingNewsInterval);
+            breakingNewsInterval = null;
+        }
+    });
+}
 
 // === Latest news typing ===
 const element2 = document.getElementById('site-latest-text');
