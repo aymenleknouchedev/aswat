@@ -22,6 +22,10 @@
 
                         <!-- رسائل النجاح -->
                         @if (session('success'))
+                            <script>
+                                // Force breaking news to refresh instantly
+                                if (typeof fetchBreakingNews === 'function') fetchBreakingNews();
+                            </script>
                             <div class="alert alert-fill alert-success alert-icon">
                                 <em class="icon ni ni-check-circle"></em>
                                 <span class="translatable" data-ar="تمت العملية بنجاح"
