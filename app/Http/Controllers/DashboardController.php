@@ -50,12 +50,32 @@ class DashboardController extends Controller
                 return Content::latest()->take(10)->get();
             });
 
+            $viewsLastDay = Content::where('status', 'published')
+                ->where('created_at', '>=', Carbon::now()->subDay())
+                ->sum('read_count');
+
+            $viewsLast3Days = Content::where('status', 'published')
+                ->where('created_at', '>=', Carbon::now()->subDays(3))
+                ->sum('read_count');
+
+            $viewsLast7Days = Content::where('status', 'published')
+                ->where('created_at', '>=', Carbon::now()->subDays(7))
+                ->sum('read_count');
+
+            $viewsLastMonth = Content::where('status', 'published')
+                ->where('created_at', '>=', Carbon::now()->subMonth())
+                ->sum('read_count');
+
             return view('dashboard.index', [
                 'contentCount'           => $contentCount,
                 'publishedTodayCount'    => $publishedTodayCount,
                 'waitingValidationCount' => $waitingValidationCount,
                 'writersCount'           => $writersCount,
                 'lastTenContents'        => $lastTenContents,
+                'viewsLastDay'          => $viewsLastDay,
+                'viewsLast3Days'        => $viewsLast3Days,
+                'viewsLast7Days'        => $viewsLast7Days,
+                'viewsLastMonth'        => $viewsLastMonth,
             ]);
         } catch (Exception $e) {
             return redirect()
@@ -64,4 +84,3 @@ class DashboardController extends Controller
         }
     }
 }
-

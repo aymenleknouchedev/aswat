@@ -169,6 +169,44 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row g-4 mb-5">
+                                <div class="col-sm-6 col-xl-3">
+                                    <div class="card card-bordered text-center h-100">
+                                        <div class="card-inner">
+                                            <em class="icon ni ni-eye fs-2 text-primary mb-2"></em>
+                                            <h2 class="mb-0">{{ $viewsLastDay ?? 0 }}</h2>
+                                            <p class="text-soft" data-en="Views (Last Day)" data-ar="مشاهدات (آخر يوم)">Views (Last Day)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-xl-3">
+                                    <div class="card card-bordered text-center h-100">
+                                        <div class="card-inner">
+                                            <em class="icon ni ni-eye fs-2 text-success mb-2"></em>
+                                            <h2 class="mb-0">{{ $viewsLast3Days ?? 0 }}</h2>
+                                            <p class="text-soft" data-en="Views (Last 3 Days)" data-ar="مشاهدات (آخر 3 أيام)">Views (Last 3 Days)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-xl-3">
+                                    <div class="card card-bordered text-center h-100">
+                                        <div class="card-inner">
+                                            <em class="icon ni ni-eye fs-2 text-warning mb-2"></em>
+                                            <h2 class="mb-0">{{ $viewsLast7Days ?? 0 }}</h2>
+                                            <p class="text-soft" data-en="Views (Last 7 Days)" data-ar="مشاهدات (آخر 7 أيام)">Views (Last 7 Days)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-xl-3">
+                                    <div class="card card-bordered text-center h-100">
+                                        <div class="card-inner">
+                                            <em class="icon ni ni-eye fs-2 text-info mb-2"></em>
+                                            <h2 class="mb-0">{{ $viewsLastMonth ?? 0 }}</h2>
+                                            <p class="text-soft" data-en="Views (Last Month)" data-ar="مشاهدات (آخر شهر)">Views (Last Month)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
                             <!-- Last 10 Contents Table -->
