@@ -120,7 +120,7 @@
                                                             <span
                                                                 class="badge bg-light text-dark border">{{ $content->display_method }}</span>
                                                             @if ($content->is_latest)
-                                                                <span class="badge bg-warning text-dark">الأحدث</span>
+                                                                <span class="badge bg-primary text-white">الأحدث</span>
                                                             @endif
                                                         </div>
                                                     </td>
@@ -193,7 +193,7 @@
                                                                 <style>
                                                                 /* small inline styles for the orange wave animation (kept local to this component) */
                                                                 .wave-badge{position:relative;display:inline-block;width:18px;height:18px;line-height:0}
-                                                                .wave-badge .dot{width:8px;height:8px;background:#ffffff00;border-radius:50%;display:block;position:relative;z-index:2;box-shadow:0 0 0 1px rgba(255,122,0,0.15) inset}
+                                                                .wave-badge .dot{width:8px;height:8px;background:#ffffff00;border-radius:50%;display:block;position:relative;z-index:2}
                                                                 .wave-badge .ripple{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:#ff7a00;opacity:0.8;z-index:1;animation:wavePulse 1.4s infinite ease-out}
                                                                 @keyframes wavePulse{
                                                                   0%{transform:translate(-50%,-50%) scale(1);opacity:0.9}
