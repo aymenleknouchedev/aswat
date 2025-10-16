@@ -107,10 +107,18 @@ class WindowController extends BaseController
             $request->validate([
                 'name' => 'required|string|max:255',
                 'slug' => 'required|string|max:255|unique:windows,slug,' . $window->id,
+                'image' => 'nullable|max:6000',
             ]);
 
             $window->name = $request->input('name');
             $window->slug = $request->input('slug');
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $path = asset('storage/' . $file->store('media', 'public'));
+                $window->image = $path;
+            }
+
             $window->save();
 
             return redirect()->back()->with('success', 'Window updated successfully.');

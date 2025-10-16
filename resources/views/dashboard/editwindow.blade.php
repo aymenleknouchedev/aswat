@@ -49,7 +49,7 @@
                         @endif
 
                         <!-- ✅ النموذج -->
-                        <form action="{{ route('dashboard.window.update', $window->id) }}" method="POST">
+                        <form action="{{ route('dashboard.window.update', $window->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -77,6 +77,23 @@
                                         value="{{ old('slug', $window->slug) }}" required>
                                 </div>
                                 @error('slug')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- صورة النافذة -->
+                            <div class="form-group">
+                                <label class="form-label" for="image" data-en="Image" data-ar="الصورة">الصورة</label>
+                                <div class="form-control-wrap">
+                                    @if ($window->image)
+                                        <div class="mb-2">
+                                            <img src="{{ $window->image }}" alt="Window Image"
+                                                style="max-width: 200px;">
+                                        </div>
+                                    @endif
+                                    <input type="file" name="image" class="form-control" id="image">
+                                </div>
+                                @error('image')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>

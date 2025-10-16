@@ -48,17 +48,21 @@
                                 <textarea name="bio" id="bio" rows="4" class="form-control" required>{{ old('bio', $writer->bio) }}</textarea>
                             </div>
 
-                            <!-- صورة -->
+                            <!-- الصورة -->
                             <div class="form-group">
-                                <label class="form-label" for="customFile">الصورة</label>
-                                <input type="file" name="image" class="form-file-input" id="customFile"
-                                    accept="image/*">
-                                @if ($writer->image)
-                                    <div class="mt-2">
-                                        <img src="{{ asset('uploads/writers/' . $writer->image) }}"
-                                            alt="{{ $writer->name }}" width="120" class="img-thumbnail">
-                                    </div>
-                                @endif
+                                <label class="form-label" for="image">الصورة</label>
+                                <div class="form-control-wrap">
+                                    @if ($writer->image)
+                                        <div class="mb-2">
+                                            <img src="{{ $writer->image }}" alt="Writer Image"
+                                                style="max-width: 200px;">
+                                        </div>
+                                    @endif
+                                    <input type="file" name="image" class="form-control" id="image">
+                                </div>
+                                @error('image')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <!-- روابط -->

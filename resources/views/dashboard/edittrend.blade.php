@@ -87,7 +87,7 @@
                                 <div class="form-control-wrap">
                                     @if ($trend->image)
                                         <div class="mb-2">
-                                            <img src="{{ asset('storage/' . $trend->image) }}" alt="Trend Image"
+                                            <img src={{ $trend->image }} alt="Trend Image"
                                                 style="max-width: 200px;">
                                         </div>
                                     @endif

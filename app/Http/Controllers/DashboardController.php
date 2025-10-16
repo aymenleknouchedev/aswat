@@ -24,7 +24,6 @@ class DashboardController extends Controller
     public function index()
     {
         try {
-
             $count_cache_ttl = config('cache_ttl.hour', 3600);
             $last_10_cache_ttl = config('cache_ttl.minute', 60);
             $today = Carbon::today();

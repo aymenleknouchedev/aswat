@@ -57,7 +57,7 @@ class MediaController extends BaseController
     public function store(Request $request)
     {
         $request->validate([
-            'media' => 'required|file|max:5120', // 5MB كحد أقصى
+            'media' => 'required|file|max:100000', // 100MB
             'name' => 'required|string|max:255',
             'alt' => 'required|string|max:255',
         ], [
