@@ -4,209 +4,271 @@
 
 @section('content')
     <div class="nk-content-body">
-
         <div class="nk-app-root">
             <div class="nk-main">
                 @include('dashboard.components.sidebar')
+
                 <div class="nk-wrap">
                     @include('dashboard.components.header')
+
                     <div class="nk-content container">
-                        <div class="container-fluid bg-white">
-                            <div class="card-inner">
+                        <div class="container-fluid bg-white p-4 rounded-3 shadow-sm">
 
-                                <!-- Table Header with Title & Button -->
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0" data-en="All Contents" data-ar="جميع المحتوى">جميع المحتوى</h5>
-                                    <a href="{{ route('dashboard.content.create') }}" class="btn btn-sm btn-outline-primary"
-                                        data-en="Add New Content" data-ar="إضافة محتوى جديد">إضافة محتوى جديد</a>
-                                </div>
+                            <!-- Header -->
+                            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold mb-2 mb-sm-0">جميع المحتوى</h5>
+                                <a href="{{ route('dashboard.content.create') }}" class="btn btn-primary btn-sm px-3">
+                                    <em class="icon ni ni-plus"></em> <span>إضافة محتوى</span>
+                                </a>
+                            </div>
 
-                                <form action="{{ route('dashboard.contents.index') }}" method="GET" class="my-3">
-                                    <div class="input-group">
-                                        <input type="text" name="search" class="form-control" value="{{ request('search') }}">
+                            <!-- Filters -->
+                            <form action="{{ route('dashboard.contents.index') }}" method="GET" class="mb-4">
+                                <div class="row g-2">
+                                    <div class="col-md-3 col-sm-6">
+                                        <input type="text" name="search" class="form-control"
+                                            value="{{ request('search') }}" placeholder="ابحث عن المحتوى...">
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-6">
                                         <select name="section" id="sectionFilter" class="form-select">
-                                            <option value="" data-en="All Sections" data-ar="جميع الأقسام">جميع الأقسام</option>
-                                            @foreach($sections as $section)
-                                                <option value="{{ $section->id }}" {{ request('section') == $section->id ? 'selected' : '' }}>{{ $section->name }}</option>
+                                            <option value="">جميع الأقسام</option>
+                                            @foreach ($sections as $section)
+                                                <option value="{{ $section->id }}"
+                                                    {{ request('section') == $section->id ? 'selected' : '' }}>
+                                                    {{ $section->name }}
+                                                </option>
                                             @endforeach
                                         </select>
-                                        <input type="text" id="date_range" name="date_range" value="{{ request('date_range') }}"
-                                            class="form-control rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
-                                        <button class="btn btn-outline-secondary" type="submit" data-en="Filter" data-ar="تصفية">تصفية</button>
-                                        <a href="{{ route('dashboard.contents.index') }}" class="btn " data-en="X" data-ar="X">ْX</a>
                                     </div>
-                                </form>
 
-                                <!-- ✅ Alerts -->
-                                @if (session('success'))
-                                    <div class="alert alert-success alert-dismissible fade show rounded shadow-sm mt-3"
-                                        role="alert">
-                                        <strong>✔ تم بنجاح:</strong> {{ session('success') }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                            aria-label="Close"></button>
+                                    <div class="col-md-3 col-sm-6">
+                                        <input type="text" id="date_range" name="date_range"
+                                            value="{{ request('date_range') }}" class="form-control"
+                                            placeholder="نطاق التاريخ">
                                     </div>
-                                @endif
 
-                                @if (session('error'))
-                                    <div class="alert alert-danger alert-dismissible fade show rounded shadow-sm mt-3"
-                                        role="alert">
-                                        <strong>⚠ خطأ:</strong> {{ session('error') }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                            aria-label="Close"></button>
+                                    <div class="col-md-4 col-sm-6 d-flex align-items-center gap-2">
+                                        <button class="btn btn-outline-primary flex-fill" type="submit">تصفية</button>
+                                        <a href="{{ route('dashboard.contents.index') }}"
+                                            class="btn btn-light flex-fill">إعادة ضبط</a>
                                     </div>
-                                @endif
+                                </div>
+                            </form>
 
-                                @if ($contents->isEmpty())
-                                    <div class="alert alert-info text-center my-4" role="alert">
-                                        <div class="mb-2">
-                                            <em class="icon ni ni-info fs-2 "></em>
-                                        </div>
-                                        <h5 class="mb-2" data-en="No content found" data-ar="لا يوجد محتوى">لا يوجد محتوى
-                                        </h5>
-                                        <p class="mb-0" data-en="Start by adding new content to see it here."
-                                            data-ar="ابدأ بإضافة محتوى جديد ليظهر هنا.">
-                                            ابدأ بإضافة محتوى جديد ليظهر هنا.
-                                        </p>
-                                    </div>
-                                @else
-                                    <!-- Scrollable Table -->
-                                    <div class="table-responsive">
-                                        <table class="table table-orders">
-                                            <thead class="tb-odr-head sticky-top" style="z-index: 10;">
+                            <!-- Alerts -->
+                            @if (session('success'))
+                                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                                    <strong>✔ تم بنجاح:</strong> {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            @if (session('error'))
+                                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                                    <strong>⚠ خطأ:</strong> {{ session('error') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            <!-- Content Table -->
+                            @if ($contents->isEmpty())
+                                <div class="text-center py-5">
+                                    <div class="fs-2 mb-2 text-muted"><em class="icon ni ni-file"></em></div>
+                                    <h6 class="fw-bold mb-1">لا يوجد محتوى</h6>
+                                    <p class="text-muted mb-3">ابدأ بإضافة محتوى جديد ليظهر هنا.</p>
+                                    <a href="{{ route('dashboard.content.create') }}"
+                                        class="btn btn-outline-primary btn-sm">
+                                        <em class="icon ni ni-plus"></em> إضافة أول محتوى
+                                    </a>
+                                </div>
+                            @else
+                                <div class="table-responsive">
+                                    <table class="table align-middle table-hover text-center">
+                                        <thead class="bg-light text-dark">
+                                            <tr>
+                                                <th>#</th>
+                                                <th></th>
+                                                <th>القسم</th>
+                                                <th>الحالة</th>
+                                                <th>التاريخ</th>
+                                                <th>الإجراءات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($contents as $content)
                                                 <tr>
-                                                    <th style="font-weight: bold;" data-en="Id" data-ar="المعرف">المعرف</th>
-                                                    <th style="font-weight: bold;" data-en="Title" data-ar="العنوان">العنوان
-                                                    </th>
-                                                    <th style="font-weight: bold;" data-en="User" data-ar="المستخدم">المستخدم
-                                                    </th>
-                                                    <th style="font-weight: bold;" data-en="Section" data-ar="القسم">القسم</th>
-                                                    <th style="font-weight: bold;" data-en="Display Method"
-                                                        data-ar="قالب العرض">قالب العرض</th>
-                                                    <th style="font-weight: bold;" data-en="Template" data-ar="القالب">القالب
-                                                    </th>
-                                                    <th style="font-weight: bold;" data-en="Status" data-ar="الحالة">الحالة</th>
-                                                    <th style="font-weight: bold;" data-en="Date" data-ar="التاريخ">التاريخ</th>
-                                                    <th style="font-weight: bold;" data-en="Author" data-ar="الكاتب">الكاتب</th>
-                                                    <th style="font-weight: bold;" data-en="Reviews" data-ar="المراجعات">المراجعات</th>
-                                                    <th style="font-weight: bold;" data-en="Actions" data-ar="الإجراءات">-</th> 
-                                                    <th style="font-weight: bold; text-align: right;" data-en="Actions" data-ar="الإجراءات">الإجراءات
-                                                        <script>
-                                                            document.addEventListener('DOMContentLoaded', function() {
-                                                                var lang = localStorage.getItem('siteLang');
-                                                                var th = document.querySelector('th[data-en="Actions"]');
-                                                                if (th && lang) {
-                                                                    th.style.textAlign = (lang === 'ar') ? 'left' : 'right';
-                                                                }
-                                                            });
-                                                        </script>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($contents as $content)
-                                                    <tr>
-                                                        <td>{{ $content->id }}</td>
-                                                        <td>{{ $content->mobile_title }}</td>
-                                                        <td>{{ $content->user->name ?? '-' }}</td>
-                                                        <td>{{ $content->section->name ?? '-' }}</td>
-                                                        <td>{{ $content->template ?? '-' }}</td>
-                                                        <td>{{ $content->display_method ?? '-' }}</td>
-                                                        <td>
-                                                            @if ($content->status == 'published')
-                                                                <span class="badge badge-dot bg-success" data-en="Published"
-                                                                    data-ar="منشور">منشور</span>
-                                                            @elseif($content->status == 'draft')
-                                                                <span class="badge badge-dot bg-warning" data-en="Draft"
-                                                                    data-ar="مسودة">مسودة</span>
-                                                            @elseif($content->status == 'scheduled')
-                                                                <span class="badge badge-dot bg-info" data-en="Scheduled"
-                                                                    data-ar="مجدول">مجدول</span>
-                                                            @else
-                                                                <span class="badge badge-dot bg-secondary"
-                                                                    data-en="Unknown" data-ar="غير معروف">غير معروف</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>{{ $content->created_at->format('Y-m-d') }}</td>
-                                                        <td>{{ $content->writer->name ?? '-' }}</td>
-                                                        <td>
-                                                            <a href="{{ route('content.reviews.index', $content->id) }}" class="badge rounded-pill bg-danger px-3 py-1" style="font-size: 1rem;" title="المراجعات">
-                                                                <em class="icon ni ni-chat-fill me-1"></em>
-                                                                {{ $content->reviews ? $content->reviews->count() : 0 }}
+                                                    <td class="fw-bold">#{{ $content->id }}</td>
+
+                                                    <td class="text-start">
+                                                        <div class="fw-bold mb-1">
+                                                            <a href="{{ route('news.show', $content->title) }}"
+                                                                class="text-dark text-decoration-none">
+                                                                {{ Str::limit($content->mobile_title, 60) }}
                                                             </a>
-                                                        </td>
-                                                        <td>
-                                                            @if ($content->contentActions && $content->contentActions->count() > 0)
-                                                                <a href="{{ route('dashboard.content.actions', $content->id) }}" title="View Actions" target="_blank">
-                                                                    <em class="icon ni ni-eye"></em>
-                                                                </a>
-                                                            @else
-                                                                -
+                                                        </div>
+                                                        <div class="small text-muted">
+                                                            <span>المحرر: {{ $content->user->name ?? 'غير معروف' }}</span>
+                                                            |
+                                                            <span>الكاتب: {{ $content->writer->name ?? '-' }}</span>
+                                                        </div>
+                                                        <div class="small mt-1">
+                                                            <span
+                                                                class="badge bg-light text-dark border">{{ $content->template }}</span>
+                                                            <span
+                                                                class="badge bg-light text-dark border">{{ $content->display_method }}</span>
+                                                            @if ($content->is_latest)
+                                                                <span class="badge bg-warning text-dark">الأحدث</span>
                                                             @endif
-                                                        </td>
-                                                        <td style="text-align: right;" id="actionsCell{{ $content->id }}">
-                                                            <script>
-                                                                document.addEventListener('DOMContentLoaded', function() {
-                                                                    var lang = localStorage.getItem('siteLang');
-                                                                    var cell = document.getElementById('actionsCell{{ $content->id }}');
-                                                                    if (cell && lang) {
-                                                                        cell.style.textAlign = (lang === 'ar') ? 'left' : 'right';
-                                                                    }
-                                                                });
-                                                            </script>
-                                                            <a href="{{ route('dashboard.content.edit', $content->id) }}" class="btn btn-sm btn-warning" data-en="Edit" data-ar="تعديل">تعديل</a>
-                                                            <div class="dropdown d-inline">
-                                                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="actionsDropdown{{ $content->id }}" data-bs-toggle="dropdown" aria-expanded="true">
-                                                                    <em class="icon ni ni-more-h"></em>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <span class="fw-medium">{{ $content->section->name ?? '-' }}</span>
+                                                        @if ($content->category)
+                                                            <div class="small text-muted">
+                                                                {{ $content->category->name ?? '' }}</div>
+                                                        @endif
+                                                    </td>
+
+                                                    <td>
+                                                        @switch($content->status)
+                                                            @case('published')
+                                                                <span class="d-inline-flex align-items-center gap-2">
+                                                                    <span class="d-inline-block rounded-circle"
+                                                                        style="width:10px;height:10px;background:#198754;"></span>
+                                                                    <span class="fw-medium">منشور</span>
+                                                                </span>
+                                                            @break
+
+                                                            @case('draft')
+                                                                <span class="d-inline-flex align-items-center gap-2">
+                                                                    <span class="d-inline-block rounded-circle"
+                                                                        style="width:10px;height:10px;background:#ffc107;"></span>
+                                                                    <span class="fw-medium">مسودة</span>
+                                                                </span>
+                                                            @break
+
+                                                            @case('scheduled')
+                                                                <span class="d-inline-flex align-items-center gap-2">
+                                                                    <span class="d-inline-block rounded-circle"
+                                                                        style="width:10px;height:10px;background:#0dcaf0;"></span>
+                                                                    <span class="fw-medium">مجدول</span>
+                                                                </span>
+                                                            @break
+
+                                                            @default
+                                                                <span class="d-inline-flex align-items-center gap-2">
+                                                                    <span class="d-inline-block rounded-circle"
+                                                                        style="width:10px;height:10px;background:#6c757d;"></span>
+                                                                    <span class="fw-medium">غير معروف</span>
+                                                                </span>
+                                                        @endswitch
+                                                    </td>
+
+                                                    <td>
+                                                        <div>{{ $content->created_at->format('Y-m-d') }}</div>
+                                                        <small
+                                                            class="text-muted">{{ $content->created_at->format('H:i') }}</small>
+                                                    </td>
+
+                                                    <td>
+                                                        <div class="d-flex justify-content-center flex-wrap gap-1 align-items-center">
+                                                            <a href="{{ route('dashboard.content.edit', $content->id) }}" class="btn btn-sm btn-primary">تعديل</a>
+
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center" type="button"
+                                                                    id="dropdownMenu{{ $content->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    المزيد
+                                                                    @if ($content->reviews && $content->reviews->count() > 0)
+                                                                        <span class="wave-badge ms-2" aria-hidden="true">
+                                                                            <span class="dot"></span>
+                                                                            <span class="ripple"></span>
+                                                                        </span>
+                                                                    @endif
                                                                 </button>
-                                                                <ul class="dropdown-menu" aria-labelledby="actionsDropdown{{ $content->id }}">
+
+                                                                <style>
+                                                                /* small inline styles for the orange wave animation (kept local to this component) */
+                                                                .wave-badge{position:relative;display:inline-block;width:18px;height:18px;line-height:0}
+                                                                .wave-badge .dot{width:8px;height:8px;background:#ffffff00;border-radius:50%;display:block;position:relative;z-index:2;box-shadow:0 0 0 1px rgba(255,122,0,0.15) inset}
+                                                                .wave-badge .ripple{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:#ff7a00;opacity:0.8;z-index:1;animation:wavePulse 1.4s infinite ease-out}
+                                                                @keyframes wavePulse{
+                                                                  0%{transform:translate(-50%,-50%) scale(1);opacity:0.9}
+                                                                  70%{transform:translate(-50%,-50%) scale(2.4);opacity:0.25}
+                                                                  100%{transform:translate(-50%,-50%) scale(3);opacity:0}
+                                                                }
+                                                                </style>
+                                                                
+                                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{ $content->id }}">
                                                                     <li>
-                                                                        <a class="dropdown-item" href="{{ route('dashboard.content.show', $content->id) }}" data-en="View" data-ar="عرض">عرض</a>
+                                                                        <a class="dropdown-item" href="{{ route('news.show', $content->title) }}">عرض</a>
                                                                     </li>
+
+                                                                    @if ($content->contentActions && $content->contentActions->count() > 0)
+                                                                        <li>
+                                                                            <a class="dropdown-item" href="{{ route('dashboard.content.actions', $content->id) }}"
+                                                                                target="_blank">سجل الإجراءات</a>
+                                                                        </li>
+                                                                    @endif
+
                                                                     <li>
-                                                                        <form action="{{ route('dashboard.content.destroy', $content->id) }}" method="POST" style="display:inline;">
+                                                                        <a class="dropdown-item" href="{{ route('content.reviews.index', $content->id) }}">
+                                                                            المراجعات
+                                                                            @if ($content->reviews && $content->reviews->count() > 0)
+                                                                                ({{ $content->reviews->count() }})
+                                                                            @endif
+                                                                        </a>
+                                                                    </li>
+
+                                                                    <li>
+                                                                        <form action="{{ route('dashboard.content.destroy', $content->id) }}" method="POST" class="m-0">
                                                                             @csrf
                                                                             @method('DELETE')
-                                                                            <button type="button" class="dropdown-item delete-btn" data-en="Delete" data-ar="حذف">حذف</button>
+                                                                            <button type="submit" class="dropdown-item text-danger"
+                                                                                onclick="return confirm('هل أنت متأكد من حذف هذا المحتوى؟')">حذف</button>
                                                                         </form>
                                                                     </li>
                                                                 </ul>
                                                             </div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                @endif
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                <!-- Pagination Links -->
+                                <!-- Pagination -->
                                 <div class="d-flex justify-content-center mt-4">
                                     {{ $contents->links() }}
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
+
                     @include('dashboard.components.footer')
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
 
-    <!-- Flatpickr JS -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        flatpickr("#date_range", {
-            mode: "range",
-            dateFormat: "Y-m-d",
-            altInput: true,
-            altFormat: "F j, Y", // prettier display
-            allowInput: true,
-            defaultDate: "{{ request('date_range') }}"
-                ? "{{ str_replace(' - ', ' to ', request('date_range')) }}"
-                : null,
+<!-- Scripts -->
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            flatpickr("#date_range", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "F j, Y",
+                allowInput: true,
+                defaultDate: "{{ request('date_range') ? str_replace(' - ', ' to ', request('date_range')) : '' }}"
+            });
         });
-    });
-</script>
-
+    </script>
+@endpush
