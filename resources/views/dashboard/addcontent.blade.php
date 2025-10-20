@@ -31,8 +31,8 @@
 
         /* Validation Styles */
         /* .alert-danger {
-                    margin: 15px 0;
-                } */
+                        margin: 15px 0;
+                    } */
 
         .search-container {
             transition: all 0.2s ease;
@@ -1134,7 +1134,7 @@
 
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" value="1" id="is_latest"
-                                        name="is_latest" {{ old('is_latest') ? 'checked' : '' }}>
+                                        name="is_latest" {{ old('is_latest', '1') ? 'checked' : '' }}>
                                     <label class="form-check-label" for="is_latest" data-ar="آخر الاخبار"
                                         data-en="Latest news">
                                         آخر الاخبار
