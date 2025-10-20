@@ -115,5 +115,6 @@ Route::prefix('dashboard')->group(function () {
         Route::put('/update-principal-trend', [PrincipalTrendController::class, 'update'])->name('dashboard.principal_trend.update');
         Route::get('/{id}', [ContentActionController::class, 'content_actions'])->name('dashboard.content.actions');
         Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
+        Route::post('/media-url-store', [MediaController::class, 'storeMediaUrl'])->name('dashboard.media_url.store');
     });
 });

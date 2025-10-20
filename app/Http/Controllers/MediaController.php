@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller as BaseController;
 use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class MediaController extends BaseController
 {
@@ -66,16 +67,19 @@ class MediaController extends BaseController
             'media.max' => 'حجم الملف لا يجب أن يتجاوز 5 ميغابايت.',
         ]);
 
-        // حفظ الملف في التخزين
-
         try {
             $file = $request->file('media');
-            $path = '/storage/' . $file->store('media', 'public');
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+            $fileName = $originalName . '_' . time() . '.' . $extension;
+
+            $storedPath = $file->storeAs('media', $fileName, 'public');
+            $path = '/storage/' . $storedPath;
 
             $media = new ContentMedia();
             $media->name = $request->input('name');
             $media->alt = $request->input('alt');
-            // تحديد نوع الوسائط (صوت، فيديو، صورة، ملف)
+
             $mimeType = $file->getClientMimeType();
             if (str_starts_with($mimeType, 'audio/')) {
                 $media->media_type = 'voice';
@@ -83,11 +87,10 @@ class MediaController extends BaseController
                 $media->media_type = 'video';
             } elseif (str_starts_with($mimeType, 'image/')) {
                 $media->media_type = 'image';
-            } elseif (filter_var($request->input('media'), FILTER_VALIDATE_URL)) {
-                $media->media_type = 'image';
             } else {
                 $media->media_type = 'file';
             }
+
             $media->path = $path;
             $media->user_id = Auth::id();
             $media->save();
@@ -102,6 +105,105 @@ class MediaController extends BaseController
                 ->withInput();
         }
     }
+
+    public function storeMediaUrl(Request $request)
+    {
+        // 1) تحقّق مرن
+        $validated = $request->validate([
+            'url'        => ['required', 'url', 'max:2048'],
+            'name'       => ['nullable', 'string', 'max:255'],
+            'alt'        => ['nullable', 'string', 'max:255'],
+            'media_type' => ['nullable', Rule::in(['auto', 'image', 'video', 'voice', 'file'])],
+        ], [
+            'url.required' => 'الرجاء إدخال رابط الوسائط.',
+            'url.url'      => 'الرابط غير صالح.',
+            'url.max'      => 'طول الرابط لا يجب أن يتجاوز 2048 حرفاً.',
+        ]);
+
+        // 2) اشتقاق النوع إن كان auto أو غير مُرسل
+        $url = $validated['url'];
+        $type = $validated['media_type'] ?? 'auto';
+        if ($type === 'auto') {
+            $type = $this->guessMediaTypeFromUrl($url); // image | video | voice | file
+        }
+
+        // 3) تطبيع الحقول الاختيارية
+        $name = $validated['name'] ?? $this->defaultNameFromUrl($url);
+        $alt  = $validated['alt']  ?? $name;
+
+        try {
+            $media = new ContentMedia();
+            $media->name       = $name;
+            $media->alt        = $alt;
+            $media->media_type = $type; // image | video | voice | file
+            $media->path       = $url;
+            $media->user_id    = Auth::id();
+            $media->save();
+
+            // إن كان الطلب Ajax نتجاوب JSON، وإلا Redirect
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status' => 'ok',
+                    'data'   => [
+                        'id'   => $media->id,
+                        'name' => $media->name,
+                        'alt'  => $media->alt,
+                        'path' => $media->path,
+                        'media_type' => $media->media_type,
+                    ],
+                ], 201);
+            }
+
+            return redirect()
+                ->route('dashboard.medias.index')
+                ->with('success', 'تم إضافة رابط الوسائط بنجاح.');
+        } catch (\Throwable $e) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => 'فشل إضافة رابط الوسائط.',
+                ], 500);
+            }
+
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'فشل إضافة رابط الوسائط. حاول مرة أخرى.'])
+                ->withInput();
+        }
+    }
+
+    /**
+     * اشتقاق نوع الوسائط من الرابط.
+     */
+    protected function guessMediaTypeFromUrl(string $url): string
+    {
+        // YouTube
+        if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)/i', $url)) {
+            return 'video';
+        }
+
+        $path = parse_url($url, PHP_URL_PATH) ?? '';
+        $ext  = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'], true)) return 'image';
+        if (in_array($ext, ['mp4', 'webm', 'mkv', 'mov', 'avi', 'm4v'], true))      return 'video';
+        if (in_array($ext, ['mp3', 'wav', 'ogg', 'm4a', 'aac', 'flac'], true))       return 'voice';
+
+        return 'file';
+    }
+
+    /**
+     * اسم افتراضي مستخرج من الرابط.
+     */
+    protected function defaultNameFromUrl(string $url): string
+    {
+        $path = parse_url($url, PHP_URL_PATH) ?? '';
+        $base = basename($path) ?: 'Imported Media';
+        // إزالة الاستعلام والامتداد
+        $base = preg_replace('/\.[^.]+$/', '', $base);
+        return trim($base) ?: 'Imported Media';
+    }
+
 
     /**
      * Display the specified resource.

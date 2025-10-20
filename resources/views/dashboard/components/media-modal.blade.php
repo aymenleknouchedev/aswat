@@ -1,31 +1,35 @@
-
-
-<!-- MMX ICONS (SVG SPRITE, HIDDEN) -->
+<!-- ================== MMX MEDIA MODAL (FULL, FIXED, TYPE BADGE, NO SUCCESS ALERTS) ================== -->
+<!-- Sprite d’icônes (optionnel) -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
     <symbol id="mmx-icon-image" viewBox="0 0 24 24">
-        <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-        <circle cx="8" cy="10" r="1.5" fill="currentColor"/>
-        <path d="M21 19l-5.5-7-4.5 6-3-4-4 5" fill="none" stroke="currentColor" stroke-width="2"/>
+        <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor"
+            stroke-width="2" />
+        <circle cx="8" cy="10" r="1.5" fill="currentColor" />
+        <path d="M21 19l-5.5-7-4.5 6-3-4-4 5" fill="none" stroke="currentColor" stroke-width="2" />
     </symbol>
     <symbol id="mmx-icon-video" viewBox="0 0 24 24">
-        <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-        <polygon points="10,9 16,12 10,15" fill="currentColor"/>
+        <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor"
+            stroke-width="2" />
+        <polygon points="10,9 16,12 10,15" fill="currentColor" />
     </symbol>
     <symbol id="mmx-icon-voice" viewBox="0 0 24 24">
-        <rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-        <rect x="9" y="7" width="2" height="10" rx="1" fill="currentColor"/>
-        <rect x="13" y="11" width="2" height="6" rx="1" fill="currentColor"/>
+        <rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="currentColor"
+            stroke-width="2" />
+        <rect x="9" y="7" width="2" height="10" rx="1" fill="currentColor" />
+        <rect x="13" y="11" width="2" height="6" rx="1" fill="currentColor" />
     </symbol>
     <symbol id="mmx-icon-file" viewBox="0 0 24 24">
-        <rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-        <path d="M9 7h6M9 11h6M9 15h2" fill="none" stroke="currentColor" stroke-width="2"/>
+        <rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="currentColor"
+            stroke-width="2" />
+        <path d="M9 7h6M9 11h6M9 15h2" fill="none" stroke="currentColor" stroke-width="2" />
     </symbol>
     <symbol id="mmx-icon-youtube" viewBox="0 0 24 24">
-        <rect x="2" y="6" width="20" height="12" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
-        <polygon points="10,9 16,12 10,15" fill="currentColor"/>
+        <rect x="2" y="6" width="20" height="12" rx="4" fill="none" stroke="currentColor"
+            stroke-width="2" />
+        <polygon points="10,9 16,12 10,15" fill="currentColor" />
     </symbol>
 </svg>
-<!-- ================== MEDIA MODAL (MMX NAMESPACE) ================== -->
+
 <!-- CSRF -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -41,22 +45,16 @@
         <!-- Tabs -->
         <div class="mmx-tabs" role="tablist" aria-label="أقسام إدارة الوسائط">
             <button class="mmx-tab-btn mmx-is-active" role="tab" aria-selected="true"
-                aria-controls="mmx-tab-gallery" id="mmx-tabbtn-gallery" tabindex="0" data-mmx-tab="gallery">
-                المعرض
-            </button>
+                aria-controls="mmx-tab-gallery" id="mmx-tabbtn-gallery" tabindex="0"
+                data-mmx-tab="gallery">المعرض</button>
             <button class="mmx-tab-btn" role="tab" aria-selected="false" aria-controls="mmx-tab-upload"
-                id="mmx-tabbtn-upload" tabindex="-1" data-mmx-tab="upload">
-                الرفع من الجهاز
-            </button>
+                id="mmx-tabbtn-upload" tabindex="-1" data-mmx-tab="upload">الرفع من الجهاز</button>
             <button class="mmx-tab-btn" role="tab" aria-selected="false" aria-controls="mmx-tab-import"
-                id="mmx-tabbtn-import" tabindex="-1" data-mmx-tab="import">
-                الاستيراد بالرابط
-            </button>
+                id="mmx-tabbtn-import" tabindex="-1" data-mmx-tab="import">الاستيراد بالرابط</button>
         </div>
 
         <!-- Gallery -->
         <section id="mmx-tab-gallery" class="mmx-tab-panel" role="tabpanel" aria-labelledby="mmx-tabbtn-gallery">
-            <!-- Filters -->
             <div class="mmx-filters">
                 <input type="text" id="mmx-search" placeholder="ابحث عن وسائط..." />
                 <select id="mmx-type-filter" aria-label="نوع الوسائط">
@@ -69,23 +67,6 @@
             </div>
 
             <div class="mmx-body">
-                <!-- Selected details -->
-                <div id="mmx-selection" class="mmx-selection" hidden>
-                    <div class="mmx-selection-title">تفاصيل الوسيط المُختار</div>
-                    <div class="mmx-selection-grid">
-                        <label>
-                            <span>الاسم/العنوان</span>
-                            <input type="text" id="mmx-selected-name" placeholder="اكتب اسمًا واضحًا" />
-                        </label>
-                        <label>
-                            <span>النص البديل ALT</span>
-                            <input type="text" id="mmx-selected-alt" placeholder="وصف موجز للمحتوى من أجل الوصول" />
-                        </label>
-                    </div>
-                    <small class="mmx-selection-hint">لن تُحفظ هذه القيم في قاعدة البيانات إلا إذا وفّرت مسار تحديث.
-                        حاليًا ستُعاد فقط مع حدث الاختيار.</small>
-                </div>
-
                 <div id="mmx-list" class="mmx-grid"></div>
                 <div id="mmx-loader" class="mmx-loader" hidden>جاري التحميل...</div>
                 <div id="mmx-sentinel" class="mmx-sentinel"></div>
@@ -98,26 +79,20 @@
         </section>
 
         <!-- Upload -->
-        <section id="mmx-tab-upload" class="mmx-tab-panel" role="tabpanel" aria-labelledby="mmx-tabbtn-upload" hidden>
+        <section id="mmx-tab-upload" class="mmx-tab-panel" role="tabpanel" aria-labelledby="mmx-tabbtn-upload"
+            hidden>
             <div class="mmx-tab-body">
                 <div class="mmx-uploader">
-                    <input type="file" id="mmx-upload-input" multiple />
+                    <input type="file" id="mmx-upload-input" />
                     <input type="text" id="mmx-upload-name" placeholder="اسم/عنوان الوسيط (اختياري)" />
                     <input type="text" id="mmx-upload-alt" placeholder="النص البديل ALT (اختياري)" />
                     <div class="mmx-uploader-actions">
                         <button class="mmx-btn mmx-btn-secondary" type="button" id="mmx-btn-upload-to-gallery"
-                            title="رفع ثم عرض في المعرض">
-                            رفع & فتح المعرض
-                        </button>
+                            title="رفع ثم عرض في المعرض">رفع & فتح المعرض</button>
                         <button class="mmx-btn mmx-btn-primary" type="button" id="mmx-btn-upload-and-select-close"
-                            title="رفع ثم حفظ وإغلاق">
-                            رفع & حفظ وإغلاق
-                        </button>
+                            title="رفع ثم حفظ وإغلاق">رفع & حفظ وإغلاق</button>
                     </div>
-                    <small class="mmx-selection-hint">
-                        يمكنك اختيار ملف أو أكثر. إذا رفعت عدة ملفات ستُطبَّق قيم الاسم و ALT نفسها على جميعها ما لم
-                        يدعم الخادم مصفوفات أسماء.
-                    </small>
+                    <small class="mmx-selection-hint">هذا النموذج يرسل ملفاً واحداً تحت الحقل <b>media</b>.</small>
                 </div>
             </div>
         </section>
@@ -131,20 +106,40 @@
                         placeholder="ألصق رابط الملف (صورة/فيديو/صوت/ملف أو YouTube)" />
                     <input type="text" id="mmx-url-name" placeholder="اسم/عنوان للوسيط (اختياري)" />
                     <input type="text" id="mmx-url-alt" placeholder="النص البديل ALT (اختياري)" />
+
+                    <!-- NEW: Media type radios for URL import -->
+                    <fieldset class="mmx-url-type-group" aria-label="نوع الوسائط للرابط">
+                        <legend>نوع الوسائط (اختياري)</legend>
+                        <label class="mmx-radio">
+                            <input type="radio" name="mmx-url-type" value="auto" checked />
+                            <span>Auto</span>
+                        </label>
+                        <label class="mmx-radio">
+                            <input type="radio" name="mmx-url-type" value="image" />
+                            <span>Image</span>
+                        </label>
+                        <label class="mmx-radio">
+                            <input type="radio" name="mmx-url-type" value="video" />
+                            <span>Video</span>
+                        </label>
+                        <label class="mmx-radio">
+                            <input type="radio" name="mmx-url-type" value="voice" />
+                            <span>Voice</span>
+                        </label>
+                        <label class="mmx-radio">
+                            <input type="radio" name="mmx-url-type" value="file" />
+                            <span>File</span>
+                        </label>
+                    </fieldset>
+
                     <div class="mmx-uploader-actions">
                         <button class="mmx-btn mmx-btn-secondary" type="button" id="mmx-btn-import-to-gallery"
-                            title="استيراد بالرابط ثم عرض في المعرض">
-                            استيراد & فتح المعرض
-                        </button>
+                            title="استيراد بالرابط ثم عرض في المعرض">استيراد & فتح المعرض</button>
                         <button class="mmx-btn mmx-btn-primary" type="button" id="mmx-btn-import-and-select-close"
-                            title="استيراد بالرابط ثم حفظ وإغلاق">
-                            استيراد & حفظ وإغلاق
-                        </button>
+                            title="استيراد بالرابط ثم حفظ وإغلاق">استيراد & حفظ وإغلاق</button>
                     </div>
-                    <small class="mmx-selection-hint">
-                        يقبل روابط مباشرة للملفات أو روابط YouTube. سيُحفظ <strong>الاسم</strong> و<strong>ALT</strong>
-                        إن قدّمتهما.
-                    </small>
+                    <small class="mmx-selection-hint">يُقبل الرابط المباشر أو رابط YouTube. يمكن تحديد نوع الوسائط
+                        يدوياً أو تركه على Auto.</small>
                 </div>
             </div>
         </section>
@@ -388,6 +383,25 @@
         width: 100%;
     }
 
+    .mmx-badge {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: rgba(0, 0, 0, .65);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, .2);
+    }
+
+    .mmx-badge svg {
+        width: 18px;
+        height: 18px;
+    }
+
     .mmx-title {
         font-size: .9rem;
         color: #374151;
@@ -396,41 +410,6 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-
-    .mmx-selection {
-        border: 1px solid var(--mmx-border);
-        background: #fff;
-        padding: .9rem 1rem;
-        margin-bottom: .9rem;
-    }
-
-    .mmx-selection-title {
-        font-weight: 600;
-        margin-bottom: .65rem;
-        color: #111;
-    }
-
-    .mmx-selection-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: .6rem;
-    }
-
-    .mmx-selection-grid input {
-        padding: .55rem .65rem;
-        border: 1px solid #dcdcdc;
-        background: #fff;
-    }
-
-    .mmx-selection-grid input::placeholder {
-        color: #9ca3af;
-    }
-
-    .mmx-selection-hint {
-        color: var(--mmx-muted);
-        display: block;
-        margin-top: .35rem;
     }
 
     .mmx-uploader {
@@ -460,6 +439,32 @@
     #mmx-url-name,
     #mmx-url-alt {
         flex: 1 1 220px;
+    }
+
+    /* NEW: URL type radios */
+    .mmx-url-type-group {
+        width: 100%;
+        margin: .2rem 0 .4rem;
+        border: 1px solid var(--mmx-border);
+        padding: .6rem .8rem;
+    }
+
+    .mmx-url-type-group legend {
+        font-size: .9rem;
+        color: #333;
+        padding: 0 .25rem;
+    }
+
+    .mmx-radio {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        margin-inline-end: 1rem;
+        cursor: pointer;
+    }
+
+    .mmx-radio input {
+        accent-color: #000;
     }
 
     .mmx-uploader-actions {
@@ -575,40 +580,38 @@
 
 <script>
     (() => {
-        // ===== Configure your endpoints =====
+        // ===== Endpoints =====
         const FETCH_URL = "{{ route('dashboard.media.getAllMediaPaginated') }}";
-        const UPLOAD_URL = ""; // définissez l’URL de l’upload
-        const IMPORT_URL = ""; // définissez l’URL d’import par lien
+        const UPLOAD_URL = "{{ route('dashboard.media.store') }}";
+        const IMPORT_URL = "{{ route('dashboard.media_url.store') }}"; // عرّفه عند وجود خدمة الاستيراد عبر الرابط
 
         const modal = document.getElementById("mmxMediaModal");
         const backdrop = modal.querySelector("[data-mmx-backdrop]");
         const closes = modal.querySelectorAll("[data-mmx-close]");
         const CSRF = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
-        // Elements — gallery
+        // Gallery
         const listEl = document.getElementById("mmx-list");
         const loaderEl = document.getElementById("mmx-loader");
         const sentinel = document.getElementById("mmx-sentinel");
         const searchInput = document.getElementById("mmx-search");
         const typeSelect = document.getElementById("mmx-type-filter");
         const btnSelect = document.getElementById("mmx-btn-select");
-        const selectionPanel = document.getElementById("mmx-selection");
-        const selectedNameEl = document.getElementById("mmx-selected-name");
-        const selectedAltEl = document.getElementById("mmx-selected-alt");
 
-        // Elements — upload
+        // Upload
         const uploadInput = document.getElementById("mmx-upload-input");
         const uploadName = document.getElementById("mmx-upload-name");
         const uploadAlt = document.getElementById("mmx-upload-alt");
         const btnUploadToGallery = document.getElementById("mmx-btn-upload-to-gallery");
         const btnUploadSelectAndClose = document.getElementById("mmx-btn-upload-and-select-close");
 
-        // Elements — import by URL
+        // Import URL
         const uploadUrlInput = document.getElementById("mmx-upload-url");
         const urlNameInput = document.getElementById("mmx-url-name");
         const urlAltInput = document.getElementById("mmx-url-alt");
         const btnImportToGallery = document.getElementById("mmx-btn-import-to-gallery");
         const btnImportSelectAndClose = document.getElementById("mmx-btn-import-and-select-close");
+        const urlTypeRadios = modal.querySelectorAll("input[name='mmx-url-type']");
 
         // Tabs
         const tabButtons = Array.from(modal.querySelectorAll('.mmx-tab-btn'));
@@ -630,14 +633,10 @@
             selected: null,
             currentField: "",
             observer: null,
-            activeTab: 'gallery',
-            selectedMeta: {
-                name: "",
-                alt: ""
-            }
+            activeTab: 'gallery'
         };
 
-        // Helpers
+        // ===== Helpers =====
         const YT_REGEX =
             /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
         const isYouTubeUrl = (url = "") => YT_REGEX.test(url);
@@ -656,7 +655,21 @@
         }
         const mapFilterForServer = (t) => (t === "voice" ? "audio" : t);
 
-        // Public API (namespaced)
+        function getBadgeIconId(media) {
+            if (media.path && isYouTubeUrl(media.path)) return "mmx-icon-youtube";
+            const kind = getMediaKind(media);
+            if (kind === "image") return "mmx-icon-image";
+            if (kind === "video") return "mmx-icon-video";
+            if (kind === "voice") return "mmx-icon-voice";
+            return "mmx-icon-file";
+        }
+
+        function getSelectedUrlType() {
+            const checked = Array.from(urlTypeRadios).find(r => r.checked);
+            return checked ? checked.value : "auto";
+        }
+
+        // ===== Public API =====
         window.mmxMediaModalManager = {
             openModal(fieldName) {
                 openModal(fieldName);
@@ -665,40 +678,55 @@
                 closeModal();
             },
             onMediaSelected(payload) {
-                // Override this in your page if needed:
-                // window.mmxMediaModalManager.onMediaSelected = ({id,url,title,alt}) => { ... }
-                // Default: no-op
                 if (window.mediaTabManager && typeof window.mediaTabManager.onMediaSelected === "function") {
-                    // Compat: call legacy handler if present
                     window.mediaTabManager.onMediaSelected(payload);
                 }
             }
         };
 
-        // Open/Close
+        // ===== Reset UI/state =====
+        function clearAllInputs() {
+            searchInput && (searchInput.value = "");
+            typeSelect && (typeSelect.value = "all");
+            uploadInput && (uploadInput.value = "");
+            uploadName && (uploadName.value = "");
+            uploadAlt && (uploadAlt.value = "");
+            uploadUrlInput && (uploadUrlInput.value = "");
+            urlNameInput && (urlNameInput.value = "");
+            urlAltInput && (urlAltInput.value = "");
+            // reset radios to Auto
+            urlTypeRadios.forEach(r => {
+                r.checked = (r.value === "auto");
+            });
+        }
+
+        function resetStateFilters() {
+            state.search = "";
+            state.type = "all";
+            state.selected = null;
+        }
+
+        // ===== Open/close =====
         function openModal(fieldName = "") {
             state.currentField = fieldName;
             state.isOpen = true;
             modal.setAttribute("aria-hidden", "false");
             document.documentElement.style.overflow = "hidden";
+            resetStateFilters();
+            clearAllInputs();
             switchTab('gallery');
             resetAndLoad();
-            setTimeout(() => {
-                document.getElementById("mmx-search")?.focus();
-            }, 0);
+            setTimeout(() => document.getElementById("mmx-search")?.focus(), 0);
         }
 
         function closeModal() {
             state.isOpen = false;
             modal.setAttribute("aria-hidden", "true");
             document.documentElement.style.overflow = "";
-            state.selected = null;
-            state.selectedMeta = {
-                name: "",
-                alt: ""
-            };
-            selectionPanel.hidden = true;
+            resetStateFilters();
+            clearAllInputs();
         }
+
         backdrop.addEventListener("click", closeModal);
         closes.forEach(b => b.addEventListener("click", closeModal));
         modal.querySelector(".mmx-container").addEventListener("click", e => e.stopPropagation());
@@ -716,7 +744,7 @@
             }
         });
 
-        // Tabs
+        // ===== Tabs =====
         tabButtons.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.mmxTab)));
 
         function switchTab(tab) {
@@ -733,24 +761,25 @@
             });
         }
 
-        // Fetch/paginate
-        function resetAndLoad() {
+        // ===== Fetch/pagination =====
+        async function resetAndLoad() {
             state.page = 1;
             state.hasMore = true;
             state.list = [];
             renderList();
-            loadMore(true);
+            await loadMore(true);
             setupObserver();
         }
 
         function setupObserver() {
             if (state.observer) state.observer.disconnect();
+            const rootEl = tabPanels.gallery.querySelector(".mmx-body");
             state.observer = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) loadMore();
                 });
             }, {
-                root: tabPanels.gallery.querySelector(".mmx-body"),
+                root: rootEl,
                 threshold: 1
             });
             state.observer.observe(sentinel);
@@ -784,7 +813,7 @@
             }
         }
 
-        // Render
+        // ===== Render =====
         function renderList() {
             listEl.innerHTML = "";
             const filtered = state.type === "all" ? state.list : state.list.filter(m => getMediaKind(m) === state
@@ -803,6 +832,13 @@
                 const thumb = document.createElement("div");
                 thumb.className = "mmx-thumb";
 
+                const badge = document.createElement("div");
+                badge.className = "mmx-badge";
+                badge.title = kind === "voice" ? "audio" : (isYouTubeUrl(media.path) ? "youtube" : kind);
+                const iconId = getBadgeIconId(media);
+                badge.innerHTML = `<svg aria-hidden="true"><use href="#${iconId}"></use></svg>`;
+                thumb.appendChild(badge);
+
                 if (media.path && isYouTubeUrl(media.path)) {
                     const vid = getYouTubeId(media.path);
                     const img = document.createElement("img");
@@ -811,19 +847,27 @@
                     img.loading = "lazy";
                     thumb.appendChild(img);
                 } else if (kind === "image") {
-                    thumb.innerHTML =
-                        `<img src="${media.path}" alt="${media.alt || media.name || ""}" loading="lazy">`;
+                    const img = document.createElement("img");
+                    img.src = media.path;
+                    img.alt = media.alt || media.name || "";
+                    img.loading = "lazy";
+                    thumb.appendChild(img);
                 } else if (kind === "video") {
                     if (/\.(mp4|webm|mkv|mov|avi|m4v)(\?|$)/i.test(media.path || "")) {
-                        thumb.innerHTML = `<video src="${media.path}" muted preload="metadata"></video>`;
-                    } else {
-                        thumb.innerHTML = ``;
+                        const video = document.createElement("video");
+                        video.src = media.path;
+                        video.muted = true;
+                        video.preload = "metadata";
+                        thumb.appendChild(video);
                     }
                 } else if (kind === "voice") {
-                    thumb.innerHTML = `<audio src="${media.path}" preload="metadata" controls></audio>`;
-                } else {
-                    thumb.innerHTML = ``;
+                    const audio = document.createElement("audio");
+                    audio.src = media.path;
+                    audio.preload = "metadata";
+                    audio.controls = true;
+                    thumb.appendChild(audio);
                 }
+
                 item.appendChild(thumb);
 
                 const title = document.createElement("div");
@@ -838,134 +882,193 @@
         function toggleSelect(media) {
             const isSame = state.selected && state.selected.id === media.id;
             state.selected = isSame ? null : media;
-
-            if (state.selected) {
-                state.selectedMeta.name = state.selected.name || "";
-                state.selectedMeta.alt = state.selected.alt || "";
-                selectedNameEl.value = state.selectedMeta.name;
-                selectedAltEl.value = state.selectedMeta.alt;
-                selectionPanel.hidden = false;
-            } else {
-                selectionPanel.hidden = true;
-                state.selectedMeta = {
-                    name: "",
-                    alt: ""
-                };
-            }
             renderList();
         }
 
-        // Sync detail panel
-        selectedNameEl?.addEventListener("input", e => {
-            state.selectedMeta.name = e.target.value;
-        });
-        selectedAltEl?.addEventListener("input", e => {
-            state.selectedMeta.alt = e.target.value;
-        });
-
-        // Search/filter (gallery)
-        searchInput?.addEventListener("input", e => {
+        // ===== Search/filter =====
+        searchInput?.addEventListener("input", async e => {
             state.search = e.target.value;
-            state.page = 1;
-            state.hasMore = true;
-            loadMore(true);
+            await resetAndLoad();
         });
-        typeSelect?.addEventListener("change", e => {
+        typeSelect?.addEventListener("change", async e => {
             state.type = e.target.value;
-            state.page = 1;
-            state.hasMore = true;
-            loadMore(true);
+            await resetAndLoad();
         });
 
-        // Final select
+        // ===== Confirm selection =====
         btnSelect?.addEventListener("click", () => {
             if (!state.selected) {
                 alert("يرجى اختيار وسيط واحد على الأقل.");
                 return;
             }
-            const title = state.selectedMeta.name?.trim() || state.selected.name || "";
-            const alt = state.selectedMeta.alt?.trim() || state.selected.alt || "";
             window.mmxMediaModalManager.onMediaSelected({
                 id: state.selected.id,
                 url: state.selected.path,
-                title,
-                alt
+                title: state.selected.name || "",
+                alt: state.selected.alt || ""
             });
             closeModal();
         });
 
-        // Upload
+        // ===== Parsing & matching helpers =====
+        function tryParseJsonFromText(text) {
+            if (!text) return null;
+            const clean = text.replace(/^\uFEFF/, "").trim();
+            try {
+                return JSON.parse(clean);
+            } catch {
+                const m = clean.match(/\{[\s\S]*\}/);
+                if (m) {
+                    try {
+                        return JSON.parse(m[0]);
+                    } catch {}
+                }
+                return {
+                    __nonJson: true,
+                    __raw: clean
+                };
+            }
+        }
+
+        function extractCreatedFromPayload(payload) {
+            if (!payload || typeof payload !== "object") return [];
+            if (Array.isArray(payload.data)) return payload.data;
+            if (Array.isArray(payload.media)) return payload.media;
+            if (payload.data) return [payload.data];
+            if (payload.media) return [payload.media];
+            return [];
+        }
+
+        function basenameNoExt(filename = "") {
+            const base = filename.split("/").pop() || filename;
+            return base.replace(/\.[^.]+$/, "").trim();
+        }
+
+        function findJustUploadedInState({
+            fileName,
+            nameVal
+        }) {
+            const base = basenameNoExt(fileName || "");
+            if (nameVal) {
+                const byName = state.list.find(m => (m.name || "").trim() === nameVal.trim());
+                if (byName) return byName;
+            }
+            if (base) {
+                const byBase = state.list.find(m => (m.name || "").trim() === base || (m.title || "").trim() ===
+                    base);
+                if (byBase) return byBase;
+            }
+            return state.list[0] || null;
+        }
+
+        // ===== Upload (open gallery / select-close) =====
         async function uploadMediaAndHandle(mode) {
             const files = uploadInput.files;
             if (!files || !files.length) {
-                alert("يرجى اختيار ملف واحد على الأقل قبل الرفع.");
+                alert("⚠️ لم يتم اختيار أي ملف للرفع.");
                 return;
             }
+            const file0 = files[0];
+            const nameVal = (uploadName.value || "").trim();
+            const altVal = (uploadAlt.value || "").trim();
+
             const form = new FormData();
-            for (const f of files) form.append("files[]", f);
-            const nameVal = uploadName.value.trim();
-            const altVal = uploadAlt.value.trim();
+            form.append("media", file0);
             if (nameVal) form.append("name", nameVal);
             if (altVal) form.append("alt", altVal);
 
+            let created = null;
             try {
                 btnUploadToGallery.disabled = true;
                 btnUploadSelectAndClose.disabled = true;
                 btnUploadToGallery.textContent = "جارٍ الرفع...";
                 btnUploadSelectAndClose.textContent = "جارٍ الرفع...";
+
                 const res = await fetch(UPLOAD_URL, {
                     method: "POST",
                     headers: {
-                        "X-CSRF-TOKEN": CSRF
+                        "X-CSRF-TOKEN": CSRF,
+                        "Accept": "application/json"
                     },
                     body: form
                 });
+                const bodyText = await res.text();
                 if (!res.ok) {
-                    console.error("Upload failed:", await res.text());
-                    alert("فشل رفع الملف.");
+                    console.error("❌ Upload failed:", res.status, bodyText);
+                    alert("فشل رفع الملف.\nStatus: " + res.status);
                     return;
                 }
-                const payload = await res.json();
-                let created = Array.isArray(payload?.data) ? payload.data :
-                    Array.isArray(payload?.media) ? payload.media :
-                    payload?.data ? [payload.data] :
-                    payload?.media ? [payload.media] : [];
-                if (!created.length) {
-                    console.warn("Unexpected upload response:", payload);
-                    alert("تم الرفع لكن لم أتعرف على الاستجابة.");
-                    return;
-                }
-                created = created.map(m => ({
-                    ...m,
-                    name: nameVal || m.name,
-                    alt: altVal || m.alt
-                }));
 
-                if (mode === 'gallery') {
-                    state.list = created.concat(state.list);
+                const parsed = tryParseJsonFromText(bodyText);
+                created = parsed && !parsed.__nonJson ? extractCreatedFromPayload(parsed) : null;
+
+                if (mode === "gallery") {
                     switchTab('gallery');
-                    renderList();
+                    await resetAndLoad();
+                    let picked = null;
+                    if (created && created.length) {
+                        const cid = created[0].id;
+                        picked = state.list.find(m => m.id === cid) || null;
+                    }
+                    if (!picked) {
+                        picked = findJustUploadedInState({
+                            fileName: file0.name,
+                            nameVal
+                        });
+                    }
+                    if (picked) {
+                        state.selected = picked;
+                        renderList();
+                        requestAnimationFrame(() => {
+                            const items = [...listEl.querySelectorAll('.mmx-item')];
+                            const el = items.find(elm => {
+                                const title = elm.querySelector('.mmx-title')?.textContent
+                                .trim() || "";
+                                return (picked.name || "") === title;
+                            }) || items[0];
+                            el?.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        });
+                    }
                     uploadInput.value = "";
                     uploadName.value = "";
                     uploadAlt.value = "";
-                    alert("تم الرفع بنجاح. تم تحديث المعرض.");
-                } else {
+                    return;
+                }
+
+                // select-close
+                if (created && created.length) {
                     const first = created[0];
-                    if (first) {
+                    window.mmxMediaModalManager.onMediaSelected({
+                        id: first.id,
+                        url: first.url || first.path,
+                        title: first.name || nameVal || "",
+                        alt: first.alt || altVal || ""
+                    });
+                    closeModal();
+                } else {
+                    await resetAndLoad();
+                    const picked = findJustUploadedInState({
+                        fileName: file0.name,
+                        nameVal
+                    });
+                    if (picked) {
                         window.mmxMediaModalManager.onMediaSelected({
-                            id: first.id,
-                            url: first.path,
-                            title: first.name || nameVal || "",
-                            alt: first.alt || altVal || ""
+                            id: picked.id,
+                            url: picked.url || picked.path,
+                            title: picked.name || nameVal || "",
+                            alt: picked.alt || altVal || ""
                         });
-                        closeModal();
                     } else {
-                        alert("تم الرفع، لكن لم أستطع تحديد العنصر.");
+                        console.warn("Upload OK but unable to determine the created media from response.");
                     }
+                    closeModal();
                 }
             } catch (err) {
-                console.error(err);
-                alert("حدث خطأ أثناء الرفع.");
+                console.error("🔥 Exception during upload:", err);
+                alert("حدث خطأ أثناء الرفع:\n" + (err && err.message ? err.message : err));
             } finally {
                 btnUploadToGallery.disabled = false;
                 btnUploadSelectAndClose.disabled = false;
@@ -974,80 +1077,124 @@
             }
         }
 
-        // Import via URL
+        // ===== Import via URL (with media type radio) =====
         async function importViaUrl(mode) {
-            const urlVal = (uploadUrlInput.value || "").trim();
-            if (!urlVal) {
-                alert("يرجى إدخال رابط صالح أولًا.");
+            if (!IMPORT_URL) {
+                alert("⚠️ لم يتم ضبط مسار الاستيراد عبر الرابط في الخادم.");
                 return;
             }
+            const urlVal = (uploadUrlInput.value || "").trim();
             const nameVal = (urlNameInput.value || "").trim();
             const altVal = (urlAltInput.value || "").trim();
+            const typeVal = getSelectedUrlType(); // auto | image | video | voice | file
+            if (!urlVal) {
+                alert("⚠️ يرجى إدخال الرابط أولاً.");
+                return;
+            }
 
+            // إذا اختار المستخدم voice نمرره كـ audio إلى الخادم
+            const payloadType = typeVal === "auto" ? undefined : mapFilterForServer(typeVal);
+
+            let created = null;
             try {
                 btnImportToGallery.disabled = true;
                 btnImportSelectAndClose.disabled = true;
                 btnImportToGallery.textContent = "جارٍ الاستيراد...";
                 btnImportSelectAndClose.textContent = "جارٍ الاستيراد...";
+
                 const res = await fetch(IMPORT_URL, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json",
                         "X-CSRF-TOKEN": CSRF,
-                        "Accept": "application/json"
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
                         url: urlVal,
                         name: nameVal || undefined,
-                        alt: altVal || undefined
+                        alt: altVal || undefined,
+                        media_type: payloadType // قد يتجاهله الخادم إن كان Auto/undefined
                     })
                 });
+                const bodyText = await res.text();
                 if (!res.ok) {
-                    console.error("Import failed:", await res.text());
-                    alert("فشل استيراد الرابط.");
+                    console.error("❌ Import failed:", res.status, bodyText);
+                    alert("فشل الاستيراد.\nStatus: " + res.status);
                     return;
                 }
-                const payload = await res.json();
-                let created = Array.isArray(payload?.data) ? payload.data :
-                    Array.isArray(payload?.media) ? payload.media :
-                    payload?.data ? [payload.data] :
-                    payload?.media ? [payload.media] : [];
-                if (!created.length) {
-                    console.warn("Unexpected import response:", payload);
-                    alert("تم الاستيراد لكن لم أتعرف على الاستجابة.");
-                    return;
-                }
-                created = created.map(m => ({
-                    ...m,
-                    name: nameVal || m.name,
-                    alt: altVal || m.alt
-                }));
 
-                if (mode === 'gallery') {
-                    state.list = created.concat(state.list);
+                const parsed = tryParseJsonFromText(bodyText);
+                created = parsed && !parsed.__nonJson ? extractCreatedFromPayload(parsed) : null;
+
+                if (mode === "gallery") {
                     switchTab('gallery');
-                    renderList();
+                    await resetAndLoad();
+
+                    let picked = null;
+                    if (created && created.length) {
+                        const cid = created[0].id;
+                        picked = state.list.find(m => m.id === cid) || null;
+                    }
+                    if (!picked) {
+                        picked = nameVal ?
+                            state.list.find(m => (m.name || "").trim() === nameVal.trim()) :
+                            (state.list[0] || null);
+                    }
+                    if (picked) {
+                        state.selected = picked;
+                        renderList();
+                        requestAnimationFrame(() => {
+                            const items = [...listEl.querySelectorAll('.mmx-item')];
+                            const el = items.find(elm => {
+                                const title = elm.querySelector('.mmx-title')?.textContent
+                                .trim() || "";
+                                return (picked.name || "") === title;
+                            }) || items[0];
+                            el?.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        });
+                    }
                     uploadUrlInput.value = "";
                     urlNameInput.value = "";
                     urlAltInput.value = "";
-                    alert("تم الاستيراد بنجاح. تم تحديث المعرض.");
-                } else {
+                    urlTypeRadios.forEach(r => {
+                        r.checked = (r.value === "auto");
+                    });
+                    return;
+                }
+
+                // select-close
+                if (created && created.length) {
                     const first = created[0];
-                    if (first) {
+                    window.mmxMediaModalManager.onMediaSelected({
+                        id: first.id,
+                        url: first.url || first.path,
+                        title: first.name || nameVal || "",
+                        alt: first.alt || altVal || ""
+                    });
+                    closeModal();
+                } else {
+                    await resetAndLoad();
+                    const picked = nameVal ?
+                        state.list.find(m => (m.name || "").trim() === nameVal.trim()) :
+                        (state.list[0] || null);
+                    if (picked) {
                         window.mmxMediaModalManager.onMediaSelected({
-                            id: first.id,
-                            url: first.path,
-                            title: first.name || nameVal || "",
-                            alt: first.alt || altVal || ""
+                            id: picked.id,
+                            url: picked.url || picked.path,
+                            title: picked.name || nameVal || "",
+                            alt: picked.alt || altVal || ""
                         });
-                        closeModal();
                     } else {
-                        alert("تم الاستيراد، لكن لم أستطع تحديد العنصر.");
+                        console.warn("Import OK but unable to determine created media.");
                     }
+                    closeModal();
                 }
             } catch (err) {
-                console.error(err);
-                alert("حدث خطأ أثناء الاستيراد.");
+                console.error("🔥 Exception during import:", err);
+                alert("حدث خطأ أثناء الاستيراد:\n" + (err && err.message ? err.message : err));
             } finally {
                 btnImportToGallery.disabled = false;
                 btnImportSelectAndClose.disabled = false;
@@ -1056,22 +1203,15 @@
             }
         }
 
-        // Bind actions
+        // ===== Bindings =====
         btnUploadToGallery?.addEventListener("click", () => uploadMediaAndHandle('gallery'));
         btnUploadSelectAndClose?.addEventListener("click", () => uploadMediaAndHandle('select-close'));
         btnImportToGallery?.addEventListener("click", () => importViaUrl('gallery'));
         btnImportSelectAndClose?.addEventListener("click", () => importViaUrl('select-close'));
 
-        // Initial empty render
-        function renderListEmpty() {
-            listEl.innerHTML = `<div class="mmx-empty">لا توجد وسائط للعرض</div>`;
-        }
-
-        function renderListIfEmpty() {
-            if (!state.list.length) renderListEmpty();
-        }
+        // ===== Initial render =====
         (function init() {
-            renderListIfEmpty();
+            if (!state.list.length) listEl.innerHTML = `<div class="mmx-empty">لا توجد وسائط للعرض</div>`;
         })();
     })();
 </script>
