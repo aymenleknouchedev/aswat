@@ -135,7 +135,9 @@ class ContentController extends BaseController
      */
     public function store(Request $request)
     {
+
         // dd($request->all());
+
         $albumImages = [];
 
         if ($request->hasFile('album_images')) {
@@ -167,12 +169,15 @@ class ContentController extends BaseController
             'seo_keyword' => 'nullable|string|max:255',
             'template' => 'required|string',
             'tags_id' => 'required|array',
-            'share_image' => 'nullable|max:2048',
+            'share_image' => 'nullable|max:10000',
             'share_title' => 'nullable|string',
             'share_description' => 'nullable|string',
             'review_description' => 'nullable|string',
             'created_at' => 'nullable|date',
+            'created_at_by_admin' => 'nullable|date',
         ];
+
+
 
         if (in_array($request->display_method, ['list', 'file'])) {
 

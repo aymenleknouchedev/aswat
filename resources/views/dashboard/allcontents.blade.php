@@ -104,24 +104,53 @@
 
                                                     <td class="text-start">
                                                         <div class="fw-bold mb-1">
-                                                            <a href="{{ route('news.show', $content->title) }}"
-                                                                class="text-dark text-decoration-none">
+                                                            <a href="{{ route('news.show', $content->title) }} "
+                                                                target="_blank" class="text-dark text-decoration-none">
                                                                 {{ Str::limit($content->mobile_title, 60) }}
                                                             </a>
                                                         </div>
                                                         <div class="small text-muted">
-                                                            <span>المحرر: {{ $content->user->name ?? 'غير معروف' }}</span>
-                                                            |
-                                                            <span>الكاتب: {{ $content->writer->name ?? '-' }}</span>
+                                                            <span>المحرر: {{ $content->user->name }}</span>
+
+                                                            @if (optional($content->writer)->name)
+                                                                | <span>الكاتب:
+                                                                    {{ optional($content->writer)->name }}</span>
+                                                            @endif
                                                         </div>
                                                         <div class="small mt-1">
-                                                            <span
-                                                                class="badge bg-light text-dark border">{{ $content->template }}</span>
-                                                            <span
-                                                                class="badge bg-light text-dark border">{{ $content->display_method }}</span>
+                                                            @php
+                                                                $templateLabels = [
+                                                                    'normal_image' => 'صورة',
+                                                                    'video' => 'فيديو',
+                                                                    'podcast' => 'بودكاست',
+                                                                    'album' => 'ألبوم',
+                                                                    'without_photo' => 'بدون صورة',
+                                                                ];
+                                                                $templateLabel =
+                                                                    $templateLabels[$content->template] ??
+                                                                    $content->template;
+                                                            @endphp
+                                                            <span class="badge bg-light text-dark border">
+                                                                {{ $templateLabel }}</span>
                                                             @if ($content->is_latest)
-                                                                <span class="badge bg-primary text-white">الأحدث</span>
+                                                                <span class="badge bg-secondary text-white mx-1">آخــر
+                                                                    الأخبار</span>
                                                             @endif
+
+                                                            @php
+                                                                $displayMethodLabels = [
+                                                                    'simple' => 'عادي',
+                                                                    'file' => 'ملف',
+                                                                    'list' => 'قائمة',
+                                                                ];
+                                                                $displayLabel =
+                                                                    $displayMethodLabels[$content->display_method] ??
+                                                                    $content->display_method;
+                                                            @endphp
+
+                                                            <span class="badge bg-light text-dark border">قالب
+                                                                {{ $displayLabel }}</span>
+
                                                         </div>
                                                     </td>
 
@@ -169,18 +198,57 @@
                                                     </td>
 
                                                     <td>
-                                                        <div>{{ $content->created_at->format('Y-m-d') }}</div>
-                                                        <small
-                                                            class="text-muted">{{ $content->created_at->format('H:i') }}</small>
+                                                        @php
+                                                            $adminRaw = $content->created_at_by_admin ?? null;
+                                                            $adminDate = null;
+                                                            if ($adminRaw instanceof \Carbon\Carbon) {
+                                                                $adminDate = $adminRaw;
+                                                            } elseif (is_string($adminRaw) && !empty($adminRaw)) {
+                                                                try {
+                                                                    $adminDate = \Carbon\Carbon::parse($adminRaw);
+                                                                } catch (\Exception $e) {
+                                                                    $adminDate = null;
+                                                                }
+                                                            }
+
+                                                            $fallbackRaw = $content->created_at ?? null;
+                                                            $fallbackDate = null;
+                                                            if ($fallbackRaw instanceof \Carbon\Carbon) {
+                                                                $fallbackDate = $fallbackRaw;
+                                                            } elseif (is_string($fallbackRaw) && !empty($fallbackRaw)) {
+                                                                try {
+                                                                    $fallbackDate = \Carbon\Carbon::parse($fallbackRaw);
+                                                                } catch (\Exception $e) {
+                                                                    $fallbackDate = null;
+                                                                }
+                                                            }
+
+                                                            $displayDate = $adminDate
+                                                                ? $adminDate->format('Y-m-d')
+                                                                : ($fallbackDate
+                                                                    ? $fallbackDate->format('Y-m-d')
+                                                                    : '');
+                                                            $displayTime = $adminDate
+                                                                ? $adminDate->format('H:i')
+                                                                : ($fallbackDate
+                                                                    ? $fallbackDate->format('H:i')
+                                                                    : '');
+                                                        @endphp
+                                                        <div>{{ $displayDate }}</div>
+                                                        <small class="text-muted">{{ $displayTime }}</small>
                                                     </td>
 
                                                     <td>
-                                                        <div class="d-flex justify-content-center flex-wrap gap-1 align-items-center">
-                                                            <a href="{{ route('dashboard.content.edit', $content->id) }}" class="btn btn-sm btn-primary">تعديل</a>
+                                                        <div
+                                                            class="d-flex justify-content-center flex-wrap gap-1 align-items-center">
+                                                            <a href="{{ route('dashboard.content.edit', $content->id) }}"
+                                                                class="btn btn-sm btn-primary">تعديل</a>
 
                                                             <div class="dropdown">
-                                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center" type="button"
-                                                                    id="dropdownMenu{{ $content->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <button
+                                                                    class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center"
+                                                                    type="button" id="dropdownMenu{{ $content->id }}"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false">
                                                                     المزيد
                                                                     @if ($content->reviews && $content->reviews->count() > 0)
                                                                         <span class="wave-badge ms-2" aria-hidden="true">
@@ -191,31 +259,76 @@
                                                                 </button>
 
                                                                 <style>
-                                                                /* small inline styles for the orange wave animation (kept local to this component) */
-                                                                .wave-badge{position:relative;display:inline-block;width:18px;height:18px;line-height:0}
-                                                                .wave-badge .dot{width:8px;height:8px;background:#ffffff00;border-radius:50%;display:block;position:relative;z-index:2}
-                                                                .wave-badge .ripple{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:#ff7a00;opacity:0.8;z-index:1;animation:wavePulse 1.4s infinite ease-out}
-                                                                @keyframes wavePulse{
-                                                                  0%{transform:translate(-50%,-50%) scale(1);opacity:0.9}
-                                                                  70%{transform:translate(-50%,-50%) scale(2.4);opacity:0.25}
-                                                                  100%{transform:translate(-50%,-50%) scale(3);opacity:0}
-                                                                }
+                                                                    /* small inline styles for the orange wave animation (kept local to this component) */
+                                                                    .wave-badge {
+                                                                        position: relative;
+                                                                        display: inline-block;
+                                                                        width: 18px;
+                                                                        height: 18px;
+                                                                        line-height: 0
+                                                                    }
+
+                                                                    .wave-badge .dot {
+                                                                        width: 8px;
+                                                                        height: 8px;
+                                                                        background: #ffffff00;
+                                                                        border-radius: 50%;
+                                                                        display: block;
+                                                                        position: relative;
+                                                                        z-index: 2
+                                                                    }
+
+                                                                    .wave-badge .ripple {
+                                                                        position: absolute;
+                                                                        top: 50%;
+                                                                        left: 50%;
+                                                                        transform: translate(-50%, -50%);
+                                                                        width: 8px;
+                                                                        height: 8px;
+                                                                        border-radius: 50%;
+                                                                        background: #ff7a00;
+                                                                        opacity: 0.8;
+                                                                        z-index: 1;
+                                                                        animation: wavePulse 1.4s infinite ease-out
+                                                                    }
+
+                                                                    @keyframes wavePulse {
+                                                                        0% {
+                                                                            transform: translate(-50%, -50%) scale(1);
+                                                                            opacity: 0.9
+                                                                        }
+
+                                                                        70% {
+                                                                            transform: translate(-50%, -50%) scale(2.4);
+                                                                            opacity: 0.25
+                                                                        }
+
+                                                                        100% {
+                                                                            transform: translate(-50%, -50%) scale(3);
+                                                                            opacity: 0
+                                                                        }
+                                                                    }
                                                                 </style>
-                                                                
-                                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{ $content->id }}">
+
+                                                                <ul class="dropdown-menu"
+                                                                    aria-labelledby="dropdownMenu{{ $content->id }}">
                                                                     <li>
-                                                                        <a class="dropdown-item" href="{{ route('news.show', $content->title) }}">عرض</a>
+                                                                        <a class="dropdown-item"
+                                                                            href="{{ route('news.show', $content->title) }}"
+                                                                            target="_blank">عرض</a>
                                                                     </li>
 
                                                                     @if ($content->contentActions && $content->contentActions->count() > 0)
                                                                         <li>
-                                                                            <a class="dropdown-item" href="{{ route('dashboard.content.actions', $content->id) }}"
-                                                                                target="_blank">سجل الإجراءات</a>
+                                                                            <a class="dropdown-item"
+                                                                                href="{{ route('dashboard.content.actions', $content->id) }}">سجل
+                                                                                الإجراءات</a>
                                                                         </li>
                                                                     @endif
 
                                                                     <li>
-                                                                        <a class="dropdown-item" href="{{ route('content.reviews.index', $content->id) }}">
+                                                                        <a class="dropdown-item"
+                                                                            href="{{ route('content.reviews.index', $content->id) }}">
                                                                             المراجعات
                                                                             @if ($content->reviews && $content->reviews->count() > 0)
                                                                                 ({{ $content->reviews->count() }})
@@ -224,11 +337,15 @@
                                                                     </li>
 
                                                                     <li>
-                                                                        <form action="{{ route('dashboard.content.destroy', $content->id) }}" method="POST" class="m-0">
+                                                                        <form
+                                                                            action="{{ route('dashboard.content.destroy', $content->id) }}"
+                                                                            method="POST" class="m-0">
                                                                             @csrf
                                                                             @method('DELETE')
-                                                                            <button type="submit" class="dropdown-item text-danger"
-                                                                                onclick="return confirm('هل أنت متأكد من حذف هذا المحتوى؟')">حذف</button>
+                                                                            <button type="button"
+                                                                                class="dropdown-item text-danger delete-btn">
+                                                                                حذف
+                                                                            </button>
                                                                         </form>
                                                                     </li>
                                                                 </ul>

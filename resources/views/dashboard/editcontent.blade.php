@@ -746,24 +746,6 @@
                     <div class="col-md-3 mt-4">
                         <div class="card">
                             <div class="card-body">
-
-                                <div class="mb-3">
-                                    <label for="publish_at" class="form-label" data-ar="جدولة النشر"
-                                        data-en="Schedule Publish">
-                                        <em class="icon ni ni-calendar"></em>
-                                        جدولة النشر
-                                    </label>
-                                    <div class="input-group mb-2">
-                                        <span class="input-group-text bg-light">
-                                            <em class="icon ni ni-calendar"></em>
-                                        </span>
-                                        <input type="datetime-local" id="publish_at" name="published_at"
-                                            class="form-control" value="{{ old('published_at') }}"
-                                            onclick="this.showPicker && this.showPicker()"
-                                            onfocus="this.showPicker && this.showPicker()">
-                                    </div>
-                                </div>
-
                                 <div class="form-check mb-2">
                                     <input class="form-check-input" type="checkbox" value="1" id="is_latest"
                                         name="is_latest" {{ $content->is_latest ? 'checked' : '' }}>

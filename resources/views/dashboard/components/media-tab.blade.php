@@ -1,118 +1,530 @@
-<!-- Media Tab -->
-<div  class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
-    {{-- Template Type radios --}}
-    <div class="form-group mt-3 mb-4">
-        @foreach ([
-        'normal_image' => ['ar' => 'صورة عادية', 'en' => 'Normal Image'],
-        'video' => ['ar' => 'فيديو', 'en' => 'Video'],
-        'podcast' => ['ar' => 'بودكاست', 'en' => 'Podcast'],
-        'album' => ['ar' => 'ألبوم صور', 'en' => 'Photo Album'],
-        'no_image' => ['ar' => 'بدون صورة', 'en' => 'No Image'],
-    ] as $value => $texts)
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="template_{{ $value }}" name="template" class="custom-control-input"
-                    value="{{ $value }}" {{ $value === 'normal_image' ? 'checked' : '' }}>
-                <label data-en="{{ $texts['en'] }}" data-ar="{{ $texts['ar'] }}" class="custom-control-label"
-                    for="template_{{ $value }}">
-                    {{ $texts['ar'] }}
+<!-- Font Awesome CDN for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Include MMX Media Modal (assurez-vous que le code MMX déjà fourni est présent sur la page) -->
+@include('dashboard.components.media-modal')
+
+<div class="media-manager">
+    @csrf
+
+    <!-- Media Type Selection -->
+    <div class="media-type-selector mb-4">
+        <div class="d-flex flex-wrap">
+            <div class="media-type-card">
+                <input type="radio" name="template" id="normal-radio" value="normal_image" class="media-type-input"
+                    checked>
+                <label for="normal-radio" class="media-type-label">
+                    <i class="fas fa-image"></i>
+                    <span>صورة</span>
                 </label>
             </div>
-        @endforeach
+            <div class="media-type-card">
+                <input type="radio" name="template" id="video-radio" value="video" class="media-type-input">
+                <label for="video-radio" class="media-type-label">
+                    <i class="fas fa-video"></i>
+                    <span>فيديو</span>
+                </label>
+            </div>
+            <div class="media-type-card">
+                <input type="radio" name="template" id="podcast-radio" value="podcast" class="media-type-input">
+                <label for="podcast-radio" class="media-type-label">
+                    <i class="fas fa-podcast"></i>
+                    <span>بودكاست</span>
+                </label>
+            </div>
+            <div class="media-type-card">
+                <input type="radio" name="template" id="album-radio" value="album" class="media-type-input">
+                <label for="album-radio" class="media-type-label">
+                    <i class="fas fa-images"></i>
+                    <span>ألبوم</span>
+                </label>
+            </div>
+            <div class="media-type-card">
+                <input type="radio" name="template" id="article-radio" value="no_image" class="media-type-input">
+                <label for="article-radio" class="media-type-label">
+                    <i class="fas fa-file-alt"></i>
+                    <span>مقال</span>
+                </label>
+            </div>
+        </div>
     </div>
 
-    {{-- Include each template partial --}}
-    @include('dashboard.components.partials.media-normal-image')
-    @include('dashboard.components.partials.media-video')
-    @include('dashboard.components.partials.media-podcast')
-    @include('dashboard.components.partials.media-album')
-    @include('dashboard.components.partials.media-no-image')
+    <!-- Hidden Fields -->
+    <div id="media-hidden-fields"></div>
 
+    <!-- Media Content -->
+    <div id="mediaTypeContent"></div>
 
+    <!-- Summary Panel -->
+    <div class="media-summary-panel mt-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">ملخص الوسائط المختارة</h5>
+                <span class="badge bg-primary" id="selected-count">0</span>
+            </div>
+            <div class="card-body">
+                <div id="summary-table-body" class="media-summary-grid"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
-{{-- استدعاء سكريبت الميديا --}}
-<script src="{{ asset('js/media-handler.js') }}"></script>
-
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const rules = {
-        normal_image: [
-            "normal_main_image",
-            "normal_mobile_image",
-            "normal_content_image",
-        ],
-        video: [
-            "video_main_image",
-            "video_mobile_image",
-            "video_content_image",
-            "video_file",
-        ],
-        podcast: [
-            "podcast_main_image",
-            "podcast_content_image",
-            "podcast_mobile_image",
-            "podcast_file",
-        ],
-        album: [
-            "album_main_image",
-            "album_content_image",
-            "album_mobile_image",
-        ],
-        no_image: [
-            "no_image_main_image",
-            "no_image_mobile_image",
-        ],
-    };
-
-    const form = document.getElementById("contentForm");
-    const publishButton = document.getElementById("publishButton");
-
-    // Detect current language
-    const currentLang = localStorage.getItem('siteLang') || 'en';
-
-    // Texts for both languages
-    const alertTexts = {
-        en: {
-            title: "Validation failed",
-            confirmButtonText: "OK"
-        },
-        ar: {
-            title: "فشل التحقق",
-            confirmButtonText: "حسناً"
+    class MediaTabManager {
+        constructor() {
+            this.state = {
+                currentTemplate: 'normal_image',
+                currentField: '',
+                selectedMedia: {}
+            };
+            this.init();
         }
-    };
 
-    publishButton.addEventListener("click", function (e) {
-        const selectedTemplate = document.querySelector('input[name="template"]:checked').value;
-        const requiredFields = rules[selectedTemplate] || [];
-        const errors = [];
+        init() {
+            this.bindEvents();
+            this.loadTemplateContent('normal_image');
+            this.updateSummary();
 
-        requiredFields.forEach(fieldName => {
-            const fileInput = document.querySelector(`input[type="file"][name="${fieldName}"]`);
-            const urlInput = document.getElementById(fieldName + "_url");
-
-            const hasFile = fileInput && fileInput.files && fileInput.files.length > 0;
-            const hasUrl = urlInput && urlInput.value.trim() !== "";
-
-            if (!hasFile && !hasUrl) {
-                errors.push(`${fieldName} is required`);
+            // Raccord explicite avec MMX (en plus du forward automatique prévu par MMX)
+            if (window.mmxMediaModalManager) {
+                const originalHandler = window.mmxMediaModalManager.onMediaSelected;
+                window.mmxMediaModalManager.onMediaSelected = (payload) => {
+                    if (typeof this.onMediaSelected === 'function') {
+                        this.onMediaSelected(payload);
+                    }
+                    if (typeof originalHandler === 'function') {
+                        // conserve tout autre comportement défini côté MMX
+                        originalHandler(payload);
+                    }
+                };
             }
-        });
-
-        const tags = document.getElementById("hiddenTags").children;
-        if (tags.length === 0) {
-            errors.push(currentLang === "ar" ? "يجب إضافة وسم واحد على الأقل" : "At least one tag is required");
         }
 
-        if (errors.length > 0) {
-            e.preventDefault();
-            Swal.fire({
-                title: alertTexts[currentLang].title,
-                html: "<ul style='text-align: center;'>" + errors.map(e => "<li class=''>" + e + "</li>").join("") + "</ul>",
-                icon: "error",
-                confirmButtonText: alertTexts[currentLang].confirmButtonText
+        bindEvents() {
+            document.querySelectorAll('.media-type-input').forEach(radio => {
+                radio.addEventListener('change', e => {
+                    this.state.currentTemplate = e.target.value;
+                    this.loadTemplateContent(e.target.value);
+                });
             });
         }
-    });
-});
+
+        loadTemplateContent(template) {
+            const templates = {
+                normal_image: this.getNormalImageTemplate(),
+                video: this.getVideoTemplate(),
+                podcast: this.getPodcastTemplate(),
+                album: this.getAlbumTemplate(),
+                no_image: this.getNoImageTemplate()
+            };
+            document.getElementById('mediaTypeContent').innerHTML = templates[template] || '';
+        }
+
+        createField(fieldName, label, icon, type = 'image') {
+            const media = this.state.selectedMedia[fieldName];
+            return `
+        <div class="field-card">
+            <label class="field-label">${label}</label>
+            <div class="field-preview" id="${fieldName}_preview">
+                ${media ? this.getMediaPreview(media, fieldName) : this.getEmptyState(fieldName, icon, type)}
+            </div>
+        </div>`;
+        }
+
+        getMediaPreview(media, fieldName) {
+            return `
+        <div class="media-preview-selected">
+            ${/\.(mp4|avi|mov|wmv)$/i.test(media.url) 
+                ? `<video src="${media.url}" controls style="width:60px;height:60px;object-fit:cover;"></video>`
+                : `<img src="${media.url}" alt="${media.title || ''}" style="width:60px;height:60px;object-fit:cover;">`}
+            <div class="media-info">
+                <span class="media-title">${media.title || 'بدون عنوان'}</span>
+                <span class="media-type">${this.getFileType(media.url)}</span>
+            </div>
+            <div class="media-actions">
+                <button class="btn btn-sm btn-outline-secondary" onclick="mediaTabManager.changeMedia('${fieldName}')">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMedia('${fieldName}')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>`;
+        }
+
+        getEmptyState(fieldName, icon, type) {
+            return `
+        <div class="field-empty" onclick="mediaTabManager.openMediaModal('${fieldName}')">
+            <i class="${icon}"></i>
+            <span>${type === 'file' ? 'اختر ملف' : 'اختر صورة'}</span>
+        </div>`;
+        }
+
+        // Public Methods
+        openMediaModal(fieldName) {
+            this.state.currentField = fieldName;
+            // Passage au gestionnaire MMX
+            if (window.mmxMediaModalManager && typeof window.mmxMediaModalManager.openModal === 'function') {
+                window.mmxMediaModalManager.openModal(fieldName);
+            } else {
+                console.warn('MMX Media Modal non disponible : veillez à inclure le script/markup MMX.');
+            }
+        }
+
+        changeMedia(fieldName) {
+            this.openMediaModal(fieldName);
+        }
+
+        removeMedia(fieldName) {
+            delete this.state.selectedMedia[fieldName];
+            this.updateFieldPreview(fieldName);
+            this.updateSummary();
+            this.updateHiddenFields();
+        }
+
+        onMediaSelected(media) {
+            // media = { id, url, title, alt } tel que renvoyé par MMX
+            if (!this.state.currentField) return;
+            this.state.selectedMedia[this.state.currentField] = media;
+            this.updateFieldPreview(this.state.currentField);
+            this.updateSummary();
+            this.updateHiddenFields();
+        }
+
+        updateFieldPreview(fieldName) {
+            const previewElement = document.getElementById(`${fieldName}_preview`);
+            if (!previewElement) return;
+            const media = this.state.selectedMedia[fieldName];
+            const icon = this.getFieldIcon(fieldName);
+            const type = fieldName.includes('_file') ? 'file' : 'image';
+            previewElement.innerHTML = media ? this.getMediaPreview(media, fieldName) : this.getEmptyState(
+                fieldName, icon, type);
+        }
+
+        getFieldIcon(fieldName) {
+            if (fieldName.includes('video_file')) return 'fas fa-video';
+            if (fieldName.includes('podcast_file')) return 'fas fa-podcast';
+            if (fieldName.includes('mobile')) return 'fas fa-mobile-alt';
+            return 'fas fa-image';
+        }
+
+        updateSummary() {
+            const summaryBody = document.getElementById('summary-table-body');
+            const selectedCount = document.getElementById('selected-count');
+            const selectedItems = Object.values(this.state.selectedMedia).filter(Boolean);
+            selectedCount.textContent = selectedItems.length;
+
+            if (selectedItems.length === 0) {
+                summaryBody.innerHTML = `
+                <div class="empty-summary">
+                    <i class="fas fa-images"></i>
+                    <p>لم يتم اختيار أي وسائط بعد</p>
+                </div>`;
+                return;
+            }
+
+            summaryBody.innerHTML = selectedItems.map(media => `
+            <div class="summary-item">
+                <img src="${media.url}" alt="${media.title || ''}">
+                <div class="summary-info">
+                    <h6>${media.title || 'بدون عنوان'}</h6>
+                    <span>${this.getFileType(media.url)}</span>
+                </div>
+                <button class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMediaFromSummary('${media.id}')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `).join('');
+        }
+
+        removeMediaFromSummary(mediaId) {
+            const fieldName = Object.keys(this.state.selectedMedia).find(key => this.state.selectedMedia[key]?.id ==
+                mediaId);
+            if (fieldName) this.removeMedia(fieldName);
+        }
+
+        updateHiddenFields() {
+            const container = document.getElementById('media-hidden-fields');
+            container.innerHTML = Object.entries(this.state.selectedMedia)
+                .map(([field, media]) => media ? `
+                <input type="hidden" name="${field}_id" value="${media.id}">
+                <input type="hidden" name="${field}" value="${media.url}">
+                <input type="hidden" name="${field}_title" value="${media.title || ''}">
+                <input type="hidden" name="${field}_alt" value="${media.alt || ''}">
+            ` : '').join('');
+        }
+
+        getFileType(url) {
+            if (!url) return 'ملف';
+            if (/\.(jpeg|jpg|gif|png|webp)$/i.test(url)) return 'صورة';
+            if (/\.(mp4|avi|mov|wmv|webm|m4v)$/i.test(url)) return 'فيديو';
+            if (/\.(mp3|wav|ogg|m4a|aac|flac)$/i.test(url)) return 'صوت';
+            return 'ملف';
+        }
+
+        // Templates
+        getNormalImageTemplate() {
+            return `<div class="template-fields"><h6 class="template-title">إعدادات الصورة</h6>
+            <div class="fields-grid">
+                ${this.createField('normal_main_image','الصورة الرئيسية','fas fa-image')}
+                ${this.createField('normal_content_image','صورة المحتوى','fas fa-image')}
+                ${this.createField('normal_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
+            </div>
+        </div>`;
+        }
+
+        getVideoTemplate() {
+            return `<div class="template-fields"><h6 class="template-title">إعدادات الفيديو</h6>
+            <div class="fields-grid">
+                ${this.createField('video_main_image','صورة الفيديو الرئيسية','fas fa-image')}
+                ${this.createField('video_content_image','صورة محتوى الفيديو','fas fa-image')}
+                ${this.createField('video_mobile_image','صورة الفيديو للموبايل','fas fa-mobile-alt')}
+                ${this.createField('video_file','ملف الفيديو','fas fa-video','file')}
+            </div>
+        </div>`;
+        }
+
+        getPodcastTemplate() {
+            return `<div class="template-fields"><h6 class="template-title">إعدادات البودكاست</h6>
+            <div class="fields-grid">
+                ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','fas fa-image')}
+                ${this.createField('podcast_content_image','صورة محتوى البودكاست','fas fa-image')}
+                ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','fas fa-mobile-alt')}
+                ${this.createField('podcast_file','ملف البودكاست','fas fa-podcast','file')}
+            </div>
+        </div>`;
+        }
+
+        getAlbumTemplate() {
+            return `<div class="template-fields"><h6 class="template-title">إعدادات الألبوم</h6>
+            <div class="fields-grid">
+                ${this.createField('album_main_image','صورة الألبوم الرئيسية','fas fa-image')}
+                ${this.createField('album_content_image','صورة محتوى الألبوم','fas fa-image')}
+                ${this.createField('album_mobile_image','صورة الألبوم للموبايل','fas fa-mobile-alt')}
+            </div>
+        </div>`;
+        }
+
+        getNoImageTemplate() {
+            return `<div class="template-fields"><h6 class="template-title">إعدادات المقال</h6>
+            <div class="fields-grid">
+                ${this.createField('no_image_main_image','الصورة الرئيسية','fas fa-image')}
+                ${this.createField('no_image_mobile_image','صورة المقال للموبايل','fas fa-mobile-alt')}
+            </div>
+        </div>`;
+        }
+    }
+
+    // Initialize
+    window.mediaTabManager = new MediaTabManager();
 </script>
+
+<style>
+    .media-manager {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Media Type Selector */
+    .media-type-selector .media-type-card {
+        position: relative;
+        margin: 0 5px 5px 0;
+    }
+
+    .media-type-input {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .media-type-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border: 2px solid #e9ecef;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+        min-width: 100px;
+    }
+
+    .media-type-label i {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: #6c757d;
+    }
+
+    .media-type-label span {
+        font-weight: 500;
+        color: #495057;
+    }
+
+    .media-type-input:checked+.media-type-label {
+        border-color: #007bff;
+        background: #f8f9ff;
+    }
+
+    .media-type-input:checked+.media-type-label i,
+    .media-type-input:checked+.media-type-label span {
+        color: #007bff;
+    }
+
+    /* Template Fields */
+    .template-fields {
+        background: white;
+        padding: 1.5rem;
+        border: 1px solid #e9ecef;
+    }
+
+    .template-title {
+        color: #495057;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .fields-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .field-card {
+        background: #f8f9fa;
+        padding: 1rem;
+        margin: 0 5px 5px 0;
+    }
+
+    .field-label {
+        font-weight: 500;
+        color: #495057;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .field-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        border: 2px solid #dee2e6;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .field-empty:hover {
+        border-color: #007bff;
+        background: #f8f9ff;
+    }
+
+    .field-empty i {
+        font-size: 2rem;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+
+    .media-preview-selected {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        background: white;
+        border: 1px solid #e9ecef;
+    }
+
+    .media-preview-selected img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        margin: 0 10px 0 0;
+    }
+
+    .media-info {
+        flex: 1;
+        margin: 0 10px;
+    }
+
+    .media-title {
+        font-weight: 500;
+        display: block;
+    }
+
+    .media-type {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+
+    .media-actions {
+        display: flex;
+    }
+
+    .media-actions .btn {
+        margin: 0 2px;
+    }
+
+    /* Summary Panel */
+    .media-summary-panel .card {
+        border: none;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .media-summary-grid {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .summary-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        background: #f8f9fa;
+        margin-bottom: 5px;
+    }
+
+    .summary-item img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin: 0 10px 0 0;
+    }
+
+    .summary-info {
+        flex: 1;
+        margin: 0 10px;
+    }
+
+    .summary-info h6 {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .empty-summary {
+        text-align: center;
+        padding: 2rem;
+        color: #6c757d;
+    }
+
+    .empty-summary i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .fields-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .media-type-selector .d-flex {
+            flex-direction: column;
+        }
+
+        .media-type-label {
+            min-width: auto;
+        }
+
+        .media-type-card,
+        .field-card {
+            margin: 0 0 5px 0;
+        }
+    }
+</style>

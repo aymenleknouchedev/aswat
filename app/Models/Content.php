@@ -41,6 +41,7 @@ class Content extends Model
         'share_description',
         'share_title',
         'share_image',
+        'created_at_by_admin',
 
         // Normal Image
         'normal_main_image',

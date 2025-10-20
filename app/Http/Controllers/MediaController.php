@@ -75,7 +75,19 @@ class MediaController extends BaseController
             $media = new ContentMedia();
             $media->name = $request->input('name');
             $media->alt = $request->input('alt');
-            $media->media_type = $file->getClientMimeType();
+            // تحديد نوع الوسائط (صوت، فيديو، صورة، ملف)
+            $mimeType = $file->getClientMimeType();
+            if (str_starts_with($mimeType, 'audio/')) {
+                $media->media_type = 'voice';
+            } elseif (str_starts_with($mimeType, 'video/')) {
+                $media->media_type = 'video';
+            } elseif (str_starts_with($mimeType, 'image/')) {
+                $media->media_type = 'image';
+            } elseif (filter_var($request->input('media'), FILTER_VALIDATE_URL)) {
+                $media->media_type = 'image';
+            } else {
+                $media->media_type = 'file';
+            }
             $media->path = $path;
             $media->user_id = Auth::id();
             $media->save();
