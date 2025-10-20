@@ -81,13 +81,14 @@
                 currentTemplate: 'normal_image',
                 currentField: '',
                 selectedMedia: {}
+                // ملاحظة: الحقول التي تنتهي بـ _assets تُخزَّن كمصفوفات
             };
 
-            /* ===== OPTIONAL PROXY =====
-               فعّل البروكسي إذا كان هناك حظر Hotlinking في بعض الهوستات. */
+            // إعدادات اختيارية للوكيل (للتخطّي عبر نفس الأصل)
             this.USE_PROXY = false;
             this.PROXY_URL = '/media/proxy?url=';
 
+            // YouTube helpers
             this.YT_REGEX = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
 
             this.init();
@@ -99,11 +100,12 @@
             this.loadTemplateContent('normal_image');
             this.updateSummary();
 
-            // Bridge MMX selection -> this manager
+            // جسر التكامل مع MMX Media Modal
             if (window.mmxMediaModalManager) {
                 const originalHandler = window.mmxMediaModalManager.onMediaSelected;
                 window.mmxMediaModalManager.onMediaSelected = (payload) => {
-                    if (typeof this.onMediaSelected === 'function') this.onMediaSelected(payload);
+                    if (Array.isArray(payload)) payload.forEach(item => this.onMediaSelected(item));
+                    else this.onMediaSelected(payload);
                     if (typeof originalHandler === 'function') originalHandler(payload);
                 };
             }
@@ -130,7 +132,6 @@
         normalizeUrl(url = '') {
             if (!url) return '';
             if (/^(data:|blob:)/i.test(url)) return url;
-
             if (url.startsWith('/')) {
                 try {
                     return new URL(url, window.location.origin).toString();
@@ -142,14 +143,8 @@
             if (!/^https?:\/\//i.test(url)) return 'https://' + url.replace(/^\/+/, '');
             return url;
         }
-
         maybeProxy(url) {
-            if (!this.USE_PROXY) return url;
-            try {
-                return this.PROXY_URL + encodeURIComponent(url);
-            } catch {
-                return url;
-            }
+            return this.USE_PROXY ? this.PROXY_URL + encodeURIComponent(url) : url;
         }
 
         /* ================== DYNAMIC TEMPLATES ================== */
@@ -175,17 +170,324 @@
       </div>`;
         }
 
-        /* ================== PREVIEWS (BIGGER + ACTIONS AT BOTTOM) ================== */
+        /* ============== COLLECTION FIELD ( *_assets ) ============== */
+        createAssetsField(fieldName, label) {
+            // حالة واجهة مخصصة
+            this.state._assetsUi = this.state._assetsUi || {};
+            this.state._assetsUi[fieldName] = Object.assign({
+                page: 1,
+                pageSize: 24,
+                view: 'grid',
+                size: 180,
+                query: '',
+                selected: new Set()
+            }, this.state._assetsUi[fieldName] || {});
+
+            const ui = this.state._assetsUi[fieldName];
+            const items = Array.isArray(this.state.selectedMedia[fieldName]) ? this.state.selectedMedia[fieldName] :
+                [];
+
+            return `
+      <div class="field-card field-card--full" data-field="${fieldName}">
+        <div class="field-label assets-label-row">
+          <span>${label}</span>
+          <div class="assets-toolbar" data-assets-toolbar="${fieldName}">
+            <div class="assets-toolbar-group">
+              <label class="assets-size-label">حجم</label>
+              <input type="range" min="120" max="260" step="10" value="${ui.size}"
+                     oninput="mediaTabManager.onAssetsSize('${fieldName}', this.value)">
+              <button type="button" class="btn btn-sm"
+                      onclick="mediaTabManager.toggleAssetsView('${fieldName}')">تبديل العرض</button>
+              <button type="button" class="btn btn-sm btn-outline-primary"
+                      onclick="mediaTabManager.openAssetsPicker('${fieldName}')">إضافة عناصر</button>
+              <button type="button" class="btn btn-sm"
+                      onclick="mediaTabManager.selectAllAssets('${fieldName}')">تحديد الكل</button>
+              <button type="button" class="btn btn-sm"
+                      onclick="mediaTabManager.clearSelection('${fieldName}')">إلغاء التحديد</button>
+              <button type="button" class="btn btn-sm btn-outline-danger"
+                      onclick="mediaTabManager.deleteSelectedAssets('${fieldName}')">حذف المحدد</button>
+              <button type="button" class="btn btn-sm btn-outline-danger"
+                      onclick="mediaTabManager.clearAllAssets('${fieldName}')">تفريغ الألبوم</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="assets-wrapper ${ui.view === 'list' ? 'is-list' : 'is-grid'}" style="--asset-size:${ui.size}px">
+          <div class="assets-grid" id="${fieldName}_grid"
+               ondragover="mediaTabManager.onAssetDragOver(event)"
+               ondrop="mediaTabManager.onAssetDrop(event, '${fieldName}')">
+            ${this.renderAssetsGrid(fieldName)}
+          </div>
+          ${this.renderAssetsPagination(fieldName, items.length)}
+        </div>
+      </div>`;
+        }
+
+        getAssetsEmptyState(fieldName) {
+            return `
+      <div class="assets-empty" onclick="mediaTabManager.openAssetsPicker('${fieldName}')">
+        <span>انقر للإضافة</span>
+      </div>`;
+        }
+
+        // بطاقة عنصر قابلة للتحديد والسحب
+        getAssetCardSelectable(media, fieldName, index) {
+            const url = this.normalizeUrl(media.url || '');
+            const type = this.getFileType(url);
+            const thumb = this.maybeProxy(
+                type === 'youtube' && this.getYouTubeId(url) ?
+                `https://i.ytimg.com/vi/${this.getYouTubeId(url)}/hqdefault.jpg` :
+                url
+            );
+            const ui = this.state._assetsUi[fieldName];
+            const selected = ui.selected.has(this._assetKey(media)) ? ' is-selected' : '';
+
+            return `
+      <div class="asset-item${selected}" data-index="${index}" draggable="true"
+           ondragstart="mediaTabManager.onAssetDragStart(event, '${fieldName}', ${index})">
+        <label class="asset-check">
+          <input type="checkbox" ${selected ? 'checked' : ''}
+                 onchange="mediaTabManager.onAssetToggle('${fieldName}', ${index}, this.checked)">
+          <span></span>
+        </label>
+        <div class="asset-thumb">
+          ${type === 'audio'
+            ? `<div class="asset-audio" title="${media.title || ''}">${media.title || 'صوت'}</div>`
+            : `<img src="${thumb}" alt="${media.title || ''}" loading="lazy"
+                     onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`}
+        </div>
+        <div class="asset-meta">
+          <div class="asset-title" title="${media.title || ''}">${media.title || 'بدون عنوان'}</div>
+          <div class="asset-type">${this.getFileTypeLabel(type)}</div>
+        </div>
+        <div class="asset-actions">
+          <button type="button" class="btn btn-sm btn-outline-danger"
+                  onclick="mediaTabManager.removeAsset('${fieldName}', ${index})">حذف</button>
+        </div>
+      </div>`;
+        }
+
+        getAssetCard(media, fieldName, index) {
+            return this.getAssetCardSelectable(media, fieldName, index);
+        }
+
+        openAssetsPicker(fieldName) {
+            this.state.currentField = fieldName; // ينتهي بـ _assets
+            if (!Array.isArray(this.state.selectedMedia[fieldName])) {
+                this.state.selectedMedia[fieldName] = [];
+            }
+            if (window.mmxMediaModalManager?.openModal) {
+                window.mmxMediaModalManager.openModal(fieldName, {
+                    multiple: true
+                });
+            } else {
+                console.warn('MMX Media Modal غير متاح.');
+            }
+        }
+
+        removeAsset(fieldName, index) {
+            const list = this.state.selectedMedia[fieldName];
+            if (!Array.isArray(list)) return;
+            list.splice(index, 1);
+            this.updateAssetsGrid(fieldName);
+            this.updateSummary();
+            this.updateHiddenFields();
+        }
+
+        updateAssetsGrid(fieldName) {
+            const wrap = document.getElementById(`${fieldName}_grid`);
+            if (!wrap) return;
+            const ui = this.state._assetsUi[fieldName];
+            const container = wrap.closest('.assets-wrapper');
+            if (container) {
+                container.style.setProperty('--asset-size', `${ui.size}px`);
+                container.classList.toggle('is-list', ui.view === 'list');
+            }
+            wrap.innerHTML = this.renderAssetsGrid(fieldName);
+            // تحديث الترقيم
+            const pagHtml = this.renderAssetsPagination(fieldName);
+            const pagEl = container.querySelector('.assets-pagination');
+            if (pagEl) pagEl.outerHTML = pagHtml;
+            else container.insertAdjacentHTML('beforeend', pagHtml);
+        }
+
+        renderAssetsGrid(fieldName) {
+            const items = Array.isArray(this.state.selectedMedia[fieldName]) ? this.state.selectedMedia[fieldName] :
+                [];
+            const ui = this.state._assetsUi[fieldName];
+            const q = ui.query.trim().toLowerCase();
+            const filtered = q ?
+                items.filter(m => (m.title || '').toLowerCase().includes(q) || (m.alt || '').toLowerCase().includes(
+                    q) || (m.url || '').toLowerCase().includes(q)) :
+                items;
+            const start = (ui.page - 1) * ui.pageSize;
+            const pageItems = filtered.slice(start, start + ui.pageSize);
+            if (!pageItems.length) return this.getAssetsEmptyState(fieldName);
+            return pageItems.map((m, i) => this.getAssetCardSelectable(m, fieldName, start + i)).join('');
+        }
+
+        renderAssetsPagination(fieldName) {
+            const ui = this.state._assetsUi[fieldName];
+            const items = Array.isArray(this.state.selectedMedia[fieldName]) ? this.state.selectedMedia[fieldName] :
+                [];
+            const q = ui.query.trim().toLowerCase();
+            const total = q ?
+                items.filter(m => (m.title || '').toLowerCase().includes(q) || (m.alt || '').toLowerCase().includes(
+                    q) || (m.url || '').toLowerCase().includes(q)).length :
+                items.length;
+            const pages = Math.max(1, Math.ceil(total / ui.pageSize));
+            const page = Math.min(ui.page, pages);
+            return `
+      <div class="assets-pagination">
+        <div class="assets-page-info">العناصر: ${total} | الصفحة ${page} من ${pages}</div>
+        <div class="assets-page-actions">
+          <label>لكل صفحة</label>
+          <select onchange="mediaTabManager.onAssetsPageSize('${fieldName}', this.value)">
+            ${[12,24,36,60,96].map(n => `<option value="${n}" ${n==ui.pageSize?'selected':''}>${n}</option>`).join('')}
+          </select>
+          <button type="button" class="btn btn-sm" ${page<=1?'disabled':''}
+                  onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page-1})">السابق</button>
+          <button type="button" class="btn btn-sm" ${page>=pages?'disabled':''}
+                  onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page+1})">التالي</button>
+        </div>
+      </div>`;
+        }
+
+        onAssetsSearch(fieldName, value) {
+            const ui = this.state._assetsUi[fieldName];
+            ui.query = value;
+            ui.page = 1;
+            this.updateAssetsGrid(fieldName);
+        }
+        onAssetsSize(fieldName, value) {
+            const ui = this.state._assetsUi[fieldName];
+            ui.size = Number(value);
+            this.updateAssetsGrid(fieldName);
+        }
+        toggleAssetsView(fieldName) {
+            const ui = this.state._assetsUi[fieldName];
+            ui.view = ui.view === 'grid' ? 'list' : 'grid';
+            this.updateAssetsGrid(fieldName);
+        }
+        onAssetsPageSize(fieldName, val) {
+            const ui = this.state._assetsUi[fieldName];
+            ui.pageSize = Number(val);
+            ui.page = 1;
+            this.updateAssetsGrid(fieldName);
+        }
+        gotoAssetsPage(fieldName, page) {
+            const ui = this.state._assetsUi[fieldName];
+            ui.page = Math.max(1, Number(page));
+            this.updateAssetsGrid(fieldName);
+        }
+
+        _assetKey(m) {
+            return (m.id != null && String(m.id)) || (m.url || '') + '|' + (m.title || '');
+        }
+        onAssetToggle(fieldName, index, checked) {
+            const list = this.state.selectedMedia[fieldName];
+            if (!Array.isArray(list)) return;
+            const key = this._assetKey(list[index]);
+            const ui = this.state._assetsUi[fieldName];
+            if (checked) ui.selected.add(key);
+            else ui.selected.delete(key);
+            this.updateAssetsGrid(fieldName);
+        }
+
+        selectAllAssets(fieldName) {
+            const ui = this.state._assetsUi[fieldName];
+            const items = Array.isArray(this.state.selectedMedia[fieldName]) ? this.state.selectedMedia[fieldName] :
+                [];
+            const q = ui.query.trim().toLowerCase();
+            const filtered = q ?
+                items.filter(m => (m.title || '').toLowerCase().includes(q) || (m.alt || '').toLowerCase().includes(
+                    q) || (m.url || '').toLowerCase().includes(q)) :
+                items;
+            const start = (ui.page - 1) * ui.pageSize;
+            const pageItems = filtered.slice(start, start + ui.pageSize);
+            pageItems.forEach(m => ui.selected.add(this._assetKey(m)));
+            this.updateAssetsGrid(fieldName);
+        }
+
+        clearSelection(fieldName) {
+            const ui = this.state._assetsUi[fieldName];
+            ui.selected.clear();
+            this.updateAssetsGrid(fieldName);
+        }
+
+        deleteSelectedAssets(fieldName) {
+            const ui = this.state._assetsUi[fieldName];
+            if (!ui.selected.size) return;
+            const list = Array.isArray(this.state.selectedMedia[fieldName]) ? this.state.selectedMedia[fieldName] :
+                [];
+            this.state.selectedMedia[fieldName] = list.filter(m => !ui.selected.has(this._assetKey(m)));
+            ui.selected.clear();
+            const total = this.state.selectedMedia[fieldName].length;
+            const maxPage = Math.max(1, Math.ceil(total / ui.pageSize));
+            ui.page = Math.min(ui.page, maxPage);
+            this.updateAssetsGrid(fieldName);
+            this.updateSummary();
+            this.updateHiddenFields();
+        }
+
+        clearAllAssets(fieldName) {
+            this.state.selectedMedia[fieldName] = [];
+            this.state._assetsUi[fieldName].selected.clear();
+            this.state._assetsUi[fieldName].page = 1;
+            this.updateAssetsGrid(fieldName);
+            this.updateSummary();
+            this.updateHiddenFields();
+        }
+
+        onAssetDragStart(ev, fieldName, index) {
+            ev.dataTransfer.setData('text/plain', JSON.stringify({
+                fieldName,
+                index
+            }));
+            ev.dataTransfer.dropEffect = 'move';
+        }
+        onAssetDragOver(ev) {
+            ev.preventDefault();
+        }
+        onAssetDrop(ev, fieldName) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData('text/plain');
+            try {
+                const {
+                    fieldName: srcField,
+                    index
+                } = JSON.parse(data);
+                if (srcField !== fieldName) return;
+                const target = ev.target.closest('.asset-item');
+                if (!target) return;
+                const toIndex = Number(target.getAttribute('data-index'));
+                this.moveAsset(fieldName, Number(index), toIndex);
+            } catch {}
+        }
+
+        moveAsset(fieldName, from, to) {
+            const list = this.state.selectedMedia[fieldName];
+            if (!Array.isArray(list)) return;
+            if (from === to || from < 0 || to < 0 || from >= list.length || to >= list.length) return;
+            const [item] = list.splice(from, 1);
+            list.splice(to, 0, item);
+            this.updateAssetsGrid(fieldName);
+            this.updateSummary();
+            this.updateHiddenFields();
+        }
+
+        /* ================== PREVIEWS (عنصر واحد) ================== */
         getMediaPreview(media, fieldName) {
+            if (fieldName.endsWith('_assets')) {
+                return `<div class="assets-grid">${ (Array.isArray(media) ? media : []).map((m, i) => this.getAssetCard(m, fieldName, i)).join('') }</div>`;
+            }
             const raw = media.url || '';
             const url = this.normalizeUrl(raw);
             const type = this.getFileType(url);
 
             const wrap = (visualHtml, title, typeLabel, isAudio = false) => `
       <div class="media-preview-selected">
-        <div class="media-visual ${isAudio ? 'is-audio' : ''}">
-          ${visualHtml}
-        </div>
+        <div class="media-visual ${isAudio ? 'is-audio' : ''}">${visualHtml}</div>
         <div class="media-info">
           <span class="media-title">${title || 'بدون عنوان'}</span>
           <span class="media-type">${typeLabel}</span>
@@ -196,30 +498,26 @@
         </div>
       </div>`;
 
-            // YouTube
             if (type === 'youtube') {
                 const vid = this.getYouTubeId(url);
                 if (vid) {
                     const embed = `https://www.youtube.com/embed/${vid}?rel=0&modestbranding=1`;
-                    const visual = `<iframe class="mmx-yt-embed" src="${embed}" title="${media.title || 'YouTube'}"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                          allowfullscreen loading="lazy" referrerpolicy="no-referrer"></iframe>`;
+                    const visual =
+                        `<iframe class="mmx-yt-embed" src="${embed}" title="${media.title || 'YouTube'}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="no-referrer"></iframe>`;
                     return wrap(visual, media.title || 'YouTube', 'يوتيوب');
                 }
                 const fallbackThumb = 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg';
-                const visual = `<img class="media-thumb" src="${fallbackThumb}" alt="${media.title || ''}"
-                        loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous">`;
+                const visual =
+                    `<img class="media-thumb" src="${fallbackThumb}" alt="${media.title || ''}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous">`;
                 return wrap(visual, media.title || 'YouTube', 'يوتيوب');
             }
 
-            // Video file
             if (type === 'video') {
                 const safe = this.maybeProxy(url);
                 const visual = `<video src="${safe}" controls preload="metadata" crossorigin="anonymous"></video>`;
                 return wrap(visual, media.title || 'ملف فيديو', 'فيديو');
             }
 
-            // Audio
             if (type === 'audio') {
                 const safe = this.maybeProxy(url);
                 const visual =
@@ -227,15 +525,14 @@
                 return wrap(visual, media.title || 'ملف صوت', 'صوت', true);
             }
 
-            // Image/Other
             const safeImg = this.maybeProxy(url);
-            const visual = `<img class="media-thumb" src="${safeImg}" alt="${media.title || ''}" loading="lazy"
-                      referrerpolicy="no-referrer" crossorigin="anonymous"
-                      onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`;
+            const visual =
+                `<img class="media-thumb" src="${safeImg}" alt="${media.title || ''}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`;
             return wrap(visual, media.title || 'بدون عنوان', this.getFileTypeLabel(type));
         }
 
         getEmptyState(fieldName, icon, type) {
+            if (fieldName.endsWith('_assets')) return this.getAssetsEmptyState(fieldName);
             return `
       <div class="field-empty" onclick="mediaTabManager.openMediaModal('${fieldName}')">
         <i class="${icon}"></i>
@@ -243,13 +540,15 @@
       </div>`;
         }
 
-        /* ================== PUBLIC API ================== */
+        /* ================== PUBLIC API (للتكامل مع المودال) ================== */
         openMediaModal(fieldName) {
             this.state.currentField = fieldName;
             if (window.mmxMediaModalManager?.openModal) {
-                window.mmxMediaModalManager.openModal(fieldName);
+                window.mmxMediaModalManager.openModal(fieldName, {
+                    multiple: false
+                });
             } else {
-                console.warn('MMX Media Modal غير متاح. تأكد من تضمين.');
+                console.warn('MMX Media Modal غير متاح. تأكد من تضمينه.');
             }
         }
         changeMedia(fieldName) {
@@ -261,10 +560,19 @@
             this.updateSummary();
             this.updateHiddenFields();
         }
+
         onMediaSelected(media) {
-            if (!this.state.currentField) return;
-            this.state.selectedMedia[this.state.currentField] = media; // {id,url,title,alt}
-            this.updateFieldPreview(this.state.currentField);
+            const field = this.state.currentField;
+            if (!field) return;
+            if (field.endsWith('_assets')) {
+                if (!Array.isArray(this.state.selectedMedia[field])) this.state.selectedMedia[field] = [];
+                const exists = this.state.selectedMedia[field].some(m => m.id == media.id && media.id != null);
+                if (!exists) this.state.selectedMedia[field].push(media);
+                this.updateAssetsGrid(field);
+            } else {
+                this.state.selectedMedia[field] = media;
+                this.updateFieldPreview(field);
+            }
             this.updateSummary();
             this.updateHiddenFields();
         }
@@ -290,10 +598,12 @@
         updateSummary() {
             const summaryBody = document.getElementById('summary-table-body');
             const selectedCount = document.getElementById('selected-count');
-            const items = Object.values(this.state.selectedMedia).filter(Boolean);
-            selectedCount.textContent = items.length;
 
-            if (!items.length) {
+            const flattenItems = Object.values(this.state.selectedMedia).flatMap(v => Array.isArray(v) ? v : (v ? [
+                v] : []));
+            selectedCount.textContent = flattenItems.length;
+
+            if (!flattenItems.length) {
                 summaryBody.innerHTML = `
         <div class="empty-summary">
           <i class="fas fa-images"></i>
@@ -302,12 +612,10 @@
                 return;
             }
 
-            summaryBody.innerHTML = items.map(media => {
+            summaryBody.innerHTML = flattenItems.map(media => {
                 const raw = media.url || '';
                 const url = this.normalizeUrl(raw);
                 const type = this.getFileType(url);
-
-                // prefer small image in summary (YouTube -> thumbnail)
                 let thumb = url;
                 if (type === 'youtube') {
                     const vid = this.getYouTubeId(url);
@@ -332,19 +640,42 @@
         }
 
         removeMediaFromSummary(mediaId) {
-            const field = Object.keys(this.state.selectedMedia).find(k => this.state.selectedMedia[k]?.id ==
-                mediaId);
-            if (field) this.removeMedia(field);
+            const singleKey = Object.keys(this.state.selectedMedia).find(k => !Array.isArray(this.state
+                .selectedMedia[k]) && this.state.selectedMedia[k]?.id == mediaId);
+            if (singleKey) return this.removeMedia(singleKey);
+            Object.keys(this.state.selectedMedia).forEach(k => {
+                const v = this.state.selectedMedia[k];
+                if (Array.isArray(v)) {
+                    const idx = v.findIndex(it => it?.id == mediaId);
+                    if (idx > -1) this.removeAsset(k, idx);
+                }
+            });
         }
 
         updateHiddenFields() {
             const container = document.getElementById('media-hidden-fields');
-            container.innerHTML = Object.entries(this.state.selectedMedia).map(([field, media]) => media ? `
-      <input type="hidden" name="${field}_id" value="${media.id}">
-      <input type="hidden" name="${field}" value="${media.url}">
-      <input type="hidden" name="${field}_title" value="${media.title || ''}">
-      <input type="hidden" name="${field}_alt" value="${media.alt || ''}">
-    ` : '').join('');
+            const parts = [];
+            Object.entries(this.state.selectedMedia).forEach(([field, media]) => {
+                if (!media) return;
+                if (Array.isArray(media)) {
+                    media.forEach((m, i) => {
+                        parts.push(
+                            `<input type="hidden" name="${field}[${i}][id]" value="${m.id ?? ''}">`,
+                            `<input type="hidden" name="${field}[${i}][url]" value="${m.url ?? ''}">`,
+                            `<input type="hidden" name="${field}[${i}][title]" value="${m.title ?? ''}">`,
+                            `<input type="hidden" name="${field}[${i}][alt]" value="${m.alt ?? ''}">`
+                        );
+                    });
+                } else {
+                    parts.push(
+                        `<input type="hidden" name="${field}_id" value="${media.id ?? ''}">`,
+                        `<input type="hidden" name="${field}" value="${media.url ?? ''}">`,
+                        `<input type="hidden" name="${field}_title" value="${media.title ?? ''}">`,
+                        `<input type="hidden" name="${field}_alt" value="${media.alt ?? ''}">`
+                    );
+                }
+            });
+            container.innerHTML = parts.join('');
         }
 
         /* ================== TYPE HELPERS ================== */
@@ -352,38 +683,29 @@
             if (!url) return 'file';
             const u = this.normalizeUrl(url);
             if (this.isYouTubeUrl(u)) return 'youtube';
-            if (/\.(jpeg|jpg|gif|png|webp|bmp|svg)(\?|#|$)/i.test(u)) return 'image';
-            if (/\.(mp4|avi|mov|wmv|webm|m4v)(\?|#|$)/i.test(u)) return 'video';
-            if (/\.(mp3|wav|ogg|m4a|aac|flac)(\?|#|$)/i.test(u)) return 'audio';
+            if (/(\.jpeg|\.jpg|\.gif|\.png|\.webp|\.bmp|\.svg)(\?|#|$)/i.test(u)) return 'image';
+            if (/(\.mp4|\.avi|\.mov|\.wmv|\.webm|\.m4v)(\?|#|$)/i.test(u)) return 'video';
+            if (/(\.mp3|\.wav|\.ogg|\.m4a|\.aac|\.flac)(\?|#|$)/i.test(u)) return 'audio';
             return 'file';
         }
         getFileTypeLabel(type) {
-            switch (type) {
-                case 'image':
-                    return 'صورة';
-                case 'video':
-                    return 'فيديو';
-                case 'audio':
-                    return 'صوت';
-                case 'youtube':
-                    return 'يوتيوب';
-                default:
-                    return 'ملف';
-            }
+            return {
+                image: 'صورة',
+                video: 'فيديو',
+                audio: 'صوت',
+                youtube: 'يوتيوب'
+            } [type] || 'ملف';
         }
         placeholderThumb(url = '') {
             return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
-                `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="68">
-        <rect width="100%" height="100%" fill="#f0f0f0"/>
-        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-              font-size="12" fill="#999">no preview</text>
-       </svg>`
+                `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="68"><rect width="100%" height="100%" fill="#f0f0f0"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="#999">no preview</text></svg>`
             );
         }
 
         /* ================== FIELD GROUPS ================== */
         getNormalImageTemplate() {
-            return `<div class="template-fields">
+            return `
+    <div class="template-fields">
       <h6 class="template-title">إعدادات الصورة</h6>
       <div class="fields-grid">
         ${this.createField('normal_main_image','الصورة الرئيسية','fas fa-image')}
@@ -392,8 +714,10 @@
       </div>
     </div>`;
         }
+
         getVideoTemplate() {
-            return `<div class="template-fields">
+            return `
+    <div class="template-fields">
       <h6 class="template-title">إعدادات الفيديو</h6>
       <div class="fields-grid">
         ${this.createField('video_main_image','صورة الفيديو الرئيسية','fas fa-image')}
@@ -403,8 +727,10 @@
       </div>
     </div>`;
         }
+
         getPodcastTemplate() {
-            return `<div class="template-fields">
+            return `
+    <div class="template-fields">
       <h6 class="template-title">إعدادات البودكاست</h6>
       <div class="fields-grid">
         ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','fas fa-image')}
@@ -414,18 +740,23 @@
       </div>
     </div>`;
         }
+
         getAlbumTemplate() {
-            return `<div class="template-fields">
+            return `
+    <div class="template-fields">
       <h6 class="template-title">إعدادات الألبوم</h6>
       <div class="fields-grid">
         ${this.createField('album_main_image','صورة الألبوم الرئيسية','fas fa-image')}
         ${this.createField('album_content_image','صورة محتوى الألبوم','fas fa-image')}
         ${this.createField('album_mobile_image','صورة الألبوم للموبايل','fas fa-mobile-alt')}
+        ${this.createAssetsField('album_assets','أصول الألبوم')}
       </div>
     </div>`;
         }
+
         getNoImageTemplate() {
-            return `<div class="template-fields">
+            return `
+    <div class="template-fields">
       <h6 class="template-title">إعدادات المقال</h6>
       <div class="fields-grid">
         ${this.createField('no_image_main_image','الصورة الرئيسية','fas fa-image')}
@@ -434,6 +765,7 @@
     </div>`;
         }
     }
+
     window.mediaTabManager = new MediaTabManager();
 </script>
 
@@ -518,7 +850,7 @@
         display: block;
     }
 
-    /* Empty state (click to choose) */
+    /* Empty state */
     .field-empty {
         display: flex;
         flex-direction: column;
@@ -543,7 +875,7 @@
         margin-bottom: .5rem;
     }
 
-    /* ====== BIGGER PREVIEW + BOTTOM ACTION BAR ====== */
+    /* Preview */
     .media-preview-selected {
         display: flex;
         flex-direction: column;
@@ -553,10 +885,9 @@
         border: 1px solid #e9ecef;
     }
 
-    /* 16:9 visual area by default */
     .media-visual {
         width: 100%;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 16/9;
         background: #000;
         overflow: hidden;
         display: flex;
@@ -564,14 +895,12 @@
         justify-content: center;
     }
 
-    /* Audio doesn't need tall box */
     .media-visual.is-audio {
         aspect-ratio: auto;
         background: #f8f9fa;
         padding: 8px;
     }
 
-    /* Fill container */
     .media-visual>img,
     .media-visual>video,
     .media-visual>iframe {
@@ -582,14 +911,12 @@
         display: block;
     }
 
-    /* Image thumb helper */
     .media-thumb {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
 
-    /* YouTube embed respects container */
     .mmx-yt-embed {
         width: 100%;
         height: 100%;
@@ -597,7 +924,6 @@
         display: block;
     }
 
-    /* Info row */
     .media-info {
         display: flex;
         align-items: baseline;
@@ -614,7 +940,6 @@
         color: #6c757d;
     }
 
-    /* Bottom actions bar */
     .media-actions {
         margin-top: 4px;
         padding-top: 8px;
@@ -695,5 +1020,218 @@
         .field-empty {
             min-height: 200px;
         }
+    }
+
+    /* ===== أصول الألبوم (مجموعة) ===== */
+    .assets-label-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* ===== تحسينات عرض الألبوم المتعدد ===== */
+    .assets-wrapper {
+        --asset-size: 180px;
+    }
+
+    .assets-wrapper.is-grid .assets-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(var(--asset-size), 1fr));
+        gap: 10px;
+    }
+
+    .assets-wrapper.is-list .assets-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .assets-toolbar {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .assets-toolbar .assets-search {
+        padding: 6px 8px;
+        min-width: 220px;
+        border: 1px solid #e0e0e0;
+        background: #fff;
+    }
+
+    .assets-toolbar-group {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .assets-size-label {
+        font-size: .9rem;
+        color: #666;
+    }
+
+    .assets-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 160px;
+        border: 2px dashed #dee2e6;
+        background: #fff;
+        color: #6c757d;
+        cursor: pointer;
+    }
+
+    .asset-item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #e9ecef;
+        background: #fff;
+        padding: 8px;
+        gap: 6px;
+        transition: box-shadow .15s ease, border-color .15s ease;
+    }
+
+    .assets-wrapper.is-list .asset-item {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .asset-item.is-selected {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 2px rgba(13, 110, 253, .15) inset;
+    }
+
+    .asset-check {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        z-index: 2;
+    }
+
+    .asset-check input {
+        display: none;
+    }
+
+    .asset-check span {
+        width: 18px;
+        height: 18px;
+        border: 1px solid #bbb;
+        background: #fff;
+        display: inline-block;
+    }
+
+    .asset-item.is-selected .asset-check span {
+        background: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+    .asset-thumb {
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: #f1f3f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .assets-wrapper.is-list .asset-thumb {
+        width: 220px;
+        aspect-ratio: 16/9;
+    }
+
+    .asset-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .asset-audio {
+        padding: 12px;
+        font-size: .9rem;
+        color: #495057;
+    }
+
+    .asset-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .asset-title {
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .asset-type {
+        font-size: .85rem;
+        color: #6c757d;
+    }
+
+    .asset-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .assets-pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .assets-page-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+    }
+
+    @media (max-width: 768px) {
+        .assets-wrapper.is-list .asset-thumb {
+            width: 40%;
+        }
+    }
+
+    /* ====== Full-width album assets ====== */
+    .field-card--full {
+        grid-column: 1 / -1;
+        background: transparent;
+        padding: 0;
+        border: none;
+    }
+
+    .field-card--full .assets-label-row {
+        margin-bottom: 8px;
+    }
+
+    .field-card--full .assets-wrapper {
+        background: #fff;
+        border: 1px solid #e9ecef;
+        padding: 10px;
+    }
+
+    .field-card--full .assets-wrapper.is-list .assets-grid {
+        gap: 10px;
+    }
+
+    .field-card--full .asset-item {
+        border: 1px solid #e9ecef;
+        background: #fff;
+    }
+
+    .field-card--full .assets-pagination {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #e9ecef;
     }
 </style>

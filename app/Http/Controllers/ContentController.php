@@ -135,330 +135,269 @@ class ContentController extends BaseController
      */
     public function store(Request $request)
     {
-
-        // dd($request->all());
-
+        // ===== 1) Préparer les URLs dأصول الألبوم (album_assets) =====
+        // Ex.: album_assets[] = ['url' => 'https://...', 'title' => '...', 'alt' => '...']
         $albumImages = [];
-
-        if ($request->hasFile('album_images')) {
-            foreach ($request->file('album_images') as $file) {
-                $albumImages[] = $file; // just add file object, don't save
+        if ($request->album_assets && is_array($request->album_assets)) {
+            foreach ($request->album_assets as $asset) {
+                if (!empty($asset['url']) && is_string($asset['url'])) {
+                    $albumImages[] = $asset['url'];
+                }
             }
         }
-        // --- URLs ---
-        if ($request->album_images_urls) {
-            $urls = json_decode($request->album_images_urls, true);
-            $albumImages = array_merge($albumImages, $urls);
-        }
 
+        // ===== 2) Règles de validation (générales) — URLs uniquement =====
         $rules = [
-            'title' => 'required|string|max:75',
-            'long_title' => 'required|string|max:210',
-            'mobile_title' => 'required|string|max:40',
-            'display_method' => 'required|string|in:simple,list,file',
-            'section_id' => 'required|exists:sections,id',
-            'category_id' => 'required|exists:categories,id',
-            'continent_id' => 'nullable|exists:locations,id',
-            'country_id' => 'nullable|exists:locations,id',
-            'trend_id' => 'nullable|exists:trends,id',
-            'window_id' => 'nullable|exists:windows,id',
-            'writer_id' => 'nullable|exists:writers,id',
-            'city_id' => 'nullable|exists:locations,id',
-            'summary' => 'nullable|string',
-            'content' => 'nullable|string',
-            'seo_keyword' => 'nullable|string|max:255',
-            'template' => 'required|string',
-            'tags_id' => 'required|array',
-            'share_image' => 'nullable|max:10000',
-            'share_title' => 'nullable|string',
-            'share_description' => 'nullable|string',
-            'review_description' => 'nullable|string',
-            'created_at' => 'nullable|date',
+            'title'               => 'required|string|max:75',
+            'long_title'          => 'required|string|max:210',
+            'mobile_title'        => 'required|string|max:40',
+            'display_method'      => 'required|string|in:simple,list,file',
+            'section_id'          => 'required|exists:sections,id',
+            'category_id'         => 'required|exists:categories,id',
+            'continent_id'        => 'nullable|exists:locations,id',
+            'country_id'          => 'nullable|exists:locations,id',
+            'trend_id'            => 'nullable|exists:trends,id',
+            'window_id'           => 'nullable|exists:windows,id',
+            'writer_id'           => 'nullable|exists:writers,id',
+            'city_id'             => 'nullable|exists:locations,id',
+            'summary'             => 'nullable|string',
+            'content'             => 'nullable|string',
+            'seo_keyword'         => 'nullable|string|max:255',
+            'template'            => 'required|string|in:normal_image,video,podcast,album,no_image',
+            'tags_id'             => 'required|array',
+            'tags_id.*'           => 'integer|exists:tags,id',
+            'share_image'         => 'nullable|url|max:2048',
+            'share_title'         => 'nullable|string',
+            'share_description'   => 'nullable|string',
+            'review_description'  => 'nullable|string',
+            'created_at'          => 'nullable|date',
             'created_at_by_admin' => 'nullable|date',
+
+            // Programmation
+            'published_at'        => 'nullable|date',
+            'status'              => 'nullable|in:published,draft,scheduled',
+            'is_latest'           => 'nullable|boolean',
+            'importance'          => 'nullable|integer|min:0|max:10',
         ];
 
-
-
-        if (in_array($request->display_method, ['list', 'file'])) {
-
-            if (empty(($request->items))) {
-                $request->items = [];
-            } else {
-                // $rules['items'] = 'required|array|min:1';
-                $rules['items.*.title'] = 'required|string|max:255';
+        // ===== 3) Règles pour display_method = list/file (items en URLs) =====
+        if (in_array($request->display_method, ['list', 'file'], true)) {
+            // Autoriser items vide -> fallback à simple plus bas
+            if (!empty($request->items) && is_array($request->items)) {
+                $rules['items']               = 'array|min:1';
+                $rules['items.*.title']       = 'required|string|max:255';
                 $rules['items.*.description'] = 'required|string';
-                $rules['items.*.image'] = [
-                    'required',
-                    'image',
-                    'mimes:jpeg,png,jpg,gif,webp',
-                    'max:10000',
-                    // function ($attribute, $value, $fail) {
-                    //     if ($value instanceof \Illuminate\Http\UploadedFile) {
-                    //         [$width, $height] = getimagesize($value->getRealPath());
-                    //         // Require 9:16 aspect ratio
-                    //         $aspectRatio = $width / $height;
-                    //         $expected = 9 / 16;
-                    //         if (abs($aspectRatio - $expected) > 0.05) {
-                    //             $fail('The ' . $attribute . ' must have a 9:16 aspect ratio.');
-                    //         }
-                    //     }
-                    // },
-                ];
-                $rules['items.*.index'] = 'required|integer';
-                $rules['items.*.url'] = $request->display_method === 'list'
-                    ? 'required|url'
-                    : 'nullable|url';
+                // image en URL uniquement
+                $rules['items.*.image']       = 'required|url|max:2048';
+                $rules['items.*.index']       = 'required|integer';
+                $rules['items.*.url']         = $request->display_method === 'list' ? 'required|url' : 'nullable|url';
             }
         }
 
+        // ===== 4) Règles « template » (toutes en URL) =====
+        // NB: plus aucun fichier téléchargé, toutes les valeurs sont des URLs/strings.
         $templateRules = [
             'normal_image' => [
-                'normal_main_image' => 'required|max:2048',
-                'normal_mobile_image' => 'required|max:2048',
-                'normal_content_image' => 'required|max:2048',
+                'normal_main_image'    => 'required',
+                'normal_mobile_image'  => 'required',
+                'normal_content_image' => 'required',
             ],
             'video' => [
-                'video_main_image' => 'required|max:2048',
-                'video_mobile_image' => 'required|max:2048',
-                'video_content_image' => 'required|max:2048',
-                'video_file' => 'required|max:200480',
+                'video_main_image'    => 'required',
+                'video_mobile_image'  => 'required',
+                'video_content_image' => 'required',
+                'video_file'          => 'required', // mp4/m3u8/YouTube, etc.
             ],
             'podcast' => [
-                'podcast_main_image' => 'required|max:2048',
-                'podcast_content_image' => 'required|max:2048',
-                'podcast_mobile_image' => 'required|max:2048',
-                'podcast_file' => 'required|max:20480',
+                'podcast_main_image'    => 'required',
+                'podcast_content_image' => 'required',
+                'podcast_mobile_image'  => 'required',
+                'podcast_file'          => 'required', // mp3/ogg/stream
             ],
             'album' => [
-                'album_main_image' => 'required|max:2048',
-                'album_content_image' => 'required|max:2048',
-                'album_mobile_image' => 'required|max:2048',
+                'album_main_image'    => 'required',
+                'album_content_image' => 'required',
+                'album_mobile_image'  => 'required',
+                // album_assets géré à part (liste d’objets)
             ],
             'no_image' => [
-                'no_image_main_image' => 'required|max:2048',
-                'no_image_mobile_image' => 'required|max:2048',
+                'no_image_main_image'   => 'required',
+                'no_image_mobile_image' => 'required',
             ],
         ];
 
+        // Mappage champ => type de liaison pivot
         $templateMediaMap = [
             'normal_image' => [
-                'normal_main_image' => 'main',
-                'normal_mobile_image' => 'mobile',
+                'normal_main_image'    => 'main',
+                'normal_mobile_image'  => 'mobile',
                 'normal_content_image' => 'detail',
             ],
             'video' => [
-                'video_main_image' => 'main',
-                'video_mobile_image' => 'mobile',
+                'video_main_image'    => 'main',
+                'video_mobile_image'  => 'mobile',
                 'video_content_image' => 'detail',
-                'video_file' => 'video',
+                'video_file'          => 'video',
             ],
             'podcast' => [
-                'podcast_main_image' => 'main',
-                'podcast_mobile_image' => 'mobile',
+                'podcast_main_image'    => 'main',
+                'podcast_mobile_image'  => 'mobile',
                 'podcast_content_image' => 'detail',
-                'podcast_file' => 'podcast',
+                'podcast_file'          => 'podcast',
             ],
             'album' => [
-                'album_main_image' => 'main',
-                'album_mobile_image' => 'mobile',
+                'album_main_image'    => 'main',
+                'album_mobile_image'  => 'mobile',
                 'album_content_image' => 'detail',
-                'album_images' => 'album',
+                'album_images'        => 'album', // géré via $albumImages
             ],
             'no_image' => [
-                'no_image_main_image' => 'main',
+                'no_image_main_image'   => 'main',
                 'no_image_mobile_image' => 'mobile',
             ],
         ];
 
+        // ===== 5) Validation =====
         $validated = $request->validate($rules);
-        $request->validate(rules: $templateRules[$request->template]);
+        $request->validate($templateRules[$request->template] ?? []);
 
-        // Validate that $albumImages contains at least one file or URL
-        if ($request->template == 'album') {
-            if (empty($albumImages) || !is_array($albumImages) || count($albumImages) === 0) {
-                return back()->withErrors(['album_images' => 'You must provide at least one album image (file or URL).'])->withInput();
+        // Vérifier qu’il y a au moins un élément d’album si template = album
+        if ($request->template === 'album') {
+            if (empty($albumImages)) {
+                return back()
+                    ->withErrors(['album_assets' => 'You must provide at least one album asset URL.'])
+                    ->withInput();
             }
         }
 
-        // Validate that $shareImage is a valid URL
-        if ($request->hasFile('share_image')) {
-            $file = $request->file('share_image');
-            $path = asset('storage/' . $file->store('media', 'public'));
-            $validated['share_image'] = $path;
-        }
-
-        if (in_array($validated['display_method'], ['list', 'file']) && (empty($validated['items']) || !is_array($validated['items']))) {
+        // Normaliser display_method si items manquants
+        if (
+            in_array($validated['display_method'], ['list', 'file'], true)
+            && (empty($validated['items']) || !is_array($validated['items']))
+        ) {
             $validated['display_method'] = 'simple';
         }
 
-        // dd($request->input('is_latest'), $request->input('importance'));
-
+        // ===== 6) Créer le contenu =====
         $content = Content::create([
             ...$validated,
-            'is_latest' => $request->has(key: 'is_latest') ? (bool)$request->is_latest : false,
+            'is_latest'  => $request->boolean('is_latest'),
             'importance' => $request->input('importance'),
-            'user_id' => Auth::id(),
+            'user_id'    => Auth::id(),
         ]);
 
-        if ($request->review_description) {
+        // ===== 7) Enregistrer une note de relecture si fournie =====
+        if ($request->filled('review_description')) {
             ContentReview::create([
                 'reviewer_id' => Auth::id(),
-                'content_id' => $content->id,
-                'message' => $request->review_description,
+                'content_id'  => $content->id,
+                'message'     => $request->review_description,
             ]);
         }
 
+        // ===== 8) Enregistrer les items (list/file) — images en URLs =====
         if (!empty($validated['items']) && is_array($validated['items'])) {
             foreach ($validated['items'] as $item) {
-                $imagePath = null;
-
-                // Handle uploaded file
-                if (isset($item['image']) && $item['image'] instanceof \Illuminate\Http\UploadedFile) {
-                    $imagePath = $item['image']->store('content_list_images', 'public');
-                } elseif (is_string($item['image'])) {
-                    $imagePath = $item['image'];
-                }
-
-                // store the whole path
-                if ($imagePath && !str_starts_with($imagePath, 'http')) {
-                    $imagePath = asset('storage/' . $imagePath);
-                }
+                $imageUrl = isset($item['image']) && is_string($item['image']) ? $item['image'] : null;
 
                 $content->contentLists()->create([
-                    'title' => $item['title'],
+                    'title'       => $item['title'],
                     'description' => $item['description'],
-                    'url' => $item['url'] ?? null,
-                    'image' => $imagePath,
-                    'index' => $item['index'],
+                    'url'         => $item['url'] ?? null,
+                    'image'       => $imageUrl,
+                    'index'       => $item['index'],
                 ]);
             }
         }
 
+        // ===== 9) Enregistrer les médias liés (tout en URLs) =====
+        $mediaMap = $templateMediaMap[$request->template] ?? null;
 
-        $mediaMap = $templateMediaMap[$request->template];
+        // utilitaire pour déduire un type mime logique à partir de l’URL
+        $detectTypeFromUrl = function (string $url): string {
+            $u = strtolower(parse_url($url, PHP_URL_PATH) ?? '');
+            if (preg_match('/\\.(jpe?g|png|gif|webp|bmp|svg)$/', $u)) return 'image';
+            if (preg_match('/\\.(mp4|mov|wmv|webm|m4v|m3u8)$/', $u)) return 'video';
+            if (preg_match('/\\.(mp3|wav|ogg|m4a|aac|flac)$/', $u)) return 'audio';
+            // Détection simple YouTube
+            if (strpos($url, 'youtube.com') !== false || strpos($url, 'youtu.be') !== false) return 'youtube';
+            return 'url';
+        };
 
-        // ✅ Loop and save media (simplified)
-        if (isset($mediaMap)) {
+        if ($mediaMap) {
             foreach ($mediaMap as $field => $type) {
+                // 9.a) Champs simples (image principale, mobile, detail, video_file, podcast_file) en URL
+                if ($field !== 'album_images' && $request->filled($field)) {
+                    $url       = $request->input($field);
+                    $mediaType = $detectTypeFromUrl($url);
 
-                if ($request->hasFile($field) && $field !== 'album_images') {
-                    $file = $request->file($field);
-                    $path = asset('storage/' . $file->store('media', 'public'));
-                    $mediatype = $file->getClientMimeType();
-
-                    $media = ContentMedia::create([
-                        'path' => $path,
-                        'media_type' => $mediatype,
-                        'user_id' => Auth::id(),
-                        'name' => $file->getClientOriginalName(),
-                        'alt' => $content->title,
-                    ]);
-                    $content->media()->attach($media->id, ['type' => $type]);
-                    continue;
-                }
-
-                // 🎥 Video Url / 🎙️ Podcast URL
-                if ($request->filled($field)) {
-
-                    // Check if ContentMedia with this path already exists
-                    $existingMedia = ContentMedia::where('path', $request->input($field))->first();
-                    if ($existingMedia) {
-                        $content->media()->attach($existingMedia->id, ['type' => $type]);
+                    // réutiliser si déjà existant
+                    $existing = ContentMedia::where('path', $url)->first();
+                    if ($existing) {
+                        $content->media()->attach($existing->id, ['type' => $type]);
                     } else {
                         $media = ContentMedia::create([
-                            'path' => $request->input($field),
-                            'media_type' => 'url',
-                            'user_id' => Auth::id(),
-                            'name' => 'url_' . bin2hex(random_bytes(10)),
-                            'alt' => $content->title,
+                            'path'       => $url,
+                            'media_type' => $mediaType, // 'image'/'video'/'audio'/'youtube'/'url'
+                            'user_id'    => Auth::id(),
+                            'name'       => basename(parse_url($url, PHP_URL_PATH) ?? 'url_' . Str::random(8)),
+                            'alt'        => $content->title,
                         ]);
                         $content->media()->attach($media->id, ['type' => $type]);
                     }
                     continue;
                 }
 
+                // 9.b) Album images (multiples URLs)
+                if ($field === 'album_images' && !empty($albumImages)) {
+                    foreach ($albumImages as $url) {
+                        $mediaType = $detectTypeFromUrl($url);
+                        $existing  = ContentMedia::where('path', $url)->first();
 
-                // 🎵 Album images (multiple: files + urls)
-                if ($field === 'album_images') {
-                    $items = [];
-                    // 1️⃣ Handle uploaded files
-                    if ($request->hasFile($field)) {
-                        foreach ($request->file($field) as $albumImage) {
-                            $path = asset('storage/' . $albumImage->store('media', 'public'));
-                            $items[] = $path;
-                        }
-                    }
-
-                    // 2️⃣ Handle URL images (array of URLs)
-                    if ($request->filled('album_images_urls')) {
-                        $urls = json_decode($request->album_images_urls, true); // decode JSON string
-                        if (is_array($urls)) {
-                            foreach ($urls as $url) {
-                                $items[] = $url; // add URL directly
-                            }
-                        }
-                    }
-
-                    // 3️⃣ Save all album media
-                    foreach ($items as $path) {
-                        $existingMedia = ContentMedia::where('path', $path)->first();
-                        if ($existingMedia) {
-                            $media = $existingMedia;
+                        if ($existing) {
+                            $content->media()->attach($existing->id, ['type' => $type]);
                         } else {
-                            if ($path instanceof \Illuminate\Http\UploadedFile) {
-                                $mediatype = $path->getClientMimeType();
-                                $name = $path->getClientOriginalName();
-                            } else {
-                                $mediatype = 'url';
-                                $name = 'url_' . bin2hex(random_bytes(10));
-                            }
                             $media = ContentMedia::create([
-                                'path' => $path,
-                                'media_type' => $mediatype,
-                                'user_id' => Auth::id(),
-                                'name' => $name,
-                                'alt' => $content->title,
+                                'path'       => $url,
+                                'media_type' => $mediaType,
+                                'user_id'    => Auth::id(),
+                                'name'       => basename(parse_url($url, PHP_URL_PATH) ?? 'url_' . Str::random(8)),
+                                'alt'        => $content->title,
                             ]);
+                            $content->media()->attach($media->id, ['type' => $type]);
                         }
-                        $content->media()->attach($media->id, ['type' => $type]);
                     }
-
-                    continue;
                 }
             }
         }
 
-        // ✅ Attach tags
+        // ===== 10) Tags =====
         $content->tags()->sync($request->tags_id);
 
+        // ===== 11) Publication / Programmation =====
         if ($request->filled('published_at') && $request->published_at > now()->toDateTimeString()) {
-            $content->status = 'scheduled';
+            $content->status       = 'scheduled';
             $content->published_at = $request->published_at;
             $content->save();
 
-            $scheduledTime = Carbon::parse($request->published_at, 'Africa/Algiers');
-
+            $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
             $delayInSeconds = now()->diffInSeconds($scheduledTime, false);
-            if ($delayInSeconds < 0) {
-                $delayInSeconds = 0;
-            }
-            PublishContent::dispatch($content->id)->delay(
-                now()->addSeconds($delayInSeconds)
-            );
+            if ($delayInSeconds < 0) $delayInSeconds = 0;
+
+            PublishContent::dispatch($content->id)->delay(now()->addSeconds($delayInSeconds));
         } elseif ($request->filled('status') && $request->status === 'draft') {
-            $content->status = 'draft';
+            $content->status       = 'draft';
             $content->published_at = null;
             $content->save();
         } else {
-            $content->status = 'published';
+            $content->status       = 'published';
             $content->published_at = now();
             $content->save();
         }
 
-
-        return redirect()->back()
-            ->with('success', 'Content created successfully.');
+        return redirect()->back()->with('success', 'Content created successfully.');
     }
+
 
     /**
      * Display the specified resource.
