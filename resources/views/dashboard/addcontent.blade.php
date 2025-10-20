@@ -31,8 +31,8 @@
 
         /* Validation Styles */
         /* .alert-danger {
-                margin: 15px 0;
-            } */
+                    margin: 15px 0;
+                } */
 
         .search-container {
             transition: all 0.2s ease;
@@ -595,7 +595,7 @@
                                                     <span class="selected-value"></span>
                                                     <button type="button" class="btn-delete"
                                                         onclick="clearSelection(this)">×</button>
-                                                    
+
                                                 </div>
 
                                                 <!-- Search Input -->
@@ -636,7 +636,7 @@
                                                     <span class="selected-value"></span>
                                                     <button type="button" class="btn-delete"
                                                         onclick="clearSelection(this)">×</button>
-                                                   
+
                                                 </div>
 
                                                 <!-- Search Input -->
@@ -676,7 +676,7 @@
                                                     <span class="selected-value"></span>
                                                     <button type="button" class="btn-delete"
                                                         onclick="clearSelection(this)">×</button>
-                                                    
+
                                                 </div>
 
                                                 <div class="input-wrapper">
@@ -716,7 +716,7 @@
                                                         onclick="clearSelection(this)">×</button>
                                                 </div>
 
-                                                
+
 
                                                 <div class="input-wrapper">
                                                     <input id="continent_search" type="text"
@@ -756,7 +756,7 @@
                                                     <span class="selected-value"></span>
                                                     <button type="button" class="btn-delete"
                                                         onclick="clearSelection(this)">×</button>
-                                                    
+
                                                 </div>
 
                                                 <div class="input-wrapper">
@@ -794,7 +794,7 @@
                                                     <span class="selected-value"></span>
                                                     <button type="button" class="btn-delete"
                                                         onclick="clearSelection(this)">×</button>
-                                                    
+
                                                 </div>
 
                                                 <div class="input-wrapper">
@@ -1676,7 +1676,7 @@
             const form = document.getElementById('contentForm');
 
             form.addEventListener('submit', function(e) {
-                
+
                 let isValid = true;
                 const errorMessages = [];
 
