@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\TopContent;
-use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Trend;
 use App\Models\Window;
@@ -11,9 +10,17 @@ use App\Models\Writer;
 use App\Models\Tag;
 use App\Models\Location;
 use App\Models\Content;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
 
 class ApiController extends Controller
 {
+    // ========== CONTENT RELATED METHODS ==========
+
+    /**
+     * Search contents with optional section filter
+     */
     public function search_contents(Request $request)
     {
         try {
@@ -32,7 +39,7 @@ class ApiController extends Controller
             if (!empty($query)) {
                 $contents->where(function ($q2) use ($query) {
                     $q2->where('title', 'LIKE', "%$query%")
-                    ->orWhere('long_title', 'LIKE', "%$query%");
+                        ->orWhere('long_title', 'LIKE', "%$query%");
                 });
             }
 
@@ -47,13 +54,61 @@ class ApiController extends Controller
     }
 
 
+    /**
+     * Add a new city
+     */
+    public function add_city(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255|min:2|unique:locations,name',
+                'slug' => 'required|string|max:255|min:2|unique:locations,slug',
+                'type' => 'required|in:city',
+            ]);
+
+            $normalizedSlug = Str::slug($validated['slug']);
+            if ($normalizedSlug !== $validated['slug'] && Location::where('slug', $normalizedSlug)->exists()) {
+                throw ValidationException::withMessages([
+                    'slug' => ['The slug has been normalized and now conflicts with an existing one. Please choose another.'],
+                ]);
+            }
+            $slug = $normalizedSlug;
+
+            $location = Location::create([
+                'name' => $validated['name'],
+                'slug' => $slug,
+                'type' => $validated['type'],
+            ]);
+
+            return response()->json([
+                'id'      => $location->id,
+                'name'    => $location->name,
+                'slug'    => $location->slug,
+                'type'    => $location->type,
+                'message' => 'Location created successfully.',
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'error'    => 'Validation Error',
+                'messages' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Server Error'], 500);
+        }
+    }
+
+    // ========== CATEGORY RELATED METHODS ==========
+
+    /**
+     * Search categories by name
+     */
     public function search_categories(Request $request)
     {
         try {
             $query = $request->query('search', '');
 
             $categories = Category::where('name', 'LIKE', "%$query%")
-            ->get(['id', 'name']);
+                ->get(['id', 'name']);
 
             return response()->json($categories);
         } catch (\Exception $e) {
@@ -61,18 +116,23 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Add a new category
+     */
     public function add_category(Request $request)
     {
         try {
             $request->validate([
                 'name' => 'required|string|max:255|min:3|unique:categories,name',
+                'slug' => 'required|string|max:255|min:3|unique:categories,slug',
             ]);
 
             $category = Category::create([
                 'name' => $request->input('name'),
+                'slug' => $request->input('slug'),
             ]);
 
-            return response()->json(['id' => $category->id, 'name' => $category->name], 201);
+            return response()->json(['id' => $category->id, 'name' => $category->name, 'slug' => $category->slug], 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['error' => 'Validation Error', 'messages' => $e->errors()], 422);
         } catch (\Exception $e) {
@@ -80,6 +140,11 @@ class ApiController extends Controller
         }
     }
 
+    // ========== TREND RELATED METHODS ==========
+
+    /**
+     * Search trends by title
+     */
     public function search_trends(Request $request)
     {
         try {
@@ -94,26 +159,62 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Add a new trend
+     */
     public function add_trend(Request $request)
     {
-
         try {
-            $request->validate([
-                'title' => 'required|string|min:3|max:255',
-            ]);
-            
-            $trend = Trend::create([
-                'title' => $request->input('title'),
+            $validated = $request->validate([
+                'title' => 'required|string|min:3|max:255|unique:trends,title',
+                'slug'  => 'required|string|min:3|max:255|unique:trends,slug',
+                'image' => 'required|image|mimes:jpeg,png,webp,gif|max:6144',
             ]);
 
-            return response()->json(['id' => $trend->id, 'title' => $trend->title], 201);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['error' => 'Validation Error', 'messages' => $e->errors()], 422);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Server Error'], 500);
+            $normalizedSlug = Str::slug($validated['slug']);
+            if ($normalizedSlug !== $validated['slug']) {
+                if (Trend::where('slug', $normalizedSlug)->exists()) {
+                    throw ValidationException::withMessages([
+                        'slug' => ['The slug has been normalized and now conflicts with an existing one. Please choose another.'],
+                    ]);
+                }
+            }
+            $slug = $normalizedSlug;
+
+            $path = $request->file('image')->store('trends', 'public');
+            $imageUrl = asset('storage/' . $path);
+
+            $trend = Trend::create([
+                'title'      => $validated['title'],
+                'slug'       => $slug,
+                'image'     => $path,
+            ]);
+
+            return response()->json([
+                'id'        => $trend->id,
+                'title'     => $trend->title,
+                'slug'      => $trend->slug,
+                'image_url' => $imageUrl,
+                'message'   => 'Trend created successfully.',
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'error'    => 'Validation Error',
+                'messages' => $e->errors(),
+            ], 422);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'error'   => 'Server Error',
+                'message' => 'An unexpected error occurred.',
+            ], 500);
         }
     }
 
+    // ========== WINDOW RELATED METHODS ==========
+
+    /**
+     * Search windows by name
+     */
     public function search_windows(Request $request)
     {
         try {
@@ -128,17 +229,40 @@ class ApiController extends Controller
         }
     }
 
-    public function add_window(Request $request){
+    /**
+     * Add a new window
+     */
+    public function add_window(Request $request)
+    {
         try {
-            $request->validate([
-                'name' => 'required|string|max:255|min:3',
+            $validated = $request->validate([
+                'name'  => 'required|string|max:255|unique:windows,name',
+                'slug'  => 'required|string|max:255|unique:windows,slug',
+                'image' => 'required|image|mimes:jpeg,png,webp,gif|max:6000',
             ]);
 
-            $window = Window::create([
-                'name' => $request->input('name'),
-            ]);
+            $window = new Window();
+            $window->name = $validated['name'];
+            $window->slug = $validated['slug'];
 
-            return response()->json(['id' => $window->id, 'name' => $window->name], 201);
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $path = $file->store('media', 'public');
+                $window->image = $path;
+                $imageUrl = asset('storage/' . $path);
+            } else {
+                $imageUrl = null;
+            }
+
+            $window->save();
+
+            return response()->json([
+                'id'        => $window->id,
+                'name'      => $window->name,
+                'slug'      => $window->slug,
+                'image_url' => $imageUrl,
+                'message'   => 'Window created successfully.',
+            ], 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['error' => 'Validation Error', 'messages' => $e->errors()], 422);
         } catch (\Exception $e) {
@@ -146,6 +270,11 @@ class ApiController extends Controller
         }
     }
 
+    // ========== TAG RELATED METHODS ==========
+
+    /**
+     * Search tags by name
+     */
     public function search_tags(Request $request)
     {
         try {
@@ -160,6 +289,9 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Add a new tag
+     */
     public function add_tag(Request $request)
     {
         try {
@@ -179,6 +311,11 @@ class ApiController extends Controller
         }
     }
 
+    // ========== WRITER RELATED METHODS ==========
+
+    /**
+     * Search writers by name
+     */
     public function search_writers(Request $request)
     {
         try {
@@ -186,7 +323,6 @@ class ApiController extends Controller
 
             $writers = Writer::where('name', 'LIKE', "%$query%")
                 ->get(['id', 'name']);
-                
 
             return response()->json($writers);
         } catch (\Exception $e) {
@@ -194,38 +330,66 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Add a new writer
+     */
     public function add_writer(Request $request)
     {
         try {
-
             $validated = $request->validate([
-                'name' => 'required|string|max:150',
-                'slug' => 'required|string|max:150|unique:writers',
-                'bio' => 'required|string',
-                'image.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'facebook' => 'nullable|url',
-                'x' => 'nullable|url',
+                'name'      => 'required|string|max:150|unique:writers,name',
+                'slug'      => 'required|string|max:150|unique:writers,slug',
+                'bio'       => 'required|string',
+                'image'     => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+                'facebook'  => 'nullable|url',
+                'x'         => 'nullable|url',
                 'instagram' => 'nullable|url',
-                'linkedin' => 'nullable|url',
+                'linkedin'  => 'nullable|url',
+                'email'     => 'nullable|email|max:190',
             ]);
 
-            $writer = Writer::create($validated);
-
-            
-            if ($request->hasFile('image')) {
-                $path = $request->file('image')->store('writers', 'public');
-                $writer->image = asset($path);
-                $writer->save();
+            $normalizedSlug = Str::slug($validated['slug']);
+            if ($normalizedSlug !== $validated['slug'] && Writer::where('slug', $normalizedSlug)->exists()) {
+                throw ValidationException::withMessages([
+                    'slug' => ['The slug has been normalized and now conflicts with an existing one. Please choose another.'],
+                ]);
             }
+            $slug = $normalizedSlug;
 
-            return response()->json(['id' => $writer->id, 'name' => $writer->name], 201);
+            $path = $request->file('image')->store('writers', 'public');
+            $imageUrl = asset('storage/' . $path);
+
+            $writer = Writer::create([
+                'name'       => $validated['name'],
+                'slug'       => $slug,
+                'bio'        => $validated['bio'],
+                'image_path' => $path,
+                'facebook'   => $validated['facebook']  ?? null,
+                'x'          => $validated['x']         ?? null,
+                'instagram'  => $validated['instagram'] ?? null,
+                'linkedin'   => $validated['linkedin']  ?? null,
+                'email'      => $validated['email']     ?? null,
+            ]);
+
+            return response()->json([
+                'id'        => $writer->id,
+                'name'      => $writer->name,
+                'slug'      => $writer->slug,
+                'image_url' => $imageUrl,
+                'message'   => 'Writer created successfully.',
+            ], 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['error' => 'Validation Error', 'messages' => $e->errors()], 422);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json(['error' => 'Server Error'], 500);
         }
     }
 
+    // ========== LOCATION RELATED METHODS ==========
+
+    /**
+     * Search cities by name
+     */
     public function search_cities(Request $request)
     {
         try {
