@@ -19,6 +19,7 @@ use App\Models\Window;
 use App\Models\Content;
 use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 use App\Jobs\PublishContent;
 
@@ -130,23 +131,122 @@ class ContentController extends BaseController
         ));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        // ===== 1) Préparer les URLs dأصول الألبوم (album_assets) =====
-        // Ex.: album_assets[] = ['url' => 'https://...', 'title' => '...', 'alt' => '...']
+        // ========= 0) Normalisation des URLs AVANT la validation =========
+        $toAbsoluteUrl = function (?string $v): ?string {
+            if (!is_string($v)) return null;
+            $v = trim($v);
+            if ($v === '') return null;
+
+            if (\Illuminate\Support\Str::startsWith($v, ['http://', 'https://'])) {
+                return $v;
+            }
+
+            // Chemins locaux fréquents -> asset()
+            if (\Illuminate\Support\Str::startsWith($v, ['/storage', 'storage/', '/uploads', 'uploads/', 'public/'])) {
+                $v = ltrim($v, '/'); // éviter //storage
+                return asset($v);
+            }
+
+            // Autres relatifs -> url()
+            return url($v);
+        };
+
+        // Normaliser share_image
+        if ($request->filled('share_image')) {
+            $request->merge([
+                'share_image' => $toAbsoluteUrl($request->input('share_image')),
+            ]);
+        }
+
+        // ========= 0bis) Harmoniser items[*] (supporte media_url -> image) =========
         $albumImages = [];
-        if ($request->album_assets && is_array($request->album_assets)) {
-            foreach ($request->album_assets as $asset) {
-                if (!empty($asset['url']) && is_string($asset['url'])) {
-                    $albumImages[] = $asset['url'];
+        if (is_array($request->input('items'))) {
+            $items = $request->input('items');
+
+            foreach ($items as $i => $item) {
+                // 1) Si le front a envoyé media_url mais pas image -> on bascule vers image pour la validation
+                if (!isset($item['image']) && !empty($item['media_url'])) {
+                    $item['image'] = $item['media_url'];
                 }
+
+                // 2) Normaliser image
+                if (isset($item['image']) && $item['image'] !== '') {
+                    $item['image'] = $toAbsoluteUrl($item['image']);
+                }
+
+                // 3) Normaliser url (facultatif en "file", requis en "list")
+                if (isset($item['url']) && $item['url'] !== '') {
+                    $item['url'] = $toAbsoluteUrl($item['url']);
+                } else {
+                    $item['url'] = null;
+                }
+
+                $items[$i] = $item;
+            }
+
+            $request->merge(['items' => $items]);
+        }
+
+        // ========= 0ter) Normaliser les champs template potentiels (tous en URL) =========
+        $templateUrlFields = [
+            // normal_image
+            'normal_main_image',
+            'normal_mobile_image',
+            'normal_content_image',
+            // video
+            'video_main_image',
+            'video_mobile_image',
+            'video_content_image',
+            'video_file',
+            // podcast
+            'podcast_main_image',
+            'podcast_mobile_image',
+            'podcast_content_image',
+            'podcast_file',
+            // album
+            'album_main_image',
+            'album_mobile_image',
+            'album_content_image',
+            // no_image
+            'no_image_main_image',
+            'no_image_mobile_image',
+        ];
+        foreach ($templateUrlFields as $f) {
+            if ($request->filled($f)) {
+                $request->merge([$f => $toAbsoluteUrl($request->input($f))]);
             }
         }
 
-        // ===== 2) Règles de validation (générales) — URLs uniquement =====
+        // Normaliser album_assets[].url si présent
+        if ($request->album_assets && is_array($request->album_assets)) {
+            $norm = [];
+            foreach ($request->album_assets as $asset) {
+                $url = isset($asset['url']) ? $toAbsoluteUrl($asset['url']) : null;
+                if ($url) {
+                    $norm[] = [
+                        'url'   => $url,
+                        'title' => $asset['title'] ?? null,
+                        'alt'   => $asset['alt'] ?? null
+                    ];
+                    $albumImages[] = $url;
+                }
+            }
+            $request->merge(['album_assets' => $norm]);
+        }
+
+        // ========= 0quater) Rétrograder display_method si items manquants =========
+        $incomingDisplay = $request->input('display_method');
+        if (in_array($incomingDisplay, ['list', 'file'], true)) {
+            $incomingItems = $request->input('items');
+            if (empty($incomingItems) || !is_array($incomingItems)) {
+                $request->merge(['display_method' => 'simple']);
+            }
+        }
+
+        // ========= 1) Règles de validation =========
         $rules = [
             'title'               => 'required|string|max:75',
             'long_title'          => 'required|string|max:210',
@@ -180,53 +280,89 @@ class ContentController extends BaseController
             'importance'          => 'nullable|integer|min:0|max:10',
         ];
 
-        // ===== 3) Règles pour display_method = list/file (items en URLs) =====
-        if (in_array($request->display_method, ['list', 'file'], true)) {
-            // Autoriser items vide -> fallback à simple plus bas
-            if (!empty($request->items) && is_array($request->items)) {
-                $rules['items']               = 'array|min:1';
-                $rules['items.*.title']       = 'required|string|max:255';
-                $rules['items.*.description'] = 'required|string';
-                // image en URL uniquement
-                $rules['items.*.image']       = 'required|url|max:2048';
-                $rules['items.*.index']       = 'required|integer';
-                $rules['items.*.url']         = $request->display_method === 'list' ? 'required|url' : 'nullable|url';
-            }
+        // items pour display_method list/file (URLs, pas fichiers)
+        if (in_array($request->input('display_method'), ['list', 'file'], true)) {
+            $rules['items']               = 'required|array|min:1';
+            $rules['items.*.title']       = 'required|string|max:255';
+            $rules['items.*.description'] = 'required|string';
+            $rules['items.*.image']       = 'required|url|max:2048'; // <- on valide bien "image"
+            $rules['items.*.index']       = 'required|integer';
+            $rules['items.*.url']         = $request->input('display_method') === 'list'
+                ? 'required|url|max:2048'
+                : 'nullable|url|max:2048';
         }
 
-        // ===== 4) Règles « template » (toutes en URL) =====
-        // NB: plus aucun fichier téléchargé, toutes les valeurs sont des URLs/strings.
+        // Règles par template
         $templateRules = [
             'normal_image' => [
-                'normal_main_image'    => 'required',
-                'normal_mobile_image'  => 'required',
-                'normal_content_image' => 'required',
+                'normal_main_image'    => 'required|url|max:2048',
+                'normal_mobile_image'  => 'required|url|max:2048',
+                'normal_content_image' => 'required|url|max:2048',
             ],
             'video' => [
-                'video_main_image'    => 'required',
-                'video_mobile_image'  => 'required',
-                'video_content_image' => 'required',
-                'video_file'          => 'required', // mp4/m3u8/YouTube, etc.
+                'video_main_image'    => 'required|url|max:2048',
+                'video_mobile_image'  => 'required|url|max:2048',
+                'video_content_image' => 'required|url|max:2048',
+                'video_file'          => 'required|url|max:2048',
             ],
             'podcast' => [
-                'podcast_main_image'    => 'required',
-                'podcast_content_image' => 'required',
-                'podcast_mobile_image'  => 'required',
-                'podcast_file'          => 'required', // mp3/ogg/stream
+                'podcast_main_image'    => 'required|url|max:2048',
+                'podcast_content_image' => 'required|url|max:2048',
+                'podcast_mobile_image'  => 'required|url|max:2048',
+                'podcast_file'          => 'required|url|max:2048',
             ],
             'album' => [
-                'album_main_image'    => 'required',
-                'album_content_image' => 'required',
-                'album_mobile_image'  => 'required',
-                // album_assets géré à part (liste d’objets)
+                'album_main_image'    => 'required|url|max:2048',
+                'album_content_image' => 'required|url|max:2048',
+                'album_mobile_image'  => 'required|url|max:2048',
             ],
             'no_image' => [
-                'no_image_main_image'   => 'required',
-                'no_image_mobile_image' => 'required',
+                'no_image_main_image'   => 'required|url|max:2048',
+                'no_image_mobile_image' => 'required|url|max:2048',
             ],
         ];
 
-        // Mappage champ => type de liaison pivot
+        // ========= 2) Validation =========
+        $validated = $request->validate($rules);
+        $request->validate($templateRules[$request->template] ?? []);
+
+        // album: au moins un asset
+        if ($request->template === 'album' && empty($albumImages)) {
+            return back()
+                ->withErrors(['album_assets' => 'You must provide at least one album asset URL.'])
+                ->withInput();
+        }
+
+        // ========= 3) Création du contenu =========
+        $content = \App\Models\Content::create([
+            ...$validated,
+            'is_latest'  => $request->boolean('is_latest'),
+            'importance' => $request->input('importance'),
+            'user_id'    => \Illuminate\Support\Facades\Auth::id(),
+        ]);
+
+        if ($request->filled('review_description')) {
+            \App\Models\ContentReview::create([
+                'reviewer_id' => \Illuminate\Support\Facades\Auth::id(),
+                'content_id'  => $content->id,
+                'message'     => $request->review_description,
+            ]);
+        }
+
+        // ========= 4) Items (list/file) =========
+        if (!empty($validated['items']) && is_array($validated['items'])) {
+            foreach ($validated['items'] as $item) {
+                $content->contentLists()->create([
+                    'title'       => $item['title'],
+                    'description' => $item['description'],
+                    'url'         => $item['url'] ?? null,
+                    'image'       => $item['image'] ?? null, // <- alimente bien "image"
+                    'index'       => $item['index'],
+                ]);
+            }
+        }
+
+        // ========= 5) Médias liés =========
         $templateMediaMap = [
             'normal_image' => [
                 'normal_main_image'    => 'main',
@@ -249,7 +385,7 @@ class ContentController extends BaseController
                 'album_main_image'    => 'main',
                 'album_mobile_image'  => 'mobile',
                 'album_content_image' => 'detail',
-                'album_images'        => 'album', // géré via $albumImages
+                'album_images'        => 'album',
             ],
             'no_image' => [
                 'no_image_main_image'   => 'main',
@@ -257,90 +393,31 @@ class ContentController extends BaseController
             ],
         ];
 
-        // ===== 5) Validation =====
-        $validated = $request->validate($rules);
-        $request->validate($templateRules[$request->template] ?? []);
-
-        // Vérifier qu’il y a au moins un élément d’album si template = album
-        if ($request->template === 'album') {
-            if (empty($albumImages)) {
-                return back()
-                    ->withErrors(['album_assets' => 'You must provide at least one album asset URL.'])
-                    ->withInput();
-            }
-        }
-
-        // Normaliser display_method si items manquants
-        if (
-            in_array($validated['display_method'], ['list', 'file'], true)
-            && (empty($validated['items']) || !is_array($validated['items']))
-        ) {
-            $validated['display_method'] = 'simple';
-        }
-
-        // ===== 6) Créer le contenu =====
-        $content = Content::create([
-            ...$validated,
-            'is_latest'  => $request->boolean('is_latest'),
-            'importance' => $request->input('importance'),
-            'user_id'    => Auth::id(),
-        ]);
-
-        // ===== 7) Enregistrer une note de relecture si fournie =====
-        if ($request->filled('review_description')) {
-            ContentReview::create([
-                'reviewer_id' => Auth::id(),
-                'content_id'  => $content->id,
-                'message'     => $request->review_description,
-            ]);
-        }
-
-        // ===== 8) Enregistrer les items (list/file) — images en URLs =====
-        if (!empty($validated['items']) && is_array($validated['items'])) {
-            foreach ($validated['items'] as $item) {
-                $imageUrl = isset($item['image']) && is_string($item['image']) ? $item['image'] : null;
-
-                $content->contentLists()->create([
-                    'title'       => $item['title'],
-                    'description' => $item['description'],
-                    'url'         => $item['url'] ?? null,
-                    'image'       => $imageUrl,
-                    'index'       => $item['index'],
-                ]);
-            }
-        }
-
-        // ===== 9) Enregistrer les médias liés (tout en URLs) =====
-        $mediaMap = $templateMediaMap[$request->template] ?? null;
-
-        // utilitaire pour déduire un type mime logique à partir de l’URL
         $detectTypeFromUrl = function (string $url): string {
             $u = strtolower(parse_url($url, PHP_URL_PATH) ?? '');
-            if (preg_match('/\\.(jpe?g|png|gif|webp|bmp|svg)$/', $u)) return 'image';
-            if (preg_match('/\\.(mp4|mov|wmv|webm|m4v|m3u8)$/', $u)) return 'video';
-            if (preg_match('/\\.(mp3|wav|ogg|m4a|aac|flac)$/', $u)) return 'audio';
-            // Détection simple YouTube
-            if (strpos($url, 'youtube.com') !== false || strpos($url, 'youtu.be') !== false) return 'youtube';
+            if (preg_match('/\.(jpe?g|png|gif|webp|bmp|svg)$/', $u)) return 'image';
+            if (preg_match('/\.(mp4|mov|wmv|webm|m4v|m3u8)$/', $u)) return 'video';
+            if (preg_match('/\.(mp3|wav|ogg|m4a|aac|flac)$/', $u)) return 'audio';
+            if (str_contains($url, 'youtube.com') || str_contains($url, 'youtu.be')) return 'youtube';
             return 'url';
         };
 
+        $mediaMap = $templateMediaMap[$request->template] ?? null;
         if ($mediaMap) {
             foreach ($mediaMap as $field => $type) {
-                // 9.a) Champs simples (image principale, mobile, detail, video_file, podcast_file) en URL
                 if ($field !== 'album_images' && $request->filled($field)) {
                     $url       = $request->input($field);
                     $mediaType = $detectTypeFromUrl($url);
 
-                    // réutiliser si déjà existant
-                    $existing = ContentMedia::where('path', $url)->first();
+                    $existing = \App\Models\ContentMedia::where('path', $url)->first();
                     if ($existing) {
                         $content->media()->attach($existing->id, ['type' => $type]);
                     } else {
-                        $media = ContentMedia::create([
+                        $media = \App\Models\ContentMedia::create([
                             'path'       => $url,
-                            'media_type' => $mediaType, // 'image'/'video'/'audio'/'youtube'/'url'
-                            'user_id'    => Auth::id(),
-                            'name'       => basename(parse_url($url, PHP_URL_PATH) ?? 'url_' . Str::random(8)),
+                            'media_type' => $mediaType,
+                            'user_id'    => \Illuminate\Support\Facades\Auth::id(),
+                            'name'       => basename(parse_url($url, PHP_URL_PATH) ?? ('url_' . \Illuminate\Support\Str::random(8))),
                             'alt'        => $content->title,
                         ]);
                         $content->media()->attach($media->id, ['type' => $type]);
@@ -348,20 +425,19 @@ class ContentController extends BaseController
                     continue;
                 }
 
-                // 9.b) Album images (multiples URLs)
                 if ($field === 'album_images' && !empty($albumImages)) {
                     foreach ($albumImages as $url) {
                         $mediaType = $detectTypeFromUrl($url);
-                        $existing  = ContentMedia::where('path', $url)->first();
+                        $existing  = \App\Models\ContentMedia::where('path', $url)->first();
 
                         if ($existing) {
                             $content->media()->attach($existing->id, ['type' => $type]);
                         } else {
-                            $media = ContentMedia::create([
+                            $media = \App\Models\ContentMedia::create([
                                 'path'       => $url,
                                 'media_type' => $mediaType,
-                                'user_id'    => Auth::id(),
-                                'name'       => basename(parse_url($url, PHP_URL_PATH) ?? 'url_' . Str::random(8)),
+                                'user_id'    => \Illuminate\Support\Facades\Auth::id(),
+                                'name'       => basename(parse_url($url, PHP_URL_PATH) ?? ('url_' . \Illuminate\Support\Str::random(8))),
                                 'alt'        => $content->title,
                             ]);
                             $content->media()->attach($media->id, ['type' => $type]);
@@ -371,20 +447,27 @@ class ContentController extends BaseController
             }
         }
 
-        // ===== 10) Tags =====
+        // ========= 6) Tags =========
         $content->tags()->sync($request->tags_id);
 
-        // ===== 11) Publication / Programmation =====
-        if ($request->filled('published_at') && $request->published_at > now()->toDateTimeString()) {
-            $content->status       = 'scheduled';
-            $content->published_at = $request->published_at;
-            $content->save();
-
+        // ========= 7) Publication / Programmation =========
+        if ($request->filled('published_at')) {
             $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
-            $delayInSeconds = now()->diffInSeconds($scheduledTime, false);
-            if ($delayInSeconds < 0) $delayInSeconds = 0;
 
-            PublishContent::dispatch($content->id)->delay(now()->addSeconds($delayInSeconds));
+            if ($scheduledTime->gt(now('Africa/Algiers'))) {
+                $content->status       = 'scheduled';
+                $content->published_at = $scheduledTime;
+                $content->save();
+
+                $delayInSeconds = now('Africa/Algiers')->diffInSeconds($scheduledTime, false);
+                if ($delayInSeconds < 0) $delayInSeconds = 0;
+
+                \App\Jobs\PublishContent::dispatch($content->id)->delay(now()->addSeconds($delayInSeconds));
+            } else {
+                $content->status       = 'published';
+                $content->published_at = $scheduledTime;
+                $content->save();
+            }
         } elseif ($request->filled('status') && $request->status === 'draft') {
             $content->status       = 'draft';
             $content->published_at = null;
@@ -395,8 +478,16 @@ class ContentController extends BaseController
             $content->save();
         }
 
-        return redirect()->back()->with('success', 'Content created successfully.');
+
+
+
+        return redirect()
+            ->back()
+            ->with('success', 'Content created successfully.')
+            ->with('clear_local_storage', true);
     }
+
+
 
 
     /**

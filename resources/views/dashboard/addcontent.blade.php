@@ -31,8 +31,8 @@
 
         /* Validation Styles */
         /* .alert-danger {
-                        margin: 15px 0;
-                    } */
+                                margin: 15px 0;
+                            } */
 
         .search-container {
             transition: all 0.2s ease;
@@ -468,19 +468,40 @@
                             </script>
                         @endif
 
-                        {{-- SweetAlert for success message --}}
-                        @if (session('success'))
+                        @if (session('clear_local_storage'))
                             <script>
+                                (function() {
+                                    try {
+                                        localStorage.removeItem('az_content_items_v6');
+                                        localStorage.removeItem('az_display_method_v6');
+                                        console.info('LocalStorage vidé après succès (signal contrôleur).');
+                                    } catch (e) {
+                                        /* noop */
+                                    }
+                                })();
+                                // Show success message using Bootstrap alert
                                 document.addEventListener('DOMContentLoaded', function() {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'تم بنجاح',
-                                        text: '{{ session('success') }}',
-                                        confirmButtonText: 'حسناً'
-                                    });
+                                    var alertDiv = document.createElement('div');
+                                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                                    alertDiv.role = 'alert';
+                                    alertDiv.innerHTML = `
+                                        {{ session('success_message', 'تم حفظ المحتوى بنجاح!') }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    `;
+                                    // Insert after the first heading or at the top of the form
+                                    var form = document.getElementById('contentForm');
+                                    var firstHeading = form ? form.querySelector('.nk-block-head') : null;
+                                    if (form && firstHeading) {
+                                        firstHeading.parentNode.insertBefore(alertDiv, firstHeading.nextSibling);
+                                    } else if (form) {
+                                        form.insertBefore(alertDiv, form.firstChild);
+                                    } else {
+                                        document.body.prepend(alertDiv);
+                                    }
                                 });
                             </script>
                         @endif
+
 
                         <div>
                             <!-- Template Hidden Field -->
