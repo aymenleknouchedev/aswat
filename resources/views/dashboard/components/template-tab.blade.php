@@ -411,16 +411,22 @@
                 <div class="mmxx-uploader">
                     <div class="mmxx-upload-fields" style="display: flex; flex-wrap: wrap; gap: .6rem; width: 100%;">
                         <div style="flex: 1 1 220px;">
-                            <label for="mmxx-upload-input" style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fafafa; color: #333; text-align: center;">
-                                <i class="fa fa-images" style="margin-right: 6px;"></i> اختر ملف الوسائط
-                                <input type="file" id="mmxx-upload-input" class="mmxx-upload-input" style="display: none;" />
+                            <label for="mmxx-upload-input"
+                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fafafa; color: #333; text-align: center;">
+                                <i class="fa fa-upload" style="margin-right: 6px;"></i> اختر ملف الوسائط
+                                <input type="file" id="mmxx-upload-input" class="mmxx-upload-input"
+                                    style="display: none;" />
                             </label>
                         </div>
                         <div style="flex: 1 1 200px;">
-                            <input type="text" id="mmxx-upload-name" class="mmxx-upload-name" placeholder="اسم الملف" style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                            <input type="text" id="mmxx-upload-name" class="mmxx-upload-name"
+                                placeholder="اسم الملف"
+                                style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
                         </div>
                         <div style="flex: 1 1 200px;">
-                            <input type="text" id="mmxx-upload-alt" class="mmxx-upload-alt" placeholder="النص البديل" style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                            <input type="text" id="mmxx-upload-alt" class="mmxx-upload-alt"
+                                placeholder="النص البديل"
+                                style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
                         </div>
                     </div>
                     <div class="mmxx-uploader-actions">
@@ -431,13 +437,40 @@
                     </div>
                 </div>
             </div>
+            <script>
+                // Change button style when file selected
+                document.addEventListener('DOMContentLoaded', function() {
+                    const fileInput = document.getElementById('mmxx-upload-input');
+                    const btnUploadToGallery = document.getElementById('mmxx-btn-upload-to-gallery');
+                    const btnUploadAndSelectClose = document.getElementById('mmxx-btn-upload-and-select-close');
+
+                    fileInput?.addEventListener('change', function() {
+                        if (fileInput.files && fileInput.files.length > 0) {
+                            btnUploadToGallery.classList.add('mmxx-btn-active');
+                            btnUploadAndSelectClose.classList.add('mmxx-btn-active');
+                        } else {
+                            btnUploadToGallery.classList.remove('mmxx-btn-active');
+                            btnUploadAndSelectClose.classList.remove('mmxx-btn-active');
+                        }
+                    });
+                });
+            </script>
+            <style>
+                /* Example: highlight buttons when file selected */
+                .mmxx-btn-active {
+                    background: #16a34a !important;
+                    border-color: #16a34a !important;
+                    color: #fff !important;
+                }
+            </style>
         </section>
 
         <!-- Import by URL -->
         <section id="mmxx-tab-import" class="mmxx-tab-panel" role="tabpanel" aria-labelledby="mmxx-tabbtn-import"
             hidden>
             <div class="mmxx-tab-body">
-                <div class="mmxx-uploader mmxx-uploader-url" style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--mmxx-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                <div class="mmxx-uploader mmxx-uploader-url"
+                    style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--mmxx-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
                     <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem;">
                         <input type="text" id="mmxx-upload-url"
                             style="flex:1 1 220px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;"
@@ -447,25 +480,35 @@
                         <input type="text" id="mmxx-url-alt" placeholder="النص البديل"
                             style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
                     </div>
-                    <fieldset class="mmxx-url-type-group" aria-label="نوع الوسائط للرابط" style="margin-bottom:.7rem; border-radius:6px; border:1px solid #e5e7eb; padding:.7rem 1rem; background:#fff;">
-                        <legend style="font-size:.97rem; color:#333; padding:0 .3rem; font-weight:500;">نوع الوسائط (اختياري)</legend>
+                    <fieldset class="mmxx-url-type-group" aria-label="نوع الوسائط للرابط"
+                        style="margin-bottom:.7rem; border-radius:6px; border:1px solid #e5e7eb; padding:.7rem 1rem; background:#fff;">
+                        <legend style="font-size:.97rem; color:#333; padding:0 .3rem; font-weight:500;">نوع الوسائط
+                            (اختياري)</legend>
                         <div style="display:flex; gap:1.2rem; flex-wrap:wrap;">
-                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio" name="mmxx-url-type" value="auto" checked /><span>Auto</span></label>
-                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio" name="mmxx-url-type" value="image" /><span>Image</span></label>
-                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio" name="mmxx-url-type" value="video" /><span>Video</span></label>
-                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio" name="mmxx-url-type" value="voice" /><span>Voice</span></label>
-                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio" name="mmxx-url-type" value="file" /><span>File</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio"
+                                    name="mmxx-url-type" value="auto" checked /><span>Auto</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio"
+                                    name="mmxx-url-type" value="image" /><span>Image</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio"
+                                    name="mmxx-url-type" value="video" /><span>Video</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio"
+                                    name="mmxx-url-type" value="voice" /><span>Voice</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio"
+                                    name="mmxx-url-type" value="file" /><span>File</span></label>
                         </div>
                     </fieldset>
                     <div class="mmxx-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
                         <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-import-to-gallery"
                             title="استيراد بالرابط ثم عرض في المعرض"
-                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & فتح المعرض</button>
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & فتح
+                            المعرض</button>
                         <button class="mmxx-btn mmxx-btn-primary" type="button"
                             id="mmxx-btn-import-and-select-close" title="استيراد بالرابط ثم حفظ وإغلاق"
-                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & حفظ وإغلاق</button>
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & حفظ
+                            وإغلاق</button>
                     </div>
-                    <small class="mmxx-selection-hint" style="display:block; color:var(--mmxx-muted); font-size:.97rem; margin-top:.2rem;">
+                    <small class="mmxx-selection-hint"
+                        style="display:block; color:var(--mmxx-muted); font-size:.97rem; margin-top:.2rem;">
                         يُقبل الرابط المباشر أو رابط YouTube. يمكن تحديد نوع الوسائط يدوياً أو تركه على Auto.
                     </small>
                 </div>
@@ -1621,7 +1664,7 @@
                                                         if (!embedCode.includes('twitter-tweet')) {
                                                             editor.windowManager.alert(
                                                                 'Please enter a valid Twitter embed code containing "twitter-tweet"'
-                                                                );
+                                                            );
                                                             return;
                                                         }
 

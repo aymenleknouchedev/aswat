@@ -81,22 +81,57 @@
         </section>
 
         <!-- Upload -->
-        <section id="mmx-tab-upload" class="mmx-tab-panel" role="tabpanel" aria-labelledby="mmx-tabbtn-upload"
-            hidden>
+        <section id="mmx-tab-upload" class="mmx-tab-panel" role="tabpanel" aria-labelledby="mmx-tabbtn-upload" hidden>
             <div class="mmx-tab-body">
                 <div class="mmx-uploader">
-                    <input type="file" id="mmx-upload-input" />
-                    <input type="text" id="mmx-upload-name" placeholder="اسم/عنوان الوسيط (اختياري)" />
-                    <input type="text" id="mmx-upload-alt" placeholder="النص البديل ALT (اختياري)" />
+                    <div class="mmx-upload-fields" style="display: flex; flex-wrap: wrap; gap: .6rem; width: 100%;">
+                        <div style="flex: 1 1 220px;">
+                            <label for="mmx-upload-input" style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fafafa; color: #333; text-align: center;">
+                                <i class="fa fa-upload" style="margin-right: 6px;"></i> اختر ملف الوسائط
+                                <input type="file" id="mmx-upload-input" class="mmx-upload-input" style="display: none;" />
+                            </label>
+                        </div>
+                        <div style="flex: 1 1 200px;">
+                            <input type="text" id="mmx-upload-name" class="mmx-upload-name" placeholder="اسم الملف" style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                        </div>
+                        <div style="flex: 1 1 200px;">
+                            <input type="text" id="mmx-upload-alt" class="mmx-upload-alt" placeholder="النص البديل" style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                        </div>
+                    </div>
                     <div class="mmx-uploader-actions">
                         <button class="mmx-btn mmx-btn-secondary" type="button" id="mmx-btn-upload-to-gallery"
                             title="رفع ثم عرض في المعرض">رفع & فتح المعرض</button>
-                        <button class="mmx-btn mmx-btn-primary" type="button" id="mmx-btn-upload-and-select-close"
-                            title="رفع ثم حفظ وإغلاق">رفع & حفظ وإغلاق</button>
+                        <button class="mmx-btn mmx-btn-primary" type="button"
+                            id="mmx-btn-upload-and-select-close" title="رفع ثم حفظ وإغلاق">رفع & حفظ وإغلاق</button>
                     </div>
-                    <small class="mmx-selection-hint">هذا النموذج يرسل ملفاً واحداً تحت الحقل <b>media</b>.</small>
                 </div>
             </div>
+            <script>
+                // Change button style when file selected
+                document.addEventListener('DOMContentLoaded', function () {
+                    const fileInput = document.getElementById('mmx-upload-input');
+                    const btnUploadToGallery = document.getElementById('mmx-btn-upload-to-gallery');
+                    const btnUploadAndSelectClose = document.getElementById('mmx-btn-upload-and-select-close');
+
+                    fileInput?.addEventListener('change', function () {
+                        if (fileInput.files && fileInput.files.length > 0) {
+                            btnUploadToGallery.classList.add('mmx-btn-active');
+                            btnUploadAndSelectClose.classList.add('mmx-btn-active');
+                        } else {
+                            btnUploadToGallery.classList.remove('mmx-btn-active');
+                            btnUploadAndSelectClose.classList.remove('mmx-btn-active');
+                        }
+                    });
+                });
+            </script>
+            <style>
+                /* Example: highlight buttons when file selected */
+                .mmx-btn-active {
+                    background: #16a34a !important;
+                    border-color: #16a34a !important;
+                    color: #fff !important;
+                }
+            </style>
         </section>
 
         <!-- Import by URL -->
