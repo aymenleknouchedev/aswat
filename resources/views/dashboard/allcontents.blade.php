@@ -22,12 +22,18 @@
                                 </a>
                             </div>
 
-                            <!-- Filters -->
+                            <!-- ================== FILTERS ================== -->
                             <form action="{{ route('dashboard.contents.index') }}" method="GET" class="mb-4">
-                                <div class="row g-2">
+                                <div class="row g-2 align-items-stretch">
+
                                     <div class="col-md-3 col-sm-6">
-                                        <input type="text" name="search" class="form-control"
-                                            value="{{ request('search') }}" placeholder="ابحث عن المحتوى...">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light text-muted">
+                                                <em class="icon ni ni-search"></em>
+                                            </span>
+                                            <input type="text" name="search" class="form-control"
+                                                value="{{ request('search') }}" placeholder="ابحث عن المحتوى...">
+                                        </div>
                                     </div>
 
                                     <div class="col-md-2 col-sm-6">
@@ -43,20 +49,33 @@
                                     </div>
 
                                     <div class="col-md-3 col-sm-6">
-                                        <input type="text" id="date_range" name="date_range"
-                                            value="{{ request('date_range') }}" class="form-control"
-                                            placeholder="نطاق التاريخ">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light text-muted">
+                                                <em class="icon ni ni-calendar"></em>
+                                            </span>
+                                            <input type="text" id="date_range" name="date_range"
+                                                value="{{ request('date_range') }}" class="form-control"
+                                                placeholder="نطاق التاريخ">
+                                        </div>
                                     </div>
 
-                                    <div class="col-md-4 col-sm-6 d-flex align-items-center gap-2">
-                                        <button class="btn btn-outline-primary flex-fill" type="submit">تصفية</button>
-                                        <a href="{{ route('dashboard.contents.index') }}"
-                                            class="btn btn-light flex-fill">إعادة ضبط</a>
+                                    <!-- Buttons -->
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                            <button class="btn btn-primary btn-filter px-4" type="submit">
+                                                <em class="icon ni ni-filter me-1"></em> تصفية
+                                            </button>
+                                            <a href="{{ route('dashboard.contents.index') }}"
+                                                class="btn btn-outline-secondary btn-filter px-4">
+                                                <em class="icon ni ni-undo me-1"></em> إعادة ضبط
+                                            </a>
+                                        </div>
                                     </div>
+
                                 </div>
                             </form>
 
-                            <!-- Alerts -->
+                            <!-- ================== ALERTS ================== -->
                             @if (session('success'))
                                 <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                                     <strong>✔ تم بنجاح:</strong> {{ session('success') }}
@@ -73,7 +92,7 @@
                                 </div>
                             @endif
 
-                            <!-- Content Table -->
+                            <!-- ================== CONTENT TABLE ================== -->
                             @if ($contents->isEmpty())
                                 <div class="text-center py-5">
                                     <div class="fs-2 mb-2 text-muted"><em class="icon ni ni-file"></em></div>
@@ -111,7 +130,6 @@
                                                         </div>
                                                         <div class="small text-muted">
                                                             <span>المحرر: {{ $content->user->name }}</span>
-
                                                             @if (optional($content->writer)->name)
                                                                 | <span>الكاتب:
                                                                     {{ optional($content->writer)->name }}</span>
@@ -150,7 +168,6 @@
 
                                                             <span class="badge bg-light text-dark border">قالب
                                                                 {{ $displayLabel }}</span>
-
                                                         </div>
                                                     </td>
 
@@ -246,70 +263,11 @@
 
                                                             <div class="dropdown">
                                                                 <button
-                                                                    class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center"
+                                                                    class="btn btn-sm btn-outline-secondary dropdown-toggle"
                                                                     type="button" id="dropdownMenu{{ $content->id }}"
                                                                     data-bs-toggle="dropdown" aria-expanded="false">
                                                                     المزيد
-                                                                    @if ($content->reviews && $content->reviews->count() > 0)
-                                                                        <span class="wave-badge ms-2" aria-hidden="true">
-                                                                            <span class="dot"></span>
-                                                                            <span class="ripple"></span>
-                                                                        </span>
-                                                                    @endif
                                                                 </button>
-
-                                                                <style>
-                                                                    /* small inline styles for the orange wave animation (kept local to this component) */
-                                                                    .wave-badge {
-                                                                        position: relative;
-                                                                        display: inline-block;
-                                                                        width: 18px;
-                                                                        height: 18px;
-                                                                        line-height: 0
-                                                                    }
-
-                                                                    .wave-badge .dot {
-                                                                        width: 8px;
-                                                                        height: 8px;
-                                                                        background: #ffffff00;
-                                                                        border-radius: 50%;
-                                                                        display: block;
-                                                                        position: relative;
-                                                                        z-index: 2
-                                                                    }
-
-                                                                    .wave-badge .ripple {
-                                                                        position: absolute;
-                                                                        top: 50%;
-                                                                        left: 50%;
-                                                                        transform: translate(-50%, -50%);
-                                                                        width: 8px;
-                                                                        height: 8px;
-                                                                        border-radius: 50%;
-                                                                        background: #ff7a00;
-                                                                        opacity: 0.8;
-                                                                        z-index: 1;
-                                                                        animation: wavePulse 1.4s infinite ease-out
-                                                                    }
-
-                                                                    @keyframes wavePulse {
-                                                                        0% {
-                                                                            transform: translate(-50%, -50%) scale(1);
-                                                                            opacity: 0.9
-                                                                        }
-
-                                                                        70% {
-                                                                            transform: translate(-50%, -50%) scale(2.4);
-                                                                            opacity: 0.25
-                                                                        }
-
-                                                                        100% {
-                                                                            transform: translate(-50%, -50%) scale(3);
-                                                                            opacity: 0
-                                                                        }
-                                                                    }
-                                                                </style>
-
                                                                 <ul class="dropdown-menu"
                                                                     aria-labelledby="dropdownMenu{{ $content->id }}">
                                                                     <li>
@@ -317,15 +275,6 @@
                                                                             href="{{ route('news.show', $content->title) }}"
                                                                             target="_blank">عرض</a>
                                                                     </li>
-
-                                                                    @if ($content->contentActions && $content->contentActions->count() > 0)
-                                                                        <li>
-                                                                            <a class="dropdown-item"
-                                                                                href="{{ route('dashboard.content.actions', $content->id) }}">سجل
-                                                                                الإجراءات</a>
-                                                                        </li>
-                                                                    @endif
-
                                                                     <li>
                                                                         <a class="dropdown-item"
                                                                             href="{{ route('content.reviews.index', $content->id) }}">
@@ -335,7 +284,6 @@
                                                                             @endif
                                                                         </a>
                                                                     </li>
-
                                                                     <li>
                                                                         <form
                                                                             action="{{ route('dashboard.content.destroy', $content->id) }}"
@@ -371,9 +319,30 @@
             </div>
         </div>
     </div>
+
+    <!-- ================== STYLES ================== -->
+    <style>
+        .form-control,
+        .form-select,
+        .input-group-text,
+        .btn-filter {
+            min-height: 42px;
+        }
+
+        [dir="rtl"] .btn .icon,
+        .btn .icon {
+            line-height: 1;
+            vertical-align: -0.125em;
+        }
+
+        @media (max-width: 576px) {
+            .btn-filter {
+                width: 100%;
+            }
+        }
+    </style>
 @endsection
 
-<!-- Scripts -->
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>

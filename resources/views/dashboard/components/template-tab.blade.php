@@ -1,3 +1,4 @@
+<!-- ======================= AZ BASE STYLES (avec variables, sans body/head/html) ======================= -->
 <style>
     :root {
         --az-border: #e1e5e9;
@@ -11,6 +12,7 @@
         --az-success: #10b981;
         --az-warning: #f59e0b;
         --az-radius: 0.35rem;
+        /* sera neutralisé par les overrides en bas */
         --az-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         --az-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
         --az-transition: all 0.2s ease-in-out;
@@ -48,6 +50,7 @@
         align-items: center;
         flex: 1;
         min-width: 0;
+        gap: 12px;
     }
 
     .az-thumb {
@@ -128,9 +131,8 @@
         font-weight: 600;
         font-size: 0.875rem;
         margin-left: 8px;
-        /* Changed from margin-right to margin-left */
+        /* RTL: apparait après les boutons */
         order: 2;
-        /* Ensure it appears after the buttons */
     }
 
     .modal-footer-sticky {
@@ -154,7 +156,7 @@
         object-fit: contain;
     }
 
-    /* Form enhancements */
+    /* Form UI */
     .form-label {
         font-weight: 600;
         margin-bottom: 8px;
@@ -201,7 +203,7 @@
 
     .btn-outline-danger:hover {
         background: var(--az-muted);
-        color: white;
+        color: #fff;
         transform: translateY(-1px);
     }
 
@@ -254,7 +256,6 @@
         color: var(--az-border);
     }
 
-    /* Fixed: Better responsive improvements */
     @media (max-width: 768px) {
         .az-item-row {
             flex-direction: column;
@@ -267,7 +268,6 @@
             gap: 6px;
         }
 
-        /* Ensure proper RTL layout for actions */
         .az-actions .btn {
             order: 1;
         }
@@ -282,22 +282,7 @@
         }
     }
 
-    /* Animation for loading */
-    @keyframes pulse {
-        0% {
-            opacity: 1;
-        }
-
-        50% {
-            opacity: 0.5;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    /* Fixed: Ensure icons display properly */
+    /* Font Awesome safety */
     .fa,
     .fas,
     .far,
@@ -341,8 +326,7 @@
     }
 </style>
 
-<!-- MMxx MEDIA MODAL (FULL, FIXED, TYPE BADGE, NO SUCCESS ALERTS) -->
-<!-- Sprite d'icônes -->
+<!-- ======================= MMxx MEDIA MODAL: SPRITE + META CSRF ======================= -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
     <symbol id="mmxx-icon-image" viewBox="0 0 24 24">
         <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor"
@@ -373,9 +357,9 @@
     </symbol>
 </svg>
 
-<!-- CSRF -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
+<!-- ======================= MMxx MEDIA MODAL: MARKUP ======================= -->
 <div id="mmxxMediaModal" class="mmxx-modal" aria-hidden="true" role="dialog" aria-modal="true"
     aria-labelledby="mmxxMediaModalTitle">
     <div class="mmxx-backdrop" data-mmxx-backdrop></div>
@@ -385,7 +369,6 @@
             <button class="mmxx-close" type="button" data-mmxx-close aria-label="إغلاق">&times;</button>
         </div>
 
-        <!-- Tabs -->
         <div class="mmxx-tabs" role="tablist" aria-label="أقسام إدارة الوسائط">
             <button class="mmxx-tab-btn mmxx-is-active" role="tab" aria-selected="true"
                 aria-controls="mmxx-tab-gallery" id="mmxx-tabbtn-gallery" tabindex="0"
@@ -432,8 +415,8 @@
                     <div class="mmxx-uploader-actions">
                         <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-upload-to-gallery"
                             title="رفع ثم عرض في المعرض">رفع & فتح المعرض</button>
-                        <button class="mmxx-btn mmxx-btn-primary" type="button" id="mmxx-btn-upload-and-select-close"
-                            title="رفع ثم حفظ وإغلاق">رفع & حفظ وإغلاق</button>
+                        <button class="mmxx-btn mmxx-btn-primary" type="button"
+                            id="mmxx-btn-upload-and-select-close" title="رفع ثم حفظ وإغلاق">رفع & حفظ وإغلاق</button>
                     </div>
                     <small class="mmxx-selection-hint">هذا النموذج يرسل ملفاً واحداً تحت الحقل <b>media</b>.</small>
                 </div>
@@ -449,37 +432,25 @@
                         placeholder="ألصق رابط الملف (صورة/فيديو/صوت/ملف أو YouTube)" />
                     <input type="text" id="mmxx-url-name" placeholder="اسم/عنوان للوسيط (اختياري)" />
                     <input type="text" id="mmxx-url-alt" placeholder="النص البديل ALT (اختياري)" />
-
-                    <!-- NEW: Media type radios for URL import -->
                     <fieldset class="mmxx-url-type-group" aria-label="نوع الوسائط للرابط">
                         <legend>نوع الوسائط (اختياري)</legend>
-                        <label class="mmxx-radio">
-                            <input type="radio" name="mmxx-url-type" value="auto" checked />
-                            <span>Auto</span>
-                        </label>
-                        <label class="mmxx-radio">
-                            <input type="radio" name="mmxx-url-type" value="image" />
-                            <span>Image</span>
-                        </label>
-                        <label class="mmxx-radio">
-                            <input type="radio" name="mmxx-url-type" value="video" />
-                            <span>Video</span>
-                        </label>
-                        <label class="mmxx-radio">
-                            <input type="radio" name="mmxx-url-type" value="voice" />
-                            <span>Voice</span>
-                        </label>
-                        <label class="mmxx-radio">
-                            <input type="radio" name="mmxx-url-type" value="file" />
-                            <span>File</span>
-                        </label>
+                        <label class="mmxx-radio"><input type="radio" name="mmxx-url-type" value="auto"
+                                checked /><span>Auto</span></label>
+                        <label class="mmxx-radio"><input type="radio" name="mmxx-url-type"
+                                value="image" /><span>Image</span></label>
+                        <label class="mmxx-radio"><input type="radio" name="mmxx-url-type"
+                                value="video" /><span>Video</span></label>
+                        <label class="mmxx-radio"><input type="radio" name="mmxx-url-type"
+                                value="voice" /><span>Voice</span></label>
+                        <label class="mmxx-radio"><input type="radio" name="mmxx-url-type"
+                                value="file" /><span>File</span></label>
                     </fieldset>
-
                     <div class="mmxx-uploader-actions">
                         <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-import-to-gallery"
                             title="استيراد بالرابط ثم عرض في المعرض">استيراد & فتح المعرض</button>
-                        <button class="mmxx-btn mmxx-btn-primary" type="button" id="mmxx-btn-import-and-select-close"
-                            title="استيراد بالرابط ثم حفظ وإغلاق">استيراد & حفظ وإغلاق</button>
+                        <button class="mmxx-btn mmxx-btn-primary" type="button"
+                            id="mmxx-btn-import-and-select-close" title="استيراد بالرابط ثم حفظ وإغلاق">استيراد & حفظ
+                            وإغلاق</button>
                     </div>
                     <small class="mmxx-selection-hint">يُقبل الرابط المباشر أو رابط YouTube. يمكن تحديد نوع الوسائط
                         يدوياً أو تركه على Auto.</small>
@@ -489,17 +460,14 @@
     </div>
 </div>
 
+<!-- ======================= MMxx MODAL STYLES ======================= -->
 <style>
-    /* ===== MMxx NAMESPACE – neutral white/grey, no rounded corners ===== */
     #mmxxMediaModal,
     #mmxxMediaModal * {
         box-sizing: border-box;
     }
 
-    #mmxxMediaModal * {
-        border-radius: 0 !important;
-    }
-
+    /* neutralisation arrondis via overrides en bas également */
     :root {
         --mmxx-bg: #fff;
         --mmxx-text: #111;
@@ -784,7 +752,6 @@
         flex: 1 1 220px;
     }
 
-    /* NEW: URL type radios */
     .mmxx-url-type-group {
         width: 100%;
         margin: .2rem 0 .4rem;
@@ -921,9 +888,9 @@
     }
 </style>
 
+<!-- ======================= MMxx MODAL SCRIPT ======================= -->
 <script>
     (() => {
-        // ===== Endpoints =====
         const FETCH_URL = "{{ route('dashboard.media.getAllMediaPaginated') }}";
         const UPLOAD_URL = "{{ route('dashboard.media.store') }}";
         const IMPORT_URL = "{{ route('dashboard.media_url.store') }}";
@@ -933,7 +900,6 @@
         const closes = modal.querySelectorAll("[data-mmxx-close]");
         const CSRF = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
-        // Gallery
         const listEl = document.getElementById("mmxx-list");
         const loaderEl = document.getElementById("mmxx-loader");
         const sentinel = document.getElementById("mmxx-sentinel");
@@ -941,14 +907,12 @@
         const typeSelect = document.getElementById("mmxx-type-filter");
         const btnSelect = document.getElementById("mmxx-btn-select");
 
-        // Upload
         const uploadInput = document.getElementById("mmxx-upload-input");
         const uploadName = document.getElementById("mmxx-upload-name");
         const uploadAlt = document.getElementById("mmxx-upload-alt");
         const btnUploadToGallery = document.getElementById("mmxx-btn-upload-to-gallery");
         const btnUploadSelectAndClose = document.getElementById("mmxx-btn-upload-and-select-close");
 
-        // Import URL
         const uploadUrlInput = document.getElementById("mmxx-upload-url");
         const urlNameInput = document.getElementById("mmxx-url-name");
         const urlAltInput = document.getElementById("mmxx-url-alt");
@@ -956,7 +920,6 @@
         const btnImportSelectAndClose = document.getElementById("mmxx-btn-import-and-select-close");
         const urlTypeRadios = modal.querySelectorAll("input[name='mmxx-url-type']");
 
-        // Tabs
         const tabButtons = Array.from(modal.querySelectorAll('.mmxx-tab-btn'));
         const tabPanels = {
             gallery: document.getElementById('mmxx-tab-gallery'),
@@ -974,12 +937,11 @@
             type: "all",
             list: [],
             selected: null,
-            currentField: "",
             observer: null,
             activeTab: 'gallery'
         };
 
-        // ===== Helpers =====
+        // Helpers
         const YT_REGEX =
             /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
         const isYouTubeUrl = (url = "") => YT_REGEX.test(url);
@@ -996,7 +958,7 @@
             if (["mp3", "wav", "ogg", "m4a", "aac", "flac"].includes(ext)) return "voice";
             return "file";
         }
-        const mapFilterForServer = (t) => (t === "voice" ? "audio" : t);
+        const mapFilterForServer = t => (t === "voice" ? "audio" : t);
 
         function getBadgeIconId(media) {
             if (media.path && isYouTubeUrl(media.path)) return "mmxx-icon-youtube";
@@ -1012,10 +974,10 @@
             return checked ? checked.value : "auto";
         }
 
-        // ===== Public API =====
+        // Public API
         window.mmxxMediaModalManager = {
-            openModal(fieldName) {
-                openModal(fieldName);
+            openModal() {
+                openModal();
             },
             closeModal() {
                 closeModal();
@@ -1027,7 +989,7 @@
             }
         };
 
-        // ===== Reset UI/state =====
+        // Reset UI
         function clearAllInputs() {
             searchInput && (searchInput.value = "");
             typeSelect && (typeSelect.value = "all");
@@ -1037,10 +999,7 @@
             uploadUrlInput && (uploadUrlInput.value = "");
             urlNameInput && (urlNameInput.value = "");
             urlAltInput && (urlAltInput.value = "");
-            // reset radios to Auto
-            urlTypeRadios.forEach(r => {
-                r.checked = (r.value === "auto");
-            });
+            urlTypeRadios.forEach(r => r.checked = (r.value === "auto"));
         }
 
         function resetStateFilters() {
@@ -1049,10 +1008,8 @@
             state.selected = null;
         }
 
-        // ===== Open/close =====
-        // ===== Open/close =====
-        function openModal(fieldName = "") {
-            state.currentField = fieldName;
+        // Open/Close
+        function openModal() {
             state.isOpen = true;
             modal.setAttribute("aria-hidden", "false");
             document.documentElement.style.overflow = "hidden";
@@ -1061,9 +1018,6 @@
             switchTab('gallery');
             resetAndLoad();
             setTimeout(() => document.getElementById("mmxx-search")?.focus(), 0);
-
-            // Store reference to parent modal for reopening
-            window._lastParentModal = modalEl;
         }
 
         function closeModal() {
@@ -1072,17 +1026,7 @@
             document.documentElement.style.overflow = "";
             resetStateFilters();
             clearAllInputs();
-
-            // Reopen parent modal if it exists
-            setTimeout(() => {
-                const parentModal = window._lastParentModal;
-                if (parentModal && window.bootstrap && bootstrap.Modal) {
-                    bootstrap.Modal.getOrCreateInstance(parentModal).show();
-                }
-                window._lastParentModal = null;
-            }, 300);
         }
-
         backdrop.addEventListener("click", closeModal);
         closes.forEach(b => b.addEventListener("click", closeModal));
         modal.querySelector(".mmxx-container").addEventListener("click", e => e.stopPropagation());
@@ -1100,7 +1044,7 @@
             }
         });
 
-        // ===== Tabs =====
+        // Tabs
         tabButtons.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.mmxxTab)));
 
         function switchTab(tab) {
@@ -1112,12 +1056,10 @@
                 b.setAttribute('aria-selected', String(active));
                 b.tabIndex = active ? 0 : -1;
             });
-            Object.entries(tabPanels).forEach(([name, panel]) => {
-                panel.hidden = (name !== tab);
-            });
+            Object.entries(tabPanels).forEach(([name, panel]) => panel.hidden = (name !== tab));
         }
 
-        // ===== Fetch/pagination =====
+        // Fetch/pagination
         async function resetAndLoad() {
             state.page = 1;
             state.hasMore = true;
@@ -1169,7 +1111,7 @@
             }
         }
 
-        // ===== Render =====
+        // Render
         function renderList() {
             listEl.innerHTML = "";
             const filtered = state.type === "all" ? state.list : state.list.filter(m => getMediaKind(m) === state
@@ -1182,7 +1124,8 @@
                 const kind = getMediaKind(media);
                 const item = document.createElement("div");
                 item.className = "mmxx-item";
-                if (state.selected && state.selected.id === media.id) item.classList.add("mmxx-is-selected");
+                if (state.selected && state.selected.id === media.id) item.classList.add(
+                    "mmxx-is-selected");
                 item.addEventListener("click", () => toggleSelect(media));
 
                 const thumb = document.createElement("div");
@@ -1241,7 +1184,7 @@
             renderList();
         }
 
-        // ===== Search/filter =====
+        // Search/filter
         searchInput?.addEventListener("input", async e => {
             state.search = e.target.value;
             await resetAndLoad();
@@ -1251,9 +1194,12 @@
             await resetAndLoad();
         });
 
-        // ===== Confirm selection =====
+        // Confirm selection
         btnSelect?.addEventListener("click", () => {
-
+            if (!state.selected) {
+                alert('يرجى اختيار وسيط.');
+                return;
+            }
             window.mmxxMediaModalManager.onMediaSelected({
                 id: state.selected.id,
                 url: state.selected.path,
@@ -1263,7 +1209,7 @@
             closeModal();
         });
 
-        // ===== Parsing & matching helpers =====
+        // Upload & Import utils
         function tryParseJsonFromText(text) {
             if (!text) return null;
             const clean = text.replace(/^\uFEFF/, "").trim();
@@ -1292,29 +1238,6 @@
             return [];
         }
 
-        function basenameNoExt(filename = "") {
-            const base = filename.split("/").pop() || filename;
-            return base.replace(/\.[^.]+$/, "").trim();
-        }
-
-        function findJustUploadedInState({
-            fileName,
-            nameVal
-        }) {
-            const base = basenameNoExt(fileName || "");
-            if (nameVal) {
-                const byName = state.list.find(m => (m.name || "").trim() === nameVal.trim());
-                if (byName) return byName;
-            }
-            if (base) {
-                const byBase = state.list.find(m => (m.name || "").trim() === base || (m.title || "").trim() ===
-                    base);
-                if (byBase) return byBase;
-            }
-            return state.list[0] || null;
-        }
-
-        // ===== Upload (open gallery / select-close) =====
         async function uploadMediaAndHandle(mode) {
             const files = uploadInput.files;
             if (!files || !files.length) {
@@ -1336,7 +1259,6 @@
                 btnUploadSelectAndClose.disabled = true;
                 btnUploadToGallery.textContent = "جارٍ الرفع...";
                 btnUploadSelectAndClose.textContent = "جارٍ الرفع...";
-
                 const res = await fetch(UPLOAD_URL, {
                     method: "POST",
                     headers: {
@@ -1351,46 +1273,30 @@
                     alert("فشل رفع الملف.\nStatus: " + res.status);
                     return;
                 }
-
                 const parsed = tryParseJsonFromText(bodyText);
                 created = parsed && !parsed.__nonJson ? extractCreatedFromPayload(parsed) : null;
 
                 if (mode === "gallery") {
                     switchTab('gallery');
                     await resetAndLoad();
+                    // auto-select just uploaded
                     let picked = null;
                     if (created && created.length) {
                         const cid = created[0].id;
                         picked = state.list.find(m => m.id === cid) || null;
                     }
                     if (!picked) {
-                        picked = findJustUploadedInState({
-                            fileName: file0.name,
-                            nameVal
-                        });
+                        picked = state.list[0] || null;
                     }
                     if (picked) {
                         state.selected = picked;
                         renderList();
-                        requestAnimationFrame(() => {
-                            const items = [...listEl.querySelectorAll('.mmxx-item')];
-                            const el = items.find(elm => {
-                                const title = elm.querySelector('.mmxx-title')?.textContent
-                                    .trim() || "";
-                                return (picked.name || "") === title;
-                            }) || items[0];
-                            el?.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'center'
-                            });
-                        });
                     }
                     uploadInput.value = "";
                     uploadName.value = "";
                     uploadAlt.value = "";
                     return;
                 }
-
                 // select-close
                 if (created && created.length) {
                     const first = created[0];
@@ -1403,10 +1309,7 @@
                     closeModal();
                 } else {
                     await resetAndLoad();
-                    const picked = findJustUploadedInState({
-                        fileName: file0.name,
-                        nameVal
-                    });
+                    const picked = state.list[0] || null;
                     if (picked) {
                         window.mmxxMediaModalManager.onMediaSelected({
                             id: picked.id,
@@ -1414,14 +1317,12 @@
                             title: picked.name || nameVal || "",
                             alt: picked.alt || altVal || ""
                         });
-                    } else {
-                        console.warn("Upload OK but unable to determine the created media from response.");
                     }
                     closeModal();
                 }
             } catch (err) {
                 console.error("🔥 Exception during upload:", err);
-                alert("حدث خطأ أثناء الرفع:\n" + (err && err.message ? err.message : err));
+                alert("حدث خطأ أثناء الرفع:\n" + (err?.message || err));
             } finally {
                 btnUploadToGallery.disabled = false;
                 btnUploadSelectAndClose.disabled = false;
@@ -1430,7 +1331,6 @@
             }
         }
 
-        // ===== Import via URL (with media type radio) =====
         async function importViaUrl(mode) {
             if (!IMPORT_URL) {
                 alert("⚠️ لم يتم ضبط مسار الاستيراد عبر الرابط في الخادم.");
@@ -1444,8 +1344,6 @@
                 alert("⚠️ يرجى إدخال الرابط أولاً.");
                 return;
             }
-
-            // إذا اختار المستخدم voice نمرره كـ audio إلى الخادم
             const payloadType = typeVal === "auto" ? undefined : mapFilterForServer(typeVal);
 
             let created = null;
@@ -1454,7 +1352,6 @@
                 btnImportSelectAndClose.disabled = true;
                 btnImportToGallery.textContent = "جارٍ الاستيراد...";
                 btnImportSelectAndClose.textContent = "جارٍ الاستيراد...";
-
                 const res = await fetch(IMPORT_URL, {
                     method: "POST",
                     headers: {
@@ -1466,7 +1363,7 @@
                         url: urlVal,
                         name: nameVal || undefined,
                         alt: altVal || undefined,
-                        media_type: payloadType // قد يتجاهله الخادم إن كان Auto/undefined
+                        media_type: payloadType
                     })
                 });
                 const bodyText = await res.text();
@@ -1475,49 +1372,30 @@
                     alert("فشل الاستيراد.\nStatus: " + res.status);
                     return;
                 }
-
                 const parsed = tryParseJsonFromText(bodyText);
                 created = parsed && !parsed.__nonJson ? extractCreatedFromPayload(parsed) : null;
 
                 if (mode === "gallery") {
                     switchTab('gallery');
                     await resetAndLoad();
-
                     let picked = null;
                     if (created && created.length) {
                         const cid = created[0].id;
                         picked = state.list.find(m => m.id === cid) || null;
                     }
                     if (!picked) {
-                        picked = nameVal ?
-                            state.list.find(m => (m.name || "").trim() === nameVal.trim()) :
-                            (state.list[0] || null);
+                        picked = state.list[0] || null;
                     }
                     if (picked) {
                         state.selected = picked;
                         renderList();
-                        requestAnimationFrame(() => {
-                            const items = [...listEl.querySelectorAll('.mmxx-item')];
-                            const el = items.find(elm => {
-                                const title = elm.querySelector('.mmxx-title')?.textContent
-                                    .trim() || "";
-                                return (picked.name || "") === title;
-                            }) || items[0];
-                            el?.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'center'
-                            });
-                        });
                     }
                     uploadUrlInput.value = "";
                     urlNameInput.value = "";
                     urlAltInput.value = "";
-                    urlTypeRadios.forEach(r => {
-                        r.checked = (r.value === "auto");
-                    });
+                    urlTypeRadios.forEach(r => r.checked = (r.value === "auto"));
                     return;
                 }
-
                 // select-close
                 if (created && created.length) {
                     const first = created[0];
@@ -1530,9 +1408,7 @@
                     closeModal();
                 } else {
                     await resetAndLoad();
-                    const picked = nameVal ?
-                        state.list.find(m => (m.name || "").trim() === nameVal.trim()) :
-                        (state.list[0] || null);
+                    const picked = state.list[0] || null;
                     if (picked) {
                         window.mmxxMediaModalManager.onMediaSelected({
                             id: picked.id,
@@ -1540,14 +1416,12 @@
                             title: picked.name || nameVal || "",
                             alt: picked.alt || altVal || ""
                         });
-                    } else {
-                        console.warn("Import OK but unable to determine created media.");
                     }
                     closeModal();
                 }
             } catch (err) {
                 console.error("🔥 Exception during import:", err);
-                alert("حدث خطأ أثناء الاستيراد:\n" + (err && err.message ? err.message : err));
+                alert("حدث خطأ أثناء الاستيراد:\n" + (err?.message || err));
             } finally {
                 btnImportToGallery.disabled = false;
                 btnImportSelectAndClose.disabled = false;
@@ -1556,69 +1430,88 @@
             }
         }
 
-        // ===== Bindings =====
+        // Bindings
         btnUploadToGallery?.addEventListener("click", () => uploadMediaAndHandle('gallery'));
         btnUploadSelectAndClose?.addEventListener("click", () => uploadMediaAndHandle('select-close'));
         btnImportToGallery?.addEventListener("click", () => importViaUrl('gallery'));
         btnImportSelectAndClose?.addEventListener("click", () => importViaUrl('select-close'));
 
-        // ===== Initial render =====
+        // Initial
         (function init() {
             if (!state.list.length) listEl.innerHTML = `<div class="mmxx-empty">لا توجد وسائط للعرض</div>`;
         })();
     })();
+
+    
 </script>
 
-<!-- The rest of your HTML remains the same -->
-
-<!-- Tab (radios + zone items) -->
+<!-- ======================= CONTENT TAB (DISPLAY METHOD + LIST ZONE) ======================= -->
 <div id="contentTab" class="container py-3">
     <div id="list-items-hidden-inputs"></div>
+
     <div id="template" class="tab-pane show active" role="tabpanel">
         <div class="form-group col-lg-12 mb-3">
             <label class="form-label">القالب</label><span class="text-danger"> *</span>
             <div class="d-flex flex-column mt-2">
-                <label class="form-check form-check-inline" style="margin-bottom:6px;"><input
-                        class="form-check-input" type="radio" name="display_method" value="simple" checked>
-                    <span class="form-check-label">أساسي</span></label>
-                <label class="form-check form-check-inline" style="margin-bottom:6px;"><input
-                        class="form-check-input" type="radio" name="display_method" value="list"> <span
-                        class="form-check-label">قائمة</span></label>
-                <label class="form-check form-check-inline"><input class="form-check-input" type="radio"
-                        name="display_method" value="file"> <span class="form-check-label">ملف</span></label>
+                <label class="form-check form-check-inline mb-2">
+                    <input class="form-check-input" type="radio" name="display_method" value="simple" checked>
+                    <span class="form-check-label">أساسي</span>
+                </label>
+                <label class="form-check form-check-inline mb-2">
+                    <input class="form-check-input" type="radio" name="display_method" value="list">
+                    <span class="form-check-label">قائمة</span>
+                </label>
+                <label class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="display_method" value="file">
+                    <span class="form-check-label">ملف</span>
+                </label>
             </div>
         </div>
+
         <div id="dynamic-items-section" class="mt-3" style="display:none;">
             <div class="d-flex" style="margin-bottom:10px;">
-                <button type="button" id="add-item-btn" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#itemModal"><i class="fa fa-plus"></i> إضافة عنصر</button>
-                <button type="button" id="clear-all-btn" class="btn btn-outline-danger mx-1"
-                    style="margin-left:8px;"><i class="fa fa-trash"></i> حذف الكل</button>
+                <button type="button" id="add-item-btn" class="btn btn-primary mx-1" data-bs-toggle="modal"
+                    data-bs-target="#itemModal">
+                    <i class="fa fa-plus"></i> إضافة عنصر
+                </button>
+                <button type="button" id="clear-all-btn" class="btn btn-outline-danger mx-1" style="transition:background 0.2s;">
+                    <i class="fa fa-trash"></i> حذف الكل
+                </button>
+                <style>
+                    #clear-all-btn:hover {
+                        background: var(--az-danger);
+                        color: #fff;
+                        border-color: var(--az-danger);
+                    }
+                </style>
             </div>
             <div id="items-container"></div>
         </div>
     </div>
 </div>
 
-<!-- Item Modal (parent) -->
+<!-- ======================= ITEM MODAL (PARENT) ======================= -->
 <div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">إضافة / تعديل عنصر</h5><button type="button" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                <h5 class="modal-title">إضافة / تعديل عنصر</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="editIndex" />
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="mb-2"><label class="form-label">العنوان <span
-                                    class="text-danger">*</span></label><input id="itemTitle" class="form-control"
-                                placeholder="عنوان واضح" /></div>
-                        <div class="mb-2"><label class="form-label">الوصف <span
-                                    class="text-danger">*</span></label>
+                        <div class="mb-2">
+                            <label class="form-label">العنوان <span class="text-danger">*</span></label>
+                            <input id="itemTitle" class="form-control" placeholder="عنوان واضح" />
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label">الوصف <span class="text-danger">*</span></label>
                             <textarea id="itemDescription" class="form-control tinymce-simple" rows="4" placeholder="ملخص"></textarea>
                         </div>
+
                         <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
                         <script>
                             document.addEventListener('DOMContentLoaded', () => {
@@ -1638,10 +1531,14 @@
                                 }
                             });
                         </script>
-                        <div class="mb-2"><label class="form-label">الرابط <small class="text-muted"
-                                    id="itemLinkNote">(مطلوب في وضع ملف)</small></label><input id="itemLinkUrl"
-                                class="form-control" placeholder="https://..." /></div>
+
+                        <div class="mb-2">
+                            <label class="form-label">الرابط <small class="text-muted" id="itemLinkNote">(مطلوب في
+                                    وضع ملف)</small></label>
+                            <input id="itemLinkUrl" class="form-control" placeholder="https://..." />
+                        </div>
                     </div>
+
                     <div class="col-md-4">
                         <label class="form-label">الوسائط <span class="text-danger">*</span></label>
                         <div class="input-group mb-2">
@@ -1651,22 +1548,27 @@
                             <button type="button" class="btn btn-outline-danger" id="btnClearMedia"
                                 title="مسح"><i class="fa fa-xmark"></i></button>
                         </div>
-                        <input type="hidden" id="itemMediaId"><input type="hidden" id="itemMediaTitle"><input
-                            type="hidden" id="itemMediaAlt">
+                        <input type="hidden" id="itemMediaId">
+                        <input type="hidden" id="itemMediaTitle">
+                        <input type="hidden" id="itemMediaAlt">
                         <div id="itemMediaPreview" class="mt-2"></div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer modal-footer-sticky">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                <button id="saveItemBtn" type="button" class="btn btn-success mx-2"><i
-                        class="fa fa-floppy-disk me-1"></i> حفظ العنصر</button>
+                <button id="saveItemBtn" type="button" class="btn btn-success mx-2">
+                    <i class="fa fa-floppy-disk me-1"></i> حفظ العنصر
+                </button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- ======================= DEP: Sortable ======================= -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<!-- ======================= MAIN ITEMS LOGIC ======================= -->
 <script>
     (function() {
         const STORAGE_KEYS = {
@@ -1675,29 +1577,33 @@
             file: 'az_items_file_v1'
         };
         const STORAGE_KEY_MODE = 'az_display_method_v6';
+
         const rootTab = document.getElementById('contentTab');
         const mainForm = rootTab ? rootTab.closest('form') : null;
         const hiddenInputsContainer = document.getElementById('list-items-hidden-inputs');
+
         const displayMethodRadios = document.querySelectorAll('input[name="display_method"]');
         const dynamicSection = document.getElementById('dynamic-items-section');
         const addBtn = document.getElementById('add-item-btn');
         const clearAllBtn = document.getElementById('clear-all-btn');
+
         const container = document.getElementById('items-container');
         const modalEl = document.getElementById('itemModal');
+
         const editIndexInput = document.getElementById('editIndex');
         const saveBtn = document.getElementById('saveItemBtn');
         const titleEl = document.getElementById('itemTitle');
         const descEl = document.getElementById('itemDescription');
         const linkEl = document.getElementById('itemLinkUrl');
         const linkNote = document.getElementById('itemLinkNote');
+
         const inpUrl = document.getElementById('itemMediaUrl');
         const inpId = document.getElementById('itemMediaId');
         const inpTitle = document.getElementById('itemMediaTitle');
         const inpAlt = document.getElementById('itemMediaAlt');
         const prev = document.getElementById('itemMediaPreview');
-        const btnPick = document.getElementById('btnPickMedia');
-        const btnClear = document.getElementById('btnClearMedia');
 
+        // Nettoyage backdrops Bootstrap si besoin
         if (window.bootstrap && modalEl) {
             modalEl.addEventListener('hidden.bs.modal', cleanupBackdrops);
             modalEl.addEventListener('hide.bs.modal', cleanupBackdrops);
@@ -1713,6 +1619,7 @@
 
         let items = [];
         let currentModeName = 'simple';
+
         const keyFor = m => STORAGE_KEYS[m] || STORAGE_KEYS.simple;
         const saveItemsFor = (m, arr) => {
             try {
@@ -1727,7 +1634,7 @@
                     if (Array.isArray(p)) return p;
                 }
             } catch {}
-            return []
+            return [];
         };
         const saveMode = m => {
             try {
@@ -1743,7 +1650,7 @@
                     return m;
                 }
             } catch {}
-            return (document.querySelector('input[name="display_method"]:checked')?.value || 'simple')
+            return (document.querySelector('input[name="display_method"]:checked')?.value || 'simple');
         };
 
         function refreshLinkNote() {
@@ -1804,6 +1711,7 @@
                 prev.appendChild(a);
             }
         }
+
         const getTinyHtml = id => (window.tinymce && tinymce.get(id)) ? tinymce.get(id).getContent() : (document
             .getElementById(id)?.value || '').trim();
         const getTinyText = id => (window.tinymce && tinymce.get(id)) ? tinymce.get(id).getContent({
@@ -1816,13 +1724,14 @@
             return (tmp.textContent || '').replace(/\s+/g, ' ').trim();
         }
 
-        function renderItems() {
+        // ===== Rendu des items (inclut mx sur les boutons) =====
+        function _renderItemsInternal() {
             container.textContent = '';
             if (!items.length) {
                 const emp = document.createElement('div');
                 emp.style.color = 'var(--az-muted)';
                 emp.style.border = '1px dashed var(--az-border)';
-                emp.style.borderRadius = '.5rem';
+                emp.style.borderRadius = '0';
                 emp.style.padding = '16px';
                 emp.textContent = 'لا توجد عناصر بعد. أضف أول عنصر.';
                 container.appendChild(emp);
@@ -1832,14 +1741,18 @@
                 const card = document.createElement('div');
                 card.className = 'az-item-card';
                 card.dataset.item = String(i);
+
                 const row = document.createElement('div');
                 row.className = 'az-item-row';
+
                 const left = document.createElement('div');
                 left.className = 'az-left';
+
                 const drag = document.createElement('div');
                 drag.className = 'az-drag no-select';
                 drag.innerHTML = '<i class="fa fa-grip-vertical"></i>';
                 left.appendChild(drag);
+
                 const thumb = document.createElement('div');
                 thumb.className = 'az-thumb';
                 const u = it.image || '';
@@ -1861,6 +1774,7 @@
                     thumb.innerHTML = '<i class="fa fa-file-lines"></i>';
                 }
                 left.appendChild(thumb);
+
                 const meta = document.createElement('div');
                 meta.className = 'az-meta';
                 const t = document.createElement('div');
@@ -1872,25 +1786,31 @@
                 meta.appendChild(t);
                 meta.appendChild(d);
                 left.appendChild(meta);
-                const right = document.createElement('div');
-                right.className = 'az-actions';
 
-                // Create buttons first
+                const right = document.createElement('div');
+                right.className = 'az-actions d-flex align-items-center';
+                right.style.gap = '.25rem';
+
                 const editBtn = document.createElement('button');
                 editBtn.type = 'button';
-                editBtn.className = 'btn btn-sm btn-outline-primary';
+                editBtn.className = 'btn btn-sm btn-outline-primary mx-1';
                 editBtn.innerHTML = '<i class="fa fa-pen"></i> تعديل';
                 editBtn.addEventListener('click', () => {
                     editIndexInput.value = String(i);
                     titleEl.value = it.title || '';
-                    if (window.tinymce && tinymce.get('itemDescription')) tinymce.get(
-                        'itemDescription').setContent(it.description || '');
+                    if (window.tinymce && tinymce.get('itemDescription')) {
+                        tinymce.get('itemDescription').setContent(it.description || '');
+                    } else {
+                        const txt = document.getElementById('itemDescription');
+                        if (txt) txt.value = it.description || '';
+                    }
                     linkEl.value = it.url || '';
                     inpId.value = it.media_id || '';
                     inpUrl.value = it.image || '';
                     inpTitle.value = it.media_title || '';
                     inpAlt.value = it.media_alt || '';
                     renderPreview();
+
                     if (window.bootstrap && bootstrap.Modal) {
                         bootstrap.Modal.getOrCreateInstance(modalEl).show();
                     } else {
@@ -1901,7 +1821,7 @@
 
                 const delBtn = document.createElement('button');
                 delBtn.type = 'button';
-                delBtn.className = 'btn btn-sm btn-outline-danger';
+                delBtn.className = 'btn btn-sm btn-outline-danger mx-1';
                 delBtn.innerHTML = '<i class="fa fa-trash"></i> حذف';
                 delBtn.addEventListener('click', () => {
                     items.splice(i, 1);
@@ -1909,15 +1829,13 @@
                     renderItems();
                 });
 
-                // Create number badge last (will appear on the right)
                 const badge = document.createElement('span');
                 badge.className = 'circle-number';
                 badge.textContent = String(i + 1);
 
-                // Append in order: buttons first, then number
                 right.appendChild(editBtn);
                 right.appendChild(delBtn);
-                right.appendChild(badge); // Number appears on the right
+                right.appendChild(badge);
 
                 row.appendChild(left);
                 row.appendChild(right);
@@ -1926,33 +1844,34 @@
             });
         }
 
+        // Expose / redefine renderItems globally to keep compatibility
+        window.renderItems = _renderItemsInternal;
+
+        // Radios
         displayMethodRadios.forEach(r => r.addEventListener('change', e => switchMode(e.target.value)));
 
-        // Updated to use MMxx modal instead of MGX
-        // Updated to use MMxx modal instead of MGX
-        // Updated to use MMxx modal instead of MGX
+        // Pick media with MMxx modal (fermer puis ré-ouvrir le modal item)
+        const btnPick = document.getElementById('btnPickMedia');
+        const btnClear = document.getElementById('btnClearMedia');
+
         btnPick?.addEventListener('click', () => {
             if (!window.mmxxMediaModalManager) {
                 alert('MMxx Media Modal غير محمّل');
                 return;
             }
 
-            // Store current modal state
-            const currentModal = modalEl;
-
-            // Close the item modal first
+            // Ferme le modal parent d'abord
             if (window.bootstrap && bootstrap.Modal) {
-                const itemModalInstance = bootstrap.Modal.getInstance(currentModal);
-                if (itemModalInstance) {
-                    itemModalInstance.hide();
-                }
+                const itemModalInstance = bootstrap.Modal.getInstance(modalEl) || bootstrap.Modal
+                    .getOrCreateInstance(modalEl);
+                itemModalInstance.hide();
             } else {
-                currentModal.style.display = 'none';
-                currentModal.setAttribute('aria-hidden', 'true');
+                modalEl.style.display = 'none';
+                modalEl.setAttribute('aria-hidden', 'true');
                 cleanupBackdrops();
             }
 
-            // Set up the callback for when media is selected
+            // Callback sélection media
             window.mmxxMediaModalManager.onMediaSelected = function(media) {
                 if (!media || !media.url) {
                     alert('لا يمكن استخدام هذا الوسيط');
@@ -1964,21 +1883,21 @@
                 inpAlt.value = media.alt || '';
                 renderPreview();
 
-                // Re-open the item modal after selection
+                // Ré-ouvrir le modal parent
                 setTimeout(() => {
                     if (window.bootstrap && bootstrap.Modal) {
-                        bootstrap.Modal.getOrCreateInstance(currentModal).show();
+                        bootstrap.Modal.getOrCreateInstance(modalEl).show();
                     } else {
-                        currentModal.style.display = 'block';
-                        currentModal.setAttribute('aria-hidden', 'false');
+                        modalEl.style.display = 'block';
+                        modalEl.setAttribute('aria-hidden', 'false');
                     }
                 }, 300);
             };
 
-            // Open the MMxx media modal after a short delay
+            // Ouvrir MMxx
             setTimeout(() => {
-                window.mmxxMediaModalManager.openModal('itemMedia');
-            }, 200);
+                window.mmxxMediaModalManager.openModal();
+            }, 150);
         });
 
         btnClear?.addEventListener('click', () => {
@@ -2002,6 +1921,7 @@
             prev.textContent = '';
         });
 
+        // Save item
         saveBtn?.addEventListener('click', () => {
             const mode = currentModeName;
             const title = (titleEl.value || '').trim();
@@ -2009,10 +1929,12 @@
             const descriptionHTML = getTinyHtml('itemDescription');
             const imageUrl = (inpUrl.value || '').trim();
             const linkUrl = (linkEl.value || '').trim();
+
             if (!title) return alert('العنوان مطلوب');
             if (!descriptionText) return alert('الوصف مطلوب');
             if (!imageUrl) return alert('الصورة مطلوبة');
             if (mode === 'file' && !linkUrl) return alert('الرابط مطلوب في وضع ملف');
+
             const payload = {
                 title,
                 description: descriptionHTML,
@@ -2022,6 +1944,7 @@
                 media_title: inpTitle.value || '',
                 media_alt: inpAlt.value || ''
             };
+
             if (editIndexInput.value !== '') {
                 const idx = parseInt(editIndexInput.value, 10);
                 if (Number.isFinite(idx) && idx >= 0 && idx < items.length) items[idx] = payload;
@@ -2030,6 +1953,7 @@
             }
             saveItemsFor(currentModeName, items);
             renderItems();
+
             if (window.bootstrap && bootstrap.Modal) {
                 bootstrap.Modal.getOrCreateInstance(modalEl).hide();
             } else {
@@ -2039,6 +1963,7 @@
             cleanupBackdrops();
         });
 
+        // Sortable
         if (container) {
             new Sortable(container, {
                 animation: 150,
@@ -2055,6 +1980,24 @@
             });
         }
 
+        // Clear All
+        if (clearAllBtn) {
+            // reset listeners if script re-injecté
+            const clone = clearAllBtn.cloneNode(true);
+            clearAllBtn.parentNode.replaceChild(clone, clearAllBtn);
+            clone.addEventListener('click', () => {
+                if (!items.length) {
+                    alert('لا توجد عناصر لحذفها.');
+                    return;
+                }
+                if (!confirm('هل تريد حذف جميع العناصر؟ لا يمكن التراجع.')) return;
+                items = [];
+                saveItemsFor(currentModeName, items);
+                renderItems();
+            });
+        }
+
+        // Init
         (function init() {
             currentModeName = loadMode();
             items = loadItemsFor(currentModeName);
@@ -2069,16 +2012,53 @@
             } catch {}
             toggleSection();
             renderItems();
-            const evt = new Event('change');
             const checked = document.querySelector('input[name="display_method"]:checked');
-            checked ? checked.dispatchEvent(evt) : refreshLinkNote();
+            checked ? checked.dispatchEvent(new Event('change')) : refreshLinkNote();
         })();
 
+        // Optionnel: nettoyer localStorage après succès serveur (à raccorder à votre flash success)
         window.addEventListener('DOMContentLoaded', () => {
             const ok = document.querySelector('.alert.alert-success, .alert-success');
             if (ok) {
-                /* possibilité: localStorage.removeItem(keyFor(currentModeName)); */
+                // Exemple: localStorage.removeItem(keyFor(currentModeName));
             }
         });
     })();
 </script>
+
+<!-- ======================= ZERO RADIUS OVERRIDES (GLOBAL) ======================= -->
+<style>
+    /* Zéro arrondi global et cohérent */
+    :root {
+        --az-radius: 0 !important;
+    }
+
+    /* Composants AZ sans arrondi */
+    .az-item-card,
+    .az-thumb,
+    #itemMediaPreview img,
+    #itemMediaPreview video,
+    .form-control,
+    .btn,
+    .input-group .form-control,
+    .input-group .btn,
+    .modal-content,
+    .modal-header,
+    .modal-body,
+    .modal-footer,
+    .empty-state,
+    .circle-number {
+        border-radius: 0 !important;
+    }
+
+    /* MMxx modal : forcer zéro arrondi partout */
+    #mmxxMediaModal,
+    #mmxxMediaModal * {
+        border-radius: 0 !important;
+    }
+
+    /* Espacement doux entre boutons d’action (en plus des mx-1) */
+    .az-actions {
+        gap: .25rem;
+    }
+</style>
