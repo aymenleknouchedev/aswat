@@ -44,13 +44,15 @@
 
         <!-- Tabs -->
         <div class="mmx-tabs" role="tablist" aria-label="أقسام إدارة الوسائط">
-            <button class="mmx-tab-btn mmx-is-active" role="tab" aria-selected="true"
+            <button type="button" class="mmx-tab-btn mmx-is-active" role="tab" aria-selected="true"
                 aria-controls="mmx-tab-gallery" id="mmx-tabbtn-gallery" tabindex="0"
                 data-mmx-tab="gallery">المعرض</button>
-            <button class="mmx-tab-btn" role="tab" aria-selected="false" aria-controls="mmx-tab-upload"
-                id="mmx-tabbtn-upload" tabindex="-1" data-mmx-tab="upload">الرفع من الجهاز</button>
-            <button class="mmx-tab-btn" role="tab" aria-selected="false" aria-controls="mmx-tab-import"
-                id="mmx-tabbtn-import" tabindex="-1" data-mmx-tab="import">الاستيراد بالرابط</button>
+            <button type="button" class="mmx-tab-btn" role="tab" aria-selected="false"
+                aria-controls="mmx-tab-upload" id="mmx-tabbtn-upload" tabindex="-1" data-mmx-tab="upload">الرفع من
+                الجهاز</button>
+            <button type="button" class="mmx-tab-btn" role="tab" aria-selected="false"
+                aria-controls="mmx-tab-import" id="mmx-tabbtn-import" tabindex="-1" data-mmx-tab="import">الاستيراد
+                بالرابط</button>
         </div>
 
         <!-- Gallery -->
@@ -1023,7 +1025,7 @@
                             const items = [...listEl.querySelectorAll('.mmx-item')];
                             const el = items.find(elm => {
                                 const title = elm.querySelector('.mmx-title')?.textContent
-                                .trim() || "";
+                                    .trim() || "";
                                 return (picked.name || "") === title;
                             }) || items[0];
                             el?.scrollIntoView({
@@ -1147,7 +1149,7 @@
                             const items = [...listEl.querySelectorAll('.mmx-item')];
                             const el = items.find(elm => {
                                 const title = elm.querySelector('.mmx-title')?.textContent
-                                .trim() || "";
+                                    .trim() || "";
                                 return (picked.name || "") === title;
                             }) || items[0];
                             el?.scrollIntoView({
