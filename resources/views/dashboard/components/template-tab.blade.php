@@ -409,16 +409,26 @@
             hidden>
             <div class="mmxx-tab-body">
                 <div class="mmxx-uploader">
-                    <input type="file" id="mmxx-upload-input" />
-                    <input type="text" id="mmxx-upload-name" placeholder="اسم/عنوان الوسيط (اختياري)" />
-                    <input type="text" id="mmxx-upload-alt" placeholder="النص البديل ALT (اختياري)" />
+                    <div class="mmxx-upload-fields" style="display: flex; flex-wrap: wrap; gap: .6rem; width: 100%;">
+                        <div style="flex: 1 1 220px;">
+                            <label for="mmxx-upload-input" style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fafafa; color: #333; text-align: center;">
+                                <i class="fa fa-images" style="margin-right: 6px;"></i> اختر ملف الوسائط
+                                <input type="file" id="mmxx-upload-input" class="mmxx-upload-input" style="display: none;" />
+                            </label>
+                        </div>
+                        <div style="flex: 1 1 200px;">
+                            <input type="text" id="mmxx-upload-name" class="mmxx-upload-name" placeholder="اسم الملف" style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                        </div>
+                        <div style="flex: 1 1 200px;">
+                            <input type="text" id="mmxx-upload-alt" class="mmxx-upload-alt" placeholder="النص البديل" style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                        </div>
+                    </div>
                     <div class="mmxx-uploader-actions">
                         <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-upload-to-gallery"
                             title="رفع ثم عرض في المعرض">رفع & فتح المعرض</button>
                         <button class="mmxx-btn mmxx-btn-primary" type="button"
                             id="mmxx-btn-upload-and-select-close" title="رفع ثم حفظ وإغلاق">رفع & حفظ وإغلاق</button>
                     </div>
-                    <small class="mmxx-selection-hint">هذا النموذج يرسل ملفاً واحداً تحت الحقل <b>media</b>.</small>
                 </div>
             </div>
         </section>
@@ -427,33 +437,37 @@
         <section id="mmxx-tab-import" class="mmxx-tab-panel" role="tabpanel" aria-labelledby="mmxx-tabbtn-import"
             hidden>
             <div class="mmxx-tab-body">
-                <div class="mmxx-uploader mmxx-uploader-url">
-                    <input type="url" id="mmxx-upload-url"
-                        placeholder="ألصق رابط الملف (صورة/فيديو/صوت/ملف أو YouTube)" />
-                    <input type="text" id="mmxx-url-name" placeholder="اسم/عنوان للوسيط (اختياري)" />
-                    <input type="text" id="mmxx-url-alt" placeholder="النص البديل ALT (اختياري)" />
-                    <fieldset class="mmxx-url-type-group" aria-label="نوع الوسائط للرابط">
-                        <legend>نوع الوسائط (اختياري)</legend>
-                        <label class="mmxx-radio"><input type="radio" name="mmxx-url-type" value="auto"
-                                checked /><span>Auto</span></label>
-                        <label class="mmxx-radio"><input type="radio" name="mmxx-url-type"
-                                value="image" /><span>Image</span></label>
-                        <label class="mmxx-radio"><input type="radio" name="mmxx-url-type"
-                                value="video" /><span>Video</span></label>
-                        <label class="mmxx-radio"><input type="radio" name="mmxx-url-type"
-                                value="voice" /><span>Voice</span></label>
-                        <label class="mmxx-radio"><input type="radio" name="mmxx-url-type"
-                                value="file" /><span>File</span></label>
-                    </fieldset>
-                    <div class="mmxx-uploader-actions">
-                        <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-import-to-gallery"
-                            title="استيراد بالرابط ثم عرض في المعرض">استيراد & فتح المعرض</button>
-                        <button class="mmxx-btn mmxx-btn-primary" type="button"
-                            id="mmxx-btn-import-and-select-close" title="استيراد بالرابط ثم حفظ وإغلاق">استيراد & حفظ
-                            وإغلاق</button>
+                <div class="mmxx-uploader mmxx-uploader-url" style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--mmxx-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                    <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem;">
+                        <input type="text" id="mmxx-upload-url"
+                            style="flex:1 1 220px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;"
+                            placeholder="الرابط" />
+                        <input type="text" id="mmxx-url-name" placeholder="اسم الملف"
+                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                        <input type="text" id="mmxx-url-alt" placeholder="النص البديل"
+                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
                     </div>
-                    <small class="mmxx-selection-hint">يُقبل الرابط المباشر أو رابط YouTube. يمكن تحديد نوع الوسائط
-                        يدوياً أو تركه على Auto.</small>
+                    <fieldset class="mmxx-url-type-group" aria-label="نوع الوسائط للرابط" style="margin-bottom:.7rem; border-radius:6px; border:1px solid #e5e7eb; padding:.7rem 1rem; background:#fff;">
+                        <legend style="font-size:.97rem; color:#333; padding:0 .3rem; font-weight:500;">نوع الوسائط (اختياري)</legend>
+                        <div style="display:flex; gap:1.2rem; flex-wrap:wrap;">
+                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio" name="mmxx-url-type" value="auto" checked /><span>Auto</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio" name="mmxx-url-type" value="image" /><span>Image</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio" name="mmxx-url-type" value="video" /><span>Video</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio" name="mmxx-url-type" value="voice" /><span>Voice</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio" name="mmxx-url-type" value="file" /><span>File</span></label>
+                        </div>
+                    </fieldset>
+                    <div class="mmxx-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
+                        <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-import-to-gallery"
+                            title="استيراد بالرابط ثم عرض في المعرض"
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & فتح المعرض</button>
+                        <button class="mmxx-btn mmxx-btn-primary" type="button"
+                            id="mmxx-btn-import-and-select-close" title="استيراد بالرابط ثم حفظ وإغلاق"
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & حفظ وإغلاق</button>
+                    </div>
+                    <small class="mmxx-selection-hint" style="display:block; color:var(--mmxx-muted); font-size:.97rem; margin-top:.2rem;">
+                        يُقبل الرابط المباشر أو رابط YouTube. يمكن تحديد نوع الوسائط يدوياً أو تركه على Auto.
+                    </small>
                 </div>
             </div>
         </section>
@@ -1441,8 +1455,6 @@
             if (!state.list.length) listEl.innerHTML = `<div class="mmxx-empty">لا توجد وسائط للعرض</div>`;
         })();
     })();
-
-    
 </script>
 
 <!-- ======================= CONTENT TAB (DISPLAY METHOD + LIST ZONE) ======================= -->
@@ -1474,7 +1486,8 @@
                     data-bs-target="#itemModal">
                     <i class="fa fa-plus"></i> إضافة عنصر
                 </button>
-                <button type="button" id="clear-all-btn" class="btn btn-outline-danger mx-1" style="transition:background 0.2s;">
+                <button type="button" id="clear-all-btn" class="btn btn-outline-danger mx-1"
+                    style="transition:background 0.2s;">
                     <i class="fa fa-trash"></i> حذف الكل
                 </button>
                 <style>
@@ -1501,7 +1514,7 @@
             <div class="modal-body">
                 <input type="hidden" id="editIndex" />
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="mb-2">
                             <label class="form-label">العنوان <span class="text-danger">*</span></label>
                             <input id="itemTitle" class="form-control" placeholder="عنوان واضح" />
@@ -1509,27 +1522,194 @@
 
                         <div class="mb-2">
                             <label class="form-label">الوصف <span class="text-danger">*</span></label>
-                            <textarea id="itemDescription" class="form-control tinymce-simple" rows="4" placeholder="ملخص"></textarea>
+                            <textarea id="itemDescription" class="form-control tinymce-simple" rows="4"></textarea>
                         </div>
 
-                        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+                        <script src="https://cdn.tiny.cloud/1/vw6sltzauw9x6b3cl3eby8nj99q4eoavzv581jnnmabxbhq2/tinymce/6/tinymce.min.js"
+                            referrerpolicy="origin"></script>
                         <script>
-                            document.addEventListener('DOMContentLoaded', () => {
-                                if (!window._tmx) {
-                                    tinymce.init({
-                                        selector: 'textarea.tinymce-simple',
-                                        menubar: false,
-                                        toolbar: 'bold italic underline | bullist numlist | undo redo | removeformat',
-                                        statusbar: false,
-                                        height: 300,
-                                        directionality: 'rtl',
-                                        language: 'ar',
-                                        plugins: 'lists directionality',
-                                        branding: false
-                                    });
-                                    window._tmx = 1;
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Enhanced theme detection
+                                function getPreferredTheme() {
+                                    const stored = localStorage.getItem('theme');
+                                    if (stored) return stored;
+                                    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
                                 }
+
+                                const theme = getPreferredTheme();
+
+                                tinymce.init({
+                                    selector: 'textarea#itemDescription',
+                                    directionality: 'rtl',
+                                    height: 600,
+                                    promotion: false,
+                                    onboarding: false,
+
+                                    // 🚫 Disable auto focus
+                                    auto_focus: '',
+
+                                    // Dark/light mode
+                                    skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
+                                    content_css: theme === 'dark' ? 'dark' : 'default',
+
+                                    // Plugins
+                                    plugins: 'advlist anchor autolink autosave charmap code codesample directionality emoticons fullscreen help hr image imagetools insertdatetime link lists media nonbreaking pagebreak preview print save searchreplace table visualblocks visualchars wordcount',
+
+                                    // Show all tools without collapsing
+                                    toolbar_mode: 'expand',
+
+                                    // Toolbar (added twitterEmbed button)
+                                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | outdent indent | code fullscreen wordcount searchreplace | link table image media blockquote twitterEmbed | bullist numlist | copy cut paste selectall pastetext | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print visualblocks visualchars help',
+
+                                    // Font families & sizes (pt based)
+                                    fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',
+                                    font_family_formats: 'Arial=arial,helvetica,sans-serif; Helvetica=helvetica; Times New Roman=times new roman,times; Courier New=courier new,courier;',
+
+                                    // Default style applied to content
+                                    content_style: 'body { font-family: Arial, Helvetica, sans-serif; font-size:18pt; line-height:1.6; }',
+
+                                    // Setup - FIXED with skip_focus
+                                    setup: (editor) => {
+                                        // Default font on init - USING skip_focus: true
+                                        editor.on('init', () => {
+                                            editor.execCommand('FontName', false, 'Arial', {
+                                                skip_focus: true
+                                            });
+                                            editor.execCommand('FontSize', false, '18pt', {
+                                                skip_focus: true
+                                            });
+                                        });
+
+                                        // ✅ Enhanced Twitter Embed button with validation
+                                        editor.ui.registry.addButton('twitterEmbed', {
+                                            text: 'Twitter',
+                                            tooltip: 'Embed Twitter Post',
+                                            onAction: () => {
+                                                editor.windowManager.open({
+                                                    title: 'Embed Twitter Post',
+                                                    body: {
+                                                        type: 'panel',
+                                                        items: [{
+                                                            type: 'textarea',
+                                                            name: 'embed',
+                                                            label: 'Paste Twitter embed code here',
+                                                            placeholder: '<blockquote class="twitter-tweet">...</blockquote>'
+                                                        }]
+                                                    },
+                                                    buttons: [{
+                                                            type: 'cancel',
+                                                            text: 'Cancel'
+                                                        },
+                                                        {
+                                                            type: 'submit',
+                                                            text: 'Insert',
+                                                            primary: true,
+                                                            enabled: false
+                                                        }
+                                                    ],
+                                                    onChange: (api) => {
+                                                        const data = api.getData();
+                                                        const isValid = data.embed.includes(
+                                                            'twitter-tweet');
+                                                        api.blocking.set('submit', !isValid);
+                                                    },
+                                                    onSubmit: (api) => {
+                                                        const data = api.getData();
+                                                        const embedCode = data.embed.trim();
+
+                                                        // Enhanced validation for Twitter embed
+                                                        if (!embedCode.includes('twitter-tweet')) {
+                                                            editor.windowManager.alert(
+                                                                'Please enter a valid Twitter embed code containing "twitter-tweet"'
+                                                                );
+                                                            return;
+                                                        }
+
+                                                        editor.insertContent(embedCode, {
+                                                            skip_focus: true
+                                                        });
+                                                        api.close();
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    },
+
+                                    // Security enhancement
+                                    paste_preprocess: (plugin, args) => {
+                                        // Clean pasted content from potential XSS
+                                        args.content = args.content.replace(
+                                            /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+                                    },
+
+                                    // Enhanced file upload with size validation
+                                    file_picker_types: 'image',
+                                    file_picker_callback: (cb, value, meta) => {
+                                        const input = document.createElement('input');
+                                        input.setAttribute('type', 'file');
+                                        input.setAttribute('accept', 'image/*');
+
+                                        input.onchange = function() {
+                                            const file = this.files[0];
+
+                                            // File size validation (5MB limit)
+                                            if (file.size > 5 * 1024 * 1024) {
+                                                alert('File size too large. Please select a file smaller than 5MB.');
+                                                return;
+                                            }
+
+                                            const reader = new FileReader();
+                                            reader.onload = function() {
+                                                const id = 'blobid' + (new Date()).getTime();
+                                                const blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                                                const base64 = reader.result.split(',')[1];
+                                                const blobInfo = blobCache.create(id, file, base64);
+                                                blobCache.add(blobInfo);
+
+                                                cb(blobInfo.blobUri(), {
+                                                    title: file.name
+                                                });
+                                            };
+                                            reader.readAsDataURL(file);
+                                        };
+
+                                        input.click();
+                                    },
+
+                                    // Menubar
+                                    menubar: 'file edit view insert format tools table help',
+
+                                    // Other settings
+                                    editimage_cors_hosts: ['picsum.photos'],
+                                    autosave_ask_before_unload: true,
+                                    autosave_interval: '30s',
+                                    autosave_prefix: '{path}{query}-{id}-',
+                                    autosave_restore_when_empty: false,
+                                    autosave_retention: '2m',
+                                    image_advtab: true,
+                                    image_caption: true,
+                                    noneditable_class: 'mceNonEditable',
+                                    contextmenu: 'link image table',
+
+                                    // 🚀 Allow Twitter / embed tags
+                                    extended_valid_elements: 'script[src|async|charset],blockquote[class|lang|dir],iframe[src|width|height|frameborder|allowfullscreen]',
+                                    valid_children: '+body[script],+div[script]',
+                                    valid_elements: '*[*]',
+
+                                    // Remove branding for better UX
+                                    branding: false
+                                }).catch(error => {
+                                    console.error('TinyMCE initialization error:', error);
+                                });
                             });
+
+                            // Theme toggle function (if needed elsewhere)
+                            function toggleTheme() {
+                                const currentTheme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+                                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                                localStorage.setItem('theme', newTheme);
+                                location.reload();
+                            }
                         </script>
 
                         <div class="mb-2">
