@@ -208,7 +208,7 @@
 
 
 <!-- ====================== SOCIAL MEDIA TAB ====================== -->
-<div class="tab-pane fade show active" id="social-media" role="tabpanel" aria-labelledby="social-media-tab">
+<div class="tab-pane" id="social-media" role="tabpanel" aria-labelledby="social-media-tab">
     <div class="social-media-tab-content">
         <div class="row g-3 mt-3">
             <!-- Content Image -->
