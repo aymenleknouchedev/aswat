@@ -657,7 +657,7 @@
                                                 <input id="country_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
                                                     onfocus="showDropdown(this)">
-                                               
+
                                             </div>
                                             <div class="dropdown">
                                                 <ul>
@@ -690,7 +690,7 @@
                                                 <input id="continent_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
                                                     onfocus="showDropdown(this)">
-                                                
+
                                             </div>
                                             <div class="dropdown">
                                                 <ul>

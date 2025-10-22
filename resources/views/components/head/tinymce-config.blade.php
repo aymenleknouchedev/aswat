@@ -1,4 +1,4 @@
-<script src="https://cdn.tiny.cloud/1/2ybotr2gj2jba7rs525xlvymht3kg2qv4833vglziifs7kj8/tinymce/8/tinymce.min.js"
+<script src="https://cdn.tiny.cloud/1/vw6sltzauw9x6b3cl3eby8nj99q4eoavzv581jnnmabxbhq2/tinymce/8/tinymce.min.js"
     referrerpolicy="origin" crossorigin="anonymous"></script>
 <script>
     const theme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';

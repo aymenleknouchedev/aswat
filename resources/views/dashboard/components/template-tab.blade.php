@@ -1,1037 +1,1683 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-
 <style>
     :root {
-        --az-border: #e5e7eb;
+        --az-border: #e1e5e9;
         --az-muted: #6b7280;
-        --az-soft: #f8f9fa;
+        --az-soft: #f8fafc;
         --az-card: #ffffff;
         --az-title: #111827;
-        --az-accent: #0d6efd;
-        --az-danger: #dc3545;
-        --az-success: #198754;
-    }
-
-    .circle-number {
-        width: 28px;
-        height: 28px;
-        border-radius: 9999px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        background: var(--az-accent);
-        color: #fff
+        --az-accent: #3b82f6;
+        --az-accent-light: #eff6ff;
+        --az-danger: #ef4444;
+        --az-success: #10b981;
+        --az-warning: #f59e0b;
+        --az-radius: 0.35rem;
+        --az-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        --az-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
+        --az-transition: all 0.2s ease-in-out;
     }
 
     .text-ellipsis {
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis
+        text-overflow: ellipsis;
     }
 
-    .no-select {
-        user-select: none
-    }
-
-    /* List */
     .az-item-card {
         background: var(--az-card);
         border: 1px solid var(--az-border);
-        border-radius: .5rem;
-        margin-bottom: 10px;
-        padding: 10px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, .04)
+        border-radius: var(--az-radius);
+        margin-bottom: 12px;
+        padding: 16px;
+        box-shadow: var(--az-shadow);
+        transition: var(--az-transition);
+    }
+
+    .az-item-card:hover {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transform: translateY(-1px);
     }
 
     .az-item-row {
         display: flex;
         align-items: center;
-        justify-content: space-between
+        justify-content: space-between;
     }
 
     .az-left {
         display: flex;
-        align-items: center
+        align-items: center;
+        flex: 1;
+        min-width: 0;
     }
 
     .az-thumb {
-        width: 64px;
-        height: 48px;
+        width: 96px;
+        height: 54px;
         border: 1px solid var(--az-border);
-        border-radius: .35rem;
+        border-radius: var(--az-radius);
         overflow: hidden;
-        background: #fafafa;
-        margin-right: 10px;
+        background: var(--az-soft);
+        margin-inline: 12px;
         display: flex;
         align-items: center;
-        justify-content: center
+        justify-content: center;
+        flex-shrink: 0;
+        position: relative;
     }
 
     .az-thumb img,
     .az-thumb video {
-        max-width: 100%;
-        max-height: 100%
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
     }
 
     .az-meta {
-        min-width: 0
+        min-width: 0;
+        flex: 1;
     }
 
     .az-title {
         color: var(--az-title);
-        font-weight: 600
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 4px;
     }
 
     .az-desc {
         color: var(--az-muted);
-        font-size: .925rem
-    }
-
-    .az-actions .btn {
-        margin-left: 6px
+        font-size: 0.875rem;
+        line-height: 1.4;
     }
 
     .az-drag {
-        width: 38px;
-        height: 38px;
+        width: 40px;
+        height: 40px;
         border: 1px dashed var(--az-border);
-        border-radius: .35rem;
+        border-radius: var(--az-radius);
         display: flex;
         align-items: center;
         justify-content: center;
         color: var(--az-muted);
-        margin-right: 10px
+        cursor: grab;
+        transition: var(--az-transition);
     }
 
-    /* Modal Add/Edit */
+    .az-drag:hover {
+        background-color: var(--az-soft);
+        border-color: var(--az-muted);
+        color: var(--az-muted);
+    }
+
+    .az-drag:active {
+        cursor: grabbing;
+    }
+
+    .circle-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background-color: var(--az-muted);
+        color: white;
+        border-radius: var(--az-radius);
+        font-weight: 600;
+        font-size: 0.875rem;
+        margin-left: 8px;
+        /* Changed from margin-right to margin-left */
+        order: 2;
+        /* Ensure it appears after the buttons */
+    }
+
     .modal-footer-sticky {
         position: sticky;
         bottom: 0;
         background: #fff;
         border-top: 1px solid var(--az-border);
-        z-index: 2
-    }
-
-    #itemModal .form-control {
-        min-height: 42px
-    }
-
-    #itemModal .input-group .btn {
-        min-height: 42px
+        z-index: 2;
+        padding: 1rem;
+        margin-top: 1rem;
     }
 
     #itemMediaPreview img,
     #itemMediaPreview video {
-        border: 1px solid #eee;
-        padding: 2px;
-        max-height: 140px;
-        border-radius: .35rem
-    }
-
-    .az-modal-header {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start
-    }
-
-    .az-modal-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: .5rem;
+        border: 1px solid var(--az-border);
+        padding: 4px;
+        max-height: 160px;
+        border-radius: var(--az-radius);
         background: var(--az-soft);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--az-accent);
-        margin-right: 10px
+        width: 100%;
+        object-fit: contain;
     }
 
-    /* MGX Picker */
-    #mgxMediaPicker,
-    #mgxMediaPicker * {
-        box-sizing: border-box
-    }
-
-    .mgx-modal {
-        position: fixed;
-        inset: 0;
-        display: none;
-        z-index: 2055
-    }
-
-    .mgx-modal[aria-hidden="false"] {
-        display: flex
-    }
-
-    .mgx-backdrop {
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, .5);
-        z-index: 2050
-    }
-
-    .mgx-box {
-        position: relative;
-        margin: auto;
-        width: min(1000px, 92vw);
-        max-height: 90vh;
-        background: #fff;
-        color: #111;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        border-radius: .5rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
-        z-index: 2056
-    }
-
-    .mgx-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 12px 16px;
-        border-bottom: 1px solid var(--az-border)
-    }
-
-    .mgx-x {
-        background: transparent;
-        border: 0;
-        font-size: 1.6rem;
-        cursor: pointer;
-        color: #666
-    }
-
-    .mgx-tabs {
-        display: flex;
-        padding: 8px 16px;
-        border-bottom: 1px solid var(--az-border)
-    }
-
-    .mgx-tab {
-        border: 1px solid var(--az-border);
-        background: #fff;
-        padding: .5rem .85rem;
-        cursor: pointer;
+    /* Form enhancements */
+    .form-label {
         font-weight: 600;
-        margin-right: 8px
-    }
-
-    .mgx-tab.is-active {
-        border-color: #cfcfcf
-    }
-
-    .mgx-panel {
-        display: block
-    }
-
-    .mgx-panel[hidden] {
-        display: none
-    }
-
-    .mgx-filters {
-        display: flex;
-        padding: 12px 16px;
-        border-bottom: 1px solid var(--az-border)
-    }
-
-    .mgx-filters input,
-    .mgx-filters select {
-        border: 1px solid #dcdcdc;
-        padding: .55rem .7rem;
-        flex: 1 1 200px
-    }
-
-    .mgx-filters input {
-        margin-right: 8px
-    }
-
-    .mgx-body {
-        padding: 12px 16px;
-        overflow: auto;
-        flex: 1
-    }
-
-    .mgx-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr))
-    }
-
-    .mgx-item {
-        border: 1px solid var(--az-border);
-        padding: 8px;
-        cursor: pointer;
-        margin: 6px;
-        border-radius: .35rem
-    }
-
-    .mgx-item.is-sel {
-        box-shadow: 0 0 0 3px #e5e7eb
-    }
-
-    .mgx-thumb {
-        height: 120px;
-        background: #fafafa;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid #f0f0f0;
-        position: relative;
-        border-radius: .35rem
-    }
-
-    .mgx-thumb img,
-    .mgx-thumb video {
-        max-width: 100%;
-        max-height: 100%
-    }
-
-    .mgx-badge {
-        position: absolute;
-        top: 6px;
-        left: 6px;
-        width: 28px;
-        height: 28px;
-        background: rgba(0, 0, 0, .65);
-        color: #fff;
-        display: grid;
-        place-items: center;
-        border-radius: .35rem
-    }
-
-    .mgx-title {
-        margin-top: 6px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis
-    }
-
-    .mgx-loader {
-        text-align: center;
-        color: var(--az-muted);
-        padding: .6rem
-    }
-
-    .mgx-foot {
-        display: flex;
-        justify-content: flex-end;
-        padding: 12px 16px;
-        border-top: 1px solid var(--az-border)
-    }
-
-    .mgx-btn {
-        border: 1px solid #000;
-        background: #000;
-        color: #fff;
-        padding: .55rem .9rem;
-        font-weight: 600;
-        cursor: pointer;
-        margin-left: 8px;
-        border-radius: .35rem
-    }
-
-    .mgx-cancel {
-        background: #444;
-        border-color: #444
-    }
-
-    .mgx-up {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 12px 16px;
-        border-bottom: 1px solid var(--az-border)
-    }
-
-    .mgx-up input[type="file"],
-    .mgx-up input[type="text"],
-    .mgx-up input[type="url"] {
-        border: 1px solid #dcdcdc;
-        padding: .5rem .7rem;
-        margin-right: 8px;
         margin-bottom: 8px;
-        border-radius: .35rem
+        color: var(--az-title);
+    }
+
+    .form-control {
+        border: 1px solid var(--az-border);
+        border-radius: var(--az-radius);
+        padding: 10px 14px;
+        transition: var(--az-transition);
+    }
+
+    .form-control:focus {
+        border-color: var(--az-muted);
+        box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1);
+    }
+
+    .btn {
+        border-radius: var(--az-radius);
+        padding: 10px 16px;
+        font-weight: 500;
+        transition: var(--az-transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
     }
 
     .btn-primary {
-        background: var(--az-accent);
-        border-color: var(--az-accent)
+        background: var(--az-muted);
+        border-color: var(--az-muted);
     }
 
-    .btn-success {
-        background: var(--az-success);
-        border-color: var(--az-success)
+    .btn-primary:hover {
+        background: #4b5563;
+        border-color: #4b5563;
+        transform: translateY(-1px);
     }
 
     .btn-outline-danger {
-        color: var(--az-danger);
-        border-color: var(--az-danger)
+        color: var(--az-muted);
+        border-color: var(--az-muted);
     }
 
-    .btn-outline-primary {
-        color: var(--az-accent);
-        border-color: var(--az-accent)
+    .btn-outline-danger:hover {
+        background: var(--az-muted);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .btn-outline-secondary {
+        color: var(--az-muted);
+        border-color: var(--az-border);
+    }
+
+    .btn-outline-secondary:hover {
+        background: var(--az-soft);
+        border-color: var(--az-muted);
+        transform: translateY(-1px);
+    }
+
+    .btn-success {
+        background: var(--az-muted);
+        border-color: var(--az-muted);
+    }
+
+    .btn-success:hover {
+        background: #4b5563;
+        border-color: #4b5563;
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        background: #6b7280;
+        border-color: #6b7280;
+    }
+
+    .btn-secondary:hover {
+        background: #4b5563;
+        border-color: #4b5563;
+        transform: translateY(-1px);
+    }
+
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--az-muted);
+        border: 2px dashed var(--az-border);
+        border-radius: var(--az-radius);
+        background: var(--az-soft);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: var(--az-border);
+    }
+
+    /* Fixed: Better responsive improvements */
+    @media (max-width: 768px) {
+        .az-item-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .az-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Ensure proper RTL layout for actions */
+        .az-actions .btn {
+            order: 1;
+        }
+
+        .az-actions .circle-number {
+            order: 2;
+        }
+
+        .az-thumb {
+            width: 80px;
+            height: 45px;
+        }
+    }
+
+    /* Animation for loading */
+    @keyframes pulse {
+        0% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    /* Fixed: Ensure icons display properly */
+    .fa,
+    .fas,
+    .far,
+    .fal,
+    .fad,
+    .fab {
+        font-family: "Font Awesome 6 Free", "Font Awesome 6 Pro", "Font Awesome 6 Brands";
+        font-weight: 900;
+    }
+
+    .fa-grip-vertical:before {
+        content: "\f58e";
+    }
+
+    .fa-plus:before {
+        content: "\2b";
+    }
+
+    .fa-trash:before {
+        content: "\f1f8";
+    }
+
+    .fa-pen:before {
+        content: "\f304";
+    }
+
+    .fa-floppy-disk:before {
+        content: "\f0c7";
+    }
+
+    .fa-images:before {
+        content: "\f302";
+    }
+
+    .fa-xmark:before {
+        content: "\f00d";
+    }
+
+    .fa-file-lines:before {
+        content: "\f15c";
     }
 </style>
 
-<!-- ============== ONGLETS CONTENU (SANS <form>) ============== -->
-<div id="contentTab" class="container py-3">
-    <div id="list-items-hidden-inputs"></div>
-
-    <div id="template" class="tab-pane show active" role="tabpanel" aria-labelledby="template-tab">
-        <div class="form-group col-lg-12 mb-3">
-            <label class="form-label">القالب</label>
-            <span class="text-danger">*</span>
-            <div class="d-flex flex-column mt-2">
-                <div class="form-check form-check-inline" style="margin-bottom:6px;">
-                    <input class="form-check-input" type="radio" name="display_method" id="display_method_simple"
-                        value="simple" checked>
-                    <label class="form-check-label" for="display_method_simple">أساسي</label>
-                </div>
-                <div class="form-check form-check-inline" style="margin-bottom:6px;">
-                    <input class="form-check-input" type="radio" name="display_method" id="display_method_list"
-                        value="list">
-                    <label class="form-check-label" for="display_method_list">قائمة</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="display_method" id="display_method_file"
-                        value="file">
-                    <label class="form-check-label" for="display_method_file">ملف</label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section dynamique (items) -->
-        <div id="dynamic-items-section" class="mt-3" style="display:none;">
-            <div class="d-flex" style="margin-bottom:10px;">
-                <button type="button" id="add-item-btn" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#itemModal">
-                    <i class="fa fa-plus"></i> إضافة عنصر
-                </button>
-                <button type="button" id="clear-all-btn" class="btn btn-outline-danger mx-1" style="margin-left:8px;">
-                    <i class="fa fa-trash"></i> حذف الكل
-                </button>
-            </div>
-            <div id="items-container"></div>
-        </div>
-    </div>
-</div>
-
-<!-- ================================ MODAL ITEM ================================ -->
-<div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="modalFormId">
-            <div class="modal-header">
-                <div class="az-modal-header">
-                    <h5 class="modal-title">إضافة / تعديل عنصر</h5>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
-            </div>
-
-            <div class="modal-body">
-                <input type="hidden" id="editIndex" />
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="mb-2">
-                            <label class="form-label">العنوان <span class="text-danger">*</span></label>
-                            <input id="itemTitle" class="form-control" placeholder="عنوان واضح ومختصر" />
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">الوصف <span class="text-danger">*</span></label>
-                            <textarea id="itemDescription" class="form-control tinymce-simple" rows="4" placeholder="ملخص قصير"></textarea>
-                        </div>
-
-                        <!-- TinyMCE -->
-                        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                tinymce.init({
-                                    selector: 'textarea.tinymce-simple',
-                                    menubar: false,
-                                    toolbar: 'bold italic underline | bullist numlist | undo redo | removeformat',
-                                    statusbar: false,
-                                    height: 350,
-                                    directionality: 'rtl',
-                                    language: 'ar',
-                                    plugins: 'lists directionality',
-                                    branding: false,
-                                });
-                            });
-                        </script>
-
-                        <div class="mb-2">
-                            <label class="form-label">الرابط <small class="text-muted">(مطلوب في وضع
-                                    قائمة)</small></label>
-                            <input id="itemLinkUrl" class="form-control" placeholder="https://example.com/article" />
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">الوسائط <span class="text-danger">*</span></label>
-                        <div class="input-group mb-2">
-                            <input id="itemMediaUrl" class="form-control" placeholder="لم يتم الاختيار" readonly>
-                            <button type="button" class="btn btn-outline-secondary" id="btnPickMedia">
-                                <i class="fa fa-images"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-danger" id="btnClearMedia" title="مسح">
-                                <i class="fa fa-xmark"></i>
-                            </button>
-                        </div>
-                        <input type="hidden" id="itemMediaId">
-                        <input type="hidden" id="itemMediaTitle">
-                        <input type="hidden" id="itemMediaAlt">
-                        <div id="itemMediaPreview" class="mt-2"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-footer modal-footer-sticky">
-                <div class="d-flex w-100 justify-content-end">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button id="saveItemBtn" type="button" class="btn btn-success mx-2">
-                        <i class="fa fa-floppy-disk me-1"></i> حفظ العنصر
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ======================= Sortable ======================= -->
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-
-<!-- ======================= MGX ICONS ======================= -->
+<!-- MMxx MEDIA MODAL (FULL, FIXED, TYPE BADGE, NO SUCCESS ALERTS) -->
+<!-- Sprite d'icônes -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-    <symbol id="mgx-i-image" viewBox="0 0 24 24">
+    <symbol id="mmxx-icon-image" viewBox="0 0 24 24">
         <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor"
             stroke-width="2" />
         <circle cx="8" cy="10" r="1.5" fill="currentColor" />
         <path d="M21 19l-5.5-7-4.5 6-3-4-4 5" fill="none" stroke="currentColor" stroke-width="2" />
     </symbol>
-    <symbol id="mgx-i-video" viewBox="0 0 24 24">
+    <symbol id="mmxx-icon-video" viewBox="0 0 24 24">
         <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor"
             stroke-width="2" />
         <polygon points="10,9 16,12 10,15" fill="currentColor" />
     </symbol>
-    <symbol id="mgx-i-voice" viewBox="0 0 24 24">
+    <symbol id="mmxx-icon-voice" viewBox="0 0 24 24">
         <rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="currentColor"
             stroke-width="2" />
         <rect x="9" y="7" width="2" height="10" rx="1" fill="currentColor" />
         <rect x="13" y="11" width="2" height="6" rx="1" fill="currentColor" />
     </symbol>
-    <symbol id="mgx-i-file" viewBox="0 0 24 24">
+    <symbol id="mmxx-icon-file" viewBox="0 0 24 24">
         <rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="currentColor"
             stroke-width="2" />
         <path d="M9 7h6M9 11h6M9 15h2" fill="none" stroke="currentColor" stroke-width="2" />
     </symbol>
-    <symbol id="mgx-i-youtube" viewBox="0 0 24 24">
+    <symbol id="mmxx-icon-youtube" viewBox="0 0 24 24">
         <rect x="2" y="6" width="20" height="12" rx="4" fill="none" stroke="currentColor"
             stroke-width="2" />
         <polygon points="10,9 16,12 10,15" fill="currentColor" />
     </symbol>
 </svg>
 
-<!-- ============== Helpers (routes sûres + backdrops) ============== -->
-<script>
-    function azSafeRoute(possibleBladeRoute, fallbackPath) {
-        try {
-            if (!possibleBladeRoute || /\{\{.+\}\}/.test(possibleBladeRoute)) {
-                return new URL(fallbackPath, window.location.origin).toString();
-            }
-            return new URL(possibleBladeRoute, window.location.origin).toString();
-        } catch (e) {
-            return fallbackPath;
-        }
-    }
+<!-- CSRF -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
-    function azRemoveLingeringBackdrops() {
-        try {
-            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-            document.body.classList.remove('modal-open');
-            document.body.style.removeProperty('padding-right');
-            document.documentElement.style.overflow = '';
-        } catch (e) {}
-    }
-</script>
-
-<!-- ============== MGX PICKER (Gallery/Upload/Import) ============== -->
-<div id="mgxMediaPicker" class="mgx-modal" aria-hidden="true" role="dialog" aria-modal="true"
-    aria-labelledby="mgxTitle">
-    <div class="mgx-backdrop" data-mgx-backdrop></div>
-    <div class="mgx-box" role="document">
-        <div class="mgx-head">
-            <h5 id="mgxTitle">اختيار وسائط</h5>
-            <button type="button" class="mgx-x" data-mgx-close aria-label="إغلاق">&times;</button>
+<div id="mmxxMediaModal" class="mmxx-modal" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="mmxxMediaModalTitle">
+    <div class="mmxx-backdrop" data-mmxx-backdrop></div>
+    <div class="mmxx-container" role="document">
+        <div class="mmxx-header">
+            <h5 id="mmxxMediaModalTitle">اختر الوسائط</h5>
+            <button class="mmxx-close" type="button" data-mmxx-close aria-label="إغلاق">&times;</button>
         </div>
 
-        <div class="mgx-tabs" role="tablist">
-            <button class="mgx-tab is-active" data-mgx-tab="gallery" role="tab" aria-selected="true"
-                aria-controls="mgx-panel-gallery" id="mgx-tab-gallery">المعرض</button>
-            <button class="mgx-tab" data-mgx-tab="upload" role="tab" aria-selected="false"
-                aria-controls="mgx-panel-upload" id="mgx-tab-upload">رفع</button>
-            <button class="mgx-tab" data-mgx-tab="import" role="tab" aria-selected="false"
-                aria-controls="mgx-panel-import" id="mgx-tab-import">استيراد بالرابط</button>
+        <!-- Tabs -->
+        <div class="mmxx-tabs" role="tablist" aria-label="أقسام إدارة الوسائط">
+            <button class="mmxx-tab-btn mmxx-is-active" role="tab" aria-selected="true"
+                aria-controls="mmxx-tab-gallery" id="mmxx-tabbtn-gallery" tabindex="0"
+                data-mmxx-tab="gallery">المعرض</button>
+            <button class="mmxx-tab-btn" role="tab" aria-selected="false" aria-controls="mmxx-tab-upload"
+                id="mmxx-tabbtn-upload" tabindex="-1" data-mmxx-tab="upload">الرفع من الجهاز</button>
+            <button class="mmxx-tab-btn" role="tab" aria-selected="false" aria-controls="mmxx-tab-import"
+                id="mmxx-tabbtn-import" tabindex="-1" data-mmxx-tab="import">الاستيراد بالرابط</button>
         </div>
 
         <!-- Gallery -->
-        <section id="mgx-panel-gallery" class="mgx-panel" role="tabpanel" aria-labelledby="mgx-tab-gallery">
-            <div class="mgx-filters">
-                <input type="text" id="mgxSearch" placeholder="ابحث..." />
-                <select id="mgxType">
-                    <option value="all">كل الأنواع</option>
-                    <option value="image">صور</option>
+        <section id="mmxx-tab-gallery" class="mmxx-tab-panel" role="tabpanel" aria-labelledby="mmxx-tabbtn-gallery">
+            <div class="mmxx-filters">
+                <input type="text" id="mmxx-search" placeholder="ابحث عن وسائط..." />
+                <select id="mmxx-type-filter" aria-label="نوع الوسائط">
+                    <option value="all">كل الوسائط</option>
+                    <option value="image">صورة</option>
                     <option value="video">فيديو</option>
                     <option value="voice">صوت</option>
                     <option value="file">ملف</option>
                 </select>
             </div>
-            <div class="mgx-body">
-                <div id="mgxList" class="mgx-grid"></div>
-                <div id="mgxLoader" class="mgx-loader" hidden>...تحميل</div>
-                <div id="mgxSentinel" class="mgx-sentinel"></div>
+
+            <div class="mmxx-body">
+                <div id="mmxx-list" class="mmxx-grid"></div>
+                <div id="mmxx-loader" class="mmxx-loader" hidden>جاري التحميل...</div>
+                <div id="mmxx-sentinel" class="mmxx-sentinel"></div>
             </div>
-            <div class="mgx-foot">
-                <button type="button" class="mgx-btn mgx-choose" id="mgxChoose">اختيار</button>
-                <button type="button" class="mgx-btn mgx-cancel" data-mgx-close>إلغاء</button>
+
+            <div class="mmxx-footer">
+                <button class="mmxx-btn mmxx-btn-select" type="button" id="mmxx-btn-select">اختر</button>
+                <button class="mmxx-btn mmxx-btn-cancel" type="button" data-mmxx-close>إلغاء</button>
             </div>
         </section>
 
         <!-- Upload -->
-        <section id="mgx-panel-upload" class="mgx-panel" role="tabpanel" aria-labelledby="mgx-tab-upload" hidden>
-            <div class="mgx-up">
-                <input type="file" id="mgxUploadFile" />
-                <input type="text" id="mgxUploadName" placeholder="اسم (اختياري)" />
-                <input type="text" id="mgxUploadAlt" placeholder="ALT (اختياري)" />
-                <div style="width:100%;"></div>
-                <button type="button" class="mgx-btn" id="mgxUploadToGallery">رفع & فتح المعرض</button>
-                <button type="button" class="mgx-btn" id="mgxUploadAndClose">رفع & اختيار</button>
+        <section id="mmxx-tab-upload" class="mmxx-tab-panel" role="tabpanel" aria-labelledby="mmxx-tabbtn-upload"
+            hidden>
+            <div class="mmxx-tab-body">
+                <div class="mmxx-uploader">
+                    <input type="file" id="mmxx-upload-input" />
+                    <input type="text" id="mmxx-upload-name" placeholder="اسم/عنوان الوسيط (اختياري)" />
+                    <input type="text" id="mmxx-upload-alt" placeholder="النص البديل ALT (اختياري)" />
+                    <div class="mmxx-uploader-actions">
+                        <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-upload-to-gallery"
+                            title="رفع ثم عرض في المعرض">رفع & فتح المعرض</button>
+                        <button class="mmxx-btn mmxx-btn-primary" type="button" id="mmxx-btn-upload-and-select-close"
+                            title="رفع ثم حفظ وإغلاق">رفع & حفظ وإغلاق</button>
+                    </div>
+                    <small class="mmxx-selection-hint">هذا النموذج يرسل ملفاً واحداً تحت الحقل <b>media</b>.</small>
+                </div>
             </div>
         </section>
 
-        <!-- Import -->
-        <section id="mgx-panel-import" class="mgx-panel" role="tabpanel" aria-labelledby="mgx-tab-import" hidden>
-            <div class="mgx-up">
-                <input type="url" id="mgxUrl" placeholder="رابط مباشر أو YouTube" />
-                <input type="text" id="mgxUrlName" placeholder="اسم (اختياري)" />
-                <input type="text" id="mgxUrlAlt" placeholder="ALT (اختياري)" />
-                <fieldset class="mgx-radio-group">
-                    <legend>النوع</legend>
-                    <label style="margin-right:12px;"><input type="radio" name="mgx-url-type" value="auto"
-                            checked> Auto</label>
-                    <label style="margin-right:12px;"><input type="radio" name="mgx-url-type" value="image">
-                        Image</label>
-                    <label style="margin-right:12px;"><input type="radio" name="mgx-url-type" value="video">
-                        Video</label>
-                    <label style="margin-right:12px;"><input type="radio" name="mgx-url-type" value="voice">
-                        Voice</label>
-                    <label><input type="radio" name="mgx-url-type" value="file"> File</label>
-                </fieldset>
-                <div style="width:100%;"></div>
-                <button type="button" class="mgx-btn" id="mgxImportToGallery">استيراد & فتح المعرض</button>
-                <button type="button" class="mgx-btn" id="mgxImportAndClose">استيراد & اختيار</button>
+        <!-- Import by URL -->
+        <section id="mmxx-tab-import" class="mmxx-tab-panel" role="tabpanel" aria-labelledby="mmxx-tabbtn-import"
+            hidden>
+            <div class="mmxx-tab-body">
+                <div class="mmxx-uploader mmxx-uploader-url">
+                    <input type="url" id="mmxx-upload-url"
+                        placeholder="ألصق رابط الملف (صورة/فيديو/صوت/ملف أو YouTube)" />
+                    <input type="text" id="mmxx-url-name" placeholder="اسم/عنوان للوسيط (اختياري)" />
+                    <input type="text" id="mmxx-url-alt" placeholder="النص البديل ALT (اختياري)" />
+
+                    <!-- NEW: Media type radios for URL import -->
+                    <fieldset class="mmxx-url-type-group" aria-label="نوع الوسائط للرابط">
+                        <legend>نوع الوسائط (اختياري)</legend>
+                        <label class="mmxx-radio">
+                            <input type="radio" name="mmxx-url-type" value="auto" checked />
+                            <span>Auto</span>
+                        </label>
+                        <label class="mmxx-radio">
+                            <input type="radio" name="mmxx-url-type" value="image" />
+                            <span>Image</span>
+                        </label>
+                        <label class="mmxx-radio">
+                            <input type="radio" name="mmxx-url-type" value="video" />
+                            <span>Video</span>
+                        </label>
+                        <label class="mmxx-radio">
+                            <input type="radio" name="mmxx-url-type" value="voice" />
+                            <span>Voice</span>
+                        </label>
+                        <label class="mmxx-radio">
+                            <input type="radio" name="mmxx-url-type" value="file" />
+                            <span>File</span>
+                        </label>
+                    </fieldset>
+
+                    <div class="mmxx-uploader-actions">
+                        <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-import-to-gallery"
+                            title="استيراد بالرابط ثم عرض في المعرض">استيراد & فتح المعرض</button>
+                        <button class="mmxx-btn mmxx-btn-primary" type="button" id="mmxx-btn-import-and-select-close"
+                            title="استيراد بالرابط ثم حفظ وإغلاق">استيراد & حفظ وإغلاق</button>
+                    </div>
+                    <small class="mmxx-selection-hint">يُقبل الرابط المباشر أو رابط YouTube. يمكن تحديد نوع الوسائط
+                        يدوياً أو تركه على Auto.</small>
+                </div>
             </div>
         </section>
     </div>
 </div>
 
+<style>
+    /* ===== MMxx NAMESPACE – neutral white/grey, no rounded corners ===== */
+    #mmxxMediaModal,
+    #mmxxMediaModal * {
+        box-sizing: border-box;
+    }
+
+    #mmxxMediaModal * {
+        border-radius: 0 !important;
+    }
+
+    :root {
+        --mmxx-bg: #fff;
+        --mmxx-text: #111;
+        --mmxx-border: #e5e7eb;
+        --mmxx-ring: #d1d5db;
+        --mmxx-muted: #6b7280;
+        --mmxx-black: #111;
+        --mmxx-black-strong: #000;
+    }
+
+    .mmxx-modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        z-index: 10000;
+    }
+
+    .mmxx-modal[aria-hidden="false"] {
+        display: block;
+    }
+
+    .mmxx-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 0;
+    }
+
+    .mmxx-container {
+        position: absolute;
+        inset: auto 0;
+        top: 5%;
+        margin: 0 auto;
+        width: clamp(320px, 92vw, 1000px);
+        max-height: 90%;
+        background: var(--mmxx-bg);
+        color: var(--mmxx-text);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 1;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+        animation: mmxxFade .2s ease-out;
+    }
+
+    @keyframes mmxxFade {
+        from {
+            opacity: 0;
+            transform: translateY(-14px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .mmxx-header {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--mmxx-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+    }
+
+    .mmxx-header h5 {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 600;
+    }
+
+    .mmxx-close {
+        font-size: 1.4rem;
+        line-height: 1;
+        border: 0;
+        background: transparent;
+        color: #666;
+        cursor: pointer;
+    }
+
+    .mmxx-close:hover {
+        color: #000;
+    }
+
+    .mmxx-tabs {
+        display: flex;
+        gap: .25rem;
+        padding: .5rem;
+        border-bottom: 1px solid var(--mmxx-border);
+        background: #fff;
+    }
+
+    .mmxx-tab-btn {
+        appearance: none;
+        background: #fff;
+        border: 1px solid var(--mmxx-border);
+        padding: .55rem .9rem;
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--mmxx-text);
+    }
+
+    .mmxx-tab-btn:focus {
+        outline: 2px solid var(--mmxx-ring);
+        outline-offset: 1px;
+    }
+
+    .mmxx-tab-btn.mmxx-is-active {
+        border-color: #dcdcdc;
+    }
+
+    .mmxx-tab-panel {
+        display: block;
+    }
+
+    .mmxx-tab-panel[hidden] {
+        display: none;
+    }
+
+    .mmxx-tab-body {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--mmxx-border);
+        background: #fff;
+    }
+
+    .mmxx-filters {
+        padding: 1rem 1.25rem;
+        display: flex;
+        gap: .65rem;
+        flex-wrap: wrap;
+        border-bottom: 1px solid var(--mmxx-border);
+        background: #fff;
+    }
+
+    .mmxx-filters input,
+    .mmxx-filters select {
+        padding: .6rem .7rem;
+        font-size: .95rem;
+        border: 1px solid #dcdcdc;
+        background: #fff;
+        color: var(--mmxx-text);
+        flex: 1 1 180px;
+        transition: box-shadow .15s, border-color .15s;
+    }
+
+    .mmxx-filters input::placeholder {
+        color: var(--mmxx-muted);
+    }
+
+    .mmxx-filters input:focus,
+    .mmxx-filters select:focus {
+        border-color: #cfcfcf;
+        box-shadow: 0 0 0 2px var(--mmxx-ring);
+        outline: none;
+    }
+
+    .mmxx-body {
+        padding: 1rem 1.25rem;
+        overflow: auto;
+        flex: 1;
+        background: #fff;
+    }
+
+    .mmxx-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: .9rem;
+    }
+
+    .mmxx-empty {
+        text-align: center;
+        color: var(--mmxx-muted);
+        font-size: .95rem;
+        margin: 2rem 0;
+    }
+
+    .mmxx-item {
+        position: relative;
+        border: 1px solid var(--mmxx-border);
+        background: #fff;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: .6rem;
+        transition: border-color .15s, transform .04s ease, box-shadow .15s;
+    }
+
+    .mmxx-item:hover {
+        border-color: #cfcfcf;
+        box-shadow: 0 0 0 3px #f3f4f6;
+    }
+
+    .mmxx-item:active {
+        transform: scale(.995);
+    }
+
+    .mmxx-item.mmxx-is-selected {
+        border-color: #cfcfcf;
+        box-shadow: 0 0 0 3px #e5e7eb;
+    }
+
+    .mmxx-thumb {
+        width: 100%;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fafafa;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid #f0f0f0;
+    }
+
+    .mmxx-thumb img,
+    .mmxx-thumb video {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .mmxx-thumb audio {
+        width: 100%;
+    }
+
+    .mmxx-badge {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: rgba(0, 0, 0, .65);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, .2);
+    }
+
+    .mmxx-badge svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .mmxx-title {
+        font-size: .9rem;
+        color: #374151;
+        margin-top: .55rem;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mmxx-uploader {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: .6rem;
+        background: #fff;
+        border: 1px solid var(--mmxx-border);
+        padding: 1rem;
+    }
+
+    .mmxx-uploader-url {
+        border-style: solid;
+    }
+
+    #mmxx-upload-input {
+        flex: 1 1 220px;
+    }
+
+    #mmxx-upload-name,
+    #mmxx-upload-alt {
+        flex: 1 1 200px;
+    }
+
+    #mmxx-upload-url,
+    #mmxx-url-name,
+    #mmxx-url-alt {
+        flex: 1 1 220px;
+    }
+
+    /* NEW: URL type radios */
+    .mmxx-url-type-group {
+        width: 100%;
+        margin: .2rem 0 .4rem;
+        border: 1px solid var(--mmxx-border);
+        padding: .6rem .8rem;
+    }
+
+    .mmxx-url-type-group legend {
+        font-size: .9rem;
+        color: #333;
+        padding: 0 .25rem;
+    }
+
+    .mmxx-radio {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        margin-inline-end: 1rem;
+        cursor: pointer;
+    }
+
+    .mmxx-radio input {
+        accent-color: #000;
+    }
+
+    .mmxx-uploader-actions {
+        display: flex;
+        gap: .6rem;
+    }
+
+    .mmxx-btn {
+        padding: .6rem 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s, color .15s, border-color .15s;
+        border: 1px solid var(--mmxx-black);
+        background: var(--mmxx-black);
+        color: #fff;
+    }
+
+    .mmxx-btn:hover {
+        background: var(--mmxx-black-strong);
+        border-color: var(--mmxx-black-strong);
+    }
+
+    .mmxx-btn-secondary {
+        background: #444;
+        border-color: #444;
+    }
+
+    .mmxx-btn-secondary:hover {
+        background: #222;
+        border-color: #222;
+    }
+
+    .mmxx-btn-primary {
+        background: var(--mmxx-black);
+        border-color: var(--mmxx-black);
+    }
+
+    .mmxx-footer {
+        padding: 1rem 1.25rem;
+        background: #fff;
+        display: flex;
+        justify-content: flex-end;
+        gap: .6rem;
+        border-top: 1px solid var(--mmxx-border);
+    }
+
+    .mmxx-btn-select {
+        background: #fff;
+        color: var(--mmxx-black);
+        border-color: var(--mmxx-black);
+    }
+
+    .mmxx-btn-select:hover {
+        background: #f5f5f5;
+    }
+
+    .mmxx-btn-cancel {
+        background: #444;
+        border-color: #444;
+        color: #fff;
+    }
+
+    .mmxx-btn-cancel:hover {
+        background: #222;
+        border-color: #222;
+    }
+
+    .mmxx-loader {
+        text-align: center;
+        color: var(--mmxx-muted);
+        padding: .75rem;
+        font-size: .95rem;
+    }
+
+    .mmxx-sentinel {
+        height: 1px;
+    }
+
+    @media (max-width: 768px) {
+        .mmxx-container {
+            top: 2%;
+            max-height: 96%;
+        }
+
+        .mmxx-tabs {
+            flex-wrap: wrap;
+        }
+
+        .mmxx-filters {
+            flex-direction: column;
+        }
+
+        .mmxx-filters input,
+        .mmxx-filters select,
+        .mmxx-uploader {
+            width: 100%;
+        }
+
+        .mmxx-uploader {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .mmxx-uploader-actions {
+            width: 100%;
+        }
+
+        .mmxx-uploader-actions .mmxx-btn {
+            width: 100%;
+        }
+    }
+</style>
+
 <script>
     (() => {
-        const MGX_FETCH_URL = azSafeRoute("{{ route('dashboard.media.getAllMediaPaginated') }}",
-            "/dashboard/media/paginated");
-        const MGX_UPLOAD_URL = azSafeRoute("{{ route('dashboard.media.store') }}", "/dashboard/media");
-        const MGX_IMPORT_URL = azSafeRoute("{{ route('dashboard.media_url.store') }}", "/dashboard/media-url");
-        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
-        const CSRF = csrfMeta ? csrfMeta.getAttribute('content') : '';
+        // ===== Endpoints =====
+        const FETCH_URL = "{{ route('dashboard.media.getAllMediaPaginated') }}";
+        const UPLOAD_URL = "{{ route('dashboard.media.store') }}";
+        const IMPORT_URL = "{{ route('dashboard.media_url.store') }}";
 
-        const root = document.getElementById('mgxMediaPicker');
-        if (!root) return;
-        const backdrop = root.querySelector('[data-mgx-backdrop]');
-        const closeBtns = root.querySelectorAll('[data-mgx-close]');
-        const tabs = Array.from(root.querySelectorAll('.mgx-tab'));
-        const panels = {
-            gallery: document.getElementById('mgx-panel-gallery'),
-            upload: document.getElementById('mgx-panel-upload'),
-            import: document.getElementById('mgx-panel-import')
+        const modal = document.getElementById("mmxxMediaModal");
+        const backdrop = modal.querySelector("[data-mmxx-backdrop]");
+        const closes = modal.querySelectorAll("[data-mmxx-close]");
+        const CSRF = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+        // Gallery
+        const listEl = document.getElementById("mmxx-list");
+        const loaderEl = document.getElementById("mmxx-loader");
+        const sentinel = document.getElementById("mmxx-sentinel");
+        const searchInput = document.getElementById("mmxx-search");
+        const typeSelect = document.getElementById("mmxx-type-filter");
+        const btnSelect = document.getElementById("mmxx-btn-select");
+
+        // Upload
+        const uploadInput = document.getElementById("mmxx-upload-input");
+        const uploadName = document.getElementById("mmxx-upload-name");
+        const uploadAlt = document.getElementById("mmxx-upload-alt");
+        const btnUploadToGallery = document.getElementById("mmxx-btn-upload-to-gallery");
+        const btnUploadSelectAndClose = document.getElementById("mmxx-btn-upload-and-select-close");
+
+        // Import URL
+        const uploadUrlInput = document.getElementById("mmxx-upload-url");
+        const urlNameInput = document.getElementById("mmxx-url-name");
+        const urlAltInput = document.getElementById("mmxx-url-alt");
+        const btnImportToGallery = document.getElementById("mmxx-btn-import-to-gallery");
+        const btnImportSelectAndClose = document.getElementById("mmxx-btn-import-and-select-close");
+        const urlTypeRadios = modal.querySelectorAll("input[name='mmxx-url-type']");
+
+        // Tabs
+        const tabButtons = Array.from(modal.querySelectorAll('.mmxx-tab-btn'));
+        const tabPanels = {
+            gallery: document.getElementById('mmxx-tab-gallery'),
+            upload: document.getElementById('mmxx-tab-upload'),
+            import: document.getElementById('mmxx-tab-import'),
         };
-        const listEl = document.getElementById('mgxList');
-        const loaderEl = document.getElementById('mgxLoader');
-        const sentinel = document.getElementById('mgxSentinel');
-        const searchEl = document.getElementById('mgxSearch');
-        const typeEl = document.getElementById('mgxType');
-        const chooseBtn = document.getElementById('mgxChoose');
-        const upFile = document.getElementById('mgxUploadFile');
-        const upName = document.getElementById('mgxUploadName');
-        const upAlt = document.getElementById('mgxUploadAlt');
-        const upToGal = document.getElementById('mgxUploadToGallery');
-        const upAndClose = document.getElementById('mgxUploadAndClose');
-        const urlInput = document.getElementById('mgxUrl');
-        const urlName = document.getElementById('mgxUrlName');
-        const urlAlt = document.getElementById('mgxUrlAlt');
-        const urlTypeRadios = root.querySelectorAll('input[name="mgx-url-type"]');
-        const importToGal = document.getElementById('mgxImportToGallery');
-        const importAndClose = document.getElementById('mgxImportAndClose');
 
         const state = {
-            open: false,
+            isOpen: false,
             page: 1,
+            perPage: 12,
             hasMore: true,
             isLoading: false,
-            list: [],
             search: "",
-            type: 'all',
+            type: "all",
+            list: [],
             selected: null,
-            obs: null,
-            cb: null
+            currentField: "",
+            observer: null,
+            activeTab: 'gallery'
         };
 
-        const YT =
+        // ===== Helpers =====
+        const YT_REGEX =
             /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
-        const isYT = u => YT.test(u || "");
-        const youId = u => (u && u.match(YT) ? u.match(YT)[1] : null);
-        const ext = p => (p || '').split('?')[0].split('.').pop()?.toLowerCase() || '';
-        const mapType = t => t === 'voice' ? 'audio' : t;
+        const isYouTubeUrl = (url = "") => YT_REGEX.test(url);
+        const getYouTubeId = (url = "") => (url.match(YT_REGEX)?.[1] ?? null);
+        const extFromPath = (p = "") => (p.split("?")[0].split(".").pop() || "").toLowerCase();
 
-        function kind(m) {
-            const p = m.path || m.url || '';
-            if (isYT(p)) return 'video';
-            const mt = (m.media_type || '').toLowerCase();
-            if (['image', 'video', 'audio', 'voice', 'file'].includes(mt)) return (mt === 'audio' ? 'voice' : mt);
-            const e = ext(p);
-            if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'].includes(e)) return 'image';
-            if (['mp4', 'webm', 'mkv', 'mov', 'avi', 'm4v'].includes(e)) return 'video';
-            if (['mp3', 'wav', 'ogg', 'm4a', 'aac', 'flac'].includes(e)) return 'voice';
-            return 'file';
+        function getMediaKind(media) {
+            if (media.path && isYouTubeUrl(media.path)) return "video";
+            const mt = (media.media_type || "").toLowerCase();
+            if (["image", "video", "audio", "voice", "file"].includes(mt)) return (mt === "audio" ? "voice" : mt);
+            const ext = extFromPath(media.path || media.url || "");
+            if (["jpg", "jpeg", "png", "gif", "webp", "bmp", "svg"].includes(ext)) return "image";
+            if (["mp4", "webm", "mkv", "mov", "avi", "m4v"].includes(ext)) return "video";
+            if (["mp3", "wav", "ogg", "m4a", "aac", "flac"].includes(ext)) return "voice";
+            return "file";
         }
-        const iconId = m => isYT(m.path) ? 'mgx-i-youtube' : ({
-            image: 'mgx-i-image',
-            video: 'mgx-i-video',
-            voice: 'mgx-i-voice'
-        } [kind(m)] || 'mgx-i-file');
+        const mapFilterForServer = (t) => (t === "voice" ? "audio" : t);
 
-        window.mgxPicker = {
-            open(onSelect) {
-                state.cb = (typeof onSelect === 'function') ? onSelect : null;
-                open();
+        function getBadgeIconId(media) {
+            if (media.path && isYouTubeUrl(media.path)) return "mmxx-icon-youtube";
+            const kind = getMediaKind(media);
+            if (kind === "image") return "mmxx-icon-image";
+            if (kind === "video") return "mmxx-icon-video";
+            if (kind === "voice") return "mmxx-icon-voice";
+            return "mmxx-icon-file";
+        }
+
+        function getSelectedUrlType() {
+            const checked = Array.from(urlTypeRadios).find(r => r.checked);
+            return checked ? checked.value : "auto";
+        }
+
+        // ===== Public API =====
+        window.mmxxMediaModalManager = {
+            openModal(fieldName) {
+                openModal(fieldName);
             },
-            close() {
-                close();
+            closeModal() {
+                closeModal();
+            },
+            onMediaSelected(payload) {
+                if (window.mediaTabManager && typeof window.mediaTabManager.onMediaSelected === "function") {
+                    window.mediaTabManager.onMediaSelected(payload);
+                }
             }
         };
 
-        function switchTab(t) {
-            tabs.forEach(b => {
-                const act = b.dataset.mgxTab === t;
-                b.classList.toggle('is-active', act);
-                b.setAttribute('aria-selected', String(act));
+        // ===== Reset UI/state =====
+        function clearAllInputs() {
+            searchInput && (searchInput.value = "");
+            typeSelect && (typeSelect.value = "all");
+            uploadInput && (uploadInput.value = "");
+            uploadName && (uploadName.value = "");
+            uploadAlt && (uploadAlt.value = "");
+            uploadUrlInput && (uploadUrlInput.value = "");
+            urlNameInput && (urlNameInput.value = "");
+            urlAltInput && (urlAltInput.value = "");
+            // reset radios to Auto
+            urlTypeRadios.forEach(r => {
+                r.checked = (r.value === "auto");
             });
-            Object.entries(panels).forEach(([k, el]) => {
-                if (el) el.hidden = (k !== t);
-            });
-        }
-        tabs.forEach(b => b.addEventListener('click', () => switchTab(b.dataset.mgxTab)));
-
-        function lockScroll() {
-            document.documentElement.style.overflow = 'hidden';
-            document.body.classList.add('modal-open');
         }
 
-        function unlockScroll() {
-            document.documentElement.style.overflow = '';
-            document.body.classList.remove('modal-open');
+        function resetStateFilters() {
+            state.search = "";
+            state.type = "all";
+            state.selected = null;
         }
 
-        function open() {
-            state.open = true;
-            root.setAttribute('aria-hidden', 'false');
-            lockScroll();
+        // ===== Open/close =====
+        // ===== Open/close =====
+        function openModal(fieldName = "") {
+            state.currentField = fieldName;
+            state.isOpen = true;
+            modal.setAttribute("aria-hidden", "false");
+            document.documentElement.style.overflow = "hidden";
+            resetStateFilters();
+            clearAllInputs();
             switchTab('gallery');
             resetAndLoad();
-            try {
-                searchEl && searchEl.focus({
-                    preventScroll: true
-                });
-            } catch (e) {}
+            setTimeout(() => document.getElementById("mmxx-search")?.focus(), 0);
+
+            // Store reference to parent modal for reopening
+            window._lastParentModal = modalEl;
         }
 
-        function close() {
-            state.open = false;
-            root.setAttribute('aria-hidden', 'true');
-            if (state.obs) {
-                state.obs.disconnect();
-                state.obs = null;
+        function closeModal() {
+            state.isOpen = false;
+            modal.setAttribute("aria-hidden", "true");
+            document.documentElement.style.overflow = "";
+            resetStateFilters();
+            clearAllInputs();
+
+            // Reopen parent modal if it exists
+            setTimeout(() => {
+                const parentModal = window._lastParentModal;
+                if (parentModal && window.bootstrap && bootstrap.Modal) {
+                    bootstrap.Modal.getOrCreateInstance(parentModal).show();
+                }
+                window._lastParentModal = null;
+            }, 300);
+        }
+
+        backdrop.addEventListener("click", closeModal);
+        closes.forEach(b => b.addEventListener("click", closeModal));
+        modal.querySelector(".mmxx-container").addEventListener("click", e => e.stopPropagation());
+        document.addEventListener("keydown", e => {
+            if (!state.isOpen) return;
+            if (e.key === "Escape") closeModal();
+            if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+                const idx = tabButtons.findIndex(b => b.getAttribute('aria-selected') === "true");
+                if (idx > -1) {
+                    const dir = e.key === "ArrowRight" ? 1 : -1;
+                    const next = (idx + dir + tabButtons.length) % tabButtons.length;
+                    tabButtons[next].click();
+                    tabButtons[next].focus();
+                }
             }
-            state.cb = null;
-            state.selected = null;
-            unlockScroll();
-            azRemoveLingeringBackdrops();
-        }
-        backdrop && backdrop.addEventListener('click', close);
-        closeBtns.forEach(b => b.addEventListener('click', close));
+        });
 
+        // ===== Tabs =====
+        tabButtons.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.mmxxTab)));
+
+        function switchTab(tab) {
+            if (!tabPanels[tab]) return;
+            state.activeTab = tab;
+            tabButtons.forEach(b => {
+                const active = b.dataset.mmxxTab === tab;
+                b.classList.toggle('mmxx-is-active', active);
+                b.setAttribute('aria-selected', String(active));
+                b.tabIndex = active ? 0 : -1;
+            });
+            Object.entries(tabPanels).forEach(([name, panel]) => {
+                panel.hidden = (name !== tab);
+            });
+        }
+
+        // ===== Fetch/pagination =====
         async function resetAndLoad() {
             state.page = 1;
             state.hasMore = true;
             state.list = [];
-            render();
-            await load();
-            if (state.obs) {
-                state.obs.disconnect();
-                state.obs = null;
-            }
-            const rootEl = panels.gallery ? panels.gallery.querySelector('.mgx-body') : null;
-            const sentinelEl = document.getElementById('mgxSentinel');
-            if (!rootEl || !sentinelEl) return;
-            state.obs = new IntersectionObserver(es => es.forEach(e => {
-                if (e.isIntersecting) load();
-            }), {
+            renderList();
+            await loadMore(true);
+            setupObserver();
+        }
+
+        function setupObserver() {
+            if (state.observer) state.observer.disconnect();
+            const rootEl = tabPanels.gallery.querySelector(".mmxx-body");
+            state.observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) loadMore();
+                });
+            }, {
                 root: rootEl,
                 threshold: 1
             });
-            state.obs.observe(sentinelEl);
+            state.observer.observe(sentinel);
         }
-        async function load() {
+        async function loadMore(reset = false) {
             if (state.isLoading || !state.hasMore) return;
             state.isLoading = true;
-            loaderEl && (loaderEl.hidden = false);
+            loaderEl.hidden = false;
             try {
-                const u = new URL(MGX_FETCH_URL);
-                u.searchParams.set('page', state.page);
-                u.searchParams.set('search', (state.search || '').trim());
-                u.searchParams.set('type', mapType(state.type));
-                const r = await fetch(u.toString(), {
+                const url = new URL(FETCH_URL, window.location.origin);
+                url.searchParams.set("page", state.page);
+                url.searchParams.set("search", state.search.trim());
+                url.searchParams.set("type", mapFilterForServer(state.type));
+                const res = await fetch(url.toString(), {
                     headers: {
-                        Accept: 'application/json'
+                        Accept: "application/json"
                     }
                 });
-                const j = await r.json().catch(() => ({}));
-                const items = Array.isArray(j.data) ? j.data : [];
-                state.list = state.list.concat(items);
-                state.hasMore = !!j.next_page_url;
+                const data = await res.json();
+                const items = Array.isArray(data.data) ? data.data : [];
+                const hasMore = !!data.next_page_url;
+                state.list = reset ? items : state.list.concat(items);
+                state.hasMore = hasMore;
                 state.page += 1;
-            } catch (e) {
-                console.error('MGX fetch error', e);
-                state.hasMore = false;
+            } catch (err) {
+                console.error(err);
             } finally {
                 state.isLoading = false;
-                loaderEl && (loaderEl.hidden = true);
-                render();
+                loaderEl.hidden = true;
+                renderList();
             }
         }
 
-        function render() {
-            if (!listEl) return;
-            listEl.textContent = '';
-            const arr = state.type === 'all' ? state.list : state.list.filter(m => kind(m) === state.type);
-            if (!arr.length) {
-                const empty = document.createElement('div');
-                empty.style.textAlign = 'center';
-                empty.style.color = '#666';
-                empty.textContent = 'لا توجد وسائط';
-                listEl.appendChild(empty);
+        // ===== Render =====
+        function renderList() {
+            listEl.innerHTML = "";
+            const filtered = state.type === "all" ? state.list : state.list.filter(m => getMediaKind(m) === state
+                .type);
+            if (!filtered.length) {
+                listEl.innerHTML = `<div class="mmxx-empty">لا توجد وسائط للعرض</div>`;
                 return;
             }
-            arr.forEach(m => {
-                const it = document.createElement('div');
-                it.className = 'mgx-item' + (state.selected && state.selected.id === m.id ? ' is-sel' : '');
-                it.addEventListener('click', () => {
-                    state.selected = (state.selected && state.selected.id === m.id) ? null : m;
-                    render();
-                });
-                const th = document.createElement('div');
-                th.className = 'mgx-thumb';
-                const badge = document.createElement('div');
-                badge.className = 'mgx-badge';
-                badge.innerHTML = `<svg><use href="#${iconId(m)}"></use></svg>`;
-                th.appendChild(badge);
-                const p = m.path || m.url || '';
-                if (isYT(p)) {
-                    const id = youId(p);
-                    const img = new Image();
-                    img.loading = 'lazy';
-                    img.alt = m.name || 'YouTube';
-                    img.src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-                    th.appendChild(img);
-                } else {
-                    const k = kind(m);
-                    if (k === 'image') {
-                        const img = new Image();
-                        img.loading = 'lazy';
-                        img.alt = m.alt || m.name || '';
-                        img.src = p;
-                        th.appendChild(img);
-                    } else if (k === 'video' && /\.(mp4|webm|mkv|mov|avi|m4v)(\?|$)/i.test(p)) {
-                        const v = document.createElement('video');
-                        v.src = p;
-                        v.muted = true;
-                        v.preload = 'metadata';
-                        th.appendChild(v);
+            filtered.forEach(media => {
+                const kind = getMediaKind(media);
+                const item = document.createElement("div");
+                item.className = "mmxx-item";
+                if (state.selected && state.selected.id === media.id) item.classList.add("mmxx-is-selected");
+                item.addEventListener("click", () => toggleSelect(media));
+
+                const thumb = document.createElement("div");
+                thumb.className = "mmxx-thumb";
+
+                const badge = document.createElement("div");
+                badge.className = "mmxx-badge";
+                badge.title = kind === "voice" ? "audio" : (isYouTubeUrl(media.path) ? "youtube" : kind);
+                const iconId = getBadgeIconId(media);
+                badge.innerHTML = `<svg aria-hidden="true"><use href="#${iconId}"></use></svg>`;
+                thumb.appendChild(badge);
+
+                if (media.path && isYouTubeUrl(media.path)) {
+                    const vid = getYouTubeId(media.path);
+                    const img = document.createElement("img");
+                    img.src = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
+                    img.alt = media.name || "YouTube";
+                    img.loading = "lazy";
+                    thumb.appendChild(img);
+                } else if (kind === "image") {
+                    const img = document.createElement("img");
+                    img.src = media.path;
+                    img.alt = media.alt || media.name || "";
+                    img.loading = "lazy";
+                    thumb.appendChild(img);
+                } else if (kind === "video") {
+                    if (/\.(mp4|webm|mkv|mov|avi|m4v)(\?|$)/i.test(media.path || "")) {
+                        const video = document.createElement("video");
+                        video.src = media.path;
+                        video.muted = true;
+                        video.preload = "metadata";
+                        thumb.appendChild(video);
                     }
+                } else if (kind === "voice") {
+                    const audio = document.createElement("audio");
+                    audio.src = media.path;
+                    audio.preload = "metadata";
+                    audio.controls = true;
+                    thumb.appendChild(audio);
                 }
-                it.appendChild(th);
-                const tt = document.createElement('div');
-                tt.className = 'mgx-title';
-                tt.textContent = m.name || '';
-                it.appendChild(tt);
-                listEl.appendChild(it);
+
+                item.appendChild(thumb);
+
+                const title = document.createElement("div");
+                title.className = "mmxx-title";
+                title.textContent = media.name || "";
+                item.appendChild(title);
+
+                listEl.appendChild(item);
             });
         }
-        searchEl && searchEl.addEventListener('input', () => {
-            state.search = searchEl.value;
-            resetAndLoad();
+
+        function toggleSelect(media) {
+            const isSame = state.selected && state.selected.id === media.id;
+            state.selected = isSame ? null : media;
+            renderList();
+        }
+
+        // ===== Search/filter =====
+        searchInput?.addEventListener("input", async e => {
+            state.search = e.target.value;
+            await resetAndLoad();
         });
-        typeEl && typeEl.addEventListener('change', () => {
-            state.type = typeEl.value;
-            resetAndLoad();
+        typeSelect?.addEventListener("change", async e => {
+            state.type = e.target.value;
+            await resetAndLoad();
         });
 
-        const choose = () => {
-            if (!state.selected) {
-                alert('يرجى اختيار وسيط');
-                return;
-            }
-            const m = state.selected;
-            const payload = {
-                id: m.id,
-                url: m.url || m.path || '',
-                title: m.name || '',
-                alt: m.alt || '',
-                type: kind(m)
-            };
-            if (!payload.url) {
-                alert('الرابط غير متاح لهذا الوسيط');
-                return;
-            }
-            if (state.cb) state.cb(payload);
-            close();
-        };
-        chooseBtn && chooseBtn.addEventListener('click', choose);
+        // ===== Confirm selection =====
+        btnSelect?.addEventListener("click", () => {
 
-        async function doUpload(mode) {
-            const f = upFile && upFile.files ? upFile.files[0] : null;
-            if (!f) {
-                alert('اختر ملفاً');
-                return;
-            }
-            const form = new FormData();
-            form.append('media', f);
-            if (upName && upName.value) form.append('name', upName.value);
-            if (upAlt && upAlt.value) form.append('alt', upAlt.value);
+            window.mmxxMediaModalManager.onMediaSelected({
+                id: state.selected.id,
+                url: state.selected.path,
+                title: state.selected.name || "",
+                alt: state.selected.alt || ""
+            });
+            closeModal();
+        });
+
+        // ===== Parsing & matching helpers =====
+        function tryParseJsonFromText(text) {
+            if (!text) return null;
+            const clean = text.replace(/^\uFEFF/, "").trim();
             try {
-                upToGal && (upToGal.disabled = true, upToGal.textContent = '...');
-                upAndClose && (upAndClose.disabled = true, upAndClose.textContent = '...');
-                const r = await fetch(MGX_UPLOAD_URL, {
-                    method: 'POST',
+                return JSON.parse(clean);
+            } catch {
+                const m = clean.match(/\{[\s\S]*\}/);
+                if (m) {
+                    try {
+                        return JSON.parse(m[0]);
+                    } catch {}
+                }
+                return {
+                    __nonJson: true,
+                    __raw: clean
+                };
+            }
+        }
+
+        function extractCreatedFromPayload(payload) {
+            if (!payload || typeof payload !== "object") return [];
+            if (Array.isArray(payload.data)) return payload.data;
+            if (Array.isArray(payload.media)) return payload.media;
+            if (payload.data) return [payload.data];
+            if (payload.media) return [payload.media];
+            return [];
+        }
+
+        function basenameNoExt(filename = "") {
+            const base = filename.split("/").pop() || filename;
+            return base.replace(/\.[^.]+$/, "").trim();
+        }
+
+        function findJustUploadedInState({
+            fileName,
+            nameVal
+        }) {
+            const base = basenameNoExt(fileName || "");
+            if (nameVal) {
+                const byName = state.list.find(m => (m.name || "").trim() === nameVal.trim());
+                if (byName) return byName;
+            }
+            if (base) {
+                const byBase = state.list.find(m => (m.name || "").trim() === base || (m.title || "").trim() ===
+                    base);
+                if (byBase) return byBase;
+            }
+            return state.list[0] || null;
+        }
+
+        // ===== Upload (open gallery / select-close) =====
+        async function uploadMediaAndHandle(mode) {
+            const files = uploadInput.files;
+            if (!files || !files.length) {
+                alert("⚠️ لم يتم اختيار أي ملف للرفع.");
+                return;
+            }
+            const file0 = files[0];
+            const nameVal = (uploadName.value || "").trim();
+            const altVal = (uploadAlt.value || "").trim();
+
+            const form = new FormData();
+            form.append("media", file0);
+            if (nameVal) form.append("name", nameVal);
+            if (altVal) form.append("alt", altVal);
+
+            let created = null;
+            try {
+                btnUploadToGallery.disabled = true;
+                btnUploadSelectAndClose.disabled = true;
+                btnUploadToGallery.textContent = "جارٍ الرفع...";
+                btnUploadSelectAndClose.textContent = "جارٍ الرفع...";
+
+                const res = await fetch(UPLOAD_URL, {
+                    method: "POST",
                     headers: {
-                        'X-CSRF-TOKEN': CSRF,
-                        Accept: 'application/json'
+                        "X-CSRF-TOKEN": CSRF,
+                        "Accept": "application/json"
                     },
                     body: form
                 });
-                if (!r.ok) {
-                    alert('فشل الرفع');
+                const bodyText = await res.text();
+                if (!res.ok) {
+                    console.error("❌ Upload failed:", res.status, bodyText);
+                    alert("فشل رفع الملف.\nStatus: " + res.status);
                     return;
                 }
-                await resetAndLoad();
-                if (mode === 'gallery') {
+
+                const parsed = tryParseJsonFromText(bodyText);
+                created = parsed && !parsed.__nonJson ? extractCreatedFromPayload(parsed) : null;
+
+                if (mode === "gallery") {
                     switchTab('gallery');
-                } else {
-                    const first = state.list[0] || null;
-                    if (first && state.cb) state.cb({
+                    await resetAndLoad();
+                    let picked = null;
+                    if (created && created.length) {
+                        const cid = created[0].id;
+                        picked = state.list.find(m => m.id === cid) || null;
+                    }
+                    if (!picked) {
+                        picked = findJustUploadedInState({
+                            fileName: file0.name,
+                            nameVal
+                        });
+                    }
+                    if (picked) {
+                        state.selected = picked;
+                        renderList();
+                        requestAnimationFrame(() => {
+                            const items = [...listEl.querySelectorAll('.mmxx-item')];
+                            const el = items.find(elm => {
+                                const title = elm.querySelector('.mmxx-title')?.textContent
+                                    .trim() || "";
+                                return (picked.name || "") === title;
+                            }) || items[0];
+                            el?.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        });
+                    }
+                    uploadInput.value = "";
+                    uploadName.value = "";
+                    uploadAlt.value = "";
+                    return;
+                }
+
+                // select-close
+                if (created && created.length) {
+                    const first = created[0];
+                    window.mmxxMediaModalManager.onMediaSelected({
                         id: first.id,
                         url: first.url || first.path,
-                        title: first.name || '',
-                        alt: first.alt || '',
-                        type: kind(first)
+                        title: first.name || nameVal || "",
+                        alt: first.alt || altVal || ""
                     });
-                    close();
+                    closeModal();
+                } else {
+                    await resetAndLoad();
+                    const picked = findJustUploadedInState({
+                        fileName: file0.name,
+                        nameVal
+                    });
+                    if (picked) {
+                        window.mmxxMediaModalManager.onMediaSelected({
+                            id: picked.id,
+                            url: picked.url || picked.path,
+                            title: picked.name || nameVal || "",
+                            alt: picked.alt || altVal || ""
+                        });
+                    } else {
+                        console.warn("Upload OK but unable to determine the created media from response.");
+                    }
+                    closeModal();
                 }
-            } catch (e) {
-                console.error(e);
-                alert('فشل الرفع');
+            } catch (err) {
+                console.error("🔥 Exception during upload:", err);
+                alert("حدث خطأ أثناء الرفع:\n" + (err && err.message ? err.message : err));
             } finally {
-                upToGal && (upToGal.disabled = false, upToGal.textContent = 'رفع & فتح المعرض');
-                upAndClose && (upAndClose.disabled = false, upAndClose.textContent = 'رفع & اختيار');
-                upFile && (upFile.value = '');
-                upName && (upName.value = '');
-                upAlt && (upAlt.value = '');
+                btnUploadToGallery.disabled = false;
+                btnUploadSelectAndClose.disabled = false;
+                btnUploadToGallery.textContent = "رفع & فتح المعرض";
+                btnUploadSelectAndClose.textContent = "رفع & حفظ وإغلاق";
             }
         }
-        upToGal && upToGal.addEventListener('click', () => doUpload('gallery'));
-        upAndClose && upAndClose.addEventListener('click', () => doUpload('select'));
 
-        function selectedUrlType() {
-            const r = [...urlTypeRadios].find(x => x.checked);
-            return r ? r.value : 'auto';
-        }
-        async function doImport(mode) {
-            const u = (urlInput && urlInput.value || '').trim();
-            if (!u) {
-                alert('أدخل الرابط');
+        // ===== Import via URL (with media type radio) =====
+        async function importViaUrl(mode) {
+            if (!IMPORT_URL) {
+                alert("⚠️ لم يتم ضبط مسار الاستيراد عبر الرابط في الخادم.");
                 return;
             }
-            const body = {
-                url: u
-            };
-            if (urlName && urlName.value) body.name = urlName.value;
-            if (urlAlt && urlAlt.value) body.alt = urlAlt.value;
-            const t = selectedUrlType();
-            if (t !== 'auto') body.media_type = (t === 'voice' ? 'audio' : t);
+            const urlVal = (uploadUrlInput.value || "").trim();
+            const nameVal = (urlNameInput.value || "").trim();
+            const altVal = (urlAltInput.value || "").trim();
+            const typeVal = getSelectedUrlType(); // auto | image | video | voice | file
+            if (!urlVal) {
+                alert("⚠️ يرجى إدخال الرابط أولاً.");
+                return;
+            }
+
+            // إذا اختار المستخدم voice نمرره كـ audio إلى الخادم
+            const payloadType = typeVal === "auto" ? undefined : mapFilterForServer(typeVal);
+
+            let created = null;
             try {
-                importToGal && (importToGal.disabled = true, importToGal.textContent = '...');
-                importAndClose && (importAndClose.disabled = true, importAndClose.textContent = '...');
-                const r = await fetch(MGX_IMPORT_URL, {
-                    method: 'POST',
+                btnImportToGallery.disabled = true;
+                btnImportSelectAndClose.disabled = true;
+                btnImportToGallery.textContent = "جارٍ الاستيراد...";
+                btnImportSelectAndClose.textContent = "جارٍ الاستيراد...";
+
+                const res = await fetch(IMPORT_URL, {
+                    method: "POST",
                     headers: {
-                        'X-CSRF-TOKEN': CSRF,
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json'
+                        "X-CSRF-TOKEN": CSRF,
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(body)
+                    body: JSON.stringify({
+                        url: urlVal,
+                        name: nameVal || undefined,
+                        alt: altVal || undefined,
+                        media_type: payloadType // قد يتجاهله الخادم إن كان Auto/undefined
+                    })
                 });
-                if (!r.ok) {
-                    alert('فشل الاستيراد');
+                const bodyText = await res.text();
+                if (!res.ok) {
+                    console.error("❌ Import failed:", res.status, bodyText);
+                    alert("فشل الاستيراد.\nStatus: " + res.status);
                     return;
                 }
-                await resetAndLoad();
-                if (mode === 'gallery') {
+
+                const parsed = tryParseJsonFromText(bodyText);
+                created = parsed && !parsed.__nonJson ? extractCreatedFromPayload(parsed) : null;
+
+                if (mode === "gallery") {
                     switchTab('gallery');
-                } else {
-                    const first = state.list[0] || null;
-                    if (first && state.cb) state.cb({
+                    await resetAndLoad();
+
+                    let picked = null;
+                    if (created && created.length) {
+                        const cid = created[0].id;
+                        picked = state.list.find(m => m.id === cid) || null;
+                    }
+                    if (!picked) {
+                        picked = nameVal ?
+                            state.list.find(m => (m.name || "").trim() === nameVal.trim()) :
+                            (state.list[0] || null);
+                    }
+                    if (picked) {
+                        state.selected = picked;
+                        renderList();
+                        requestAnimationFrame(() => {
+                            const items = [...listEl.querySelectorAll('.mmxx-item')];
+                            const el = items.find(elm => {
+                                const title = elm.querySelector('.mmxx-title')?.textContent
+                                    .trim() || "";
+                                return (picked.name || "") === title;
+                            }) || items[0];
+                            el?.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        });
+                    }
+                    uploadUrlInput.value = "";
+                    urlNameInput.value = "";
+                    urlAltInput.value = "";
+                    urlTypeRadios.forEach(r => {
+                        r.checked = (r.value === "auto");
+                    });
+                    return;
+                }
+
+                // select-close
+                if (created && created.length) {
+                    const first = created[0];
+                    window.mmxxMediaModalManager.onMediaSelected({
                         id: first.id,
                         url: first.url || first.path,
-                        title: first.name || '',
-                        alt: first.alt || '',
-                        type: kind(first)
+                        title: first.name || nameVal || "",
+                        alt: first.alt || altVal || ""
                     });
-                    close();
+                    closeModal();
+                } else {
+                    await resetAndLoad();
+                    const picked = nameVal ?
+                        state.list.find(m => (m.name || "").trim() === nameVal.trim()) :
+                        (state.list[0] || null);
+                    if (picked) {
+                        window.mmxxMediaModalManager.onMediaSelected({
+                            id: picked.id,
+                            url: picked.url || picked.path,
+                            title: picked.name || nameVal || "",
+                            alt: picked.alt || altVal || ""
+                        });
+                    } else {
+                        console.warn("Import OK but unable to determine created media.");
+                    }
+                    closeModal();
                 }
-            } catch (e) {
-                console.error(e);
-                alert('فشل الاستيراد');
+            } catch (err) {
+                console.error("🔥 Exception during import:", err);
+                alert("حدث خطأ أثناء الاستيراد:\n" + (err && err.message ? err.message : err));
             } finally {
-                importToGal && (importToGal.disabled = false, importToGal.textContent = 'استيراد & فتح المعرض');
-                importAndClose && (importAndClose.disabled = false, importAndClose.textContent =
-                    'استيراد & اختيار');
-                urlInput && (urlInput.value = '');
-                urlName && (urlName.value = '');
-                urlAlt && (urlAlt.value = '');
-                urlTypeRadios.forEach(r => r.checked = (r.value === 'auto'));
+                btnImportToGallery.disabled = false;
+                btnImportSelectAndClose.disabled = false;
+                btnImportToGallery.textContent = "استيراد & فتح المعرض";
+                btnImportSelectAndClose.textContent = "استيراد & حفظ وإغلاق";
             }
         }
-        importToGal && importToGal.addEventListener('click', () => doImport('gallery'));
-        importAndClose && importAndClose.addEventListener('click', () => doImport('select'));
+
+        // ===== Bindings =====
+        btnUploadToGallery?.addEventListener("click", () => uploadMediaAndHandle('gallery'));
+        btnUploadSelectAndClose?.addEventListener("click", () => uploadMediaAndHandle('select-close'));
+        btnImportToGallery?.addEventListener("click", () => importViaUrl('gallery'));
+        btnImportSelectAndClose?.addEventListener("click", () => importViaUrl('select-close'));
+
+        // ===== Initial render =====
+        (function init() {
+            if (!state.list.length) listEl.innerHTML = `<div class="mmxx-empty">لا توجد وسائط للعرض</div>`;
+        })();
     })();
 </script>
 
-<!-- ======================== Onglet & Persistance (sans créer de <form>) ======================== -->
+<!-- The rest of your HTML remains the same -->
+
+<!-- Tab (radios + zone items) -->
+<div id="contentTab" class="container py-3">
+    <div id="list-items-hidden-inputs"></div>
+    <div id="template" class="tab-pane show active" role="tabpanel">
+        <div class="form-group col-lg-12 mb-3">
+            <label class="form-label">القالب</label><span class="text-danger"> *</span>
+            <div class="d-flex flex-column mt-2">
+                <label class="form-check form-check-inline" style="margin-bottom:6px;"><input
+                        class="form-check-input" type="radio" name="display_method" value="simple" checked>
+                    <span class="form-check-label">أساسي</span></label>
+                <label class="form-check form-check-inline" style="margin-bottom:6px;"><input
+                        class="form-check-input" type="radio" name="display_method" value="list"> <span
+                        class="form-check-label">قائمة</span></label>
+                <label class="form-check form-check-inline"><input class="form-check-input" type="radio"
+                        name="display_method" value="file"> <span class="form-check-label">ملف</span></label>
+            </div>
+        </div>
+        <div id="dynamic-items-section" class="mt-3" style="display:none;">
+            <div class="d-flex" style="margin-bottom:10px;">
+                <button type="button" id="add-item-btn" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#itemModal"><i class="fa fa-plus"></i> إضافة عنصر</button>
+                <button type="button" id="clear-all-btn" class="btn btn-outline-danger mx-1"
+                    style="margin-left:8px;"><i class="fa fa-trash"></i> حذف الكل</button>
+            </div>
+            <div id="items-container"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Item Modal (parent) -->
+<div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">إضافة / تعديل عنصر</h5><button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editIndex" />
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="mb-2"><label class="form-label">العنوان <span
+                                    class="text-danger">*</span></label><input id="itemTitle" class="form-control"
+                                placeholder="عنوان واضح" /></div>
+                        <div class="mb-2"><label class="form-label">الوصف <span
+                                    class="text-danger">*</span></label>
+                            <textarea id="itemDescription" class="form-control tinymce-simple" rows="4" placeholder="ملخص"></textarea>
+                        </div>
+                        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                                if (!window._tmx) {
+                                    tinymce.init({
+                                        selector: 'textarea.tinymce-simple',
+                                        menubar: false,
+                                        toolbar: 'bold italic underline | bullist numlist | undo redo | removeformat',
+                                        statusbar: false,
+                                        height: 300,
+                                        directionality: 'rtl',
+                                        language: 'ar',
+                                        plugins: 'lists directionality',
+                                        branding: false
+                                    });
+                                    window._tmx = 1;
+                                }
+                            });
+                        </script>
+                        <div class="mb-2"><label class="form-label">الرابط <small class="text-muted"
+                                    id="itemLinkNote">(مطلوب في وضع ملف)</small></label><input id="itemLinkUrl"
+                                class="form-control" placeholder="https://..." /></div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">الوسائط <span class="text-danger">*</span></label>
+                        <div class="input-group mb-2">
+                            <input id="itemMediaUrl" class="form-control" placeholder="لم يتم الاختيار" readonly>
+                            <button type="button" class="btn btn-outline-secondary" id="btnPickMedia"><i
+                                    class="fa fa-images"></i></button>
+                            <button type="button" class="btn btn-outline-danger" id="btnClearMedia"
+                                title="مسح"><i class="fa fa-xmark"></i></button>
+                        </div>
+                        <input type="hidden" id="itemMediaId"><input type="hidden" id="itemMediaTitle"><input
+                            type="hidden" id="itemMediaAlt">
+                        <div id="itemMediaPreview" class="mt-2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-sticky">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button id="saveItemBtn" type="button" class="btn btn-success mx-2"><i
+                        class="fa fa-floppy-disk me-1"></i> حفظ العنصر</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
     (function() {
-        const STORAGE_KEY_ITEMS = 'az_content_items_v6';
+        const STORAGE_KEYS = {
+            simple: 'az_items_simple_v1',
+            list: 'az_items_list_v1',
+            file: 'az_items_file_v1'
+        };
         const STORAGE_KEY_MODE = 'az_display_method_v6';
-
         const rootTab = document.getElementById('contentTab');
         const mainForm = rootTab ? rootTab.closest('form') : null;
         const hiddenInputsContainer = document.getElementById('list-items-hidden-inputs');
-
         const displayMethodRadios = document.querySelectorAll('input[name="display_method"]');
         const dynamicSection = document.getElementById('dynamic-items-section');
         const addBtn = document.getElementById('add-item-btn');
@@ -1040,10 +1686,10 @@
         const modalEl = document.getElementById('itemModal');
         const editIndexInput = document.getElementById('editIndex');
         const saveBtn = document.getElementById('saveItemBtn');
-
         const titleEl = document.getElementById('itemTitle');
         const descEl = document.getElementById('itemDescription');
         const linkEl = document.getElementById('itemLinkUrl');
+        const linkNote = document.getElementById('itemLinkNote');
         const inpUrl = document.getElementById('itemMediaUrl');
         const inpId = document.getElementById('itemMediaId');
         const inpTitle = document.getElementById('itemMediaTitle');
@@ -1053,59 +1699,79 @@
         const btnClear = document.getElementById('btnClearMedia');
 
         if (window.bootstrap && modalEl) {
-            modalEl.addEventListener('hidden.bs.modal', azRemoveLingeringBackdrops);
-            modalEl.addEventListener('hide.bs.modal', azRemoveLingeringBackdrops);
+            modalEl.addEventListener('hidden.bs.modal', cleanupBackdrops);
+            modalEl.addEventListener('hide.bs.modal', cleanupBackdrops);
+        }
+
+        function cleanupBackdrops() {
+            try {
+                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                document.body.classList.remove('modal-open');
+                document.documentElement.style.overflow = '';
+            } catch (e) {}
         }
 
         let items = [];
-
-        function saveItems() {
+        let currentModeName = 'simple';
+        const keyFor = m => STORAGE_KEYS[m] || STORAGE_KEYS.simple;
+        const saveItemsFor = (m, arr) => {
             try {
-                localStorage.setItem(STORAGE_KEY_ITEMS, JSON.stringify(items));
+                localStorage.setItem(keyFor(m), JSON.stringify(arr || []));
             } catch {}
-        }
-
-        function loadItems() {
+        };
+        const loadItemsFor = m => {
             try {
-                const raw = localStorage.getItem(STORAGE_KEY_ITEMS);
+                const raw = localStorage.getItem(keyFor(m));
                 if (raw) {
                     const p = JSON.parse(raw);
-                    if (Array.isArray(p)) items = p;
+                    if (Array.isArray(p)) return p;
                 }
             } catch {}
-        }
-
-        function saveMode() {
-            const c = document.querySelector('input[name="display_method"]:checked');
-            if (c) try {
-                localStorage.setItem(STORAGE_KEY_MODE, c.value);
+            return []
+        };
+        const saveMode = m => {
+            try {
+                localStorage.setItem(STORAGE_KEY_MODE, m);
             } catch {}
-        }
-
-        function loadMode() {
+        };
+        const loadMode = () => {
             try {
                 const m = localStorage.getItem(STORAGE_KEY_MODE);
                 if (m) {
                     const r = document.querySelector(`input[name="display_method"][value="${m}"]`);
-                    if (r) r.checked = true;
+                    r && (r.checked = true);
+                    return m;
                 }
             } catch {}
-        }
+            return (document.querySelector('input[name="display_method"]:checked')?.value || 'simple')
+        };
 
-        function currentMode() {
-            const r = document.querySelector('input[name="display_method"]:checked');
-            return r ? r.value : 'simple';
+        function refreshLinkNote() {
+            if (!linkNote) return;
+            if (currentModeName === 'file') {
+                linkNote.textContent = '(مطلوب في وضع ملف)';
+                linkEl?.setAttribute('aria-required', 'true');
+            } else {
+                linkNote.textContent = '(اختياري إلا في وضع ملف)';
+                linkEl?.removeAttribute('aria-required');
+            }
         }
 
         function toggleSection() {
-            const val = currentMode();
-            const show = (val === 'list' || val === 'file');
+            const show = (currentModeName === 'list' || currentModeName === 'file');
             dynamicSection.style.display = show ? 'block' : 'none';
+            refreshLinkNote();
         }
-        displayMethodRadios.forEach(r => r.addEventListener('change', () => {
+
+        function switchMode(m) {
+            if (m === currentModeName) return;
+            saveItemsFor(currentModeName, items);
+            currentModeName = m;
+            saveMode(m);
+            items = loadItemsFor(m);
+            renderItems();
             toggleSection();
-            saveMode();
-        }));
+        }
 
         function renderPreview() {
             prev.textContent = '';
@@ -1138,45 +1804,11 @@
                 prev.appendChild(a);
             }
         }
-
-        btnPick && btnPick.addEventListener('click', () => {
-            if (!window.mgxPicker) {
-                alert('MGX Picker غير محمّل');
-                return;
-            }
-            window.mgxPicker.open(media => {
-                if (!media || !media.url) {
-                    alert('لا يمكن استخدام هذا الوسيط');
-                    return;
-                }
-                inpId.value = media.id || '';
-                inpUrl.value = media.url || '';
-                inpTitle.value = media.title || '';
-                inpAlt.value = media.alt || '';
-                renderPreview();
-            });
-        });
-        btnClear && btnClear.addEventListener('click', () => {
-            inpId.value = '';
-            inpUrl.value = '';
-            inpTitle.value = '';
-            inpAlt.value = '';
-            prev.textContent = '';
-        });
-
-        addBtn && addBtn.addEventListener('click', () => {
-            editIndexInput.value = '';
-            titleEl.value = '';
-            descEl.value = '';
-            linkEl.value = '';
-            if (window.tinymce && tinymce.get('itemDescription')) tinymce.get('itemDescription').setContent(
-                '');
-            inpId.value = '';
-            inpUrl.value = '';
-            inpTitle.value = '';
-            inpAlt.value = '';
-            prev.textContent = '';
-        });
+        const getTinyHtml = id => (window.tinymce && tinymce.get(id)) ? tinymce.get(id).getContent() : (document
+            .getElementById(id)?.value || '').trim();
+        const getTinyText = id => (window.tinymce && tinymce.get(id)) ? tinymce.get(id).getContent({
+            format: 'text'
+        }).replace(/\s+/g, ' ').trim() : (document.getElementById(id)?.value || '').replace(/\s+/g, ' ').trim();
 
         function textFromHtml(html) {
             const tmp = document.createElement('div');
@@ -1204,12 +1836,10 @@
                 row.className = 'az-item-row';
                 const left = document.createElement('div');
                 left.className = 'az-left';
-
                 const drag = document.createElement('div');
                 drag.className = 'az-drag no-select';
                 drag.innerHTML = '<i class="fa fa-grip-vertical"></i>';
                 left.appendChild(drag);
-
                 const thumb = document.createElement('div');
                 thumb.className = 'az-thumb';
                 const u = it.image || '';
@@ -1231,7 +1861,6 @@
                     thumb.innerHTML = '<i class="fa fa-file-lines"></i>';
                 }
                 left.appendChild(thumb);
-
                 const meta = document.createElement('div');
                 meta.className = 'az-meta';
                 const t = document.createElement('div');
@@ -1243,22 +1872,17 @@
                 meta.appendChild(t);
                 meta.appendChild(d);
                 left.appendChild(meta);
-
                 const right = document.createElement('div');
                 right.className = 'az-actions';
-                const badge = document.createElement('span');
-                badge.className = 'circle-number';
-                badge.textContent = String(i + 1);
 
+                // Create buttons first
                 const editBtn = document.createElement('button');
                 editBtn.type = 'button';
                 editBtn.className = 'btn btn-sm btn-outline-primary';
-                editBtn.style.marginLeft = '6px';
                 editBtn.innerHTML = '<i class="fa fa-pen"></i> تعديل';
                 editBtn.addEventListener('click', () => {
                     editIndexInput.value = String(i);
                     titleEl.value = it.title || '';
-                    descEl.value = it.description || '';
                     if (window.tinymce && tinymce.get('itemDescription')) tinymce.get(
                         'itemDescription').setContent(it.description || '');
                     linkEl.value = it.url || '';
@@ -1278,17 +1902,23 @@
                 const delBtn = document.createElement('button');
                 delBtn.type = 'button';
                 delBtn.className = 'btn btn-sm btn-outline-danger';
-                delBtn.style.marginLeft = '6px';
                 delBtn.innerHTML = '<i class="fa fa-trash"></i> حذف';
                 delBtn.addEventListener('click', () => {
                     items.splice(i, 1);
-                    saveItems();
+                    saveItemsFor(currentModeName, items);
                     renderItems();
                 });
 
-                right.appendChild(badge);
+                // Create number badge last (will appear on the right)
+                const badge = document.createElement('span');
+                badge.className = 'circle-number';
+                badge.textContent = String(i + 1);
+
+                // Append in order: buttons first, then number
                 right.appendChild(editBtn);
                 right.appendChild(delBtn);
+                right.appendChild(badge); // Number appears on the right
+
                 row.appendChild(left);
                 row.appendChild(right);
                 card.appendChild(row);
@@ -1296,49 +1926,93 @@
             });
         }
 
-        /* === TinyMCE-safe getters === */
-        function getTinyHtml(id) {
-            if (window.tinymce && tinymce.get(id)) {
-                return tinymce.get(id).getContent();
-            }
-            return (document.getElementById(id)?.value || '').trim();
-        }
+        displayMethodRadios.forEach(r => r.addEventListener('change', e => switchMode(e.target.value)));
 
-        function getTinyText(id) {
-            if (window.tinymce && tinymce.get(id)) {
-                return tinymce.get(id).getContent({
-                    format: 'text'
-                }).replace(/\s+/g, ' ').trim();
+        // Updated to use MMxx modal instead of MGX
+        // Updated to use MMxx modal instead of MGX
+        // Updated to use MMxx modal instead of MGX
+        btnPick?.addEventListener('click', () => {
+            if (!window.mmxxMediaModalManager) {
+                alert('MMxx Media Modal غير محمّل');
+                return;
             }
-            return (document.getElementById(id)?.value || '').replace(/\s+/g, ' ').trim();
-        }
 
-        /* === SAVE BTN (fixed validation for description) === */
-        saveBtn && saveBtn.addEventListener('click', () => {
-            const mode = currentMode();
+            // Store current modal state
+            const currentModal = modalEl;
+
+            // Close the item modal first
+            if (window.bootstrap && bootstrap.Modal) {
+                const itemModalInstance = bootstrap.Modal.getInstance(currentModal);
+                if (itemModalInstance) {
+                    itemModalInstance.hide();
+                }
+            } else {
+                currentModal.style.display = 'none';
+                currentModal.setAttribute('aria-hidden', 'true');
+                cleanupBackdrops();
+            }
+
+            // Set up the callback for when media is selected
+            window.mmxxMediaModalManager.onMediaSelected = function(media) {
+                if (!media || !media.url) {
+                    alert('لا يمكن استخدام هذا الوسيط');
+                    return;
+                }
+                inpId.value = media.id || '';
+                inpUrl.value = media.url || '';
+                inpTitle.value = media.title || '';
+                inpAlt.value = media.alt || '';
+                renderPreview();
+
+                // Re-open the item modal after selection
+                setTimeout(() => {
+                    if (window.bootstrap && bootstrap.Modal) {
+                        bootstrap.Modal.getOrCreateInstance(currentModal).show();
+                    } else {
+                        currentModal.style.display = 'block';
+                        currentModal.setAttribute('aria-hidden', 'false');
+                    }
+                }, 300);
+            };
+
+            // Open the MMxx media modal after a short delay
+            setTimeout(() => {
+                window.mmxxMediaModalManager.openModal('itemMedia');
+            }, 200);
+        });
+
+        btnClear?.addEventListener('click', () => {
+            inpId.value = '';
+            inpUrl.value = '';
+            inpTitle.value = '';
+            inpAlt.value = '';
+            prev.textContent = '';
+        });
+
+        addBtn?.addEventListener('click', () => {
+            editIndexInput.value = '';
+            titleEl.value = '';
+            linkEl.value = '';
+            if (window.tinymce && tinymce.get('itemDescription')) tinymce.get('itemDescription').setContent(
+                '');
+            inpId.value = '';
+            inpUrl.value = '';
+            inpTitle.value = '';
+            inpAlt.value = '';
+            prev.textContent = '';
+        });
+
+        saveBtn?.addEventListener('click', () => {
+            const mode = currentModeName;
             const title = (titleEl.value || '').trim();
-            const descriptionText = getTinyText('itemDescription'); // for validation
-            const descriptionHTML = getTinyHtml('itemDescription'); // stored content
+            const descriptionText = getTinyText('itemDescription');
+            const descriptionHTML = getTinyHtml('itemDescription');
             const imageUrl = (inpUrl.value || '').trim();
             const linkUrl = (linkEl.value || '').trim();
-
-            if (!title) {
-                alert('العنوان مطلوب');
-                return;
-            }
-            if (!descriptionText) {
-                alert('الوصف مطلوب');
-                return;
-            }
-            if (!imageUrl) {
-                alert('الصورة مطلوبة');
-                return;
-            }
-            if (mode === 'list' && !linkUrl) {
-                alert('الرابط مطلوب في وضع قائمة');
-                return;
-            }
-
+            if (!title) return alert('العنوان مطلوب');
+            if (!descriptionText) return alert('الوصف مطلوب');
+            if (!imageUrl) return alert('الصورة مطلوبة');
+            if (mode === 'file' && !linkUrl) return alert('الرابط مطلوب في وضع ملف');
             const payload = {
                 title,
                 description: descriptionHTML,
@@ -1346,99 +2020,64 @@
                 url: linkUrl || null,
                 media_id: inpId.value || null,
                 media_title: inpTitle.value || '',
-                media_alt: inpAlt.value || '',
+                media_alt: inpAlt.value || ''
             };
-
             if (editIndexInput.value !== '') {
                 const idx = parseInt(editIndexInput.value, 10);
                 if (Number.isFinite(idx) && idx >= 0 && idx < items.length) items[idx] = payload;
             } else {
                 items.push(payload);
             }
-
-            saveItems();
+            saveItemsFor(currentModeName, items);
             renderItems();
-
             if (window.bootstrap && bootstrap.Modal) {
                 bootstrap.Modal.getOrCreateInstance(modalEl).hide();
             } else {
                 modalEl.style.display = 'none';
                 modalEl.setAttribute('aria-hidden', 'true');
             }
-            azRemoveLingeringBackdrops();
+            cleanupBackdrops();
         });
 
-        clearAllBtn && clearAllBtn.addEventListener('click', () => {
-            if (confirm('حذف جميع العناصر؟ لا يمكن التراجع.')) {
-                items = [];
-                saveItems();
-                renderItems();
-            }
-        });
-
-        // Sérialisation vers formulaire parent
-        if (mainForm) {
-            mainForm.addEventListener('submit', () => {
-                hiddenInputsContainer.textContent = '';
-                items.forEach((it, i) => {
-                    addHidden(`items[${i}][title]`, it.title || '');
-                    addHidden(`items[${i}][description]`, it.description || ''); // HTML
-                    addHidden(`items[${i}][image]`, it.image || '');
-                    addHidden(`items[${i}][url]`, it.url || '');
-                    addHidden(`items[${i}][index]`, String(i));
-                    addHidden(`items[${i}][media_title]`, it.media_title || '');
-                    addHidden(`items[${i}][media_alt]`, it.media_alt || '');
-                });
-            });
-        } else {
-            console.warn('[contentTab] Aucun formulaire parent trouvé.');
-        }
-
-        function addHidden(name, val) {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = name;
-            input.value = String(val).replace(/"/g, '&quot;');
-            hiddenInputsContainer.appendChild(input);
-        }
-
-        new Sortable(container, {
-            animation: 150,
-            handle: '.az-drag',
-            onEnd(evt) {
-                const oldIndex = evt.oldIndex,
-                    newIndex = evt.newIndex;
-                if (!Number.isFinite(oldIndex) || !Number.isFinite(newIndex)) return;
-                const m = items.splice(oldIndex, 1)[0];
-                items.splice(newIndex, 0, m);
-                saveItems();
-                renderItems();
-            }
-        });
-
-        // Init
-        (function init() {
-            loadMode();
-            toggleSection();
-            loadItems();
-            // Migration champs anciens
-            items = items.map(it => {
-                if (!it.image && it.media_url) {
-                    it.image = it.media_url;
+        if (container) {
+            new Sortable(container, {
+                animation: 150,
+                handle: '.az-drag',
+                onEnd: e => {
+                    const o = e.oldIndex,
+                        n = e.newIndex;
+                    if (!Number.isFinite(o) || !Number.isFinite(n)) return;
+                    const m = items.splice(o, 1)[0];
+                    items.splice(n, 0, m);
+                    saveItemsFor(currentModeName, items);
+                    renderItems();
                 }
-                return it;
             });
-            saveItems();
+        }
+
+        (function init() {
+            currentModeName = loadMode();
+            items = loadItemsFor(currentModeName);
+            try {
+                const LEGACY = 'az_content_items_v6';
+                const legacyRaw = localStorage.getItem(LEGACY);
+                if (legacyRaw && !localStorage.getItem(keyFor(currentModeName))) {
+                    const arr = JSON.parse(legacyRaw);
+                    if (Array.isArray(arr)) localStorage.setItem(keyFor(currentModeName), legacyRaw);
+                    localStorage.removeItem(LEGACY);
+                }
+            } catch {}
+            toggleSection();
             renderItems();
+            const evt = new Event('change');
+            const checked = document.querySelector('input[name="display_method"]:checked');
+            checked ? checked.dispatchEvent(evt) : refreshLinkNote();
         })();
 
-        // Purge localStorage après succès (si الصفحة تعرض .alert-success)
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('DOMContentLoaded', () => {
             const ok = document.querySelector('.alert.alert-success, .alert-success');
             if (ok) {
-                try {
-                    localStorage.removeItem(STORAGE_KEY_ITEMS); /* garder/حذف الوضع حسب رغبتك */
-                } catch {}
+                /* possibilité: localStorage.removeItem(keyFor(currentModeName)); */
             }
         });
     })();
