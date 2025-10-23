@@ -525,120 +525,168 @@ class ContentController extends BaseController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(string $id)
     {
+        // ===== 1) Chargement du contenu + relations nécessaires =====
         $content = Content::with([
-            'section',
-            'category',
-            'country',
-            'continent',
-            'trend',
-            'window',
-            'writer',
-            'city',
-            'tags',
-            'contentLists',
-            'media'
+            'section:id,name',
+            'category:id,name',
+            'country:id,name',
+            'continent:id,name',
+            'trend:id,title',
+            'window:id,name',
+            'writer:id,name',
+            'city:id,name',
+            'tags:id,name',
+            'contentLists' => function ($q) {
+                $q->orderBy('index');
+            },
         ])->findOrFail($id);
 
-        // Get all relationships for dropdowns
-        $sections = Section::all();
-        $categories = Category::all();
-        $countries = Location::where('type', 'country')->get();
-        $continents = Location::where('type', 'continent')->get();
-        $cities = Location::where('type', 'city')->get();
-        $trends = Trend::all();
-        $windows = Window::all();
-        $writers = Writer::all();
-        $tags = Tag::all();
+        // ===== 2) Données pour les <select> (objets avec id/name|title) =====
+        $sections   = Section::orderBy('name')->get(['id', 'name']);
+        $categories = Category::orderBy('name')->get(['id', 'name']);
+        $countries  = Location::where('type', 'country')->orderBy('name')->get(['id', 'name']);
+        $continents = Location::where('type', 'continent')->orderBy('name')->get(['id', 'name']);
+        $cities     = Location::where('type', 'city')->orderBy('name')->get(['id', 'name']);
+        $trends     = Trend::orderBy('title')->get(['id', 'title']); // title ici
+        $windows    = Window::orderBy('name')->get(['id', 'name']);  // name ici
+        $writers    = Writer::orderBy('name')->get(['id', 'name']);
+        $tags       = Tag::orderBy('name')->get(['id', 'name']);
 
-        // Get selected tag IDs for the multi-select
-        $selectedTagIds = $content->tags->pluck('id')->toArray();
+        // Tags sélectionnés
+        $selectedTagIds = $content->tags->pluck('id')->all();
 
-        // Get existing media for the media tab - convert to array if needed
-        $existing_images = $content->media()->whereIn('media_type', ['image'])->get()->toArray();
-        $existing_videos = $content->media()->whereIn('media_type', ['video', 'youtube'])->get()->toArray();
-        $existing_podcasts = $content->media()->whereIn('media_type', ['audio'])->get()->toArray();
-        $existing_albums = $content->media()->where('type', 'album')->get()->toArray();
+        // ===== 3) Médias existants (préfixés avec la vraie table) =====
+        $mediaTable = $content->media()->getRelated()->getTable(); // ex. 'content_media'
 
-        // Get content lists items if display_method is list/file
+        $existing_images = $content->media()
+            ->where($mediaTable . '.media_type', 'image')
+            ->get([
+                $mediaTable . '.id',
+                $mediaTable . '.name',
+                $mediaTable . '.alt',
+                $mediaTable . '.path',
+                $mediaTable . '.media_type',
+            ])->toArray();
+
+        $existing_videos = $content->media()
+            ->whereIn($mediaTable . '.media_type', ['video', 'youtube'])
+            ->get([
+                $mediaTable . '.id',
+                $mediaTable . '.name',
+                $mediaTable . '.alt',
+                $mediaTable . '.path',
+                $mediaTable . '.media_type',
+            ])->toArray();
+
+        $existing_podcasts = $content->media()
+            ->where($mediaTable . '.media_type', 'audio')
+            ->get([
+                $mediaTable . '.id',
+                $mediaTable . '.name',
+                $mediaTable . '.alt',
+                $mediaTable . '.path',
+                $mediaTable . '.media_type',
+            ])->toArray();
+
+        $existing_albums = $content->media()
+            ->wherePivot('type', 'album')
+            ->get([
+                $mediaTable . '.id',
+                $mediaTable . '.name',
+                $mediaTable . '.alt',
+                $mediaTable . '.path',
+                $mediaTable . '.media_type',
+            ])->toArray();
+
+        // ===== 4) Items (list/file) =====
         $contentItems = [];
-        if (in_array($content->display_method, ['list', 'file'])) {
-            $contentItems = $content->contentLists()->orderBy('index')->get()->toArray();
+        if (in_array($content->display_method, ['list', 'file'], true)) {
+            $contentItems = $content->contentLists->toArray();
         }
 
+        // ===== 5) Review existant =====
+        $reviewDescription = optional(
+            \App\Models\ContentReview::where('content_id', $content->id)->first()
+        )->message ?? '';
 
-        // Get review description if exists
-        $reviewDescription = '';
-        $review = \App\Models\ContentReview::where('content_id', $content->id)->first();
-        if ($review) {
-            $reviewDescription = $review->message;
-        }
+        // ===== 6) Médias "template" via le pivot =====
+        $pivotMedias = $content->media()
+            ->withPivot('type') // {main, mobile, detail, video, podcast, album}
+            ->get([
+                $mediaTable . '.id',
+                $mediaTable . '.name',
+                $mediaTable . '.alt',
+                $mediaTable . '.path',
+            ])->groupBy(fn($m) => $m->pivot->type);
 
-        // Get template-specific media URLs
-        $templateMedia = [];
-        $mediaTypes = ['main', 'mobile', 'detail', 'video', 'podcast', 'album'];
+        $getPath = function (string $type) use ($pivotMedias): string {
+            $m = $pivotMedias->get($type)?->first();
+            return $m?->path ?? '';
+        };
 
-        foreach ($mediaTypes as $type) {
-            $media = $content->media()->wherePivot('type', $type)->first();
-            if ($media) {
-                $templateMedia[$type] = $media->path;
+        $albumAssetsArray = [];
+        if ($pivotMedias->has('album')) {
+            foreach ($pivotMedias->get('album') as $m) {
+                $albumAssetsArray[] = [
+                    'url'   => $m->path,
+                    'title' => $m->name,
+                    'alt'   => $m->alt,
+                ];
             }
         }
 
-        // Map template fields based on current template
+        // ===== 7) Champs mappés par template =====
         $templateFields = [];
         switch ($content->template) {
             case 'normal_image':
                 $templateFields = [
-                    'normal_main_image' => $templateMedia['main'] ?? '',
-                    'normal_mobile_image' => $templateMedia['mobile'] ?? '',
-                    'normal_content_image' => $templateMedia['detail'] ?? '',
+                    'normal_main_image'    => $getPath('main'),
+                    'normal_mobile_image'  => $getPath('mobile'),
+                    'normal_content_image' => $getPath('detail'),
                 ];
                 break;
+
             case 'video':
                 $templateFields = [
-                    'video_main_image' => $templateMedia['main'] ?? '',
-                    'video_mobile_image' => $templateMedia['mobile'] ?? '',
-                    'video_content_image' => $templateMedia['detail'] ?? '',
-                    'video_file' => $templateMedia['video'] ?? '',
+                    'video_main_image'    => $getPath('main'),
+                    'video_mobile_image'  => $getPath('mobile'),
+                    'video_content_image' => $getPath('detail'),
+                    'video_file'          => $getPath('video'),
                 ];
                 break;
+
             case 'podcast':
                 $templateFields = [
-                    'podcast_main_image' => $templateMedia['main'] ?? '',
-                    'podcast_mobile_image' => $templateMedia['mobile'] ?? '',
-                    'podcast_content_image' => $templateMedia['detail'] ?? '',
-                    'podcast_file' => $templateMedia['podcast'] ?? '',
+                    'podcast_main_image'    => $getPath('main'),
+                    'podcast_mobile_image'  => $getPath('mobile'),
+                    'podcast_content_image' => $getPath('detail'),
+                    'podcast_file'          => $getPath('podcast'),
                 ];
                 break;
-            case 'album':
-                // Convert album assets collection to array
-                $albumAssets = $content->media()->wherePivot('type', 'album')->get();
-                $albumAssetsArray = [];
-                foreach ($albumAssets as $media) {
-                    $albumAssetsArray[] = [
-                        'url' => $media->path,
-                        'title' => $media->name,
-                        'alt' => $media->alt
-                    ];
-                }
 
+            case 'album':
                 $templateFields = [
-                    'album_main_image' => $templateMedia['main'] ?? '',
-                    'album_mobile_image' => $templateMedia['mobile'] ?? '',
-                    'album_content_image' => $templateMedia['detail'] ?? '',
-                    'album_assets' => $albumAssetsArray,
+                    'album_main_image'    => $getPath('main'),
+                    'album_mobile_image'  => $getPath('mobile'),
+                    'album_content_image' => $getPath('detail'),
+                    'album_assets'        => $albumAssetsArray,
                 ];
                 break;
+
             case 'no_image':
                 $templateFields = [
-                    'no_image_main_image' => $templateMedia['main'] ?? '',
-                    'no_image_mobile_image' => $templateMedia['mobile'] ?? '',
+                    'no_image_main_image'   => $getPath('main'),
+                    'no_image_mobile_image' => $getPath('mobile'),
                 ];
                 break;
+
+            default:
+                $templateFields = [];
         }
 
+        // ===== 8) Vue =====
         return view('dashboard.editcontent', compact(
             'content',
             'sections',
@@ -660,6 +708,8 @@ class ContentController extends BaseController
             'templateFields'
         ));
     }
+
+
 
 
 

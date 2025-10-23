@@ -1001,7 +1001,7 @@
                             </div>
 
                             {{-- ===== SOCIAL MEDIA TAB ===== --}}
-                            @include('dashboard.components.social-media')
+                            @include('dashboard.components.edit-social-media')
 
                             {{-- ===== MESSAGE TAB ===== --}}
                             <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">

@@ -1,21 +1,21 @@
-<!-- ======================= HEAD ASSETS (place in <head>) ======================= -->
+<!-- ======================= HEAD (placez idéalement ces balises dans <head>) ======================= -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="preconnect" href="https://www.youtube.com">
 <link rel="preconnect" href="https://i.ytimg.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
-<!-- ======================= MMX MEDIA MODAL INCLUDE (required) ======================= -->
+<!-- ======================= MMX MEDIA MODAL (assurez-vous que le composant est inclus) ======================= -->
 @include('dashboard.components.media-modal')
 
 <!-- ======================= MEDIA MANAGER UI ======================= -->
 <div class="media-manager">
     @csrf
-    <!-- Media Type Selection -->
-    <div class="media-type-selector mb-4">
+
+    <!-- Sélecteur du type de média -->
+    <div class="media-type-selector mb-3">
         <div class="d-flex flex-wrap">
             <div class="media-type-card">
-                <input type="radio" name="template" id="normal-radio" value="normal_image" class="media-type-input"
-                    checked>
+                <input type="radio" name="template" id="normal-radio" value="normal_image" class="media-type-input">
                 <label for="normal-radio" class="media-type-label">
                     <i class="fas fa-image"></i>
                     <span>صورة</span>
@@ -50,15 +50,17 @@
                 </label>
             </div>
         </div>
+
+       
     </div>
 
-    <!-- Hidden Fields (générés dynamiquement) -->
+    <!-- Champs cachés (mis à jour dynamiquement) -->
     <div id="media-hidden-fields"></div>
 
-    <!-- Dynamic Template Content -->
+    <!-- Contenu dynamique du template -->
     <div id="mediaTypeContent"></div>
 
-    <!-- Summary Panel -->
+    <!-- Panneau récapitulatif -->
     <div class="media-summary-panel mt-4">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
@@ -79,15 +81,14 @@
             this.state = {
                 currentTemplate: 'normal_image',
                 currentField: '',
-                selectedMedia: {}
-                // ملاحظة: الحقول التي تنتهي بـ _assets تُخزَّن كمصفوفات
+                selectedMedia: {} // { fieldName: {id,url,title,alt} | [{...}, ...] }
             };
 
-            // Proxy optionnel (même origine)
+            // Option proxy interne si vous en avez un (sinon laissez false)
             this.USE_PROXY = false;
             this.PROXY_URL = '/media/proxy?url=';
 
-            // YouTube helpers
+            // Règles YouTube
             this.YT_REGEX = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
 
             this.init();
@@ -96,10 +97,11 @@
         /* ================== INIT & EVENTS ================== */
         init() {
             this.bindEvents();
-            this.loadTemplateContent('normal_image');
+            this.loadTemplateContent(this.state.currentTemplate);
             this.updateSummary();
+            this.updateCurrentTemplatePill();
 
-            // Pont d’intégration avec MMX Media Modal
+            // Pont d’intégration avec le MMX Media Modal
             if (window.mmxMediaModalManager) {
                 const originalHandler = window.mmxMediaModalManager.onMediaSelected;
                 window.mmxMediaModalManager.onMediaSelected = (payload) => {
@@ -115,8 +117,27 @@
                 radio.addEventListener('change', e => {
                     this.state.currentTemplate = e.target.value;
                     this.loadTemplateContent(e.target.value);
+                    this.updateCurrentTemplatePill();
+                    this.updateHiddenFields();
                 });
             });
+        }
+
+        updateCurrentTemplatePill() {
+            const map = {
+                normal_image: 'صورة',
+                video: 'فيديو',
+                podcast: 'بودكاست',
+                album: 'ألبوم',
+                no_image: 'مقال'
+            };
+            const label = map[this.state.currentTemplate] || this.state.currentTemplate;
+            const el = document.getElementById('current-template-label');
+            if (el) el.textContent = label;
+
+            // Coche visuellement le bon radio
+            const radio = document.querySelector(`.media-type-input[value="${this.state.currentTemplate}"]`);
+            if (radio) radio.checked = true;
         }
 
         /* ================== URL HELPERS ================== */
@@ -127,7 +148,6 @@
             const m = url.match(this.YT_REGEX);
             return m ? m[1] : null;
         }
-
         normalizeUrl(url = '') {
             if (!url) return '';
             if (/^(data:|blob:)/i.test(url)) return url;
@@ -156,17 +176,19 @@
                 no_image: this.getNoImageTemplate()
             };
             document.getElementById('mediaTypeContent').innerHTML = templates[template] || '';
+            // Après rendu, ré-attacher l’aperçu pour les champs déjà sélectionnés
+            Object.keys(this.state.selectedMedia).forEach(f => this.updateFieldPreview(f));
         }
 
         createField(fieldName, label, icon, type = 'image') {
             const media = this.state.selectedMedia[fieldName];
             return `
-      <div class="field-card">
-        <label class="field-label">${label}</label>
-        <div class="field-preview" id="${fieldName}_preview">
-          ${media ? this.getMediaPreview(media, fieldName) : this.getEmptyState(fieldName, icon, type)}
-        </div>
-      </div>`;
+        <div class="field-card">
+            <label class="field-label">${label}</label>
+            <div class="field-preview" id="${fieldName}_preview">
+                ${media ? this.getMediaPreview(media, fieldName) : this.getEmptyState(fieldName, icon, type)}
+            </div>
+        </div>`;
         }
 
         /* ============== COLLECTION FIELD ( *_assets ) ============== */
@@ -181,50 +203,48 @@
                 selected: new Set()
             }, this.state._assetsUi[fieldName] || {});
 
-            const items = Array.isArray(this.state.selectedMedia[fieldName]) ? this.state.selectedMedia[fieldName] :
-                [];
-
             return `
-      <div class="field-card field-card--full" data-field="${fieldName}">
-        <div class="field-label assets-label-row">
-          <span>${label}</span>
-          <div class="assets-toolbar" data-assets-toolbar="${fieldName}">
-            <div class="assets-toolbar-group">
-              <label class="assets-size-label">حجم</label>
-              <input type="range" min="120" max="260" step="10" value="${this.state._assetsUi[fieldName].size}"
-                     oninput="mediaTabManager.onAssetsSize('${fieldName}', this.value)">
-              <button type="button" class="btn btn-sm"
-                      onclick="mediaTabManager.toggleAssetsView('${fieldName}')">تبديل العرض</button>
-              <button type="button" class="btn btn-sm btn-outline-primary"
-                      onclick="mediaTabManager.openAssetsPicker('${fieldName}')">إضافة عناصر</button>
-              <button type="button" class="btn btn-sm"
-                      onclick="mediaTabManager.selectAllAssets('${fieldName}')">تحديد الكل</button>
-              <button type="button" class="btn btn-sm"
-                      onclick="mediaTabManager.clearSelection('${fieldName}')">إلغاء التحديد</button>
-              <button type="button" class="btn btn-sm btn-outline-danger"
-                      onclick="mediaTabManager.deleteSelectedAssets('${fieldName}')">حذف المحدد</button>
-              <button type="button" class="btn btn-sm btn-outline-danger"
-                      onclick="mediaTabManager.clearAllAssets('${fieldName}')">تفريغ الألبوم</button>
+        <div class="field-card field-card--full" data-field="${fieldName}">
+            <div class="field-label assets-label-row">
+                <span>${label}</span>
+                <div class="assets-toolbar" data-assets-toolbar="${fieldName}">
+                    <div class="assets-toolbar-group">
+                        <label class="assets-size-label">حجم</label>
+                        <input type="range" min="120" max="260" step="10" value="${this.state._assetsUi[fieldName].size}"
+                               oninput="mediaTabManager.onAssetsSize('${fieldName}', this.value)">
+                        <button type="button" class="btn btn-sm"
+                                onclick="mediaTabManager.toggleAssetsView('${fieldName}')">تبديل العرض</button>
+                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                onclick="mediaTabManager.openAssetsPicker('${fieldName}')">إضافة عناصر</button>
+                        <button type="button" class="btn btn-sm"
+                                onclick="mediaTabManager.selectAllAssets('${fieldName}')">تحديد الكل</button>
+                        <button type="button" class="btn btn-sm"
+                                onclick="mediaTabManager.clearSelection('${fieldName}')">إلغاء التحديد</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                onclick="mediaTabManager.deleteSelectedAssets('${fieldName}')">حذف المحدد</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                onclick="mediaTabManager.clearAllAssets('${fieldName}')">تفريغ الألبوم</button>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
 
-        <div class="assets-wrapper ${this.state._assetsUi[fieldName].view === 'list' ? 'is-list' : 'is-grid'}" style="--asset-size:${this.state._assetsUi[fieldName].size}px">
-          <div class="assets-grid" id="${fieldName}_grid"
-               ondragover="mediaTabManager.onAssetDragOver(event)"
-               ondrop="mediaTabManager.onAssetDrop(event, '${fieldName}')">
-            ${this.renderAssetsGrid(fieldName)}
-          </div>
-          ${this.renderAssetsPagination(fieldName, items.length)}
-        </div>
-      </div>`;
+            <div class="assets-wrapper ${this.state._assetsUi[fieldName].view === 'list' ? 'is-list' : 'is-grid'}"
+                 style="--asset-size:${this.state._assetsUi[fieldName].size}px">
+                <div class="assets-grid" id="${fieldName}_grid"
+                     ondragover="mediaTabManager.onAssetDragOver(event)"
+                     ondrop="mediaTabManager.onAssetDrop(event, '${fieldName}')">
+                    ${this.renderAssetsGrid(fieldName)}
+                </div>
+                ${this.renderAssetsPagination(fieldName)}
+            </div>
+        </div>`;
         }
 
         getAssetsEmptyState(fieldName) {
             return `
-      <div class="assets-empty" onclick="mediaTabManager.openAssetsPicker('${fieldName}')">
-        <span>انقر للإضافة</span>
-      </div>`;
+        <div class="assets-empty" onclick="mediaTabManager.openAssetsPicker('${fieldName}')">
+            <span>انقر للإضافة</span>
+        </div>`;
         }
 
         getAssetCardSelectable(media, fieldName, index) {
@@ -239,28 +259,28 @@
             const selected = ui.selected.has(this._assetKey(media)) ? ' is-selected' : '';
 
             return `
-      <div class="asset-item${selected}" data-index="${index}" draggable="true"
-           ondragstart="mediaTabManager.onAssetDragStart(event, '${fieldName}', ${index})">
-        <label class="asset-check">
-          <input type="checkbox" ${selected ? 'checked' : ''}
-                 onchange="mediaTabManager.onAssetToggle('${fieldName}', ${index}, this.checked)">
-          <span></span>
-        </label>
-        <div class="asset-thumb">
-          ${type === 'audio'
-            ? `<div class="asset-audio" title="${media.title || ''}">${media.title || 'صوت'}</div>`
-            : `<img src="${thumb}" alt="${media.title || ''}" loading="lazy"
-                     onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`}
-        </div>
-        <div class="asset-meta">
-          <div class="asset-title" title="${media.title || ''}">${media.title || 'بدون عنوان'}</div>
-          <div class="asset-type">${this.getFileTypeLabel(type)}</div>
-        </div>
-        <div class="asset-actions">
-          <button type="button" class="btn btn-sm btn-outline-danger"
-                  onclick="mediaTabManager.removeAsset('${fieldName}', ${index})">حذف</button>
-        </div>
-      </div>`;
+        <div class="asset-item${selected}" data-index="${index}" draggable="true"
+             ondragstart="mediaTabManager.onAssetDragStart(event, '${fieldName}', ${index})">
+            <label class="asset-check">
+                <input type="checkbox" ${selected ? 'checked' : ''}
+                       onchange="mediaTabManager.onAssetToggle('${fieldName}', ${index}, this.checked)">
+                <span></span>
+            </label>
+            <div class="asset-thumb">
+                ${type === 'audio'
+                    ? `<div class="asset-audio" title="${media.title || ''}">${media.title || 'صوت'}</div>`
+                    : `<img src="${thumb}" alt="${media.title || ''}" loading="lazy"
+                            onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`}
+            </div>
+            <div class="asset-meta">
+                <div class="asset-title" title="${media.title || ''}">${media.title || 'بدون عنوان'}</div>
+                <div class="asset-type">${this.getFileTypeLabel(type)}</div>
+            </div>
+            <div class="asset-actions">
+                <button type="button" class="btn btn-sm btn-outline-danger"
+                        onclick="mediaTabManager.removeAsset('${fieldName}', ${index})">حذف</button>
+            </div>
+        </div>`;
         }
 
         getAssetCard(media, fieldName, index) {
@@ -269,9 +289,7 @@
 
         openAssetsPicker(fieldName) {
             this.state.currentField = fieldName; // *_assets
-            if (!Array.isArray(this.state.selectedMedia[fieldName])) {
-                this.state.selectedMedia[fieldName] = [];
-            }
+            if (!Array.isArray(this.state.selectedMedia[fieldName])) this.state.selectedMedia[fieldName] = [];
             if (window.mmxMediaModalManager?.openModal) {
                 window.mmxMediaModalManager.openModal(fieldName, {
                     multiple: true
@@ -313,8 +331,11 @@
             const ui = this.state._assetsUi[fieldName];
             const q = ui.query.trim().toLowerCase();
             const filtered = q ?
-                items.filter(m => (m.title || '').toLowerCase().includes(q) || (m.alt || '').toLowerCase().includes(
-                    q) || (m.url || '').toLowerCase().includes(q)) :
+                items.filter(m =>
+                    (m.title || '').toLowerCase().includes(q) ||
+                    (m.alt || '').toLowerCase().includes(q) ||
+                    (m.url || '').toLowerCase().includes(q)
+                ) :
                 items;
             const start = (ui.page - 1) * ui.pageSize;
             const pageItems = filtered.slice(start, start + ui.pageSize);
@@ -328,25 +349,28 @@
                 [];
             const q = ui.query.trim().toLowerCase();
             const total = q ?
-                items.filter(m => (m.title || '').toLowerCase().includes(q) || (m.alt || '').toLowerCase().includes(
-                    q) || (m.url || '').toLowerCase().includes(q)).length :
+                items.filter(m =>
+                    (m.title || '').toLowerCase().includes(q) ||
+                    (m.alt || '').toLowerCase().includes(q) ||
+                    (m.url || '').toLowerCase().includes(q)
+                ).length :
                 items.length;
             const pages = Math.max(1, Math.ceil(total / ui.pageSize));
             const page = Math.min(ui.page, pages);
             return `
-      <div class="assets-pagination">
-        <div class="assets-page-info">العناصر: ${total} | الصفحة ${page} من ${pages}</div>
-        <div class="assets-page-actions">
-          <label>لكل صفحة</label>
-          <select onchange="mediaTabManager.onAssetsPageSize('${fieldName}', this.value)">
-            ${[12,24,36,60,96].map(n => `<option value="${n}" ${n==ui.pageSize?'selected':''}>${n}</option>`).join('')}
-          </select>
-          <button type="button" class="btn btn-sm" ${page<=1?'disabled':''}
-                  onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page-1})">السابق</button>
-          <button type="button" class="btn btn-sm" ${page>=pages?'disabled':''}
-                  onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page+1})">التالي</button>
-        </div>
-      </div>`;
+        <div class="assets-pagination">
+            <div class="assets-page-info">العناصر: ${total} | الصفحة ${page} من ${pages}</div>
+            <div class="assets-page-actions">
+                <label>لكل صفحة</label>
+                <select onchange="mediaTabManager.onAssetsPageSize('${fieldName}', this.value)">
+                    ${[12,24,36,60,96].map(n => `<option value="${n}" ${n==ui.pageSize?'selected':''}>${n}</option>`).join('')}
+                </select>
+                <button type="button" class="btn btn-sm" ${page<=1?'disabled':''}
+                        onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page-1})">السابق</button>
+                <button type="button" class="btn btn-sm" ${page>=pages?'disabled':''}
+                        onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page+1})">التالي</button>
+            </div>
+        </div>`;
         }
 
         onAssetsSearch(fieldName, value) {
@@ -395,8 +419,11 @@
                 [];
             const q = ui.query.trim().toLowerCase();
             const filtered = q ?
-                items.filter(m => (m.title || '').toLowerCase().includes(q) || (m.alt || '').toLowerCase().includes(
-                    q) || (m.url || '').toLowerCase().includes(q)) :
+                items.filter(m =>
+                    (m.title || '').toLowerCase().includes(q) ||
+                    (m.alt || '').toLowerCase().includes(q) ||
+                    (m.url || '').toLowerCase().includes(q)
+                ) :
                 items;
             const start = (ui.page - 1) * ui.pageSize;
             const pageItems = filtered.slice(start, start + ui.pageSize);
@@ -467,39 +494,41 @@
             this.updateHiddenFields();
         }
 
-        /* ================== PREVIEWS (عنصر واحد) ================== */
+        /* ================== PREVIEWS (champ unitaire) ================== */
         getMediaPreview(media, fieldName) {
             if (fieldName.endsWith('_assets')) {
-                return `<div class="assets-grid">${ (Array.isArray(media) ? media : []).map((m, i) => this.getAssetCard(m, fieldName, i)).join('') }</div>`;
+                const list = Array.isArray(media) ? media : [];
+                return `<div class="assets-grid">${list.map((m, i) => this.getAssetCard(m, fieldName, i)).join('')}</div>`;
             }
             const raw = media.url || '';
             const url = this.normalizeUrl(raw);
             const type = this.getFileType(url);
 
             const wrap = (visualHtml, title, typeLabel, isAudio = false) => `
-      <div class="media-preview-selected">
-        <div class="media-visual ${isAudio ? 'is-audio' : ''}">${visualHtml}</div>
-        <div class="media-info">
-          <span class="media-title">${title || 'بدون عنوان'}</span>
-          <span class="media-type">${typeLabel}</span>
-        </div>
-        <div class="media-actions">
-          <button class="btn btn-sm btn-outline-secondary" onclick="mediaTabManager.changeMedia('${fieldName}')">تغيير</button>
-          <button class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMedia('${fieldName}')">حذف</button>
-        </div>
-      </div>`;
+        <div class="media-preview-selected">
+            <div class="media-visual ${isAudio ? 'is-audio' : ''}">${visualHtml}</div>
+            <div class="media-info">
+                <span class="media-title">${title || 'بدون عنوان'}</span>
+                <span class="media-type">${typeLabel}</span>
+            </div>
+            <div class="media-actions">
+                <button class="btn btn-sm btn-outline-secondary" onclick="mediaTabManager.changeMedia('${fieldName}')">تغيير</button>
+                <button class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMedia('${fieldName}')">حذف</button>
+            </div>
+        </div>`;
 
             if (type === 'youtube') {
                 const vid = this.getYouTubeId(url);
                 if (vid) {
                     const embed = `https://www.youtube.com/embed/${vid}?rel=0&modestbranding=1`;
-                    const visual =
-                        `<iframe class="mmx-yt-embed" src="${embed}" title="${media.title || 'YouTube'}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="no-referrer"></iframe>`;
+                    const visual = `<iframe class="mmx-yt-embed" src="${embed}" title="${media.title || 'YouTube'}"
+                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                  allowfullscreen loading="lazy" referrerpolicy="no-referrer"></iframe>`;
                     return wrap(visual, media.title || 'YouTube', 'يوتيوب');
                 }
                 const fallbackThumb = 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg';
-                const visual =
-                    `<img class="media-thumb" src="${fallbackThumb}" alt="${media.title || ''}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous">`;
+                const visual = `<img class="media-thumb" src="${fallbackThumb}" alt="${media.title || ''}" loading="lazy"
+                              referrerpolicy="no-referrer" crossorigin="anonymous">`;
                 return wrap(visual, media.title || 'YouTube', 'يوتيوب');
             }
 
@@ -517,21 +546,22 @@
             }
 
             const safeImg = this.maybeProxy(url);
-            const visual =
-                `<img class="media-thumb" src="${safeImg}" alt="${media.title || ''}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`;
+            const visual = `<img class="media-thumb" src="${safeImg}" alt="${media.title || ''}" loading="lazy"
+                         referrerpolicy="no-referrer" crossorigin="anonymous"
+                         onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`;
             return wrap(visual, media.title || 'بدون عنوان', this.getFileTypeLabel(type));
         }
 
         getEmptyState(fieldName, icon, type) {
             if (fieldName.endsWith('_assets')) return this.getAssetsEmptyState(fieldName);
             return `
-      <div class="field-empty" onclick="mediaTabManager.openMediaModal('${fieldName}')">
-        <i class="${icon}"></i>
-        <span>${type === 'file' ? 'اختر ملف' : 'اختر صورة'}</span>
-      </div>`;
+        <div class="field-empty" onclick="mediaTabManager.openMediaModal('${fieldName}')">
+            <i class="${icon}"></i>
+            <span>${type === 'file' ? 'اختر ملف' : 'اختر صورة'}</span>
+        </div>`;
         }
 
-        /* ================== PUBLIC API (للتكامل مع المودال) ================== */
+        /* ================== API PUBLIC (intégration modal) ================== */
         openMediaModal(fieldName) {
             this.state.currentField = fieldName;
             if (window.mmxMediaModalManager?.openModal) {
@@ -555,13 +585,23 @@
         onMediaSelected(media) {
             const field = this.state.currentField;
             if (!field) return;
+
+            // Normaliser l’objet media (id/url/title/alt)
+            const m = {
+                id: media.id ?? null,
+                url: media.url ?? media.path ?? '',
+                title: media.title ?? media.name ?? '',
+                alt: media.alt ?? ''
+            };
+
             if (field.endsWith('_assets')) {
                 if (!Array.isArray(this.state.selectedMedia[field])) this.state.selectedMedia[field] = [];
-                const exists = this.state.selectedMedia[field].some(m => m.id == media.id && media.id != null);
-                if (!exists) this.state.selectedMedia[field].push(media);
+                const exists = this.state.selectedMedia[field].some(x => (x.id != null && m.id != null) ? x.id == m
+                    .id : (x.url === m.url));
+                if (!exists) this.state.selectedMedia[field].push(m);
                 this.updateAssetsGrid(field);
             } else {
-                this.state.selectedMedia[field] = media;
+                this.state.selectedMedia[field] = m;
                 this.updateFieldPreview(field);
             }
             this.updateSummary();
@@ -596,10 +636,10 @@
 
             if (!flattenItems.length) {
                 summaryBody.innerHTML = `
-        <div class="empty-summary">
-          <i class="fas fa-images"></i>
-          <p>لم يتم اختيار أي وسائط بعد</p>
-        </div>`;
+            <div class="empty-summary">
+                <i class="fas fa-images"></i>
+                <p>لم يتم اختيار أي وسائط بعد</p>
+            </div>`;
                 return;
             }
 
@@ -615,29 +655,34 @@
                 thumb = this.maybeProxy(thumb);
 
                 return `
-        <div class="summary-item">
-          <img src="${thumb}" alt="${media.title || ''}" loading="lazy"
-               referrerpolicy="no-referrer" crossorigin="anonymous"
-               onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">
-          <div class="summary-info">
-            <h6>${media.title || 'بدون عنوان'}</h6>
-            <span>${this.getFileTypeLabel(type)}</span>
-          </div>
-          <button class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMediaFromSummary('${media.id}')">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>`;
+            <div class="summary-item">
+                <img src="${thumb}" alt="${media.title || ''}" loading="lazy"
+                     referrerpolicy="no-referrer" crossorigin="anonymous"
+                     onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">
+                <div class="summary-info">
+                    <h6>${media.title || 'بدون عنوان'}</h6>
+                    <span>${this.getFileTypeLabel(type)}</span>
+                </div>
+                <button class="btn btn-sm btn-outline-danger"
+                        onclick="mediaTabManager.removeMediaFromSummary('${media.id ?? ''}${media.url ?? ''}')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>`;
             }).join('');
         }
 
-        removeMediaFromSummary(mediaId) {
-            const singleKey = Object.keys(this.state.selectedMedia).find(k => !Array.isArray(this.state
-                .selectedMedia[k]) && this.state.selectedMedia[k]?.id == mediaId);
+        removeMediaFromSummary(key) {
+            // Supprime dans les champs unitaires
+            const singleKey = Object.keys(this.state.selectedMedia)
+                .find(k => !Array.isArray(this.state.selectedMedia[k]) &&
+                    ((this.state.selectedMedia[k]?.id ?? '') + (this.state.selectedMedia[k]?.url ?? '')) == key);
             if (singleKey) return this.removeMedia(singleKey);
+
+            // Supprime dans les collections
             Object.keys(this.state.selectedMedia).forEach(k => {
                 const v = this.state.selectedMedia[k];
                 if (Array.isArray(v)) {
-                    const idx = v.findIndex(it => it?.id == mediaId);
+                    const idx = v.findIndex(it => ((it?.id ?? '') + (it?.url ?? '')) == key);
                     if (idx > -1) this.removeAsset(k, idx);
                 }
             });
@@ -646,6 +691,10 @@
         updateHiddenFields() {
             const container = document.getElementById('media-hidden-fields');
             const parts = [];
+
+            // Ajouter aussi le template courant pour la soumission
+            parts.push(`<input type="hidden" name="template" value="${this.state.currentTemplate}">`);
+
             Object.entries(this.state.selectedMedia).forEach(([field, media]) => {
                 if (!media) return;
                 if (Array.isArray(media)) {
@@ -693,114 +742,120 @@
             );
         }
 
-        /* ================== FIELD GROUPS ================== */
+        /* ================== GROUPES DE CHAMPS ================== */
         getNormalImageTemplate() {
             return `
-    <div class="template-fields">
-      <h6 class="template-title">إعدادات الصورة</h6>
-      <div class="fields-grid">
-        ${this.createField('normal_main_image','الصورة الرئيسية','fas fa-image')}
-        ${this.createField('normal_content_image','صورة المحتوى','fas fa-image')}
-        ${this.createField('normal_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
-      </div>
-    </div>`;
+        <div class="template-fields">
+            <h6 class="template-title">إعدادات الصورة</h6>
+            <div class="fields-grid">
+                ${this.createField('normal_main_image','الصورة الرئيسية','fas fa-image')}
+                ${this.createField('normal_content_image','صورة المحتوى','fas fa-image')}
+                ${this.createField('normal_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
+            </div>
+        </div>`;
         }
-
         getVideoTemplate() {
             return `
-    <div class="template-fields">
-      <h6 class="template-title">إعدادات الفيديو</h6>
-      <div class="fields-grid">
-        ${this.createField('video_main_image','صورة الفيديو الرئيسية','fas fa-image')}
-        ${this.createField('video_content_image','صورة محتوى الفيديو','fas fa-image')}
-        ${this.createField('video_mobile_image','صورة الفيديو للموبايل','fas fa-mobile-alt')}
-        ${this.createField('video_file','ملف الفيديو','fas fa-video','file')}
-      </div>
-    </div>`;
+        <div class="template-fields">
+            <h6 class="template-title">إعدادات الفيديو</h6>
+            <div class="fields-grid">
+                ${this.createField('video_main_image','صورة الفيديو الرئيسية','fas fa-image')}
+                ${this.createField('video_content_image','صورة محتوى الفيديو','fas fa-image')}
+                ${this.createField('video_mobile_image','صورة الفيديو للموبايل','fas fa-mobile-alt')}
+                ${this.createField('video_file','ملف الفيديو','fas fa-video','file')}
+            </div>
+        </div>`;
         }
-
         getPodcastTemplate() {
             return `
-    <div class="template-fields">
-      <h6 class="template-title">إعدادات البودكاست</h6>
-      <div class="fields-grid">
-        ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','fas fa-image')}
-        ${this.createField('podcast_content_image','صورة محتوى البودكاست','fas fa-image')}
-        ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','fas fa-mobile-alt')}
-        ${this.createField('podcast_file','ملف البودكاست','fas fa-podcast','file')}
-      </div>
-    </div>`;
+        <div class="template-fields">
+            <h6 class="template-title">إعدادات البودكاست</h6>
+            <div class="fields-grid">
+                ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','fas fa-image')}
+                ${this.createField('podcast_content_image','صورة محتوى البودكاست','fas fa-image')}
+                ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','fas fa-mobile-alt')}
+                ${this.createField('podcast_file','ملف البودكاست','fas fa-podcast','file')}
+            </div>
+        </div>`;
         }
-
         getAlbumTemplate() {
             return `
-    <div class="template-fields">
-      <h6 class="template-title">إعدادات الألبوم</h6>
-      <div class="fields-grid">
-        ${this.createField('album_main_image','صورة الألبوم الرئيسية','fas fa-image')}
-        ${this.createField('album_content_image','صورة محتوى الألبوم','fas fa-image')}
-        ${this.createField('album_mobile_image','صورة الألبوم للموبايل','fas fa-mobile-alt')}
-        ${this.createAssetsField('album_assets','أصول الألبوم')}
-      </div>
-    </div>`;
+        <div class="template-fields">
+            <h6 class="template-title">إعدادات الألبوم</h6>
+            <div class="fields-grid">
+                ${this.createField('album_main_image','صورة الألبوم الرئيسية','fas fa-image')}
+                ${this.createField('album_content_image','صورة محتوى الألبوم','fas fa-image')}
+                ${this.createField('album_mobile_image','صورة الألبوم للموبايل','fas fa-mobile-alt')}
+                ${this.createAssetsField('album_assets','أصول الألبوم')}
+            </div>
+        </div>`;
         }
-
         getNoImageTemplate() {
             return `
-    <div class="template-fields">
-      <h6 class="template-title">إعدادات المقال</h6>
-      <div class="fields-grid">
-        ${this.createField('no_image_main_image','الصورة الرئيسية','fas fa-image')}
-        ${this.createField('no_image_mobile_image','صورة المقال للموبايل','fas fa-mobile-alt')}
-      </div>
-    </div>`;
+        <div class="template-fields">
+            <h6 class="template-title">إعدادات المقال</h6>
+            <div class="fields-grid">
+                ${this.createField('no_image_main_image','الصورة الرئيسية','fas fa-image')}
+                ${this.createField('no_image_mobile_image','صورة المقال للموبايل','fas fa-mobile-alt')}
+            </div>
+        </div>`;
         }
     }
+
+    // Instance globale
     window.mediaTabManager = new MediaTabManager();
 </script>
 
-<!-- ======================= MODULE ÉDITION (EDIT-MEDIA-TAB) ======================= -->
+<!-- ======================= HYDRATATION INITIALE (depuis le contrôleur) ======================= -->
 @php
-    // Valeurs initiales depuis le contrôleur (sécuriser si non définies)
+    // Contrôleur fournit : $content, $templateFields (cf. méthode edit())
     $initialTemplate = $content->template ?? old('template', 'normal_image');
 
-    $existing_images = $existing_images ?? [];
-    $existing_videos = $existing_videos ?? [];
-    $existing_podcasts = $existing_podcasts ?? [];
-    $existing_albums = $existing_albums ?? [];
-
-    // Mappage champ -> URL (conforme aux règles PHP)
-    $initialFields = [
-        // normal_image
-        'normal_main_image' => $existing_images['main'] ?? null,
-        'normal_content_image' => $existing_images['detail'] ?? null,
-        'normal_mobile_image' => $existing_images['mobile'] ?? null,
-
-        // video
-        'video_main_image' => $existing_images['main'] ?? null,
-        'video_content_image' => $existing_images['detail'] ?? null,
-        'video_mobile_image' => $existing_images['mobile'] ?? null,
-        'video_file' => $existing_videos['video'] ?? null,
-
-        // podcast
-        'podcast_main_image' => $existing_images['main'] ?? null,
-        'podcast_content_image' => $existing_images['detail'] ?? null,
-        'podcast_mobile_image' => $existing_images['mobile'] ?? null,
-        'podcast_file' => $existing_podcasts['podcast'] ?? null,
-
-        // album
-        'album_main_image' => $existing_images['main'] ?? null,
-        'album_content_image' => $existing_images['detail'] ?? null,
-        'album_mobile_image' => $existing_images['mobile'] ?? null,
-        // assets gérés séparément
+    // Champs unitaires : on ne passe que les clés présentes et non vides
+    $fieldKeys = [
+        'normal_main_image',
+        'normal_content_image',
+        'normal_mobile_image',
+        'video_main_image',
+        'video_content_image',
+        'video_mobile_image',
+        'video_file',
+        'podcast_main_image',
+        'podcast_content_image',
+        'podcast_mobile_image',
+        'podcast_file',
+        'album_main_image',
+        'album_content_image',
+        'album_mobile_image',
+        'no_image_main_image',
+        'no_image_mobile_image',
     ];
-    $initialFields = collect($initialFields)->filter(fn($v) => is_string($v) && trim($v) !== '')->all();
+    $initialFields = [];
+    foreach ($fieldKeys as $k) {
+        if (!empty($templateFields[$k]) && is_string($templateFields[$k]) && trim($templateFields[$k]) !== '') {
+            $initialFields[$k] = $templateFields[$k];
+        }
+    }
 
-    $initialAssets = [
-        'album_assets' => array_values(
-            array_filter($existing_albums ?? [], fn($u) => is_string($u) && trim($u) !== ''),
-        ),
-    ];
+    // Assets d’album : tableau d’objets [{url,title,alt}, ...]
+    $initialAssets = [];
+    if (!empty($templateFields['album_assets']) && is_array($templateFields['album_assets'])) {
+        // Normaliser : ne garder que url/title/alt
+        $initialAssets['album_assets'] = array_values(
+            array_map(
+                function ($m) {
+                    return [
+                        'url' => is_array($m) ? $m['url'] ?? '' : (is_string($m) ? $m : ''),
+                        'title' => is_array($m) ? $m['title'] ?? '' : '',
+                        'alt' => is_array($m) ? $m['alt'] ?? '' : '',
+                    ];
+                },
+                array_filter($templateFields['album_assets'], function ($m) {
+                    return is_array($m) ? !empty($m['url']) : is_string($m) && trim($m) !== '';
+                }),
+            ),
+        );
+    }
 @endphp
 
 <script>
@@ -819,15 +874,15 @@
         window.mediaTabManager.hydrateInitial = function(payload) {
             if (!payload || typeof payload !== 'object') return;
 
+            // 1) Template courant
             const tpl = (payload.template || '').trim() || 'normal_image';
-
-            // 1) Sélection du template (radio + vue)
             this.state.currentTemplate = tpl;
             const radio = document.querySelector(`.media-type-input[value="${tpl}"]`);
             if (radio) radio.checked = true;
             this.loadTemplateContent(tpl);
+            this.updateCurrentTemplatePill();
 
-            // 2) Champs unitaires
+            // 2) Champs unitaires (URL -> objet media)
             const fields = payload.fields || {};
             Object.keys(fields).forEach(fieldName => {
                 const url = fields[fieldName];
@@ -836,11 +891,12 @@
                 this.updateFieldPreview(fieldName);
             });
 
-            // 3) Album assets (tableau)
+            // 3) Album assets (objets {url,title,alt})
             const assets = payload.assets || {};
             if (Array.isArray(assets.album_assets) && assets.album_assets.length) {
                 const key = 'album_assets';
-                this.state.selectedMedia[key] = assets.album_assets.map(u => toMediaObject(u));
+                this.state.selectedMedia[key] = assets.album_assets.map(m => toMediaObject(m.url || m, m
+                    .title || '', m.alt || ''));
                 this.state._assetsUi = this.state._assetsUi || {};
                 this.state._assetsUi[key] = Object.assign({
                     page: 1,
@@ -864,7 +920,7 @@
                 fields: @json($initialFields, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
                 assets: @json($initialAssets, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
             };
-            // Démarrage immédiat (la classe a déjà rendu le template par défaut)
+            // Laisser le temps au DOM d’apparaître
             setTimeout(() => {
                 window.mediaTabManager.hydrateInitial(bootstrap);
             }, 0);
@@ -878,7 +934,7 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* Media Type Selector */
+    /* Sélecteur type */
     .media-type-selector .media-type-card {
         position: relative;
         margin: 0 5px 5px 0;
@@ -922,7 +978,17 @@
         color: #007bff;
     }
 
-    /* Template Fields */
+    .current-template-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: .35rem .6rem;
+        background: #f1f4ff;
+        border: 1px solid #cfe0ff;
+        color: #2a4ea1;
+    }
+
+    /* Champs template */
     .template-fields {
         background: #fff;
         padding: 1.5rem;
@@ -953,7 +1019,7 @@
         display: block;
     }
 
-    /* Empty state */
+    /* États vides */
     .field-empty {
         display: flex;
         flex-direction: column;
@@ -1053,7 +1119,7 @@
         width: 100%;
     }
 
-    /* Summary Panel */
+    /* Récapitulatif */
     .media-summary-panel .card {
         border: none;
         box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
@@ -1125,14 +1191,13 @@
         }
     }
 
-    /* ===== أصول الألبوم (مجموعة) ===== */
+    /* ===== A S S E T S  (album) ===== */
     .assets-label-row {
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
 
-    /* ===== تحسينات عرض الألبوم المتعدد ===== */
     .assets-wrapper {
         --asset-size: 180px;
     }
@@ -1305,7 +1370,7 @@
         }
     }
 
-    /* ====== Full-width album assets ====== */
+    /* Full width pour les assets */
     .field-card--full {
         grid-column: 1 / -1;
         background: transparent;

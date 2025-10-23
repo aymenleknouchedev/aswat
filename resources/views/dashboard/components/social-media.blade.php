@@ -325,19 +325,24 @@
 
         <!-- Upload -->
         <section id="nbn-panel-upload" class="nbn-panel" role="tabpanel" aria-labelledby="nbn-tab-upload" hidden>
-            <div class="nbn-up" style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--az-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+            <div class="nbn-up"
+                style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--az-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
                 <div class="nbn-upload-fields" style="display: flex; flex-wrap: wrap; gap: .6rem; width: 100%;">
                     <div style="flex: 1 1 220px;">
-                        <label for="nbnUploadFile" style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fafafa; color: #333; text-align: center;">
+                        <label for="nbnUploadFile"
+                            style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fafafa; color: #333; text-align: center;">
                             <i class="fa fa-upload" style="margin-right: 6px;"></i> اختر ملف الوسائط
-                            <input type="file" id="nbnUploadFile" accept="image/*,video/*" style="display: none;" />
+                            <input type="file" id="nbnUploadFile" accept="image/*,video/*"
+                                style="display: none;" />
                         </label>
                     </div>
                     <div style="flex: 1 1 200px;">
-                        <input type="text" id="nbnUploadName" placeholder="اسم الملف" style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                        <input type="text" id="nbnUploadName" placeholder="اسم الملف"
+                            style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
                     </div>
                     <div style="flex: 1 1 200px;">
-                        <input type="text" id="nbnUploadAlt" placeholder="النص البديل" style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                        <input type="text" id="nbnUploadAlt" placeholder="النص البديل"
+                            style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
                     </div>
                 </div>
                 <div class="nbn-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
@@ -348,12 +353,12 @@
                 </div>
             </div>
             <script>
-                document.addEventListener('DOMContentLoaded', function () {
+                document.addEventListener('DOMContentLoaded', function() {
                     const fileInput = document.getElementById('nbnUploadFile');
                     const btnUploadToGallery = document.getElementById('nbnUploadToGallery');
                     const btnUploadAndClose = document.getElementById('nbnUploadAndClose');
 
-                    fileInput?.addEventListener('change', function () {
+                    fileInput?.addEventListener('change', function() {
                         if (fileInput.files && fileInput.files.length > 0) {
                             btnUploadToGallery.classList.add('nbn-btn-active');
                             btnUploadAndClose.classList.add('nbn-btn-active');
@@ -376,52 +381,63 @@
         <!-- Import -->
         <section id="nbn-panel-import" class="nbn-panel" role="tabpanel" aria-labelledby="nbn-tab-import" hidden>
             <div class="x-tab-body">
-            <div class="x-uploader x-uploader-url"
-                style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--x-border, #e5e7eb); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem;">
-                <input type="text" id="nbnUrl"
-                    style="flex:1 1 220px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;"
-                    placeholder="الرابط" />
-                <input type="text" id="nbnUrlName" placeholder="اسم الملف"
-                    style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
-                <input type="text" id="nbnUrlAlt" placeholder="النص البديل"
-                    style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                <div class="x-uploader x-uploader-url"
+                    style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--x-border, #e5e7eb); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                    <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem;">
+                        <input type="text" id="nbnUrl"
+                            style="flex:1 1 220px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;"
+                            placeholder="الرابط" />
+                        <input type="text" id="nbnUrlName" placeholder="اسم الملف"
+                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                        <input type="text" id="nbnUrlAlt" placeholder="النص البديل"
+                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                    </div>
+                    <fieldset class="x-url-type-group" aria-label="نوع الوسائط للرابط"
+                        style="margin-bottom:.7rem; border-radius:6px; border:1px solid #e5e7eb; padding:.7rem 1rem; background:#fff;">
+                        <legend style="font-size:.97rem; color:#333; padding:0 .3rem; font-weight:500;">نوع الوسائط
+                            (اختياري)</legend>
+                        <div style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
+                            <label class="x-radio"
+                                style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
+                                <input type="radio" name="nbn-url-type" value="auto" checked
+                                    style="accent-color: #2563eb;" />
+                                <span style="font-weight: 500; color: #2563eb;">Auto</span>
+                            </label>
+                            <label class="x-radio"
+                                style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
+                                <input type="radio" name="nbn-url-type" value="image"
+                                    style="accent-color: #059669;" />
+                                <span style="font-weight: 500; color: #059669;">Image</span>
+                            </label>
+                            <label class="x-radio"
+                                style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
+                                <input type="radio" name="nbn-url-type" value="video"
+                                    style="accent-color: #f59e42;" />
+                                <span style="font-weight: 500; color: #f59e42;">Video</span>
+                            </label>
+                            <label class="x-radio"
+                                style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
+                                <input type="radio" name="nbn-url-type" value="voice"
+                                    style="accent-color: #6366f1;" />
+                                <span style="font-weight: 500; color: #6366f1;">Voice</span>
+                            </label>
+                            <label class="x-radio"
+                                style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
+                                <input type="radio" name="nbn-url-type" value="file"
+                                    style="accent-color: #6b7280;" />
+                                <span style="font-weight: 500; color: #6b7280;">File</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                    <div class="x-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
+                        <button class="x-btn x-btn-secondary nbn-btn" type="button" id="nbnImportToGallery"
+                            title="استيراد بالرابط ثم عرض في المعرض"
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المعرض</button>
+                        <button class="x-btn x-btn-primary nbn-btn" type="button" id="nbnImportAndClose"
+                            title="استيراد بالرابط ثم حفظ وإغلاق"
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المقال</button>
+                    </div>
                 </div>
-                <fieldset class="x-url-type-group" aria-label="نوع الوسائط للرابط"
-                style="margin-bottom:.7rem; border-radius:6px; border:1px solid #e5e7eb; padding:.7rem 1rem; background:#fff;">
-                <legend style="font-size:.97rem; color:#333; padding:0 .3rem; font-weight:500;">نوع الوسائط (اختياري)</legend>
-                <div style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
-                    <label class="x-radio" style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
-                        <input type="radio" name="nbn-url-type" value="auto" checked style="accent-color: #2563eb;" />
-                        <span style="font-weight: 500; color: #2563eb;">Auto</span>
-                    </label>
-                    <label class="x-radio" style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
-                        <input type="radio" name="nbn-url-type" value="image" style="accent-color: #059669;" />
-                        <span style="font-weight: 500; color: #059669;">Image</span>
-                    </label>
-                    <label class="x-radio" style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
-                        <input type="radio" name="nbn-url-type" value="video" style="accent-color: #f59e42;" />
-                        <span style="font-weight: 500; color: #f59e42;">Video</span>
-                    </label>
-                    <label class="x-radio" style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
-                        <input type="radio" name="nbn-url-type" value="voice" style="accent-color: #6366f1;" />
-                        <span style="font-weight: 500; color: #6366f1;">Voice</span>
-                    </label>
-                    <label class="x-radio" style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
-                        <input type="radio" name="nbn-url-type" value="file" style="accent-color: #6b7280;" />
-                        <span style="font-weight: 500; color: #6b7280;">File</span>
-                    </label>
-                </div>
-                </fieldset>
-                <div class="x-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
-                <button class="x-btn x-btn-secondary nbn-btn" type="button" id="nbnImportToGallery"
-                    title="استيراد بالرابط ثم عرض في المعرض"
-                    style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المعرض</button>
-                <button class="x-btn x-btn-primary nbn-btn" type="button" id="nbnImportAndClose"
-                    title="استيراد بالرابط ثم حفظ وإغلاق"
-                    style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المقال</button>
-                </div>
-            </div>
             </div>
         </section>
     </div>
@@ -868,14 +884,18 @@
                 previewName.textContent = payload.title || payload.url;
                 previewWrap.classList.remove('d-none');
                 placeholder.style.display = 'none';
-                prevImg.src = payload.url;
-                prevImg.alt = payload.alt || payload.title || '';
-                prevImgWrap.style.display = '';
+                if (prevImg) {
+                    prevImg.src = payload.url;
+                    prevImg.alt = payload.alt || payload.title || '';
+                    prevImgWrap && (prevImgWrap.style.display = '');
+                }
             } else {
                 previewWrap.classList.add('d-none');
                 placeholder.style.display = 'block';
-                prevImg.removeAttribute('src');
-                prevImgWrap.style.display = 'none';
+                if (prevImg) {
+                    prevImg.removeAttribute('src');
+                    prevImgWrap && (prevImgWrap.style.display = 'none');
+                }
             }
         }
         window.removeShareImage = function() {
@@ -889,8 +909,8 @@
         window.updatePreview = function() {
             const t = document.getElementById('share_title')?.value || '';
             const d = document.getElementById('share_description')?.value || '';
-            prevTitle.textContent = t.trim() || 'عنوان المشاركة';
-            prevDesc.textContent = d.trim() || 'وصف المشاركة';
+            if (prevTitle) prevTitle.textContent = t.trim() || 'عنوان المشاركة';
+            if (prevDesc) prevDesc.textContent = d.trim() || 'وصف المشاركة';
         };
 
         function opennbnForSocial() {
@@ -927,5 +947,81 @@
                 hidden.value = shareUrl?.value || '';
             });
         });
+    })();
+</script>
+
+<!-- ====================== BRIDGE MediaTabManager ↔ nbn (AJOUT NOUVEAU) ====================== -->
+<script>
+    /**
+     * Ce bridge connecte nbn aux méthodes du MediaTabManager :
+     * - openMediaModal(field) pour les champs unitaires (image/vidéo/podcast)
+     * - openAssetsPicker(field) pour les champs d’album (*_assets) en ajout itératif
+     * Il met ensuite à jour l’aperçu, le résumé et les champs cachés.
+     */
+    (function bridgeMediaTabWithNbn() {
+        if (!window.mediaTabManager) return; // MediaTabManager requis
+
+        // Normalisation objet média depuis nbn
+        function norm(media) {
+            return {
+                id: media?.id ?? null,
+                url: media?.url ?? media?.path ?? '',
+                title: media?.title ?? media?.name ?? '',
+                alt: media?.alt ?? ''
+            };
+        }
+
+        // Ouvre nbn et retourne un seul média via callback
+        function openNbnSingle(onSelect) {
+            if (window.nbnPicker?.open) {
+                window.nbnPicker.open(function(sel) {
+                    if (!sel || !sel.url) {
+                        alert('لا يمكن استخدام هذا الوسيط');
+                        return;
+                    }
+                    onSelect(norm(sel));
+                });
+                return true;
+            }
+            return false;
+        }
+
+        // Conserver l’implémentation d’origine (MMX) si jamais nbn n’est pas présent
+        const _openMediaModal = window.mediaTabManager.openMediaModal.bind(window.mediaTabManager);
+        const _openAssetsPicker = window.mediaTabManager.openAssetsPicker.bind(window.mediaTabManager);
+
+        // Champs unitaires
+        window.mediaTabManager.openMediaModal = function(fieldName) {
+            this.state.currentField = fieldName;
+            const used = openNbnSingle((media) => {
+                this.state.selectedMedia[fieldName] = media;
+                this.updateFieldPreview(fieldName);
+                this.updateSummary();
+                this.updateHiddenFields();
+            });
+            if (!used) {
+                _openMediaModal(fieldName); // fallback MMX
+            }
+        };
+
+        // Album assets (ajout itératif)
+        window.mediaTabManager.openAssetsPicker = function(fieldName) {
+            this.state.currentField = fieldName;
+            if (!Array.isArray(this.state.selectedMedia[fieldName])) {
+                this.state.selectedMedia[fieldName] = [];
+            }
+            const used = openNbnSingle((media) => {
+                const list = this.state.selectedMedia[fieldName];
+                const exists = list.some(x => (x.id != null && media.id != null) ? x.id == media.id : (x
+                    .url === media.url));
+                if (!exists) list.push(media);
+                this.updateAssetsGrid(fieldName);
+                this.updateSummary();
+                this.updateHiddenFields();
+            });
+            if (!used) {
+                _openAssetsPicker(fieldName); // fallback MMX
+            }
+        };
     })();
 </script>
