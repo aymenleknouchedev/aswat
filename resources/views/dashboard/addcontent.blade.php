@@ -158,10 +158,6 @@
             margin-bottom: 1.5rem;
         }
 
-        .search-wrapper {
-            margin-bottom: 1rem;
-        }
-
         .form-text {
             font-size: 0.75rem;
         }
@@ -910,9 +906,19 @@
                                                     @endforeach
                                                 @endif
                                             </div>
-
-                                            <small class="text-muted">يمكنك اختيار أكثر من وسم</small>
                                         </div>
+                                    </div>
+                                </div>
+
+                                {{-- ===== SEO KEYWORD FIELD ===== --}}
+                                <div class="form-group col-12 mb-3">
+                                    <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
+                                        data-en="SEO Keyword">الكلمة الرئيسية</label>
+                                    <span style="color:red;">*</span>
+                                    <div class="form-control-wrap">
+                                        <input required id="seo_keyword" name="seo_keyword" type="text"
+                                            class="form-control form-control" maxlength="50"
+                                            value="{{ old('seo_keyword', '') }}">
                                     </div>
                                 </div>
 
@@ -938,17 +944,7 @@
                                     </div>
                                 </div>
 
-                                {{-- ===== SEO KEYWORD FIELD ===== --}}
-                                <div class="form-group col-12 mb-3">
-                                    <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
-                                        data-en="SEO Keyword">الكلمة الرئيسية</label>
-                                    <span style="color:red;">*</span>
-                                    <div class="form-control-wrap">
-                                        <input required id="seo_keyword" name="seo_keyword" type="text"
-                                            class="form-control form-control" maxlength="50"
-                                            value="{{ old('seo_keyword', '') }}">
-                                    </div>
-                                </div>
+
                             </div>
 
                             {{-- ===== TEMPLATE TAB ===== --}}
@@ -1002,16 +998,19 @@
 
                         {{-- ===== SUBMIT BUTTONS ===== --}}
                         <div class="mt-4 d-flex">
-                            <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر" data-en="Publish"
-                                id="publishButton">نشر</button>
-                            <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg"
-                                data-ar="حفظ كمسودة" data-en="Save as Draft">حفظ كمسودة</button>
+                            <button name="status" value="published" type="submit" class="btn btn-primary btn-lg me-3"
+                                data-ar="نشر" data-en="Publish" id="publishButton">نشر</button>
+                            <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg me-3"
+                                data-ar="حفظ" data-en="Save as Draft">حفظ</button>
+                            <button name="status" value="preview" type="submit" class="btn btn-secondary btn-lg"
+                                style="margin-left: 10px; color: white;" data-ar="حفظ و معاينة"
+                                data-en="Save and Preview">حفظ و معاينة</button>
                         </div>
                     </div>
 
                     {{-- ===== RIGHT SIDEBAR ===== --}}
                     <div class="col-md-3 mt-4">
-                        <div class="card mb-3">
+                        <div class="mb-3" style="border: 1px solid #dee2e6; border-radius: 4px; padding: 10px;">
                             <div class="card-body">
                                 {{-- CREATION DATE --}}
                                 <div class="mb-3">

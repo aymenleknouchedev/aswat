@@ -215,12 +215,10 @@
             <div class="col-md-6">
                 <div class="card h-100">
                     <div class="card-header">
-                        <h6 class="card-title mb-0">صورة المحتوى</h6>
+                        <h6 class="card-title mb-0">الصورة</h6>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="share_image_url" class="form-label small text-muted">اختر صورة للمشاركة على
-                                وسائل التواصل</label>
                             <div class="input-group">
                                 <input type="text" id="share_image_url" name="share_image_url" class="form-control"
                                     placeholder="لم يتم الاختيار" readonly>
@@ -268,73 +266,19 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="share_title" class="form-label">عنوان المشاركة</label>
+                            <label for="share_title" class="form-label">العنوان</label>
                             <input type="text" id="share_title" name="share_title" class="form-control"
                                 value="{{ old('share_title', '') }}" placeholder="أدخل عنوان المشاركة" maxlength="100"
                                 oninput="updatePreview()">
-                            <div class="form-text">سيظهر هذا العنوان عند مشاركة المحتوى على وسائل التواصل</div>
                         </div>
                         <div class="mb-0">
-                            <label for="share_description" class="form-label">وصف المشاركة</label>
+                            <label for="share_description" class="form-label">الوصف</label>
                             <textarea id="share_description" name="share_description" class="form-control" rows="4"
                                 placeholder="أدخل وصف المشاركة" maxlength="260" oninput="updatePreview()">{{ old('share_description', '') }}</textarea>
-                            <div class="form-text">سيظهر هذا الوصف عند مشاركة المحتوى على وسائل التواصل</div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Social Media Preview -->
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h6 class="card-title mb-0">معاينة المشاركة</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="social-preview bg-white border rounded p-3">
-                                    <div class="d-flex align-items-start mb-2">
-                                        <div class="flex-shrink-0">
-                                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center"
-                                                style="width:40px;height:40px;">
-                                                <i class="fas fa-globe text-white"></i>
-                                            </div>
-                                        </div>
-                                        <div class="flex-grow-1 ms-2">
-                                            <div class="fw-bold" id="preview_site_name">أصوات جزائرية</div>
-                                            <div class="text-muted small">الآن</div>
-                                        </div>
-                                    </div>
-                                    <div class="preview-content mt-2">
-                                        <p class="mb-1 fw-semibold" id="preview_title">
-                                            {{ old('share_title', '') ?: 'عنوان المشاركة' }}</p>
-                                        <p class="small text-muted mb-2" id="preview_description">
-                                            {{ old('share_description', '') ?: 'وصف المشاركة' }}</p>
-                                        <div id="preview_image_container" class="mb-2 rounded overflow-hidden"
-                                            style="display:none;">
-                                            <img id="preview_image" src="" alt=""
-                                                class="img-fluid w-100">
-                                        </div>
-                                        <div class="text-muted small" id="preview_url">www.algerie-voices.dz</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="alert alert-info">
-                                    <h6 class="alert-heading">نصائح للمشاركة</h6>
-                                    <ul class="small mb-0 ps-3">
-                                        <li>استخدم عناوين جذابة وواضحة</li>
-                                        <li>أضف وصفاً مختصراً ومفيداً</li>
-                                        <li>اختر صورة عالية الجودة</li>
-                                        <li>تأكد من ظهور المحتوى بشكل صحيح</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> <!-- /row -->
-                    </div>
-                </div>
-            </div> <!-- /preview -->
         </div>
     </div>
 </div>
@@ -398,13 +342,10 @@
                 </div>
                 <div class="nbn-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
                     <button type="button" class="nbn-btn nbn-btn-secondary" id="nbnUploadToGallery"
-                        style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">رفع & فتح المعرض</button>
+                        style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المعرض</button>
                     <button type="button" class="nbn-btn nbn-btn-primary" id="nbnUploadAndClose"
-                        style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">رفع & حفظ وإغلاق</button>
+                        style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المقال</button>
                 </div>
-                <small class="x-selection-hint" style="display:block; color:var(--az-muted, #6b7280); font-size:.97rem; margin-top:.2rem;">
-                    يُقبل رفع الصور والفيديو فقط. يمكنك إضافة اسم أو نص ALT اختياريًا.
-                </small>
             </div>
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
@@ -475,15 +416,11 @@
                 <div class="x-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
                 <button class="x-btn x-btn-secondary nbn-btn" type="button" id="nbnImportToGallery"
                     title="استيراد بالرابط ثم عرض في المعرض"
-                    style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & فتح المعرض</button>
+                    style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المعرض</button>
                 <button class="x-btn x-btn-primary nbn-btn" type="button" id="nbnImportAndClose"
                     title="استيراد بالرابط ثم حفظ وإغلاق"
-                    style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & حفظ وإغلاق</button>
+                    style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المقال</button>
                 </div>
-                <small class="x-selection-hint"
-                style="display:block; color:var(--x-muted, #6b7280); font-size:.97rem; margin-top:.2rem;">
-                يُقبل الرابط المباشر أو رابط YouTube. يمكن تحديد نوع الوسائط يدوياً أو تركه على Auto.
-                </small>
             </div>
             </div>
         </section>

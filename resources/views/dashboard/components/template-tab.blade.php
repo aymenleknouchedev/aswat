@@ -431,9 +431,9 @@
                     </div>
                     <div class="mmxx-uploader-actions">
                         <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-upload-to-gallery"
-                            title="رفع ثم عرض في المعرض">رفع & فتح المعرض</button>
+                            title="إدراج في المعرض">إدراج في المعرض</button>
                         <button class="mmxx-btn mmxx-btn-primary" type="button"
-                            id="mmxx-btn-upload-and-select-close" title="رفع ثم حفظ وإغلاق">رفع & حفظ وإغلاق</button>
+                            id="mmxx-btn-upload-and-select-close" title="رفع ثم حفظ وإغلاق">إدراج في المقال</button>
                     </div>
                 </div>
             </div>
@@ -500,17 +500,11 @@
                     <div class="mmxx-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
                         <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-import-to-gallery"
                             title="استيراد بالرابط ثم عرض في المعرض"
-                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & فتح
-                            المعرض</button>
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المعرض</button>
                         <button class="mmxx-btn mmxx-btn-primary" type="button"
                             id="mmxx-btn-import-and-select-close" title="استيراد بالرابط ثم حفظ وإغلاق"
-                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & حفظ
-                            وإغلاق</button>
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المقال</button>
                     </div>
-                    <small class="mmxx-selection-hint"
-                        style="display:block; color:var(--mmxx-muted); font-size:.97rem; margin-top:.2rem;">
-                        يُقبل الرابط المباشر أو رابط YouTube. يمكن تحديد نوع الوسائط يدوياً أو تركه على Auto.
-                    </small>
                 </div>
             </div>
         </section>
@@ -1383,8 +1377,8 @@
             } finally {
                 btnUploadToGallery.disabled = false;
                 btnUploadSelectAndClose.disabled = false;
-                btnUploadToGallery.textContent = "رفع & فتح المعرض";
-                btnUploadSelectAndClose.textContent = "رفع & حفظ وإغلاق";
+                btnUploadToGallery.textContent = "إدراج في المعرض";
+                btnUploadSelectAndClose.textContent = "إدراج في المقال";
             }
         }
 
@@ -1482,8 +1476,8 @@
             } finally {
                 btnImportToGallery.disabled = false;
                 btnImportSelectAndClose.disabled = false;
-                btnImportToGallery.textContent = "استيراد & فتح المعرض";
-                btnImportSelectAndClose.textContent = "استيراد & حفظ وإغلاق";
+                btnImportToGallery.textContent = "إدراج في المعرض";
+                btnImportSelectAndClose.textContent = "إدراج في المقال";
             }
         }
 
@@ -1561,6 +1555,27 @@
                         <div class="mb-2">
                             <label class="form-label">العنوان <span class="text-danger">*</span></label>
                             <input id="itemTitle" class="form-control" placeholder="عنوان واضح" />
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label">الرابط <small class="text-muted" id="itemLinkNote">(مطلوب في
+                                    وضع ملف)</small></label>
+                            <input id="itemLinkUrl" class="form-control" placeholder="https://..." />
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label">الوسائط <span class="text-danger">*</span></label>
+                            <div class="input-group mb-2">
+                                <input id="itemMediaUrl" class="form-control" placeholder="لم يتم الاختيار" readonly>
+                                <button type="button" class="btn btn-outline-secondary" id="btnPickMedia"><i
+                                        class="fa fa-images"></i></button>
+                                <button type="button" class="btn btn-outline-danger" id="btnClearMedia"
+                                    title="مسح"><i class="fa fa-xmark"></i></button>
+                            </div>
+                            <input type="hidden" id="itemMediaId">
+                            <input type="hidden" id="itemMediaTitle">
+                            <input type="hidden" id="itemMediaAlt">
+                            <div id="itemMediaPreview" class="mt-2"></div>
                         </div>
 
                         <div class="mb-2">
@@ -1755,27 +1770,10 @@
                             }
                         </script>
 
-                        <div class="mb-2">
-                            <label class="form-label">الرابط <small class="text-muted" id="itemLinkNote">(مطلوب في
-                                    وضع ملف)</small></label>
-                            <input id="itemLinkUrl" class="form-control" placeholder="https://..." />
-                        </div>
+
                     </div>
 
-                    <div class="col-md-4">
-                        <label class="form-label">الوسائط <span class="text-danger">*</span></label>
-                        <div class="input-group mb-2">
-                            <input id="itemMediaUrl" class="form-control" placeholder="لم يتم الاختيار" readonly>
-                            <button type="button" class="btn btn-outline-secondary" id="btnPickMedia"><i
-                                    class="fa fa-images"></i></button>
-                            <button type="button" class="btn btn-outline-danger" id="btnClearMedia"
-                                title="مسح"><i class="fa fa-xmark"></i></button>
-                        </div>
-                        <input type="hidden" id="itemMediaId">
-                        <input type="hidden" id="itemMediaTitle">
-                        <input type="hidden" id="itemMediaAlt">
-                        <div id="itemMediaPreview" class="mt-2"></div>
-                    </div>
+
                 </div>
             </div>
             <div class="modal-footer modal-footer-sticky">

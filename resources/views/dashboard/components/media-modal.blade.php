@@ -81,39 +81,46 @@
         </section>
 
         <!-- Upload -->
-        <section id="mmx-tab-upload" class="mmx-tab-panel" role="tabpanel" aria-labelledby="mmx-tabbtn-upload" hidden>
+        <section id="mmx-tab-upload" class="mmx-tab-panel" role="tabpanel" aria-labelledby="mmx-tabbtn-upload"
+            hidden>
             <div class="mmx-tab-body">
                 <div class="mmx-uploader">
                     <div class="mmx-upload-fields" style="display: flex; flex-wrap: wrap; gap: .6rem; width: 100%;">
                         <div style="flex: 1 1 220px;">
-                            <label for="mmx-upload-input" style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fafafa; color: #333; text-align: center;">
+                            <label for="mmx-upload-input"
+                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fafafa; color: #333; text-align: center;">
                                 <i class="fa fa-upload" style="margin-right: 6px;"></i> اختر ملف الوسائط
-                                <input type="file" id="mmx-upload-input" class="mmx-upload-input" style="display: none;" />
+                                <input type="file" id="mmx-upload-input" class="mmx-upload-input"
+                                    style="display: none;" />
                             </label>
                         </div>
                         <div style="flex: 1 1 200px;">
-                            <input type="text" id="mmx-upload-name" class="mmx-upload-name" placeholder="اسم الملف" style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                            <input type="text" id="mmx-upload-name" class="mmx-upload-name"
+                                placeholder="اسم الملف"
+                                style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
                         </div>
                         <div style="flex: 1 1 200px;">
-                            <input type="text" id="mmx-upload-alt" class="mmx-upload-alt" placeholder="النص البديل" style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                            <input type="text" id="mmx-upload-alt" class="mmx-upload-alt"
+                                placeholder="النص البديل"
+                                style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
                         </div>
                     </div>
                     <div class="mmx-uploader-actions">
                         <button class="mmx-btn mmx-btn-secondary" type="button" id="mmx-btn-upload-to-gallery"
-                            title="رفع ثم عرض في المعرض">رفع & فتح المعرض</button>
-                        <button class="mmx-btn mmx-btn-primary" type="button"
-                            id="mmx-btn-upload-and-select-close" title="رفع ثم حفظ وإغلاق">رفع & حفظ وإغلاق</button>
+                            title="إدراج في المعرض">إدراج في المعرض</button>
+                        <button class="mmx-btn mmx-btn-primary" type="button" id="mmx-btn-upload-and-select-close"
+                            title="إدراج في المقال">إدراج في المقال</button>
                     </div>
                 </div>
             </div>
             <script>
                 // Change button style when file selected
-                document.addEventListener('DOMContentLoaded', function () {
+                document.addEventListener('DOMContentLoaded', function() {
                     const fileInput = document.getElementById('mmx-upload-input');
                     const btnUploadToGallery = document.getElementById('mmx-btn-upload-to-gallery');
                     const btnUploadAndSelectClose = document.getElementById('mmx-btn-upload-and-select-close');
 
-                    fileInput?.addEventListener('change', function () {
+                    fileInput?.addEventListener('change', function() {
                         if (fileInput.files && fileInput.files.length > 0) {
                             btnUploadToGallery.classList.add('mmx-btn-active');
                             btnUploadAndSelectClose.classList.add('mmx-btn-active');
@@ -138,49 +145,44 @@
         <section id="mmx-tab-import" class="mmx-tab-panel" role="tabpanel" aria-labelledby="mmx-tabbtn-import"
             hidden>
             <div class="mmx-tab-body">
-            <div class="mmx-uploader mmx-uploader-url"
-                style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--mmx-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem;">
-                <input type="text" id="mmx-upload-url"
-                    style="flex:1 1 220px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;"
-                    placeholder="الرابط" />
-                <input type="text" id="mmx-url-name" placeholder="اسم الملف"
-                    style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
-                <input type="text" id="mmx-url-alt" placeholder="النص البديل"
-                    style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                <div class="mmx-uploader mmx-uploader-url"
+                    style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--mmx-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                    <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem;">
+                        <input type="text" id="mmx-upload-url"
+                            style="flex:1 1 220px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;"
+                            placeholder="الرابط" />
+                        <input type="text" id="mmx-url-name" placeholder="اسم الملف"
+                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                        <input type="text" id="mmx-url-alt" placeholder="النص البديل"
+                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                    </div>
+                    <fieldset class="mmx-url-type-group" aria-label="نوع الوسائط للرابط"
+                        style="margin-bottom:.7rem; border-radius:6px; border:1px solid #e5e7eb; padding:.7rem 1rem; background:#fff;">
+                        <legend style="font-size:.97rem; color:#333; padding:0 .3rem; font-weight:500;">نوع الوسائط
+                            (اختياري)</legend>
+                        <div style="display:flex; gap:1.2rem; flex-wrap:wrap;">
+                            <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
+                                    name="mmx-url-type" value="auto" checked /><span>Auto</span></label>
+                            <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
+                                    name="mmx-url-type" value="image" /><span>Image</span></label>
+                            <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
+                                    name="mmx-url-type" value="video" /><span>Video</span></label>
+                            <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
+                                    name="mmx-url-type" value="voice" /><span>Voice</span></label>
+                            <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
+                                    name="mmx-url-type" value="file" /><span>File</span></label>
+                        </div>
+                    </fieldset>
+                    <div class="mmx-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
+                        <button class="mmx-btn mmx-btn-secondary" type="button" id="mmx-btn-import-to-gallery"
+                            title="استيراد بالرابط ثم عرض في المعرض"
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المعرض
+                        </button>
+                        <button class="mmx-btn mmx-btn-primary" type="button" id="mmx-btn-import-and-select-close"
+                            title="استيراد بالرابط ثم حفظ وإغلاق"
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المقال</button>
+                    </div>
                 </div>
-                <fieldset class="mmx-url-type-group" aria-label="نوع الوسائط للرابط"
-                style="margin-bottom:.7rem; border-radius:6px; border:1px solid #e5e7eb; padding:.7rem 1rem; background:#fff;">
-                <legend style="font-size:.97rem; color:#333; padding:0 .3rem; font-weight:500;">نوع الوسائط
-                    (اختياري)</legend>
-                <div style="display:flex; gap:1.2rem; flex-wrap:wrap;">
-                    <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
-                        name="mmx-url-type" value="auto" checked /><span>Auto</span></label>
-                    <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
-                        name="mmx-url-type" value="image" /><span>Image</span></label>
-                    <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
-                        name="mmx-url-type" value="video" /><span>Video</span></label>
-                    <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
-                        name="mmx-url-type" value="voice" /><span>Voice</span></label>
-                    <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
-                        name="mmx-url-type" value="file" /><span>File</span></label>
-                </div>
-                </fieldset>
-                <div class="mmx-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
-                <button class="mmx-btn mmx-btn-secondary" type="button" id="mmx-btn-import-to-gallery"
-                    title="استيراد بالرابط ثم عرض في المعرض"
-                    style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & فتح
-                    المعرض</button>
-                <button class="mmx-btn mmx-btn-primary" type="button"
-                    id="mmx-btn-import-and-select-close" title="استيراد بالرابط ثم حفظ وإغلاق"
-                    style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & حفظ
-                    وإغلاق</button>
-                </div>
-                <small class="mmx-selection-hint"
-                style="display:block; color:var(--mmx-muted); font-size:.97rem; margin-top:.2rem;">
-                يُقبل الرابط المباشر أو رابط YouTube. يمكن تحديد نوع الوسائط يدوياً أو تركه على Auto.
-                </small>
-            </div>
             </div>
         </section>
     </div>
@@ -1238,8 +1240,8 @@
             } finally {
                 btnImportToGallery.disabled = false;
                 btnImportSelectAndClose.disabled = false;
-                btnImportToGallery.textContent = "استيراد & فتح المعرض";
-                btnImportSelectAndClose.textContent = "استيراد & حفظ وإغلاق";
+                btnImportToGallery.textContent = "إدراج في المعرض";
+                btnImportSelectAndClose.textContent = "إدراج في المقال";
             }
         }
 

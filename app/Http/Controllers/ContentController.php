@@ -275,10 +275,18 @@ class ContentController extends BaseController
 
             // Programmation
             'published_at'        => 'nullable|date',
-            'status'              => 'nullable|in:published,draft,scheduled',
+            'status'              => 'nullable|in:published,draft,scheduled,preview',
             'is_latest'           => 'nullable|boolean',
             'importance'          => 'nullable|integer|min:0|max:10',
         ];
+
+
+        // Mode preview spécial 
+        $preview = false;
+        if ($request->input('status') === 'preview') {
+            $request->merge(['status' => 'draft']);
+            $preview = true;
+        }
 
         // items pour display_method list/file (URLs, pas fichiers)
         if (in_array($request->input('display_method'), ['list', 'file'], true)) {
@@ -468,17 +476,31 @@ class ContentController extends BaseController
                 $content->published_at = $scheduledTime;
                 $content->save();
             }
-        } elseif ($request->filled('status') && $request->status === 'draft') {
-            $content->status       = 'draft';
+        } elseif ($request->filled('status') && $request->status === 'draft' && $preview === false) {
+            $content->status = 'draft';
             $content->published_at = null;
             $content->save();
-        } else {
-            $content->status       = 'published';
+            return redirect()
+                ->route('dashboard.contents.index')
+                ->with('success', 'Content created successfully.')
+                ->with('clear_local_storage', true);
+        } elseif ($request->filled('status') && $request->status === 'published') {
+            $content->status = 'published';
             $content->published_at = now();
             $content->save();
+            return redirect()
+                ->route('dashboard.contents.index')
+                ->with('success', 'Content created successfully.')
+                ->with('clear_local_storage', true);
+        } elseif ($request->filled('status') && $preview === true) {
+            $content->published_at = null;
+            $content->save();
+            // Redirect back to content update, and open news.show in a blank page via session
+            return redirect()
+                ->route('dashboard.content.edit', $content->id)
+                ->with('success', 'Content created successfully in preview mode.')
+                ->with('clear_local_storage', true);
         }
-
-
 
 
         return redirect()
