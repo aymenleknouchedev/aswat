@@ -381,25 +381,110 @@
 
         <!-- Upload -->
         <section id="nbn-panel-upload" class="nbn-panel" role="tabpanel" aria-labelledby="nbn-tab-upload" hidden>
-            <div class="nbn-up">
-                <input type="file" id="nbnUploadFile" accept="image/*,video/*">
-                <input type="text" id="nbnUploadName" placeholder="اسم (اختياري)">
-                <input type="text" id="nbnUploadAlt" placeholder="ALT (اختياري)">
-                <div style="width:100%"></div>
-                <button type="button" class="nbn-btn" id="nbnUploadToGallery">رفع & فتح المعرض</button>
-                <button type="button" class="nbn-btn" id="nbnUploadAndClose">رفع & اختيار</button>
+            <div class="nbn-up" style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--az-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                <div class="nbn-upload-fields" style="display: flex; flex-wrap: wrap; gap: .6rem; width: 100%;">
+                    <div style="flex: 1 1 220px;">
+                        <label for="nbnUploadFile" style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fafafa; color: #333; text-align: center;">
+                            <i class="fa fa-upload" style="margin-right: 6px;"></i> اختر ملف الوسائط
+                            <input type="file" id="nbnUploadFile" accept="image/*,video/*" style="display: none;" />
+                        </label>
+                    </div>
+                    <div style="flex: 1 1 200px;">
+                        <input type="text" id="nbnUploadName" placeholder="اسم الملف" style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                    </div>
+                    <div style="flex: 1 1 200px;">
+                        <input type="text" id="nbnUploadAlt" placeholder="النص البديل" style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                    </div>
+                </div>
+                <div class="nbn-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
+                    <button type="button" class="nbn-btn nbn-btn-secondary" id="nbnUploadToGallery"
+                        style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">رفع & فتح المعرض</button>
+                    <button type="button" class="nbn-btn nbn-btn-primary" id="nbnUploadAndClose"
+                        style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">رفع & حفظ وإغلاق</button>
+                </div>
+                <small class="x-selection-hint" style="display:block; color:var(--az-muted, #6b7280); font-size:.97rem; margin-top:.2rem;">
+                    يُقبل رفع الصور والفيديو فقط. يمكنك إضافة اسم أو نص ALT اختياريًا.
+                </small>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const fileInput = document.getElementById('nbnUploadFile');
+                    const btnUploadToGallery = document.getElementById('nbnUploadToGallery');
+                    const btnUploadAndClose = document.getElementById('nbnUploadAndClose');
+
+                    fileInput?.addEventListener('change', function () {
+                        if (fileInput.files && fileInput.files.length > 0) {
+                            btnUploadToGallery.classList.add('nbn-btn-active');
+                            btnUploadAndClose.classList.add('nbn-btn-active');
+                        } else {
+                            btnUploadToGallery.classList.remove('nbn-btn-active');
+                            btnUploadAndClose.classList.remove('nbn-btn-active');
+                        }
+                    });
+                });
+            </script>
+            <style>
+                .nbn-btn-active {
+                    background: #16a34a !important;
+                    border-color: #16a34a !important;
+                    color: #fff !important;
+                }
+            </style>
         </section>
 
         <!-- Import -->
         <section id="nbn-panel-import" class="nbn-panel" role="tabpanel" aria-labelledby="nbn-tab-import" hidden>
-            <div class="nbn-up">
-                <input type="url" id="nbnUrl" placeholder="رابط مباشر (صورة/فيديو)">
-                <input type="text" id="nbnUrlName" placeholder="اسم (اختياري)">
-                <input type="text" id="nbnUrlAlt" placeholder="ALT (اختياري)">
-                <div style="width:100%"></div>
-                <button type="button" class="nbn-btn" id="nbnImportToGallery">استيراد & فتح المعرض</button>
-                <button type="button" class="nbn-btn" id="nbnImportAndClose">استيراد & اختيار</button>
+            <div class="x-tab-body">
+            <div class="x-uploader x-uploader-url"
+                style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--x-border, #e5e7eb); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem;">
+                <input type="text" id="nbnUrl"
+                    style="flex:1 1 220px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;"
+                    placeholder="الرابط" />
+                <input type="text" id="nbnUrlName" placeholder="اسم الملف"
+                    style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                <input type="text" id="nbnUrlAlt" placeholder="النص البديل"
+                    style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                </div>
+                <fieldset class="x-url-type-group" aria-label="نوع الوسائط للرابط"
+                style="margin-bottom:.7rem; border-radius:6px; border:1px solid #e5e7eb; padding:.7rem 1rem; background:#fff;">
+                <legend style="font-size:.97rem; color:#333; padding:0 .3rem; font-weight:500;">نوع الوسائط (اختياري)</legend>
+                <div style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
+                    <label class="x-radio" style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
+                        <input type="radio" name="nbn-url-type" value="auto" checked style="accent-color: #2563eb;" />
+                        <span style="font-weight: 500; color: #2563eb;">Auto</span>
+                    </label>
+                    <label class="x-radio" style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
+                        <input type="radio" name="nbn-url-type" value="image" style="accent-color: #059669;" />
+                        <span style="font-weight: 500; color: #059669;">Image</span>
+                    </label>
+                    <label class="x-radio" style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
+                        <input type="radio" name="nbn-url-type" value="video" style="accent-color: #f59e42;" />
+                        <span style="font-weight: 500; color: #f59e42;">Video</span>
+                    </label>
+                    <label class="x-radio" style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
+                        <input type="radio" name="nbn-url-type" value="voice" style="accent-color: #6366f1;" />
+                        <span style="font-weight: 500; color: #6366f1;">Voice</span>
+                    </label>
+                    <label class="x-radio" style="font-size: .97rem; display: flex; align-items: center; gap: .4rem; cursor: pointer; padding: .3rem .7rem; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; transition: border-color .2s;">
+                        <input type="radio" name="nbn-url-type" value="file" style="accent-color: #6b7280;" />
+                        <span style="font-weight: 500; color: #6b7280;">File</span>
+                    </label>
+                </div>
+                </fieldset>
+                <div class="x-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
+                <button class="x-btn x-btn-secondary nbn-btn" type="button" id="nbnImportToGallery"
+                    title="استيراد بالرابط ثم عرض في المعرض"
+                    style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & فتح المعرض</button>
+                <button class="x-btn x-btn-primary nbn-btn" type="button" id="nbnImportAndClose"
+                    title="استيراد بالرابط ثم حفظ وإغلاق"
+                    style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">استيراد & حفظ وإغلاق</button>
+                </div>
+                <small class="x-selection-hint"
+                style="display:block; color:var(--x-muted, #6b7280); font-size:.97rem; margin-top:.2rem;">
+                يُقبل الرابط المباشر أو رابط YouTube. يمكن تحديد نوع الوسائط يدوياً أو تركه على Auto.
+                </small>
+            </div>
             </div>
         </section>
     </div>

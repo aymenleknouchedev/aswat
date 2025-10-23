@@ -10,7 +10,6 @@
 <!-- ======================= MEDIA MANAGER UI ======================= -->
 <div class="media-manager">
     @csrf
-
     <!-- Media Type Selection -->
     <div class="media-type-selector mb-4">
         <div class="d-flex flex-wrap">
