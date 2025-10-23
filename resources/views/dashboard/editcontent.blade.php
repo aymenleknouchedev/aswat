@@ -1,21 +1,36 @@
 @extends('layouts.admin')
 <!DOCTYPE html>
 
-
 @section('title', 'أصوات جزائرية | تعديل محتوى')
 
 @section('content')
 
-    <script>
-        window.scrollTo(0, 0);
-        window.onload = function() {
-            window.scrollTo(0, 0);
-            setTimeout(function() {
-                window.scrollTo(0, 0);
-            }, 1);
-        };
-    </script>
+    {{-- ============================ SCRIPTS & STYLES ============================ --}}
     <style>
+        /* ===== VALIDATION STYLES ===== */
+        .hidden-input:invalid~.selected-item {
+            border-color: #dc3545;
+        }
+
+        .search-container:has(.hidden-input:invalid) .form-label {
+            color: #dc3545;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: red;
+        }
+
+        .search-container {
+            transition: all 0.2s ease;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        /* ===== SELECT2 RTL SUPPORT ===== */
         .select2-dropdown-rtl {
             direction: rtl !important;
             text-align: right !important;
@@ -30,15 +45,69 @@
             direction: rtl;
             text-align: right;
         }
-    </style>
-    <style>
+
+        /* ===== SINGLE SELECT FIELDS (Section, Category, etc.) ===== */
+        .selected-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border: 1px solid #929292;
+            border-radius: 0px;
+            background-color: #f3f3f3;
+            margin: 0px;
+        }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #f3f3f3;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-delete:hover {
+            background-color: #f3f3f3;
+            color: rgb(255, 0, 0);
+        }
+
+        /* ===== LAYOUT STYLES ===== */
+        .fields-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .fields-row .search-wrapper {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .fields-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* ===== TAB STYLES ===== */
+        .tab-content {
+            min-height: 400px;
+        }
+
         #contentTabs .nav-link {
             color: #b0b0b0 !important;
             background-color: transparent !important;
             border: none !important;
             border-bottom: 2px solid transparent !important;
             transition: all 0.2s ease;
-            margin-right: 10px
+            margin-right: 10px;
+            padding: 10px 15px;
         }
 
         #contentTabs .nav-link:hover {
@@ -50,759 +119,1257 @@
             border-bottom: 2px solid #0d6efd !important;
             font-weight: bold;
         }
+
+        #contentTabs {
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 20px;
+        }
+
+        /* ===== RIGHT SIDEBAR STYLES ===== */
+        .col-md-3 {
+            padding-left: 15px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border: 1px solid rgba(0, 0, 0, 0.125);
+        }
+
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+
+        /* ===== FORM ELEMENT STYLES ===== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-text {
+            font-size: 0.75rem;
+        }
+
+        /* ===== SEARCH DROPDOWN STYLES ===== */
+        .search-container {
+            position: relative;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 0px;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            border: 1px solid #ced4da;
+            border-radius: 0px;
+            background: white;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 5px;
+        }
+
+        .dropdown ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dropdown li {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .dropdown li:hover {
+            background-color: #f8f9fa;
+        }
+
+        .dropdown li.selected {
+            background-color: #e8f4ff;
+            color: #2c5aa0;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: block;
+        }
+
+        .input-wrapper.hidden {
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .btn-add {
+            position: absolute;
+            top: 50%;
+            left: 8px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 2;
+            color: #6c757d;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== TAGS (MULTI-SELECT) STYLES ===== */
+        .multi-select-container {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .tags-selected-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 6px 8px;
+            min-height: 42px;
+            border: 1px solid #ced4da;
+            border-radius: 0px;
+            background: white;
+            align-items: center;
+            margin-top: 0;
+        }
+
+        .tag-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 6px;
+            border: 1px solid #929292;
+            border-radius: 0px;
+            background-color: #f3f3f3;
+            font-size: 11px;
+            line-height: 1.2;
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tag-delete {
+            background: none;
+            border: none;
+            font-size: 12px;
+            cursor: pointer;
+            color: #6c757d;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .tag-delete:hover {
+            background-color: #ff6b6b;
+            color: white;
+        }
+
+        .tags-search-container {
+            position: relative;
+        }
+
+        .tags-input-wrapper {
+            position: relative;
+            display: block;
+        }
+
+        .tags-input-wrapper.hidden {
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+        }
+
+        #tags_id_search {
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            min-width: 120px;
+            flex: 1;
+            color: #000;
+        }
+
+        .tags-selected-container:focus-within {
+            border-color: #ced4da;
+            outline: 0;
+            box-shadow: none;
+        }
+
+        #tags_id_search::placeholder,
+        #tags_id_search::-webkit-input-placeholder,
+        #tags_id_search::-moz-placeholder,
+        #tags_id_search:-ms-input-placeholder,
+        #tags_id_search:-moz-placeholder {
+            color: transparent;
+        }
+
+        /* ===== SOCIAL MEDIA PREVIEW STYLES ===== */
+        .social-preview {
+            border: 1px solid #dddfe2;
+            font-family: Helvetica, Arial, sans-serif;
+            max-width: 500px;
+        }
+
+        .image-preview-container {
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .image-preview-container:hover {
+            background-color: #f8f9fa;
+        }
+
+        .btn-danger {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        #preview_image_container {
+            max-height: 300px;
+            overflow: hidden;
+        }
+
+        .image-preview-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .delete-image-btn {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: rgba(220, 53, 69, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .delete-image-btn:hover {
+            opacity: 1;
+        }
     </style>
 
+    {{-- ============================ MAIN CONTENT ============================ --}}
     <div class="nk-app-root">
         <div class="nk-main">
             @include('dashboard.components.sidebar')
             <div class="nk-wrap">
                 @include('dashboard.components.header')
 
-                <form id="contentForm" class="nk-content container row"
-                    action="{{ route('dashboard.content.update', $content->id) }}" method="POST"
-                    enctype="multipart/form-data">
+                {{-- ============================ CONTENT FORM ============================ --}}
+                <form class="nk-content container row" action="{{ route('dashboard.content.update', $content->id) }}"
+                    method="POST" enctype="multipart/form-data" id="contentForm">
                     @csrf
                     @method('PUT')
 
+                    {{-- ===== LEFT COLUMN (MAIN CONTENT) ===== --}}
                     <div class="col-md-9">
 
+                        {{-- ===== PAGE HEADER ===== --}}
                         <div class="nk-block-head mb-4">
                             <div class="nk-block-head-content">
-                                <h4 class="nk-block-title" data-ar="تعديل المحتوى" data-en="Edit Content">تعديل المحتوى</h4>
+                                <h4 class="nk-block-title" data-ar="تعديل محتوى" data-en="Edit Content">
+                                    تعديل محتوى
+                                </h4>
                             </div>
                         </div>
 
+                        {{-- ===== SWEETALERT FOR VALIDATION ERRORS ===== --}}
+                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                         @if ($errors->any())
-                            <div class="alert alert-danger" role="alert">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'حدث خطأ',
+                                        html: `{!! implode('<br>', $errors->all()) !!}`,
+                                        confirmButtonText: 'حسناً'
+                                    });
+                                });
+                            </script>
                         @endif
 
-                        <div>
-                            @csrf
-                            <!-- Tabs nav -->
-                            <ul class="nav mb-4" id="contentTabs" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="add-content-tab" data-bs-target="#add-content"
-                                        type="button" role="tab" aria-controls="add-content" aria-selected="true"
-                                        data-ar="إضافة محتوى" data-en="Add Content">
-                                        إضافة محتوى
-                                    </button>
-                                </li>
+                        @if (session('success'))
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    // المفاتيح الخاصة بالعناصر فقط
+                                    const itemKeys = [
+                                        'az_items_list_v1',
+                                        'az_items_file_v1',
+                                        'az_display_method_v6'
+                                    ];
 
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="template-tab" data-bs-target="#template" type="button"
-                                        role="tab" aria-controls="template" aria-selected="false" data-ar="اختر القالب"
-                                        data-en="Choose Template">
-                                        اختر القالب
-                                    </button>
-                                </li>
-
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="media-tab" data-bs-target="#media" type="button"
-                                        role="tab" aria-controls="media" aria-selected="false" data-ar="الوسائط"
-                                        data-en="Media">
-                                        الوسائط
-                                    </button>
-                                </li>
-
-                                <!-- NEW Social Media tab -->
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="social-media-tab" data-bs-target="#social-media"
-                                        type="button" role="tab" aria-controls="social-media" aria-selected="false"
-                                        data-ar="وسائل التواصل" data-en="Social Media">
-                                        وسائل التواصل
-                                    </button>
-                                </li>
-
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="message-tab" data-bs-target="#message" type="button"
-                                        role="tab" aria-controls="message" aria-selected="false"
-                                        data-ar="رسالة المراجعة" data-en="Review Message">
-                                        رسالة المراجعة
-                                    </button>
-                                </li>
-                            </ul>
-
-                            <!-- Tabs content -->
-                            <div class="tab-content" id="contentTabsContent">
-                                <!-- Add Content Tab -->
-                                <div class="tab-pane fade show active" id="add-content" role="tabpanel"
-                                    aria-labelledby="add-content-tab">
-
-                                    <div class="row">
-                                        <div class="form-group col-12">
-                                            <label class="form-label" for="title" data-ar="العنوان"
-                                                data-en="Title">العنوان</label>
-                                            <span style="color:red;">*</span>
-                                            <div class="form-control-wrap">
-                                                <input required id="title" name="title" type="text"
-                                                    class="form-control form-control" maxlength="75" data-ar="العنوان"
-                                                    data-en="Title" value="{{ $content->title ?? old('title', '') }}">
-                                            </div>
-                                            <small class="text-muted"><span id="title-count">0</span> / 75</small>
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label class="form-label" for="long_title" data-ar="العنوان الطويل"
-                                                data-en="Long Title">العنوان الطويل</label>
-                                            <span style="color:red;">*</span>
-                                            <div class="form-control-wrap">
-                                                <input required id="long_title" name="long_title" type="text"
-                                                    class="form-control form-control" maxlength="210"
-                                                    data-ar="العنوان الطويل" data-en="Long Title"
-                                                    value="{{ $content->long_title ?? old('long_title', '') }}">
-                                            </div>
-                                            <small class="text-muted"><span id="long_title-count">0</span> / 210</small>
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <label class="form-label" for="mobile_title" data-ar="عنوان الموبايل"
-                                                data-en="Mobile Title">عنوان الموبايل </label>
-                                            <span style="color:red;">*</span>
-                                            <div class="form-control-wrap">
-                                                <input required id="mobile_title" name="mobile_title" type="text"
-                                                    class="form-control form-control" maxlength="40"
-                                                    data-ar="عنوان الموبايل" data-en="Mobile Title"
-                                                    value="{{ $content->mobile_title ?? old('mobile_title', '') }}">
-                                            </div>
-                                            <small class="text-muted"><span id="mobile_title-count">0</span> / 40</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="row g-3 mt-1 ">
-                                        <div class="form-group col-md-6 col-lg-3">
-                                            <label class="form-label" data-ar="القسم" data-en="Section">القسم</label>
-                                            <span style="color:red;">*</span>
-                                            <div class="form-control-wrap">
-                                                <select required name="section_id" class="form-select js-select2"
-                                                    data-search="on"
-                                                    value="{{ $content->section_id ?? old('section_id') }}">
-                                                    <option value="">اختر القسم</option>
-                                                    @foreach ($sections as $section)
-                                                        <option value="{{ $section->id }}"
-                                                            {{ $content->section_id == $section->id ? 'selected' : '' }}>
-                                                            {{ $section->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6 col-lg-3">
-                                            <label class="form-label" data-ar="التصنيف"
-                                                data-en="Category">التصنيف</label>
-                                            <div class="form-control-wrap position-relative">
-                                                <input type="text" id="categorySearch" class="form-control pe-5"
-                                                    value="{{ $content->category->name ?? '' }}" />
-                                                <input type="hidden" name="category_id" id="categoryHidden"
-                                                    value="{{ $content->category_id ?? '' }}" />
-                                                <div id="categoryResults" class="dropdown-menu w-100 shadow-sm"
-                                                    style="max-height:200px; overflow-y:auto; display:none;">
-                                                </div>
-                                                <button type="button" id="addCategoryButton"
-                                                    class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                    style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;"
-                                                    data-bs-toggle="modal" data-bs-target="#addCategoryModal"
-                                                    tabindex="-1">
-                                                    <em class="icon ni ni-plus"></em>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="modal fade" id="addCategoryModal" tabindex="-1"
-                                            aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="addCategoryModalLabel"
-                                                            data-ar="إضافة تصنيف جديد" data-en="Add New Category">إضافة
-                                                            تصنيف جديد</h5>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <input type="text" id="newCategoryInput" class="form-control"
-                                                            data-ar="تصنيف جديد" data-en="New Category">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal" data-ar="إلغاء"
-                                                            data-en="Cancel">إلغاء</button>
-                                                        <button type="button" id="saveCategoryBtn"
-                                                            class="btn btn-primary" data-ar="حفظ"
-                                                            data-en="Save">حفظ</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6 col-lg-3">
-                                            <label class="form-label" data-ar="القارة" data-en="Continent">القارة</label>
-                                            <div class="form-control-wrap">
-                                                <select name="continent_id" class="form-select js-select2"
-                                                    data-search="on" value="{{ old('continent_id') }}">
-                                                    <option value="">اختر القارة</option>
-                                                    @foreach ($continents as $continent)
-                                                        <option value="{{ $continent->id }}"
-                                                            {{ $content->continent_id == $continent->id ? 'selected' : '' }}>
-                                                            {{ $continent->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6 col-lg-3">
-                                            <label class="form-label" data-ar="الدولة" data-en="Country">الدولة</label>
-                                            <div class="form-control-wrap">
-                                                <select name="country_id" class="form-select js-select2" data-search="on"
-                                                    value="{{ $content->country_id ?? old('country_id') }}">
-                                                    <option value="">اختر المكان</option>
-                                                    @foreach ($countries as $country)
-                                                        <option value="{{ $country->id }}"
-                                                            {{ $content->country_id == $country->id ? 'selected' : '' }}>
-                                                            {{ $country->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="row g-3">
-                                        <div class="form-group col-md-6 col-lg-6">
-                                            <div class="d-flex align-items-end">
-                                                <div class="w-100">
-                                                    <label class="form-label" data-ar="الاتجاه"
-                                                        data-en="Trend">الاتجاه</label>
-                                                    <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="trendSearch" class="form-control"
-                                                            value="{{ $content->trend->title ?? '' }}">
-                                                        <input type="hidden" name="trend_id" id="trendHidden"
-                                                            value="{{ $content->trend_id ?? '' }}">
-                                                        <div id="trendResults" class="dropdown-menu w-100 shadow-sm"
-                                                            style="max-height:200px; overflow-y:auto; display:none;">
-                                                        </div>
-                                                        <button type="button" id="addTrendButton"
-                                                            class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;"
-                                                            data-bs-toggle="modal" data-bs-target="#addTrendModal"
-                                                            tabindex="-1">
-                                                            <em class="icon ni ni-plus"></em>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal fade" id="addTrendModal" tabindex="-1"
-                                            aria-labelledby="addTrendModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="addTrendModalLabel"
-                                                            data-ar="إضافة اتجاه جديد" data-en="Add New Trend">إضافة اتجاه
-                                                            جديد</h5>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <input type="text" id="newTrendInput" class="form-control"
-                                                            data-ar="اتجاه جديد" data-en="New Trend">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal" data-ar="إلغاء"
-                                                            data-en="Cancel">إلغاء</button>
-                                                        <button type="button" id="saveTrendBtn" class="btn btn-primary"
-                                                            data-ar="حفظ" data-en="Save">حفظ</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6 col-lg-6">
-                                            <div class="d-flex align-items-end">
-                                                <div class="w-100">
-                                                    <label class="form-label" data-ar="النافذة"
-                                                        data-en="Window">النافذة</label>
-                                                    <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="windowSearch" class="form-control pe-5"
-                                                            value="{{ $content->window->name ?? '' }}" />
-                                                        <input type="hidden" name="window_id" id="windowHidden"
-                                                            value="{{ $content->window_id ?? '' }}" />
-                                                        <div id="windowResults" class="dropdown-menu w-100 shadow-sm"
-                                                            style="max-height:200px; overflow-y:auto; display:none;">
-                                                        </div>
-                                                        <button type="button" id="addWindowButton"
-                                                            class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;"
-                                                            data-bs-toggle="modal" data-bs-target="#addWindowModal"
-                                                            tabindex="-1">
-                                                            <em class="icon ni ni-plus"></em>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal fade" id="addWindowModal" tabindex="-1"
-                                            aria-labelledby="addWindowModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="addWindowModalLabel"
-                                                            data-ar="إضافة نافذة جديدة" data-en="Add New Window">إضافة
-                                                            نافذة جديدة</h5>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <input type="text" id="newWindowInput" class="form-control"
-                                                            data-ar="نافذة جديدة" data-en="New Window">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal" data-ar="إلغاء"
-                                                            data-en="Cancel">إلغاء</button>
-                                                        <button type="button" id="saveWindowBtn" class="btn btn-primary"
-                                                            data-ar="حفظ" data-en="Save">حفظ</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row g-3">
-                                        <div class="form-group col-md-6 col-lg-6">
-                                            <div class="d-flex align-items-end">
-                                                <div class="w-100">
-                                                    <label class="form-label" data-ar="الكاتب"
-                                                        data-en="Writer">الكاتب</label>
-                                                    <div class="form-control-wrap position-relative">
-                                                        <input type="text" id="writerSearch" class="form-control"
-                                                            value="{{ $content->writer->name ?? '' }}">
-                                                        <input type="hidden" name="writer_id" id="writerHidden"
-                                                            value="{{ $content->writer_id ?? '' }}">
-                                                        <div id="writerResults" class="dropdown-menu w-100"
-                                                            style="display:none; max-height:200px; overflow-y:auto;"></div>
-                                                        <button type="button" id="addWriterButton"
-                                                            class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;"
-                                                            data-bs-toggle="modal" data-bs-target="#addWriterModal"
-                                                            tabindex="-1">
-                                                            <em class="icon ni ni-plus"></em>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="modal fade" id="addWriterModal" tabindex="-1"
-                                            aria-labelledby="addWriterModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-
-                                                    <!-- Header -->
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="addWriterModalLabel"
-                                                            data-ar="إضافة كاتب جديد" data-en="Add New Writer">إضافة كاتب
-                                                            جديد</h5>
-                                                    </div>
-
-                                                    <!-- Body -->
-                                                    <div class="modal-body">
-
-                                                        <div id="writerForm">
-                                                            @csrf
-
-                                                            <div class="mb-3">
-                                                                <label class="form-label" data-ar="الاسم"
-                                                                    data-en="Name">الاسم</label>
-                                                                <input type="text" id="writerName" name="name"
-                                                                    class="form-control" data-ar="الاسم" data-en="Name">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label class="form-label" data-ar="الرابط (Slug)"
-                                                                    data-en="Slug">الرابط (Slug)</label>
-                                                                <input type="text" id="writerSlug" name="slug"
-                                                                    class="form-control" data-ar="الرابط" data-en="Slug">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label class="form-label" data-ar="نبذة"
-                                                                    data-en="Bio">نبذة</label>
-                                                                <textarea id="writerBio" name="bio" class="form-control" rows="3"></textarea>
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label class="form-label" data-ar="الصورة"
-                                                                    data-en="Image">الصورة</label>
-                                                                <input type="file" id="writerImage" name="image"
-                                                                    class="form-control" accept="image/*"
-                                                                    data-ar="الصورة" data-en="Image">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label class="form-label" data-ar="فيسبوك"
-                                                                    data-en="Facebook">فيسبوك</label>
-                                                                <input type="url" id="writerFacebook" name="facebook"
-                                                                    class="form-control"
-                                                                    placeholder="https://facebook.com/" data-ar="فيسبوك"
-                                                                    data-en="Facebook">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label class="form-label" data-ar="X"
-                                                                    data-en="X">X</label>
-                                                                <input type="url" id="writerX" name="x"
-                                                                    class="form-control" placeholder="https://x.com/"
-                                                                    data-ar="X" data-en="X">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label class="form-label" data-ar="إنستغرام"
-                                                                    data-en="Instagram">إنستغرام</label>
-                                                                <input type="url" id="writerInstagram"
-                                                                    name="instagram" class="form-control"
-                                                                    placeholder="https://instagram.com/"
-                                                                    data-ar="إنستغرام" data-en="Instagram">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label class="form-label" data-ar="لينكدإن"
-                                                                    data-en="LinkedIn">لينكدإن</label>
-                                                                <input type="url" id="writerLinkedin" name="linkedin"
-                                                                    class="form-control"
-                                                                    placeholder="https://linkedin.com/" data-ar="لينكدإن"
-                                                                    data-en="LinkedIn">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <!-- Footer -->
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal" data-ar="إلغاء"
-                                                            data-en="Cancel">إلغاء</button>
-                                                        <button type="button" id="saveWriterBtn" class="btn btn-primary"
-                                                            data-ar="حفظ" data-en="Save">حفظ</button>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
+                                    itemKeys.forEach(k => localStorage.removeItem(k));
+                                });
+                            </script>
+                        @endif
 
 
-                                        <div class="form-group col-md-6 col-lg-6">
-                                            <label class="form-label" data-ar="موقع الكاتب"
-                                                data-en="Writer Location">موقع الكاتب</label>
-                                            <div class="form-control-wrap relative w-full">
-                                                <input type="text" id="cityInput" name="city_name"
-                                                    class="form-control" value="{{ $scity->name ?? '' }}" />
-                                                <input type="hidden" id="cityId" name="city_id"
-                                                    value="{{ $content->city_id ?? '' }}" />
-                                                <div id="cityDropdown" class="dropdown-menu w-100 shadow-sm"
-                                                    style="max-height:200px; overflow-y:auto; display:none;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row g-3">
-                                        <div class="form-group col-md-12">
-                                            <div class="d-flex align-items-end">
-                                                <div class="w-100">
-                                                    <label class="form-label" data-ar="الوسوم"
-                                                        data-en="Tags">الوسوم</label>
-                                                    <span style="color:red;">*</span>
-                                                    <div class="d-flex flex-wrap align-items-center" id="tagInputBox"
-                                                        style="gap:5px; position:relative; cursor:text;">
-                                                        @if ($content->tags)
-                                                            @foreach ($content->tags as $tag)
-                                                                <div class="tag-chip">
-                                                                    {{ $tag->name }}
-                                                                    <span class="remove-tag" style="cursor:pointer;"
-                                                                        data-tag-id="{{ $tag->id }}">&times;</span>
-                                                                </div>
-                                                            @endforeach
-                                                        @endif
-                                                        <div id="tagContainer" class="d-flex flex-wrap align-items-center"
-                                                            style="gap:5px; flex:1 ">
-                                                            <input type="text" id="tagSearch" class="form-control"
-                                                                style="background: transparent; color outline:none; min-width:120px;">
-                                                        </div>
-                                                        <button type="button" id="addTagButton"
-                                                            class="btn btn-link p-0 position-absolute top-50 end-0 translate-middle-y"
-                                                            style="height: 100%; z-index: 2; margin-left: 8px; margin-right: 8px;"
-                                                            data-bs-toggle="modal" data-bs-target="#addTagModal"
-                                                            tabindex="-1">
-                                                            <em class="icon ni ni-plus"></em>
-                                                        </button>
-                                                    </div>
-
-                                                    <div id="tagResults" class="dropdown-menu w-100"
-                                                        style="display:none; max-height:200px; overflow-y:auto; position:absolute; z-index:1000;">
-                                                    </div>
-
-                                                    <div id="hiddenTags">
-                                                        @if ($content->tags)
-                                                            @foreach ($content->tags as $tag)
-                                                                <input type="hidden" name="tags_id[]"
-                                                                    value="{{ $tag->id }}">
-                                                            @endforeach
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal fade" id="addTagModal" tabindex="-1"
-                                        aria-labelledby="addTagModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="addTagModalLabel"
-                                                        data-ar="إضافة وسم جديد" data-en="Add New Tag">إضافة وسم جديد</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="إغلاق"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <input type="text" id="newTagInput" class="form-control"
-                                                        data-ar="وسم جديد" data-en="New Tag">
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal" data-ar="إلغاء"
-                                                        data-en="Cancel">إلغاء</button>
-                                                    <button type="button" id="saveTagBtn" class="btn btn-primary"
-                                                        data-ar="حفظ" data-en="Save">حفظ</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {{-- TAG MODAL --}}
 
 
-                                    <div class="form-group col-12 my-3">
-                                        <label class="form-label" for="summary" data-ar="الملخص"
-                                            data-en="Summary">الملخص</label>
-                                        <span style="color:red;">*</span>
-                                        <div class="form-control-wrap">
-                                            <textarea required id="summary" name="summary" class="form-control form-control" rows="3"
-                                                style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130">{{ $content->summary ?? '' }}</textarea>
-                                        </div>
-                                        <small class="text-muted"><span id="summary-count">0</span> / 130</small>
-                                    </div>
 
-                                    <div class="form-group col-12 mb-3">
-                                        <label class="form-label" for="body" data-ar="المتن" data-en="Body">المتن
+                        {{-- ===== TEMPLATE HIDDEN FIELD ===== --}}
+                        <input type="hidden" name="template" id="template_field"
+                            value="{{ old('template', $content->template ?? 'default') }}">
+
+                        {{-- ===== CONTENT TABS NAVIGATION ===== --}}
+                        <ul class="nav mb-4" id="contentTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="add-content-tab" data-bs-toggle="tab"
+                                    data-bs-target="#add-content" type="button" role="tab" aria-controls="add-content"
+                                    aria-selected="true" data-ar="تعديل محتوى" data-en="Edit Content">
+                                    تعديل محتوى
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="template-tab" data-bs-toggle="tab" data-bs-target="#template"
+                                    type="button" role="tab" aria-controls="template" aria-selected="false"
+                                    data-ar="اختر القالب" data-en="Choose Template">
+                                    اختر القالب
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="media-tab" data-bs-toggle="tab" data-bs-target="#media"
+                                    type="button" role="tab" aria-controls="media" aria-selected="false"
+                                    data-ar="الوسائط" data-en="Media">
+                                    الوسائط
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="social-media-tab" data-bs-toggle="tab"
+                                    data-bs-target="#social-media" type="button" role="tab"
+                                    aria-controls="social-media" aria-selected="false" data-ar="وسائل التواصل"
+                                    data-en="Social Media">
+                                    وسائل التواصل
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="message-tab" data-bs-toggle="tab" data-bs-target="#message"
+                                    type="button" role="tab" aria-controls="message" aria-selected="false"
+                                    data-ar="رسالة المراجعة" data-en="Review Message">
+                                    رسالة المراجعة
+                                </button>
+                            </li>
+                        </ul>
+
+                        {{-- ===== TAB CONTENT ===== --}}
+                        <div class="tab-content" id="contentTabsContent">
+
+                            {{-- ===== ADD CONTENT TAB ===== --}}
+                            <div class="tab-pane fade show active" id="add-content" role="tabpanel"
+                                aria-labelledby="add-content-tab">
+
+                                {{-- TITLE FIELDS --}}
+                                <div class="row">
+                                    <div class="form-group col-12">
+                                        <label class="form-label" for="title" data-ar="العنوان" data-en="Title">
+                                            العنوان
                                         </label>
                                         <span style="color:red;">*</span>
                                         <div class="form-control-wrap">
-                                            <x-forms.tinymce-editor id="myeditorinstance" :value="$content->content ?? ''"
-                                                name="content" />
+                                            <input required id="title" name="title" type="text"
+                                                class="form-control form-control" maxlength="68" data-ar="العنوان"
+                                                data-en="Title" value="{{ old('title', $content->title) }}">
                                         </div>
+                                        <small class="text-muted"><span
+                                                id="title-count">{{ strlen(old('title', $content->title)) }}</span> /
+                                            68</small>
                                     </div>
 
-                                    <div class="form-group col-12 mb-3">
-                                        <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
-                                            data-en="SEO Keyword">الكلمة الرئيسية</label>
+                                    <div class="form-group col-12">
+                                        <label class="form-label" for="long_title" data-ar="العنوان الطويل"
+                                            data-en="Long Title">
+                                            العنوان الطويل
+                                        </label>
                                         <span style="color:red;">*</span>
                                         <div class="form-control-wrap">
-                                            <input required id="seo_keyword" name="seo_keyword" type="text"
-                                                class="form-control form-control" maxlength="50"
-                                                value="{{ $content->seo_keyword ?? '' }}">
+                                            <input required id="long_title" name="long_title" type="text"
+                                                class="form-control form-control" maxlength="210"
+                                                data-ar="العنوان الطويل" data-en="Long Title"
+                                                value="{{ old('long_title', $content->long_title) }}">
+                                        </div>
+                                        <small class="text-muted"><span
+                                                id="long_title-count">{{ strlen(old('long_title', $content->long_title)) }}</span>
+                                            / 210</small>
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label class="form-label" for="mobile_title" data-ar="عنوان الموبايل"
+                                            data-en="Mobile Title">
+                                            عنوان الموبايل
+                                        </label>
+                                        <span style="color:red;">*</span>
+                                        <div class="form-control-wrap">
+                                            <input required id="mobile_title" name="mobile_title" type="text"
+                                                class="form-control form-control" maxlength="40" data-ar="عنوان الموبايل"
+                                                data-en="Mobile Title"
+                                                value="{{ old('mobile_title', $content->mobile_title) }}">
+                                        </div>
+                                        <small class="text-muted"><span
+                                                id="mobile_title-count">{{ strlen(old('mobile_title', $content->mobile_title)) }}</span>
+                                            / 40</small>
+                                    </div>
+                                </div>
+
+                                {{-- ===== FIRST ROW: SECTION, CATEGORY, COUNTRY, CONTINENT ===== --}}
+                                <div class="fields-row">
+                                    <!-- Section -->
+                                    <div class="search-wrapper">
+                                        <div class="search-container category-selector">
+                                            <label class="form-label required-field" for="section" data-ar="القسم"
+                                                data-en="Section">القسم</label>
+                                            <input type="hidden" name="section_id" required class="hidden-input"
+                                                value="{{ old('section_id', $content->section_id) }}">
+                                            <div class="selected-item"
+                                                style="{{ old('section_id', $content->section_id) ? 'display: flex;' : 'display: none;' }}">
+                                                <span class="selected-value">
+                                                    @if ($content->section)
+                                                        {{ $content->section->name }}
+                                                    @endif
+                                                </span>
+                                                <button type="button" class="btn-delete"
+                                                    onclick="clearSelection(this)">×</button>
+                                            </div>
+                                            <div class="input-wrapper"
+                                                style="{{ old('section_id', $content->section_id) ? 'display: none;' : '' }}">
+                                                <input id="section_search" type="text"
+                                                    class="form-control search-input" oninput="filterList(this)"
+                                                    onfocus="showDropdown(this)">
+                                            </div>
+                                            <div class="dropdown">
+                                                <ul>
+                                                    @foreach ($sections as $section)
+                                                        <li data-id="{{ $section->id }}"
+                                                            data-name="{{ $section->name }}"
+                                                            onclick="selectItem(this, '{{ $section->name }}', '{{ $section->id }}')"
+                                                            {{ old('section_id', $content->section_id) == $section->id ? 'class=selected' : '' }}>
+                                                            {{ $section->name }}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
 
+                                    <!-- Category -->
+                                    <div class="search-wrapper">
+                                        <div class="search-container category-selector">
+                                            <label class="form-label required-field" for="category" data-ar="الصنف"
+                                                data-en="category">الصنف</label>
+                                            <input type="hidden" name="category_id" required class="hidden-input"
+                                                value="{{ old('category_id', $content->category_id) }}">
+                                            <div class="selected-item"
+                                                style="{{ old('category_id', $content->category_id) ? 'display: flex;' : 'display: none;' }}">
+                                                <span class="selected-value">
+                                                    @if ($content->category)
+                                                        {{ $content->category->name }}
+                                                    @endif
+                                                </span>
+                                                <button type="button" class="btn-delete"
+                                                    onclick="clearSelection(this)">×</button>
+                                            </div>
+                                            <div class="input-wrapper"
+                                                style="{{ old('category_id', $content->category_id) ? 'display: none;' : '' }}">
+                                                <input id="category_search" type="text"
+                                                    class="form-control search-input" oninput="filterList(this)"
+                                                    onfocus="showDropdown(this)">
+                                                <button type="button" class="btn-add" data-bs-toggle="modal"
+                                                    data-bs-target="#addCategoryModal" tabindex="-1">+</button>
+                                            </div>
+                                            <div class="dropdown">
+                                                <ul>
+                                                    @foreach ($categories as $category)
+                                                        <li data-id="{{ $category->id }}"
+                                                            data-name="{{ $category->name }}"
+                                                            onclick="selectItem(this, '{{ $category->name }}', '{{ $category->id }}')"
+                                                            {{ old('category_id', $content->category_id) == $category->id ? 'class=selected' : '' }}>
+                                                            {{ $category->name }}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Country -->
+                                    <div class="search-wrapper">
+                                        <div class="search-container category-selector">
+                                            <label class="form-label" for="country" data-ar="البلد"
+                                                data-en="Country">البلد</label>
+                                            <input type="hidden" name="country_id" class="hidden-input"
+                                                value="{{ old('country_id', $content->country_id) }}">
+                                            <div class="selected-item"
+                                                style="{{ old('country_id', $content->country_id) ? 'display: flex;' : 'display: none;' }}">
+                                                <span class="selected-value">
+                                                    @if ($content->country)
+                                                        {{ $content->country->name }}
+                                                    @endif
+                                                </span>
+                                                <button type="button" class="btn-delete"
+                                                    onclick="clearSelection(this)">×</button>
+                                            </div>
+                                            <div class="input-wrapper"
+                                                style="{{ old('country_id', $content->country_id) ? 'display: none;' : '' }}">
+                                                <input id="country_search" type="text"
+                                                    class="form-control search-input" oninput="filterList(this)"
+                                                    onfocus="showDropdown(this)">
+
+                                            </div>
+                                            <div class="dropdown">
+                                                <ul>
+                                                    @foreach ($countries as $country)
+                                                        <li data-id="{{ $country->id }}"
+                                                            data-name="{{ $country->name }}"
+                                                            onclick="selectItem(this, '{{ $country->name }}', '{{ $country->id }}')"
+                                                            {{ old('country_id', $content->country_id) == $country->id ? 'class=selected' : '' }}>
+                                                            {{ $country->name }}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Continent -->
+                                    <div class="search-wrapper">
+                                        <div class="search-container category-selector">
+                                            <label class="form-label" for="continent" data-ar="القارة"
+                                                data-en="Continent">القارة</label>
+                                            <input type="hidden" name="continent_id" class="hidden-input"
+                                                value="{{ old('continent_id', $content->continent_id) }}">
+                                            <div class="selected-item"
+                                                style="{{ old('continent_id', $content->continent_id) ? 'display: flex;' : 'display: none;' }}">
+                                                <span class="selected-value">
+                                                    @if ($content->continent)
+                                                        {{ $content->continent->name }}
+                                                    @endif
+                                                </span>
+                                                <button type="button" class="btn-delete"
+                                                    onclick="clearSelection(this)">×</button>
+                                            </div>
+                                            <div class="input-wrapper"
+                                                style="{{ old('continent_id', $content->continent_id) ? 'display: none;' : '' }}">
+                                                <input id="continent_search" type="text"
+                                                    class="form-control search-input" oninput="filterList(this)"
+                                                    onfocus="showDropdown(this)">
+
+                                            </div>
+                                            <div class="dropdown">
+                                                <ul>
+                                                    @foreach ($continents as $continent)
+                                                        <li data-id="{{ $continent->id }}"
+                                                            data-name="{{ $continent->name }}"
+                                                            onclick="selectItem(this, '{{ $continent->name }}', '{{ $continent->id }}')"
+                                                            {{ old('continent_id', $content->continent_id) == $continent->id ? 'class=selected' : '' }}>
+                                                            {{ $continent->name }}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <!-- Template Tab -->
-                                @include('dashboard.components.edit-template-tab')
+                                {{-- ===== TREND & WINDOW ROW ===== --}}
+                                <div class="fields-row">
+                                    <!-- Trend -->
+                                    <div class="search-wrapper">
+                                        <div class="search-container category-selector">
+                                            <label class="form-label" for="trend" data-ar="الترند"
+                                                data-en="Trend">الترند</label>
+                                            <input type="hidden" name="trend_id" class="hidden-input"
+                                                value="{{ old('trend_id', $content->trend_id) }}">
+                                            <div class="selected-item"
+                                                style="{{ old('trend_id', $content->trend_id) ? 'display: flex;' : 'display: none;' }}">
+                                                <span class="selected-value">
+                                                    @if ($content->trend)
+                                                        {{ $content->trend->title }}
+                                                    @endif
+                                                </span>
+                                                <button type="button" class="btn-delete"
+                                                    onclick="clearSelection(this)">×</button>
+                                            </div>
+                                            <div class="input-wrapper"
+                                                style="{{ old('trend_id', $content->trend_id) ? 'display: none;' : '' }}">
+                                                <input id="trend_search" type="text" class="form-control search-input"
+                                                    oninput="filterList(this)" onfocus="showDropdown(this)">
+                                                <button type="button" class="btn-add" data-bs-toggle="modal"
+                                                    data-bs-target="#addTrendModal" tabindex="-1">+</button>
+                                            </div>
+                                            <div class="dropdown">
+                                                <ul>
+                                                    @foreach ($trends as $trend)
+                                                        <li data-id="{{ $trend->id }}"
+                                                            data-name="{{ $trend->title }}"
+                                                            onclick="selectItem(this, '{{ $trend->title }}', '{{ $trend->id }}')"
+                                                            {{ old('trend_id', $content->trend_id) == $trend->id ? 'class=selected' : '' }}>
+                                                            {{ $trend->title }}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                <!-- Media Tab -->
-                                @include('dashboard.components.edit-media-tab', [
-                                    'mainImagePaths' => $mainImagePaths,
-                                    'mobileImagePaths' => $mobileImagePaths,
-                                    'contentImagePaths' => $contentImagePaths,
-                                    'albumImagePaths' => $albumImagePaths,
-                                    'videoPaths' => $videoPaths,
-                                    'podcastPaths' => $podcastPaths,
-                                ])
+                                    <!-- Window -->
+                                    <div class="search-wrapper">
+                                        <div class="search-container category-selector">
+                                            <label class="form-label" for="window" data-ar="النافذة"
+                                                data-en="Window">النافذة</label>
+                                            <input type="hidden" name="window_id" class="hidden-input"
+                                                value="{{ old('window_id', $content->window_id) }}">
+                                            <div class="selected-item"
+                                                style="{{ old('window_id', $content->window_id) ? 'display: flex;' : 'display: none;' }}">
+                                                <span class="selected-value">
+                                                    @if ($content->window)
+                                                        {{ $content->window->name }}
+                                                    @endif
+                                                </span>
+                                                <button type="button" class="btn-delete"
+                                                    onclick="clearSelection(this)">×</button>
+                                            </div>
+                                            <div class="input-wrapper"
+                                                style="{{ old('window_id', $content->window_id) ? 'display: none;' : '' }}">
+                                                <input id="window_search" type="text"
+                                                    class="form-control search-input" oninput="filterList(this)"
+                                                    onfocus="showDropdown(this)">
+                                                <button type="button" class="btn-add" data-bs-toggle="modal"
+                                                    data-bs-target="#addWindowModal" tabindex="-1">+</button>
+                                            </div>
+                                            <div class="dropdown">
+                                                <ul>
+                                                    @foreach ($windows as $window)
+                                                        <li data-id="{{ $window->id }}"
+                                                            data-name="{{ $window->name }}"
+                                                            onclick="selectItem(this, '{{ $window->name }}', '{{ $window->id }}')"
+                                                            {{ old('window_id', $content->window_id) == $window->id ? 'class=selected' : '' }}>
+                                                            {{ $window->name }}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
+                                {{-- ===== WRITER & WRITER LOCATION ROW ===== --}}
+                                <div class="fields-row">
+                                    <!-- Writer -->
+                                    <div class="search-wrapper">
+                                        <div class="search-container category-selector">
+                                            <label class="form-label" for="writer" data-ar="الكاتب"
+                                                data-en="Writer">الكاتب</label>
+                                            <input type="hidden" name="writer_id" class="hidden-input"
+                                                value="{{ old('writer_id', $content->writer_id) }}">
+                                            <div class="selected-item"
+                                                style="{{ old('writer_id', $content->writer_id) ? 'display: flex;' : 'display: none;' }}">
+                                                <span class="selected-value">
+                                                    @if ($content->writer)
+                                                        {{ $content->writer->name }}
+                                                    @endif
+                                                </span>
+                                                <button type="button" class="btn-delete"
+                                                    onclick="clearSelection(this)">×</button>
+                                            </div>
+                                            <div class="input-wrapper"
+                                                style="{{ old('writer_id', $content->writer_id) ? 'display: none;' : '' }}">
+                                                <input id="writer_search" type="text"
+                                                    class="form-control search-input" oninput="filterList(this)"
+                                                    onfocus="showDropdown(this)">
+                                                <button type="button" class="btn-add" data-bs-toggle="modal"
+                                                    data-bs-target="#addWriterModal" tabindex="-1">+</button>
+                                            </div>
+                                            <div class="dropdown">
+                                                <ul>
+                                                    @foreach ($writers as $writer)
+                                                        <li data-id="{{ $writer->id }}"
+                                                            data-name="{{ $writer->name }}"
+                                                            onclick="selectItem(this, '{{ $writer->name }}', '{{ $writer->id }}')"
+                                                            {{ old('writer_id', $content->writer_id) == $writer->id ? 'class=selected' : '' }}>
+                                                            {{ $writer->name }}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                <!-- Message Tab -->
-                                <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
-                                    <div class="d-flex flex-column" id="reviews-container">
-                                        @foreach ($reviews as $review)
+                                    <!-- Writer Location -->
+                                    <div class="search-wrapper">
+                                        <div class="search-container category-selector">
+                                            <label class="form-label" for="writer_location" data-ar="موقع الكاتب"
+                                                data-en="Writer Location">موقع الكاتب</label>
+                                            <input type="hidden" name="city_id" class="hidden-input"
+                                                value="{{ old('city_id', $content->city_id) }}">
+                                            <div class="selected-item"
+                                                style="{{ old('city_id', $content->city_id) ? 'display: flex;' : 'display: none;' }}">
+                                                <span class="selected-value">
+                                                    @if ($content->city)
+                                                        {{ $content->city->name }}
+                                                    @endif
+                                                </span>
+                                                <button type="button" class="btn-delete"
+                                                    onclick="clearSelection(this)">×</button>
+                                            </div>
+                                            <div class="input-wrapper"
+                                                style="{{ old('city_id', $content->city_id) ? 'display: none;' : '' }}">
+                                                <input id="writer_location_search" type="text"
+                                                    class="form-control search-input" oninput="filterList(this)"
+                                                    onfocus="showDropdown(this)">
+                                                <button type="button" class="btn-add" data-bs-toggle="modal"
+                                                    data-bs-target="#addWriterLocationModal" tabindex="-1">+</button>
+                                            </div>
+                                            <div class="dropdown">
+                                                <ul>
+                                                    @foreach ($cities as $location)
+                                                        <li data-id="{{ $location->id }}"
+                                                            data-name="{{ $location->name }}"
+                                                            onclick="selectItem(this, '{{ $location->name }}', '{{ $location->id }}')"
+                                                            {{ old('city_id', $content->city_id) == $location->id ? 'class=selected' : '' }}>
+                                                            {{ $location->name }}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- ===== TAGS ROW (MULTI-SELECT) ===== --}}
+                                <div class="fields-row">
+                                    <div class="search-wrapper" style="flex: 1;">
+                                        <div class="multi-select-container">
+                                            <label class="form-label required-field" for="tags_id" data-ar="الوسوم"
+                                                data-en="Tags">الوسوم</label>
+
+                                            {{-- SELECTED + SEARCH (SERVER-RENDER OLD TAGS) --}}
                                             @php
-                                                $isOwner = auth()->id() === $review->reviewer_id;
+                                                $oldTagIds = old('tags_id', $selectedTagIds);
+                                                $tagById = $tags->keyBy('id');
                                             @endphp
-                                            <div
-                                                class="d-flex {{ $isOwner ? 'justify-content-end' : 'justify-content-start' }} mb-2">
-                                                <div class="review-message-card p-2 rounded shadow-sm {{ $isOwner ? 'bg-secondary text-white' : 'bg-light text-dark' }}"
-                                                    style="max-width: 100%;">
-                                                    <div class="d-flex align-items-center mb-1">
-                                                        <div
-                                                            class="small fw-bold badge {{ $isOwner ? 'bg-dark text-white' : 'bg-secondary text-white' }}">
-                                                            {{ $review->reviewer->name }} {{ $review->reviewer->surname }}
-                                                        </div>
-                                                        <span
-                                                            class="ms-2 text-muted small">{{ $review->created_at->diffForHumans() }}</span>
+
+                                            <div class="tags-search-container">
+                                                <div id="tags_id-selected-container" class="tags-selected-container">
+                                                    @if (is_array($oldTagIds) && count($oldTagIds))
+                                                        @foreach ($oldTagIds as $tid)
+                                                            @if (isset($tagById[$tid]))
+                                                                <div class="tag-item" data-id="{{ $tid }}">
+                                                                    <span
+                                                                        class="selected-value">{{ $tagById[$tid]->name }}</span>
+                                                                    <button type="button" class="tag-delete"
+                                                                        onclick="removeMultiItem(this, '{{ $tid }}', 'tags_id')">×</button>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+
+                                                    <div class="tags-input-wrapper">
+                                                        <input id="tags_id_search" type="text"
+                                                            class="form-control search-input"
+                                                            oninput="filterMultiList(this)"
+                                                            onfocus="showMultiDropdown(this)">
+                                                        <button type="button" class="btn-add" data-bs-toggle="modal"
+                                                            data-bs-target="#addTagModal" tabindex="-1">+</button>
                                                     </div>
-                                                    <p class="mb-0" style="white-space: pre-line;">
-                                                        {{ $review->message }}
-                                                    </p>
+                                                </div>
+
+                                                <div class="dropdown">
+                                                    <ul id="tags-options-list">
+                                                        @foreach ($tags as $tag)
+                                                            <li data-id="{{ $tag->id }}"
+                                                                data-name="{{ $tag->name }}"
+                                                                class="{{ in_array($tag->id, $oldTagIds) ? 'selected' : '' }}"
+                                                                onclick="selectMultiItem(this, this.dataset.name, this.dataset.id, 'tags_id')">
+                                                                {{ $tag->name }}
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
                                                 </div>
                                             </div>
-                                        @endforeach
-                                    </div>
 
-                                    <div class="mb-3">
-                                        <a target="_blank" href="{{ route('content.reviews.index', $content->id) }}"
-                                            style="padding: 8px 0px;"
-                                            class="btn btn-primary w-100 d-inline-block text-center"
-                                            data-en="Check out all reviews" data-ar="اطلع على جميع المراجعات">اطلع على
-                                            جميع المراجعات</a>
-                                    </div>
-
-
-                                </div>
-                            </div>
-
-                            <!-- Tabs content -->
-                            <div class="tab-content">
-                                <!-- Add Content Tab -->
-                                <div class="tab-pane fade show active" id="add-content" role="tabpanel"
-                                    aria-labelledby="add-content-tab">
-                                    <!-- Existing content here -->
-                                </div>
-
-                                <!-- Media Tab -->
-                                <div class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
-                                    <!-- Existing content here -->
-                                </div>
-
-                                <!-- Social Media Tab Content -->
-                                <div class="tab-pane fade" id="social-media" role="tabpanel"
-                                    aria-labelledby="social-media-tab">
-                                    <div class="row g-3 mt-3">
-                                        <!-- Content Image -->
-                                        <div class="col-md-6">
-                                            <label for="share_image" class="form-label" data-ar="صورة المحتوى"
-                                                data-en="Content Image">صورة المحتوى</label>
-                                            <input type="file" id="share_image" name="share_image"
-                                                class="form-control" accept="image/*">
-                                            <div class="mt-2 border rounded p-2 text-center" style="aspect-ratio: 16/9;">
-                                                <img id="share_image_preview" src="{{ $content->share_image }}"
-                                                    style="aspect-ratio: 16/9; display:none;">
+                                            {{-- Hidden inputs for selected tags (server-rendered) --}}
+                                            <div id="tags_id-hidden-inputs">
+                                                @if (is_array($oldTagIds) && count($oldTagIds))
+                                                    @foreach ($oldTagIds as $tagId)
+                                                        <input type="hidden" name="tags_id[]"
+                                                            value="{{ $tagId }}">
+                                                    @endforeach
+                                                @endif
                                             </div>
                                         </div>
-
-                                        <!-- Title -->
-                                        <div class="col-md-6">
-                                            <label for="share_title" class="form-label" data-ar="عنوان المشاركة"
-                                                data-en="Share Title">عنوان المشاركة</label>
-                                            <input type="text" id="share_title" name="share_title"
-                                                class="form-control" value="{{ $content->share_title }}">
-                                        </div>
-
-                                        <!-- Description -->
-                                        <div class="col-md-12">
-                                            <label for="share_description" class="form-label" data-ar="وصف المشاركة"
-                                                data-en="Share Description">وصف المشاركة</label>
-                                            <textarea id="share_description" name="share_description" class="form-control" rows="3">{{ $content->share_description }}</textarea>
-                                        </div>
-
                                     </div>
                                 </div>
 
-                                <!-- Review Message Tab -->
-                                <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
-                                    <!-- Existing content here -->
+                                {{-- ===== SEO KEYWORD FIELD ===== --}}
+                                <div class="form-group col-12 mb-3">
+                                    <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
+                                        data-en="SEO Keyword">الكلمة الرئيسية</label>
+                                    <span style="color:red;">*</span>
+                                    <div class="form-control-wrap">
+                                        <input required id="seo_keyword" name="seo_keyword" type="text"
+                                            class="form-control form-control" maxlength="50"
+                                            value="{{ old('seo_keyword', $content->seo_keyword) }}">
+                                    </div>
+                                </div>
+
+                                {{-- ===== SUMMARY FIELD ===== --}}
+                                <div class="form-group col-12 my-3">
+                                    <label class="form-label" for="summary" data-ar="الملخص"
+                                        data-en="Summary">الملخص</label>
+                                    <span style="color:red;">*</span>
+                                    <div class="form-control-wrap">
+                                        <textarea required id="summary" name="summary" class="form-control form-control" rows="3"
+                                            style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130">{{ old('summary', $content->summary) }}</textarea>
+                                    </div>
+                                    <small class="text-muted"><span
+                                            id="summary-count">{{ strlen(old('summary', $content->summary)) }}</span> /
+                                        130</small>
+                                </div>
+
+                                {{-- ===== BODY CONTENT EDITOR ===== --}}
+                                <div class="form-group col-12 mb-3">
+                                    <label class="form-label" for="body" data-ar="المتن"
+                                        data-en="Body">المتن</label>
+                                    <span style="color:red;">*</span>
+                                    <div class="form-control-wrap">
+                                        <x-forms.tinymce-editor id="myeditorinstance" :value="old('content', $content->content ?? '')" name="content" />
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            {{-- ===== TEMPLATE TAB ===== --}}
+                            <div class="tab-pane fade" id="template" role="tabpanel" aria-labelledby="template-tab">
+                                <div class="template-tab-content">
+                                    @include('dashboard.components.edit-template-tab')
                                 </div>
                             </div>
 
-
-                            <div class="mt-4 p-3 border rounded" id="seo-evaluation" style="">
-                                <h5 data-ar="تقييم السيو (SEO)" data-en="SEO Evaluation">تقييم السيو (SEO)</h5>
-                                <div class="progress" style="height: 20px; margin-bottom:10px;">
-                                    <div id="seo-bar" class="progress-bar" role="progressbar"
-                                        style="width: 0%; background-color: red;" aria-valuenow="0" aria-valuemin="0"
-                                        aria-valuemax="100"></div>
+                            {{-- ===== MEDIA TAB ===== --}}
+                            <div class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
+                                <div class="media-tab-content">
+                                    @include('dashboard.components.edit-media-tab', [
+                                        'existing_images' => $existing_images,
+                                        'existing_videos' => $existing_videos,
+                                        'existing_podcasts' => $existing_podcasts,
+                                        'existing_albums' => $existing_albums,
+                                    ])
                                 </div>
-                                <div id="seo-text" style="font-weight: bold; margin-bottom: 10px;"
-                                    data-ar="يرجى كتابة المحتوى لتقييم السيو"
-                                    data-en="Please write content to evaluate SEO">يرجى كتابة المحتوى
-                                    لتقييم السيو</div>
-                                <div id="seo-feedback" style="display:none;"></div>
                             </div>
 
-                            <div class="mt-4 d-flex">
-                                <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر"
-                                    data-en="Publish">
-                                    نشر
-                                </button>
-                                <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg"
-                                    data-ar="حفظ كمسودة" data-en="Save as Draft">
-                                    حفظ كمسودة
-                                </button>
+                            {{-- ===== SOCIAL MEDIA TAB ===== --}}
+                            @include('dashboard.components.social-media')
+
+                            {{-- ===== MESSAGE TAB ===== --}}
+                            <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
+                                <div class="message-tab-content">
+                                    <div class="mb-3">
+                                        <label for="message_text" data-ar="رسالة المراجعة" data-en="Review Message">رسالة
+                                            المراجعة</label>
+                                        <textarea id="message_text" name="review_description" class="form-control">{{ old('review_description', $content->review_description) }}</textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        {{-- ===== SEO EVALUATION SECTION ===== --}}
+                        <div class="mt-4 p-3 border rounded" id="seo-evaluation">
+                            <h5 data-ar="تقييم السيو (SEO)" data-en="SEO Evaluation">تقييم السيو (SEO)</h5>
+                            <div class="progress" style="height: 20px; margin-bottom:10px;">
+                                <div id="seo-bar" class="progress-bar" role="progressbar"
+                                    style="width: 0%; background-color: red;" aria-valuenow="0" aria-valuemin="0"
+                                    aria-valuemax="100"></div>
+                            </div>
+                            <div id="seo-text" style="font-weight: bold; margin-bottom: 10px;"
+                                data-ar="يرجى كتابة المحتوى لتقييم السيو" data-en="Please write content to evaluate SEO">
+                                يرجى كتابة المحتوى لتقييم السيو
+                            </div>
+                            <div id="seo-feedback" style="display:none;"></div>
+                        </div>
+
+                        {{-- ===== SUBMIT BUTTONS ===== --}}
+                        <div class="mt-4 d-flex">
+                            <button name="status" value="published" type="submit" class="btn btn-primary btn-lg me-3"
+                                data-ar="تحديث" data-en="Update" id="publishButton">تحديث</button>
+                            <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg me-3"
+                                data-ar="حفظ كمسودة" data-en="Save as Draft">حفظ كمسودة</button>
+                            <button name="status" value="preview" type="submit" class="btn btn-secondary btn-lg"
+                                style="margin-left: 10px; color: white;" data-ar="تحديث و معاينة"
+                                data-en="Update and Preview">تحديث و معاينة</button>
+                        </div>
                     </div>
+
+                    {{-- ===== RIGHT SIDEBAR ===== --}}
                     <div class="col-md-3 mt-4">
-                        <div class="card">
+                        <div class="mb-3" style="border: 1px solid #dee2e6; border-radius: 4px; padding: 10px;">
                             <div class="card-body">
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" value="1" id="is_latest"
-                                        name="is_latest" {{ $content->is_latest ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="is_latest" data-ar="آخر الاخبار"
-                                        data-en="Latest news">
-                                        آخر الاخبار
-                                    </label>
+                                {{-- CREATION DATE --}}
+                                <div class="mb-3">
+                                    <label class="form-label d-block mb-2" for="created_at_by_admin"
+                                        data-ar="تاريخ الإنشاء" data-en="Created At">تاريخ الإنشاء</label>
+                                    <input type="datetime-local" id="created_at_by_admin" name="created_at_by_admin"
+                                        class="form-control"
+                                        value="{{ old('created_at_by_admin', $content->created_at_by_admin ? \Carbon\Carbon::parse($content->created_at_by_admin)->format('Y-m-d\TH:i') : '') }}">
                                 </div>
 
-                                <div class="mb-2">
-                                    <label class="form-label d-block mb-1" for="importance" data-ar="أهمية الخبر"
-                                        data-en="Importance of News">أهمية الخبر</label>
+                                {{-- SCHEDULE PUBLISH --}}
+                                <div class="mb-3">
+                                    <label class="form-label d-block mb-2" for="publish_at">
+                                        <span data-ar="جدولة النشر" data-en="Schedule Publish">جدولة النشر</span>
+                                    </label>
+                                    <input type="datetime-local" id="publish_at" name="published_at"
+                                        class="form-control"
+                                        value="{{ old('published_at', $content->published_at ? \Carbon\Carbon::parse($content->published_at)->format('Y-m-d\TH:i') : '') }}"
+                                        onclick="this.showPicker && this.showPicker()"
+                                        onfocus="this.showPicker && this.showPicker()">
+                                </div>
+
+                                {{-- LATEST NEWS CHECKBOX --}}
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" value="1" id="is_latest"
+                                        name="is_latest" {{ old('is_latest', $content->is_latest) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="is_latest" data-ar="آخر الاخبار"
+                                        data-en="Latest news">آخر الاخبار</label>
+                                </div>
+
+                                {{-- IMPORTANCE RADIO BUTTONS --}}
+                                <div class="mb-3">
+                                    <label class="form-label d-block mb-2" for="importance" data-ar="الظهور في الواجهة"
+                                        data-en="Display on Frontend">الظهور في الواجهة</label>
                                     <div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="importance"
                                                 id="importance1" value="1"
-                                                {{ $content->importance == 1 ? 'checked' : '' }}>
+                                                {{ old('importance', $content->importance) == '1' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="importance1" data-ar="صف أول"
-                                                data-en="First news">صف أول</label>
+                                                data-en="First Row">صف أول</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="importance"
                                                 id="importance2" value="2"
-                                                {{ $content->importance == 2 ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="importance2" data-ar="خبر ثاني"
-                                                data-en="Secondary news">خبر ثاني</label>
+                                                {{ old('importance', $content->importance) == '2' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="importance2" data-ar="صف ثانٍ"
+                                                data-en="Second Row">صف ثانٍ</label>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-
-                        <script>
-                            // Duplicate content button
-                            document.getElementById('duplicateContentBtn').addEventListener('click', function() {
-                                alert('سيتم نسخ بيانات النموذج. (تنفيذ النسخ حسب الحاجة)');
-                                // يمكنك هنا تنفيذ منطق النسخ حسب الحاجة
-                            });
-
-                            // Preview content button
-                            document.getElementById('previewContentBtn').addEventListener('click', function() {
-                                alert('معاينة المحتوى غير متوفرة حالياً. (نفذ المعاينة حسب الحاجة)');
-                                // يمكنك هنا فتح نافذة معاينة أو تنفيذ منطق المعاينة
-                            });
-                        </script>
                     </div>
                 </form>
+
                 @include('dashboard.components.footer')
             </div>
         </div>
     </div>
 
+    {{-- ============================ MODALS ============================ --}}
+
+    {{-- Add Section Modal --}}
+    <div class="modal fade" id="addSectionModal" tabindex="-1" aria-labelledby="addSectionModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSectionModalLabel">إضافة قسم جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addSectionForm">@csrf
+                        <div class="mb-3"><label for="section_name" class="form-label">اسم القسم</label><input
+                                type="text" class="form-control" id="section_name" name="name" required></div>
+                        <div class="mb-3"><label for="section_description" class="form-label">الوصف</label>
+                            <textarea class="form-control" id="section_description" name="description" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">إلغاء</button><button type="button" class="btn btn-primary"
+                        onclick="addNewSection()">حفظ</button></div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Add Category Modal --}}
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCategoryModalLabel">إضافة صنف جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCategoryForm">@csrf
+                        <div class="mb-3"><label for="category_name" class="form-label">اسم الصنف</label>
+                            <input type="text" class="form-control" id="category_name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category_slug" class="form-label">الرابط المختصر</label>
+                            <input type="text" class="form-control" id="category_slug" name="slug"
+                                placeholder="مثال: politics" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addNewCategory()">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
+    {{-- Add Writer Modal --}}
+    <div class="modal fade" id="addWriterModal" tabindex="-1" aria-labelledby="addWriterModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addWriterModalLabel">إضافة كاتب جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="addWriterForm" enctype="multipart/form-data">@csrf
+                        <div class="mb-3">
+                            <label for="writer_name" class="form-label">اسم الكاتب</label>
+                            <input type="text" class="form-control" id="writer_name" name="name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="writer_slug" class="form-label">الرابط المختصر (Slug)</label>
+                            <input type="text" class="form-control" id="writer_slug" name="slug"
+                                placeholder="مثال: naji-benz" required>
+                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="writer_bio" class="form-label">السيرة الذاتية</label>
+                            <textarea class="form-control" id="writer_bio" name="bio" rows="3" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="writer_image" class="form-label">الصورة</label>
+                            <input type="file" class="form-control" id="writer_image" name="image"
+                                accept=".jpeg,.jpg,.png,.gif,.webp" required>
+                            <div class="form-text">الحد الأقصى 2MB. يُقبل: jpeg, png, webp, gif</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="writer_email" class="form-label">البريد الإلكتروني (اختياري)</label>
+                            <input type="email" class="form-control" id="writer_email" name="email">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">روابط السوشيال (اختياري)</label>
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <input type="url" class="form-control" id="writer_facebook" name="facebook"
+                                        placeholder="https://facebook.com/username">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="url" class="form-control" id="writer_x" name="x"
+                                        placeholder="https://x.com/username">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="url" class="form-control" id="writer_instagram" name="instagram"
+                                        placeholder="https://instagram.com/username">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="url" class="form-control" id="writer_linkedin" name="linkedin"
+                                        placeholder="https://linkedin.com/in/username">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addNewWriter(event)">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Add Writer Location Modal --}}
+    <div class="modal fade" id="addWriterLocationModal" tabindex="-1" aria-labelledby="addWriterLocationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addWriterLocationModalLabel">إضافة موقع كاتب جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addWriterLocationForm">@csrf
+                        <div class="mb-3">
+                            <label for="location_name" class="form-label">اسم الموقع</label>
+                            <input type="text" class="form-control" id="location_name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="location_slug" class="form-label">الرابط المختصر (Slug)</label>
+                            <input type="text" class="form-control" id="location_slug" name="slug" required>
+                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
+                        </div>
+                        <input type="hidden" name="type" value="city">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addNewWriterLocation(event)">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Add Trend Modal --}}
+    <div class="modal fade" id="addTrendModal" tabindex="-1" aria-labelledby="addTrendModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTrendModalLabel">إضافة ترند جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="addTrendForm" enctype="multipart/form-data">@csrf
+                        <div class="mb-3">
+                            <label for="trend_title" class="form-label">اسم الترند</label>
+                            <input type="text" class="form-control" id="trend_title" name="title" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="trend_slug" class="form-label">الرابط المختصر (Slug)</label>
+                            <input type="text" class="form-control" id="trend_slug" name="slug"
+                                placeholder="مثال: world-cup-2026" required>
+                            <div class="form-text">يُولَّد تلقائيًا من العنوان ويمكن تعديله.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="trend_image" class="form-label">الصورة</label>
+                            <input type="file" class="form-control" id="trend_image" name="image"
+                                accept=".jpeg,.jpg,.png,.webp,.gif" required>
+                            <div class="form-text">الحد الأقصى 6MB. يُقبل: jpeg, png, webp, gif</div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addNewTrend(event)">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addWindowModal" tabindex="-1" aria-labelledby="addWindowModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addWindowModalLabel">إضافة نافذة جديدة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addWindowForm" enctype="multipart/form-data">@csrf
+                        <div class="mb-3">
+                            <label for="window_name" class="form-label">اسم النافذة</label>
+                            <input type="text" class="form-control" id="window_name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="window_slug" class="form-label">الرابط المختصر (Slug)</label>
+                            <input type="text" class="form-control" id="window_slug" name="slug" required>
+                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="window_image" class="form-label">الصورة</label>
+                            <input type="file" class="form-control" id="window_image" name="image"
+                                accept=".jpeg,.jpg,.png,.webp,.gif" required>
+                            <div class="form-text">الحد الأقصى 6MB. يُقبل: jpeg, png, webp, gif</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addNewWindow(event)">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Add Tag Modal --}}
+    <div class="modal fade" id="addTagModal" tabindex="-1" aria-labelledby="addTagModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTagModalLabel">إضافة وسم جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTagForm">@csrf
+                        <div class="mb-3">
+                            <label for="tag_name" class="form-label">اسم الوسم</label>
+                            <input type="text" class="form-control" id="tag_name" name="name" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addNewTag()">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- ============================ SCRIPTS ============================ --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+    {{-- External Scripts --}}
     <script src="/dashlite/js/seo.js"></script>
     <script src="/dashlite/js/tabs.js"></script>
     <script src="/dashlite/js/album.js"></script>
@@ -810,10 +1377,196 @@
     <script src="/dashlite/js/media-tab.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        // ========== SINGLE SELECTION FUNCTIONS ==========
+        function showDropdown(input) {
+            const container = input.closest('.category-selector');
+            const dropdown = container.querySelector('.dropdown');
+            dropdown.style.display = 'block';
+        }
+
+        function filterList(input) {
+            const container = input.closest('.category-selector');
+            const dropdown = container.querySelector('.dropdown');
+            const filter = input.value.toLowerCase();
+            const items = dropdown.querySelectorAll('li');
+            let visible = false;
+
+            items.forEach(li => {
+                const text = li.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    li.style.display = '';
+                    visible = true;
+                } else {
+                    li.style.display = 'none';
+                }
+            });
+
+            dropdown.style.display = visible ? 'block' : 'none';
+        }
+
+        function selectItem(li, value, id) {
+            const container = li.closest('.category-selector');
+            const selectedDiv = container.querySelector('.selected-item');
+            const selectedValue = container.querySelector('.selected-value');
+            const inputWrapper = container.querySelector('.input-wrapper');
+            const dropdown = container.querySelector('.dropdown');
+            const hiddenInput = container.querySelector('.hidden-input');
+
+            selectedValue.textContent = value;
+            hiddenInput.value = id;
+
+            selectedDiv.style.display = 'flex';
+            inputWrapper.classList.add('hidden');
+            dropdown.style.display = 'none';
+
+            container.style.border = '';
+            container.style.padding = '';
+        }
+
+        function clearSelection(button) {
+            const container = button.closest('.category-selector');
+            const selectedDiv = container.querySelector('.selected-item');
+            const inputWrapper = container.querySelector('.input-wrapper');
+            const hiddenInput = container.querySelector('.hidden-input');
+
+            selectedDiv.style.display = 'none';
+            inputWrapper.classList.remove('hidden');
+            hiddenInput.value = '';
+        }
+
+        // ========== MULTI-SELECT (TAGS) FUNCTIONS ==========
+        function showMultiDropdown(input) {
+            const container = input.closest('.tags-search-container');
+            const dropdown = container.querySelector('.dropdown');
+            dropdown.style.display = 'block';
+        }
+
+        function filterMultiList(input) {
+            const container = input.closest('.tags-search-container');
+            const dropdown = container.querySelector('.dropdown');
+            const filter = input.value.toLowerCase();
+            const items = dropdown.querySelectorAll('li');
+            let visible = false;
+
+            items.forEach(li => {
+                const text = (li.dataset.name || li.textContent).toLowerCase();
+                if (text.includes(filter)) {
+                    li.style.display = '';
+                    visible = true;
+                } else {
+                    li.style.display = 'none';
+                }
+            });
+
+            dropdown.style.display = visible ? 'block' : 'none';
+        }
+
+        function selectMultiItem(li, value, id, fieldName) {
+            const container = li.closest('.multi-select-container');
+            const selectedContainer = document.getElementById(fieldName + '-selected-container');
+            const hiddenInputsContainer = document.getElementById(fieldName + '-hidden-inputs');
+            const searchInput = container.querySelector('.search-input');
+            const dropdown = container.querySelector('.dropdown');
+
+            const existingInput = hiddenInputsContainer.querySelector(`input[name="${fieldName}[]"][value="${id}"]`);
+            if (existingInput) return;
+
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = fieldName + '[]';
+            hiddenInput.value = id;
+            hiddenInputsContainer.appendChild(hiddenInput);
+
+            const selectedItem = document.createElement('div');
+            selectedItem.className = 'tag-item';
+            selectedItem.setAttribute('data-id', id);
+            selectedItem.innerHTML = `
+                <span class="selected-value">${value}</span>
+                <button type="button" class="tag-delete" onclick="removeMultiItem(this, '${id}', '${fieldName}')">×</button>
+            `;
+            selectedContainer.insertBefore(selectedItem, selectedContainer.querySelector('.tags-input-wrapper'));
+
+            li.classList.add('selected');
+
+            searchInput.value = '';
+            dropdown.style.display = 'none';
+            searchInput.focus();
+
+            container.style.border = '';
+            container.style.padding = '';
+        }
+
+        function removeMultiItem(button, id, fieldName) {
+            const selectedContainer = document.getElementById(fieldName + '-selected-container');
+            const hiddenInputsContainer = document.getElementById(fieldName + '-hidden-inputs');
+            const list = document.getElementById('tags-options-list');
+
+            const hiddenInput = hiddenInputsContainer.querySelector(`input[name="${fieldName}[]"][value="${id}"]`);
+            if (hiddenInput) hiddenInput.remove();
+
+            const li = list.querySelector(`li[data-id="${id}"]`);
+            if (li) li.classList.remove('selected');
+
+            const selectedItem = button.closest('.tag-item');
+            if (selectedItem) selectedItem.remove();
+        }
+
+        // ========== UTILITY FUNCTIONS ==========
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            document.querySelectorAll('.category-selector').forEach(container => {
+                if (!container.contains(e.target)) {
+                    const dd = container.querySelector('.dropdown');
+                    if (dd) dd.style.display = 'none';
+                }
+            });
+            document.querySelectorAll('.multi-select-container .tags-search-container').forEach(container => {
+                if (!container.contains(e.target)) {
+                    const dd = container.querySelector('.dropdown');
+                    if (dd) dd.style.display = 'none';
+                }
+            });
+        });
+
+        // Initialize from old values
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSingleSelect('section_id', {{ (int) old('section_id', $content->section_id) }});
+            initializeSingleSelect('category_id', {{ (int) old('category_id', $content->category_id) }});
+            initializeSingleSelect('country_id', {{ (int) old('country_id', $content->country_id) }});
+            initializeSingleSelect('continent_id', {{ (int) old('continent_id', $content->continent_id) }});
+            initializeSingleSelect('writer_id', {{ (int) old('writer_id', $content->writer_id) }});
+            initializeSingleSelect('city_id', {{ (int) old('city_id', $content->city_id) }});
+
+            // Trend & Window
+            initializeSingleSelect('trend_id', {{ (int) old('trend_id', $content->trend_id) }});
+            initializeSingleSelect('window_id', {{ (int) old('window_id', $content->window_id) }});
+
+            // Tags already server-rendered
+            initializeCharacterCounters();
+            initializeBootstrapTabs();
+            updatePreview();
+        });
+
+        function initializeSingleSelect(fieldName, oldValue) {
+            if (!oldValue) return;
+            const hidden = document.querySelector(`input[name="${fieldName}"]`);
+            if (!hidden) return;
+            const container = hidden.closest('.category-selector');
+            if (!container) return;
+
+            const dd = container.querySelector('.dropdown');
+            if (!dd) return;
+            const li = dd.querySelector(`li[data-id="${oldValue}"]`);
+            if (li) {
+                selectItem(li, li.dataset.name || li.textContent.trim(), li.dataset.id || String(oldValue));
+            }
+        }
+
+        function initializeCharacterCounters() {
             const fields = [{
                     id: "title",
-                    max: 75
+                    max: 68
                 },
                 {
                     id: "long_title",
@@ -826,181 +1579,925 @@
                 {
                     id: "summary",
                     max: 130
-                } // ✅ Added summary field
+                }
             ];
-
             fields.forEach(f => {
                 const el = document.getElementById(f.id);
                 const counter = document.getElementById(f.id + "-count");
-
                 if (el && counter) {
-                    // Initial update
                     counter.textContent = el.value.length;
-
-                    // Update on typing
                     el.addEventListener("input", function() {
                         counter.textContent = this.value.length;
                     });
                 }
             });
-        });
-    </script>
+        }
 
+        function initializeBootstrapTabs() {
+            var triggerTabList = [].slice.call(document.querySelectorAll('#contentTabs button'));
+            triggerTabList.forEach(function(triggerEl) {
+                var tabTrigger = new bootstrap.Tab(triggerEl);
+                triggerEl.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    tabTrigger.show();
+                });
+            });
+        }
 
-    <!-- Preview Script -->
-    <script>
+        // ========== FORM VALIDATION ==========
         document.addEventListener('DOMContentLoaded', function() {
-            // Show initial image if exists
-            const preview = document.getElementById('share_image_preview');
-            if (preview && preview.src && preview.src.trim() !== '' && preview.src !== window.location.href) {
-                preview.style.display = 'block';
-            } else {
-                preview.style.display = 'none';
-            }
+            const form = document.getElementById('contentForm');
 
-            // On file change, update preview
-            document.getElementById('share_image').addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    preview.src = URL.createObjectURL(file);
-                    preview.style.display = 'block';
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                const errorMessages = [];
+
+                const sectionInput = document.querySelector('input[name="section_id"]');
+                if (!sectionInput.value) {
+                    isValid = false;
+                    errorMessages.push('يرجى اختيار القسم');
+                    highlightField(sectionInput);
+                }
+
+                const categoryInput = document.querySelector('input[name="category_id"]');
+                if (!categoryInput.value) {
+                    isValid = false;
+                    errorMessages.push('يرجى اختيار الصنف');
+                    highlightField(categoryInput);
+                }
+
+                const tagsInputs = document.querySelectorAll('input[name="tags_id[]"]');
+                if (tagsInputs.length === 0) {
+                    isValid = false;
+                    errorMessages.push('يرجى اختيار وسم واحد على الأقل');
+                    highlightField(document.getElementById('tags_id-hidden-inputs'));
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
+                    showValidationError(errorMessages.join('<br>'));
+                    scrollToFirstError();
                 } else {
-                    // If no file selected, keep initial image if exists, otherwise hide
-                    if (preview.src && preview.src.trim() !== '' && preview.src !== window.location.href) {
-                        preview.style.display = 'block';
-                    } else {
-                        preview.src = '';
-                        preview.style.display = 'none';
+                    const formData = new FormData(this);
+                    for (let [key, value] of formData.entries()) {
+                        console.log(key + ': ' + value);
                     }
                 }
             });
-        });
-    </script>
 
+            function highlightField(input) {
+                const container = input.closest('.search-container') || input.closest('.multi-select-container');
+                if (container) {
+                    container.style.border = '1px solid #dc3545';
+                    container.style.borderRadius = '4px';
+                    container.style.padding = '4px';
+                    setTimeout(() => {
+                        container.style.border = '';
+                        container.style.padding = '';
+                    }, 3000);
+                }
+            }
 
-    <script>
-        $(document).ready(function() {
-            $('.js-select2').select2({
-                placeholder: "اختر",
-                allowClear: true,
-                width: '100%'
-            });
-        });
-    </script>
+            function showValidationError(message) {
+                const existingError = document.getElementById('validation-error');
+                if (existingError) existingError.remove();
 
-    <script>
-        const contentId = {{ $content->id }};
-        const messageText = document.getElementById('message_text');
-        const currentUserId = @json(auth()->id());
-        const currentUserName = @json(auth()->user()->name . ' ' . auth()->user()->surname);
+                const errorDiv = document.createElement('div');
+                errorDiv.id = 'validation-error';
+                errorDiv.className = 'alert alert-danger alert-dismissible fade show';
+                errorDiv.innerHTML =
+                    `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
 
-        messageText.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
-                storeReview();
+                const firstHeading = form.querySelector('.nk-block-head');
+                if (firstHeading) {
+                    firstHeading.parentNode.insertBefore(errorDiv, firstHeading.nextSibling);
+                } else {
+                    form.insertBefore(errorDiv, form.firstChild);
+                }
+            }
+
+            function scrollToFirstError() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                const firstError = document.querySelector(
+                        '.search-container[style*="border: 1px solid #dc3545"]') ||
+                    document.querySelector('.multi-select-container[style*="border: 1px solid #dc3545"]');
+                if (firstError) {
+                    firstError.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
             }
         });
 
-        async function storeReview() {
+        // ========== TEMPLATE SELECTION ==========
+        function selectTemplate(templateName) {
+            document.getElementById('template_field').value = templateName;
+            document.querySelectorAll('.template-option').forEach(option => option.classList.remove('selected'));
+            if (event && event.target) {
+                const box = event.target.closest('.template-option');
+                if (box) box.classList.add('selected');
+            }
+        }
+
+        // ========== SHARE IMAGE PREVIEW ==========
+        function previewShareImage(input) {
+            const file = input.files[0];
+            const previewWrapper = document.getElementById('share_image_preview_wrapper');
+            const preview = document.getElementById('share_image_preview');
+            const placeholder = document.getElementById('share_image_placeholder');
+            const fileName = document.getElementById('share_image_name');
+            const previewImageContainer = document.getElementById('preview_image_container');
+            const previewImage = document.getElementById('preview_image');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    previewImage.src = e.target.result;
+                    fileName.textContent = file.name;
+                    previewWrapper.classList.remove('d-none');
+                    placeholder.classList.add('d-none');
+                    previewImageContainer.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                removeShareImage();
+            }
+        }
+
+        function removeShareImage() {
+            const previewWrapper = document.getElementById('share_image_preview_wrapper');
+            const placeholder = document.getElementById('share_image_placeholder');
+            const fileInput = document.getElementById('share_image');
+            const previewImageContainer = document.getElementById('preview_image_container');
+
+            fileInput.value = '';
+            previewWrapper.classList.add('d-none');
+            placeholder.classList.remove('d-none');
+            previewImageContainer.style.display = 'none';
+        }
+
+        function updatePreview() {
+            const shareTitle = document.getElementById('share_title');
+            const shareDescription = document.getElementById('share_description');
+            const previewTitle = document.getElementById('preview_title');
+            const previewDescription = document.getElementById('preview_description');
+            if (shareTitle && previewTitle) previewTitle.textContent = shareTitle.value || 'عنوان المشاركة';
+            if (shareDescription && previewDescription) previewDescription.textContent = shareDescription.value ||
+                'وصف المشاركة';
+        }
+
+        // ========== SLUGIFY HELPER ==========
+        function slugify(v) {
+            return v.toString().toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '')
+                .substring(0, 150);
+        }
+
+        // ========== MODAL AJAX FUNCTIONS ==========
+
+        // Add New Writer
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameI = document.getElementById('writer_name');
+            const slugI = document.getElementById('writer_slug');
+            if (nameI && slugI) {
+                nameI.addEventListener('input', () => {
+                    if (!slugI.dataset.touched || slugI.value.trim() === '') {
+                        slugI.value = slugify(nameI.value);
+                    }
+                });
+                slugI.addEventListener('input', () => slugI.dataset.touched = '1');
+            }
+        });
+
+        async function addNewWriter(e) {
+            if (e && e.preventDefault) e.preventDefault();
+
+            const form = document.getElementById('addWriterForm');
+            const fd = new FormData(form);
+
+            const name = (fd.get('name') || '').trim();
+            const slug = (fd.get('slug') || '').trim();
+            const bio = (fd.get('bio') || '').trim();
+            const file = fd.get('image');
+
+            if (!name) return Swal.fire({
+                icon: 'error',
+                title: 'تنبيه',
+                text: 'يرجى إدخال اسم الكاتب.'
+            });
+            if (!slug) return Swal.fire({
+                icon: 'error',
+                title: 'تنبيه',
+                text: 'يرجى إدخال الرابط المختصر.'
+            });
+            if (!bio) return Swal.fire({
+                icon: 'error',
+                title: 'تنبيه',
+                text: 'يرجى إدخال السيرة الذاتية.'
+            });
+            if (!(file instanceof File) || !file.name) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'يرجى اختيار صورة.'
+                });
+            }
+
+            const okTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!okTypes.includes(file.type)) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'صيغة الصورة غير مدعومة.'
+                });
+            }
+            if (file.size > 2 * 1024 * 1024) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'حجم الصورة يتجاوز 2MB.'
+                });
+            }
+
             try {
-                const response = await fetch(`/dashboard/api/store/reviews`, {
+                const res = await fetch('/dashboard/api/add-writer', {
                     method: 'POST',
+                    body: fd,
                     headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        content_id: contentId,
-                        message: messageText.value
-                    })
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content'),
+                        'Accept': 'application/json'
+                    }
                 });
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                const ctype = res.headers.get('content-type') || '';
+                let data = {};
+                if (ctype.includes('application/json')) {
+                    data = await res.json();
+                } else {
+                    const text = await res.text();
+                    throw new Error(text || 'استجابة غير صالحة من الخادم');
                 }
 
-                messageText.value = '';
-                // inside a response there is the new review
-                const data = await response.json();
-                const review = data.review;
-                const reviewsContainer = document.getElementById('reviews-container');
-                const isOwner = Number(currentUserId) === Number(review.reviewer_id);
-                const reviewDiv = document.createElement('div');
-                reviewDiv.className = `d-flex ${isOwner ? 'justify-content-end' : 'justify-content-start'}`;
-                const innerDiv = document.createElement('div');
-                innerDiv.className = `py-1  ${isOwner ? 'text-end' : 'text-start'}`;
-                // Reviewer Info
-                const reviewerInfo = document.createElement('div');
-                reviewerInfo.className = 'small fw-bold mb-1 badge badge-primary';
-                reviewerInfo.textContent = isOwner ? currentUserName : review.reviewer_name;
-                innerDiv.appendChild(reviewerInfo);
+                if (res.ok && (data.id || (data.writer && data.writer.id))) {
+                    const id = data.id || data.writer.id;
+                    const name = data.name || (data.writer && data.writer.name);
 
-                // Message
-                const messagePara = document.createElement('p');
-                messagePara.className = 'mb-2';
-                messagePara.textContent = review.message;
-                innerDiv.appendChild(messagePara);
+                    const writerSearch = document.querySelector('#writer_search');
+                    if (writerSearch) {
+                        const listUl = writerSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        if (listUl) {
+                            const li = document.createElement('li');
+                            li.dataset.id = String(id);
+                            li.dataset.name = name;
+                            li.textContent = name;
+                            li.onclick = function() {
+                                selectItem(li, name, String(id));
+                            };
+                            listUl.appendChild(li);
+                            selectItem(li, name, String(id));
+                        }
+                    }
 
-                reviewDiv.appendChild(innerDiv);
-                reviewsContainer.appendChild(reviewDiv);
-                reviewsContainer.scrollTop = reviewsContainer.scrollHeight;
-            } catch (error) {
-                console.error('Error storing review:', error);
+                    if (window.$) $('#addWriterModal').modal('hide');
+                    form.reset();
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تمت الإضافة',
+                        text: `تم إنشاء الكاتب: ${name}`,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    return;
+                }
+
+                if (res.status === 422 && (data.errors || data.messages)) {
+                    const all = data.errors || data.messages;
+                    const msgs = Object.keys(all).map(k => `• ${k}: ${all[k].join(' / ')}`).join('\n');
+                    throw new Error(msgs || 'تحقق من الحقول.');
+                }
+
+                throw new Error(data.message || data.error || 'تعذر إضافة الكاتب.');
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: err.message || 'حدث خطأ غير متوقع'
+                });
             }
         }
+
+        // Add New Category
+        async function addNewCategory(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            const form = document.getElementById('addCategoryForm');
+            const fd = new FormData(form);
+
+            try {
+                const res = await fetch('/dashboard/api/add-category', {
+                    method: 'POST',
+                    body: fd,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content'),
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const contentType = res.headers.get('content-type') || '';
+                let data = {};
+                if (contentType.includes('application/json')) {
+                    data = await res.json();
+                } else {
+                    const text = await res.text();
+                    throw new Error(text || 'استجابة غير صالحة من الخادم');
+                }
+
+                if (res.status === 201 && data.id && data.name) {
+                    const dropdown = document.querySelector('#category_search')
+                        .closest('.search-container')
+                        .querySelector('.dropdown ul');
+
+                    const newItem = document.createElement('li');
+                    newItem.dataset.id = data.id;
+                    newItem.dataset.name = data.name;
+                    newItem.textContent = data.name;
+                    newItem.onclick = function() {
+                        selectItem(this, data.name, data.id);
+                    };
+                    dropdown.appendChild(newItem);
+
+                    $('#addCategoryModal').modal('hide');
+                    form.reset();
+
+                    // Auto select new category
+                    selectItem(newItem, data.name, data.id);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم الحفظ',
+                        timer: 1200,
+                        showConfirmButton: false
+                    });
+                    return;
+                }
+
+                // 422 validation errors
+                if (res.status === 422 && data.messages) {
+                    const msgs = Object.values(data.messages).flat().join('<br>');
+                    return Swal.fire({
+                        icon: 'error',
+                        title: 'تحقق من الحقول',
+                        html: msgs
+                    });
+                }
+
+                // Other errors (e.g., 500)
+                const msg = data.error || data.message || 'تعذر حفظ الصنف';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: msg
+                });
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: err.message || 'حدث خطأ غير متوقع'
+                });
+            }
+        }
+
+        // Add New Tag
+        async function addNewTag(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            const form = document.getElementById('addTagForm');
+            const fd = new FormData(form);
+
+            // تأكد أن لدينا قيمة name
+            const name = (fd.get('name') || '').trim();
+            if (!name) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'يرجى إدخال اسم الوسم.'
+                });
+            }
+
+            try {
+                const res = await fetch('/dashboard/api/add-tag', {
+                    method: 'POST',
+                    body: fd,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content'),
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const contentType = res.headers.get('content-type') || '';
+                let data = {};
+                if (contentType.includes('application/json')) {
+                    data = await res.json();
+                } else {
+                    const text = await res.text();
+                    throw new Error(text || 'استجابة غير صالحة من الخادم');
+                }
+
+                // نجاح متوقع: 201 Created
+                if (res.ok && (data.id || (data.tag && data.tag.id))) {
+                    const tagId = data.id || data.tag.id;
+                    const tagName = data.name || data.tag.name;
+
+                    // أضِف العنصر إلى قائمة الخيارات
+                    const list = document.getElementById('tags-options-list');
+                    const li = document.createElement('li');
+                    li.dataset.id = String(tagId);
+                    li.dataset.name = tagName;
+                    li.textContent = tagName;
+                    li.onclick = function() {
+                        selectMultiItem(li, tagName, String(tagId), 'tags_id');
+                    };
+                    list.appendChild(li);
+
+                    // أغلق المودال وافرغ المدخلات
+                    if (window.$) {
+                        $('#addTagModal').modal('hide');
+                    }
+                    form.reset();
+
+                    // اختر الوسم تلقائيًا
+                    selectMultiItem(li, tagName, String(tagId), 'tags_id');
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تمت الإضافة',
+                        text: 'تمت إضافة الوسم: ' + tagName,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    return;
+                }
+
+                // أخطاء التحقق 422 (Laravel)
+                if (res.status === 422 && (data.errors || data.messages)) {
+                    const msgs = Object.values(data.errors || data.messages).flat().join('\n');
+                    throw new Error(msgs || 'تحقق من الحقول.');
+                }
+
+                // أي خطأ آخر من الخادم
+                throw new Error(data.message || data.error || 'تعذر إضافة الوسم.');
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: err.message || 'حدث خطأ غير متوقع'
+                });
+            }
+        }
+
+        // Add New Trend
+        document.addEventListener('DOMContentLoaded', function() {
+            const titleI = document.getElementById('trend_title');
+            const slugI = document.getElementById('trend_slug');
+            titleI?.addEventListener('input', () => {
+                if (!slugI) return;
+                if (!slugI.dataset.touched || slugI.value.trim() === '') {
+                    slugI.value = slugify(titleI.value);
+                }
+            });
+            slugI?.addEventListener('input', () => slugI.dataset.touched = '1');
+        });
+
+        async function addNewTrend(e) {
+            if (e && e.preventDefault) e.preventDefault();
+
+            const form = document.getElementById('addTrendForm');
+            const fd = new FormData(form);
+
+            const title = (fd.get('title') || '').trim();
+            const slug = (fd.get('slug') || '').trim();
+            const file = fd.get('image');
+
+            if (!title) return Swal.fire({
+                icon: 'error',
+                title: 'تنبيه',
+                text: 'يرجى إدخال اسم الترند.'
+            });
+            if (!slug) return Swal.fire({
+                icon: 'error',
+                title: 'تنبيه',
+                text: 'يرجى إدخال الرابط المختصر.'
+            });
+            if (!(file instanceof File) || !file.name) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'يرجى اختيار صورة.'
+                });
+            }
+
+            const okTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+            if (!okTypes.includes(file.type)) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'صيغة الصورة غير مدعومة.'
+                });
+            }
+
+            if (file.size > 6 * 1024 * 1024) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'حجم الصورة يتجاوز 6MB.'
+                });
+            }
+
+            try {
+                const res = await fetch('/dashboard/api/add-trend', {
+                    method: 'POST',
+                    body: fd,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content'),
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const ctype = res.headers.get('content-type') || '';
+                let data = {};
+                if (ctype.includes('application/json')) {
+                    data = await res.json();
+                } else {
+                    const text = await res.text();
+                    throw new Error(text || 'استجابة غير صالحة من الخادم');
+                }
+
+                if (res.ok && (data.id || (data.trend && data.trend.id))) {
+                    const id = data.id || data.trend.id;
+                    const name = data.title || (data.trend && data.trend.title) || title;
+                    const slugR = data.slug || (data.trend && data.trend.slug) || slug;
+
+                    const trendSearch = document.querySelector('#trend_search');
+                    if (trendSearch) {
+                        const listUl = trendSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        if (listUl) {
+                            const li = document.createElement('li');
+                            li.dataset.id = String(id);
+                            li.dataset.name = name;
+                            li.textContent = name;
+                            li.onclick = function() {
+                                selectItem(li, name, String(id));
+                            };
+                            listUl.appendChild(li);
+                            selectItem(li, name, String(id));
+                        }
+                    }
+
+                    if (window.$) $('#addTrendModal').modal('hide');
+                    form.reset();
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تمت الإضافة',
+                        text: `تم إنشاء الترند: ${name} (${slugR})`,
+                        timer: 1600,
+                        showConfirmButton: false
+                    });
+                    return;
+                }
+
+                if (res.status === 422 && (data.errors || data.messages)) {
+                    const all = data.errors || data.messages;
+                    const msgs = Object.keys(all).map(k => `• ${k}: ${all[k].join(' / ')}`).join('\n');
+                    throw new Error(msgs || 'تحقق من الحقول.');
+                }
+
+                throw new Error(data.message || data.error || 'تعذر إضافة الترند.');
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: err.message || 'حدث خطأ غير متوقع'
+                });
+            }
+        }
+
+        // ========== ADD WINDOW MODAL FUNCTION ==========
+        async function addNewWindow(e) {
+            if (e && e.preventDefault) e.preventDefault();
+
+            const form = document.getElementById('addWindowForm');
+            const fd = new FormData(form);
+
+            const name = (fd.get('name') || '').trim();
+            const slug = (fd.get('slug') || '').trim();
+            const file = fd.get('image');
+
+            // Validation
+            if (!name) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'يرجى إدخال اسم النافذة.'
+                });
+            }
+            if (!slug) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'يرجى إدخال الرابط المختصر.'
+                });
+            }
+            if (!(file instanceof File) || !file.name) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'يرجى اختيار صورة.'
+                });
+            }
+
+            // File type validation
+            const okTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+            if (!okTypes.includes(file.type)) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'صيغة الصورة غير مدعومة. يُقبل: jpeg, png, webp, gif'
+                });
+            }
+
+            // File size validation (6MB)
+            if (file.size > 6 * 1024 * 1024) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'حجم الصورة يتجاوز 6MB.'
+                });
+            }
+
+            try {
+                const res = await fetch('/dashboard/api/add-window', {
+                    method: 'POST',
+                    body: fd,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content'),
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const contentType = res.headers.get('content-type') || '';
+                let data = {};
+
+                if (contentType.includes('application/json')) {
+                    data = await res.json();
+                } else {
+                    const text = await res.text();
+                    throw new Error(text || 'استجابة غير صالحة من الخادم');
+                }
+
+                // Success response
+                if (res.ok && (data.id || (data.window && data.window.id))) {
+                    const id = data.id || data.window.id;
+                    const name = data.name || data.window.name;
+                    const slug = data.slug || data.window.slug;
+
+                    // Add to dropdown list
+                    const windowSearch = document.querySelector('#window_search');
+                    if (windowSearch) {
+                        const listUl = windowSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        if (listUl) {
+                            const li = document.createElement('li');
+                            li.dataset.id = String(id);
+                            li.dataset.name = name;
+                            li.textContent = name;
+                            li.onclick = function() {
+                                selectItem(li, name, String(id));
+                            };
+                            listUl.appendChild(li);
+
+                            // Auto-select the new window
+                            selectItem(li, name, String(id));
+                        }
+                    }
+
+                    // Close modal and reset form
+                    if (window.$) {
+                        $('#addWindowModal').modal('hide');
+                    }
+                    form.reset();
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تمت الإضافة',
+                        text: `تم إنشاء النافذة: ${name}`,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    return;
+                }
+
+                // Validation errors
+                if (res.status === 422 && (data.errors || data.messages)) {
+                    const all = data.errors || data.messages;
+                    const msgs = Object.keys(all).map(k => `• ${k}: ${all[k].join(' / ')}`).join('\n');
+                    throw new Error(msgs || 'تحقق من الحقول.');
+                }
+
+                // Other server errors
+                throw new Error(data.message || data.error || 'تعذر إضافة النافذة.');
+
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: err.message || 'حدث خطأ غير متوقع'
+                });
+            }
+        }
+
+        // ========== SLUG GENERATION FOR WINDOW ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('window_name');
+            const slugInput = document.getElementById('window_slug');
+
+            if (nameInput && slugInput) {
+                nameInput.addEventListener('input', () => {
+                    if (!slugInput.dataset.touched || slugInput.value.trim() === '') {
+                        slugInput.value = slugify(nameInput.value);
+                    }
+                });
+
+                slugInput.addEventListener('input', () => {
+                    slugInput.dataset.touched = '1';
+                });
+            }
+        });
+
+        // ========== SLUGIFY HELPER FUNCTION ==========
+        function slugify(v) {
+            return v.toString().toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '')
+                .substring(0, 255);
+        }
+
+        // Stubs for other modal functions
+        function addNewCountry() {
+            /* similar to addNewSection */
+        }
+
+        function addNewContinent() {
+            /* similar to addNewSection */
+        }
+
+        // ========== ADD WRITER LOCATION (CITY) FUNCTION ==========
+        async function addNewWriterLocation(e) {
+            if (e && e.preventDefault) e.preventDefault();
+
+            const form = document.getElementById('addWriterLocationForm');
+            const fd = new FormData(form);
+
+            const name = (fd.get('name') || '').trim();
+            const slug = (fd.get('slug') || '').trim();
+            const type = 'city'; // Hardcoded as per your backend
+
+            // Validation
+            if (!name) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'يرجى إدخال اسم الموقع.'
+                });
+            }
+            if (!slug) {
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'تنبيه',
+                    text: 'يرجى إدخال الرابط المختصر.'
+                });
+            }
+
+            try {
+                const res = await fetch('/dashboard/api/add-city', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        name: name,
+                        slug: slug,
+                        type: type
+                    }),
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content'),
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const contentType = res.headers.get('content-type') || '';
+                let data = {};
+
+                if (contentType.includes('application/json')) {
+                    data = await res.json();
+                } else {
+                    const text = await res.text();
+                    throw new Error(text || 'استجابة غير صالحة من الخادم');
+                }
+
+                // Success response
+                if (res.ok && (data.id || (data.location && data.location.id))) {
+                    const id = data.id || data.location.id;
+                    const name = data.name || data.location.name;
+                    const slug = data.slug || data.location.slug;
+
+                    // Add to dropdown list
+                    const locationSearch = document.querySelector('#writer_location_search');
+                    if (locationSearch) {
+                        const listUl = locationSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        if (listUl) {
+                            const li = document.createElement('li');
+                            li.dataset.id = String(id);
+                            li.dataset.name = name;
+                            li.textContent = name;
+                            li.onclick = function() {
+                                selectItem(li, name, String(id));
+                            };
+                            listUl.appendChild(li);
+
+                            // Auto-select the new location
+                            selectItem(li, name, String(id));
+                        }
+                    }
+
+                    // Close modal and reset form
+                    if (window.$) {
+                        $('#addWriterLocationModal').modal('hide');
+                    }
+                    form.reset();
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تمت الإضافة',
+                        text: `تم إنشاء الموقع: ${name}`,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    return;
+                }
+
+                // Validation errors
+                if (res.status === 422 && (data.errors || data.messages)) {
+                    const all = data.errors || data.messages;
+                    const msgs = Object.keys(all).map(k => `• ${k}: ${all[k].join(' / ')}`).join('\n');
+                    throw new Error(msgs || 'تحقق من الحقول.');
+                }
+
+                // Other server errors
+                throw new Error(data.message || data.error || 'تعذر إضافة الموقع.');
+
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: err.message || 'حدث خطأ غير متوقع'
+                });
+            }
+        }
+
+        // ========== SLUG GENERATION FOR WRITER LOCATION ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('location_name');
+            const slugInput = document.getElementById('location_slug');
+
+            if (nameInput && slugInput) {
+                nameInput.addEventListener('input', () => {
+                    if (!slugInput.dataset.touched || slugInput.value.trim() === '') {
+                        slugInput.value = slugify(nameInput.value);
+                    }
+                });
+
+                slugInput.addEventListener('input', () => {
+                    slugInput.dataset.touched = '1';
+                });
+            }
+        });
     </script>
 
-
-
 @endsection
-
-<style>
-    .tag-chip {
-        background: #6576ff;
-        color: #fff;
-        padding: 3px 8px;
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 12px;
-    }
-
-    .tag-chip span {
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    #tagSearch {
-        flex: 1;
-        min-width: 100px;
-    }
-</style>
-
-<script src={{ asset('dashlite/js/apis/search-category-api.js') }}></script>
-<script src={{ asset('dashlite/js/apis/add-category-api.js') }}></script>
-<script src={{ asset('dashlite/js/apis/search-trend-api.js') }}></script>
-<script src={{ asset('dashlite/js/apis/add-trend-api.js') }}></script>
-<script src={{ asset('dashlite/js/apis/search-window-api.js') }}></script>
-<script src={{ asset('dashlite/js/apis/add-window-api.js') }}></script>
-<script src={{ asset('dashlite/js/apis/search-tag-api.js') }}></script>
-<script src={{ asset('dashlite/js/apis/add-tag-api.js') }}></script>
-<script src={{ asset('dashlite/js/apis/search-writer-api.js') }}></script>
-<script src={{ asset('dashlite/js/apis/add-writer-api.js') }}></script>
-<script src={{ asset('dashlite/js/apis/search-writer-location-api.js') }}></script>
-
-<script>
-    // Share image file preview
-    document.getElementById("share_image").addEventListener("change", function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                document.getElementById("preview-share_image").innerHTML =
-                    `<img src="${event.target.result}" alt="preview">`;
-                document.getElementById("share_image_url").value = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-</script>

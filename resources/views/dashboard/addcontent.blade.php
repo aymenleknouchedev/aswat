@@ -5,6 +5,8 @@
 
 @section('content')
 
+
+
     {{-- ============================ SCRIPTS & STYLES ============================ --}}
 
     {{-- <script>
@@ -442,38 +444,23 @@
                             </script>
                         @endif
 
-                        {{-- ===== SUCCESS MESSAGE HANDLING ===== --}}
-                        @if (session('clear_local_storage'))
+                        @if (session('success'))
                             <script>
-                                (function() {
-                                    try {
-                                        localStorage.removeItem('az_content_items_v6');
-                                        localStorage.removeItem('az_display_method_v6');
-                                        console.info('LocalStorage vidé après succès (signal contrôleur).');
-                                    } catch (e) {
-                                        /* noop */
-                                    }
-                                })();
                                 document.addEventListener('DOMContentLoaded', function() {
-                                    var alertDiv = document.createElement('div');
-                                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
-                                    alertDiv.role = 'alert';
-                                    alertDiv.innerHTML = `
-                                        {{ session('success_message', 'تم حفظ المحتوى بنجاح!') }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    `;
-                                    var form = document.getElementById('contentForm');
-                                    var firstHeading = form ? form.querySelector('.nk-block-head') : null;
-                                    if (form && firstHeading) {
-                                        firstHeading.parentNode.insertBefore(alertDiv, firstHeading.nextSibling);
-                                    } else if (form) {
-                                        form.insertBefore(alertDiv, form.firstChild);
-                                    } else {
-                                        document.body.prepend(alertDiv);
-                                    }
+                                    // المفاتيح الخاصة بالعناصر فقط
+                                    const itemKeys = [
+                                        'az_items_list_v1',
+                                        'az_items_file_v1',
+                                        'az_display_method_v6'
+                                    ];
+
+                                    itemKeys.forEach(k => localStorage.removeItem(k));
                                 });
                             </script>
                         @endif
+
+
+
 
                         {{-- ===== TEMPLATE HIDDEN FIELD ===== --}}
                         <input type="hidden" name="template" id="template_field" value="default">

@@ -2283,3 +2283,61 @@
         gap: .25rem;
     }
 </style>
+<script>
+    (function() {
+        const MODE_KEY = 'az_display_method_v6';
+        const STORE_KEYS = {
+            list: 'az_items_list_v1',
+            file: 'az_items_file_v1'
+        };
+        const hidden = document.getElementById('list-items-hidden-inputs');
+        const form = hidden ? hidden.closest('form') : null;
+
+        if (!hidden || !form) return;
+
+        function makeHidden(name, value) {
+            const i = document.createElement('input');
+            i.type = 'hidden';
+            i.name = name;
+            i.value = value == null ? '' : String(value);
+            return i;
+        }
+
+        function serializeAndInject() {
+            hidden.innerHTML = '';
+            const mode = localStorage.getItem(MODE_KEY) || 'simple';
+            if (!(mode === 'list' || mode === 'file')) return;
+
+            let items = [];
+            try {
+                const raw = localStorage.getItem(STORE_KEYS[mode]);
+                const arr = raw ? JSON.parse(raw) : [];
+                if (Array.isArray(arr)) items = arr;
+            } catch (e) {}
+
+            if (!items.length) return;
+
+            items.forEach((it, idx) => {
+                const base = `items[${idx}]`;
+                hidden.appendChild(makeHidden(`${base}[title]`, it.title || ''));
+                hidden.appendChild(makeHidden(`${base}[description]`, it.description || ''));
+                hidden.appendChild(makeHidden(`${base}[image]`, it.image || ''));
+                // url مطلوب فقط في وضع file حسب واجهتك الحالية
+                hidden.appendChild(makeHidden(`${base}[url]`, it.url || ''));
+                hidden.appendChild(makeHidden(`${base}[index]`, idx + 1));
+            });
+        }
+
+        // عند تغيير وضع العرض: نظّف حقول الـ hidden
+        document.querySelectorAll('input[name="display_method"]').forEach(r => {
+            r.addEventListener('change', () => {
+                hidden.innerHTML = '';
+            });
+        });
+
+        // قبل الإرسال مباشرةً
+        form.addEventListener('submit', () => {
+            serializeAndInject();
+        });
+    })();
+</script>

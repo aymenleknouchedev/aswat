@@ -92,6 +92,21 @@
                                 </div>
                             @endif
 
+                            @if (session('success'))
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        // المفاتيح الخاصة بالعناصر فقط
+                                        const itemKeys = [
+                                            'az_items_list_v1',
+                                            'az_items_file_v1',
+                                            'az_display_method_v6'
+                                        ];
+
+                                        itemKeys.forEach(k => localStorage.removeItem(k));
+                                    });
+                                </script>
+                            @endif
+
                             <!-- ================== CONTENT TABLE ================== -->
                             @if ($contents->isEmpty())
                                 <div class="text-center py-5">
