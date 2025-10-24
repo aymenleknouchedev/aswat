@@ -21,7 +21,7 @@
 
     {{-- ============================ STYLES ============================ --}}
     <style>
-        /* ===== VALIDATION STYLES ===== */
+        ===== VALIDATION STYLES =====
         .hidden-input:invalid~.selected-item {
             border-color: #dc3545;
         }
@@ -45,7 +45,7 @@
         }
 
         /* ===== SELECT2 RTL SUPPORT ===== */
-        .select2-dropdown-rtl {
+        .select2-dropdown-input-rtl {
             direction: rtl !important;
             text-align: right !important;
         }
@@ -164,7 +164,7 @@
             font-size: 0.75rem;
         }
 
-        /* ===== SEARCH DROPDOWN STYLES ===== */
+        /* ===== SEARCH DROPDOWN-input STYLES ===== */
         .search-container {
             position: relative;
             width: 100%;
@@ -178,7 +178,7 @@
             border-radius: 0px;
         }
 
-        .dropdown {
+        .dropdown-input {
             display: none;
             position: absolute;
             top: 100%;
@@ -194,23 +194,23 @@
             margin-top: 5px;
         }
 
-        .dropdown ul {
+        .dropdown-input ul {
             list-style: none;
             margin: 0;
             padding: 0;
         }
 
-        .dropdown li {
+        .dropdown-input li {
             padding: 10px 15px;
             cursor: pointer;
             border-bottom: 1px solid #f1f1f1;
         }
 
-        .dropdown li:hover {
+        .dropdown-input li:hover {
             background-color: #f8f9fa;
         }
 
-        .dropdown li.selected {
+        .dropdown-input li.selected {
             background-color: #e8f4ff;
             color: #2c5aa0;
             font-weight: 500;
@@ -574,9 +574,9 @@
                                             <div class="input-wrapper">
                                                 <input id="section_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showDropdown-input(this)">
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="dropdown-input">
                                                 <ul>
                                                     @foreach ($sections as $section)
                                                         <li data-id="{{ $section->id }}" data-name="{{ $section->name }}"
@@ -605,11 +605,11 @@
                                             <div class="input-wrapper">
                                                 <input id="category_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showDropdown-input(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addCategoryModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="dropdown-input">
                                                 <ul>
                                                     @foreach ($categories as $category)
                                                         <li data-id="{{ $category->id }}"
@@ -639,10 +639,10 @@
                                             <div class="input-wrapper">
                                                 <input id="country_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showDropdown-input(this)">
 
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="dropdown-input">
                                                 <ul>
                                                     @foreach ($countries as $country)
                                                         <li data-id="{{ $country->id }}"
@@ -672,10 +672,10 @@
                                             <div class="input-wrapper">
                                                 <input id="continent_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showDropdown-input(this)">
 
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="dropdown-input">
                                                 <ul>
                                                     @foreach ($continents as $continent)
                                                         <li data-id="{{ $continent->id }}"
@@ -707,11 +707,11 @@
                                             </div>
                                             <div class="input-wrapper">
                                                 <input id="trend_search" type="text" class="form-control search-input"
-                                                    oninput="filterList(this)" onfocus="showDropdown(this)">
+                                                    oninput="filterList(this)" onfocus="showDropdown-input(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addTrendModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="dropdown-input">
                                                 <ul>
                                                     @foreach ($trends as $trend)
                                                         <li data-id="{{ $trend->id }}"
@@ -741,11 +741,11 @@
                                             <div class="input-wrapper">
                                                 <input id="window_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showDropdown-input(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addWindowModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="dropdown-input">
                                                 <ul>
                                                     @foreach ($windows as $window)
                                                         <li data-id="{{ $window->id }}"
@@ -778,11 +778,11 @@
                                             <div class="input-wrapper">
                                                 <input id="writer_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showDropdown-input(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addWriterModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="dropdown-input">
                                                 <ul>
                                                     @foreach ($writers as $writer)
                                                         <li data-id="{{ $writer->id }}"
@@ -812,11 +812,11 @@
                                             <div class="input-wrapper">
                                                 <input id="writer_location_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showDropdown-input(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addWriterLocationModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="dropdown-input">
                                                 <ul>
                                                     @foreach ($cities as $location)
                                                         <li data-id="{{ $location->id }}"
@@ -864,13 +864,13 @@
                                                         <input id="tags_id_search" type="text"
                                                             class="form-control search-input"
                                                             oninput="filterMultiList(this)"
-                                                            onfocus="showMultiDropdown(this)">
+                                                            onfocus="showMultiDropdown-input(this)">
                                                         <button type="button" class="btn-add" data-bs-toggle="modal"
                                                             data-bs-target="#addTagModal" tabindex="-1">+</button>
                                                     </div>
                                                 </div>
 
-                                                <div class="dropdown">
+                                                <div class="dropdown-input">
                                                     <ul id="tags-options-list">
                                                         @foreach ($tags as $tag)
                                                             <li data-id="{{ $tag->id }}"
@@ -1329,17 +1329,17 @@
 
     <script>
         // ========== SINGLE SELECTION FUNCTIONS ==========
-        function showDropdown(input) {
+        function showDropdown-input(input) {
             const container = input.closest('.category-selector');
-            const dropdown = container.querySelector('.dropdown');
-            dropdown.style.display = 'block';
+            const dropdown-input = container.querySelector('.dropdown-input');
+            dropdown-input.style.display = 'block';
         }
 
         function filterList(input) {
             const container = input.closest('.category-selector');
-            const dropdown = container.querySelector('.dropdown');
+            const dropdown-input = container.querySelector('.dropdown-input');
             const filter = input.value.toLowerCase();
-            const items = dropdown.querySelectorAll('li');
+            const items = dropdown-input.querySelectorAll('li');
             let visible = false;
 
             items.forEach(li => {
@@ -1352,7 +1352,7 @@
                 }
             });
 
-            dropdown.style.display = visible ? 'block' : 'none';
+            dropdown-input.style.display = visible ? 'block' : 'none';
         }
 
         function selectItem(li, value, id) {
@@ -1360,7 +1360,7 @@
             const selectedDiv = container.querySelector('.selected-item');
             const selectedValue = container.querySelector('.selected-value');
             const inputWrapper = container.querySelector('.input-wrapper');
-            const dropdown = container.querySelector('.dropdown');
+            const dropdown-input = container.querySelector('.dropdown-input');
             const hiddenInput = container.querySelector('.hidden-input');
 
             selectedValue.textContent = value;
@@ -1368,7 +1368,7 @@
 
             selectedDiv.style.display = 'flex';
             inputWrapper.classList.add('hidden');
-            dropdown.style.display = 'none';
+            dropdown-input.style.display = 'none';
 
             container.style.border = '';
             container.style.padding = '';
@@ -1386,17 +1386,17 @@
         }
 
         // ========== MULTI-SELECT (TAGS) FUNCTIONS ==========
-        function showMultiDropdown(input) {
+        function showMultiDropdown-input(input) {
             const container = input.closest('.tags-search-container');
-            const dropdown = container.querySelector('.dropdown');
-            dropdown.style.display = 'block';
+            const dropdown-input = container.querySelector('.dropdown-input');
+            dropdown-input.style.display = 'block';
         }
 
         function filterMultiList(input) {
             const container = input.closest('.tags-search-container');
-            const dropdown = container.querySelector('.dropdown');
+            const dropdown-input = container.querySelector('.dropdown-input');
             const filter = input.value.toLowerCase();
-            const items = dropdown.querySelectorAll('li');
+            const items = dropdown-input.querySelectorAll('li');
             let visible = false;
 
             items.forEach(li => {
@@ -1409,7 +1409,7 @@
                 }
             });
 
-            dropdown.style.display = visible ? 'block' : 'none';
+            dropdown-input.style.display = visible ? 'block' : 'none';
         }
 
         function selectMultiItem(li, value, id, fieldName) {
@@ -1417,7 +1417,7 @@
             const selectedContainer = document.getElementById(fieldName + '-selected-container');
             const hiddenInputsContainer = document.getElementById(fieldName + '-hidden-inputs');
             const searchInput = container.querySelector('.search-input');
-            const dropdown = container.querySelector('.dropdown');
+            const dropdown-input = container.querySelector('.dropdown-input');
 
             const existingInput = hiddenInputsContainer.querySelector(`input[name="${fieldName}[]"][value="${id}"]`);
             if (existingInput) return;
@@ -1440,7 +1440,7 @@
             li.classList.add('selected');
 
             searchInput.value = '';
-            dropdown.style.display = 'none';
+            dropdown-input.style.display = 'none';
             searchInput.focus();
 
             container.style.border = '';
@@ -1464,17 +1464,17 @@
 
         // ========== UTILITY FUNCTIONS ==========
 
-        // Close dropdowns when clicking outside
+        // Close dropdown-inputs when clicking outside
         document.addEventListener('click', function(e) {
             document.querySelectorAll('.category-selector').forEach(container => {
                 if (!container.contains(e.target)) {
-                    const dd = container.querySelector('.dropdown');
+                    const dd = container.querySelector('.dropdown-input');
                     if (dd) dd.style.display = 'none';
                 }
             });
             document.querySelectorAll('.multi-select-container .tags-search-container').forEach(container => {
                 if (!container.contains(e.target)) {
-                    const dd = container.querySelector('.dropdown');
+                    const dd = container.querySelector('.dropdown-input');
                     if (dd) dd.style.display = 'none';
                 }
             });
@@ -1506,7 +1506,7 @@
             const container = hidden.closest('.category-selector');
             if (!container) return;
 
-            const dd = container.querySelector('.dropdown');
+            const dd = container.querySelector('.dropdown-input');
             if (!dd) return;
             const li = dd.querySelector(`li[data-id="${oldValue}"]`);
             if (li) {
@@ -1803,7 +1803,7 @@
 
                     const writerSearch = document.querySelector('#writer_search');
                     if (writerSearch) {
-                        const listUl = writerSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        const listUl = writerSearch.closest('.search-container')?.querySelector('.dropdown-input ul');
                         if (listUl) {
                             const li = document.createElement('li');
                             li.dataset.id = String(id);
@@ -1874,9 +1874,9 @@
                 }
 
                 if (res.status === 201 && data.id && data.name) {
-                    const dropdown = document.querySelector('#category_search')
+                    const dropdown-input = document.querySelector('#category_search')
                         .closest('.search-container')
-                        .querySelector('.dropdown ul');
+                        .querySelector('.dropdown-input ul');
 
                     const newItem = document.createElement('li');
                     newItem.dataset.id = data.id;
@@ -1885,7 +1885,7 @@
                     newItem.onclick = function() {
                         selectItem(this, data.name, data.id);
                     };
-                    dropdown.appendChild(newItem);
+                    dropdown-input.appendChild(newItem);
 
                     $('#addCategoryModal').modal('hide');
                     form.reset();
@@ -2103,7 +2103,7 @@
 
                     const trendSearch = document.querySelector('#trend_search');
                     if (trendSearch) {
-                        const listUl = trendSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        const listUl = trendSearch.closest('.search-container')?.querySelector('.dropdown-input ul');
                         if (listUl) {
                             const li = document.createElement('li');
                             li.dataset.id = String(id);
@@ -2227,10 +2227,10 @@
                     const name = data.name || data.window.name;
                     const slug = data.slug || data.window.slug;
 
-                    // Add to dropdown list
+                    // Add to dropdown-input list
                     const windowSearch = document.querySelector('#window_search');
                     if (windowSearch) {
-                        const listUl = windowSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        const listUl = windowSearch.closest('.search-container')?.querySelector('.dropdown-input ul');
                         if (listUl) {
                             const li = document.createElement('li');
                             li.dataset.id = String(id);
@@ -2377,10 +2377,10 @@
                     const name = data.name || data.location.name;
                     const slug = data.slug || data.location.slug;
 
-                    // Add to dropdown list
+                    // Add to dropdown-input list
                     const locationSearch = document.querySelector('#writer_location_search');
                     if (locationSearch) {
-                        const listUl = locationSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        const listUl = locationSearch.closest('.search-container')?.querySelector('.dropdown-input ul');
                         if (listUl) {
                             const li = document.createElement('li');
                             li.dataset.id = String(id);
