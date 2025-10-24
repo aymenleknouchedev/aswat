@@ -199,8 +199,8 @@
 
 [data-bs-theme=dark] {
   color-scheme: dark;
-  --bs-body-color: #dee2e6;
-  --bs-body-color-rgb: 222, 226, 230;
+  --bs-body-color: #0D141D;
+  --bs-body-color-rgb: 13, 20, 29;
   --bs-body-bg: #0D141D;
   --bs-body-bg-rgb: 33, 37, 41;
   --bs-emphasis-color: #fff;
