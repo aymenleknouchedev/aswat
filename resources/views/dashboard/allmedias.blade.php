@@ -45,151 +45,85 @@
                                         </div>
                                     </div>
                                     <div class="nk-block">
-                                        <!-- Media Type Tabs -->
-                                        <div class="mb-4">
-                                            <ul class="nav nav-tabs media-type-tabs" id="mediaTypeTabs" role="tablist">
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab"
-                                                        data-bs-target="#all" type="button" role="tab"
-                                                        aria-controls="all" aria-selected="true">
-                                                        <em class="icon ni ni-grid"></em>
-                                                        <span data-en="All" data-ar="الكل">الكل</span>
-                                                        <span
-                                                            class="badge badge-pill badge-dim bg-light">{{ $medias->count() }}</span>
-                                                    </button>
-                                                </li>
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link" id="images-tab" data-bs-toggle="tab"
-                                                        data-bs-target="#images" type="button" role="tab"
-                                                        aria-controls="images" aria-selected="false">
-                                                        <em class="icon ni ni-image"></em>
-                                                        <span data-en="Images" data-ar="الصور">الصور</span>
-                                                        <span
-                                                            class="badge badge-pill badge-dim bg-light">{{ $images->count() }}</span>
-                                                    </button>
-                                                </li>
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link" id="videos-tab" data-bs-toggle="tab"
-                                                        data-bs-target="#videos" type="button" role="tab"
-                                                        aria-controls="videos" aria-selected="false">
-                                                        <em class="icon ni ni-play-circle"></em>
-                                                        <span data-en="Videos" data-ar="الفيديوهات">الفيديوهات</span>
-                                                        <span
-                                                            class="badge badge-pill badge-dim bg-light">{{ $videos->count() }}</span>
-                                                    </button>
-                                                </li>
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link" id="audio-tab" data-bs-toggle="tab"
-                                                        data-bs-target="#audio" type="button" role="tab"
-                                                        aria-controls="audio" aria-selected="false">
-                                                        <em class="icon ni ni-music"></em>
-                                                        <span data-en="Audio" data-ar="الصوتيات">الصوتيات</span>
-                                                        <span
-                                                            class="badge badge-pill badge-dim bg-light">{{ $audio->count() }}</span>
-                                                    </button>
-                                                </li>
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link" id="documents-tab" data-bs-toggle="tab"
-                                                        data-bs-target="#documents" type="button" role="tab"
-                                                        aria-controls="documents" aria-selected="false">
-                                                        <em class="icon ni ni-file-text"></em>
-                                                        <span data-en="Documents" data-ar="المستندات">المستندات</span>
-                                                        <span
-                                                            class="badge badge-pill badge-dim bg-light">{{ $documents->count() }}</span>
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <!-- Media Grid -->
+                                        <div class="row g-3" id="mediaGrid">
+                                            @if ($medias->isEmpty())
+                                                @include('dashboard.media.empty-state')
+                                            @else
+                                                @foreach ($medias as $media)
+                                                    <div class="col-xl-5th col-lg-4 col-md-6 col-12">
+                                                        <div class="card media-card" data-media-path="{{ $media->path }}">
+                                                            <div class="card-inner">
+                                                                <!-- Media Preview -->
+                                                                <div class="media-preview">
+                                                                    @if ($media->media_type === 'image')
+                                                                        <img src="{{ $media->path }}"
+                                                                            alt="{{ $media->alt }}" loading="lazy">
+                                                                    @elseif($media->media_type === 'video')
+                                                                        <video controls>
+                                                                            <source src="{{ $media->path }}"
+                                                                                type="video/mp4">
+                                                                            Your browser does not support the video tag.
+                                                                        </video>
+                                                                    @elseif($media->media_type === 'audio')
+                                                                        <div class="audio-preview">
+                                                                            <em class="icon ni ni-audio"></em>
+                                                                            <div class="audio-title">{{ $media->name }}
+                                                                            </div>
+                                                                            <audio controls>
+                                                                                <source src="{{ $media->path }}"
+                                                                                    type="audio/mpeg">
+                                                                                Your browser does not support the audio
+                                                                                element.
+                                                                            </audio>
+                                                                        </div>
+                                                                    @else
+                                                                        <div class="document-preview">
+                                                                            <em class="icon ni ni-file-text"></em>
+                                                                            <div class="document-title">{{ $media->name }}
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
 
-                                        <!-- Tab Content -->
-                                        <div class="tab-content" id="mediaTypeTabsContent">
-                                            <!-- All Media -->
-                                            <div class="tab-pane fade show active" id="all" role="tabpanel"
-                                                aria-labelledby="all-tab">
-                                                @if ($medias->isEmpty())
-                                                    @include('dashboard.media.empty-state')
-                                                @else
-                                                    <div class="row g-3" id="mediaGrid">
-                                                        @foreach ($medias as $media)
-                                                            @include('dashboard.media.media-card', [
-                                                                'media' => $media,
-                                                            ])
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                            </div>
+                                                                <!-- Media Info -->
+                                                                <div class="media-info">
+                                                                    <h6 class="media-name">{{ $media->name }}</h6>
+                                                                    <p class="media-alt">{{ $media->alt }}</p>
+                                                                    <div class="media-meta">
+                                                                        <span>{{ $media->extension }}</span>
+                                                                        <span>{{ $media->size }}</span>
+                                                                    </div>
+                                                                </div>
 
-                                            <!-- Images -->
-                                            <div class="tab-pane fade" id="images" role="tabpanel"
-                                                aria-labelledby="images-tab">
-                                                @if ($images->isEmpty())
-                                                    @include('dashboard.media.empty-state', [
-                                                        'type' => 'images',
-                                                    ])
-                                                @else
-                                                    <div class="row g-3" id="imagesGrid">
-                                                        @foreach ($images as $media)
-                                                            @include('dashboard.media.media-card', [
-                                                                'media' => $media,
-                                                            ])
-                                                        @endforeach
+                                                                <!-- Media Actions -->
+                                                                <div class="media-actions">
+                                                                    <button
+                                                                        class="btn btn-dim btn-sm btn-outline-primary btn-edit edit-media"
+                                                                        data-media-id="{{ $media->id }}"
+                                                                        data-media-name="{{ $media->name }}"
+                                                                        data-media-alt="{{ $media->alt }}">
+                                                                        <em class="icon ni ni-edit"></em>
+                                                                        <span>تعديل</span>
+                                                                    </button>
+                                                                    <form
+                                                                        action="{{ route('dashboard.media.destroy', $media->id) }}"
+                                                                        method="POST" class="d-inline">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit"
+                                                                            class="btn btn-dim btn-sm btn-outline-danger btn-delete"
+                                                                            onclick="return confirm('هل أنت متأكد من حذف هذا الملف؟')">
+                                                                            <em class="icon ni ni-trash"></em>
+                                                                            <span>حذف</span>
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                @endif
-                                            </div>
-
-                                            <!-- Videos -->
-                                            <div class="tab-pane fade" id="videos" role="tabpanel"
-                                                aria-labelledby="videos-tab">
-                                                @if ($videos->isEmpty())
-                                                    @include('dashboard.media.empty-state', [
-                                                        'type' => 'videos',
-                                                    ])
-                                                @else
-                                                    <div class="row g-3" id="videosGrid">
-                                                        @foreach ($videos as $media)
-                                                            @include('dashboard.media.media-card', [
-                                                                'media' => $media,
-                                                            ])
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                            </div>
-
-                                            <!-- Audio -->
-                                            <div class="tab-pane fade" id="audio" role="tabpanel"
-                                                aria-labelledby="audio-tab">
-                                                @if ($audio->isEmpty())
-                                                    @include('dashboard.media.empty-state', [
-                                                        'type' => 'audio',
-                                                    ])
-                                                @else
-                                                    <div class="row g-3" id="audioGrid">
-                                                        @foreach ($audio as $media)
-                                                            @include('dashboard.media.media-card', [
-                                                                'media' => $media,
-                                                            ])
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                            </div>
-
-                                            <!-- Documents -->
-                                            <div class="tab-pane fade" id="documents" role="tabpanel"
-                                                aria-labelledby="documents-tab">
-                                                @if ($documents->isEmpty())
-                                                    @include('dashboard.media.empty-state', [
-                                                        'type' => 'documents',
-                                                    ])
-                                                @else
-                                                    <div class="row g-3" id="documentsGrid">
-                                                        @foreach ($documents as $media)
-                                                            @include('dashboard.media.media-card', [
-                                                                'media' => $media,
-                                                            ])
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                            </div>
+                                                @endforeach
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center mt-4">
@@ -221,15 +155,15 @@
                         <div class="row g-gs">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label" for="editName" data-en="Name"
-                                        data-ar="الاسم">الاسم</label>
+                                    <label class="form-label" for="editName" data-en="Name" data-ar="الاسم">الاسم</label>
                                     <input required type="text" class="form-control" id="editName" name="name">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label" for="editAlt" data-en="Alt Text"
-                                        data-ar="النص البديل">النص البديل</label>
+                                        data-ar="النص البديل">النص
+                                        البديل</label>
                                     <input required type="text" class="form-control" id="editAlt" name="alt">
                                 </div>
                             </div>
@@ -256,51 +190,17 @@
     @include('dashboard.components.media-modal')
 
     <style>
-        /* Media Type Tabs */
-        .media-type-tabs {
-            border-bottom: 1px solid #e5e9f2;
-        }
-
-        .media-type-tabs .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
-            color: #526484;
-            border: none;
-            border-radius: 4px 4px 0 0;
-            margin-bottom: -1px;
-            transition: all 0.3s ease;
-        }
-
-        .media-type-tabs .nav-link:hover {
-            background-color: #f8f9fa;
-            color: #364a63;
-        }
-
-        .media-type-tabs .nav-link.active {
-            background-color: #fff;
-            color: #6576ff;
-            border-bottom: 2px solid #6576ff;
-        }
-
-        .media-type-tabs .badge {
-            font-size: 0.7rem;
-            margin-left: 4px;
-        }
-
         /* Media Cards */
         .media-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-radius: 12px;
             overflow: hidden;
             border: 1px solid #e5e9f2;
             height: 100%;
         }
 
         .media-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         }
 
         .card-inner {
@@ -318,6 +218,7 @@
             overflow: hidden;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             position: relative;
+            padding: 10px;
         }
 
         .media-preview img,
@@ -326,22 +227,12 @@
             max-width: 100%;
             object-fit: contain;
             transition: transform 0.3s ease;
+            border-radius: 4px;
         }
 
         .media-card:hover .media-preview img,
         .media-card:hover .media-preview video {
-            transform: scale(1.05);
-        }
-
-        .media-preview::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.05), transparent);
-            pointer-events: none;
+            transform: scale(1.02);
         }
 
         .file-placeholder {
@@ -366,18 +257,25 @@
             justify-content: center;
             background: linear-gradient(135deg, #6576ff 0%, #8a5ced 100%);
             color: white;
-            padding: 20px;
+            padding: 15px;
+            border-radius: 4px;
         }
 
         .audio-preview .icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
         }
 
         .audio-preview .audio-title {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-align: center;
             word-break: break-word;
+            margin-bottom: 10px;
+        }
+
+        .audio-preview audio {
+            width: 100%;
+            height: 40px;
         }
 
         .document-preview {
@@ -389,17 +287,17 @@
             justify-content: center;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 20px;
-            position: relative;
+            border-radius: 4px;
         }
 
         .document-preview .icon {
-            font-size: 3.5rem;
+            font-size: 3rem;
             margin-bottom: 15px;
             color: #526484;
         }
 
         .document-preview .document-title {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-align: center;
             word-break: break-word;
             color: #364a63;
@@ -443,7 +341,6 @@
 
         .media-actions .btn {
             flex: 1;
-            border-radius: 6px;
             font-size: 0.8rem;
             padding: 6px 12px;
             display: flex;
@@ -488,11 +385,33 @@
             margin: 0 auto;
         }
 
+        /* 5 cards per row */
+        @media (min-width: 1200px) {
+            .col-xl-5th {
+                flex: 0 0 20%;
+                max-width: 20%;
+            }
+        }
+
         /* Responsive adjustments */
+        @media (max-width: 1199px) and (min-width: 992px) {
+            .col-lg-4 {
+                flex: 0 0 33.333333%;
+                max-width: 33.333333%;
+            }
+        }
+
+        @media (max-width: 991px) and (min-width: 768px) {
+            .col-md-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+
         @media (max-width: 767px) {
-            .media-type-tabs .nav-link {
-                padding: 10px 12px;
-                font-size: 0.85rem;
+            .col-12 {
+                flex: 0 0 100%;
+                max-width: 100%;
             }
 
             .media-preview {
@@ -527,16 +446,6 @@
                 }
             });
 
-            // Delete Confirmation
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.delete-btn')) {
-                    const button = e.target.closest('.delete-btn');
-                    if (confirm('هل أنت متأكد من حذف هذا الوسائط؟')) {
-                        button.closest('form').submit();
-                    }
-                }
-            });
-
             // Handle media selection from MMX modal
             window.mediaTabManager = {
                 onMediaSelected: function(payload) {
@@ -544,6 +453,18 @@
                     window.location.reload();
                 }
             };
+
+            // Auto-play videos on hover
+            document.querySelectorAll('.media-preview video').forEach(video => {
+                video.addEventListener('mouseenter', function() {
+                    this.play();
+                });
+
+                video.addEventListener('mouseleave', function() {
+                    this.pause();
+                    this.currentTime = 0;
+                });
+            });
         });
     </script>
 @endsection
