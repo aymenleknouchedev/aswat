@@ -986,42 +986,42 @@
             return false;
         }
 
-        // Conserver l’implémentation d’origine (MMX) si jamais nbn n’est pas présent
-        const _openMediaModal = window.mediaTabManager.openMediaModal.bind(window.mediaTabManager);
-        const _openAssetsPicker = window.mediaTabManager.openAssetsPicker.bind(window.mediaTabManager);
+        // // Conserver l’implémentation d’origine (MMX) si jamais nbn n’est pas présent
+        // const _openMediaModal = window.mediaTabManager.openMediaModal.bind(window.mediaTabManager);
+        // const _openAssetsPicker = window.mediaTabManager.openAssetsPicker.bind(window.mediaTabManager);
 
-        // Champs unitaires
-        window.mediaTabManager.openMediaModal = function(fieldName) {
-            this.state.currentField = fieldName;
-            const used = openNbnSingle((media) => {
-                this.state.selectedMedia[fieldName] = media;
-                this.updateFieldPreview(fieldName);
-                this.updateSummary();
-                this.updateHiddenFields();
-            });
-            if (!used) {
-                _openMediaModal(fieldName); // fallback MMX
-            }
-        };
+        // // Champs unitaires
+        // window.mediaTabManager.openMediaModal = function(fieldName) {
+        //     this.state.currentField = fieldName;
+        //     const used = openNbnSingle((media) => {
+        //         this.state.selectedMedia[fieldName] = media;
+        //         this.updateFieldPreview(fieldName);
+        //         this.updateSummary();
+        //         this.updateHiddenFields();
+        //     });
+        //     if (!used) {
+        //         _openMediaModal(fieldName); // fallback MMX
+        //     }
+        // };
 
-        // Album assets (ajout itératif)
-        window.mediaTabManager.openAssetsPicker = function(fieldName) {
-            this.state.currentField = fieldName;
-            if (!Array.isArray(this.state.selectedMedia[fieldName])) {
-                this.state.selectedMedia[fieldName] = [];
-            }
-            const used = openNbnSingle((media) => {
-                const list = this.state.selectedMedia[fieldName];
-                const exists = list.some(x => (x.id != null && media.id != null) ? x.id == media.id : (x
-                    .url === media.url));
-                if (!exists) list.push(media);
-                this.updateAssetsGrid(fieldName);
-                this.updateSummary();
-                this.updateHiddenFields();
-            });
-            if (!used) {
-                _openAssetsPicker(fieldName); // fallback MMX
-            }
-        };
+        // // Album assets (ajout itératif)
+        // window.mediaTabManager.openAssetsPicker = function(fieldName) {
+        //     this.state.currentField = fieldName;
+        //     if (!Array.isArray(this.state.selectedMedia[fieldName])) {
+        //         this.state.selectedMedia[fieldName] = [];
+        //     }
+        //     const used = openNbnSingle((media) => {
+        //         const list = this.state.selectedMedia[fieldName];
+        //         const exists = list.some(x => (x.id != null && media.id != null) ? x.id == media.id : (x
+        //             .url === media.url));
+        //         if (!exists) list.push(media);
+        //         this.updateAssetsGrid(fieldName);
+        //         this.updateSummary();
+        //         this.updateHiddenFields();
+        //     });
+        //     if (!used) {
+        //         _openAssetsPicker(fieldName); // fallback MMX
+        //     }
+        // };
     })();
 </script>

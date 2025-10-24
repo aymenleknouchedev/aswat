@@ -4,8 +4,8 @@
 <link rel="preconnect" href="https://i.ytimg.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
-<!-- ======================= MMX MEDIA MODAL (assurez-vous que le composant est inclus) ======================= -->
-@include('dashboard.components.media-modal')
+<!-- ======================= xmm MEDIA MODAL (assurez-vous que le composant est inclus) ======================= -->
+@include('dashboard.components.edit-media-modal')
 
 <!-- ======================= MEDIA MANAGER UI ======================= -->
 <div class="media-manager">
@@ -101,10 +101,10 @@
             this.updateSummary();
             this.updateCurrentTemplatePill();
 
-            // Pont d’intégration avec le MMX Media Modal
-            if (window.mmxMediaModalManager) {
-                const originalHandler = window.mmxMediaModalManager.onMediaSelected;
-                window.mmxMediaModalManager.onMediaSelected = (payload) => {
+            // Pont d’intégration avec le xmm Media Modal
+            if (window.xmmMediaModalManager) {
+                const originalHandler = window.xmmMediaModalManager.onMediaSelected;
+                window.xmmMediaModalManager.onMediaSelected = (payload) => {
                     if (Array.isArray(payload)) payload.forEach(item => this.onMediaSelected(item));
                     else this.onMediaSelected(payload);
                     if (typeof originalHandler === 'function') originalHandler(payload);
@@ -290,12 +290,12 @@
         openAssetsPicker(fieldName) {
             this.state.currentField = fieldName; // *_assets
             if (!Array.isArray(this.state.selectedMedia[fieldName])) this.state.selectedMedia[fieldName] = [];
-            if (window.mmxMediaModalManager?.openModal) {
-                window.mmxMediaModalManager.openModal(fieldName, {
+            if (window.xmmMediaModalManager?.openModal) {
+                window.xmmMediaModalManager.openModal(fieldName, {
                     multiple: true
                 });
             } else {
-                console.warn('MMX Media Modal غير متاح.');
+                console.warn('xmm Media Modal غير متاح.');
             }
         }
 
@@ -521,7 +521,7 @@
                 const vid = this.getYouTubeId(url);
                 if (vid) {
                     const embed = `https://www.youtube.com/embed/${vid}?rel=0&modestbranding=1`;
-                    const visual = `<iframe class="mmx-yt-embed" src="${embed}" title="${media.title || 'YouTube'}"
+                    const visual = `<iframe class="xmm-yt-embed" src="${embed}" title="${media.title || 'YouTube'}"
                                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                   allowfullscreen loading="lazy" referrerpolicy="no-referrer"></iframe>`;
                     return wrap(visual, media.title || 'YouTube', 'يوتيوب');
@@ -564,12 +564,12 @@
         /* ================== API PUBLIC (intégration modal) ================== */
         openMediaModal(fieldName) {
             this.state.currentField = fieldName;
-            if (window.mmxMediaModalManager?.openModal) {
-                window.mmxMediaModalManager.openModal(fieldName, {
+            if (window.xmmMediaModalManager?.openModal) {
+                window.xmmMediaModalManager.openModal(fieldName, {
                     multiple: false
                 });
             } else {
-                console.warn('MMX Media Modal غير متاح. تأكد من تضمينه.');
+                console.warn('xmm Media Modal غير متاح. تأكد من تضمينه.');
             }
         }
         changeMedia(fieldName) {
@@ -1087,7 +1087,7 @@
         object-fit: cover;
     }
 
-    .mmx-yt-embed {
+    .xmm-yt-embed {
         width: 100%;
         height: 100%;
         border: 0;
