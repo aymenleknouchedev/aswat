@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" lang="zxx" class="js">
+<html lang="ar" data-bs-theme="white" lang="zxx" class="js">
 
 <head>
     <link rel="icon" type="image/svg+xml" href="{{ asset('user/assets/images/icon-logo.svg') }}" />

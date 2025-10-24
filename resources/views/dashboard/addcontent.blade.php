@@ -1,38 +1,23 @@
+
 @extends('layouts.admin')
-<!DOCTYPE html>
 
 @section('title', 'أصوات جزائرية | إضافة محتوى')
 
 @section('content')
 
-
-
-    {{-- ============================ SCRIPTS & STYLES ============================ --}}
-
-    {{-- <script>
-        window.scrollTo(0, 0);
-        window.onload = function() {
-            window.scrollTo(0, 0);
-            setTimeout(function() {
-                window.scrollTo(0, 0);
-            }, 1);
-        };
-    </script> --}}
-
-    {{-- ============================ STYLES ============================ --}}
     <style>
         /* ===== VALIDATION STYLES ===== */
         .hidden-input:invalid~.selected-item {
-            border-color: #dc3545;
+            border-color: var(--bs-form-invalid-color);
         }
 
         .search-container:has(.hidden-input:invalid) .form-label {
-            color: #dc3545;
+            color: var(--bs-form-invalid-color);
         }
 
         .required-field::after {
             content: " *";
-            color: red;
+            color: var(--bs-danger);
         }
 
         .search-container {
@@ -41,7 +26,7 @@
 
         .required-field::after {
             content: " *";
-            color: #dc3545;
+            color: var(--bs-danger);
         }
 
         /* ===== SELECT2 RTL SUPPORT ===== */
@@ -66,10 +51,11 @@
             align-items: center;
             gap: 10px;
             padding: 8px;
-            border: 1px solid #929292;
+            border: 1px solid var(--bs-border-color);
             border-radius: 0px;
-            background-color: #f3f3f3;
+            background-color: var(--bs-secondary-bg);
             margin: 0px;
+            color: var(--bs-body-color);
         }
 
         .btn-delete {
@@ -77,7 +63,7 @@
             border: none;
             font-size: 20px;
             cursor: pointer;
-            color: #f3f3f3;
+            color: var(--bs-secondary-color);
             width: 24px;
             height: 24px;
             border-radius: 50%;
@@ -87,8 +73,8 @@
         }
 
         .btn-delete:hover {
-            background-color: #f3f3f3;
-            color: rgb(255, 0, 0);
+            background-color: var(--bs-tertiary-bg);
+            color: var(--bs-danger);
         }
 
         /* ===== LAYOUT STYLES ===== */
@@ -115,7 +101,7 @@
         }
 
         #contentTabs .nav-link {
-            color: #b0b0b0 !important;
+            color: var(--bs-secondary-color) !important;
             background-color: transparent !important;
             border: none !important;
             border-bottom: 2px solid transparent !important;
@@ -125,17 +111,17 @@
         }
 
         #contentTabs .nav-link:hover {
-            border-bottom: 2px solid #ccc !important;
+            border-bottom: 2px solid var(--bs-border-color) !important;
         }
 
         #contentTabs .nav-link.active {
-            color: #0d6efd !important;
-            border-bottom: 2px solid #0d6efd !important;
+            color: var(--bs-primary) !important;
+            border-bottom: 2px solid var(--bs-primary) !important;
             font-weight: bold;
         }
 
         #contentTabs {
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid var(--bs-border-color);
             margin-bottom: 20px;
         }
 
@@ -146,13 +132,15 @@
 
         .card {
             margin-bottom: 20px;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            border: 1px solid rgba(0, 0, 0, 0.125);
+            box-shadow: var(--bs-box-shadow-sm);
+            border: 1px solid var(--bs-border-color);
+            background-color: var(--bs-body-bg);
         }
 
         .card-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            background-color: var(--bs-secondary-bg);
+            border-bottom: 1px solid var(--bs-border-color);
+            color: var(--bs-heading-color);
         }
 
         /* ===== FORM ELEMENT STYLES ===== */
@@ -162,6 +150,7 @@
 
         .form-text {
             font-size: 0.75rem;
+            color: var(--bs-secondary-color);
         }
 
         /* ===== SEARCH DROPDOWN STYLES ===== */
@@ -174,8 +163,17 @@
         .form-control {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ced4da;
             border-radius: 0px;
+            background-color: var(--bs-body-bg);
+            border: 1px solid var(--bs-border-color);
+            color: var(--bs-body-color);
+        }
+
+        .form-control:focus {
+            background-color: var(--bs-body-bg);
+            border-color: var(--bs-primary);
+            color: var(--bs-body-color);
+            box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
         }
 
         .dropdown {
@@ -184,13 +182,13 @@
             top: 100%;
             left: 0;
             right: 0;
-            border: 1px solid #ced4da;
             border-radius: 0px;
-            background: white;
+            background: var(--bs-body-bg);
+            border: 1px solid var(--bs-border-color);
             max-height: 200px;
             overflow-y: auto;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--bs-box-shadow);
             margin-top: 5px;
         }
 
@@ -203,16 +201,20 @@
         .dropdown li {
             padding: 10px 15px;
             cursor: pointer;
-            border-bottom: 1px solid #f1f1f1;
+            border-bottom: 1px solid var(--bs-border-color);
+            color: var(--bs-body-color);
+            background-color: var(--bs-body-bg);
+            transition: all 0.2s ease;
         }
 
         .dropdown li:hover {
-            background-color: #f8f9fa;
+            background-color: var(--bs-tertiary-bg);
+            color: var(--bs-body-color);
         }
 
         .dropdown li.selected {
-            background-color: #e8f4ff;
-            color: #2c5aa0;
+            background-color: var(--bs-primary-bg-subtle);
+            color: var(--bs-primary-text-emphasis);
             font-weight: 500;
         }
 
@@ -237,12 +239,16 @@
             font-size: 20px;
             cursor: pointer;
             z-index: 2;
-            color: #6c757d;
+            color: var(--bs-secondary-color);
             width: 24px;
             height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .btn-add:hover {
+            color: var(--bs-primary);
         }
 
         /* ===== TAGS (MULTI-SELECT) STYLES ===== */
@@ -257,9 +263,9 @@
             gap: 4px;
             padding: 6px 8px;
             min-height: 42px;
-            border: 1px solid #ced4da;
+            border: 1px solid var(--bs-border-color);
             border-radius: 0px;
-            background: white;
+            background: var(--bs-body-bg);
             align-items: center;
             margin-top: 0;
         }
@@ -269,15 +275,16 @@
             align-items: center;
             gap: 4px;
             padding: 2px 6px;
-            border: 1px solid #929292;
+            border: 1px solid var(--bs-border-color);
             border-radius: 0px;
-            background-color: #f3f3f3;
+            background-color: var(--bs-secondary-bg);
             font-size: 11px;
             line-height: 1.2;
             max-width: 150px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: var(--bs-body-color);
         }
 
         .tag-delete {
@@ -285,7 +292,7 @@
             border: none;
             font-size: 12px;
             cursor: pointer;
-            color: #6c757d;
+            color: var(--bs-secondary-color);
             width: 14px;
             height: 14px;
             border-radius: 50%;
@@ -298,8 +305,8 @@
         }
 
         .tag-delete:hover {
-            background-color: #ff6b6b;
-            color: white;
+            background-color: var(--bs-danger);
+            color: var(--bs-white);
         }
 
         .tags-search-container {
@@ -325,13 +332,13 @@
             margin: 0;
             min-width: 120px;
             flex: 1;
-            color: #000;
+            color: var(--bs-body-color);
         }
 
         .tags-selected-container:focus-within {
-            border-color: #ced4da;
+            border-color: var(--bs-primary);
             outline: 0;
-            box-shadow: none;
+            box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
         }
 
         #tags_id_search::placeholder,
@@ -344,9 +351,11 @@
 
         /* ===== SOCIAL MEDIA PREVIEW STYLES ===== */
         .social-preview {
-            border: 1px solid #dddfe2;
+            border: 1px solid var(--bs-border-color);
             font-family: Helvetica, Arial, sans-serif;
             max-width: 500px;
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
         }
 
         .image-preview-container {
@@ -355,10 +364,11 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            background-color: var(--bs-secondary-bg);
         }
 
         .image-preview-container:hover {
-            background-color: #f8f9fa;
+            background-color: var(--bs-tertiary-bg);
         }
 
         .btn-danger {
@@ -403,9 +413,53 @@
         .delete-image-btn:hover {
             opacity: 1;
         }
+
+        /* ===== FORM LABELS AND TEXT ===== */
+        .form-label {
+            color: var(--bs-heading-color);
+        }
+
+        .text-muted {
+            color: var(--bs-secondary-color) !important;
+        }
+
+        /* ===== ALERT STYLES ===== */
+        .alert-danger {
+            background-color: var(--bs-danger-bg-subtle);
+            border-color: var(--bs-danger-border-subtle);
+            color: var(--bs-danger-text-emphasis);
+        }
+
+        /* ===== MODAL STYLES ===== */
+        .modal-content {
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
+        }
+
+        .modal-header {
+            border-bottom-color: var(--bs-border-color);
+        }
+
+        .modal-footer {
+            border-top-color: var(--bs-border-color);
+        }
+
+        /* ===== PROGRESS BAR STYLES ===== */
+        .progress {
+            background-color: var(--bs-secondary-bg);
+        }
+
+     
+
+        .border {
+            border-color: var(--bs-border-color) !important;
+        }
+
+        .text-muted {
+            color: var(--bs-secondary-color) !important;
+        }
     </style>
 
-    {{-- ============================ MAIN CONTENT ============================ --}}
     <div class="nk-app-root">
         <div class="nk-main">
             @include('dashboard.components.sidebar')
@@ -447,20 +501,15 @@
                         @if (session('success'))
                             <script>
                                 document.addEventListener('DOMContentLoaded', function() {
-                                    // المفاتيح الخاصة بالعناصر فقط
                                     const itemKeys = [
                                         'az_items_list_v1',
                                         'az_items_file_v1',
                                         'az_display_method_v6'
                                     ];
-
                                     itemKeys.forEach(k => localStorage.removeItem(k));
                                 });
                             </script>
                         @endif
-
-
-
 
                         {{-- ===== TEMPLATE HIDDEN FIELD ===== --}}
                         <input type="hidden" name="template" id="template_field" value="default">
@@ -518,7 +567,7 @@
                                         <label class="form-label" for="title" data-ar="العنوان" data-en="Title">
                                             العنوان
                                         </label>
-                                        <span style="color:red;">*</span>
+                                        <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input required id="title" name="title" type="text"
                                                 class="form-control form-control" maxlength="68" data-ar="العنوان"
@@ -532,7 +581,7 @@
                                             data-en="Long Title">
                                             العنوان الطويل
                                         </label>
-                                        <span style="color:red;">*</span>
+                                        <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input required id="long_title" name="long_title" type="text"
                                                 class="form-control form-control" maxlength="210"
@@ -547,7 +596,7 @@
                                             data-en="Mobile Title">
                                             عنوان الموبايل
                                         </label>
-                                        <span style="color:red;">*</span>
+                                        <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input required id="mobile_title" name="mobile_title" type="text"
                                                 class="form-control form-control" maxlength="40" data-ar="عنوان الموبايل"
@@ -901,7 +950,7 @@
                                 <div class="form-group col-12 mb-3">
                                     <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
                                         data-en="SEO Keyword">الكلمة الرئيسية</label>
-                                    <span style="color:red;">*</span>
+                                    <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <input required id="seo_keyword" name="seo_keyword" type="text"
                                             class="form-control form-control" maxlength="50"
@@ -913,7 +962,7 @@
                                 <div class="form-group col-12 my-3">
                                     <label class="form-label" for="summary" data-ar="الملخص"
                                         data-en="Summary">الملخص</label>
-                                    <span style="color:red;">*</span>
+                                    <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <textarea required id="summary" name="summary" class="form-control form-control" rows="3"
                                             style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130">{{ old('summary', '') }}</textarea>
@@ -925,13 +974,11 @@
                                 <div class="form-group col-12 mb-3">
                                     <label class="form-label" for="body" data-ar="المتن"
                                         data-en="Body">المتن</label>
-                                    <span style="color:red;">*</span>
+                                    <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <x-forms.tinymce-editor id="myeditorinstance" :value="old('content', $post->content ?? '')" name="content" />
                                     </div>
                                 </div>
-
-
                             </div>
 
                             {{-- ===== TEMPLATE TAB ===== --}}
@@ -973,8 +1020,8 @@
                             <h5 data-ar="تقييم السيو (SEO)" data-en="SEO Evaluation">تقييم السيو (SEO)</h5>
                             <div class="progress" style="height: 20px; margin-bottom:10px;">
                                 <div id="seo-bar" class="progress-bar" role="progressbar"
-                                    style="width: 0%; background-color: red;" aria-valuenow="0" aria-valuemin="0"
-                                    aria-valuemax="100"></div>
+                                    style="width: 0%; background-color: var(--bs-danger);" aria-valuenow="0"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                             <div id="seo-text" style="font-weight: bold; margin-bottom: 10px;"
                                 data-ar="يرجى كتابة المحتوى لتقييم السيو" data-en="Please write content to evaluate SEO">
@@ -987,9 +1034,9 @@
                         <div class="mt-4 d-flex">
                             <button name="status" value="published" type="submit" class="btn btn-primary btn-lg me-3"
                                 data-ar="نشر" data-en="Publish" id="publishButton">نشر</button>
-                            <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg me-3"
+                            <button name="status" value="draft" type="submit" class="btn btn-primary btn-lg me-3"
                                 data-ar="حفظ" data-en="Save as Draft">حفظ</button>
-                            <button name="status" value="preview" type="submit" class="btn btn-secondary btn-lg"
+                            <button name="status" value="preview" type="submit" class="btn btn-primary btn-lg"
                                 style="margin-left: 10px; color: white;" data-ar="حفظ و معاينة"
                                 data-en="Save and Preview">حفظ و معاينة</button>
                         </div>
@@ -997,7 +1044,8 @@
 
                     {{-- ===== RIGHT SIDEBAR ===== --}}
                     <div class="col-md-3 mt-4">
-                        <div class="mb-3" style="border: 1px solid #dee2e6; border-radius: 4px; padding: 10px;">
+                        <div class="mb-3"
+                            style="border: 1px solid var(--bs-border-color); border-radius: 4px; padding: 10px;">
                             <div class="card-body">
                                 {{-- CREATION DATE --}}
                                 <div class="mb-3">
@@ -1058,7 +1106,6 @@
     </div>
 
     {{-- ============================ MODALS ============================ --}}
-
     {{-- Add Section Modal --}}
     <div class="modal fade" id="addSectionModal" tabindex="-1" aria-labelledby="addSectionModalLabel"
         aria-hidden="true">
@@ -1113,7 +1160,6 @@
         </div>
     </div>
 
-
     {{-- Add Writer Modal --}}
     <div class="modal fade" id="addWriterModal" tabindex="-1" aria-labelledby="addWriterModalLabel"
         aria-hidden="true">
@@ -1123,38 +1169,32 @@
                     <h5 class="modal-title" id="addWriterModalLabel">إضافة كاتب جديد</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <div class="modal-body">
                     <form id="addWriterForm" enctype="multipart/form-data">@csrf
                         <div class="mb-3">
                             <label for="writer_name" class="form-label">اسم الكاتب</label>
                             <input type="text" class="form-control" id="writer_name" name="name" required>
                         </div>
-
                         <div class="mb-3">
                             <label for="writer_slug" class="form-label">الرابط المختصر (Slug)</label>
                             <input type="text" class="form-control" id="writer_slug" name="slug"
                                 placeholder="مثال: naji-benz" required>
                             <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
                         </div>
-
                         <div class="mb-3">
                             <label for="writer_bio" class="form-label">السيرة الذاتية</label>
                             <textarea class="form-control" id="writer_bio" name="bio" rows="3" required></textarea>
                         </div>
-
                         <div class="mb-3">
                             <label for="writer_image" class="form-label">الصورة</label>
                             <input type="file" class="form-control" id="writer_image" name="image"
                                 accept=".jpeg,.jpg,.png,.gif,.webp" required>
                             <div class="form-text">الحد الأقصى 2MB. يُقبل: jpeg, png, webp, gif</div>
                         </div>
-
                         <div class="mb-3">
                             <label for="writer_email" class="form-label">البريد الإلكتروني (اختياري)</label>
                             <input type="email" class="form-control" id="writer_email" name="email">
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">روابط السوشيال (اختياري)</label>
                             <div class="row g-2">
@@ -1178,7 +1218,6 @@
                         </div>
                     </form>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                     <button type="button" class="btn btn-primary" onclick="addNewWriter(event)">حفظ</button>
@@ -1226,21 +1265,18 @@
                     <h5 class="modal-title" id="addTrendModalLabel">إضافة ترند جديد</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <div class="modal-body">
                     <form id="addTrendForm" enctype="multipart/form-data">@csrf
                         <div class="mb-3">
                             <label for="trend_title" class="form-label">اسم الترند</label>
                             <input type="text" class="form-control" id="trend_title" name="title" required>
                         </div>
-
                         <div class="mb-3">
                             <label for="trend_slug" class="form-label">الرابط المختصر (Slug)</label>
                             <input type="text" class="form-control" id="trend_slug" name="slug"
                                 placeholder="مثال: world-cup-2026" required>
                             <div class="form-text">يُولَّد تلقائيًا من العنوان ويمكن تعديله.</div>
                         </div>
-
                         <div class="mb-3">
                             <label for="trend_image" class="form-label">الصورة</label>
                             <input type="file" class="form-control" id="trend_image" name="image"
@@ -1249,7 +1285,6 @@
                         </div>
                     </form>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                     <button type="button" class="btn btn-primary" onclick="addNewTrend(event)">حفظ</button>
@@ -1258,6 +1293,7 @@
         </div>
     </div>
 
+    {{-- Add Window Modal --}}
     <div class="modal fade" id="addWindowModal" tabindex="-1" aria-labelledby="addWindowModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -1599,7 +1635,7 @@
             function highlightField(input) {
                 const container = input.closest('.search-container') || input.closest('.multi-select-container');
                 if (container) {
-                    container.style.border = '1px solid #dc3545';
+                    container.style.border = '1px solid var(--bs-form-invalid-color)';
                     container.style.borderRadius = '4px';
                     container.style.padding = '4px';
                     setTimeout(() => {
@@ -1633,8 +1669,8 @@
                     behavior: 'smooth'
                 });
                 const firstError = document.querySelector(
-                        '.search-container[style*="border: 1px solid #dc3545"]') ||
-                    document.querySelector('.multi-select-container[style*="border: 1px solid #dc3545"]');
+                        '.search-container[style*="border: 1px solid"]') ||
+                    document.querySelector('.multi-select-container[style*="border: 1px solid"]');
                 if (firstError) {
                     firstError.scrollIntoView({
                         behavior: 'smooth',
