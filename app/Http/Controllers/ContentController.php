@@ -33,9 +33,9 @@ class ContentController extends BaseController
     {
         $this->middleware(['auth', 'check:content_access']);
     }
-    /**
-     * Display a listing of the resource.
-     */
+
+
+
     public function index(Request $request)
     {
         $pagination = config('pagination.per15', 15);
@@ -78,10 +78,6 @@ class ContentController extends BaseController
 
         return view('dashboard.allcontents', compact('contents', 'sections'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
 
     public function create()
     {
@@ -513,18 +509,6 @@ class ContentController extends BaseController
     }
 
 
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id) {}
-
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         // ===== 1) Chargement du contenu + relations nécessaires =====
@@ -709,53 +693,61 @@ class ContentController extends BaseController
         ));
     }
 
-
-
-
-
-    /**
-     * Update the specified resource in storage.
-     */
-
     public function update(Request $request, $id)
     {
         // Find the content to update
         $content = \App\Models\Content::findOrFail($id);
 
-        // ========= 0) Normalisation des URLs AVANT la validation =========
+        // ========= 0) Normalisation helpers =========
         $toAbsoluteUrl = function (?string $v): ?string {
             if (!is_string($v)) return null;
             $v = trim($v);
             if ($v === '') return null;
 
+            // Keep absolute as-is
             if (\Illuminate\Support\Str::startsWith($v, ['http://', 'https://'])) {
                 return $v;
             }
 
-            // Chemins locaux fréquents -> asset()
+            // Common local paths -> asset()
             if (\Illuminate\Support\Str::startsWith($v, ['/storage', 'storage/', '/uploads', 'uploads/', 'public/'])) {
-                $v = ltrim($v, '/'); // éviter //storage
+                $v = ltrim($v, '/'); // avoid //storage
                 return asset($v);
             }
 
-            // Autres relatifs -> url()
+            // Fallback for other relatives
             return url($v);
         };
 
-        // Normaliser share_image
-        if ($request->filled('share_image')) {
+        // ========= 0.a) Social Media bridge (accept both share_image_url & share_image) =========
+        $incomingShare = $request->input('share_image') ?: $request->input('share_image_url');
+        if ($incomingShare !== null && $incomingShare !== '') {
             $request->merge([
-                'share_image' => $toAbsoluteUrl($request->input('share_image')),
+                'share_image' => $toAbsoluteUrl($incomingShare),
             ]);
+        } else {
+            $request->merge(['share_image' => null]);
         }
 
-        // ========= 0bis) Harmoniser items[*] (supporte media_url -> image) =========
+        // ========= 0.b) Harmoniser items[*] (support media_url -> image) =========
         $albumImages = [];
-        if (is_array($request->input('items'))) {
-            $items = $request->input('items');
+
+        // FIXED: Handle items data properly - check both JSON string and array formats
+        $itemsData = $request->input('items');
+
+        if (is_string($itemsData)) {
+            // If items is a JSON string, decode it
+            $decodedItems = json_decode($itemsData, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decodedItems)) {
+                $itemsData = $decodedItems;
+            }
+        }
+
+        if (is_array($itemsData)) {
+            $items = $itemsData;
 
             foreach ($items as $i => $item) {
-                // 1) Si le front a envoyé media_url mais pas image -> on bascule vers image pour la validation
+                // 1) media_url -> image (front compatibility)
                 if (!isset($item['image']) && !empty($item['media_url'])) {
                     $item['image'] = $item['media_url'];
                 }
@@ -765,20 +757,28 @@ class ContentController extends BaseController
                     $item['image'] = $toAbsoluteUrl($item['image']);
                 }
 
-                // 3) Normaliser url (facultatif en "file", requis en "list")
+                // 3) Normaliser url (optional for "file", required for "list")
                 if (isset($item['url']) && $item['url'] !== '') {
                     $item['url'] = $toAbsoluteUrl($item['url']);
                 } else {
                     $item['url'] = null;
                 }
 
+                // 4) Ensure index is set
+                if (!isset($item['index'])) {
+                    $item['index'] = $i;
+                }
+
                 $items[$i] = $item;
             }
 
             $request->merge(['items' => $items]);
+        } else {
+            // If no valid items data, set empty array
+            $request->merge(['items' => []]);
         }
 
-        // ========= 0ter) Normaliser les champs template potentiels (tous en URL) =========
+        // ========= 0.c) Normaliser les champs template potentiels (tous en URL) =========
         $templateUrlFields = [
             // normal_image
             'normal_main_image',
@@ -825,7 +825,7 @@ class ContentController extends BaseController
             $request->merge(['album_assets' => $norm]);
         }
 
-        // ========= 0quater) Rétrograder display_method si items manquants =========
+        // ========= 0.d) Rétrograder display_method si items manquants =========
         $incomingDisplay = $request->input('display_method');
         if (in_array($incomingDisplay, ['list', 'file'], true)) {
             $incomingItems = $request->input('items');
@@ -852,11 +852,16 @@ class ContentController extends BaseController
             'content'             => 'nullable|string',
             'seo_keyword'         => 'nullable|string|max:255',
             'template'            => 'required|string|in:normal_image,video,podcast,album,no_image',
-            'tags_id'             => 'required|array',
-            'tags_id.*'           => 'integer|exists:tags,id',
-            'share_image'         => 'nullable|url|max:2048',
-            'share_title'         => 'nullable|string',
-            'share_description'   => 'nullable|string',
+
+            // Tags (allow empty array -> sync([]))
+            'tags_id'   => 'nullable|array',
+            'tags_id.*' => 'integer|exists:tags,id',
+
+            // ---- Social Media fields ----
+            'share_image'        => 'nullable|url|max:2048',
+            'share_title'        => 'nullable|string|max:100',
+            'share_description'  => 'nullable|string|max:260',
+
             'review_description'  => 'nullable|string',
             'created_at'          => 'nullable|date',
             'created_at_by_admin' => 'nullable|date',
@@ -868,7 +873,7 @@ class ContentController extends BaseController
             'importance'          => 'nullable|integer|min:0|max:10',
         ];
 
-        // Mode preview spécial 
+        // Mode preview spécial
         $preview = false;
         if ($request->input('status') === 'preview') {
             $request->merge(['status' => 'draft']);
@@ -928,131 +933,110 @@ class ContentController extends BaseController
                 ->withInput();
         }
 
-        // ========= 3) Mise à jour du contenu =========
-        $content->update([
-            ...$validated,
-            'is_latest'  => $request->boolean('is_latest'),
-            'importance' => $request->input('importance'),
-            // Note: user_id n'est pas mis à jour lors de l'édition
-        ]);
+        // ========= 3) Transaction pour cohérence (update + lists + media + tags) =========
+        \Illuminate\Support\Facades\DB::beginTransaction();
 
-        // ========= 4) Gestion de la revue =========
-        if ($request->filled('review_description')) {
-            // Mettre à jour ou créer la revue
-            $review = \App\Models\ContentReview::where('content_id', $content->id)->first();
-            if ($review) {
-                $review->update([
-                    'reviewer_id' => \Illuminate\Support\Facades\Auth::id(),
-                    'message'     => $request->review_description,
-                ]);
-            } else {
-                \App\Models\ContentReview::create([
-                    'reviewer_id' => \Illuminate\Support\Facades\Auth::id(),
-                    'content_id'  => $content->id,
-                    'message'     => $request->review_description,
-                ]);
-            }
-        } else {
-            // Supprimer la revue si elle existe et que le champ est vide
-            \App\Models\ContentReview::where('content_id', $content->id)->delete();
-        }
+        try {
+            // Mise à jour du contenu (inclut les champs Social Media)
+            $content->update([
+                ...$validated,
+                'is_latest'  => $request->boolean('is_latest'),
+                'importance' => $request->input('importance'),
+                // user_id not updated on edit
+            ]);
 
-        // ========= 5) Items (list/file) - Sync au lieu de create =========
-        if (in_array($request->input('display_method'), ['list', 'file'], true) && !empty($validated['items'])) {
-            // Supprimer les anciens items
-            $content->contentLists()->delete();
-
-            // Créer les nouveaux items
-            foreach ($validated['items'] as $item) {
-                $content->contentLists()->create([
-                    'title'       => $item['title'],
-                    'description' => $item['description'],
-                    'url'         => $item['url'] ?? null,
-                    'image'       => $item['image'] ?? null,
-                    'index'       => $item['index'],
-                ]);
-            }
-        } else {
-            // Si on passe de list/file à simple, supprimer les items
-            $content->contentLists()->delete();
-        }
-
-        // ========= 6) Sync des tags =========
-        $content->tags()->sync($request->tags_id);
-
-        // ========= 7) Gestion des médias liés =========
-        $detectTypeFromUrl = function (string $url): string {
-            $u = strtolower(parse_url($url, PHP_URL_PATH) ?? '');
-            if (preg_match('/\.(jpe?g|png|gif|webp|bmp|svg)$/', $u)) return 'image';
-            if (preg_match('/\.(mp4|mov|wmv|webm|m4v|m3u8)$/', $u)) return 'video';
-            if (preg_match('/\.(mp3|wav|ogg|m4a|aac|flac)$/', $u)) return 'audio';
-            if (str_contains($url, 'youtube.com') || str_contains($url, 'youtu.be')) return 'youtube';
-            return 'url';
-        };
-
-        // Template media mapping
-        $templateMediaMap = [
-            'normal_image' => [
-                'normal_main_image'    => 'main',
-                'normal_mobile_image'  => 'mobile',
-                'normal_content_image' => 'detail',
-            ],
-            'video' => [
-                'video_main_image'    => 'main',
-                'video_mobile_image'  => 'mobile',
-                'video_content_image' => 'detail',
-                'video_file'          => 'video',
-            ],
-            'podcast' => [
-                'podcast_main_image'    => 'main',
-                'podcast_mobile_image'  => 'mobile',
-                'podcast_content_image' => 'detail',
-                'podcast_file'          => 'podcast',
-            ],
-            'album' => [
-                'album_main_image'    => 'main',
-                'album_mobile_image'  => 'mobile',
-                'album_content_image' => 'detail',
-                'album_images'        => 'album',
-            ],
-            'no_image' => [
-                'no_image_main_image'   => 'main',
-                'no_image_mobile_image' => 'mobile',
-            ],
-        ];
-
-        // Détacher tous les médias existants pour ce contenu
-        $content->media()->detach();
-
-        // Attacher les nouveaux médias
-        $mediaMap = $templateMediaMap[$request->template] ?? null;
-        if ($mediaMap) {
-            foreach ($mediaMap as $field => $type) {
-                if ($field !== 'album_images' && $request->filled($field)) {
-                    $url       = $request->input($field);
-                    $mediaType = $detectTypeFromUrl($url);
-
-                    $existing = \App\Models\ContentMedia::where('path', $url)->first();
-                    if ($existing) {
-                        $content->media()->attach($existing->id, ['type' => $type]);
-                    } else {
-                        $media = \App\Models\ContentMedia::create([
-                            'path'       => $url,
-                            'media_type' => $mediaType,
-                            'user_id'    => \Illuminate\Support\Facades\Auth::id(),
-                            'name'       => basename(parse_url($url, PHP_URL_PATH) ?? ('url_' . \Illuminate\Support\Str::random(8))),
-                            'alt'        => $content->title,
-                        ]);
-                        $content->media()->attach($media->id, ['type' => $type]);
-                    }
-                    continue;
+            // ========= 4) Gestion de la revue =========
+            if ($request->filled('review_description')) {
+                $review = \App\Models\ContentReview::where('content_id', $content->id)->first();
+                if ($review) {
+                    $review->update([
+                        'reviewer_id' => \Illuminate\Support\Facades\Auth::id(),
+                        'message'     => $request->review_description,
+                    ]);
+                } else {
+                    \App\Models\ContentReview::create([
+                        'reviewer_id' => \Illuminate\Support\Facades\Auth::id(),
+                        'content_id'  => $content->id,
+                        'message'     => $request->review_description,
+                    ]);
                 }
+            } else {
+                \App\Models\ContentReview::where('content_id', $content->id)->delete();
+            }
 
-                if ($field === 'album_images' && !empty($albumImages)) {
-                    foreach ($albumImages as $url) {
+            // ========= 5) Items (list/file) - Sync au lieu de create =========
+            if (in_array($request->input('display_method'), ['list', 'file'], true) && !empty($validated['items'])) {
+                $content->contentLists()->delete();
+                foreach ($validated['items'] as $item) {
+                    $content->contentLists()->create([
+                        'title'       => $item['title'],
+                        'description' => $item['description'],
+                        'url'         => $item['url'] ?? null,
+                        'image'       => $item['image'] ?? null,
+                        'index'       => $item['index'],
+                    ]);
+                }
+            } else {
+                // Si on passe de list/file à simple, supprimer les items
+                $content->contentLists()->delete();
+            }
+
+            // ========= 6) Sync des tags (supporter null -> vider) =========
+            $content->tags()->sync($request->input('tags_id', []));
+
+            // ========= 7) Gestion des médias liés =========
+            $detectTypeFromUrl = function (string $url): string {
+                $u = strtolower(parse_url($url, PHP_URL_PATH) ?? '');
+                if (preg_match('/\.(jpe?g|png|gif|webp|bmp|svg)$/', $u)) return 'image';
+                if (preg_match('/\.(mp4|mov|wmv|webm|m4v|m3u8)$/', $u)) return 'video';
+                if (preg_match('/\.(mp3|wav|ogg|m4a|aac|flac)$/', $u)) return 'audio';
+                if (str_contains($url, 'youtube.com') || str_contains($url, 'youtu.be')) return 'youtube';
+                return 'url';
+            };
+
+            $templateMediaMap = [
+                'normal_image' => [
+                    'normal_main_image'    => 'main',
+                    'normal_mobile_image'  => 'mobile',
+                    'normal_content_image' => 'detail',
+                ],
+                'video' => [
+                    'video_main_image'    => 'main',
+                    'video_mobile_image'  => 'mobile',
+                    'video_content_image' => 'detail',
+                    'video_file'          => 'video',
+                ],
+                'podcast' => [
+                    'podcast_main_image'    => 'main',
+                    'podcast_mobile_image'  => 'mobile',
+                    'podcast_content_image' => 'detail',
+                    'podcast_file'          => 'podcast',
+                ],
+                'album' => [
+                    'album_main_image'    => 'main',
+                    'album_mobile_image'  => 'mobile',
+                    'album_content_image' => 'detail',
+                    'album_images'        => 'album',
+                ],
+                'no_image' => [
+                    'no_image_main_image'   => 'main',
+                    'no_image_mobile_image' => 'mobile',
+                ],
+            ];
+
+            // Détacher tous les médias existants
+            $content->media()->detach();
+
+            // Attacher les nouveaux
+            $mediaMap = $templateMediaMap[$request->template] ?? null;
+            if ($mediaMap) {
+                foreach ($mediaMap as $field => $type) {
+                    // Champs unitaires
+                    if ($field !== 'album_images' && $request->filled($field)) {
+                        $url       = $request->input($field);
                         $mediaType = $detectTypeFromUrl($url);
-                        $existing  = \App\Models\ContentMedia::where('path', $url)->first();
 
+                        $existing = \App\Models\ContentMedia::where('path', $url)->first();
                         if ($existing) {
                             $content->media()->attach($existing->id, ['type' => $type]);
                         } else {
@@ -1065,198 +1049,102 @@ class ContentController extends BaseController
                             ]);
                             $content->media()->attach($media->id, ['type' => $type]);
                         }
+                        continue;
+                    }
+
+                    // Album assets
+                    if ($field === 'album_images' && !empty($albumImages)) {
+                        foreach ($albumImages as $url) {
+                            $mediaType = $detectTypeFromUrl($url);
+                            $existing  = \App\Models\ContentMedia::where('path', $url)->first();
+
+                            if ($existing) {
+                                $content->media()->attach($existing->id, ['type' => $type]);
+                            } else {
+                                $media = \App\Models\ContentMedia::create([
+                                    'path'       => $url,
+                                    'media_type' => $mediaType,
+                                    'user_id'    => \Illuminate\Support\Facades\Auth::id(),
+                                    'name'       => basename(parse_url($url, PHP_URL_PATH) ?? ('url_' . \Illuminate\Support\Str::random(8))),
+                                    'alt'        => $content->title,
+                                ]);
+                                $content->media()->attach($media->id, ['type' => $type]);
+                            }
+                        }
                     }
                 }
             }
-        }
 
-        // ========= 8) Publication / Programmation =========
-        if ($request->filled('published_at')) {
-            $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
+            // ========= 8) Publication / Programmation =========
+            if ($request->filled('published_at')) {
+                $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
 
-            if ($scheduledTime->gt(now('Africa/Algiers'))) {
-                $content->status       = 'scheduled';
-                $content->published_at = $scheduledTime;
+                if ($scheduledTime->gt(now('Africa/Algiers'))) {
+                    $content->status       = 'scheduled';
+                    $content->published_at = $scheduledTime;
+                    $content->save();
+
+                    $delayInSeconds = now('Africa/Algiers')->diffInSeconds($scheduledTime, false);
+                    if ($delayInSeconds < 0) $delayInSeconds = 0;
+
+                    \App\Jobs\PublishContent::dispatch($content->id)->delay(now()->addSeconds($delayInSeconds));
+                } else {
+                    $content->status       = 'published';
+                    $content->published_at = $scheduledTime;
+                    $content->save();
+                }
+            } elseif ($request->filled('status') && $request->status === 'draft' && $preview === false) {
+                $content->status = 'draft';
+                $content->published_at = null;
                 $content->save();
 
-                $delayInSeconds = now('Africa/Algiers')->diffInSeconds($scheduledTime, false);
-                if ($delayInSeconds < 0) $delayInSeconds = 0;
+                \Illuminate\Support\Facades\DB::commit();
 
-                \App\Jobs\PublishContent::dispatch($content->id)->delay(now()->addSeconds($delayInSeconds));
-            } else {
-                $content->status       = 'published';
-                $content->published_at = $scheduledTime;
+                return redirect()
+                    ->route('dashboard.contents.index')
+                    ->with('success', 'Content updated successfully.')
+                    ->with('clear_local_storage', true);
+            } elseif ($request->filled('status') && $request->status === 'published') {
+                $content->status = 'published';
+                $content->published_at = now();
                 $content->save();
+
+                \Illuminate\Support\Facades\DB::commit();
+
+                return redirect()
+                    ->route('dashboard.contents.index')
+                    ->with('success', 'Content updated successfully.')
+                    ->with('clear_local_storage', true);
+            } elseif ($request->filled('status') && $preview === true) {
+                $content->published_at = null;
+                $content->save();
+
+                \Illuminate\Support\Facades\DB::commit();
+
+                return redirect()
+                    ->route('dashboard.content.edit', $content->id)
+                    ->with('success', 'Content updated successfully in preview mode.')
+                    ->with('clear_local_storage', true);
             }
-        } elseif ($request->filled('status') && $request->status === 'draft' && $preview === false) {
-            $content->status = 'draft';
-            $content->published_at = null;
-            $content->save();
-            return redirect()
-                ->route('dashboard.contents.index')
-                ->with('success', 'Content updated successfully.')
-                ->with('clear_local_storage', true);
-        } elseif ($request->filled('status') && $request->status === 'published') {
-            $content->status = 'published';
-            $content->published_at = now();
-            $content->save();
-            return redirect()
-                ->route('dashboard.contents.index')
-                ->with('success', 'Content updated successfully.')
-                ->with('clear_local_storage', true);
-        } elseif ($request->filled('status') && $preview === true) {
-            $content->published_at = null;
-            $content->save();
+
+            \Illuminate\Support\Facades\DB::commit();
 
             return redirect()
                 ->route('dashboard.content.edit', $content->id)
-                ->with('success', 'Content updated successfully in preview mode.')
+                ->with('success', 'Content updated successfully.')
                 ->with('clear_local_storage', true);
-        }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+            report($e);
 
-        return redirect()
-            ->route('dashboard.content.edit', $content->id)
-            ->with('success', 'Content updated successfully.')
-            ->with('clear_local_storage', true);
-    }
-
-    /**
-     * Attach media fresh (when template changes)
-     */
-    protected function attachMedia(Request $request, Content $content, array $mediaMap, array $albumImages)
-    {
-        foreach ($mediaMap as $field => $type) {
-            if ($field === 'album_images') {
-                foreach ($albumImages as $img) {
-                    $path = $img instanceof \Illuminate\Http\UploadedFile
-                        ? asset('storage/' . $img->store('media', 'public'))
-                        : $img;
-
-                    $media = ContentMedia::create([
-                        'path' => $path,
-                        'media_type' => $img instanceof \Illuminate\Http\UploadedFile
-                            ? $img->getClientMimeType()
-                            : 'url',
-                        'user_id' => Auth::id(),
-                        'name' => $img instanceof \Illuminate\Http\UploadedFile
-                            ? $img->getClientOriginalName()
-                            : 'url_' . bin2hex(random_bytes(10)),
-                        'alt' => $content->title,
-                    ]);
-                    $content->media()->attach($media->id, ['type' => $type]);
-                }
-            } elseif ($request->hasFile($field)) {
-                $file = $request->file($field);
-                $path = asset('storage/' . $file->store('media', 'public'));
-                $media = ContentMedia::create([
-                    'path' => $path,
-                    'media_type' => $file->getClientMimeType(),
-                    'user_id' => Auth::id(),
-                    'name' => $file->getClientOriginalName(),
-                    'alt' => $content->title,
-                ]);
-                $content->media()->attach($media->id, ['type' => $type]);
-            } elseif ($request->filled($field)) {
-                $media = ContentMedia::firstOrCreate(
-                    ['path' => $request->input($field)],
-                    [
-                        'media_type' => 'url',
-                        'user_id' => Auth::id(),
-                        'name' => 'url_' . bin2hex(random_bytes(10)),
-                        'alt' => $content->title,
-                    ]
-                );
-                $content->media()->attach($media->id, ['type' => $type]);
-            }
-        }
-    }
-
-    /**
-     * Update media (same template, only replace where new files are given)
-     */
-    /**
-     * Update media (same template, only replace where new files/urls are given)
-     */
-    protected function updateMedia(Request $request, Content $content, array $mediaMap, array $albumImages)
-    {
-        foreach ($mediaMap as $field => $type) {
-            // Handle album images (multiple)
-            if ($field === 'album_images') {
-                if (!empty($albumImages)) {
-                    // Remove old album media
-                    $content->media()->wherePivot('type', $type)->detach();
-
-                    foreach ($albumImages as $img) {
-                        $path = $img instanceof \Illuminate\Http\UploadedFile
-                            ? asset('storage/' . $img->store('media', 'public'))
-                            : $img;
-
-                        $media = ContentMedia::firstOrCreate(
-                            ['path' => $path],
-                            [
-                                'media_type' => $img instanceof \Illuminate\Http\UploadedFile
-                                    ? $img->getClientMimeType()
-                                    : 'url',
-                                'user_id' => Auth::id(),
-                                'name' => $img instanceof \Illuminate\Http\UploadedFile
-                                    ? $img->getClientOriginalName()
-                                    : 'url_' . bin2hex(random_bytes(10)),
-                                'alt' => $content->title,
-                            ]
-                        );
-                        $content->media()->attach($media->id, ['type' => $type]);
-                    }
-                }
-                continue;
-            }
-
-            // Handle file upload (single)
-            if ($request->hasFile($field)) {
-                // Remove old media of this type
-                $content->media()->wherePivot('type', $type)->detach();
-
-                $file = $request->file($field);
-                $path = asset('storage/' . $file->store('media', 'public'));
-                $media = ContentMedia::create([
-                    'path' => $path,
-                    'media_type' => $file->getClientMimeType(),
-                    'user_id' => Auth::id(),
-                    'name' => $file->getClientOriginalName(),
-                    'alt' => $content->title,
-                ]);
-                $content->media()->attach($media->id, ['type' => $type]);
-                continue;
-            }
-
-            // Handle URL input (single)
-            if ($request->filled($field)) {
-                $url = $request->input($field);
-
-                // Only update if URL is different from current
-                $existing = $content->media()->wherePivot('type', $type)->where('path', $url)->first();
-                if (!$existing) {
-                    // Remove old media of this type
-                    $content->media()->wherePivot('type', $type)->detach();
-
-                    $media = ContentMedia::firstOrCreate(
-                        ['path' => $url],
-                        [
-                            'media_type' => 'url',
-                            'user_id' => Auth::id(),
-                            'name' => 'url_' . bin2hex(random_bytes(10)),
-                            'alt' => $content->title,
-                        ]
-                    );
-                    $content->media()->attach($media->id, ['type' => $type]);
-                }
-            }
+            return back()
+                ->withErrors(['general' => 'An unexpected error occurred while updating the content.'])
+                ->withInput();
         }
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(string $id)
     {
         try {

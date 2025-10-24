@@ -208,9 +208,7 @@
         }
 
         .input-wrapper.hidden {
-            visibility: hidden;
-            height: 0;
-            overflow: hidden;
+            display: none !important;
         }
 
         .btn-add {
@@ -298,9 +296,7 @@
         }
 
         .tags-input-wrapper.hidden {
-            visibility: hidden;
-            height: 0;
-            overflow: hidden;
+            display: none !important;
         }
 
         #tags_id_search {
@@ -445,10 +441,6 @@
                                 });
                             </script>
                         @endif
-
-
-
-
 
                         {{-- ===== TEMPLATE HIDDEN FIELD ===== --}}
                         <input type="hidden" name="template" id="template_field"
@@ -1416,7 +1408,7 @@
             hiddenInput.value = id;
 
             selectedDiv.style.display = 'flex';
-            inputWrapper.classList.add('hidden');
+            inputWrapper.style.display = 'none';
             dropdown.style.display = 'none';
 
             container.style.border = '';
@@ -1428,10 +1420,17 @@
             const selectedDiv = container.querySelector('.selected-item');
             const inputWrapper = container.querySelector('.input-wrapper');
             const hiddenInput = container.querySelector('.hidden-input');
+            const searchInput = container.querySelector('.search-input');
 
             selectedDiv.style.display = 'none';
-            inputWrapper.classList.remove('hidden');
+            inputWrapper.style.display = 'block';
             hiddenInput.value = '';
+
+            // Clear the search input and focus on it
+            if (searchInput) {
+                searchInput.value = '';
+                searchInput.focus();
+            }
         }
 
         // ========== MULTI-SELECT (TAGS) FUNCTIONS ==========

@@ -1475,7 +1475,7 @@
             <div class="d-flex flex-column mt-2">
                 <label class="form-check form-check-inline mb-2">
                     <input class="form-check-input" type="radio" name="display_method" value="simple"
-                        {{ isset($content) && $content->display_method == 'simple' ? 'checked' : '' }}>
+                        {{ isset($content) && $content->display_method == 'simple' ? 'checked' : ''}}>
                     <span class="form-check-label">أساسي</span>
                 </label>
                 <label class="form-check form-check-inline mb-2">

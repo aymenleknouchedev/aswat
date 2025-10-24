@@ -51,7 +51,7 @@
             </div>
         </div>
 
-       
+
     </div>
 
     <!-- Champs cachés (mis à jour dynamiquement) -->
@@ -512,8 +512,8 @@
                 <span class="media-type">${typeLabel}</span>
             </div>
             <div class="media-actions">
-                <button class="btn btn-sm btn-outline-secondary" onclick="mediaTabManager.changeMedia('${fieldName}')">تغيير</button>
-                <button class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMedia('${fieldName}')">حذف</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="mediaTabManager.changeMedia('${fieldName}')">تغيير</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMedia('${fieldName}')">حذف</button>
             </div>
         </div>`;
 
@@ -631,7 +631,8 @@
             const selectedCount = document.getElementById('selected-count');
 
             const flattenItems = Object.values(this.state.selectedMedia).flatMap(v => Array.isArray(v) ? v : (v ? [
-                v] : []));
+                v
+            ] : []));
             selectedCount.textContent = flattenItems.length;
 
             if (!flattenItems.length) {
