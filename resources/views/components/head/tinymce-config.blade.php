@@ -84,8 +84,7 @@
                     <div class="vvc-uploader-actions">
                         <button class="vvc-btn vvc-btn-secondary" type="button" id="vvc-btn-upload-to-gallery"
                             title="رفع ثم عرض في المعرض">
-                            رفع & فتح المعرض
-                        </button>
+                            إدراج في المعرض </button>
                         <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-upload-and-select-close"
                             title="رفع ثم حفظ وإغلاق">
                             رفع & حفظ وإغلاق

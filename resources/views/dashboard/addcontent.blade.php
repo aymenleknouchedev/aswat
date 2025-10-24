@@ -30,7 +30,7 @@
         }
 
         /* ===== SELECT2 RTL SUPPORT ===== */
-        .select2-dropdown-rtl {
+        .select2-mydropdown-rtl {
             direction: rtl !important;
             text-align: right !important;
         }
@@ -153,7 +153,7 @@
             color: var(--bs-secondary-color);
         }
 
-        /* ===== SEARCH DROPDOWN STYLES ===== */
+        /* ===== SEARCH myDROPDOWN STYLES ===== */
         .search-container {
             position: relative;
             width: 100%;
@@ -176,7 +176,7 @@
             box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
         }
 
-        .dropdown {
+        .mydropdown {
             display: none;
             position: absolute;
             top: 100%;
@@ -192,13 +192,13 @@
             margin-top: 5px;
         }
 
-        .dropdown ul {
+        .mydropdown ul {
             list-style: none;
             margin: 0;
             padding: 0;
         }
 
-        .dropdown li {
+        .mydropdown li {
             padding: 10px 15px;
             cursor: pointer;
             border-bottom: 1px solid var(--bs-border-color);
@@ -207,12 +207,12 @@
             transition: all 0.2s ease;
         }
 
-        .dropdown li:hover {
+        .mydropdown li:hover {
             background-color: var(--bs-tertiary-bg);
             color: var(--bs-body-color);
         }
 
-        .dropdown li.selected {
+        .mydropdown li.selected {
             background-color: var(--bs-primary-bg-subtle);
             color: var(--bs-primary-text-emphasis);
             font-weight: 500;
@@ -623,9 +623,9 @@
                                             <div class="input-wrapper">
                                                 <input id="section_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showmyDropdown(this)">
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="mydropdown">
                                                 <ul>
                                                     @foreach ($sections as $section)
                                                         <li data-id="{{ $section->id }}" data-name="{{ $section->name }}"
@@ -654,11 +654,11 @@
                                             <div class="input-wrapper">
                                                 <input id="category_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showmyDropdown(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addCategoryModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="mydropdown">
                                                 <ul>
                                                     @foreach ($categories as $category)
                                                         <li data-id="{{ $category->id }}"
@@ -688,10 +688,10 @@
                                             <div class="input-wrapper">
                                                 <input id="country_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showmyDropdown(this)">
 
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="mydropdown">
                                                 <ul>
                                                     @foreach ($countries as $country)
                                                         <li data-id="{{ $country->id }}"
@@ -721,10 +721,10 @@
                                             <div class="input-wrapper">
                                                 <input id="continent_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showmyDropdown(this)">
 
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="mydropdown">
                                                 <ul>
                                                     @foreach ($continents as $continent)
                                                         <li data-id="{{ $continent->id }}"
@@ -756,11 +756,11 @@
                                             </div>
                                             <div class="input-wrapper">
                                                 <input id="trend_search" type="text" class="form-control search-input"
-                                                    oninput="filterList(this)" onfocus="showDropdown(this)">
+                                                    oninput="filterList(this)" onfocus="showmyDropdown(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addTrendModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="mydropdown">
                                                 <ul>
                                                     @foreach ($trends as $trend)
                                                         <li data-id="{{ $trend->id }}"
@@ -790,11 +790,11 @@
                                             <div class="input-wrapper">
                                                 <input id="window_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showmyDropdown(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addWindowModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="mydropdown">
                                                 <ul>
                                                     @foreach ($windows as $window)
                                                         <li data-id="{{ $window->id }}"
@@ -827,11 +827,11 @@
                                             <div class="input-wrapper">
                                                 <input id="writer_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showmyDropdown(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addWriterModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="mydropdown">
                                                 <ul>
                                                     @foreach ($writers as $writer)
                                                         <li data-id="{{ $writer->id }}"
@@ -861,11 +861,11 @@
                                             <div class="input-wrapper">
                                                 <input id="writer_location_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showmyDropdown(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addWriterLocationModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="mydropdown">
                                                 <ul>
                                                     @foreach ($cities as $location)
                                                         <li data-id="{{ $location->id }}"
@@ -913,13 +913,13 @@
                                                         <input id="tags_id_search" type="text"
                                                             class="form-control search-input"
                                                             oninput="filterMultiList(this)"
-                                                            onfocus="showMultiDropdown(this)">
+                                                            onfocus="showMultimyDropdown(this)">
                                                         <button type="button" class="btn-add" data-bs-toggle="modal"
                                                             data-bs-target="#addTagModal" tabindex="-1">+</button>
                                                     </div>
                                                 </div>
 
-                                                <div class="dropdown">
+                                                <div class="mydropdown">
                                                     <ul id="tags-options-list">
                                                         @foreach ($tags as $tag)
                                                             <li data-id="{{ $tag->id }}"
@@ -1365,17 +1365,17 @@
 
     <script>
         // ========== SINGLE SELECTION FUNCTIONS ==========
-        function showDropdown(input) {
+        function showmyDropdown(input) {
             const container = input.closest('.category-selector');
-            const dropdown = container.querySelector('.dropdown');
-            dropdown.style.display = 'block';
+            const mydropdown = container.querySelector('.mydropdown');
+            mydropdown.style.display = 'block';
         }
 
         function filterList(input) {
             const container = input.closest('.category-selector');
-            const dropdown = container.querySelector('.dropdown');
+            const mydropdown = container.querySelector('.mydropdown');
             const filter = input.value.toLowerCase();
-            const items = dropdown.querySelectorAll('li');
+            const items = mydropdown.querySelectorAll('li');
             let visible = false;
 
             items.forEach(li => {
@@ -1388,7 +1388,7 @@
                 }
             });
 
-            dropdown.style.display = visible ? 'block' : 'none';
+            mydropdown.style.display = visible ? 'block' : 'none';
         }
 
         function selectItem(li, value, id) {
@@ -1396,7 +1396,7 @@
             const selectedDiv = container.querySelector('.selected-item');
             const selectedValue = container.querySelector('.selected-value');
             const inputWrapper = container.querySelector('.input-wrapper');
-            const dropdown = container.querySelector('.dropdown');
+            const mydropdown = container.querySelector('.mydropdown');
             const hiddenInput = container.querySelector('.hidden-input');
 
             selectedValue.textContent = value;
@@ -1404,7 +1404,7 @@
 
             selectedDiv.style.display = 'flex';
             inputWrapper.classList.add('hidden');
-            dropdown.style.display = 'none';
+            mydropdown.style.display = 'none';
 
             container.style.border = '';
             container.style.padding = '';
@@ -1422,17 +1422,17 @@
         }
 
         // ========== MULTI-SELECT (TAGS) FUNCTIONS ==========
-        function showMultiDropdown(input) {
+        function showMultimyDropdown(input) {
             const container = input.closest('.tags-search-container');
-            const dropdown = container.querySelector('.dropdown');
-            dropdown.style.display = 'block';
+            const mydropdown = container.querySelector('.mydropdown');
+            mydropdown.style.display = 'block';
         }
 
         function filterMultiList(input) {
             const container = input.closest('.tags-search-container');
-            const dropdown = container.querySelector('.dropdown');
+            const mydropdown = container.querySelector('.mydropdown');
             const filter = input.value.toLowerCase();
-            const items = dropdown.querySelectorAll('li');
+            const items = mydropdown.querySelectorAll('li');
             let visible = false;
 
             items.forEach(li => {
@@ -1445,7 +1445,7 @@
                 }
             });
 
-            dropdown.style.display = visible ? 'block' : 'none';
+            mydropdown.style.display = visible ? 'block' : 'none';
         }
 
         function selectMultiItem(li, value, id, fieldName) {
@@ -1453,7 +1453,7 @@
             const selectedContainer = document.getElementById(fieldName + '-selected-container');
             const hiddenInputsContainer = document.getElementById(fieldName + '-hidden-inputs');
             const searchInput = container.querySelector('.search-input');
-            const dropdown = container.querySelector('.dropdown');
+            const mydropdown = container.querySelector('.mydropdown');
 
             const existingInput = hiddenInputsContainer.querySelector(`input[name="${fieldName}[]"][value="${id}"]`);
             if (existingInput) return;
@@ -1476,7 +1476,7 @@
             li.classList.add('selected');
 
             searchInput.value = '';
-            dropdown.style.display = 'none';
+            mydropdown.style.display = 'none';
             searchInput.focus();
 
             container.style.border = '';
@@ -1500,17 +1500,17 @@
 
         // ========== UTILITY FUNCTIONS ==========
 
-        // Close dropdowns when clicking outside
+        // Close mydropdowns when clicking outside
         document.addEventListener('click', function(e) {
             document.querySelectorAll('.category-selector').forEach(container => {
                 if (!container.contains(e.target)) {
-                    const dd = container.querySelector('.dropdown');
+                    const dd = container.querySelector('.mydropdown');
                     if (dd) dd.style.display = 'none';
                 }
             });
             document.querySelectorAll('.multi-select-container .tags-search-container').forEach(container => {
                 if (!container.contains(e.target)) {
-                    const dd = container.querySelector('.dropdown');
+                    const dd = container.querySelector('.mydropdown');
                     if (dd) dd.style.display = 'none';
                 }
             });
@@ -1542,7 +1542,7 @@
             const container = hidden.closest('.category-selector');
             if (!container) return;
 
-            const dd = container.querySelector('.dropdown');
+            const dd = container.querySelector('.mydropdown');
             if (!dd) return;
             const li = dd.querySelector(`li[data-id="${oldValue}"]`);
             if (li) {
@@ -1839,7 +1839,7 @@
 
                     const writerSearch = document.querySelector('#writer_search');
                     if (writerSearch) {
-                        const listUl = writerSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        const listUl = writerSearch.closest('.search-container')?.querySelector('.mydropdown ul');
                         if (listUl) {
                             const li = document.createElement('li');
                             li.dataset.id = String(id);
@@ -1910,9 +1910,9 @@
                 }
 
                 if (res.status === 201 && data.id && data.name) {
-                    const dropdown = document.querySelector('#category_search')
+                    const mydropdown = document.querySelector('#category_search')
                         .closest('.search-container')
-                        .querySelector('.dropdown ul');
+                        .querySelector('.mydropdown ul');
 
                     const newItem = document.createElement('li');
                     newItem.dataset.id = data.id;
@@ -1921,7 +1921,7 @@
                     newItem.onclick = function() {
                         selectItem(this, data.name, data.id);
                     };
-                    dropdown.appendChild(newItem);
+                    mydropdown.appendChild(newItem);
 
                     $('#addCategoryModal').modal('hide');
                     form.reset();
@@ -2139,7 +2139,7 @@
 
                     const trendSearch = document.querySelector('#trend_search');
                     if (trendSearch) {
-                        const listUl = trendSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        const listUl = trendSearch.closest('.search-container')?.querySelector('.mydropdown ul');
                         if (listUl) {
                             const li = document.createElement('li');
                             li.dataset.id = String(id);
@@ -2263,10 +2263,10 @@
                     const name = data.name || data.window.name;
                     const slug = data.slug || data.window.slug;
 
-                    // Add to dropdown list
+                    // Add to mydropdown list
                     const windowSearch = document.querySelector('#window_search');
                     if (windowSearch) {
-                        const listUl = windowSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        const listUl = windowSearch.closest('.search-container')?.querySelector('.mydropdown ul');
                         if (listUl) {
                             const li = document.createElement('li');
                             li.dataset.id = String(id);
@@ -2413,10 +2413,10 @@
                     const name = data.name || data.location.name;
                     const slug = data.slug || data.location.slug;
 
-                    // Add to dropdown list
+                    // Add to mydropdown list
                     const locationSearch = document.querySelector('#writer_location_search');
                     if (locationSearch) {
-                        const listUl = locationSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        const listUl = locationSearch.closest('.search-container')?.querySelector('.mydropdown ul');
                         if (listUl) {
                             const li = document.createElement('li');
                             li.dataset.id = String(id);

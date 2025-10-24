@@ -138,7 +138,6 @@
     .modal-footer-sticky {
         position: sticky;
         bottom: 0;
-        background: #fff;
         border-top: 1px solid var(--az-border);
         z-index: 2;
         padding: 1rem;
