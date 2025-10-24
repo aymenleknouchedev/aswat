@@ -824,7 +824,6 @@
 
     /* Template Fields */
     .template-fields {
-        background: var(--bs-white);
         padding: 1.5rem;
         border: 1px solid var(--bs-border-color);
         border-radius: var(--bs-border-radius);
