@@ -148,9 +148,9 @@
         </div>
 
         <div class="nbn-tabs" role="tablist">
-            <button class="nbn-tab is-active" data-nbn-tab="gallery" role="tab" aria-selected="true" aria-controls="nbn-panel-gallery" id="nbn-tab-gallery">المعرض</button>
-            <button class="nbn-tab" data-nbn-tab="upload" role="tab" aria-selected="false" aria-controls="nbn-panel-upload" id="nbn-tab-upload">رفع</button>
-            <button class="nbn-tab" data-nbn-tab="import" role="tab" aria-selected="false" aria-controls="nbn-panel-import" id="nbn-tab-import">استيراد بالرابط</button>
+            <button type="button" class="nbn-tab is-active" data-nbn-tab="gallery" role="tab" aria-selected="true" aria-controls="nbn-panel-gallery" id="nbn-tab-gallery">المعرض</button>
+            <button type="button" class="nbn-tab" data-nbn-tab="upload" role="tab" aria-selected="false" aria-controls="nbn-panel-upload" id="nbn-tab-upload">رفع</button>
+            <button type="button" class="nbn-tab" data-nbn-tab="import" role="tab" aria-selected="false" aria-controls="nbn-panel-import" id="nbn-tab-import">استيراد بالرابط</button>
         </div>
 
         {{-- Gallery --}}
