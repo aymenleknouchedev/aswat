@@ -863,6 +863,7 @@
         border: 2px solid var(--bs-border-color);
         cursor: pointer;
         transition: all .3s ease;
+        background: var(--bs-white);
         min-height: 240px;
         border-radius: var(--bs-border-radius);
     }

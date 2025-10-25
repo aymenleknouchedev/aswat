@@ -2315,6 +2315,60 @@
             checked ? checked.dispatchEvent(new Event('change')) : refreshLinkNote();
         })();
 
+        // FIXED: Submit form handling - always submit as simple if no items in list/file mode
+        if (mainForm) {
+            mainForm.addEventListener('submit', function(e) {
+                // Get the currently selected display method
+                const selectedMode = document.querySelector('input[name="display_method"]:checked')
+                    ?.value || 'simple';
+
+                // If list or file mode is selected but no items exist, force simple mode
+                if ((selectedMode === 'list' || selectedMode === 'file') && items.length === 0) {
+                    // Create a hidden input to override the display method to simple
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'display_method';
+                    hiddenInput.value = 'simple';
+                    mainForm.appendChild(hiddenInput);
+
+                    // Clear any existing items hidden inputs since we're submitting as simple
+                    hiddenInputsContainer.innerHTML = '';
+
+                    console.log('Forcing display method to "simple" because no items were added in ' +
+                        selectedMode + ' mode');
+                } else {
+                    // Normal behavior - serialize items if needed
+                    serializeAndInject();
+                }
+            });
+        }
+
+        function serializeAndInject() {
+            hiddenInputsContainer.innerHTML = '';
+            const mode = currentModeName;
+
+            // Only inject items for list and file modes when items exist
+            if ((mode === 'list' || mode === 'file') && items.length > 0) {
+                items.forEach((it, idx) => {
+                    const base = `items[${idx}]`;
+                    hiddenInputsContainer.appendChild(makeHidden(`${base}[title]`, it.title || ''));
+                    hiddenInputsContainer.appendChild(makeHidden(`${base}[description]`, it.description ||
+                        ''));
+                    hiddenInputsContainer.appendChild(makeHidden(`${base}[image]`, it.image || ''));
+                    hiddenInputsContainer.appendChild(makeHidden(`${base}[url]`, it.url || ''));
+                    hiddenInputsContainer.appendChild(makeHidden(`${base}[index]`, idx + 1));
+                });
+            }
+        }
+
+        function makeHidden(name, value) {
+            const i = document.createElement('input');
+            i.type = 'hidden';
+            i.name = name;
+            i.value = value == null ? '' : String(value);
+            return i;
+        }
+
         // Optionnel: nettoyer localStorage après succès serveur (à raccorder à votre flash success)
         window.addEventListener('DOMContentLoaded', () => {
             const ok = document.querySelector('.alert.alert-success, .alert-success');
@@ -2361,62 +2415,3 @@
         gap: .25rem;
     }
 </style>
-
-<script>
-    (function() {
-        const MODE_KEY = 'az_display_method_v6';
-        const STORE_KEYS = {
-            list: 'az_items_list_v1',
-            file: 'az_items_file_v1'
-        };
-        const hidden = document.getElementById('list-items-hidden-inputs');
-        const form = hidden ? hidden.closest('form') : null;
-
-        if (!hidden || !form) return;
-
-        function makeHidden(name, value) {
-            const i = document.createElement('input');
-            i.type = 'hidden';
-            i.name = name;
-            i.value = value == null ? '' : String(value);
-            return i;
-        }
-
-        function serializeAndInject() {
-            hidden.innerHTML = '';
-            const mode = localStorage.getItem(MODE_KEY) || 'simple';
-            if (!(mode === 'list' || mode === 'file')) return;
-
-            let items = [];
-            try {
-                const raw = localStorage.getItem(STORE_KEYS[mode]);
-                const arr = raw ? JSON.parse(raw) : [];
-                if (Array.isArray(arr)) items = arr;
-            } catch (e) {}
-
-            if (!items.length) return;
-
-            items.forEach((it, idx) => {
-                const base = `items[${idx}]`;
-                hidden.appendChild(makeHidden(`${base}[title]`, it.title || ''));
-                hidden.appendChild(makeHidden(`${base}[description]`, it.description || ''));
-                hidden.appendChild(makeHidden(`${base}[image]`, it.image || ''));
-                // url مطلوب فقط في وضع file حسب واجهتك الحالية
-                hidden.appendChild(makeHidden(`${base}[url]`, it.url || ''));
-                hidden.appendChild(makeHidden(`${base}[index]`, idx + 1));
-            });
-        }
-
-        // عند تغيير وضع العرض: نظّف حقول الـ hidden
-        document.querySelectorAll('input[name="display_method"]').forEach(r => {
-            r.addEventListener('change', () => {
-                hidden.innerHTML = '';
-            });
-        });
-
-        // قبل الإرسال مباشرةً
-        form.addEventListener('submit', () => {
-            serializeAndInject();
-        });
-    })();
-</script>
