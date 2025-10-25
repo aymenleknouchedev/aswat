@@ -503,7 +503,8 @@
                                     const itemKeys = [
                                         'az_items_list_v1',
                                         'az_items_file_v1',
-                                        'az_display_method_v6'
+                                        'az_display_method_v6',
+                                        'mediaManagerState'
                                     ];
 
                                     itemKeys.forEach(k => localStorage.removeItem(k));

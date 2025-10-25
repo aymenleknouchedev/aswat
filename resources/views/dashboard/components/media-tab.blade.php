@@ -11,6 +11,12 @@
 <div class="media-manager">
     @csrf
 
+    <!-- Validation Alert -->
+    <div id="media-validation-alert" class="alert alert-danger d-none" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <span id="validation-message"></span>
+    </div>
+
     <!-- Media Type Selection -->
     <div class="media-type-selector mb-4">
         <div class="d-flex flex-wrap">
@@ -91,12 +97,44 @@
             // YouTube helpers
             this.YT_REGEX = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
 
+            // Complete validation rules for each media type - ALL fields are required
+            this.validationRules = {
+                normal_image: ['normal_main_image', 'normal_content_image', 'normal_mobile_image'],
+                video: ['video_main_image', 'video_content_image', 'video_mobile_image', 'video_file'],
+                podcast: ['podcast_main_image', 'podcast_content_image', 'podcast_mobile_image',
+                    'podcast_file'],
+                album: ['album_main_image', 'album_content_image', 'album_mobile_image', 'album_assets'],
+                no_image: ['no_image_main_image', 'no_image_mobile_image']
+            };
+
+            // Field labels for validation messages
+            this.fieldLabels = {
+                normal_main_image: 'الصورة الرئيسية',
+                normal_content_image: 'صورة المحتوى',
+                normal_mobile_image: 'صورة الموبايل',
+                video_main_image: 'صورة الفيديو الرئيسية',
+                video_content_image: 'صورة محتوى الفيديو',
+                video_mobile_image: 'صورة الفيديو للموبايل',
+                video_file: 'ملف الفيديو',
+                podcast_main_image: 'صورة البودكاست الرئيسية',
+                podcast_content_image: 'صورة محتوى البودكاست',
+                podcast_mobile_image: 'صورة البودكاست للموبايل',
+                podcast_file: 'ملف البودكاست',
+                album_main_image: 'صورة الألبوم الرئيسية',
+                album_content_image: 'صورة محتوى الألبوم',
+                album_mobile_image: 'صورة الألبوم للموبايل',
+                album_assets: 'أصول الألبوم',
+                no_image_main_image: 'الصورة الرئيسية',
+                no_image_mobile_image: 'صورة المقال للموبايل'
+            };
+
             this.init();
         }
 
         /* ================== INIT & EVENTS ================== */
         init() {
             this.bindEvents();
+            this.restoreState();
             this.loadTemplateContent('normal_image');
             this.updateSummary();
 
@@ -109,6 +147,9 @@
                     if (typeof originalHandler === 'function') originalHandler(payload);
                 };
             }
+
+            // Add form validation
+            this.setupFormValidation();
         }
 
         bindEvents() {
@@ -116,8 +157,213 @@
                 radio.addEventListener('change', e => {
                     this.state.currentTemplate = e.target.value;
                     this.loadTemplateContent(e.target.value);
+                    this.clearValidation();
+                    this.highlightRequiredFields();
                 });
             });
+        }
+
+        /* ================== VALIDATION ================== */
+        setupFormValidation() {
+            // Find the parent form and intercept its submission
+            const form = this.findParentForm();
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    if (!this.validateMediaSelection()) {
+                        e.preventDefault();
+                        this.showValidationError();
+                    }
+                });
+            }
+        }
+
+        findParentForm() {
+            let element = this.getContainer();
+            while (element && element.tagName !== 'FORM') {
+                element = element.parentElement;
+            }
+            return element;
+        }
+
+        getContainer() {
+            return document.querySelector('.media-manager');
+        }
+
+        validateMediaSelection() {
+            const template = this.state.currentTemplate;
+            const requiredFields = this.validationRules[template] || [];
+            const missingFields = [];
+
+            for (const field of requiredFields) {
+                if (field.endsWith('_assets')) {
+                    // For asset collections, check if array exists and has items
+                    if (!Array.isArray(this.state.selectedMedia[field]) ||
+                        this.state.selectedMedia[field].length === 0) {
+                        missingFields.push(field);
+                    }
+                } else {
+                    // For single media fields
+                    if (!this.state.selectedMedia[field]) {
+                        missingFields.push(field);
+                    }
+                }
+            }
+
+            this.missingFields = missingFields; // Store for detailed error message
+            return missingFields.length === 0;
+        }
+
+        showValidationError() {
+            const alert = document.getElementById('media-validation-alert');
+            const message = document.getElementById('validation-message');
+
+            if (alert && message) {
+                const templateName = this.getTemplateDisplayName(this.state.currentTemplate);
+                const missingFieldNames = this.missingFields.map(field => this.fieldLabels[field]).join('، ');
+
+                message.textContent =
+                    `يجب تعبئة جميع الوسائط المطلوبة لنوع ${templateName}. الحقول المطلوبة: ${missingFieldNames}`;
+                alert.classList.remove('d-none');
+
+                // Highlight missing fields
+                this.highlightMissingFields();
+
+                // Scroll to alert
+                alert.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        highlightMissingFields() {
+            // Remove previous highlights
+            this.clearFieldHighlights();
+
+            // Highlight missing fields
+            this.missingFields.forEach(field => {
+                const previewElement = document.getElementById(`${field}_preview`);
+                if (previewElement) {
+                    previewElement.classList.add('field-missing');
+                }
+
+                // For asset fields, highlight the container
+                if (field.endsWith('_assets')) {
+                    const assetContainer = document.querySelector(`[data-field="${field}"]`);
+                    if (assetContainer) {
+                        assetContainer.classList.add('field-missing');
+                    }
+                }
+            });
+        }
+
+        highlightRequiredFields() {
+            // Remove previous highlights
+            this.clearFieldHighlights();
+
+            // Highlight all required fields for current template
+            const requiredFields = this.validationRules[this.state.currentTemplate] || [];
+            requiredFields.forEach(field => {
+                const previewElement = document.getElementById(`${field}_preview`);
+                if (previewElement) {
+                    previewElement.classList.add('field-required');
+                }
+
+                // For asset fields, highlight the container
+                if (field.endsWith('_assets')) {
+                    const assetContainer = document.querySelector(`[data-field="${field}"]`);
+                    if (assetContainer) {
+                        assetContainer.classList.add('field-required');
+                    }
+                }
+            });
+        }
+
+        clearFieldHighlights() {
+            // Remove all field highlighting
+            document.querySelectorAll('.field-missing, .field-required').forEach(el => {
+                el.classList.remove('field-missing', 'field-required');
+            });
+        }
+
+        clearValidation() {
+            const alert = document.getElementById('media-validation-alert');
+            if (alert) {
+                alert.classList.add('d-none');
+            }
+            this.clearFieldHighlights();
+        }
+
+        getTemplateDisplayName(template) {
+            const names = {
+                normal_image: 'الصورة',
+                video: 'الفيديو',
+                podcast: 'البودكاست',
+                album: 'الألبوم',
+                no_image: 'المقال'
+            };
+            return names[template] || template;
+        }
+
+        /* ================== STATE PERSISTENCE ================== */
+        saveState() {
+            try {
+                const stateToSave = {
+                    currentTemplate: this.state.currentTemplate,
+                    selectedMedia: this.state.selectedMedia
+                };
+                localStorage.setItem('mediaManagerState', JSON.stringify(stateToSave));
+            } catch (e) {
+                console.warn('Failed to save media manager state:', e);
+            }
+        }
+
+        restoreState() {
+            try {
+                const savedState = localStorage.getItem('mediaManagerState');
+                if (savedState) {
+                    const parsedState = JSON.parse(savedState);
+
+                    // Restore template
+                    if (parsedState.currentTemplate) {
+                        this.state.currentTemplate = parsedState.currentTemplate;
+                        const radio = document.querySelector(`input[value="${parsedState.currentTemplate}"]`);
+                        if (radio) radio.checked = true;
+                    }
+
+                    // Restore media selections
+                    if (parsedState.selectedMedia) {
+                        this.state.selectedMedia = parsedState.selectedMedia;
+
+                        // Update UI for all fields
+                        Object.keys(this.state.selectedMedia).forEach(fieldName => {
+                            if (fieldName.endsWith('_assets')) {
+                                this.updateAssetsGrid(fieldName);
+                            } else {
+                                this.updateFieldPreview(fieldName);
+                            }
+                        });
+                    }
+
+                    // Highlight required fields after restoration
+                    setTimeout(() => this.highlightRequiredFields(), 100);
+                } else {
+                    // Highlight required fields for initial template
+                    setTimeout(() => this.highlightRequiredFields(), 100);
+                }
+            } catch (e) {
+                console.warn('Failed to restore media manager state:', e);
+                // Highlight required fields even if restoration fails
+                setTimeout(() => this.highlightRequiredFields(), 100);
+            }
+        }
+
+        clearState() {
+            try {
+                localStorage.removeItem('mediaManagerState');
+            } catch (e) {
+                console.warn('Failed to clear media manager state:', e);
+            }
         }
 
         /* ================== URL HELPERS ================== */
@@ -157,6 +403,9 @@
                 no_image: this.getNoImageTemplate()
             };
             document.getElementById('mediaTypeContent').innerHTML = templates[template] || '';
+
+            // Highlight required fields after template load
+            setTimeout(() => this.highlightRequiredFields(), 50);
         }
 
         createField(fieldName, label, icon, type = 'image') {
@@ -292,6 +541,8 @@
             this.updateAssetsGrid(fieldName);
             this.updateSummary();
             this.updateHiddenFields();
+            this.saveState(); // Save state after removal
+            this.clearValidation(); // Re-check validation
         }
 
         updateAssetsGrid(fieldName) {
@@ -428,6 +679,8 @@
             this.updateAssetsGrid(fieldName);
             this.updateSummary();
             this.updateHiddenFields();
+            this.saveState(); // Save state after deletion
+            this.clearValidation(); // Re-check validation
         }
 
         clearAllAssets(fieldName) {
@@ -437,6 +690,8 @@
             this.updateAssetsGrid(fieldName);
             this.updateSummary();
             this.updateHiddenFields();
+            this.saveState(); // Save state after clearing
+            this.clearValidation(); // Re-check validation
         }
 
         onAssetDragStart(ev, fieldName, index) {
@@ -474,6 +729,7 @@
             this.updateAssetsGrid(fieldName);
             this.updateSummary();
             this.updateHiddenFields();
+            this.saveState(); // Save state after reordering
         }
 
         /* ================== PREVIEWS (عنصر واحد) ================== */
@@ -559,6 +815,8 @@
             this.updateFieldPreview(fieldName);
             this.updateSummary();
             this.updateHiddenFields();
+            this.saveState(); // Save state after removal
+            this.clearValidation(); // Re-check validation
         }
 
         onMediaSelected(media) {
@@ -575,6 +833,8 @@
             }
             this.updateSummary();
             this.updateHiddenFields();
+            this.saveState(); // Save state after selection
+            this.clearValidation(); // Clear any previous validation errors
         }
 
         updateFieldPreview(fieldName) {
@@ -775,6 +1035,36 @@
     .media-manager {
         font-family: var(--bs-font-sans-serif);
         color: var(--bs-body-color);
+    }
+
+    /* Validation Alert */
+    #media-validation-alert {
+        border-radius: var(--bs-border-radius);
+        border-left: 4px solid var(--bs-danger);
+    }
+
+    /* Field Highlighting */
+    .field-missing {
+        border: 2px solid var(--bs-danger) !important;
+        box-shadow: 0 0 0 0.2rem rgba(var(--bs-danger-rgb), 0.25) !important;
+    }
+
+    .field-required {
+    }
+
+    .field-preview.field-missing {
+        border: 2px solid var(--bs-danger) !important;
+    }
+
+    .field-preview.field-required {
+    }
+
+    .field-card--full.field-missing .assets-wrapper {
+        border: 2px solid var(--bs-danger) !important;
+        box-shadow: 0 0 0 0.2rem rgba(var(--bs-danger-rgb), 0.25) !important;
+    }
+
+    .field-card--full.field-required .assets-wrapper {
     }
 
     /* Media Type Selector */
