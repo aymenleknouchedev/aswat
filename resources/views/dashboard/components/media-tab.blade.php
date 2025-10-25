@@ -842,13 +842,14 @@
     }
 
     .field-card {
+        background: var(--bs-gray-100);
         padding: 1rem;
         border-radius: var(--bs-border-radius);
     }
 
     .field-label {
         font-weight: 500;
-        color: var(--bs-gray-800);
+        color: var(--bs-gray);
         margin-bottom: .5rem;
         display: block;
     }
@@ -863,6 +864,7 @@
         border: 2px solid var(--bs-border-color);
         cursor: pointer;
         transition: all .3s ease;
+        background: var(--bs-white);
         min-height: 240px;
         border-radius: var(--bs-border-radius);
     }
@@ -874,6 +876,12 @@
 
     .field-empty i {
         font-size: 2rem;
+        color: var(--bs-gray);
+        margin-bottom: .5rem;
+    }
+
+    .field-empty span {
+        font-size: 1rem;
         color: var(--bs-gray);
         margin-bottom: .5rem;
     }
