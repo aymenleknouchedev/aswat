@@ -64,7 +64,7 @@
                     <div class="vvc-upload-fields" style="display:flex; flex-wrap:wrap; gap:.6rem; width:100%;">
                         <div style="flex:1 1 260px;">
                             <label for="vvc-upload-input"
-                                style="display:block; width:100%; cursor:pointer; padding:.6rem .7rem; border:1px solid #dcdcdc; background:#fafafa; color:#333; text-align:center;">
+                                style="display:block; width:100%; cursor:pointer; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-gray-100); color:var(--vvc-body-color); text-align:center;">
                                 <i class="fa fa-upload" style="margin-right:6px;"></i> اختر ملف الوسائط
                                 <input type="file" id="vvc-upload-input" class="vvc-upload-input"
                                     accept="image/*,video/*" style="display:none;" />
@@ -73,22 +73,18 @@
                         <div style="flex:1 1 220px;">
                             <input type="text" id="vvc-upload-name" class="vvc-upload-name"
                                 placeholder="اسم الملف"
-                                style="width:100%; padding:.6rem .7rem; border:1px solid #dcdcdc; background:#fff;" />
+                                style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);" />
                         </div>
                         <div style="flex:1 1 220px;">
                             <input type="text" id="vvc-upload-alt" class="vvc-upload-alt"
                                 placeholder="النص البديل (للصور)"
-                                style="width:100%; padding:.6rem .7rem; border:1px solid #dcdcdc; background:#fff;" />
+                                style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);" />
                         </div>
                     </div>
                     <div class="vvc-uploader-actions">
-                        <button class="vvc-btn vvc-btn-secondary" type="button" id="vvc-btn-upload-to-gallery"
+                        <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-upload-to-gallery"
                             title="رفع ثم عرض في المعرض">
                             إدراج في المعرض </button>
-                        <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-upload-and-select-close"
-                            title="رفع ثم حفظ وإغلاق">
-                            رفع & حفظ وإغلاق
-                        </button>
                     </div>
                 </div>
             </div>
@@ -108,13 +104,44 @@
     }
 
     :root {
-        --vvc-bg: #fff;
-        --vvc-text: #111;
-        --vvc-border: #e5e7eb;
-        --vvc-ring: #d1d5db;
-        --vvc-muted: #6b7280;
-        --vvc-black: #111;
-        --vvc-black-strong: #000;
+        /* Updated color palette */
+        --vvc-primary: #6576ff;
+        --vvc-secondary: #364a63;
+        --vvc-success: #1ee0ac;
+        --vvc-info: #09c2de;
+        --vvc-warning: #f4bd0e;
+        --vvc-danger: #e85347;
+        --vvc-light: #e5e9f2;
+        --vvc-dark: #1f2b3a;
+        --vvc-gray: #8091a7;
+        --vvc-lighter: #f5f6fa;
+
+        --vvc-gray-100: #ebeef2;
+        --vvc-gray-200: #e5e9f2;
+        --vvc-gray-300: #dbdfea;
+        --vvc-gray-400: #b7c2d0;
+        --vvc-gray-500: #8091a7;
+        --vvc-gray-600: #3c4d62;
+        --vvc-gray-700: #344357;
+        --vvc-gray-800: #2b3748;
+        --vvc-gray-900: #1f2b3a;
+
+        --vvc-body-bg: #fff;
+        --vvc-body-color: #526484;
+        --vvc-heading-color: #364a63;
+        --vvc-border-color: #dbdfea;
+        --vvc-muted: #8091a7;
+    }
+
+    [data-bs-theme="dark"] {
+        --vvc-body-bg: #0D141D;
+        --vvc-body-color: #e5e9f2;
+        --vvc-heading-color: #fff;
+        --vvc-border-color: #384D69;
+        --vvc-muted: #b7c2d0;
+        --vvc-gray-100: #2b3748;
+        --vvc-gray-200: #344357;
+        --vvc-gray-300: #3c4d62;
     }
 
     .vvc-modal {
@@ -142,8 +169,8 @@
         margin: 0 auto;
         width: clamp(320px, 92vw, 1000px);
         max-height: 90%;
-        background: var(--vvc-bg);
-        color: var(--vvc-text);
+        background: var(--vvc-body-bg);
+        color: var(--vvc-body-color);
         display: flex;
         flex-direction: column;
         overflow: hidden;
@@ -166,18 +193,23 @@
 
     .vvc-header {
         padding: 1rem 1.25rem;
-        border-bottom: 1px solid var(--vvc-border);
+        border-bottom: 1px solid var(--vvc-border-color);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: #fff
+        background: var(--vvc-body-bg)
+    }
+
+    .vvc-header h5 {
+        color: var(--vvc-heading-color);
+        margin: 0;
     }
 
     .vvc-close {
         font-size: 1.4rem;
         border: 0;
         background: transparent;
-        color: #666;
+        color: var(--vvc-gray-500);
         cursor: pointer
     }
 
@@ -185,21 +217,23 @@
         display: flex;
         gap: .25rem;
         padding: .5rem;
-        border-bottom: 1px solid var(--vvc-border);
-        background: #fff
+        border-bottom: 1px solid var(--vvc-border-color);
+        background: var(--vvc-body-bg)
     }
 
     .vvc-tab-btn {
-        background: #fff;
-        border: 1px solid var(--vvc-border);
+        background: var(--vvc-body-bg);
+        border: 1px solid var(--vvc-border-color);
         padding: .55rem .9rem;
         cursor: pointer;
         font-weight: 600;
-        color: var(--vvc-text)
+        color: var(--vvc-body-color)
     }
 
     .vvc-tab-btn.vvc-is-active {
-        border-color: #dcdcdc
+        background: var(--vvc-primary);
+        border-color: var(--vvc-primary);
+        color: white;
     }
 
     .vvc-tab-panel {
@@ -212,8 +246,8 @@
 
     .vvc-tab-body {
         padding: 1rem 1.25rem;
-        border-bottom: 1px solid var(--vvc-border);
-        background: #fff
+        border-bottom: 1px solid var(--vvc-border-color);
+        background: var(--vvc-body-bg)
     }
 
     .vvc-filters {
@@ -221,17 +255,17 @@
         display: flex;
         gap: .65rem;
         flex-wrap: wrap;
-        border-bottom: 1px solid var(--vvc-border);
-        background: #fff
+        border-bottom: 1px solid var(--vvc-border-color);
+        background: var(--vvc-body-bg)
     }
 
     .vvc-filters input,
     .vvc-filters select {
         padding: .6rem .7rem;
         font-size: .95rem;
-        border: 1px solid #dcdcdc;
-        background: #fff;
-        color: var(--vvc-text);
+        border: 1px solid var(--vvc-border-color);
+        background: var(--vvc-body-bg);
+        color: var(--vvc-body-color);
         flex: 1 1 180px
     }
 
@@ -239,7 +273,7 @@
         padding: 1rem 1.25rem;
         overflow: auto;
         flex: 1;
-        background: #fff
+        background: var(--vvc-body-bg)
     }
 
     .vvc-grid {
@@ -257,8 +291,7 @@
 
     .vvc-item {
         position: relative;
-        border: 1px solid var(--vvc-border);
-        background: #fff;
+        background: var(--vvc-body-bg);
         cursor: pointer;
         display: flex;
         flex-direction: column;
@@ -268,13 +301,13 @@
     }
 
     .vvc-item:hover {
-        border-color: #cfcfcf;
-        box-shadow: 0 0 0 3px #f3f4f6
+        border-color: var(--vvc-primary);
+        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.1)
     }
 
     .vvc-item.vvc-is-selected {
-        border-color: #cfcfcf;
-        box-shadow: 0 0 0 3px #e5e7eb
+        border-color: var(--vvc-primary);
+        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.2)
     }
 
     .vvc-thumb {
@@ -283,10 +316,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #fafafa;
+        background: var(--vvc-gray-100);
         overflow: hidden;
         position: relative;
-        border: 1px solid #f0f0f0
+        border: 1px solid var(--vvc-gray-200)
     }
 
     .vvc-thumb img,
@@ -311,7 +344,7 @@
 
     .vvc-title {
         font-size: .9rem;
-        color: #374151;
+        color: var(--vvc-heading-color);
         margin-top: .55rem;
         width: 100%;
         white-space: nowrap;
@@ -324,8 +357,8 @@
         flex-wrap: wrap;
         align-items: center;
         gap: .6rem;
-        background: #fff;
-        border: 1px solid var(--vvc-border);
+        background: var(--vvc-body-bg);
+        border: 1px solid var(--vvc-border-color);
         padding: 1rem
     }
 
@@ -339,59 +372,60 @@
         font-weight: 600;
         cursor: pointer;
         transition: background .15s, color .15s, border-color .15s;
-        border: 1px solid var(--vvc-black);
-        background: var(--vvc-black);
+        border: 1px solid transparent;
+        background: var(--vvc-primary);
         color: #fff
     }
 
     .vvc-btn:hover {
-        background: var(--vvc-black-strong);
-        border-color: var(--vvc-black-strong)
+        background: #465fff;
+        border-color: #465fff
     }
 
     .vvc-btn-secondary {
-        background: #444;
-        border-color: #444
+        background: var(--vvc-secondary);
+        border-color: var(--vvc-secondary)
     }
 
     .vvc-btn-secondary:hover {
-        background: #222;
-        border-color: #222
+        background: #2b3748;
+        border-color: #2b3748
     }
 
     .vvc-btn-primary {
-        background: var(--vvc-black);
-        border-color: var(--vvc-black)
+        background: var(--vvc-primary);
+        border-color: var(--vvc-primary)
     }
 
     .vvc-footer {
         padding: 1rem 1.25rem;
-        background: #fff;
+        background: var(--vvc-body-bg);
         display: flex;
         justify-content: flex-end;
         gap: .6rem;
-        border-top: 1px solid var(--vvc-border)
+        border-top: 1px solid var(--vvc-border-color)
     }
 
     .vvc-btn-select {
-        background: #fff;
-        color: var(--vvc-black);
-        border-color: var(--vvc-black)
+        background: var(--vvc-primary);
+        color: #fff;
+        border-color: var(--vvc-primary)
     }
 
     .vvc-btn-select:hover {
-        background: #f5f5f5
+        background: #465fff;
+        border-color: #465fff
     }
 
     .vvc-btn-cancel {
-        background: #444;
-        border-color: #444;
-        color: #fff
+        background: var(--vvc-secondary);
+        border-color: var(--vvc-secondary);
+        color: #fff;
     }
 
     .vvc-btn-cancel:hover {
-        background: #222;
-        border-color: #222
+        background: #2b3748;
+        border-color: #2b3748;
     }
 
     .vvc-loader {
@@ -452,7 +486,6 @@
         const upName = document.getElementById('vvc-upload-name');
         const upAlt = document.getElementById('vvc-upload-alt');
         const btnUpGal = document.getElementById('vvc-btn-upload-to-gallery');
-        const btnUpSel = document.getElementById('vvc-btn-upload-and-select-close');
 
         // ---------- State ----------
         const state = {
@@ -794,9 +827,7 @@
 
             try {
                 btnUpGal.disabled = true;
-                btnUpSel.disabled = true;
                 btnUpGal.textContent = 'جارٍ الرفع...';
-                btnUpSel.textContent = 'جارٍ الرفع...';
                 const res = await fetch(UPLOAD_URL, {
                     method: 'POST',
                     headers: {
@@ -827,26 +858,12 @@
                     upAlt.value = '';
                     return;
                 }
-                if (created.length) {
-                    const first = created[0];
-                    const url = toAbsoluteUrl(first.url || first.path);
-                    const kind = getMediaKind(first);
-                    window.vvcMediaModalManager.onMediaSelected({
-                        id: first.id,
-                        url,
-                        title: first.name || nameVal,
-                        alt: first.alt || altVal,
-                        type: kind
-                    });
-                }
             } catch (err) {
                 console.error('Upload exception', err);
                 alert('حدث خطأ أثناء الرفع.');
             } finally {
                 btnUpGal.disabled = false;
-                btnUpSel.disabled = false;
-                btnUpGal.textContent = 'رفع & فتح المعرض';
-                btnUpSel.textContent = 'رفع & حفظ وإغلاق';
+                btnUpGal.textContent = 'إدراج في المعرض';
             }
         }
 
@@ -871,7 +888,6 @@
 
         // ---------- Bindings ----------
         btnUpGal?.addEventListener('click', () => uploadMedia('gallery'));
-        btnUpSel?.addEventListener('click', () => uploadMedia('select-close'));
 
         // ---------- Initial ----------
         if (!state.list.length) {
