@@ -71,7 +71,8 @@ class MediaController extends BaseController
             $file = $request->file('media');
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $extension = $file->getClientOriginalExtension();
-            $fileName = $originalName . '_' . time() . '.' . $extension;
+            $safeName = preg_replace('/\s+/', '_', $originalName);
+            $fileName = $safeName . '_' . time() . '.' . $extension;
 
             $storedPath = $file->storeAs('media', $fileName, 'public');
             $path = '/storage/' . $storedPath;
