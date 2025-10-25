@@ -1,21 +1,22 @@
-<!-- ======================= HEAD (placez idéalement ces balises dans <head>) ======================= -->
+<!-- ======================= HEAD ASSETS (place in <head>) ======================= -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="preconnect" href="https://www.youtube.com">
 <link rel="preconnect" href="https://i.ytimg.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
-<!-- ======================= xmm MEDIA MODAL (assurez-vous que le composant est inclus) ======================= -->
-@include('dashboard.components.edit-media-modal')
+<!-- ======================= MMX MEDIA MODAL INCLUDE (required) ======================= -->
+@include('dashboard.components.media-modal')
 
 <!-- ======================= MEDIA MANAGER UI ======================= -->
 <div class="media-manager">
     @csrf
 
-    <!-- Sélecteur du type de média -->
-    <div class="media-type-selector mb-3">
+    <!-- Media Type Selection -->
+    <div class="media-type-selector mb-4">
         <div class="d-flex flex-wrap">
             <div class="media-type-card">
-                <input type="radio" name="template" id="normal-radio" value="normal_image" class="media-type-input">
+                <input type="radio" name="template" id="normal-radio" value="normal_image" class="media-type-input"
+                    checked>
                 <label for="normal-radio" class="media-type-label">
                     <i class="fas fa-image"></i>
                     <span>صورة</span>
@@ -50,17 +51,15 @@
                 </label>
             </div>
         </div>
-
-
     </div>
 
-    <!-- Champs cachés (mis à jour dynamiquement) -->
+    <!-- Hidden Fields -->
     <div id="media-hidden-fields"></div>
 
-    <!-- Contenu dynamique du template -->
+    <!-- Dynamic Template Content -->
     <div id="mediaTypeContent"></div>
 
-    <!-- Panneau récapitulatif -->
+    <!-- Summary Panel -->
     <div class="media-summary-panel mt-4">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
@@ -74,21 +73,21 @@
     </div>
 </div>
 
-<!-- ======================= SCRIPT : MediaTabManager ======================= -->
+<!-- ======================= SCRIPT ======================= -->
 <script>
     class MediaTabManager {
         constructor() {
             this.state = {
                 currentTemplate: 'normal_image',
                 currentField: '',
-                selectedMedia: {} // { fieldName: {id,url,title,alt} | [{...}, ...] }
+                selectedMedia: {}
             };
 
-            // Option proxy interne si vous en avez un (sinon laissez false)
+            // إعدادات اختيارية للوكيل (للتخطّي عبر نفس الأصل)
             this.USE_PROXY = false;
             this.PROXY_URL = '/media/proxy?url=';
 
-            // Règles YouTube
+            // YouTube helpers
             this.YT_REGEX = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
 
             this.init();
@@ -97,14 +96,13 @@
         /* ================== INIT & EVENTS ================== */
         init() {
             this.bindEvents();
-            this.loadTemplateContent(this.state.currentTemplate);
+            this.loadTemplateContent('normal_image');
             this.updateSummary();
-            this.updateCurrentTemplatePill();
 
-            // Pont d’intégration avec le xmm Media Modal
-            if (window.xmmMediaModalManager) {
-                const originalHandler = window.xmmMediaModalManager.onMediaSelected;
-                window.xmmMediaModalManager.onMediaSelected = (payload) => {
+            // جسر التكامل مع MMX Media Modal
+            if (window.mmxMediaModalManager) {
+                const originalHandler = window.mmxMediaModalManager.onMediaSelected;
+                window.mmxMediaModalManager.onMediaSelected = (payload) => {
                     if (Array.isArray(payload)) payload.forEach(item => this.onMediaSelected(item));
                     else this.onMediaSelected(payload);
                     if (typeof originalHandler === 'function') originalHandler(payload);
@@ -117,27 +115,8 @@
                 radio.addEventListener('change', e => {
                     this.state.currentTemplate = e.target.value;
                     this.loadTemplateContent(e.target.value);
-                    this.updateCurrentTemplatePill();
-                    this.updateHiddenFields();
                 });
             });
-        }
-
-        updateCurrentTemplatePill() {
-            const map = {
-                normal_image: 'صورة',
-                video: 'فيديو',
-                podcast: 'بودكاست',
-                album: 'ألبوم',
-                no_image: 'مقال'
-            };
-            const label = map[this.state.currentTemplate] || this.state.currentTemplate;
-            const el = document.getElementById('current-template-label');
-            if (el) el.textContent = label;
-
-            // Coche visuellement le bon radio
-            const radio = document.querySelector(`.media-type-input[value="${this.state.currentTemplate}"]`);
-            if (radio) radio.checked = true;
         }
 
         /* ================== URL HELPERS ================== */
@@ -148,6 +127,7 @@
             const m = url.match(this.YT_REGEX);
             return m ? m[1] : null;
         }
+
         normalizeUrl(url = '') {
             if (!url) return '';
             if (/^(data:|blob:)/i.test(url)) return url;
@@ -176,23 +156,22 @@
                 no_image: this.getNoImageTemplate()
             };
             document.getElementById('mediaTypeContent').innerHTML = templates[template] || '';
-            // Après rendu, ré-attacher l’aperçu pour les champs déjà sélectionnés
-            Object.keys(this.state.selectedMedia).forEach(f => this.updateFieldPreview(f));
         }
 
         createField(fieldName, label, icon, type = 'image') {
             const media = this.state.selectedMedia[fieldName];
             return `
-        <div class="field-card">
-            <label class="field-label">${label}</label>
-            <div class="field-preview" id="${fieldName}_preview">
-                ${media ? this.getMediaPreview(media, fieldName) : this.getEmptyState(fieldName, icon, type)}
-            </div>
-        </div>`;
+      <div class="field-card">
+        <label class="field-label">${label}</label>
+        <div class="field-preview" id="${fieldName}_preview">
+          ${media ? this.getMediaPreview(media, fieldName) : this.getEmptyState(fieldName, icon, type)}
+        </div>
+      </div>`;
         }
 
         /* ============== COLLECTION FIELD ( *_assets ) ============== */
         createAssetsField(fieldName, label) {
+            // حالة واجهة مخصصة
             this.state._assetsUi = this.state._assetsUi || {};
             this.state._assetsUi[fieldName] = Object.assign({
                 page: 1,
@@ -203,50 +182,54 @@
                 selected: new Set()
             }, this.state._assetsUi[fieldName] || {});
 
-            return `
-        <div class="field-card field-card--full" data-field="${fieldName}">
-            <div class="field-label assets-label-row">
-                <span>${label}</span>
-                <div class="assets-toolbar" data-assets-toolbar="${fieldName}">
-                    <div class="assets-toolbar-group">
-                        <label class="assets-size-label">حجم</label>
-                        <input type="range" min="120" max="260" step="10" value="${this.state._assetsUi[fieldName].size}"
-                               oninput="mediaTabManager.onAssetsSize('${fieldName}', this.value)">
-                        <button type="button" class="btn btn-sm"
-                                onclick="mediaTabManager.toggleAssetsView('${fieldName}')">تبديل العرض</button>
-                        <button type="button" class="btn btn-sm btn-outline-primary"
-                                onclick="mediaTabManager.openAssetsPicker('${fieldName}')">إضافة عناصر</button>
-                        <button type="button" class="btn btn-sm"
-                                onclick="mediaTabManager.selectAllAssets('${fieldName}')">تحديد الكل</button>
-                        <button type="button" class="btn btn-sm"
-                                onclick="mediaTabManager.clearSelection('${fieldName}')">إلغاء التحديد</button>
-                        <button type="button" class="btn btn-sm btn-outline-danger"
-                                onclick="mediaTabManager.deleteSelectedAssets('${fieldName}')">حذف المحدد</button>
-                        <button type="button" class="btn btn-sm btn-outline-danger"
-                                onclick="mediaTabManager.clearAllAssets('${fieldName}')">تفريغ الألبوم</button>
-                    </div>
-                </div>
-            </div>
+            const ui = this.state._assetsUi[fieldName];
+            const items = Array.isArray(this.state.selectedMedia[fieldName]) ? this.state.selectedMedia[fieldName] :
+                [];
 
-            <div class="assets-wrapper ${this.state._assetsUi[fieldName].view === 'list' ? 'is-list' : 'is-grid'}"
-                 style="--asset-size:${this.state._assetsUi[fieldName].size}px">
-                <div class="assets-grid" id="${fieldName}_grid"
-                     ondragover="mediaTabManager.onAssetDragOver(event)"
-                     ondrop="mediaTabManager.onAssetDrop(event, '${fieldName}')">
-                    ${this.renderAssetsGrid(fieldName)}
-                </div>
-                ${this.renderAssetsPagination(fieldName)}
+            return `
+      <div class="field-card field-card--full" data-field="${fieldName}">
+        <div class="field-label assets-label-row">
+          <span>${label}</span>
+          <div class="assets-toolbar" data-assets-toolbar="${fieldName}">
+            <div class="assets-toolbar-group">
+              <label class="assets-size-label">حجم</label>
+              <input type="range" min="120" max="260" step="10" value="${ui.size}"
+                     oninput="mediaTabManager.onAssetsSize('${fieldName}', this.value)">
+              <button type="button" class="btn btn-sm"
+                      onclick="mediaTabManager.toggleAssetsView('${fieldName}')">تبديل العرض</button>
+              <button type="button" class="btn btn-sm btn-outline-primary"
+                      onclick="mediaTabManager.openAssetsPicker('${fieldName}')">إضافة عناصر</button>
+              <button type="button" class="btn btn-sm"
+                      onclick="mediaTabManager.selectAllAssets('${fieldName}')">تحديد الكل</button>
+              <button type="button" class="btn btn-sm"
+                      onclick="mediaTabManager.clearSelection('${fieldName}')">إلغاء التحديد</button>
+              <button type="button" class="btn btn-sm btn-outline-danger"
+                      onclick="mediaTabManager.deleteSelectedAssets('${fieldName}')">حذف المحدد</button>
+              <button type="button" class="btn btn-sm btn-outline-danger"
+                      onclick="mediaTabManager.clearAllAssets('${fieldName}')">تفريغ الألبوم</button>
             </div>
-        </div>`;
+          </div>
+        </div>
+
+        <div class="assets-wrapper ${ui.view === 'list' ? 'is-list' : 'is-grid'}" style="--asset-size:${ui.size}px">
+          <div class="assets-grid" id="${fieldName}_grid"
+               ondragover="mediaTabManager.onAssetDragOver(event)"
+               ondrop="mediaTabManager.onAssetDrop(event, '${fieldName}')">
+            ${this.renderAssetsGrid(fieldName)}
+          </div>
+          ${this.renderAssetsPagination(fieldName, items.length)}
+        </div>
+      </div>`;
         }
 
         getAssetsEmptyState(fieldName) {
             return `
-        <div class="assets-empty" onclick="mediaTabManager.openAssetsPicker('${fieldName}')">
-            <span>انقر للإضافة</span>
-        </div>`;
+      <div class="assets-empty" onclick="mediaTabManager.openAssetsPicker('${fieldName}')">
+        <span>انقر للإضافة</span>
+      </div>`;
         }
 
+        // بطاقة عنصر قابلة للتحديد والسحب
         getAssetCardSelectable(media, fieldName, index) {
             const url = this.normalizeUrl(media.url || '');
             const type = this.getFileType(url);
@@ -259,28 +242,28 @@
             const selected = ui.selected.has(this._assetKey(media)) ? ' is-selected' : '';
 
             return `
-        <div class="asset-item${selected}" data-index="${index}" draggable="true"
-             ondragstart="mediaTabManager.onAssetDragStart(event, '${fieldName}', ${index})">
-            <label class="asset-check">
-                <input type="checkbox" ${selected ? 'checked' : ''}
-                       onchange="mediaTabManager.onAssetToggle('${fieldName}', ${index}, this.checked)">
-                <span></span>
-            </label>
-            <div class="asset-thumb">
-                ${type === 'audio'
-                    ? `<div class="asset-audio" title="${media.title || ''}">${media.title || 'صوت'}</div>`
-                    : `<img src="${thumb}" alt="${media.title || ''}" loading="lazy"
-                            onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`}
-            </div>
-            <div class="asset-meta">
-                <div class="asset-title" title="${media.title || ''}">${media.title || 'بدون عنوان'}</div>
-                <div class="asset-type">${this.getFileTypeLabel(type)}</div>
-            </div>
-            <div class="asset-actions">
-                <button type="button" class="btn btn-sm btn-outline-danger"
-                        onclick="mediaTabManager.removeAsset('${fieldName}', ${index})">حذف</button>
-            </div>
-        </div>`;
+      <div class="asset-item${selected}" data-index="${index}" draggable="true"
+           ondragstart="mediaTabManager.onAssetDragStart(event, '${fieldName}', ${index})">
+        <label class="asset-check">
+          <input type="checkbox" ${selected ? 'checked' : ''}
+                 onchange="mediaTabManager.onAssetToggle('${fieldName}', ${index}, this.checked)">
+          <span></span>
+        </label>
+        <div class="asset-thumb">
+          ${type === 'audio'
+            ? `<div class="asset-audio" title="${media.title || ''}">${media.title || 'صوت'}</div>`
+            : `<img src="${thumb}" alt="${media.title || ''}" loading="lazy"
+                     onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`}
+        </div>
+        <div class="asset-meta">
+          <div class="asset-title" title="${media.title || ''}">${media.title || 'بدون عنوان'}</div>
+          <div class="asset-type">${this.getFileTypeLabel(type)}</div>
+        </div>
+        <div class="asset-actions">
+          <button type="button" class="btn btn-sm btn-outline-danger"
+                  onclick="mediaTabManager.removeAsset('${fieldName}', ${index})">حذف</button>
+        </div>
+      </div>`;
         }
 
         getAssetCard(media, fieldName, index) {
@@ -288,14 +271,16 @@
         }
 
         openAssetsPicker(fieldName) {
-            this.state.currentField = fieldName; // *_assets
-            if (!Array.isArray(this.state.selectedMedia[fieldName])) this.state.selectedMedia[fieldName] = [];
-            if (window.xmmMediaModalManager?.openModal) {
-                window.xmmMediaModalManager.openModal(fieldName, {
+            this.state.currentField = fieldName; // ينتهي بـ _assets
+            if (!Array.isArray(this.state.selectedMedia[fieldName])) {
+                this.state.selectedMedia[fieldName] = [];
+            }
+            if (window.mmxMediaModalManager?.openModal) {
+                window.mmxMediaModalManager.openModal(fieldName, {
                     multiple: true
                 });
             } else {
-                console.warn('xmm Media Modal غير متاح.');
+                console.warn('MMX Media Modal غير متاح.');
             }
         }
 
@@ -318,7 +303,7 @@
                 container.classList.toggle('is-list', ui.view === 'list');
             }
             wrap.innerHTML = this.renderAssetsGrid(fieldName);
-            // pagination
+            // تحديث الترقيم
             const pagHtml = this.renderAssetsPagination(fieldName);
             const pagEl = container.querySelector('.assets-pagination');
             if (pagEl) pagEl.outerHTML = pagHtml;
@@ -331,11 +316,8 @@
             const ui = this.state._assetsUi[fieldName];
             const q = ui.query.trim().toLowerCase();
             const filtered = q ?
-                items.filter(m =>
-                    (m.title || '').toLowerCase().includes(q) ||
-                    (m.alt || '').toLowerCase().includes(q) ||
-                    (m.url || '').toLowerCase().includes(q)
-                ) :
+                items.filter(m => (m.title || '').toLowerCase().includes(q) || (m.alt || '').toLowerCase().includes(
+                    q) || (m.url || '').toLowerCase().includes(q)) :
                 items;
             const start = (ui.page - 1) * ui.pageSize;
             const pageItems = filtered.slice(start, start + ui.pageSize);
@@ -349,28 +331,25 @@
                 [];
             const q = ui.query.trim().toLowerCase();
             const total = q ?
-                items.filter(m =>
-                    (m.title || '').toLowerCase().includes(q) ||
-                    (m.alt || '').toLowerCase().includes(q) ||
-                    (m.url || '').toLowerCase().includes(q)
-                ).length :
+                items.filter(m => (m.title || '').toLowerCase().includes(q) || (m.alt || '').toLowerCase().includes(
+                    q) || (m.url || '').toLowerCase().includes(q)).length :
                 items.length;
             const pages = Math.max(1, Math.ceil(total / ui.pageSize));
             const page = Math.min(ui.page, pages);
             return `
-        <div class="assets-pagination">
-            <div class="assets-page-info">العناصر: ${total} | الصفحة ${page} من ${pages}</div>
-            <div class="assets-page-actions">
-                <label>لكل صفحة</label>
-                <select onchange="mediaTabManager.onAssetsPageSize('${fieldName}', this.value)">
-                    ${[12,24,36,60,96].map(n => `<option value="${n}" ${n==ui.pageSize?'selected':''}>${n}</option>`).join('')}
-                </select>
-                <button type="button" class="btn btn-sm" ${page<=1?'disabled':''}
-                        onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page-1})">السابق</button>
-                <button type="button" class="btn btn-sm" ${page>=pages?'disabled':''}
-                        onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page+1})">التالي</button>
-            </div>
-        </div>`;
+      <div class="assets-pagination">
+        <div class="assets-page-info">العناصر: ${total} | الصفحة ${page} من ${pages}</div>
+        <div class="assets-page-actions">
+          <label>لكل صفحة</label>
+          <select onchange="mediaTabManager.onAssetsPageSize('${fieldName}', this.value)">
+            ${[12,24,36,60,96].map(n => `<option value="${n}" ${n==ui.pageSize?'selected':''}>${n}</option>`).join('')}
+          </select>
+          <button type="button" class="btn btn-sm" ${page<=1?'disabled':''}
+                  onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page-1})">السابق</button>
+          <button type="button" class="btn btn-sm" ${page>=pages?'disabled':''}
+                  onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page+1})">التالي</button>
+        </div>
+      </div>`;
         }
 
         onAssetsSearch(fieldName, value) {
@@ -413,28 +392,28 @@
             else ui.selected.delete(key);
             this.updateAssetsGrid(fieldName);
         }
+
         selectAllAssets(fieldName) {
             const ui = this.state._assetsUi[fieldName];
             const items = Array.isArray(this.state.selectedMedia[fieldName]) ? this.state.selectedMedia[fieldName] :
                 [];
             const q = ui.query.trim().toLowerCase();
             const filtered = q ?
-                items.filter(m =>
-                    (m.title || '').toLowerCase().includes(q) ||
-                    (m.alt || '').toLowerCase().includes(q) ||
-                    (m.url || '').toLowerCase().includes(q)
-                ) :
+                items.filter(m => (m.title || '').toLowerCase().includes(q) || (m.alt || '').toLowerCase().includes(
+                    q) || (m.url || '').toLowerCase().includes(q)) :
                 items;
             const start = (ui.page - 1) * ui.pageSize;
             const pageItems = filtered.slice(start, start + ui.pageSize);
             pageItems.forEach(m => ui.selected.add(this._assetKey(m)));
             this.updateAssetsGrid(fieldName);
         }
+
         clearSelection(fieldName) {
             const ui = this.state._assetsUi[fieldName];
             ui.selected.clear();
             this.updateAssetsGrid(fieldName);
         }
+
         deleteSelectedAssets(fieldName) {
             const ui = this.state._assetsUi[fieldName];
             if (!ui.selected.size) return;
@@ -449,6 +428,7 @@
             this.updateSummary();
             this.updateHiddenFields();
         }
+
         clearAllAssets(fieldName) {
             this.state.selectedMedia[fieldName] = [];
             this.state._assetsUi[fieldName].selected.clear();
@@ -483,6 +463,7 @@
                 this.moveAsset(fieldName, Number(index), toIndex);
             } catch {}
         }
+
         moveAsset(fieldName, from, to) {
             const list = this.state.selectedMedia[fieldName];
             if (!Array.isArray(list)) return;
@@ -494,41 +475,39 @@
             this.updateHiddenFields();
         }
 
-        /* ================== PREVIEWS (champ unitaire) ================== */
+        /* ================== PREVIEWS (عنصر واحد) ================== */
         getMediaPreview(media, fieldName) {
             if (fieldName.endsWith('_assets')) {
-                const list = Array.isArray(media) ? media : [];
-                return `<div class="assets-grid">${list.map((m, i) => this.getAssetCard(m, fieldName, i)).join('')}</div>`;
+                return `<div class="assets-grid">${ (Array.isArray(media) ? media : []).map((m, i) => this.getAssetCard(m, fieldName, i)).join('') }</div>`;
             }
             const raw = media.url || '';
             const url = this.normalizeUrl(raw);
             const type = this.getFileType(url);
 
             const wrap = (visualHtml, title, typeLabel, isAudio = false) => `
-        <div class="media-preview-selected">
-            <div class="media-visual ${isAudio ? 'is-audio' : ''}">${visualHtml}</div>
-            <div class="media-info">
-                <span class="media-title">${title || 'بدون عنوان'}</span>
-                <span class="media-type">${typeLabel}</span>
-            </div>
-            <div class="media-actions">
-                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="mediaTabManager.changeMedia('${fieldName}')">تغيير</button>
-                <button type="button" class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMedia('${fieldName}')">حذف</button>
-            </div>
-        </div>`;
+      <div class="media-preview-selected">
+        <div class="media-visual ${isAudio ? 'is-audio' : ''}">${visualHtml}</div>
+        <div class="media-info">
+          <span class="media-title">${title || 'بدون عنوان'}</span>
+          <span class="media-type">${typeLabel}</span>
+        </div>
+        <div class="media-actions">
+          <button type="button" class="btn btn-sm btn-outline-secondary" onclick="mediaTabManager.changeMedia('${fieldName}')">تغيير</button>
+          <button type="button" class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMedia('${fieldName}')">حذف</button>
+        </div>
+      </div>`;
 
             if (type === 'youtube') {
                 const vid = this.getYouTubeId(url);
                 if (vid) {
                     const embed = `https://www.youtube.com/embed/${vid}?rel=0&modestbranding=1`;
-                    const visual = `<iframe class="xmm-yt-embed" src="${embed}" title="${media.title || 'YouTube'}"
-                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                  allowfullscreen loading="lazy" referrerpolicy="no-referrer"></iframe>`;
+                    const visual =
+                        `<iframe class="mmx-yt-embed" src="${embed}" title="${media.title || 'YouTube'}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="no-referrer"></iframe>`;
                     return wrap(visual, media.title || 'YouTube', 'يوتيوب');
                 }
                 const fallbackThumb = 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg';
-                const visual = `<img class="media-thumb" src="${fallbackThumb}" alt="${media.title || ''}" loading="lazy"
-                              referrerpolicy="no-referrer" crossorigin="anonymous">`;
+                const visual =
+                    `<img class="media-thumb" src="${fallbackThumb}" alt="${media.title || ''}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous">`;
                 return wrap(visual, media.title || 'YouTube', 'يوتيوب');
             }
 
@@ -546,30 +525,29 @@
             }
 
             const safeImg = this.maybeProxy(url);
-            const visual = `<img class="media-thumb" src="${safeImg}" alt="${media.title || ''}" loading="lazy"
-                         referrerpolicy="no-referrer" crossorigin="anonymous"
-                         onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`;
+            const visual =
+                `<img class="media-thumb" src="${safeImg}" alt="${media.title || ''}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`;
             return wrap(visual, media.title || 'بدون عنوان', this.getFileTypeLabel(type));
         }
 
         getEmptyState(fieldName, icon, type) {
             if (fieldName.endsWith('_assets')) return this.getAssetsEmptyState(fieldName);
             return `
-        <div class="field-empty" onclick="mediaTabManager.openMediaModal('${fieldName}')">
-            <i class="${icon}"></i>
-            <span>${type === 'file' ? 'اختر ملف' : 'اختر صورة'}</span>
-        </div>`;
+      <div class="field-empty" onclick="mediaTabManager.openMediaModal('${fieldName}')">
+        <i class="${icon}"></i>
+        <span>${type === 'file' ? 'اختر ملف' : 'اختر صورة'}</span>
+      </div>`;
         }
 
-        /* ================== API PUBLIC (intégration modal) ================== */
+        /* ================== PUBLIC API (للتكامل مع المودال) ================== */
         openMediaModal(fieldName) {
             this.state.currentField = fieldName;
-            if (window.xmmMediaModalManager?.openModal) {
-                window.xmmMediaModalManager.openModal(fieldName, {
+            if (window.mmxMediaModalManager?.openModal) {
+                window.mmxMediaModalManager.openModal(fieldName, {
                     multiple: false
                 });
             } else {
-                console.warn('xmm Media Modal غير متاح. تأكد من تضمينه.');
+                console.warn('MMX Media Modal غير متاح. تأكد من تضمينه.');
             }
         }
         changeMedia(fieldName) {
@@ -585,23 +563,13 @@
         onMediaSelected(media) {
             const field = this.state.currentField;
             if (!field) return;
-
-            // Normaliser l’objet media (id/url/title/alt)
-            const m = {
-                id: media.id ?? null,
-                url: media.url ?? media.path ?? '',
-                title: media.title ?? media.name ?? '',
-                alt: media.alt ?? ''
-            };
-
             if (field.endsWith('_assets')) {
                 if (!Array.isArray(this.state.selectedMedia[field])) this.state.selectedMedia[field] = [];
-                const exists = this.state.selectedMedia[field].some(x => (x.id != null && m.id != null) ? x.id == m
-                    .id : (x.url === m.url));
-                if (!exists) this.state.selectedMedia[field].push(m);
+                const exists = this.state.selectedMedia[field].some(m => m.id == media.id && media.id != null);
+                if (!exists) this.state.selectedMedia[field].push(media);
                 this.updateAssetsGrid(field);
             } else {
-                this.state.selectedMedia[field] = m;
+                this.state.selectedMedia[field] = media;
                 this.updateFieldPreview(field);
             }
             this.updateSummary();
@@ -637,10 +605,10 @@
 
             if (!flattenItems.length) {
                 summaryBody.innerHTML = `
-            <div class="empty-summary">
-                <i class="fas fa-images"></i>
-                <p>لم يتم اختيار أي وسائط بعد</p>
-            </div>`;
+        <div class="empty-summary">
+          <i class="fas fa-images"></i>
+          <p>لم يتم اختيار أي وسائط بعد</p>
+        </div>`;
                 return;
             }
 
@@ -656,34 +624,29 @@
                 thumb = this.maybeProxy(thumb);
 
                 return `
-            <div class="summary-item">
-                <img src="${thumb}" alt="${media.title || ''}" loading="lazy"
-                     referrerpolicy="no-referrer" crossorigin="anonymous"
-                     onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">
-                <div class="summary-info">
-                    <h6>${media.title || 'بدون عنوان'}</h6>
-                    <span>${this.getFileTypeLabel(type)}</span>
-                </div>
-                <button class="btn btn-sm btn-outline-danger"
-                        onclick="mediaTabManager.removeMediaFromSummary('${media.id ?? ''}${media.url ?? ''}')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>`;
+        <div class="summary-item">
+          <img src="${thumb}" alt="${media.title || ''}" loading="lazy"
+               referrerpolicy="no-referrer" crossorigin="anonymous"
+               onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">
+          <div class="summary-info">
+            <h6>${media.title || 'بدون عنوان'}</h6>
+            <span>${this.getFileTypeLabel(type)}</span>
+          </div>
+          <button class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMediaFromSummary('${media.id}')">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>`;
             }).join('');
         }
 
-        removeMediaFromSummary(key) {
-            // Supprime dans les champs unitaires
-            const singleKey = Object.keys(this.state.selectedMedia)
-                .find(k => !Array.isArray(this.state.selectedMedia[k]) &&
-                    ((this.state.selectedMedia[k]?.id ?? '') + (this.state.selectedMedia[k]?.url ?? '')) == key);
+        removeMediaFromSummary(mediaId) {
+            const singleKey = Object.keys(this.state.selectedMedia).find(k => !Array.isArray(this.state
+                .selectedMedia[k]) && this.state.selectedMedia[k]?.id == mediaId);
             if (singleKey) return this.removeMedia(singleKey);
-
-            // Supprime dans les collections
             Object.keys(this.state.selectedMedia).forEach(k => {
                 const v = this.state.selectedMedia[k];
                 if (Array.isArray(v)) {
-                    const idx = v.findIndex(it => ((it?.id ?? '') + (it?.url ?? '')) == key);
+                    const idx = v.findIndex(it => it?.id == mediaId);
                     if (idx > -1) this.removeAsset(k, idx);
                 }
             });
@@ -692,10 +655,6 @@
         updateHiddenFields() {
             const container = document.getElementById('media-hidden-fields');
             const parts = [];
-
-            // Ajouter aussi le template courant pour la soumission
-            parts.push(`<input type="hidden" name="template" value="${this.state.currentTemplate}">`);
-
             Object.entries(this.state.selectedMedia).forEach(([field, media]) => {
                 if (!media) return;
                 if (Array.isArray(media)) {
@@ -743,69 +702,670 @@
             );
         }
 
-        /* ================== GROUPES DE CHAMPS ================== */
+        /* ================== FIELD GROUPS ================== */
         getNormalImageTemplate() {
             return `
-        <div class="template-fields">
-            <h6 class="template-title">إعدادات الصورة</h6>
-            <div class="fields-grid">
-                ${this.createField('normal_main_image','الصورة الرئيسية','fas fa-image')}
-                ${this.createField('normal_content_image','صورة المحتوى','fas fa-image')}
-                ${this.createField('normal_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
-            </div>
-        </div>`;
+    <div class="template-fields">
+      <h6 class="template-title">إعدادات الصورة</h6>
+      <div class="fields-grid">
+        ${this.createField('normal_main_image','الصورة الرئيسية','fas fa-image')}
+        ${this.createField('normal_content_image','صورة المحتوى','fas fa-image')}
+        ${this.createField('normal_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
+      </div>
+    </div>`;
         }
+
         getVideoTemplate() {
             return `
-        <div class="template-fields">
-            <h6 class="template-title">إعدادات الفيديو</h6>
-            <div class="fields-grid">
-                ${this.createField('video_main_image','صورة الفيديو الرئيسية','fas fa-image')}
-                ${this.createField('video_content_image','صورة محتوى الفيديو','fas fa-image')}
-                ${this.createField('video_mobile_image','صورة الفيديو للموبايل','fas fa-mobile-alt')}
-                ${this.createField('video_file','ملف الفيديو','fas fa-video','file')}
-            </div>
-        </div>`;
+    <div class="template-fields">
+      <h6 class="template-title">إعدادات الفيديو</h6>
+      <div class="fields-grid">
+        ${this.createField('video_main_image','صورة الفيديو الرئيسية','fas fa-image')}
+        ${this.createField('video_content_image','صورة محتوى الفيديو','fas fa-image')}
+        ${this.createField('video_mobile_image','صورة الفيديو للموبايل','fas fa-mobile-alt')}
+        ${this.createField('video_file','ملف الفيديو','fas fa-video','file')}
+      </div>
+    </div>`;
         }
+
         getPodcastTemplate() {
             return `
-        <div class="template-fields">
-            <h6 class="template-title">إعدادات البودكاست</h6>
-            <div class="fields-grid">
-                ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','fas fa-image')}
-                ${this.createField('podcast_content_image','صورة محتوى البودكاست','fas fa-image')}
-                ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','fas fa-mobile-alt')}
-                ${this.createField('podcast_file','ملف البودكاست','fas fa-podcast','file')}
-            </div>
-        </div>`;
+    <div class="template-fields">
+      <h6 class="template-title">إعدادات البودكاست</h6>
+      <div class="fields-grid">
+        ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','fas fa-image')}
+        ${this.createField('podcast_content_image','صورة محتوى البودكاست','fas fa-image')}
+        ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','fas fa-mobile-alt')}
+        ${this.createField('podcast_file','ملف البودكاست','fas fa-podcast','file')}
+      </div>
+    </div>`;
         }
+
         getAlbumTemplate() {
             return `
-        <div class="template-fields">
-            <h6 class="template-title">إعدادات الألبوم</h6>
-            <div class="fields-grid">
-                ${this.createField('album_main_image','صورة الألبوم الرئيسية','fas fa-image')}
-                ${this.createField('album_content_image','صورة محتوى الألبوم','fas fa-image')}
-                ${this.createField('album_mobile_image','صورة الألبوم للموبايل','fas fa-mobile-alt')}
-                ${this.createAssetsField('album_assets','أصول الألبوم')}
-            </div>
-        </div>`;
+    <div class="template-fields">
+      <h6 class="template-title">إعدادات الألبوم</h6>
+      <div class="fields-grid">
+        ${this.createField('album_main_image','صورة الألبوم الرئيسية','fas fa-image')}
+        ${this.createField('album_content_image','صورة محتوى الألبوم','fas fa-image')}
+        ${this.createField('album_mobile_image','صورة الألبوم للموبايل','fas fa-mobile-alt')}
+        ${this.createAssetsField('album_assets','أصول الألبوم')}
+      </div>
+    </div>`;
         }
+
         getNoImageTemplate() {
             return `
-        <div class="template-fields">
-            <h6 class="template-title">إعدادات المقال</h6>
-            <div class="fields-grid">
-                ${this.createField('no_image_main_image','الصورة الرئيسية','fas fa-image')}
-                ${this.createField('no_image_mobile_image','صورة المقال للموبايل','fas fa-mobile-alt')}
-            </div>
-        </div>`;
+    <div class="template-fields">
+      <h6 class="template-title">إعدادات المقال</h6>
+      <div class="fields-grid">
+        ${this.createField('no_image_main_image','الصورة الرئيسية','fas fa-image')}
+        ${this.createField('no_image_mobile_image','صورة المقال للموبايل','fas fa-mobile-alt')}
+      </div>
+    </div>`;
         }
     }
 
-    // Instance globale
     window.mediaTabManager = new MediaTabManager();
 </script>
+
+<!-- ======================= STYLES ======================= -->
+<style>
+    :root {
+        --az-border: #dbdfea;
+        --az-muted: #8091a7;
+        --az-soft: #f5f6fa;
+        --az-card: #ffffff;
+        --az-title: #364a63;
+        --az-accent: #6576ff;
+        --az-accent-light: #eff6ff;
+        --az-danger: #e85347;
+        --az-success: #1ee0ac;
+        --az-warning: #f4bd0e;
+        --az-radius: 0.35rem;
+        --az-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        --az-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
+        --az-transition: all 0.2s ease-in-out;
+    }
+
+    [data-bs-theme="dark"] {
+        --az-border: #384D69;
+        --az-muted: #b7c2d0;
+        --az-soft: #2b3748;
+        --az-card: #0D141D;
+        --az-title: #e5e9f2;
+        --az-accent: #6576ff;
+        --az-accent-light: #2b3748;
+        --az-danger: #e85347;
+        --az-success: #1ee0ac;
+        --az-warning: #f4bd0e;
+    }
+
+    .media-manager {
+        font-family: var(--bs-font-sans-serif);
+        color: var(--az-title);
+    }
+
+    /* Media Type Selector */
+    .media-type-selector .media-type-card {
+        position: relative;
+        margin: 0 5px 5px 0;
+    }
+
+    .media-type-input {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .media-type-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border: 2px solid var(--bs-border-color);
+        cursor: pointer;
+        transition: all .3s ease;
+        /* background: var(--bs-white); */
+        min-width: 110px;
+        border-radius: var(--bs-border-radius);
+    }
+
+    .media-type-label i {
+        font-size: 1.5rem;
+        margin-bottom: .5rem;
+        color: var(--bs-gray);
+    }
+
+    .media-type-label span {
+        font-weight: 500;
+        color: var(--bs-gray-700);
+    }
+
+    .media-type-input:checked+.media-type-label {
+        border-color: var(--bs-primary);
+        background: var(--bs-primary-bg-subtle);
+    }
+
+    .media-type-input:checked+.media-type-label i,
+    .media-type-input:checked+.media-type-label span {
+        color: var(--bs-primary);
+    }
+
+    /* Template Fields */
+    .template-fields {
+        padding: 1.5rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+    }
+
+    .template-title {
+        color: var(--bs-gray-800);
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .fields-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+        gap: 10px;
+    }
+
+    .field-card {
+        padding: 1rem;
+        border-radius: var(--bs-border-radius);
+    }
+
+    .field-label {
+        font-weight: 500;
+        color: var(--bs-gray);
+        margin-bottom: .5rem;
+        display: block;
+    }
+
+    /* Empty state */
+    .field-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        border: 2px solid var(--bs-border-color);
+        cursor: pointer;
+        transition: all .3s ease;
+        min-height: 240px;
+        border-radius: var(--bs-border-radius);
+    }
+
+    .field-empty:hover {
+        border-color: var(--bs-primary);
+        background: var(--bs-primary-bg-subtle);
+    }
+
+    .field-empty i {
+        font-size: 2rem;
+        color: var(--bs-gray);
+        margin-bottom: .5rem;
+    }
+
+    .field-empty span {
+        font-size: 1rem;
+        color: var(--bs-gray);
+        margin-bottom: .5rem;
+    }
+
+    /* Preview */
+    .media-preview-selected {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+    }
+
+    .media-visual {
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: var(--bs-dark);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--bs-border-radius-sm);
+    }
+
+    .media-visual.is-audio {
+        aspect-ratio: auto;
+        background: var(--bs-gray-100);
+        padding: 8px;
+    }
+
+    .media-visual>img,
+    .media-visual>video,
+    .media-visual>iframe {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border: 0;
+        display: block;
+        border-radius: var(--bs-border-radius-sm);
+    }
+
+    .media-thumb {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .mmx-yt-embed {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+    }
+
+    .media-info {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin: 0 2px;
+    }
+
+    .media-title {
+        font-weight: 600;
+        color: var(--bs-gray-800);
+    }
+
+    .media-type {
+        font-size: .875rem;
+        color: var(--bs-gray);
+    }
+
+    .media-actions {
+        margin-top: 4px;
+        padding-top: 8px;
+        border-top: 1px solid var(--bs-border-color);
+        display: flex;
+        justify-content: flex-end;
+        gap: 6px;
+        width: 100%;
+    }
+
+    /* Summary Panel */
+    .media-summary-panel .card {
+        border: none;
+        box-shadow: var(--bs-box-shadow);
+        border-radius: var(--bs-border-radius);
+    }
+
+    .media-summary-panel .card-header {
+        /* background-color: var(--bs-gray-100); */
+        border-bottom: 1px solid var(--bs-border-color);
+        color: var(--bs-gray-800);
+    }
+
+    .media-summary-grid {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .summary-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        background: var(--bs-body-bg);
+        margin-bottom: 6px;
+        border-radius: var(--bs-border-radius);
+    }
+
+    .summary-item img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin: 0 10px 0 0;
+        border-radius: var(--bs-border-radius-sm);
+    }
+
+    .summary-info {
+        flex: 1;
+        margin: 0 10px;
+    }
+
+    .summary-info h6 {
+        margin: 0;
+        font-size: .9rem;
+        color: var(--bs-gray-800);
+    }
+
+    .summary-info span {
+        color: var(--bs-gray);
+        font-size: .8rem;
+    }
+
+    .empty-summary {
+        text-align: center;
+        padding: 2rem;
+        color: var(--bs-gray);
+    }
+
+    .empty-summary i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: .5;
+    }
+
+    /* Buttons */
+    .btn {
+        border-radius: var(--az-radius);
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .btn-outline-primary {
+        color: var(--az-accent);
+        border-color: var(--az-accent);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--az-accent);
+        border-color: var(--az-accent);
+        color: white;
+    }
+
+    .btn-outline-secondary {
+        color: var(--az-muted);
+        border-color: var(--az-border);
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: var(--az-muted);
+        border-color: var(--az-muted);
+        color: white;
+    }
+
+    .btn-outline-danger {
+        color: var(--az-danger);
+        border-color: var(--az-danger);
+    }
+
+    .btn-outline-danger:hover {
+        background-color: var(--az-danger);
+        border-color: var(--az-danger);
+        color: white;
+    }
+
+    .badge {
+        border-radius: var(--az-radius);
+        font-weight: 600;
+    }
+
+    .bg-primary {
+        background-color: var(--az-accent) !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .fields-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .media-type-selector .d-flex {
+            flex-direction: column;
+        }
+
+        .media-type-label {
+            min-width: auto;
+        }
+
+        .media-type-card,
+        .field-card {
+            margin: 0 0 5px 0;
+        }
+
+        .field-empty {
+            min-height: 200px;
+        }
+    }
+
+    /* ===== أصول الألبوم (مجموعة) ===== */
+    .assets-label-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* ===== تحسينات عرض الألبوم المتعدد ===== */
+    .assets-wrapper {
+        --asset-size: 180px;
+    }
+
+    .assets-wrapper.is-grid .assets-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(var(--asset-size), 1fr));
+        gap: 10px;
+    }
+
+    .assets-wrapper.is-list .assets-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .assets-toolbar {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .assets-toolbar .assets-search {
+        padding: 6px 8px;
+        min-width: 220px;
+        border: 1px solid var(--az-border);
+        background: var(--az-card);
+        border-radius: var(--az-radius);
+        color: var(--az-title);
+    }
+
+    .assets-toolbar-group {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .assets-size-label {
+        font-size: .9rem;
+        color: var(--az-muted);
+    }
+
+    .assets-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 160px;
+        border: 2px dashed var(--az-border);
+        background: var(--az-card);
+        color: var(--az-muted);
+        cursor: pointer;
+        border-radius: var(--az-radius);
+    }
+
+    .asset-item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--az-border);
+        background: var(--az-card);
+        padding: 8px;
+        gap: 6px;
+        transition: box-shadow .15s ease, border-color .15s ease;
+        border-radius: var(--az-radius);
+    }
+
+    .assets-wrapper.is-list .asset-item {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .asset-item.is-selected {
+        border-color: var(--az-accent);
+        box-shadow: 0 0 0 2px rgba(101, 118, 255, .15) inset;
+    }
+
+    .asset-check {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        z-index: 2;
+    }
+
+    .asset-check input {
+        display: none;
+    }
+
+    .asset-check span {
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--az-border);
+        background: var(--az-card);
+        display: inline-block;
+        border-radius: var(--az-radius);
+    }
+
+    .asset-item.is-selected .asset-check span {
+        background: var(--az-accent);
+        border-color: var(--az-accent);
+    }
+
+    .asset-thumb {
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: var(--az-soft);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: var(--az-radius);
+    }
+
+    .assets-wrapper.is-list .asset-thumb {
+        width: 220px;
+        aspect-ratio: 16/9;
+    }
+
+    .asset-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .asset-audio {
+        padding: 12px;
+        font-size: .9rem;
+        color: var(--az-title);
+    }
+
+    .asset-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .asset-title {
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--az-title);
+    }
+
+    .asset-type {
+        font-size: .85rem;
+        color: var(--az-muted);
+    }
+
+    .asset-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .assets-pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid var(--az-border);
+    }
+
+    .assets-page-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .assets-page-actions select {
+        border: 1px solid var(--az-border);
+        border-radius: var(--az-radius);
+        padding: 4px 8px;
+        background: var(--az-card);
+        color: var(--az-title);
+    }
+
+    .assets-page-info {
+        color: var(--az-muted);
+        font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+        .assets-wrapper.is-list .asset-thumb {
+            width: 40%;
+        }
+    }
+
+    /* ====== Full-width album assets ====== */
+    .field-card--full {
+        grid-column: 1 / -1;
+        background: transparent;
+        padding: 0;
+        border: none;
+    }
+
+    .field-card--full .assets-label-row {
+        margin-bottom: 8px;
+    }
+
+    .field-card--full .assets-wrapper {
+        background: var(--az-card);
+        border: 1px solid var(--az-border);
+        padding: 10px;
+        border-radius: var(--az-radius);
+    }
+
+    .field-card--full .assets-wrapper.is-list .assets-grid {
+        gap: 10px;
+    }
+
+    .field-card--full .asset-item {
+        border: 1px solid var(--az-border);
+        background: var(--az-card);
+    }
+
+    .field-card--full .assets-pagination {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid var(--az-border);
+    }
+</style>
 
 <!-- ======================= HYDRATATION INITIALE (depuis le contrôleur) ======================= -->
 @php
@@ -838,7 +1398,7 @@
         }
     }
 
-    // Assets d’album : tableau d’objets [{url,title,alt}, ...]
+    // Assets d'album : tableau d'objets [{url,title,alt}, ...]
     $initialAssets = [];
     if (!empty($templateFields['album_assets']) && is_array($templateFields['album_assets'])) {
         // Normaliser : ne garder que url/title/alt
@@ -881,7 +1441,6 @@
             const radio = document.querySelector(`.media-type-input[value="${tpl}"]`);
             if (radio) radio.checked = true;
             this.loadTemplateContent(tpl);
-            this.updateCurrentTemplatePill();
 
             // 2) Champs unitaires (URL -> objet media)
             const fields = payload.fields || {};
@@ -921,486 +1480,10 @@
                 fields: @json($initialFields, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
                 assets: @json($initialAssets, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
             };
-            // Laisser le temps au DOM d’apparaître
+            // Laisser le temps au DOM d'apparaître
             setTimeout(() => {
                 window.mediaTabManager.hydrateInitial(bootstrap);
             }, 0);
         });
     })();
 </script>
-
-<!-- ======================= STYLES ======================= -->
-<style>
-    .media-manager {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    /* Sélecteur type */
-    .media-type-selector .media-type-card {
-        position: relative;
-        margin: 0 5px 5px 0;
-    }
-
-    .media-type-input {
-        position: absolute;
-        opacity: 0;
-    }
-
-    .media-type-label {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 1rem 1.5rem;
-        border: 2px solid #e9ecef;
-        cursor: pointer;
-        transition: all .3s ease;
-        background: #fff;
-        min-width: 110px;
-    }
-
-    .media-type-label i {
-        font-size: 1.5rem;
-        margin-bottom: .5rem;
-        color: #6c757d;
-    }
-
-    .media-type-label span {
-        font-weight: 500;
-        color: #495057;
-    }
-
-    .media-type-input:checked+.media-type-label {
-        border-color: #007bff;
-        background: #f8f9ff;
-    }
-
-    .media-type-input:checked+.media-type-label i,
-    .media-type-input:checked+.media-type-label span {
-        color: #007bff;
-    }
-
-    .current-template-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: .35rem .6rem;
-        background: #f1f4ff;
-        border: 1px solid #cfe0ff;
-        color: #2a4ea1;
-    }
-
-    /* Champs template */
-    .template-fields {
-        background: #fff;
-        padding: 1.5rem;
-        border: 1px solid #e9ecef;
-    }
-
-    .template-title {
-        color: #495057;
-        margin-bottom: 1rem;
-        font-weight: 600;
-    }
-
-    .fields-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-        gap: 10px;
-    }
-
-    .field-card {
-        background: #f8f9fa;
-        padding: 1rem;
-    }
-
-    .field-label {
-        font-weight: 500;
-        color: #495057;
-        margin-bottom: .5rem;
-        display: block;
-    }
-
-    /* États vides */
-    .field-empty {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        border: 2px solid #dee2e6;
-        cursor: pointer;
-        transition: all .3s ease;
-        background: #fff;
-        min-height: 240px;
-    }
-
-    .field-empty:hover {
-        border-color: #007bff;
-        background: #f8f9ff;
-    }
-
-    .field-empty i {
-        font-size: 2rem;
-        color: #6c757d;
-        margin-bottom: .5rem;
-    }
-
-    /* Preview */
-    .media-preview-selected {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        padding: 12px;
-        background: #fff;
-        border: 1px solid #e9ecef;
-    }
-
-    .media-visual {
-        width: 100%;
-        aspect-ratio: 16/9;
-        background: #000;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .media-visual.is-audio {
-        aspect-ratio: auto;
-        background: #f8f9fa;
-        padding: 8px;
-    }
-
-    .media-visual>img,
-    .media-visual>video,
-    .media-visual>iframe {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border: 0;
-        display: block;
-    }
-
-    .media-thumb {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .xmm-yt-embed {
-        width: 100%;
-        height: 100%;
-        border: 0;
-        display: block;
-    }
-
-    .media-info {
-        display: flex;
-        align-items: baseline;
-        gap: 8px;
-        margin: 0 2px;
-    }
-
-    .media-title {
-        font-weight: 600;
-    }
-
-    .media-type {
-        font-size: .875rem;
-        color: #6c757d;
-    }
-
-    .media-actions {
-        margin-top: 4px;
-        padding-top: 8px;
-        border-top: 1px solid #e9ecef;
-        display: flex;
-        justify-content: flex-end;
-        gap: 6px;
-        width: 100%;
-    }
-
-    /* Récapitulatif */
-    .media-summary-panel .card {
-        border: none;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
-    }
-
-    .media-summary-grid {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .summary-item {
-        display: flex;
-        align-items: center;
-        padding: 1rem;
-        background: #f8f9fa;
-        margin-bottom: 6px;
-    }
-
-    .summary-item img {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-        margin: 0 10px 0 0;
-    }
-
-    .summary-info {
-        flex: 1;
-        margin: 0 10px;
-    }
-
-    .summary-info h6 {
-        margin: 0;
-        font-size: .9rem;
-    }
-
-    .empty-summary {
-        text-align: center;
-        padding: 2rem;
-        color: #6c757d;
-    }
-
-    .empty-summary i {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        opacity: .5;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .fields-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .media-type-selector .d-flex {
-            flex-direction: column;
-        }
-
-        .media-type-label {
-            min-width: auto;
-        }
-
-        .media-type-card,
-        .field-card {
-            margin: 0 0 5px 0;
-        }
-
-        .field-empty {
-            min-height: 200px;
-        }
-    }
-
-    /* ===== A S S E T S  (album) ===== */
-    .assets-label-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .assets-wrapper {
-        --asset-size: 180px;
-    }
-
-    .assets-wrapper.is-grid .assets-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(var(--asset-size), 1fr));
-        gap: 10px;
-    }
-
-    .assets-wrapper.is-list .assets-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .assets-toolbar {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    .assets-toolbar .assets-search {
-        padding: 6px 8px;
-        min-width: 220px;
-        border: 1px solid #e0e0e0;
-        background: #fff;
-    }
-
-    .assets-toolbar-group {
-        display: flex;
-        gap: 6px;
-        align-items: center;
-    }
-
-    .assets-size-label {
-        font-size: .9rem;
-        color: #666;
-    }
-
-    .assets-empty {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 160px;
-        border: 2px dashed #dee2e6;
-        background: #fff;
-        color: #6c757d;
-        cursor: pointer;
-    }
-
-    .asset-item {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        border: 1px solid #e9ecef;
-        background: #fff;
-        padding: 8px;
-        gap: 6px;
-        transition: box-shadow .15s ease, border-color .15s ease;
-    }
-
-    .assets-wrapper.is-list .asset-item {
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .asset-item.is-selected {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 2px rgba(13, 110, 253, .15) inset;
-    }
-
-    .asset-check {
-        position: absolute;
-        top: 6px;
-        left: 6px;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        z-index: 2;
-    }
-
-    .asset-check input {
-        display: none;
-    }
-
-    .asset-check span {
-        width: 18px;
-        height: 18px;
-        border: 1px solid #bbb;
-        background: #fff;
-        display: inline-block;
-    }
-
-    .asset-item.is-selected .asset-check span {
-        background: #0d6efd;
-        border-color: #0d6efd;
-    }
-
-    .asset-thumb {
-        width: 100%;
-        aspect-ratio: 16/9;
-        background: #f1f3f5;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-    }
-
-    .assets-wrapper.is-list .asset-thumb {
-        width: 220px;
-        aspect-ratio: 16/9;
-    }
-
-    .asset-thumb img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-
-    .asset-audio {
-        padding: 12px;
-        font-size: .9rem;
-        color: #495057;
-    }
-
-    .asset-meta {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-    }
-
-    .asset-title {
-        font-weight: 600;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .asset-type {
-        font-size: .85rem;
-        color: #6c757d;
-    }
-
-    .asset-actions {
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .assets-pagination {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 8px;
-        padding-top: 8px;
-        border-top: 1px solid #e9ecef;
-    }
-
-    .assets-page-actions {
-        display: flex;
-        gap: 6px;
-        align-items: center;
-    }
-
-    @media (max-width: 768px) {
-        .assets-wrapper.is-list .asset-thumb {
-            width: 40%;
-        }
-    }
-
-    /* Full width pour les assets */
-    .field-card--full {
-        grid-column: 1 / -1;
-        background: transparent;
-        padding: 0;
-        border: none;
-    }
-
-    .field-card--full .assets-label-row {
-        margin-bottom: 8px;
-    }
-
-    .field-card--full .assets-wrapper {
-        background: #fff;
-        border: 1px solid #e9ecef;
-        padding: 10px;
-    }
-
-    .field-card--full .assets-wrapper.is-list .assets-grid {
-        gap: 10px;
-    }
-
-    .field-card--full .asset-item {
-        border: 1px solid #e9ecef;
-        background: #fff;
-    }
-
-    .field-card--full .assets-pagination {
-        margin-top: 10px;
-        padding-top: 10px;
-        border-top: 1px solid #e9ecef;
-    }
-</style>

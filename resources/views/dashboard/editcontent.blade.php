@@ -1,24 +1,22 @@
 @extends('layouts.admin')
-<!DOCTYPE html>
 
 @section('title', 'أصوات جزائرية | تعديل محتوى')
 
 @section('content')
 
-    {{-- ============================ SCRIPTS & STYLES ============================ --}}
     <style>
         /* ===== VALIDATION STYLES ===== */
         .hidden-input:invalid~.selected-item {
-            border-color: #dc3545;
+            border-color: var(--bs-form-invalid-color);
         }
 
         .search-container:has(.hidden-input:invalid) .form-label {
-            color: #dc3545;
+            color: var(--bs-form-invalid-color);
         }
 
         .required-field::after {
             content: " *";
-            color: red;
+            color: var(--bs-danger);
         }
 
         .search-container {
@@ -27,11 +25,11 @@
 
         .required-field::after {
             content: " *";
-            color: #dc3545;
+            color: var(--bs-danger);
         }
 
         /* ===== SELECT2 RTL SUPPORT ===== */
-        .select2-dropdown-rtl {
+        .select2-indropdown-rtl {
             direction: rtl !important;
             text-align: right !important;
         }
@@ -52,10 +50,11 @@
             align-items: center;
             gap: 10px;
             padding: 8px;
-            border: 1px solid #929292;
+            border: 1px solid var(--bs-border-color);
             border-radius: 0px;
-            background-color: #f3f3f3;
+            background-color: var(--bs-secondary-bg);
             margin: 0px;
+            color: var(--bs-body-color);
         }
 
         .btn-delete {
@@ -63,7 +62,7 @@
             border: none;
             font-size: 20px;
             cursor: pointer;
-            color: #f3f3f3;
+            color: var(--bs-secondary-color);
             width: 24px;
             height: 24px;
             border-radius: 50%;
@@ -73,8 +72,8 @@
         }
 
         .btn-delete:hover {
-            background-color: #f3f3f3;
-            color: rgb(255, 0, 0);
+            background-color: var(--bs-tertiary-bg);
+            color: var(--bs-danger);
         }
 
         /* ===== LAYOUT STYLES ===== */
@@ -101,7 +100,7 @@
         }
 
         #contentTabs .nav-link {
-            color: #b0b0b0 !important;
+            color: var(--bs-secondary-color) !important;
             background-color: transparent !important;
             border: none !important;
             border-bottom: 2px solid transparent !important;
@@ -111,17 +110,17 @@
         }
 
         #contentTabs .nav-link:hover {
-            border-bottom: 2px solid #ccc !important;
+            border-bottom: 2px solid var(--bs-border-color) !important;
         }
 
         #contentTabs .nav-link.active {
-            color: #0d6efd !important;
-            border-bottom: 2px solid #0d6efd !important;
+            color: var(--bs-primary) !important;
+            border-bottom: 2px solid var(--bs-primary) !important;
             font-weight: bold;
         }
 
         #contentTabs {
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid var(--bs-border-color);
             margin-bottom: 20px;
         }
 
@@ -132,13 +131,15 @@
 
         .card {
             margin-bottom: 20px;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            border: 1px solid rgba(0, 0, 0, 0.125);
+            box-shadow: var(--bs-box-shadow-sm);
+            border: 1px solid var(--bs-border-color);
+            background-color: var(--bs-body-bg);
         }
 
         .card-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            background-color: var(--bs-secondary-bg);
+            border-bottom: 1px solid var(--bs-border-color);
+            color: var(--bs-heading-color);
         }
 
         /* ===== FORM ELEMENT STYLES ===== */
@@ -148,9 +149,10 @@
 
         .form-text {
             font-size: 0.75rem;
+            color: var(--bs-secondary-color);
         }
 
-        /* ===== SEARCH DROPDOWN STYLES ===== */
+        /* ===== SEARCH inDROPDOWN STYLES ===== */
         .search-container {
             position: relative;
             width: 100%;
@@ -160,45 +162,58 @@
         .form-control {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ced4da;
             border-radius: 0px;
+            background-color: var(--bs-body-bg);
+            border: 1px solid var(--bs-border-color);
+            color: var(--bs-body-color);
         }
 
-        .dropdown {
+        .form-control:focus {
+            background-color: var(--bs-body-bg);
+            border-color: var(--bs-primary);
+            color: var(--bs-body-color);
+            box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        .indropdown {
             display: none;
             position: absolute;
             top: 100%;
             left: 0;
             right: 0;
-            border: 1px solid #ced4da;
             border-radius: 0px;
-            background: white;
+            background: var(--bs-body-bg);
+            border: 1px solid var(--bs-border-color);
             max-height: 200px;
             overflow-y: auto;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--bs-box-shadow);
             margin-top: 5px;
         }
 
-        .dropdown ul {
+        .indropdown ul {
             list-style: none;
             margin: 0;
             padding: 0;
         }
 
-        .dropdown li {
+        .indropdown li {
             padding: 10px 15px;
             cursor: pointer;
-            border-bottom: 1px solid #f1f1f1;
+            border-bottom: 1px solid var(--bs-border-color);
+            color: var(--bs-body-color);
+            background-color: var(--bs-body-bg);
+            transition: all 0.2s ease;
         }
 
-        .dropdown li:hover {
-            background-color: #f8f9fa;
+        .indropdown li:hover {
+            background-color: var(--bs-tertiary-bg);
+            color: var(--bs-body-color);
         }
 
-        .dropdown li.selected {
-            background-color: #e8f4ff;
-            color: #2c5aa0;
+        .indropdown li.selected {
+            background-color: var(--bs-primary-bg-subtle);
+            color: var(--bs-primary-text-emphasis);
             font-weight: 500;
         }
 
@@ -221,12 +236,16 @@
             font-size: 20px;
             cursor: pointer;
             z-index: 2;
-            color: #6c757d;
+            color: var(--bs-secondary-color);
             width: 24px;
             height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .btn-add:hover {
+            color: var(--bs-primary);
         }
 
         /* ===== TAGS (MULTI-SELECT) STYLES ===== */
@@ -241,9 +260,9 @@
             gap: 4px;
             padding: 6px 8px;
             min-height: 42px;
-            border: 1px solid #ced4da;
+            border: 1px solid var(--bs-border-color);
             border-radius: 0px;
-            background: white;
+            background: var(--bs-body-bg);
             align-items: center;
             margin-top: 0;
         }
@@ -253,15 +272,16 @@
             align-items: center;
             gap: 4px;
             padding: 2px 6px;
-            border: 1px solid #929292;
+            border: 1px solid var(--bs-border-color);
             border-radius: 0px;
-            background-color: #f3f3f3;
+            background-color: var(--bs-secondary-bg);
             font-size: 11px;
             line-height: 1.2;
             max-width: 150px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: var(--bs-body-color);
         }
 
         .tag-delete {
@@ -269,7 +289,7 @@
             border: none;
             font-size: 12px;
             cursor: pointer;
-            color: #6c757d;
+            color: var(--bs-secondary-color);
             width: 14px;
             height: 14px;
             border-radius: 50%;
@@ -282,8 +302,8 @@
         }
 
         .tag-delete:hover {
-            background-color: #ff6b6b;
-            color: white;
+            background-color: var(--bs-danger);
+            color: var(--bs-white);
         }
 
         .tags-search-container {
@@ -307,13 +327,13 @@
             margin: 0;
             min-width: 120px;
             flex: 1;
-            color: #000;
+            color: var(--bs-body-color);
         }
 
         .tags-selected-container:focus-within {
-            border-color: #ced4da;
+            border-color: var(--bs-primary);
             outline: 0;
-            box-shadow: none;
+            box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
         }
 
         #tags_id_search::placeholder,
@@ -326,9 +346,11 @@
 
         /* ===== SOCIAL MEDIA PREVIEW STYLES ===== */
         .social-preview {
-            border: 1px solid #dddfe2;
+            border: 1px solid var(--bs-border-color);
             font-family: Helvetica, Arial, sans-serif;
             max-width: 500px;
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
         }
 
         .image-preview-container {
@@ -337,10 +359,11 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            background-color: var(--bs-secondary-bg);
         }
 
         .image-preview-container:hover {
-            background-color: #f8f9fa;
+            background-color: var(--bs-tertiary-bg);
         }
 
         .btn-danger {
@@ -385,9 +408,55 @@
         .delete-image-btn:hover {
             opacity: 1;
         }
+
+        /* ===== FORM LABELS AND TEXT ===== */
+        .form-label {
+            color: var(--bs-heading-color);
+        }
+
+        .text-muted {
+            color: var(--bs-secondary-color) !important;
+        }
+
+        /* ===== ALERT STYLES ===== */
+        .alert-danger {
+            background-color: var(--bs-danger-bg-subtle);
+            border-color: var(--bs-danger-border-subtle);
+            color: var(--bs-danger-text-emphasis);
+        }
+
+        /* ===== MODAL STYLES ===== */
+        .modal-content {
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
+        }
+
+        .modal-header {
+            border-bottom-color: var(--bs-border-color);
+        }
+
+        .modal-footer {
+            border-top-color: var(--bs-border-color);
+        }
+
+        /* ===== PROGRESS BAR STYLES ===== */
+        .progress {
+            background-color: var(--bs-secondary-bg);
+        }
+
+        .progress-bar {
+            background-color: var(--bs-danger);
+        }
+
+        .border {
+            border-color: var(--bs-border-color) !important;
+        }
+
+        .text-muted {
+            color: var(--bs-secondary-color) !important;
+        }
     </style>
 
-    {{-- ============================ MAIN CONTENT ============================ --}}
     <div class="nk-app-root">
         <div class="nk-main">
             @include('dashboard.components.sidebar')
@@ -499,7 +568,7 @@
                                         <label class="form-label" for="title" data-ar="العنوان" data-en="Title">
                                             العنوان
                                         </label>
-                                        <span style="color:red;">*</span>
+                                        <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input required id="title" name="title" type="text"
                                                 class="form-control form-control" maxlength="68" data-ar="العنوان"
@@ -515,7 +584,7 @@
                                             data-en="Long Title">
                                             العنوان الطويل
                                         </label>
-                                        <span style="color:red;">*</span>
+                                        <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input required id="long_title" name="long_title" type="text"
                                                 class="form-control form-control" maxlength="210"
@@ -532,7 +601,7 @@
                                             data-en="Mobile Title">
                                             عنوان الموبايل
                                         </label>
-                                        <span style="color:red;">*</span>
+                                        <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input required id="mobile_title" name="mobile_title" type="text"
                                                 class="form-control form-control" maxlength="40" data-ar="عنوان الموبايل"
@@ -565,12 +634,12 @@
                                                     onclick="clearSelection(this)">×</button>
                                             </div>
                                             <div class="input-wrapper"
-                                                style="{{ old('section_id', $content->section_id) ? 'display: none;' : '' }}">
+                                                style="{{ old('section_id', $content->section_id) ? 'display: none;' : 'display: block;' }}">
                                                 <input id="section_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showinDropdown(this)">
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="indropdown">
                                                 <ul>
                                                     @foreach ($sections as $section)
                                                         <li data-id="{{ $section->id }}"
@@ -603,14 +672,14 @@
                                                     onclick="clearSelection(this)">×</button>
                                             </div>
                                             <div class="input-wrapper"
-                                                style="{{ old('category_id', $content->category_id) ? 'display: none;' : '' }}">
+                                                style="{{ old('category_id', $content->category_id) ? 'display: none;' : 'display: block;' }}">
                                                 <input id="category_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showinDropdown(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addCategoryModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="indropdown">
                                                 <ul>
                                                     @foreach ($categories as $category)
                                                         <li data-id="{{ $category->id }}"
@@ -643,13 +712,12 @@
                                                     onclick="clearSelection(this)">×</button>
                                             </div>
                                             <div class="input-wrapper"
-                                                style="{{ old('country_id', $content->country_id) ? 'display: none;' : '' }}">
+                                                style="{{ old('country_id', $content->country_id) ? 'display: none;' : 'display: block;' }}">
                                                 <input id="country_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
-
+                                                    onfocus="showinDropdown(this)">
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="indropdown">
                                                 <ul>
                                                     @foreach ($countries as $country)
                                                         <li data-id="{{ $country->id }}"
@@ -682,13 +750,12 @@
                                                     onclick="clearSelection(this)">×</button>
                                             </div>
                                             <div class="input-wrapper"
-                                                style="{{ old('continent_id', $content->continent_id) ? 'display: none;' : '' }}">
+                                                style="{{ old('continent_id', $content->continent_id) ? 'display: none;' : 'display: block;' }}">
                                                 <input id="continent_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
-
+                                                    onfocus="showinDropdown(this)">
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="indropdown">
                                                 <ul>
                                                     @foreach ($continents as $continent)
                                                         <li data-id="{{ $continent->id }}"
@@ -724,13 +791,13 @@
                                                     onclick="clearSelection(this)">×</button>
                                             </div>
                                             <div class="input-wrapper"
-                                                style="{{ old('trend_id', $content->trend_id) ? 'display: none;' : '' }}">
+                                                style="{{ old('trend_id', $content->trend_id) ? 'display: none;' : 'display: block;' }}">
                                                 <input id="trend_search" type="text" class="form-control search-input"
-                                                    oninput="filterList(this)" onfocus="showDropdown(this)">
+                                                    oninput="filterList(this)" onfocus="showinDropdown(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addTrendModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="indropdown">
                                                 <ul>
                                                     @foreach ($trends as $trend)
                                                         <li data-id="{{ $trend->id }}"
@@ -763,14 +830,14 @@
                                                     onclick="clearSelection(this)">×</button>
                                             </div>
                                             <div class="input-wrapper"
-                                                style="{{ old('window_id', $content->window_id) ? 'display: none;' : '' }}">
+                                                style="{{ old('window_id', $content->window_id) ? 'display: none;' : 'display: block;' }}">
                                                 <input id="window_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showinDropdown(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addWindowModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="indropdown">
                                                 <ul>
                                                     @foreach ($windows as $window)
                                                         <li data-id="{{ $window->id }}"
@@ -806,14 +873,14 @@
                                                     onclick="clearSelection(this)">×</button>
                                             </div>
                                             <div class="input-wrapper"
-                                                style="{{ old('writer_id', $content->writer_id) ? 'display: none;' : '' }}">
+                                                style="{{ old('writer_id', $content->writer_id) ? 'display: none;' : 'display: block;' }}">
                                                 <input id="writer_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showinDropdown(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addWriterModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="indropdown">
                                                 <ul>
                                                     @foreach ($writers as $writer)
                                                         <li data-id="{{ $writer->id }}"
@@ -846,14 +913,14 @@
                                                     onclick="clearSelection(this)">×</button>
                                             </div>
                                             <div class="input-wrapper"
-                                                style="{{ old('city_id', $content->city_id) ? 'display: none;' : '' }}">
+                                                style="{{ old('city_id', $content->city_id) ? 'display: none;' : 'display: block;' }}">
                                                 <input id="writer_location_search" type="text"
                                                     class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showDropdown(this)">
+                                                    onfocus="showinDropdown(this)">
                                                 <button type="button" class="btn-add" data-bs-toggle="modal"
                                                     data-bs-target="#addWriterLocationModal" tabindex="-1">+</button>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="indropdown">
                                                 <ul>
                                                     @foreach ($cities as $location)
                                                         <li data-id="{{ $location->id }}"
@@ -901,13 +968,13 @@
                                                         <input id="tags_id_search" type="text"
                                                             class="form-control search-input"
                                                             oninput="filterMultiList(this)"
-                                                            onfocus="showMultiDropdown(this)">
+                                                            onfocus="showMultiinDropdown(this)">
                                                         <button type="button" class="btn-add" data-bs-toggle="modal"
                                                             data-bs-target="#addTagModal" tabindex="-1">+</button>
                                                     </div>
                                                 </div>
 
-                                                <div class="dropdown">
+                                                <div class="indropdown">
                                                     <ul id="tags-options-list">
                                                         @foreach ($tags as $tag)
                                                             <li data-id="{{ $tag->id }}"
@@ -938,7 +1005,7 @@
                                 <div class="form-group col-12 mb-3">
                                     <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
                                         data-en="SEO Keyword">الكلمة الرئيسية</label>
-                                    <span style="color:red;">*</span>
+                                    <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <input required id="seo_keyword" name="seo_keyword" type="text"
                                             class="form-control form-control" maxlength="50"
@@ -950,7 +1017,7 @@
                                 <div class="form-group col-12 my-3">
                                     <label class="form-label" for="summary" data-ar="الملخص"
                                         data-en="Summary">الملخص</label>
-                                    <span style="color:red;">*</span>
+                                    <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <textarea required id="summary" name="summary" class="form-control form-control" rows="3"
                                             style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130">{{ old('summary', $content->summary) }}</textarea>
@@ -964,13 +1031,11 @@
                                 <div class="form-group col-12 mb-3">
                                     <label class="form-label" for="body" data-ar="المتن"
                                         data-en="Body">المتن</label>
-                                    <span style="color:red;">*</span>
+                                    <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <x-forms.tinymce-editor id="myeditorinstance" :value="old('content', $content->content ?? '')" name="content" />
                                     </div>
                                 </div>
-
-
                             </div>
 
                             {{-- ===== TEMPLATE TAB ===== --}}
@@ -1012,8 +1077,8 @@
                             <h5 data-ar="تقييم السيو (SEO)" data-en="SEO Evaluation">تقييم السيو (SEO)</h5>
                             <div class="progress" style="height: 20px; margin-bottom:10px;">
                                 <div id="seo-bar" class="progress-bar" role="progressbar"
-                                    style="width: 0%; background-color: red;" aria-valuenow="0" aria-valuemin="0"
-                                    aria-valuemax="100"></div>
+                                    style="width: 0%; background-color: var(--bs-danger);" aria-valuenow="0"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                             <div id="seo-text" style="font-weight: bold; margin-bottom: 10px;"
                                 data-ar="يرجى كتابة المحتوى لتقييم السيو" data-en="Please write content to evaluate SEO">
@@ -1036,7 +1101,8 @@
 
                     {{-- ===== RIGHT SIDEBAR ===== --}}
                     <div class="col-md-3 mt-4">
-                        <div class="mb-3" style="border: 1px solid #dee2e6; border-radius: 4px; padding: 10px;">
+                        <div class="mb-3"
+                            style="border: 1px solid var(--bs-border-color); border-radius: 4px; padding: 10px;">
                             <div class="card-body">
                                 {{-- CREATION DATE --}}
                                 <div class="mb-3">
@@ -1099,7 +1165,6 @@
     </div>
 
     {{-- ============================ MODALS ============================ --}}
-
     {{-- Add Section Modal --}}
     <div class="modal fade" id="addSectionModal" tabindex="-1" aria-labelledby="addSectionModalLabel"
         aria-hidden="true">
@@ -1154,7 +1219,6 @@
         </div>
     </div>
 
-
     {{-- Add Writer Modal --}}
     <div class="modal fade" id="addWriterModal" tabindex="-1" aria-labelledby="addWriterModalLabel"
         aria-hidden="true">
@@ -1164,38 +1228,32 @@
                     <h5 class="modal-title" id="addWriterModalLabel">إضافة كاتب جديد</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <div class="modal-body">
                     <form id="addWriterForm" enctype="multipart/form-data">@csrf
                         <div class="mb-3">
                             <label for="writer_name" class="form-label">اسم الكاتب</label>
                             <input type="text" class="form-control" id="writer_name" name="name" required>
                         </div>
-
                         <div class="mb-3">
                             <label for="writer_slug" class="form-label">الرابط المختصر (Slug)</label>
                             <input type="text" class="form-control" id="writer_slug" name="slug"
                                 placeholder="مثال: naji-benz" required>
                             <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
                         </div>
-
                         <div class="mb-3">
                             <label for="writer_bio" class="form-label">السيرة الذاتية</label>
                             <textarea class="form-control" id="writer_bio" name="bio" rows="3" required></textarea>
                         </div>
-
                         <div class="mb-3">
                             <label for="writer_image" class="form-label">الصورة</label>
                             <input type="file" class="form-control" id="writer_image" name="image"
                                 accept=".jpeg,.jpg,.png,.gif,.webp" required>
                             <div class="form-text">الحد الأقصى 2MB. يُقبل: jpeg, png, webp, gif</div>
                         </div>
-
                         <div class="mb-3">
                             <label for="writer_email" class="form-label">البريد الإلكتروني (اختياري)</label>
                             <input type="email" class="form-control" id="writer_email" name="email">
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">روابط السوشيال (اختياري)</label>
                             <div class="row g-2">
@@ -1219,7 +1277,6 @@
                         </div>
                     </form>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                     <button type="button" class="btn btn-primary" onclick="addNewWriter(event)">حفظ</button>
@@ -1267,21 +1324,18 @@
                     <h5 class="modal-title" id="addTrendModalLabel">إضافة ترند جديد</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <div class="modal-body">
                     <form id="addTrendForm" enctype="multipart/form-data">@csrf
                         <div class="mb-3">
                             <label for="trend_title" class="form-label">اسم الترند</label>
                             <input type="text" class="form-control" id="trend_title" name="title" required>
                         </div>
-
                         <div class="mb-3">
                             <label for="trend_slug" class="form-label">الرابط المختصر (Slug)</label>
                             <input type="text" class="form-control" id="trend_slug" name="slug"
                                 placeholder="مثال: world-cup-2026" required>
                             <div class="form-text">يُولَّد تلقائيًا من العنوان ويمكن تعديله.</div>
                         </div>
-
                         <div class="mb-3">
                             <label for="trend_image" class="form-label">الصورة</label>
                             <input type="file" class="form-control" id="trend_image" name="image"
@@ -1290,7 +1344,6 @@
                         </div>
                     </form>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                     <button type="button" class="btn btn-primary" onclick="addNewTrend(event)">حفظ</button>
@@ -1299,6 +1352,7 @@
         </div>
     </div>
 
+    {{-- Add Window Modal --}}
     <div class="modal fade" id="addWindowModal" tabindex="-1" aria-labelledby="addWindowModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -1370,17 +1424,17 @@
 
     <script>
         // ========== SINGLE SELECTION FUNCTIONS ==========
-        function showDropdown(input) {
+        function showinDropdown(input) {
             const container = input.closest('.category-selector');
-            const dropdown = container.querySelector('.dropdown');
-            dropdown.style.display = 'block';
+            const indropdown = container.querySelector('.indropdown');
+            indropdown.style.display = 'block';
         }
 
         function filterList(input) {
             const container = input.closest('.category-selector');
-            const dropdown = container.querySelector('.dropdown');
+            const indropdown = container.querySelector('.indropdown');
             const filter = input.value.toLowerCase();
-            const items = dropdown.querySelectorAll('li');
+            const items = indropdown.querySelectorAll('li');
             let visible = false;
 
             items.forEach(li => {
@@ -1393,7 +1447,7 @@
                 }
             });
 
-            dropdown.style.display = visible ? 'block' : 'none';
+            indropdown.style.display = visible ? 'block' : 'none';
         }
 
         function selectItem(li, value, id) {
@@ -1401,7 +1455,7 @@
             const selectedDiv = container.querySelector('.selected-item');
             const selectedValue = container.querySelector('.selected-value');
             const inputWrapper = container.querySelector('.input-wrapper');
-            const dropdown = container.querySelector('.dropdown');
+            const indropdown = container.querySelector('.indropdown');
             const hiddenInput = container.querySelector('.hidden-input');
 
             selectedValue.textContent = value;
@@ -1409,7 +1463,7 @@
 
             selectedDiv.style.display = 'flex';
             inputWrapper.style.display = 'none';
-            dropdown.style.display = 'none';
+            indropdown.style.display = 'none';
 
             container.style.border = '';
             container.style.padding = '';
@@ -1434,17 +1488,17 @@
         }
 
         // ========== MULTI-SELECT (TAGS) FUNCTIONS ==========
-        function showMultiDropdown(input) {
+        function showMultiinDropdown(input) {
             const container = input.closest('.tags-search-container');
-            const dropdown = container.querySelector('.dropdown');
-            dropdown.style.display = 'block';
+            const indropdown = container.querySelector('.indropdown');
+            indropdown.style.display = 'block';
         }
 
         function filterMultiList(input) {
             const container = input.closest('.tags-search-container');
-            const dropdown = container.querySelector('.dropdown');
+            const indropdown = container.querySelector('.indropdown');
             const filter = input.value.toLowerCase();
-            const items = dropdown.querySelectorAll('li');
+            const items = indropdown.querySelectorAll('li');
             let visible = false;
 
             items.forEach(li => {
@@ -1457,7 +1511,7 @@
                 }
             });
 
-            dropdown.style.display = visible ? 'block' : 'none';
+            indropdown.style.display = visible ? 'block' : 'none';
         }
 
         function selectMultiItem(li, value, id, fieldName) {
@@ -1465,7 +1519,7 @@
             const selectedContainer = document.getElementById(fieldName + '-selected-container');
             const hiddenInputsContainer = document.getElementById(fieldName + '-hidden-inputs');
             const searchInput = container.querySelector('.search-input');
-            const dropdown = container.querySelector('.dropdown');
+            const indropdown = container.querySelector('.indropdown');
 
             const existingInput = hiddenInputsContainer.querySelector(`input[name="${fieldName}[]"][value="${id}"]`);
             if (existingInput) return;
@@ -1488,7 +1542,7 @@
             li.classList.add('selected');
 
             searchInput.value = '';
-            dropdown.style.display = 'none';
+            indropdown.style.display = 'none';
             searchInput.focus();
 
             container.style.border = '';
@@ -1512,17 +1566,17 @@
 
         // ========== UTILITY FUNCTIONS ==========
 
-        // Close dropdowns when clicking outside
+        // Close indropdowns when clicking outside
         document.addEventListener('click', function(e) {
             document.querySelectorAll('.category-selector').forEach(container => {
                 if (!container.contains(e.target)) {
-                    const dd = container.querySelector('.dropdown');
+                    const dd = container.querySelector('.indropdown');
                     if (dd) dd.style.display = 'none';
                 }
             });
             document.querySelectorAll('.multi-select-container .tags-search-container').forEach(container => {
                 if (!container.contains(e.target)) {
-                    const dd = container.querySelector('.dropdown');
+                    const dd = container.querySelector('.indropdown');
                     if (dd) dd.style.display = 'none';
                 }
             });
@@ -1554,7 +1608,7 @@
             const container = hidden.closest('.category-selector');
             if (!container) return;
 
-            const dd = container.querySelector('.dropdown');
+            const dd = container.querySelector('.indropdown');
             if (!dd) return;
             const li = dd.querySelector(`li[data-id="${oldValue}"]`);
             if (li) {
@@ -1647,7 +1701,7 @@
             function highlightField(input) {
                 const container = input.closest('.search-container') || input.closest('.multi-select-container');
                 if (container) {
-                    container.style.border = '1px solid #dc3545';
+                    container.style.border = '1px solid var(--bs-form-invalid-color)';
                     container.style.borderRadius = '4px';
                     container.style.padding = '4px';
                     setTimeout(() => {
@@ -1681,8 +1735,8 @@
                     behavior: 'smooth'
                 });
                 const firstError = document.querySelector(
-                        '.search-container[style*="border: 1px solid #dc3545"]') ||
-                    document.querySelector('.multi-select-container[style*="border: 1px solid #dc3545"]');
+                        '.search-container[style*="border: 1px solid"]') ||
+                    document.querySelector('.multi-select-container[style*="border: 1px solid"]');
                 if (firstError) {
                     firstError.scrollIntoView({
                         behavior: 'smooth',
@@ -1851,7 +1905,7 @@
 
                     const writerSearch = document.querySelector('#writer_search');
                     if (writerSearch) {
-                        const listUl = writerSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        const listUl = writerSearch.closest('.search-container')?.querySelector('.indropdown ul');
                         if (listUl) {
                             const li = document.createElement('li');
                             li.dataset.id = String(id);
@@ -1922,9 +1976,9 @@
                 }
 
                 if (res.status === 201 && data.id && data.name) {
-                    const dropdown = document.querySelector('#category_search')
+                    const indropdown = document.querySelector('#category_search')
                         .closest('.search-container')
-                        .querySelector('.dropdown ul');
+                        .querySelector('.indropdown ul');
 
                     const newItem = document.createElement('li');
                     newItem.dataset.id = data.id;
@@ -1933,7 +1987,7 @@
                     newItem.onclick = function() {
                         selectItem(this, data.name, data.id);
                     };
-                    dropdown.appendChild(newItem);
+                    indropdown.appendChild(newItem);
 
                     $('#addCategoryModal').modal('hide');
                     form.reset();
@@ -2151,7 +2205,7 @@
 
                     const trendSearch = document.querySelector('#trend_search');
                     if (trendSearch) {
-                        const listUl = trendSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        const listUl = trendSearch.closest('.search-container')?.querySelector('.indropdown ul');
                         if (listUl) {
                             const li = document.createElement('li');
                             li.dataset.id = String(id);
@@ -2275,10 +2329,10 @@
                     const name = data.name || data.window.name;
                     const slug = data.slug || data.window.slug;
 
-                    // Add to dropdown list
+                    // Add to indropdown list
                     const windowSearch = document.querySelector('#window_search');
                     if (windowSearch) {
-                        const listUl = windowSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        const listUl = windowSearch.closest('.search-container')?.querySelector('.indropdown ul');
                         if (listUl) {
                             const li = document.createElement('li');
                             li.dataset.id = String(id);
@@ -2425,10 +2479,10 @@
                     const name = data.name || data.location.name;
                     const slug = data.slug || data.location.slug;
 
-                    // Add to dropdown list
+                    // Add to indropdown list
                     const locationSearch = document.querySelector('#writer_location_search');
                     if (locationSearch) {
-                        const listUl = locationSearch.closest('.search-container')?.querySelector('.dropdown ul');
+                        const listUl = locationSearch.closest('.search-container')?.querySelector('.indropdown ul');
                         if (listUl) {
                             const li = document.createElement('li');
                             li.dataset.id = String(id);
