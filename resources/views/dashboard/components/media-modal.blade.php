@@ -1,5 +1,5 @@
 <!-- ================== MMX MEDIA MODAL (FULL, FIXED, TYPE BADGE, NO SUCCESS ALERTS) ================== -->
-<!-- Sprite d’icônes (optionnel) -->
+<!-- Sprite d'icônes (optionnel) -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
     <symbol id="mmx-icon-image" viewBox="0 0 24 24">
         <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor"
@@ -88,7 +88,7 @@
                     <div class="mmx-upload-fields" style="display: flex; flex-wrap: wrap; gap: .6rem; width: 100%;">
                         <div style="flex: 1 1 220px;">
                             <label for="mmx-upload-input"
-                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fafafa; color: #333; text-align: center;">
+                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid var(--mmx-border); border-radius: 0; background: var(--mmx-gray-100); color: var(--mmx-text); text-align: center;">
                                 <i class="fa fa-upload" style="margin-right: 6px;"></i> اختر ملف الوسائط
                                 <input type="file" id="mmx-upload-input" class="mmx-upload-input"
                                     style="display: none;" />
@@ -97,12 +97,12 @@
                         <div style="flex: 1 1 200px;">
                             <input type="text" id="mmx-upload-name" class="mmx-upload-name"
                                 placeholder="اسم الملف"
-                                style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                                style="width: 100%; padding: .6rem .7rem; border: 1px solid var(--mmx-border); border-radius: 0; background: var(--mmx-bg); color: var(--mmx-text);" />
                         </div>
                         <div style="flex: 1 1 200px;">
                             <input type="text" id="mmx-upload-alt" class="mmx-upload-alt"
                                 placeholder="النص البديل"
-                                style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                                style="width: 100%; padding: .6rem .7rem; border: 1px solid var(--mmx-border); border-radius: 0; background: var(--mmx-bg); color: var(--mmx-text);" />
                         </div>
                     </div>
                     <div class="mmx-uploader-actions">
@@ -134,8 +134,8 @@
             <style>
                 /* Example: highlight buttons when file selected */
                 .mmx-btn-active {
-                    background: #16a34a !important;
-                    border-color: #16a34a !important;
+                    background: var(--mmx-success) !important;
+                    border-color: var(--mmx-success) !important;
                     color: #fff !important;
                 }
             </style>
@@ -146,31 +146,33 @@
             hidden>
             <div class="mmx-tab-body">
                 <div class="mmx-uploader mmx-uploader-url"
-                    style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--mmx-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                    style="padding:1.2rem; border-radius:8px; border:1px solid var(--mmx-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
                     <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem;">
                         <input type="text" id="mmx-upload-url"
-                            style="flex:1 1 220px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;"
+                            style="flex:1 1 220px; padding:.7rem 1rem; border:1px solid var(--mmx-border); border-radius:6px; background:var(--mmx-bg); color:var(--mmx-text); font-size:1rem;"
                             placeholder="الرابط" />
                         <input type="text" id="mmx-url-name" placeholder="اسم الملف"
-                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid var(--mmx-border); border-radius:6px; background:var(--mmx-bg); color:var(--mmx-text); font-size:1rem;" />
                         <input type="text" id="mmx-url-alt" placeholder="النص البديل"
-                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid var(--mmx-border); border-radius:6px; background:var(--mmx-bg); color:var(--mmx-text); font-size:1rem;" />
                     </div>
                     <fieldset class="mmx-url-type-group" aria-label="نوع الوسائط للرابط"
-                        style="margin-bottom:.7rem; border-radius:6px; border:1px solid #e5e7eb; padding:.7rem 1rem; background:#fff;">
-                        <legend style="font-size:.97rem; color:#333; padding:0 .3rem; font-weight:500;">نوع الوسائط
+                        style="margin-bottom:.7rem; border-radius:6px; border:1px solid var(--mmx-border); padding:.7rem 1rem; background:var(--mmx-bg);">
+                        <legend style="font-size:.97rem; color:var(--mmx-text); padding:0 .3rem; font-weight:500;">نوع
+                            الوسائط
                             (اختياري)</legend>
                         <div style="display:flex; gap:1.2rem; flex-wrap:wrap;">
-                            <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
-                                    name="mmx-url-type" value="auto" checked /><span>Auto</span></label>
-                            <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
-                                    name="mmx-url-type" value="image" /><span>Image</span></label>
-                            <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
-                                    name="mmx-url-type" value="video" /><span>Video</span></label>
-                            <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
-                                    name="mmx-url-type" value="voice" /><span>Voice</span></label>
-                            <label class="mmx-radio" style="font-size:.97rem;"><input type="radio"
-                                    name="mmx-url-type" value="file" /><span>File</span></label>
+                            <label class="mmx-radio" style="font-size:.97rem; color:var(--mmx-text);"><input
+                                    type="radio" name="mmx-url-type" value="auto"
+                                    checked /><span>Auto</span></label>
+                            <label class="mmx-radio" style="font-size:.97rem; color:var(--mmx-text);"><input
+                                    type="radio" name="mmx-url-type" value="image" /><span>Image</span></label>
+                            <label class="mmx-radio" style="font-size:.97rem; color:var(--mmx-text);"><input
+                                    type="radio" name="mmx-url-type" value="video" /><span>Video</span></label>
+                            <label class="mmx-radio" style="font-size:.97rem; color:var(--mmx-text);"><input
+                                    type="radio" name="mmx-url-type" value="voice" /><span>Voice</span></label>
+                            <label class="mmx-radio" style="font-size:.97rem; color:var(--mmx-text);"><input
+                                    type="radio" name="mmx-url-type" value="file" /><span>File</span></label>
                         </div>
                     </fieldset>
                     <div class="mmx-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
@@ -189,7 +191,7 @@
 </div>
 
 <style>
-    /* ===== MMX NAMESPACE – neutral white/grey, no rounded corners ===== */
+    /* ===== MMX NAMESPACE – Updated for white/dark mode compatibility ===== */
     #mmxMediaModal,
     #mmxMediaModal * {
         box-sizing: border-box;
@@ -200,13 +202,55 @@
     }
 
     :root {
+        /* Light mode colors */
+        --mmx-primary: #6576ff;
+        --mmx-secondary: #364a63;
+        --mmx-success: #1ee0ac;
+        --mmx-danger: #e85347;
+        --mmx-warning: #f4bd0e;
+        --mmx-info: #09c2de;
+
         --mmx-bg: #fff;
-        --mmx-text: #111;
-        --mmx-border: #e5e7eb;
-        --mmx-ring: #d1d5db;
-        --mmx-muted: #6b7280;
-        --mmx-black: #111;
-        --mmx-black-strong: #000;
+        --mmx-text: #526484;
+        --mmx-border: #dbdfea;
+        --mmx-ring: #6576ff;
+        --mmx-muted: #8091a7;
+
+        --mmx-gray-100: #ebeef2;
+        --mmx-gray-200: #e5e9f2;
+        --mmx-gray-300: #dbdfea;
+        --mmx-gray-400: #b7c2d0;
+        --mmx-gray-500: #8091a7;
+        --mmx-gray-600: #3c4d62;
+        --mmx-gray-700: #344357;
+        --mmx-gray-800: #2b3748;
+        --mmx-gray-900: #1f2b3a;
+    }
+
+    [data-bs-theme="dark"] {
+        /* Dark mode colors */
+        --mmx-primary: #6576ff;
+        --mmx-secondary: #364a63;
+        --mmx-success: #1ee0ac;
+        --mmx-danger: #e85347;
+        --mmx-warning: #f4bd0e;
+        --mmx-info: #09c2de;
+
+        --mmx-bg: #0D141D;
+        --mmx-text: #e5e9f2;
+        --mmx-border: #384D69;
+        --mmx-ring: #6576ff;
+        --mmx-muted: #b7c2d0;
+
+        --mmx-gray-100: #2b3748;
+        --mmx-gray-200: #344357;
+        --mmx-gray-300: #3c4d62;
+        --mmx-gray-400: #8091a7;
+        --mmx-gray-500: #b7c2d0;
+        --mmx-gray-600: #dbdfea;
+        --mmx-gray-700: #e5e9f2;
+        --mmx-gray-800: #ebeef2;
+        --mmx-gray-900: #f5f6fa;
     }
 
     .mmx-modal {
@@ -262,13 +306,14 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: #fff;
+        background: var(--mmx-bg);
     }
 
     .mmx-header h5 {
         margin: 0;
         font-size: 1.05rem;
         font-weight: 600;
+        color: var(--mmx-text);
     }
 
     .mmx-close {
@@ -276,12 +321,12 @@
         line-height: 1;
         border: 0;
         background: transparent;
-        color: #666;
+        color: var(--mmx-muted);
         cursor: pointer;
     }
 
     .mmx-close:hover {
-        color: #000;
+        color: var(--mmx-text);
     }
 
     .mmx-tabs {
@@ -289,12 +334,12 @@
         gap: .25rem;
         padding: .5rem;
         border-bottom: 1px solid var(--mmx-border);
-        background: #fff;
+        background: var(--mmx-bg);
     }
 
     .mmx-tab-btn {
         appearance: none;
-        background: #fff;
+        background: var(--mmx-bg);
         border: 1px solid var(--mmx-border);
         padding: .55rem .9rem;
         cursor: pointer;
@@ -308,7 +353,9 @@
     }
 
     .mmx-tab-btn.mmx-is-active {
-        border-color: #dcdcdc;
+        background: var(--mmx-primary);
+        border-color: var(--mmx-primary);
+        color: white;
     }
 
     .mmx-tab-panel {
@@ -322,7 +369,7 @@
     .mmx-tab-body {
         padding: 1rem 1.25rem;
         border-bottom: 1px solid var(--mmx-border);
-        background: #fff;
+        background: var(--mmx-bg);
     }
 
     .mmx-filters {
@@ -331,15 +378,15 @@
         gap: .65rem;
         flex-wrap: wrap;
         border-bottom: 1px solid var(--mmx-border);
-        background: #fff;
+        background: var(--mmx-bg);
     }
 
     .mmx-filters input,
     .mmx-filters select {
         padding: .6rem .7rem;
         font-size: .95rem;
-        border: 1px solid #dcdcdc;
-        background: #fff;
+        border: 1px solid var(--mmx-border);
+        background: var(--mmx-bg);
         color: var(--mmx-text);
         flex: 1 1 180px;
         transition: box-shadow .15s, border-color .15s;
@@ -351,8 +398,8 @@
 
     .mmx-filters input:focus,
     .mmx-filters select:focus {
-        border-color: #cfcfcf;
-        box-shadow: 0 0 0 2px var(--mmx-ring);
+        border-color: var(--mmx-primary);
+        box-shadow: 0 0 0 2px rgba(101, 118, 255, 0.1);
         outline: none;
     }
 
@@ -360,7 +407,7 @@
         padding: 1rem 1.25rem;
         overflow: auto;
         flex: 1;
-        background: #fff;
+        background: var(--mmx-bg);
     }
 
     .mmx-grid {
@@ -378,8 +425,7 @@
 
     .mmx-item {
         position: relative;
-        border: 1px solid var(--mmx-border);
-        background: #fff;
+        background: var(--mmx-bg);
         cursor: pointer;
         display: flex;
         flex-direction: column;
@@ -390,8 +436,8 @@
     }
 
     .mmx-item:hover {
-        border-color: #cfcfcf;
-        box-shadow: 0 0 0 3px #f3f4f6;
+        border-color: var(--mmx-primary);
+        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.1);
     }
 
     .mmx-item:active {
@@ -399,8 +445,8 @@
     }
 
     .mmx-item.mmx-is-selected {
-        border-color: #cfcfcf;
-        box-shadow: 0 0 0 3px #e5e7eb;
+        border-color: var(--mmx-primary);
+        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.2);
     }
 
     .mmx-thumb {
@@ -409,10 +455,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #fafafa;
+        background: var(--mmx-gray-100);
         overflow: hidden;
         position: relative;
-        border: 1px solid #f0f0f0;
+        border: 1px solid var(--mmx-gray-200);
     }
 
     .mmx-thumb img,
@@ -446,7 +492,7 @@
 
     .mmx-title {
         font-size: .9rem;
-        color: #374151;
+        color: var(--mmx-text);
         margin-top: .55rem;
         width: 100%;
         white-space: nowrap;
@@ -459,7 +505,7 @@
         flex-wrap: wrap;
         align-items: center;
         gap: .6rem;
-        background: #fff;
+        background: var(--mmx-bg);
         border: 1px solid var(--mmx-border);
         padding: 1rem;
     }
@@ -493,7 +539,7 @@
 
     .mmx-url-type-group legend {
         font-size: .9rem;
-        color: #333;
+        color: var(--mmx-text);
         padding: 0 .25rem;
     }
 
@@ -506,7 +552,7 @@
     }
 
     .mmx-radio input {
-        accent-color: #000;
+        accent-color: var(--mmx-primary);
     }
 
     .mmx-uploader-actions {
@@ -519,34 +565,34 @@
         font-weight: 600;
         cursor: pointer;
         transition: background .15s, color .15s, border-color .15s;
-        border: 1px solid var(--mmx-black);
-        background: var(--mmx-black);
+        border: 1px solid var(--mmx-primary);
+        background: var(--mmx-primary);
         color: #fff;
     }
 
     .mmx-btn:hover {
-        background: var(--mmx-black-strong);
-        border-color: var(--mmx-black-strong);
+        background: #465fff;
+        border-color: #465fff;
     }
 
     .mmx-btn-secondary {
-        background: #444;
-        border-color: #444;
+        background: var(--mmx-secondary);
+        border-color: var(--mmx-secondary);
     }
 
     .mmx-btn-secondary:hover {
-        background: #222;
-        border-color: #222;
+        background: #2b3748;
+        border-color: #2b3748;
     }
 
     .mmx-btn-primary {
-        background: var(--mmx-black);
-        border-color: var(--mmx-black);
+        background: var(--mmx-primary);
+        border-color: var(--mmx-primary);
     }
 
     .mmx-footer {
         padding: 1rem 1.25rem;
-        background: #fff;
+        background: var(--mmx-bg);
         display: flex;
         justify-content: flex-end;
         gap: .6rem;
@@ -554,24 +600,25 @@
     }
 
     .mmx-btn-select {
-        background: #fff;
-        color: var(--mmx-black);
-        border-color: var(--mmx-black);
+        background: var(--mmx-primary);
+        color: #fff;
+        border-color: var(--mmx-primary);
     }
 
     .mmx-btn-select:hover {
-        background: #f5f5f5;
+        background: #465fff;
+        border-color: #465fff;
     }
 
     .mmx-btn-cancel {
-        background: #444;
-        border-color: #444;
+        background: var(--mmx-secondary);
+        border-color: var(--mmx-secondary);
         color: #fff;
     }
 
     .mmx-btn-cancel:hover {
-        background: #222;
-        border-color: #222;
+        background: #2b3748;
+        border-color: #2b3748;
     }
 
     .mmx-loader {
@@ -1114,8 +1161,8 @@
             } finally {
                 btnUploadToGallery.disabled = false;
                 btnUploadSelectAndClose.disabled = false;
-                btnUploadToGallery.textContent = "رفع & فتح المعرض";
-                btnUploadSelectAndClose.textContent = "رفع & حفظ وإغلاق";
+                btnUploadToGallery.textContent = "إدراج في المعرض";
+                btnUploadSelectAndClose.textContent = "إدراج في المقال";
             }
         }
 

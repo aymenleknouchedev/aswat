@@ -1,21 +1,34 @@
 <!-- ======================= AZ BASE STYLES (avec variables, sans body/head/html) ======================= -->
 <style>
     :root {
-        --az-border: #e1e5e9;
-        --az-muted: #6b7280;
-        --az-soft: #f8fafc;
+        --az-border: #dbdfea;
+        --az-muted: #8091a7;
+        --az-soft: #f5f6fa;
         --az-card: #ffffff;
-        --az-title: #111827;
-        --az-accent: #3b82f6;
+        --az-title: #364a63;
+        --az-accent: #6576ff;
         --az-accent-light: #eff6ff;
-        --az-danger: #ef4444;
-        --az-success: #10b981;
-        --az-warning: #f59e0b;
+        --az-danger: #e85347;
+        --az-success: #1ee0ac;
+        --az-warning: #f4bd0e;
         --az-radius: 0.35rem;
         /* sera neutralisé par les overrides en bas */
         --az-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         --az-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
         --az-transition: all 0.2s ease-in-out;
+    }
+
+    [data-bs-theme="dark"] {
+        --az-border: #384D69;
+        --az-muted: #b7c2d0;
+        --az-soft: #2b3748;
+        --az-card: #0D141D;
+        --az-title: #e5e9f2;
+        --az-accent: #6576ff;
+        --az-accent-light: #2b3748;
+        --az-danger: #e85347;
+        --az-success: #1ee0ac;
+        --az-warning: #f4bd0e;
     }
 
     .text-ellipsis {
@@ -167,11 +180,13 @@
         border-radius: var(--az-radius);
         padding: 10px 14px;
         transition: var(--az-transition);
+        background: var(--az-card);
+        color: var(--az-title);
     }
 
     .form-control:focus {
-        border-color: var(--az-muted);
-        box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1);
+        border-color: var(--az-accent);
+        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.1);
     }
 
     .btn {
@@ -185,23 +200,24 @@
     }
 
     .btn-primary {
-        background: var(--az-muted);
-        border-color: var(--az-muted);
+        background: var(--az-accent);
+        border-color: var(--az-accent);
+        color: white;
     }
 
     .btn-primary:hover {
-        background: #4b5563;
-        border-color: #4b5563;
+        background: #465fff;
+        border-color: #465fff;
         transform: translateY(-1px);
     }
 
     .btn-outline-danger {
-        color: var(--az-muted);
-        border-color: var(--az-muted);
+        color: var(--az-danger);
+        border-color: var(--az-danger);
     }
 
     .btn-outline-danger:hover {
-        background: var(--az-muted);
+        background: var(--az-danger);
         color: #fff;
         transform: translateY(-1px);
     }
@@ -218,24 +234,26 @@
     }
 
     .btn-success {
-        background: var(--az-muted);
-        border-color: var(--az-muted);
+        background: var(--az-success);
+        border-color: var(--az-success);
+        color: white;
     }
 
     .btn-success:hover {
-        background: #4b5563;
-        border-color: #4b5563;
+        background: #17c99a;
+        border-color: #17c99a;
         transform: translateY(-1px);
     }
 
     .btn-secondary {
-        background: #6b7280;
-        border-color: #6b7280;
+        background: var(--az-muted);
+        border-color: var(--az-muted);
+        color: white;
     }
 
     .btn-secondary:hover {
-        background: #4b5563;
-        border-color: #4b5563;
+        background: #6b7f9a;
+        border-color: #6b7f9a;
         transform: translateY(-1px);
     }
 
@@ -411,7 +429,7 @@
                     <div class="mmxx-upload-fields" style="display: flex; flex-wrap: wrap; gap: .6rem; width: 100%;">
                         <div style="flex: 1 1 220px;">
                             <label for="mmxx-upload-input"
-                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fafafa; color: #333; text-align: center;">
+                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border-radius: 0; background: var(--az-soft); color: var(--az-title); text-align: center;">
                                 <i class="fa fa-upload" style="margin-right: 6px;"></i> اختر ملف الوسائط
                                 <input type="file" id="mmxx-upload-input" class="mmxx-upload-input"
                                     style="display: none;" />
@@ -420,12 +438,12 @@
                         <div style="flex: 1 1 200px;">
                             <input type="text" id="mmxx-upload-name" class="mmxx-upload-name"
                                 placeholder="اسم الملف"
-                                style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                                style="width: 100%; padding: .6rem .7rem; border-radius: 0; background: var(--az-soft);border:none; color: var(--az-title);" />
                         </div>
                         <div style="flex: 1 1 200px;">
                             <input type="text" id="mmxx-upload-alt" class="mmxx-upload-alt"
                                 placeholder="النص البديل"
-                                style="width: 100%; padding: .6rem .7rem; border: 1px solid #dcdcdc; border-radius: 0; background: #fff;" />
+                                style="width: 100%; padding: .6rem .7rem; border-radius: 0; background: var(--az-soft);border:none; color: var(--az-title);" />
                         </div>
                     </div>
                     <div class="mmxx-uploader-actions">
@@ -457,8 +475,8 @@
             <style>
                 /* Example: highlight buttons when file selected */
                 .mmxx-btn-active {
-                    background: #16a34a !important;
-                    border-color: #16a34a !important;
+                    background: var(--az-success) !important;
+                    border-color: var(--az-success) !important;
                     color: #fff !important;
                 }
             </style>
@@ -469,31 +487,33 @@
             hidden>
             <div class="mmxx-tab-body">
                 <div class="mmxx-uploader mmxx-uploader-url"
-                    style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--mmxx-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                    style="padding:1.2rem; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
                     <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem;">
                         <input type="text" id="mmxx-upload-url"
-                            style="flex:1 1 220px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;"
+                            style="flex:1 1 220px; padding:.7rem 1rem; border-radius:6px; background:var(--az-card); color:var(--az-title); font-size:1rem;"
                             placeholder="الرابط" />
                         <input type="text" id="mmxx-url-name" placeholder="اسم الملف"
-                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                            style="flex:1 1 180px; padding:.7rem 1rem; border-radius:6px; background:var(--az-card); color:var(--az-title); font-size:1rem;" />
                         <input type="text" id="mmxx-url-alt" placeholder="النص البديل"
-                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;" />
+                            style="flex:1 1 180px; padding:.7rem 1rem; border-radius:6px; background:var(--az-card); color:var(--az-title); font-size:1rem;" />
                     </div>
                     <fieldset class="mmxx-url-type-group" aria-label="نوع الوسائط للرابط"
-                        style="margin-bottom:.7rem; border-radius:6px; border:1px solid #e5e7eb; padding:.7rem 1rem; background:#fff;">
-                        <legend style="font-size:.97rem; color:#333; padding:0 .3rem; font-weight:500;">نوع الوسائط
+                        style="margin-bottom:.7rem; border-radius:6px; padding:.7rem 1rem; background:var(--az-card);">
+                        <legend style="font-size:.97rem; color:var(--az-title); padding:0 .3rem; font-weight:500;">نوع
+                            الوسائط
                             (اختياري)</legend>
                         <div style="display:flex; gap:1.2rem; flex-wrap:wrap;">
-                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio"
-                                    name="mmxx-url-type" value="auto" checked /><span>Auto</span></label>
-                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio"
-                                    name="mmxx-url-type" value="image" /><span>Image</span></label>
-                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio"
-                                    name="mmxx-url-type" value="video" /><span>Video</span></label>
-                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio"
-                                    name="mmxx-url-type" value="voice" /><span>Voice</span></label>
-                            <label class="mmxx-radio" style="font-size:.97rem;"><input type="radio"
-                                    name="mmxx-url-type" value="file" /><span>File</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem; color:var(--az-title);"><input
+                                    type="radio" name="mmxx-url-type" value="auto"
+                                    checked /><span>Auto</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem; color:var(--az-title);"><input
+                                    type="radio" name="mmxx-url-type" value="image" /><span>Image</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem; color:var(--az-title);"><input
+                                    type="radio" name="mmxx-url-type" value="video" /><span>Video</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem; color:var(--az-title);"><input
+                                    type="radio" name="mmxx-url-type" value="voice" /><span>Voice</span></label>
+                            <label class="mmxx-radio" style="font-size:.97rem; color:var(--az-title);"><input
+                                    type="radio" name="mmxx-url-type" value="file" /><span>File</span></label>
                         </div>
                     </fieldset>
                     <div class="mmxx-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
@@ -517,15 +537,49 @@
         box-sizing: border-box;
     }
 
-    /* neutralisation arrondis via overrides en bas également */
+    /* Updated color variables */
     :root {
         --mmxx-bg: #fff;
-        --mmxx-text: #111;
-        --mmxx-border: #e5e7eb;
-        --mmxx-ring: #d1d5db;
-        --mmxx-muted: #6b7280;
-        --mmxx-black: #111;
-        --mmxx-black-strong: #000;
+        --mmxx-text: #526484;
+        --mmxx-border: #dbdfea;
+        --mmxx-ring: #6576ff;
+        --mmxx-muted: #8091a7;
+        --mmxx-primary: #6576ff;
+        --mmxx-secondary: #364a63;
+        --mmxx-success: #1ee0ac;
+        --mmxx-danger: #e85347;
+        --mmxx-warning: #f4bd0e;
+        --mmxx-gray-100: #ebeef2;
+        --mmxx-gray-200: #e5e9f2;
+        --mmxx-gray-300: #dbdfea;
+        --mmxx-gray-400: #b7c2d0;
+        --mmxx-gray-500: #8091a7;
+        --mmxx-gray-600: #3c4d62;
+        --mmxx-gray-700: #344357;
+        --mmxx-gray-800: #2b3748;
+        --mmxx-gray-900: #1f2b3a;
+    }
+
+    [data-bs-theme="dark"] {
+        --mmxx-bg: #0D141D;
+        --mmxx-text: #e5e9f2;
+        --mmxx-border: #384D69;
+        --mmxx-ring: #6576ff;
+        --mmxx-muted: #b7c2d0;
+        --mmxx-primary: #6576ff;
+        --mmxx-secondary: #364a63;
+        --mmxx-success: #1ee0ac;
+        --mmxx-danger: #e85347;
+        --mmxx-warning: #f4bd0e;
+        --mmxx-gray-100: #2b3748;
+        --mmxx-gray-200: #344357;
+        --mmxx-gray-300: #3c4d62;
+        --mmxx-gray-400: #8091a7;
+        --mmxx-gray-500: #b7c2d0;
+        --mmxx-gray-600: #dbdfea;
+        --mmxx-gray-700: #e5e9f2;
+        --mmxx-gray-800: #ebeef2;
+        --mmxx-gray-900: #f5f6fa;
     }
 
     .mmxx-modal {
@@ -581,13 +635,14 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: #fff;
+        background: var(--mmxx-bg);
     }
 
     .mmxx-header h5 {
         margin: 0;
         font-size: 1.05rem;
         font-weight: 600;
+        color: var(--mmxx-text);
     }
 
     .mmxx-close {
@@ -595,12 +650,12 @@
         line-height: 1;
         border: 0;
         background: transparent;
-        color: #666;
+        color: var(--mmxx-muted);
         cursor: pointer;
     }
 
     .mmxx-close:hover {
-        color: #000;
+        color: var(--mmxx-text);
     }
 
     .mmxx-tabs {
@@ -608,12 +663,12 @@
         gap: .25rem;
         padding: .5rem;
         border-bottom: 1px solid var(--mmxx-border);
-        background: #fff;
+        background: var(--mmxx-bg);
     }
 
     .mmxx-tab-btn {
         appearance: none;
-        background: #fff;
+        background: var(--mmxx-bg);
         border: 1px solid var(--mmxx-border);
         padding: .55rem .9rem;
         cursor: pointer;
@@ -627,7 +682,9 @@
     }
 
     .mmxx-tab-btn.mmxx-is-active {
-        border-color: #dcdcdc;
+        background: var(--mmxx-primary);
+        border-color: var(--mmxx-primary);
+        color: white;
     }
 
     .mmxx-tab-panel {
@@ -641,7 +698,7 @@
     .mmxx-tab-body {
         padding: 1rem 1.25rem;
         border-bottom: 1px solid var(--mmxx-border);
-        background: #fff;
+        background: var(--mmxx-bg);
     }
 
     .mmxx-filters {
@@ -650,15 +707,15 @@
         gap: .65rem;
         flex-wrap: wrap;
         border-bottom: 1px solid var(--mmxx-border);
-        background: #fff;
+        background: var(--mmxx-bg);
     }
 
     .mmxx-filters input,
     .mmxx-filters select {
         padding: .6rem .7rem;
         font-size: .95rem;
-        border: 1px solid #dcdcdc;
-        background: #fff;
+        border: 1px solid var(--mmxx-border);
+        background: var(--mmxx-bg);
         color: var(--mmxx-text);
         flex: 1 1 180px;
         transition: box-shadow .15s, border-color .15s;
@@ -670,8 +727,8 @@
 
     .mmxx-filters input:focus,
     .mmxx-filters select:focus {
-        border-color: #cfcfcf;
-        box-shadow: 0 0 0 2px var(--mmxx-ring);
+        border-color: var(--mmxx-primary);
+        box-shadow: 0 0 0 2px rgba(101, 118, 255, 0.1);
         outline: none;
     }
 
@@ -679,7 +736,7 @@
         padding: 1rem 1.25rem;
         overflow: auto;
         flex: 1;
-        background: #fff;
+        background: var(--mmxx-bg);
     }
 
     .mmxx-grid {
@@ -697,8 +754,7 @@
 
     .mmxx-item {
         position: relative;
-        border: 1px solid var(--mmxx-border);
-        background: #fff;
+        background: var(--mmxx-bg);
         cursor: pointer;
         display: flex;
         flex-direction: column;
@@ -709,8 +765,8 @@
     }
 
     .mmxx-item:hover {
-        border-color: #cfcfcf;
-        box-shadow: 0 0 0 3px #f3f4f6;
+        border-color: var(--mmxx-primary);
+        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.1);
     }
 
     .mmxx-item:active {
@@ -718,8 +774,8 @@
     }
 
     .mmxx-item.mmxx-is-selected {
-        border-color: #cfcfcf;
-        box-shadow: 0 0 0 3px #e5e7eb;
+        border-color: var(--mmxx-primary);
+        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.2);
     }
 
     .mmxx-thumb {
@@ -728,10 +784,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #fafafa;
+        background: var(--mmxx-gray-100);
         overflow: hidden;
         position: relative;
-        border: 1px solid #f0f0f0;
+        border: 1px solid var(--mmxx-gray-200);
     }
 
     .mmxx-thumb img,
@@ -765,7 +821,7 @@
 
     .mmxx-title {
         font-size: .9rem;
-        color: #374151;
+        color: var(--mmxx-text);
         margin-top: .55rem;
         width: 100%;
         white-space: nowrap;
@@ -778,7 +834,7 @@
         flex-wrap: wrap;
         align-items: center;
         gap: .6rem;
-        background: #fff;
+        background: var(--mmxx-bg);
         border: 1px solid var(--mmxx-border);
         padding: 1rem;
     }
@@ -811,7 +867,7 @@
 
     .mmxx-url-type-group legend {
         font-size: .9rem;
-        color: #333;
+        color: var(--mmxx-text);
         padding: 0 .25rem;
     }
 
@@ -824,7 +880,7 @@
     }
 
     .mmxx-radio input {
-        accent-color: #000;
+        accent-color: var(--mmxx-primary);
     }
 
     .mmxx-uploader-actions {
@@ -837,34 +893,34 @@
         font-weight: 600;
         cursor: pointer;
         transition: background .15s, color .15s, border-color .15s;
-        border: 1px solid var(--mmxx-black);
-        background: var(--mmxx-black);
+        border: 1px solid var(--mmxx-primary);
+        background: var(--mmxx-primary);
         color: #fff;
     }
 
     .mmxx-btn:hover {
-        background: var(--mmxx-black-strong);
-        border-color: var(--mmxx-black-strong);
+        background: #465fff;
+        border-color: #465fff;
     }
 
     .mmxx-btn-secondary {
-        background: #444;
-        border-color: #444;
+        background: var(--mmxx-secondary);
+        border-color: var(--mmxx-secondary);
     }
 
     .mmxx-btn-secondary:hover {
-        background: #222;
-        border-color: #222;
+        background: #2b3748;
+        border-color: #2b3748;
     }
 
     .mmxx-btn-primary {
-        background: var(--mmxx-black);
-        border-color: var(--mmxx-black);
+        background: var(--mmxx-primary);
+        border-color: var(--mmxx-primary);
     }
 
     .mmxx-footer {
         padding: 1rem 1.25rem;
-        background: #fff;
+        background: var(--mmxx-bg);
         display: flex;
         justify-content: flex-end;
         gap: .6rem;
@@ -872,24 +928,25 @@
     }
 
     .mmxx-btn-select {
-        background: #fff;
-        color: var(--mmxx-black);
-        border-color: var(--mmxx-black);
+        background: var(--mmxx-primary);
+        color: #fff;
+        border-color: var(--mmxx-primary);
     }
 
     .mmxx-btn-select:hover {
-        background: #f5f5f5;
+        background: #465fff;
+        border-color: #465fff;
     }
 
     .mmxx-btn-cancel {
-        background: #444;
-        border-color: #444;
+        background: var(--mmxx-secondary);
+        border-color: var(--mmxx-secondary);
         color: #fff;
     }
 
     .mmxx-btn-cancel:hover {
-        background: #222;
-        border-color: #222;
+        background: #2b3748;
+        border-color: #2b3748;
     }
 
     .mmxx-loader {
@@ -1076,6 +1133,14 @@
             document.documentElement.style.overflow = "";
             resetStateFilters();
             clearAllInputs();
+
+            // FIXED: Always reopen the parent item modal when MMxx modal closes
+            setTimeout(() => {
+                if (window.itemModalManager && typeof window.itemModalManager.reopenItemModal ===
+                    'function') {
+                    window.itemModalManager.reopenItemModal();
+                }
+            }, 150);
         }
         backdrop.addEventListener("click", closeModal);
         closes.forEach(b => b.addEventListener("click", closeModal));
@@ -2073,6 +2138,20 @@
         // Pick media with MMxx modal (fermer puis ré-ouvrir le modal item)
         const btnPick = document.getElementById('btnPickMedia');
         const btnClear = document.getElementById('btnClearMedia');
+
+        // Global item modal manager
+        window.itemModalManager = {
+            reopenItemModal: function() {
+                setTimeout(() => {
+                    if (window.bootstrap && bootstrap.Modal) {
+                        bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                    } else {
+                        modalEl.style.display = 'block';
+                        modalEl.setAttribute('aria-hidden', 'false');
+                    }
+                }, 150);
+            }
+        };
 
         btnPick?.addEventListener('click', () => {
             if (!window.mmxxMediaModalManager) {

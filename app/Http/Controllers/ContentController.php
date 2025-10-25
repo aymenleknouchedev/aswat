@@ -273,8 +273,8 @@ class ContentController extends BaseController
             $rules['items.*.image']       = 'required|url|max:2048';
             $rules['items.*.index']       = 'required|integer|min:1';
             $rules['items.*.url']         = $request->input('display_method') === 'list'
-                ? 'required|url|max:2048'
-                : 'nullable|url|max:2048';
+                ? 'nullable|url|max:2048'
+                : 'required|url|max:2048';
         }
 
         // Règles par template
