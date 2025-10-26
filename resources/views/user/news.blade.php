@@ -677,6 +677,27 @@
                 @endif
 
             </div>
+            <div class="custom-sidebar">
+                <p class="section-title">المزيد من {{ $news->category->name }}</p>
+                @include('user.components.ligne')
+
+                {{-- @foreach ($suggestions as $content)
+                    <div class="sp20" style="margin-top: 16px;"></div>
+                    <div class="news-card-horizontal">
+                        <div class="news-card-image">
+                            <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
+                                alt="{{ $content->title ?? 'تحلية مياه البحر' }}">
+                        </div>
+                        <div class="news-card-text">
+                            <h3> <x-category-links :content="$content" fallback="اقتصاد جزائري" /></h3>
+                            <a href="{{ route('news.show', $content->title) }}"
+                                style="text-decoration: none; color: inherit;">
+                                <p>{{ $content->title ?? '' }}</p>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach --}}
+            </div>
         </div>
 
         @include('user.components.footer')
