@@ -379,7 +379,7 @@
             transform: translateX(10px);
             pointer-events: none;
             transition: all 0.3s ease;
-            
+
         }
 
         .share-container.active .share-icons {
@@ -397,12 +397,12 @@
         }
 
         .share-icons a i {
-           font-size: 18px;
+            font-size: 18px;
         }
 
         .share-icons a i:hover {
-           color: #333;
-           transition: color 0.3s ease;
+            color: #333;
+            transition: color 0.3s ease;
         }
 
         .share-icons img {
@@ -519,7 +519,8 @@
                                     title="نسخ الرابط" rel="noopener" class="share-icon" style="position: relative;">
                                     <i class="fa-solid fa-link"></i>
                                 </a>
-                                <div id="copyMessage" style="display:none;position:absolute;top:-38px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:8px 18px;border-radius:8px;z-index:9999;font-family:asswat-medium;font-size:9px;white-space:nowrap;">
+                                <div id="copyMessage"
+                                    style="display:none;position:absolute;top:-38px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:8px 18px;border-radius:8px;z-index:9999;font-family:asswat-medium;font-size:9px;white-space:nowrap;">
                                     تم نسخ الرابط!
                                 </div>
                             </div>
@@ -665,7 +666,8 @@
                 @if (optional($news->writer)->id)
                     <a href="{{ route('writer.show', $news->writer->id) }}">
                         <div class="writer-card">
-                            <img src="{{ $news->writer->image ?? asset('user.png') }}" alt="Writer" loading="lazy" style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
+                            <img src="{{ $news->writer->image ?? asset('user.png') }}" alt="Writer" loading="lazy"
+                                style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
 
                             <div class="writer-info">
                                 <span> <span style="font-weight:bold;">{{ $news->writer->name }}</span>
@@ -705,14 +707,21 @@
 
     <script>
         const toggle = document.getElementById('shareToggle');
-        const text = document.getElementById('shareText');
+        const shareContainer = document.getElementById('shareContainer');
 
-        function toggleShare() {
-            toggle.parentElement.classList.toggle('active');
+        function toggleShare(e) {
+            e.stopPropagation();
+            shareContainer.classList.toggle('active');
         }
 
         toggle.addEventListener('click', toggleShare);
-        text.addEventListener('click', toggleShare);
+
+        // Close when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!shareContainer.contains(e.target)) {
+                shareContainer.classList.remove('active');
+            }
+        });
     </script>
 
 @endsection
