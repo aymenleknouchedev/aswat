@@ -117,7 +117,7 @@
                     @forelse ($latestContents as $item)
                         <div class="newCategory-all-card">
                             <div class="newCategory-all-card-date">
-                                <h4 style="width: 130px">
+                                <h4 style="width: 100px">
                                     @php
                                         \Carbon\Carbon::setLocale('ar'); // تفعيل اللغة العربية
 
