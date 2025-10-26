@@ -288,11 +288,15 @@
             border: 1px solid #eee;
         }
 
-        .writer-card img {
+        .writer-card a img {
             width: 80px;
             height: 80px;
             object-fit: cover;
             border-radius: 50%;
+        }
+        .writer-card a  {
+            width: 80px;
+            height: 80px;
         }
 
         .writer-info {
@@ -571,7 +575,7 @@
                 @if (optional($news->writer)->id)
                     <div class="writer-card">
                         <a href="{{ route('writer.show', $news->writer->id) }}">
-                            <img height="80" width="80" src="{{ $news->writer->image ?? asset('user.png') }}" alt="Writer" loading="lazy">
+                            <img src="{{ $news->writer->image ?? asset('user.png') }}" alt="Writer" loading="lazy">
                         </a>
                         <div class="writer-info">
                             <a href="{{ route('writer.show', $news->writer->id) }}">
