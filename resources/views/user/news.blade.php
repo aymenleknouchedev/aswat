@@ -195,15 +195,15 @@
             text-align: center;
             position: relative;
             font-family: asswat-medium;
+            
         }
 
         .custom-article-content blockquote p {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 24px;
             color: #222;
             line-height: 1.6;
-            font-family: asswat-bold !important;
-            font-weight: bold !important;
+            font-family: asswat-medium !important;
             text-align: center !important;
         }
 
