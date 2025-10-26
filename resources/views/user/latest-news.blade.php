@@ -127,10 +127,8 @@
                                     @endphp
 
                                     @if ($diffHours < 24)
-                                        {{-- مثال: "منذ ٣ ساعات" --}}
-                                        {{ $created->diffForHumans(null, null, false, 2) }}
+                                        {{ $created->diffForHumans(null, null, false, 1) }}
                                     @else
-                                        {{-- مثال: "٢٦ أكتوبر ٢٠٢٥ ١٥:٤٠" --}}
                                         {{ $created->translatedFormat('d F Y H:i') }}
                                     @endif
                                 </h4>
