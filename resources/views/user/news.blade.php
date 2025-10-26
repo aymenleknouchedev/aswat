@@ -185,7 +185,7 @@
         .custom-article-content blockquote {
             width: 100%;
             /* background: #f5f5f5; */
-            padding: 50px 20px;
+            padding: 40px 20px;
             margin: 30px 0;
             text-align: center;
             position: relative;
