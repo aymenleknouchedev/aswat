@@ -835,7 +835,7 @@
                 @endforeach
             </div>
         </div>
-        <section class="economy-feature-grid">
+        <section class="economy-feature-grid container">
             <div class="economy-grid-container-news">
                 @foreach ($relatedNews as $item)
                     <div class="economy-card-news">
