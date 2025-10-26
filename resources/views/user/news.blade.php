@@ -110,8 +110,8 @@
 
         /* Image caption styling */
         .custom-article-image-wrapper figcaption {
-            background: #eee;
-            color: #F5F5F5;
+            background: #F5F5F5;
+            color: #555;
             font-size: 15px;
             padding: 10px;
             text-align: right;
