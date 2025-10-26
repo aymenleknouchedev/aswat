@@ -14,10 +14,9 @@
         .custom-container {
             max-width: 1200px;
             margin: 40px auto;
-            padding: 0 20px;
             display: flex;
             flex-direction: row;
-            gap: 40px;
+            gap: 20px;
         }
 
         .custom-main {
@@ -26,8 +25,8 @@
         }
 
         .custom-sidebar {
-            flex: 0 0 40%;
-            max-width: 40%;
+            flex: 0 0 calc(40% - 20px);
+            max-width: calc(40% - 20px);
         }
 
         /* Responsive */
