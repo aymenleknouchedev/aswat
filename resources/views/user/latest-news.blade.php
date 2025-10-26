@@ -106,7 +106,7 @@
 
         <div class="container">
             <div class="title">
-                <p class="section-title">آخر الأخبار</p>
+                <p class="section-title">أخبار</p>
                 @include('user.components.ligne')
                 <div class="under-title-ligne-space"></div>
             </div>
