@@ -4,6 +4,15 @@
 
 @section('content')
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.custom-article-content a').forEach(function(el) {
+                el.setAttribute('target', '_blank');
+                el.setAttribute('rel', 'noopener');
+            });
+        });
+    </script>
+
     {{-- ================= CSS ================= --}}
     <style>
         /* Layout */
@@ -16,22 +25,7 @@
             text-decoration: underline;
         }
 
-        /* Make all links open in new tab by default */
-        .custom-article-content a[target="_blank"]::after {
-            content: "↗";
-            font-size: 12px;
-            margin-right: 4px;
-            vertical-align: middle;
-        }
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                document.querySelectorAll('.custom-article-content a').forEach(function(link) {
-                    link.setAttribute('target', '_blank');
-                    link.setAttribute('rel', 'noopener');
-                });
-            });
-        </script>.custom-container {
+        .custom-container {
             max-width: 1200px;
             margin: 40px auto;
             display: flex;
