@@ -93,7 +93,6 @@
             color: #888;
             font-family: asswat-light;
             text-align: right;
-            margin-bottom: 5px;
         }
 
         /* Images */
