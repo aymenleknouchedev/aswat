@@ -198,7 +198,7 @@
             font-size: 28px;
             color: #222;
             line-height: 1.6;
-            font-family: asswat-medium !important;
+            font-family: asswat-bold !important;
             text-align: center !important;
         }
 
