@@ -542,9 +542,15 @@ class HomePageController extends Controller
             $lastWeekNews = $lastWeekNews->concat($olderNews);
         }
 
+        $relatedNews = Content::where('title', '!=', $news->title)
+            ->where('section_id', $sectionId)
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+
         $this->recordView($news);
 
-        return view('user.news', compact('news', 'lastNews', 'lastWeekNews'));
+        return view('user.news', compact('news', 'lastNews', 'lastWeekNews', 'relatedNews'));
     }
 
     protected function recordView($content)
