@@ -836,9 +836,9 @@
             </div>
         </div>
         <section class="economy-feature-grid container">
+            <p class="section-title">ذات صلة</p>
+            @include('user.components.ligne')
             <div class="economy-grid-container-news">
-                <p class="section-title">ذات صلة</p>
-                @include('user.components.ligne')
                 @foreach ($relatedNews as $item)
                     <div class="economy-card-news">
                         <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
