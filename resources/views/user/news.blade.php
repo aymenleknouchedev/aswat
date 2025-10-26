@@ -84,6 +84,7 @@
             font-family: asswat-regular;
             margin-bottom: 15px;
             text-align: right;
+            font-weight: bold;
         }
 
         .custom-meta,
