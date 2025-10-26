@@ -118,8 +118,24 @@
                         <div class="newCategory-all-card">
                             <div class="newCategory-all-card-date">
                                 <h4>
-                                    {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
+                                    @php
+                                        \Carbon\Carbon::setLocale('ar'); // تفعيل اللغة العربية
+
+                                        $created = \Carbon\Carbon::parse($item->created_at);
+                                        $now = \Carbon\Carbon::now();
+                                        $diffHours = $created->diffInHours($now);
+                                    @endphp
+
+                                    @if ($diffHours < 24)
+                                        {{-- مثال: "منذ ٣ ساعات" --}}
+                                        {{ $created->diffForHumans(null, null, false, 2) }}
+                                    @else
+                                        {{-- مثال: "٢٦ أكتوبر ٢٠٢٥ ١٥:٤٠" --}}
+                                        {{ $created->translatedFormat('d F Y H:i') }}
+                                    @endif
                                 </h4>
+
+
                             </div>
                             <div class="newCategory-all-card-image">
                                 <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
