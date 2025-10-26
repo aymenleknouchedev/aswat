@@ -17,7 +17,7 @@
             display: flex;
             flex-direction: row;
             gap: 20px;
-            padding: 0 13px;
+            padding: 0 11px;
         }
 
         .custom-main {
