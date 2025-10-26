@@ -37,7 +37,6 @@
             line-height: 1.6;
             margin-bottom: 15px;
             max-width: 750px;
-            font-weight: bolder;
         }
 
         .social-links {
