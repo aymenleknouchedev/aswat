@@ -81,7 +81,7 @@
         .custom-article-summary {
             font-size: 18px;
             color: #555;
-            font-family: asswat-light;
+            font-family: asswat-regular;
             margin-bottom: 15px;
             text-align: right;
         }
