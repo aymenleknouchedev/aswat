@@ -439,14 +439,13 @@
                     @if ($news->city)
                         {{ $news->city->name }} -
                     @endif
-                    @if ($news->writer && $news->writer->name)
+                    @if (optional($news->writer)->name)
                         <a href="{{ route('writer.show', $news->writer->id) }}">
                             <span> {{ $news->writer->name }}</span>
                         </a>
                     @else
                         <span> بدون كاتب</span>
                     @endif
-
                 </div>
 
                 {{-- التاريخ --}}
