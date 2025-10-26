@@ -48,7 +48,7 @@
                                 <div class="form-control-wrap">
                                     <textarea name="bio" class="form-control" id="bio" rows="4" maxlength="225" required>{{ old('bio', isset($writer) ? $writer->bio : '') }}</textarea>
                                     <small class="text-muted">
-                                        <span id="bio-count">{{ strlen(old('bio', isset($writer) ? $writer->bio : '')) }}</span> / 225
+                                        <span id="bio-count">0</span> / 225
                                     </small>
                                 </div>
                                 @error('bio')
@@ -59,9 +59,11 @@
                                 document.addEventListener('DOMContentLoaded', function () {
                                     var bio = document.getElementById('bio');
                                     var count = document.getElementById('bio-count');
-                                    bio.addEventListener('input', function () {
+                                    function updateCount() {
                                         count.textContent = bio.value.length;
-                                    });
+                                    }
+                                    updateCount();
+                                    bio.addEventListener('input', updateCount);
                                 });
                             </script>
 
