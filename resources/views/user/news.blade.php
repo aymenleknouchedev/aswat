@@ -142,11 +142,12 @@
         .custom-article-content h2,
         .custom-article-content h3,
         .custom-article-content h4 {
-            font-family: asswat-bold !important;
+            font-family: asswat-medium !important;
             color: #111 !important;
             text-align: right !important;
             margin-top: 35px !important;
             margin-bottom: 18px !important;
+            font-size: 32px !important;
         }
 
         .custom-article-content h3 {
@@ -408,9 +409,9 @@
 
                 {{-- الكاتب --}}
                 <div class="custom-meta">
-                    
+
                     @if ($news->city)
-                       {{ $news->city->name }} -
+                        {{ $news->city->name }} -
                     @endif
                     @if ($news->writer && $news->writer->name)
                         <a href="{{ route('writer.show', $news->writer->id) }}">
