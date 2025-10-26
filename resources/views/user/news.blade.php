@@ -205,8 +205,8 @@
         .custom-article-content blockquote::before {
             content: "";
             position: absolute;
-            /* top: 20px;
-            right: 20px; */
+            top: 0px;
+            right: 0px;
             width: 32px;
             height: 32px;
             background: url('/user/assets/icons/quote-top.png') no-repeat center;
@@ -217,8 +217,8 @@
         .custom-article-content blockquote::after {
             content: "";
             position: absolute;
-            /* bottom: 20px;
-            left: 20px; */
+            bottom: 0px;
+            left: 0px;
             width: 32px;
             height: 32px;
             background: url('/user/assets/icons/quote-bottom.png') no-repeat center;
