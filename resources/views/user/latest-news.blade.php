@@ -133,7 +133,7 @@
                                     @else
                                         <div style="display: flex; flex-direction: column; align-items: flex-start;">
                                             <span>{{ $created->translatedFormat('d F Y') }}</span>
-                                            <span>{{ $created->translatedFormat('H:i') }}</span>
+                                            <span style="color: #74747C;">{{ $created->translatedFormat('H:i') }}</span>
                                         </div>
                                     @endif
                                 </h4>
