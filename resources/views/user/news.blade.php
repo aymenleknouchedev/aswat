@@ -88,7 +88,7 @@
 
         .custom-meta,
         .custom-meta-date {
-            font-size: 14px;
+            font-size: 15px;
             color: #141414;
             font-family: asswat-light;
             text-align: right;
@@ -333,7 +333,7 @@
 
         .date-text {
             color: #888;
-            font-size: 14px;
+            font-size: 15px;
             margin: 0;
         }
 
