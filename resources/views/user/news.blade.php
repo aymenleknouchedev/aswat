@@ -11,6 +11,11 @@
             width: 100%;
         }
 
+        .custom-article-content a {
+            color: #000000;
+            text-decoration: underline;
+        }
+
         .custom-container {
             max-width: 1200px;
             margin: 40px auto;
