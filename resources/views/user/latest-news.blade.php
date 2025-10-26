@@ -129,8 +129,10 @@
                                     @if ($diffHours < 24)
                                         {{ $created->diffForHumans(null, null, false, 1) }}
                                     @else
-                                        {{ $created->translatedFormat('d F Y') }}<br>
-                                        {{ $created->translatedFormat('H:i') }}
+                                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                                            <span>{{ $created->translatedFormat('d F Y') }}</span>
+                                            <span>{{ $created->translatedFormat('H:i') }}</span>
+                                        </div>
                                     @endif
                                 </h4>
 
