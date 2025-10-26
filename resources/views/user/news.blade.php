@@ -194,7 +194,6 @@
         }
 
         .custom-article-content blockquote p {
-            margin: 10px 0px;
             font-size: 28px;
             color: #222;
             line-height: 1.6;
