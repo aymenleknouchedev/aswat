@@ -542,43 +542,69 @@ class HomePageController extends Controller
             $lastWeekNews = $lastWeekNews->concat($olderNews);
         }
 
+        // بداية الكود
+        $relatedNews = collect();
+
         if (!empty($news->seo_keyword)) {
+            // 🟢 1. حسب seo_keyword
             $relatedNews = Content::where('id', '!=', $news->id)
                 ->where('seo_keyword', $news->seo_keyword)
                 ->take(4)
                 ->get();
+        }
 
-            // إذا لم نجد 4 مقالات بنفس seo_keyword، نبحث حسب الوسوم (tags)
-            if ($relatedNews->count() < 4 && $news->tags->isNotEmpty()) {
-                $tagIds = $news->tags->pluck('id'); // استخراج IDs الوسوم
-
-                $relatedNews = Content::where('id', '!=', $news->id)
-                    ->whereHas('tags', function ($query) use ($tagIds) {
-                        $query->whereIn('tags.id', $tagIds);
-                    })
-                    ->inRandomOrder()
-                    ->take(4)
-                    ->get();
-            }
-        } elseif ($news->tags->isNotEmpty()) {
+        // 🟡 2. حسب tags إذا لم نجد كفاية
+        if ($relatedNews->count() < 4 && $news->tags->isNotEmpty()) {
             $tagIds = $news->tags->pluck('id');
 
-            $relatedNews = Content::where('id', '!=', $news->id)
+            $tagBased = Content::where('id', '!=', $news->id)
                 ->whereHas('tags', function ($query) use ($tagIds) {
                     $query->whereIn('tags.id', $tagIds);
                 })
                 ->inRandomOrder()
-                ->take(4)
+                ->take(4 - $relatedNews->count())
                 ->get();
-        } else {
-            // إذا لم يوجد seo_keyword ولا tags، جلب عشوائي من نفس القسم
-            $relatedNews = Content::where('id', '!=', $news->id)
-                ->where('section_id', $sectionId)
-                ->inRandomOrder()
-                ->take(4)
-                ->get();
+
+            $relatedNews = $relatedNews->merge($tagBased);
         }
 
+        // 🔵 3. إذا لا يوجد seo_keyword ولا tags، نستخدم تشابه النصوص
+        if ($relatedNews->count() < 4 && empty($news->seo_keyword) && $news->tags->isEmpty()) {
+            // نحضر كلمات من العنوان والملخص والمحتوى
+            $text = strtolower(strip_tags($news->title . ' ' . $news->summary . ' ' . $news->content));
+
+            // تقسيم إلى كلمات رئيسية بعد حذف الكلمات القصيرة
+            $keywords = collect(explode(' ', $text))
+                ->filter(fn($word) => strlen($word) > 4)
+                ->unique()
+                ->take(8) // نأخذ 8 كلمات فقط لتقليل الحمل
+                ->values();
+
+            $relatedByText = Content::where('id', '!=', $news->id)
+                ->where(function ($query) use ($keywords) {
+                    foreach ($keywords as $word) {
+                        $query->orWhere('title', 'like', "%{$word}%")
+                            ->orWhere('summary', 'like', "%{$word}%")
+                            ->orWhere('content', 'like', "%{$word}%");
+                    }
+                })
+                ->inRandomOrder()
+                ->take(4 - $relatedNews->count())
+                ->get();
+
+            $relatedNews = $relatedNews->merge($relatedByText);
+        }
+
+        // ⚪️ 4. إذا لم تكفِ النتائج حتى الآن → جلب عشوائي من نفس القسم
+        if ($relatedNews->count() < 4) {
+            $fallback = Content::where('id', '!=', $news->id)
+                ->where('section_id', $news->section_id)
+                ->inRandomOrder()
+                ->take(4 - $relatedNews->count())
+                ->get();
+
+            $relatedNews = $relatedNews->merge($fallback);
+        }
 
         $this->recordView($news);
 
