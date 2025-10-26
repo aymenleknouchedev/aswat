@@ -130,7 +130,7 @@
 
         .custom-article-content * {
             font-family: asswat-regular !important;
-            text-align: justify !important;
+            /* text-align: justify !important; */
             direction: rtl !important;
             box-sizing: border-box;
         }
