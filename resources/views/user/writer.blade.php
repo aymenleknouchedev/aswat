@@ -36,7 +36,7 @@
             color: #555;
             line-height: 1.6;
             margin-bottom: 15px;
-            max-width: 600px;
+            max-width: 750px;
         }
 
         .social-links {
@@ -93,7 +93,7 @@
         /* Articles section */
         .newCategory-all-section {
             display: grid;
-            grid-template-columns: 8fr 4fr;
+            grid-template-columns: 10fr 2fr;
             gap: 70px;
         }
 
