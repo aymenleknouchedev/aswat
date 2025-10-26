@@ -456,6 +456,42 @@
             cursor: pointer;
         }
 
+        .newCategoryReadMoreNews {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .newCategoryReadMoreNews-list {
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            direction: rtl;
+            font-family: asswat-bold;
+            border-bottom: 1px solid #ddd;
+            /* الخط الرمادي */
+            padding-bottom: 10px;
+            /* مسافة بين النص والخط */
+        }
+
+        .newCategoryReadMoreNews-list:last-child {
+            border-bottom: none;
+        }
+
+        .newCategoryReadMoreNews-list .number {
+            font-size: 32px;
+            color: #e7e7e7;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .newCategoryReadMoreNews-list p {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+
         .share-btn:hover {
             background: #f5f5f5;
         }
@@ -713,6 +749,20 @@
 
             </div>
             <div class="custom-sidebar">
+                <p class="section-title">الأكثر قراءة</p>
+                @include('user.components.ligne')
+                <div class="newCategoryReadMoreNews">
+                    @foreach ($lastWeekNews as $index => $item)
+                        <div class="newCategoryReadMoreNews-list">
+                            <span class="number">{{ $index + 1 }}</span>
+                            <a href="{{ route('news.show', $item->title) }}"
+                                style="text-decoration: none; color: inherit;">
+                                <p>{{ $item->title }}</p>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+                @include('user.components.sp60')
                 <p class="section-title">المزيد من {{ $news->category->name }}</p>
                 @include('user.components.ligne')
 
