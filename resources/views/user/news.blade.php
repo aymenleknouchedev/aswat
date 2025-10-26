@@ -111,7 +111,7 @@
 
         /* ===================== CONTENT ===================== */
         .custom-article-content {
-            font-size: 18px !important;
+            font-size: 17px !important;
             font-family: asswat-regular;
             color: #333;
             line-height: 1.9;
