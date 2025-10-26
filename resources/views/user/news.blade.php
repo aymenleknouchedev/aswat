@@ -341,7 +341,7 @@
 
         .news-card-horizontal-news {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 10px;
             direction: rtl;
             margin-bottom: 10px;
