@@ -70,14 +70,12 @@
         }
 
         .custom-article-title {
-            font-size: 40px;
+            font-size: 42px;
             font-family: asswat-regular;
             color: #141414;
             line-height: 1.4;
             text-align: right;
             margin-bottom: 20px;
-            font-weight: bold;
-
         }
 
         .custom-article-summary {
@@ -86,7 +84,6 @@
             font-family: asswat-regular;
             margin-bottom: 15px;
             text-align: right;
-            font-weight: bold;
         }
 
         .custom-meta,
