@@ -7,7 +7,7 @@
     <style>
         .newCategory-all-section {
             display: grid;
-            grid-template-columns: 8fr 4fr;
+            grid-template-columns: 10fr 2fr;
             gap: 70px;
         }
 
