@@ -9,8 +9,7 @@
             align-items: center;
             gap: 30px;
             direction: rtl;
-            margin-bottom: 60px;
-            padding: 30px;
+            margin: 40px 0px;
             flex-wrap: wrap;
         }
 
@@ -37,6 +36,7 @@
             color: #555;
             line-height: 1.6;
             margin-bottom: 15px;
+            max-width: 600px;
         }
 
         .social-links {
@@ -217,28 +217,39 @@
                 <img src="{{ $writer->image ?? 'user.png' }}" alt="{{ $writer->name }}">
                 <div class="writer-info">
                     <h1>{{ $writer->name }}</h1>
-                    <p>{{ $writer->bio ?? 'لا توجد سيرة ذاتية متوفرة.' }}</p>
+                    <p>{{ $writer->bio ?? '' }}</p>
                 </div>
             </div>
 
             <!-- Writer Articles -->
             <div class="title">
-                <div class="writer-title-bar">
-                    <p class="section-title">مقالات {{ $writer->name }}</p>
-
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+                <div class="writer-title-bar" style="margin-bottom:10px">
+                    <h2 class="section-title"></h2>
                     <div class="social-links">
-                        @if ($writer->facebook)
-                            <a href="{{ $writer->facebook }}" target="_blank">فيسبوك</a>
+                        @if ($writer && $writer->x)
+                            <a href="{{ $writer->x }}" target="_blank" title="تويتر">
+                                <i class="fa-brands fa-x-twitter" style="color: #888; font-size: 1.3em;"></i>
+                            </a>
                         @endif
-                        @if ($writer->twitter)
-                            <a href="{{ $writer->twitter }}" target="_blank">تويتر</a>
+                        @if ($writer && $writer->facebook)
+                            <a href="{{ $writer->facebook }}" target="_blank" title="فيسبوك">
+                                <i class="fab fa-facebook" style="color: #888; font-size: 1.3em;"></i>
+                            </a>
                         @endif
-                        @if ($writer->instagram)
-                            <a href="{{ $writer->instagram }}" target="_blank">إنستغرام</a>
+                        @if ($writer && $writer->instagram)
+                            <a href="{{ $writer->instagram }}" target="_blank" title="انستغرام">
+                                <i class="fab fa-instagram" style="color: #888; font-size: 1.3em;"></i>
+                            </a>
                         @endif
+                        @if ($writer && $writer->linkedin)
+                            <a href="{{ $writer->linkedin }}" target="_blank" title="لينكدإن">
+                                <i class="fab fa-linkedin" style="color: #888; font-size: 1.3em;"></i>
+                            </a>
+                        @endif
+                        {{-- Add more socials as needed --}}
                     </div>
                 </div>
-
                 @include('user.components.ligne')
                 <div class="under-title-ligne-space"></div>
             </div>

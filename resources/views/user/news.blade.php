@@ -665,7 +665,7 @@
                 @if (optional($news->writer)->id)
                     <a href="{{ route('writer.show', $news->writer->id) }}">
                         <div class="writer-card">
-                            <img src="{{ $news->writer->image ?? asset('user.png') }}" alt="Writer" loading="lazy">
+                            <img src="{{ $news->writer->image ?? asset('user.png') }}" alt="Writer" loading="lazy" style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
 
                             <div class="writer-info">
                                 <span> <span style="font-weight:bold;">{{ $news->writer->name }}</span>
