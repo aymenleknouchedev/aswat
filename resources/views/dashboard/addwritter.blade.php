@@ -82,7 +82,8 @@
                             <div class="form-group">
                                 <label class="form-label" for="bio" data-en="Bio" data-ar="نبذة">نبذة</label>
                                 <div class="form-control-wrap">
-                                    <textarea name="bio" class="form-control" id="bio" rows="4" required>{{ old('bio') }}</textarea>
+                                    <textarea name="bio" class="form-control" id="bio" rows="4" maxlength="225" required>{{ old('bio') }}</textarea>
+                                    <small class="text-muted">225 حرف كحد أقصى</small>
                                 </div>
                                 @error('bio')
                                     <span class="text-danger small">{{ $message }}</span>
