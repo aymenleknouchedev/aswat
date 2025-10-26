@@ -124,7 +124,7 @@
             color: #333;
             line-height: 1.9;
             text-align: right;
-            margin: 10px 0px;
+            margin: 5px 0px;
         }
 
         .custom-article-content * {
@@ -194,7 +194,7 @@
         }
 
         .custom-article-content blockquote p {
-            margin: 0;
+            margin: 10px 0px;
             font-size: 28px;
             color: #222;
             line-height: 1.6;
