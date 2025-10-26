@@ -134,11 +134,6 @@
             box-sizing: border-box;
         }
 
-        .custom-article-content p {
-            margin-bottom: 18px !important;
-            line-height: 1.9 !important;
-        }
-
         .custom-article-content h2,
         .custom-article-content h3,
         .custom-article-content h4 {
