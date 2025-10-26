@@ -542,11 +542,45 @@ class HomePageController extends Controller
             $lastWeekNews = $lastWeekNews->concat($olderNews);
         }
 
-        $relatedNews = Content::where('title', '!=', $news->title)
+        // جلب الأخبار ذات نفس seo_keyword إذا وجد 4 مقالات
+        if (!empty($news->seo_keyword)) {
+            $relatedNews = Content::where('id', '!=', $news->id)
+            ->where('seo_keyword', $news->seo_keyword)
+            ->take(4)
+            ->get();
+
+            // إذا لم نجد 4 مقالات بنفس seo_keyword، نبحث حسب الوسوم (tags)
+            if ($relatedNews->count() < 4 && !empty($news->tags)) {
+            $tags = explode(',', $news->tags);
+            $relatedNews = Content::where('id', '!=', $news->id)
+                ->where(function ($query) use ($tags) {
+                foreach ($tags as $tag) {
+                    $query->orWhere('tags', 'like', '%' . trim($tag) . '%');
+                }
+                })
+                ->inRandomOrder()
+                ->take(4)
+                ->get();
+            }
+        } else if (!empty($news->tags)) {
+            $tags = explode(',', $news->tags);
+            $relatedNews = Content::where('id', '!=', $news->id)
+            ->where(function ($query) use ($tags) {
+                foreach ($tags as $tag) {
+                $query->orWhere('tags', 'like', '%' . trim($tag) . '%');
+                }
+            })
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+        } else {
+            // إذا لم يوجد seo_keyword ولا tags، جلب عشوائي من نفس القسم
+            $relatedNews = Content::where('id', '!=', $news->id)
             ->where('section_id', $sectionId)
             ->inRandomOrder()
             ->take(4)
             ->get();
+        }
 
         $this->recordView($news);
 
