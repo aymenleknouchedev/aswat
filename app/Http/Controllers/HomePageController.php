@@ -505,10 +505,13 @@ class HomePageController extends Controller
     public function showNews($title)
     {
         $news = Content::where('title', $title)->latest()->firstOrFail();
-
+        $lastNews = Content::where('id', '!=', $news->title)
+            ->latest()
+            ->take(5)
+            ->get();
         $this->recordView($news);
 
-        return view('user.news', compact('news'));
+        return view('user.news', compact('news', 'lastNews'));
     }
 
     protected function recordView($content)

@@ -339,6 +339,41 @@
             margin-right: 8px;
         }
 
+        .news-card-horizontal-news {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            direction: rtl;
+            margin-bottom: 10px;
+            /* Image right, text left for Arabic */
+        }
+
+        .news-card-horizontal-news .news-card-image-news img {
+            width: 140px;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+        }
+
+        .news-card-horizontal-news .news-card-text-news {
+            flex: 1;
+        }
+
+        .news-card-horizontal-news .news-card-text-news h3 {
+            font-size: 12px;
+            margin: 0 0 4px;
+            color: #74747C;
+            font-family: asswat-light;
+            font-weight: lighter;
+        }
+
+        .news-card-horizontal-news .news-card-text-news p {
+            font-size: 14px;
+            margin: 0;
+            font-family: asswat-medium;
+            line-height: 1.4;
+        }
+
         @media (max-width: 600px) {
             .floating-podcast-player {
                 width: 95%;
@@ -681,14 +716,14 @@
                 <p class="section-title">المزيد من {{ $news->category->name }}</p>
                 @include('user.components.ligne')
 
-                {{-- @foreach ($suggestions as $content)
+                @foreach ($lastNews as $content)
                     <div class="sp20" style="margin-top: 16px;"></div>
-                    <div class="news-card-horizontal">
-                        <div class="news-card-image">
+                    <div class="news-card-horizontal-news">
+                        <div class="news-card-image-news">
                             <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
                                 alt="{{ $content->title ?? 'تحلية مياه البحر' }}">
                         </div>
-                        <div class="news-card-text">
+                        <div class="news-card-text-news">
                             <h3> <x-category-links :content="$content" fallback="اقتصاد جزائري" /></h3>
                             <a href="{{ route('news.show', $content->title) }}"
                                 style="text-decoration: none; color: inherit;">
@@ -696,7 +731,7 @@
                             </a>
                         </div>
                     </div>
-                @endforeach --}}
+                @endforeach
             </div>
         </div>
 
