@@ -200,7 +200,7 @@
 
         .custom-article-content blockquote p {
             margin: 0;
-            font-size: 24px;
+            font-size: 28px;
             color: #222;
             line-height: 1.6;
             font-family: asswat-medium !important;
