@@ -21,13 +21,13 @@
         }
 
         .custom-main {
-            flex: 0 0 60%;
-            max-width: 60%;
+            flex: 0 0 70%;
+            max-width: 70%;
         }
 
         .custom-sidebar {
-            flex: 0 0 calc(40% - 20px);
-            max-width: calc(40% - 20px);
+            flex: 0 0 calc(30% - 20px);
+            max-width: calc(30% - 20px);
         }
 
         /* Responsive */
