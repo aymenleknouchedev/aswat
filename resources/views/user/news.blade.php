@@ -76,6 +76,8 @@
             line-height: 1.4;
             text-align: right;
             margin-bottom: 20px;
+            font-weight: bolder;
+
         }
 
         .custom-article-summary {
