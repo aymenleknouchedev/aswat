@@ -443,8 +443,6 @@
                         <a href="{{ route('writer.show', $news->writer->id) }}">
                             <span> {{ $news->writer->name }}</span>
                         </a>
-                    @else
-                        <span> بدون كاتب</span>
                     @endif
                 </div>
 
