@@ -184,7 +184,7 @@
         /* Blockquote */
         .custom-article-content blockquote {
             width: 100%;
-            background: #f5f5f5;
+            /* background: #f5f5f5; */
             padding: 60px 20px;
             margin: 30px 0;
             text-align: center;
