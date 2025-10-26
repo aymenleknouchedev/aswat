@@ -90,7 +90,7 @@
         .custom-meta,
         .custom-meta-date {
             font-size: 14px;
-            color: #888;
+            color: #141414;
             font-family: asswat-light;
             text-align: right;
         }
