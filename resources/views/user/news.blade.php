@@ -124,7 +124,7 @@
             color: #333;
             line-height: 1.9;
             text-align: right;
-            margin: 5px 0px;
+            margin: 10px 0px;
         }
 
         .custom-article-content * {
