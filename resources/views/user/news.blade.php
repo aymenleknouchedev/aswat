@@ -837,7 +837,9 @@
         </div>
         <section class="economy-feature-grid container">
             <p class="section-title">ذات صلة</p>
+            <div style="height: 5px"></div>
             @include('user.components.ligne')
+            <div style="height: 20px"></div>
             <div class="economy-grid-container-news">
                 @foreach ($relatedNews as $item)
                     <div class="economy-card-news">

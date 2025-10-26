@@ -57,7 +57,6 @@
             <div class="economy-card">
                 <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="{{ $item->title ?? '' }}">
-
                 <h3>
                     <x-category-links :content="$item" />
 
