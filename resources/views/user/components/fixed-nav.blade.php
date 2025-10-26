@@ -137,7 +137,6 @@
                 z-index: 2000;
                 display: flex;
                 align-items: center;
-                box-shadow: 0 1px 3px rgba(33, 136, 56, 0.2);
             }
 
             .admin-bar-content {
