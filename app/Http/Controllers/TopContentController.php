@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Section;
-use App\Http\Controllers\Controller;
 use App\Models\TopContent;
 use App\Models\Content;
 use Illuminate\Http\Request;
@@ -14,98 +13,66 @@ class TopContentController extends Controller
     {
         try {
             $sections = Section::all();
-            // $topContents = TopContent::with("content")->get();
+
+            // Get top contents (ordered)
             $topContents = TopContent::with('content')
                 ->orderBy('order', 'desc')
-                ->get()
-                ->pluck('content.title', 'id')
-                ->toArray();
-
-            
-            $existingContentIds = TopContent::pluck('content_id')->toArray();
-
-            $recentContents = Content::whereNotIn('id', $existingContentIds)
-                ->orderBy('created_at', 'desc')
-                ->take(30)
                 ->get();
 
-                return view("dashboard.topcontents", compact("topContents", "sections", "recentContents"));
+            // Load recent contents — don’t exclude any (since we now just disable them in UI)
+            $recentContents = Content::orderBy('created_at', 'desc')
+                ->take(50)
+                ->get();
+
+            return view("dashboard.topcontents", compact("topContents", "sections", "recentContents"));
         } catch (\Exception $e) {
-            // Handle exception
             return back()->withErrors(['error' => 'Failed to retrieve content']);
         }
     }
 
-    public function store($id)
-    {
-        try {
-            // Check if content already exists in top contents
-            $existing = TopContent::where('content_id', $id)->first();
-            if ($existing) {
-                return response()->json(['error'=> 'Content already exists in top contents'], 400);
-            }
+    /**
+     * Save or update top contents order and selection.
+     * Expected payload: { ids: [content_id1, content_id2, ...] }
+     */
+ public function updateOrder(Request $request)
+{
+    try {
+        $ids = $request->input('ids', []);
 
-            $count = TopContent::count();
-            if ($count >= 10) {
-                return response()->json(['error' => 'Maximum of 10 top contents allowed'], 400);
-            }
-
-            $topContent = new TopContent();
-            $topContent->content_id = $id;
-            $topContent->order = (TopContent::max('order') ?? 0) + 1;
-            $topContent->save();
-
+        // 🛑 Enforce max 10 contents rule
+        if (count($ids) > 10) {
             return response()->json([
-                'success' => true,
-                'content' => [
-                    'id' => $topContent->id,
-                    'title' => $topContent->content->title,
-                ],
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to add content to top contents'], 500);
+                'success' => false,
+                'error' => 'Too many items',
+                'message' => 'You can only have up to 10 top contents.',
+            ], 422);
         }
-    }
 
-    public function updateOrder(Request $request)
-    {
-        try {
-            $ids = $request->input('ids', []); 
+        // If no IDs, clear all top contents
+        if (empty($ids)) {
+            TopContent::truncate();
+            return response()->json(['success' => true, 'message' => 'List cleared']);
+        }
 
-            foreach ($ids as $index => $id) {
-                TopContent::where('id', $id)->update([
-                    'order' => count($ids) - $index 
-                ]);
-            }
+        // Remove old contents not in the new list
+        TopContent::whereNotIn('content_id', $ids)->delete();
 
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'error' => 'Failed to update order'], 500);
+        // Reorder or create new ones (reverse to keep top order consistent)
+        foreach (array_reverse($ids) as $index => $contentId) {
+            TopContent::updateOrCreate(
+                ['content_id' => $contentId],
+                ['order' => $index + 1]
+            );
+        }
+
+        return response()->json(['success' => true, 'message' => 'Order saved successfully']);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => 'Failed to update order',
+            'message' => $e->getMessage(),
+        ], 500);
     }
 }
 
-
-    public function destroy($id)
-    {
-        try {
-            $content = TopContent::find($id);
-            if ($content) {
-                $content->delete();
-            } else {
-                return response()->json(['error' => 'Top Content not found', 'success' => false], 404);
-            }
-             return response()->json([
-                'success' => true,
-                'message' => 'Content removed successfully',
-                'id' => $id,
-            ]);
-        } catch (\Exception $e) {
-             return response()->json([
-                'success' => false,
-                'message' => 'Failed to remove content',
-                'error' => $e->getMessage(),
-            ]);
-        }
-    }
 }

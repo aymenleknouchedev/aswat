@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'أصوات جزائرية | جميع الصفحات')
+@section('title', 'أصوات جزائرية | إدارة المحتويات المميزة')
 
 @section('content')
     <div class="nk-app-root">
@@ -17,23 +17,21 @@
                             <div class="nk-block-head">
                                 <div class="nk-block-head-content d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h4 class="nk-block-title" data-en="First Management" data-ar="إدارة الأولى">
-                                            إدارة الأولى
+                                        <h4 class="nk-block-title fw-bold" data-en="Top Contents Management" data-ar="إدارة المحتويات المميزة">
+                                            إدارة المحتويات المميزة
                                         </h4>
-                                        <p data-en="List of all top contents." data-ar="قائمة بجميع المحتويات المميزة.">
-                                            قائمة بجميع المحتويات المميزة.
+                                        <p class="text-muted" data-en="Manage and reorder featured contents." data-ar="قم بإدارة وترتيب المحتويات المميزة.">
+                                            قم بإدارة وترتيب المحتويات المميزة.
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
+                            {{-- Alerts --}}
                             @if (session('success'))
                                 <div class="alert alert-fill alert-success alert-icon">
                                     <em class="icon ni ni-check-circle"></em>
-                                    <span class="translatable" data-ar="تمت العملية بنجاح"
-                                        data-en="Operation completed successfully">
-                                        {{ session('success') ?? 'تمت العملية بنجاح' }}
-                                    </span>
+                                    <span>{{ session('success') }}</span>
                                 </div>
                             @endif
 
@@ -42,20 +40,19 @@
                                     <em class="icon ni ni-cross-circle"></em>
                                     <ul class="mb-0">
                                         @foreach ($errors->all() as $error)
-                                            <li class="translatable" data-ar="حدث خطأ ما" data-en="An error occurred">
-                                                {{ $error ?? 'حدث خطأ ما' }}
-                                            </li>
+                                            <li>{{ $error }}</li>
                                         @endforeach
                                     </ul>
                                 </div>
                             @endif
+
                         </div>
-                        
+
                         <div class="mt-4">
                             <form id="topContentSearchForm" class="mb-3">
                                 <div class="row g-2">
                                     <div class="col-md-6 col-lg-3">
-                                        <input type="text" name="search_all" id="searchAllInput" 
+                                        <input type="text" name="search_all" id="searchAllInput"
                                             class="form-control"
                                             placeholder="ابحث في جميع المحتويات...">
                                     </div>
@@ -71,20 +68,23 @@
                             </form>
 
                             <div class="row g-3">
-                                <!-- Left -->
+                                <!-- Left: Recent -->
                                 <div class="col-lg-6">
-                                    <div class="card h-100">
+                                    <div class="card">
                                         <div class="card-body p-0">
                                             <ul id="recentContentsList" class="list-group custom-scroll"
-                                                style="direction: rtl; max-height: 500px; overflow-y: auto;">
+                                                style="direction: rtl; max-height: 550px; overflow-y: auto;">
                                                 @foreach ($recentContents as $content)
-                                                    <li class="list-group-item d-flex align-items-center justify-content-between">
-                                                        <span style="font-size: 13px">{{ $content->title }}</span>
-                                                        @if (count($topContents) < 10)
-                                                            <a href="#" class="btn btn-link btn-sm add-content-btn p-0" data-id="{{ $content->id }}">
-                                                                <em class="icon ni ni-plus text-secondary"></em>
-                                                            </a>
-                                                        @endif
+                                                    <li class="list-group-item d-flex align-items-center justify-content-between"
+                                                        data-id="{{ $content->id }}">
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <span class="fw-semibold" style="font-size: 13px">{{ $content->title }}</span>
+                                                            <small class="text-muted">#{{ $content->id }}</small>
+                                                        </div>
+                                                        <a href="#" class="btn btn-icon btn-sm btn-outline-primary add-content-btn" data-id="{{ $content->id }}"
+                                                            title="Add to top">
+                                                            <em class="icon ni ni-plus"></em>
+                                                        </a>
                                                     </li>
                                                 @endforeach
                                             </ul>
@@ -92,36 +92,39 @@
                                     </div>
                                 </div>
 
-                                <!-- Right -->
+                                <!-- Right: Top -->
                                 <div class="col-lg-6">
-                                    <div class="card h-100">
+                                    <div class="card">
                                         <div class="card-body p-0">
                                             <ul id="sortable-list" class="list-group">
-                                                @foreach ($topContents as $id => $item)
+                                                @foreach ($topContents as $top)
                                                     <li class="list-group-item d-flex align-items-center justify-content-between"
-                                                        data-id="{{ $id }}">
+                                                        data-id="{{ $top->content_id }}">
                                                         <div class="d-flex align-items-center gap-2">
                                                             <span class="badge bg-primary d-inline-flex align-items-center justify-content-center"
                                                                 style="width: 28px; height: 28px; border-radius: 50%; font-size: 14px;">
                                                                 {{ $loop->iteration }}
                                                             </span>
-                                                            <span style="font-size: 13px">{{ $item }}</span>
+                                                            <div class="d-flex flex-column">
+                                                                <span style="font-size: 13px">{{ $top?->content?->title ?? 'بدون عنوان' }}</span>
+                                                                <small class="text-muted">#{{ $top->content_id }}</small>
+                                                            </div>
                                                         </div>
-                                                        <form method="POST" 
-                                                            class="d-inline mb-0 delete-top-content-form" 
-                                                            data-id="{{ $id }}" 
-                                                            action="{{ route('dashboard.topcontents.destroy', $id) }}"
-                                                        >
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-link text-danger p-0">
-                                                                <em class="icon ni ni-minus"></em>
-                                                            </button>
-                                                        </form>
+                                                        <button type="button" class="btn btn-icon btn-sm btn-outline-danger delete-top-content-btn"
+                                                            title="إزالة">
+                                                            <em class="icon ni ni-minus"></em>
+                                                        </button>
                                                     </li>
                                                 @endforeach
                                             </ul>
                                         </div>
+                                    </div>
+
+                                    <!-- Save button (sticky) -->
+                                    <div class="text-end mt-3">
+                                        <button id="saveChangesBtn" class="btn btn-primary px-4">
+                                            💾 حفظ التغييرات
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -135,213 +138,178 @@
     </div>
 @endsection
 
+{{-- Scripts placed outside section to match original pattern (if your layout doesn't support stacks) --}}
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-        function updateBadges() {
-            document.querySelectorAll("#sortable-list li").forEach((li, index) => {
-                let badge = li.querySelector(".badge");
-                if (badge) badge.textContent = index + 1;
-            });
+    const sortableList = document.getElementById("sortable-list");
+    const recentList = document.getElementById("recentContentsList");
+    const saveBtn = document.getElementById("saveChangesBtn");
+
+    let topContents = new Map();
+
+    // Initialize existing top contents
+    document.querySelectorAll("#sortable-list li").forEach(li => {
+        const id = li.dataset.id?.toString();
+        if (id) {
+            const titleEl = li.querySelector("div > div > span") || li.querySelector("span:nth-child(2)");
+            const title = titleEl ? titleEl.textContent.trim() : id;
+            topContents.set(id, title);
         }
-
-        new Sortable(document.getElementById('sortable-list'), {
-            animation: 150,
-            ghostClass: 'bg-light',
-            onEnd: function () {
-                let ids = [];
-                document.querySelectorAll("#sortable-list li").forEach((li, index) => {
-                    ids.push(li.getAttribute("data-id"));
-                });
-
-                updateBadges();
-
-                fetch("{{ route('dashboard.topcontents.updateOrder') }}", {
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ ids: ids })
-                })
-                .then(res => res.json())
-                .then(response => {
-                    if (!response.success) {
-                        alert("⚠️ لم يتم حفظ الترتيب!");
-                    }
-                })
-                .catch(err => {
-                    alert("⚠️ حدث خطأ أثناء حفظ الترتيب.");
-                    console.error(err);
-                });
-            }
-        });
-
-        const form = document.getElementById("topContentSearchForm");
-        const resultsDiv = document.getElementById("recentContentsList");
-        const originalContents = resultsDiv.innerHTML;
-
-        form.addEventListener("input", function () {
-            let formData = new FormData(form);
-            let query = new URLSearchParams(formData).toString();
-
-            if (!formData.get("search_all") && !formData.get("section_filter")) {
-                resultsDiv.innerHTML = originalContents;
-                bindAddButtons();
-                return;
-            }
-
-            fetch("{{ route('api.search.contents') }}?" + query)
-                .then(res => res.json())
-                .then(data => {
-
-                    resultsDiv.innerHTML = "";
-
-                    if (data.length === 0) {
-                        resultsDiv.innerHTML = `<li class="list-group-item text-muted">❌ لا توجد نتائج.</li>`;
-                        return;
-                    }
-
-                    data.forEach(item => {
-                        let li = document.createElement("li");
-                        li.className = "list-group-item d-flex align-items-center justify-content-between";
-                        li.innerHTML = `
-                            <span style="font-size: 13px">${item.title}</span>
-                            <a href="#" class="btn btn-sm btn-link add-content-btn p-0" data-id="${item.id}">
-                                <em class="icon ni ni-plus text-secondary"></em>
-                            </a>
-                        `;
-                        resultsDiv.appendChild(li);
-                    });
-
-                    bindAddButtons();
-                })
-                .catch(err => {
-                    resultsDiv.innerHTML = `<li class="list-group-item text-danger">⚠️ حدث خطأ أثناء البحث.</li>`;
-                    console.error(err);
-                });
-        });
-
-        function bindAddButtons() {
-            document.querySelectorAll(".add-content-btn").forEach(btn => {
-                btn.addEventListener("click", function (e) {
-                    e.preventDefault();
-                    let id = this.dataset.id;
-
-                    fetch("{{ url('/dashboard/top-contents') }}/" + id, {
-                        method: "POST",
-                        headers: {
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                            "Accept": "application/json",
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({})
-                    })
-                        .then(res => res.json().catch(() => ({})))
-                        .then(response => {
-                            if (response.success) {
-                                let id = response.content.id;
-                                let title = response.content.title;
-
-                                let li = document.createElement("li");
-                                li.className = "list-group-item d-flex align-items-center justify-content-between";
-                                li.setAttribute("data-id", id);
-                                li.innerHTML = `
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="badge bg-primary d-inline-flex align-items-center justify-content-center"
-                                            style="width: 28px; height: 28px; border-radius: 50%; font-size: 14px;">
-                                        </span>
-                                        <span style="font-size: 13px">${title}</span>
-                                    </div>
-                                    
-                                    <form method="POST" 
-                                        action="/dashboard/top-contents/delete/${id}"
-                                        class="d-inline mb-0 delete-top-content-form" 
-                                        data-id="${id}"
-                                    >
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-link text-danger p-0">
-                                            <em class="icon ni ni-minus"></em>
-                                        </button>
-                                    </form>
-                                `;
-
-                                this.closest("li")?.remove();
-
-                                const sortableList = document.getElementById("sortable-list");
-                                if (!sortableList) return console.error('#sortable-list not found');
-
-                                // Use prepend (works in modern browsers). Fallback to insertBefore with firstElementChild.
-                                if (sortableList.prepend) {
-                                    sortableList.prepend(li);
-                                } else {
-                                    sortableList.insertBefore(li, sortableList.firstElementChild || null);
-                                }
-
-                                updateBadges();
-                                bindDeleteButtons();
-                            } else {
-                                alert(response.error ?? "❌ لم يتمكن من إضافة المحتوى.");
-                            }
-                        })
-                        .catch(err => {
-                            alert("⚠️ حدث خطأ أثناء الإضافة.");
-                            console.error(err);
-                        });
-                });
-            });
-        }
-
-        var isDeleting = false;
-        function bindDeleteButtons() {
-            document.querySelectorAll(".delete-top-content-form").forEach(form => {
-                form.addEventListener("submit", function (e) {
-                    e.preventDefault();
-
-                    let id = this.dataset.id;
-                    let url = this.getAttribute("action");
-                    let li = this.closest("li");
-
-                    if (isDeleting) return;
-                    isDeleting = true;
-
-                    fetch(url, {
-                        method: "DELETE",
-                        headers: {
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                            "Accept": "application/json",
-                        }
-                    })
-                    .then(res => res.json())
-                    .then(response => {
-                        if (response.success) {
-                            li.style.transition = "opacity 0.3s";
-                            li.style.opacity = "0";
-                            li.remove(this);
-                            updateBadges();
-                            // setTimeout(() => {
-                            //     li.remove();
-                            //     updateBadges();
-                            // }, 300);
-                        } else {
-                            alert(response.error ?? "❌ فشل حذف المحتوى.");
-                        }
-                    })
-                    .finally(() => {
-                        isDeleting = false;
-                    })
-                    .catch(err => {
-                        alert("⚠️ حدث خطأ أثناء الحذف.");
-                        console.error(err);
-                    });
-                });
-            });
-        }
-
-        bindAddButtons();
-        bindDeleteButtons();
-        updateBadges();
     });
+
+    function updateBadges() {
+        document.querySelectorAll("#sortable-list li").forEach((li, index) => {
+            const badge = li.querySelector(".badge");
+            if (badge) badge.textContent = index + 1;
+        });
+    }
+
+    function refreshDisabledState() {
+        document.querySelectorAll("#recentContentsList li").forEach(li => {
+            const id = li.dataset.id?.toString();
+            const btn = li.querySelector(".add-content-btn");
+            if (!id || !btn) return;
+
+            if (topContents.has(id)) {
+                li.classList.add("disabled");
+                btn.classList.add("disabled");
+                btn.style.pointerEvents = "none";
+                btn.style.opacity = "0.5";
+            } else {
+                li.classList.remove("disabled");
+                btn.classList.remove("disabled");
+                btn.style.pointerEvents = "auto";
+                btn.style.opacity = "1";
+            }
+        });
+    }
+
+    function bindAddButtons() {
+        document.querySelectorAll(".add-content-btn").forEach(btn => {
+            btn.replaceWith(btn.cloneNode(true));
+        });
+
+        document.querySelectorAll(".add-content-btn").forEach(btn => {
+            btn.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                const id = this.dataset.id?.toString();
+                if (!id) return;
+
+                // 🟩 Prevent adding more than 10 items
+                if (topContents.size >= 10) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'الحد الأقصى 10 محتويات فقط',
+                        text: 'لا يمكنك إضافة المزيد من المحتويات المميزة.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    return;
+                }
+
+                if (topContents.has(id)) return;
+
+                const recentLi = this.closest("li");
+                const titleEl = recentLi?.querySelector("span.fw-semibold, span") || recentLi?.querySelector("span");
+                const title = titleEl ? titleEl.textContent.trim() : id;
+
+                topContents.set(id, title);
+
+                const li = document.createElement("li");
+                li.className = "list-group-item d-flex align-items-center justify-content-between";
+                li.dataset.id = id;
+                li.innerHTML = `
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary d-inline-flex align-items-center justify-content-center"
+                            style="width: 28px; height: 28px; border-radius: 50%; font-size: 14px;"></span>
+                        <div class="d-flex flex-column">
+                            <span style="font-size: 13px">${escapeHtml(title)}</span>
+                            <small class="text-muted">#${id}</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-icon btn-sm btn-outline-danger delete-top-content-btn" title="إزالة">
+                        <em class="icon ni ni-minus"></em>
+                    </button>
+                `;
+
+                sortableList.appendChild(li);
+                bindDeleteButtons();
+                updateBadges();
+                refreshDisabledState();
+            });
+        });
+    }
+
+    function bindDeleteButtons() {
+        document.querySelectorAll(".delete-top-content-btn").forEach(btn => {
+            btn.replaceWith(btn.cloneNode(true));
+        });
+
+        document.querySelectorAll(".delete-top-content-btn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const li = this.closest("li");
+                if (!li) return;
+
+                const id = li.dataset.id?.toString();
+                if (id) topContents.delete(id);
+
+                li.remove();
+                updateBadges();
+                refreshDisabledState();
+            });
+        });
+    }
+
+    function escapeHtml(text) {
+        var map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+        return String(text).replace(/[&<>"']/g, m => map[m]);
+    }
+
+    new Sortable(sortableList, { animation: 150, ghostClass: 'bg-light', onEnd: updateBadges });
+
+    if (saveBtn) {
+        saveBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            const ids = Array.from(document.querySelectorAll("#sortable-list li")).map(li => li.dataset.id).filter(Boolean);
+
+            saveBtn.disabled = true;
+            saveBtn.textContent = "حفظ...";
+
+            fetch("{{ route('dashboard.topcontents.updateOrder') }}", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ ids })
+            })
+            .then(res => res.json())
+            .then(response => {
+                if (response && response.success) {
+                    Swal.fire({ icon: 'success', title: 'تم حفظ التغييرات بنجاح', timer: 2000, showConfirmButton: false });
+                } else {
+                    Swal.fire({ icon: 'error', title: response.message || '⚠️ حدث خطأ أثناء حفظ التغييرات.' });
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                Swal.fire({ icon: 'error', title: '⚠️ حدث خطأ أثناء حفظ التغييرات.' });
+            })
+            .finally(() => {
+                saveBtn.disabled = false;
+                saveBtn.textContent = "💾 حفظ التغييرات";
+            });
+        });
+    }
+
+    bindAddButtons();
+    bindDeleteButtons();
+    updateBadges();
+    refreshDisabledState();
+});
 </script>
+
