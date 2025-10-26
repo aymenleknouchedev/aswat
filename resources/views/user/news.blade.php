@@ -71,13 +71,11 @@
 
         .custom-article-title {
             font-size: 40px;
-            font-family: asswat-regular;
+            font-family: asswat-medium;
             color: #141414;
             line-height: 1.4;
             text-align: right;
             margin-bottom: 20px;
-            font-weight: bolder;
-
         }
 
         .custom-article-summary {
