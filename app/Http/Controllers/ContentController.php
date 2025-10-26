@@ -334,12 +334,12 @@ class ContentController extends BaseController
             ...$validated,
             'is_latest'  => $request->boolean('is_latest'),
             'importance' => $request->input('importance'),
-            'user_id'    => \Illuminate\Support\Facades\Auth::id(),
+            'user_id'    => Auth::id(),
         ]);
 
         if ($request->filled('review_description')) {
             \App\Models\ContentReview::create([
-                'reviewer_id' => \Illuminate\Support\Facades\Auth::id(),
+                'reviewer_id' => Auth::id(),
                 'content_id'  => $content->id,
                 'message'     => $request->review_description,
             ]);
