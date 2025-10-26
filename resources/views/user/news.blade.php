@@ -379,6 +379,7 @@
             transform: translateX(10px);
             pointer-events: none;
             transition: all 0.3s ease;
+            
         }
 
         .share-container.active .share-icons {
@@ -395,9 +396,18 @@
             justify-content: center;
         }
 
+        .share-icons a i {
+           font-size: 18px;
+        }
+
+        .share-icons a i:hover {
+           color: #333;
+           transition: color 0.3s ease;
+        }
+
         .share-icons img {
-            width: 26px;
-            height: 26px;
+            width: 27px;
+            height: 27px;
         }
 
         .share-btn {
@@ -486,28 +496,112 @@
                         <div class="share-icons">
                             {{-- Facebook --}}
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
-                                target="_blank" title="مشاركة على فيسبوك" rel="noopener">
-                                <img src="{{ asset('user/assets/icons/fb.png') }}" alt="Facebook">
+                                target="_blank" title="مشاركة على فيسبوك" rel="noopener" class="share-icon">
+                                <i class="fa-brands fa-facebook"></i>
                             </a>
 
                             {{-- X (Twitter) --}}
                             <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($shareTitle . ' - ' . $shareDescription) }}"
-                                target="_blank" title="مشاركة على X" rel="noopener">
-                                <img src="{{ asset('user/assets/icons/twitter.png') }}" alt="X">
+                                target="_blank" title="مشاركة على X" rel="noopener" class="share-icon">
+                                <i class="fa-brands fa-x-twitter"></i>
                             </a>
 
                             {{-- WhatsApp --}}
                             <a href="https://wa.me/?text={{ urlencode($shareTitle . ' - ' . $shareDescription . ' ' . request()->fullUrl()) }}"
-                                target="_blank" title="مشاركة على واتساب" rel="noopener">
-                                <img src="{{ asset('user/assets/icons/whatsapp.png') }}" alt="WhatsApp">
+                                target="_blank" title="مشاركة على واتساب" rel="noopener" class="share-icon">
+                                <i class="fa-brands fa-whatsapp"></i>
                             </a>
-                        </div>
 
+                            {{-- نسخ الرابط --}}
+                            <div style="position: relative; display: inline-block;">
+                                <a href="#"
+                                    onclick="navigator.clipboard.writeText('{{ request()->fullUrl() }}'); showCopyMessage(); return false;"
+                                    title="نسخ الرابط" rel="noopener" class="share-icon" style="position: relative;">
+                                    <i class="fa-solid fa-link"></i>
+                                </a>
+                                <div id="copyMessage" style="display:none;position:absolute;top:-38px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:8px 18px;border-radius:8px;z-index:9999;font-family:asswat-medium;font-size:9px;white-space:nowrap;">
+                                    تم نسخ الرابط!
+                                </div>
+                            </div>
+                            <script>
+                                function showCopyMessage() {
+                                    const msg = document.getElementById('copyMessage');
+                                    msg.style.display = 'block';
+                                    setTimeout(() => {
+                                        msg.style.display = 'none';
+                                    }, 1800);
+                                }
+                            </script>
+                        </div>
+                        <link rel="stylesheet"
+                            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
                         <button class="share-btn" id="shareToggle" title="مشاركة">
                             <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
                         </button>
                     </div>
+                    <style>
+                        .share-container {
+                            display: flex;
+                            align-items: center;
+                            justify-content: flex-end;
+                            gap: 10px;
+                            position: relative;
+                        }
+
+                        .share-icons {
+                            display: flex;
+                            gap: 8px;
+                            opacity: 0;
+                            transform: translateX(-10px);
+                            pointer-events: none;
+                            transition: all 0.3s ease;
+                        }
+
+                        .share-container.active .share-icons {
+                            transform: translateX(0);
+                            pointer-events: auto;
+                        }
+
+                        .share-icons a {
+                            border-radius: 50%;
+                            padding: 6px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: #929292;
+                        }
+
+                        .share-icons a:hover {
+                            border-radius: 50%;
+                            padding: 6px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: #929292;
+                        }
+
+                        .share-icons img {
+                            width: 30px;
+                            height: 30px;
+                        }
+
+                        .share-btn {
+                            background: #ffffff;
+                            border: none;
+                            border-radius: 50%;
+                            width: 27px;
+                            height: 27px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                        }
+
+                        .share-btn:hover {
+                            background: #f5f5f5;
+                        }
+                    </style>
                 </div>
 
 
