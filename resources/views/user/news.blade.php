@@ -242,7 +242,6 @@
             height: 32px;
             background: url('/user/assets/icons/up.svg') no-repeat center;
             background-size: contain;
-            transform: scaleY(-1);
         }
 
         .custom-article-content blockquote::after {
