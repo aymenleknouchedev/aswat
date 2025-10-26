@@ -104,20 +104,26 @@
                         <i class="fas fa-gauge"></i> <!-- Dashboard icon -->
                     </a>
                     @if (isset($news))
-                        <a  href="{{ route('dashboard.content.edit', $news->id) }}"
-                            class="btn btn-sm btn-warning" title="تعديل">
+                        <a href="{{ route('dashboard.content.edit', $news->id) }}" class="btn btn-sm btn-warning"
+                            title="تعديل">
                             <i class="fas fa-pencil"></i> <!-- Edit icon -->
+                        </a>
+                    @else
+                        <a href="{{ route('dashboard.content.create') }}" class="btn btn-sm btn-warning"
+                            title="إضافة خبر">
+                            <i class="fa-solid fa-plus"></i> <!-- Add icon -->
                         </a>
                     @endif
                     @if (isset($writer))
-                        <a  href="{{ route('dashboard.writer.edit', $writer->id) }}"
-                            class="btn btn-sm btn-warning" title="تعديل">
+                        <a href="{{ route('dashboard.writer.edit', $writer->id) }}" class="btn btn-sm btn-warning"
+                            title="تعديل">
                             <i class="fas fa-pencil"></i> <!-- Edit icon -->
                         </a>
                     @endif
 
                     <a href="{{ route('dashboard.logout') }}"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="تسجيل الخروج">
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                        title="تسجيل الخروج">
                         <i class="fas fa-arrow-right-from-bracket"></i> <!-- Logout icon -->
                     </a>
                     <form id="logout-form" action="{{ route('dashboard.logout') }}" method="POST"
