@@ -82,13 +82,24 @@
                             <div class="form-group">
                                 <label class="form-label" for="bio" data-en="Bio" data-ar="نبذة">نبذة</label>
                                 <div class="form-control-wrap">
-                                    <textarea name="bio" class="form-control" id="bio" rows="4" maxlength="225" required>{{ old('bio') }}</textarea>
-                                    <small class="text-muted">225 حرف كحد أقصى</small>
+                                    <textarea name="bio" class="form-control" id="bio" rows="4" maxlength="225" required>{{ old('bio', isset($writer) ? $writer->bio : '') }}</textarea>
+                                    <small class="text-muted">
+                                        <span id="bio-count">{{ strlen(old('bio', isset($writer) ? $writer->bio : '')) }}</span> / 225
+                                    </small>
                                 </div>
                                 @error('bio')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    var bio = document.getElementById('bio');
+                                    var count = document.getElementById('bio-count');
+                                    bio.addEventListener('input', function () {
+                                        count.textContent = bio.value.length;
+                                    });
+                                });
+                            </script>
 
                             <!-- صورة الكاتب -->
                             <div class="form-group">

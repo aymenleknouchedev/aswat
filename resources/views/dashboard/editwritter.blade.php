@@ -45,7 +45,17 @@
                             <!-- نبذة -->
                             <div class="form-group">
                                 <label class="form-label" for="bio">نبذة</label>
-                                <textarea name="bio" id="bio" rows="4" class="form-control" required>{{ old('bio', $writer->bio) }}</textarea>
+                                <textarea name="bio" id="bio" rows="4" maxlength="225" class="form-control" required>{{ old('bio', $writer->bio) }}</textarea>
+                                <small class="text-muted"><span id="bio-count">{{ strlen(old('bio', $writer->bio)) }}</span></small>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        var bio = document.getElementById('bio');
+                                        var count = document.getElementById('bio-count');
+                                        bio.addEventListener('input', function () {
+                                            count.textContent = bio.value.length;
+                                        });
+                                    });
+                                </script>
                             </div>
 
                             <!-- الصورة -->
