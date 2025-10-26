@@ -25,35 +25,35 @@
                     checked>
                 <label for="normal-radio" class="media-type-label">
                     <i class="fas fa-image"></i>
-                    <span>صورة</span>
+                    <span data-ar="صورة" data-en="Image">صورة</span>
                 </label>
             </div>
             <div class="media-type-card">
                 <input type="radio" name="template" id="video-radio" value="video" class="media-type-input">
                 <label for="video-radio" class="media-type-label">
                     <i class="fas fa-video"></i>
-                    <span>فيديو</span>
+                    <span data-ar="فيديو" data-en="Video">فيديو</span>
                 </label>
             </div>
             <div class="media-type-card">
                 <input type="radio" name="template" id="podcast-radio" value="podcast" class="media-type-input">
                 <label for="podcast-radio" class="media-type-label">
                     <i class="fas fa-podcast"></i>
-                    <span>بودكاست</span>
+                    <span data-ar="بودكاست" data-en="Podcast">بودكاست</span>
                 </label>
             </div>
             <div class="media-type-card">
                 <input type="radio" name="template" id="album-radio" value="album" class="media-type-input">
                 <label for="album-radio" class="media-type-label">
                     <i class="fas fa-images"></i>
-                    <span>ألبوم</span>
+                    <span data-ar="ألبوم" data-en="Album">ألبوم</span>
                 </label>
             </div>
             <div class="media-type-card">
                 <input type="radio" name="template" id="article-radio" value="no_image" class="media-type-input">
                 <label for="article-radio" class="media-type-label">
                     <i class="fas fa-file-alt"></i>
-                    <span>مقال</span>
+                    <span data-ar="مقال" data-en="Article">مقال</span>
                 </label>
             </div>
         </div>
@@ -69,7 +69,8 @@
     <div class="media-summary-panel mt-4">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">ملخص الوسائط المختارة</h5>
+                <h5 class="mb-0" data-ar="ملخص الوسائط المختارة" data-en="Selected Media Summary">ملخص الوسائط
+                    المختارة</h5>
                 <span class="badge bg-primary" id="selected-count">0</span>
             </div>
             <div class="card-body">
@@ -86,8 +87,8 @@
             this.state = {
                 currentTemplate: 'normal_image',
                 currentField: '',
-                selectedMedia: {}
-                // ملاحظة: الحقول التي تنتهي بـ _assets تُخزَّن كمصفوفات
+                selectedMedia: {},
+                currentLanguage: 'ar' // Default language
             };
 
             // إعدادات اختيارية للوكيل (للتخطّي عبر نفس الأصل)
@@ -102,30 +103,106 @@
                 normal_image: ['normal_main_image', 'normal_content_image', 'normal_mobile_image'],
                 video: ['video_main_image', 'video_content_image', 'video_mobile_image', 'video_file'],
                 podcast: ['podcast_main_image', 'podcast_content_image', 'podcast_mobile_image',
-                    'podcast_file'],
+                    'podcast_file'
+                ],
                 album: ['album_main_image', 'album_content_image', 'album_mobile_image', 'album_assets'],
                 no_image: ['no_image_main_image', 'no_image_mobile_image']
             };
 
             // Field labels for validation messages
             this.fieldLabels = {
-                normal_main_image: 'الصورة الرئيسية',
-                normal_content_image: 'صورة المحتوى',
-                normal_mobile_image: 'صورة الموبايل',
-                video_main_image: 'صورة الفيديو الرئيسية',
-                video_content_image: 'صورة محتوى الفيديو',
-                video_mobile_image: 'صورة الفيديو للموبايل',
-                video_file: 'ملف الفيديو',
-                podcast_main_image: 'صورة البودكاست الرئيسية',
-                podcast_content_image: 'صورة محتوى البودكاست',
-                podcast_mobile_image: 'صورة البودكاست للموبايل',
-                podcast_file: 'ملف البودكاست',
-                album_main_image: 'صورة الألبوم الرئيسية',
-                album_content_image: 'صورة محتوى الألبوم',
-                album_mobile_image: 'صورة الألبوم للموبايل',
-                album_assets: 'أصول الألبوم',
-                no_image_main_image: 'الصورة الرئيسية',
-                no_image_mobile_image: 'صورة المقال للموبايل'
+                normal_main_image: {
+                    ar: 'الصورة الرئيسية',
+                    en: 'Main Image'
+                },
+                normal_content_image: {
+                    ar: 'صورة المحتوى',
+                    en: 'Content Image'
+                },
+                normal_mobile_image: {
+                    ar: 'صورة الموبايل',
+                    en: 'Mobile Image'
+                },
+                video_main_image: {
+                    ar: 'صورة الفيديو الرئيسية',
+                    en: 'Video Main Image'
+                },
+                video_content_image: {
+                    ar: 'صورة محتوى الفيديو',
+                    en: 'Video Content Image'
+                },
+                video_mobile_image: {
+                    ar: 'صورة الفيديو للموبايل',
+                    en: 'Video Mobile Image'
+                },
+                video_file: {
+                    ar: 'ملف الفيديو',
+                    en: 'Video File'
+                },
+                podcast_main_image: {
+                    ar: 'صورة البودكاست الرئيسية',
+                    en: 'Podcast Main Image'
+                },
+                podcast_content_image: {
+                    ar: 'صورة محتوى البودكاست',
+                    en: 'Podcast Content Image'
+                },
+                podcast_mobile_image: {
+                    ar: 'صورة البودكاست للموبايل',
+                    en: 'Podcast Mobile Image'
+                },
+                podcast_file: {
+                    ar: 'ملف البودكاست',
+                    en: 'Podcast File'
+                },
+                album_main_image: {
+                    ar: 'صورة الألبوم الرئيسية',
+                    en: 'Album Main Image'
+                },
+                album_content_image: {
+                    ar: 'صورة محتوى الألبوم',
+                    en: 'Album Content Image'
+                },
+                album_mobile_image: {
+                    ar: 'صورة الألبوم للموبايل',
+                    en: 'Album Mobile Image'
+                },
+                album_assets: {
+                    ar: 'أصول الألبوم',
+                    en: 'Album Assets'
+                },
+                no_image_main_image: {
+                    ar: 'الصورة الرئيسية',
+                    en: 'Main Image'
+                },
+                no_image_mobile_image: {
+                    ar: 'صورة المقال للموبايل',
+                    en: 'Article Mobile Image'
+                }
+            };
+
+            // Template display names
+            this.templateNames = {
+                normal_image: {
+                    ar: 'الصورة',
+                    en: 'Image'
+                },
+                video: {
+                    ar: 'الفيديو',
+                    en: 'Video'
+                },
+                podcast: {
+                    ar: 'البودكاست',
+                    en: 'Podcast'
+                },
+                album: {
+                    ar: 'الألبوم',
+                    en: 'Album'
+                },
+                no_image: {
+                    ar: 'المقال',
+                    en: 'Article'
+                }
             };
 
             this.init();
@@ -150,6 +227,37 @@
 
             // Add form validation
             this.setupFormValidation();
+
+            // Initialize language
+            this.detectLanguage();
+        }
+
+        detectLanguage() {
+            // You can implement language detection logic here
+            // For now, we'll use Arabic as default
+            this.state.currentLanguage = 'ar';
+        }
+
+        setLanguage(lang) {
+            this.state.currentLanguage = lang;
+            this.updateUITexts();
+        }
+
+        updateUITexts() {
+            // Update all dynamic texts based on current language
+            document.querySelectorAll('[data-ar][data-en]').forEach(element => {
+                element.textContent = element.getAttribute(`data-${this.state.currentLanguage}`);
+            });
+
+            // Update template content
+            this.loadTemplateContent(this.state.currentTemplate);
+
+            // Update summary
+            this.updateSummary();
+        }
+
+        getText(key) {
+            return this[key]?.[this.state.currentLanguage] || key;
         }
 
         bindEvents() {
@@ -219,10 +327,16 @@
 
             if (alert && message) {
                 const templateName = this.getTemplateDisplayName(this.state.currentTemplate);
-                const missingFieldNames = this.missingFields.map(field => this.fieldLabels[field]).join('، ');
+                const missingFieldNames = this.missingFields.map(field =>
+                    this.fieldLabels[field][this.state.currentLanguage]
+                ).join('، ');
 
-                message.textContent =
-                    `يجب تعبئة جميع الوسائط المطلوبة لنوع ${templateName}. الحقول المطلوبة: ${missingFieldNames}`;
+                const errorMessages = {
+                    ar: `يجب تعبئة جميع الوسائط المطلوبة لنوع ${templateName}. الحقول المطلوبة: ${missingFieldNames}`,
+                    en: `All required media must be filled for ${templateName} type. Required fields: ${missingFieldNames}`
+                };
+
+                message.textContent = errorMessages[this.state.currentLanguage];
                 alert.classList.remove('d-none');
 
                 // Highlight missing fields
@@ -295,14 +409,7 @@
         }
 
         getTemplateDisplayName(template) {
-            const names = {
-                normal_image: 'الصورة',
-                video: 'الفيديو',
-                podcast: 'البودكاست',
-                album: 'الألبوم',
-                no_image: 'المقال'
-            };
-            return names[template] || template;
+            return this.templateNames[template]?.[this.state.currentLanguage] || template;
         }
 
         /* ================== STATE PERSISTENCE ================== */
@@ -310,7 +417,8 @@
             try {
                 const stateToSave = {
                     currentTemplate: this.state.currentTemplate,
-                    selectedMedia: this.state.selectedMedia
+                    selectedMedia: this.state.selectedMedia,
+                    currentLanguage: this.state.currentLanguage
                 };
                 localStorage.setItem('mediaManagerState', JSON.stringify(stateToSave));
             } catch (e) {
@@ -331,6 +439,11 @@
                         if (radio) radio.checked = true;
                     }
 
+                    // Restore language
+                    if (parsedState.currentLanguage) {
+                        this.state.currentLanguage = parsedState.currentLanguage;
+                    }
+
                     // Restore media selections
                     if (parsedState.selectedMedia) {
                         this.state.selectedMedia = parsedState.selectedMedia;
@@ -344,6 +457,9 @@
                             }
                         });
                     }
+
+                    // Update UI texts
+                    this.updateUITexts();
 
                     // Highlight required fields after restoration
                     setTimeout(() => this.highlightRequiredFields(), 100);
@@ -408,11 +524,12 @@
             setTimeout(() => this.highlightRequiredFields(), 50);
         }
 
-        createField(fieldName, label, icon, type = 'image') {
+        createField(fieldName, labelAr, labelEn, icon, type = 'image') {
+            const label = this.state.currentLanguage === 'ar' ? labelAr : labelEn;
             const media = this.state.selectedMedia[fieldName];
             return `
       <div class="field-card">
-        <label class="field-label">${label}</label>
+        <label class="field-label" data-ar="${labelAr}" data-en="${labelEn}">${label}</label>
         <div class="field-preview" id="${fieldName}_preview">
           ${media ? this.getMediaPreview(media, fieldName) : this.getEmptyState(fieldName, icon, type)}
         </div>
@@ -420,7 +537,9 @@
         }
 
         /* ============== COLLECTION FIELD ( *_assets ) ============== */
-        createAssetsField(fieldName, label) {
+        createAssetsField(fieldName, labelAr, labelEn) {
+            const label = this.state.currentLanguage === 'ar' ? labelAr : labelEn;
+
             // حالة واجهة مخصصة
             this.state._assetsUi = this.state._assetsUi || {};
             this.state._assetsUi[fieldName] = Object.assign({
@@ -439,24 +558,24 @@
             return `
       <div class="field-card field-card--full" data-field="${fieldName}">
         <div class="field-label assets-label-row">
-          <span>${label}</span>
+          <span data-ar="${labelAr}" data-en="${labelEn}">${label}</span>
           <div class="assets-toolbar" data-assets-toolbar="${fieldName}">
             <div class="assets-toolbar-group">
-              <label class="assets-size-label">حجم</label>
+              <label class="assets-size-label" data-ar="حجم" data-en="Size">${this.state.currentLanguage === 'ar' ? 'حجم' : 'Size'}</label>
               <input type="range" min="120" max="260" step="10" value="${ui.size}"
                      oninput="mediaTabManager.onAssetsSize('${fieldName}', this.value)">
               <button type="button" class="btn btn-sm"
-                      onclick="mediaTabManager.toggleAssetsView('${fieldName}')">تبديل العرض</button>
+                      onclick="mediaTabManager.toggleAssetsView('${fieldName}')" data-ar="تبديل العرض" data-en="Toggle View">${this.state.currentLanguage === 'ar' ? 'تبديل العرض' : 'Toggle View'}</button>
               <button type="button" class="btn btn-sm btn-outline-primary"
-                      onclick="mediaTabManager.openAssetsPicker('${fieldName}')">إضافة عناصر</button>
+                      onclick="mediaTabManager.openAssetsPicker('${fieldName}')" data-ar="إضافة عناصر" data-en="Add Items">${this.state.currentLanguage === 'ar' ? 'إضافة عناصر' : 'Add Items'}</button>
               <button type="button" class="btn btn-sm"
-                      onclick="mediaTabManager.selectAllAssets('${fieldName}')">تحديد الكل</button>
+                      onclick="mediaTabManager.selectAllAssets('${fieldName}')" data-ar="تحديد الكل" data-en="Select All">${this.state.currentLanguage === 'ar' ? 'تحديد الكل' : 'Select All'}</button>
               <button type="button" class="btn btn-sm"
-                      onclick="mediaTabManager.clearSelection('${fieldName}')">إلغاء التحديد</button>
+                      onclick="mediaTabManager.clearSelection('${fieldName}')" data-ar="إلغاء التحديد" data-en="Clear Selection">${this.state.currentLanguage === 'ar' ? 'إلغاء التحديد' : 'Clear Selection'}</button>
               <button type="button" class="btn btn-sm btn-outline-danger"
-                      onclick="mediaTabManager.deleteSelectedAssets('${fieldName}')">حذف المحدد</button>
+                      onclick="mediaTabManager.deleteSelectedAssets('${fieldName}')" data-ar="حذف المحدد" data-en="Delete Selected">${this.state.currentLanguage === 'ar' ? 'حذف المحدد' : 'Delete Selected'}</button>
               <button type="button" class="btn btn-sm btn-outline-danger"
-                      onclick="mediaTabManager.clearAllAssets('${fieldName}')">تفريغ الألبوم</button>
+                      onclick="mediaTabManager.clearAllAssets('${fieldName}')" data-ar="تفريغ الألبوم" data-en="Clear All">${this.state.currentLanguage === 'ar' ? 'تفريغ الألبوم' : 'Clear All'}</button>
             </div>
           </div>
         </div>
@@ -473,9 +592,10 @@
         }
 
         getAssetsEmptyState(fieldName) {
+            const text = this.state.currentLanguage === 'ar' ? 'انقر للإضافة' : 'Click to add';
             return `
       <div class="assets-empty" onclick="mediaTabManager.openAssetsPicker('${fieldName}')">
-        <span>انقر للإضافة</span>
+        <span data-ar="انقر للإضافة" data-en="Click to add">${text}</span>
       </div>`;
         }
 
@@ -490,6 +610,10 @@
             );
             const ui = this.state._assetsUi[fieldName];
             const selected = ui.selected.has(this._assetKey(media)) ? ' is-selected' : '';
+            const title = media.title || (this.state.currentLanguage === 'ar' ? 'بدون عنوان' : 'No title');
+            const audioText = this.state.currentLanguage === 'ar' ? 'صوت' : 'Audio';
+            const noTitleText = this.state.currentLanguage === 'ar' ? 'بدون عنوان' : 'No title';
+            const deleteText = this.state.currentLanguage === 'ar' ? 'حذف' : 'Delete';
 
             return `
       <div class="asset-item${selected}" data-index="${index}" draggable="true"
@@ -501,17 +625,17 @@
         </label>
         <div class="asset-thumb">
           ${type === 'audio'
-            ? `<div class="asset-audio" title="${media.title || ''}">${media.title || 'صوت'}</div>`
+            ? `<div class="asset-audio" title="${media.title || ''}">${media.title || audioText}</div>`
             : `<img src="${thumb}" alt="${media.title || ''}" loading="lazy"
                      onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`}
         </div>
         <div class="asset-meta">
-          <div class="asset-title" title="${media.title || ''}">${media.title || 'بدون عنوان'}</div>
+          <div class="asset-title" title="${media.title || ''}">${media.title || noTitleText}</div>
           <div class="asset-type">${this.getFileTypeLabel(type)}</div>
         </div>
         <div class="asset-actions">
           <button type="button" class="btn btn-sm btn-outline-danger"
-                  onclick="mediaTabManager.removeAsset('${fieldName}', ${index})">حذف</button>
+                  onclick="mediaTabManager.removeAsset('${fieldName}', ${index})" data-ar="حذف" data-en="Delete">${deleteText}</button>
         </div>
       </div>`;
         }
@@ -588,18 +712,26 @@
                 items.length;
             const pages = Math.max(1, Math.ceil(total / ui.pageSize));
             const page = Math.min(ui.page, pages);
+
+            const itemsText = this.state.currentLanguage === 'ar' ? 'العناصر' : 'Items';
+            const pageText = this.state.currentLanguage === 'ar' ? 'الصفحة' : 'Page';
+            const ofText = this.state.currentLanguage === 'ar' ? 'من' : 'of';
+            const perPageText = this.state.currentLanguage === 'ar' ? 'لكل صفحة' : 'Per page';
+            const prevText = this.state.currentLanguage === 'ar' ? 'السابق' : 'Previous';
+            const nextText = this.state.currentLanguage === 'ar' ? 'التالي' : 'Next';
+
             return `
       <div class="assets-pagination">
-        <div class="assets-page-info">العناصر: ${total} | الصفحة ${page} من ${pages}</div>
+        <div class="assets-page-info" data-ar="${itemsText}: ${total} | ${pageText} ${page} ${ofText} ${pages}" data-en="${itemsText}: ${total} | ${pageText} ${page} ${ofText} ${pages}">${itemsText}: ${total} | ${pageText} ${page} ${ofText} ${pages}</div>
         <div class="assets-page-actions">
-          <label>لكل صفحة</label>
+          <label data-ar="${perPageText}" data-en="${perPageText}">${perPageText}</label>
           <select onchange="mediaTabManager.onAssetsPageSize('${fieldName}', this.value)">
             ${[12,24,36,60,96].map(n => `<option value="${n}" ${n==ui.pageSize?'selected':''}>${n}</option>`).join('')}
           </select>
           <button type="button" class="btn btn-sm" ${page<=1?'disabled':''}
-                  onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page-1})">السابق</button>
+                  onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page-1})" data-ar="${prevText}" data-en="${prevText}">${prevText}</button>
           <button type="button" class="btn btn-sm" ${page>=pages?'disabled':''}
-                  onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page+1})">التالي</button>
+                  onclick="mediaTabManager.gotoAssetsPage('${fieldName}', ${page+1})" data-ar="${nextText}" data-en="${nextText}">${nextText}</button>
         </div>
       </div>`;
         }
@@ -741,16 +873,23 @@
             const url = this.normalizeUrl(raw);
             const type = this.getFileType(url);
 
+            const changeText = this.state.currentLanguage === 'ar' ? 'تغيير' : 'Change';
+            const deleteText = this.state.currentLanguage === 'ar' ? 'حذف' : 'Delete';
+            const noTitleText = this.state.currentLanguage === 'ar' ? 'بدون عنوان' : 'No title';
+            const youtubeText = this.state.currentLanguage === 'ar' ? 'يوتيوب' : 'YouTube';
+            const videoFileText = this.state.currentLanguage === 'ar' ? 'ملف فيديو' : 'Video file';
+            const audioFileText = this.state.currentLanguage === 'ar' ? 'ملف صوت' : 'Audio file';
+
             const wrap = (visualHtml, title, typeLabel, isAudio = false) => `
       <div class="media-preview-selected">
         <div class="media-visual ${isAudio ? 'is-audio' : ''}">${visualHtml}</div>
         <div class="media-info">
-          <span class="media-title">${title || 'بدون عنوان'}</span>
+          <span class="media-title">${title || noTitleText}</span>
           <span class="media-type">${typeLabel}</span>
         </div>
         <div class="media-actions">
-          <button type="button" class="btn btn-sm btn-outline-secondary" onclick="mediaTabManager.changeMedia('${fieldName}')">تغيير</button>
-          <button type="button" class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMedia('${fieldName}')">حذف</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" onclick="mediaTabManager.changeMedia('${fieldName}')" data-ar="تغيير" data-en="Change">${changeText}</button>
+          <button type="button" class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMedia('${fieldName}')" data-ar="حذف" data-en="Delete">${deleteText}</button>
         </div>
       </div>`;
 
@@ -759,40 +898,45 @@
                 if (vid) {
                     const embed = `https://www.youtube.com/embed/${vid}?rel=0&modestbranding=1`;
                     const visual =
-                        `<iframe class="mmx-yt-embed" src="${embed}" title="${media.title || 'YouTube'}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="no-referrer"></iframe>`;
-                    return wrap(visual, media.title || 'YouTube', 'يوتيوب');
+                        `<iframe class="mmx-yt-embed" src="${embed}" title="${media.title || youtubeText}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="no-referrer"></iframe>`;
+                    return wrap(visual, media.title || youtubeText, youtubeText);
                 }
                 const fallbackThumb = 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg';
                 const visual =
                     `<img class="media-thumb" src="${fallbackThumb}" alt="${media.title || ''}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous">`;
-                return wrap(visual, media.title || 'YouTube', 'يوتيوب');
+                return wrap(visual, media.title || youtubeText, youtubeText);
             }
 
             if (type === 'video') {
                 const safe = this.maybeProxy(url);
                 const visual = `<video src="${safe}" controls preload="metadata" crossorigin="anonymous"></video>`;
-                return wrap(visual, media.title || 'ملف فيديو', 'فيديو');
+                return wrap(visual, media.title || videoFileText, this.getFileTypeLabel(type));
             }
 
             if (type === 'audio') {
                 const safe = this.maybeProxy(url);
                 const visual =
                     `<audio src="${safe}" controls preload="metadata" crossorigin="anonymous" style="width:100%"></audio>`;
-                return wrap(visual, media.title || 'ملف صوت', 'صوت', true);
+                return wrap(visual, media.title || audioFileText, this.getFileTypeLabel(type), true);
             }
 
             const safeImg = this.maybeProxy(url);
             const visual =
                 `<img class="media-thumb" src="${safeImg}" alt="${media.title || ''}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`;
-            return wrap(visual, media.title || 'بدون عنوان', this.getFileTypeLabel(type));
+            return wrap(visual, media.title || noTitleText, this.getFileTypeLabel(type));
         }
 
         getEmptyState(fieldName, icon, type) {
             if (fieldName.endsWith('_assets')) return this.getAssetsEmptyState(fieldName);
+
+            const chooseImageText = this.state.currentLanguage === 'ar' ? 'اختر صورة' : 'Choose Image';
+            const chooseFileText = this.state.currentLanguage === 'ar' ? 'اختر ملف' : 'Choose File';
+            const text = type === 'file' ? chooseFileText : chooseImageText;
+
             return `
       <div class="field-empty" onclick="mediaTabManager.openMediaModal('${fieldName}')">
         <i class="${icon}"></i>
-        <span>${type === 'file' ? 'اختر ملف' : 'اختر صورة'}</span>
+        <span data-ar="${text}" data-en="${text}">${text}</span>
       </div>`;
         }
 
@@ -865,10 +1009,12 @@
             selectedCount.textContent = flattenItems.length;
 
             if (!flattenItems.length) {
+                const noMediaText = this.state.currentLanguage === 'ar' ? 'لم يتم اختيار أي وسائط بعد' :
+                    'No media selected yet';
                 summaryBody.innerHTML = `
         <div class="empty-summary">
           <i class="fas fa-images"></i>
-          <p>لم يتم اختيار أي وسائط بعد</p>
+          <p data-ar="${noMediaText}" data-en="${noMediaText}">${noMediaText}</p>
         </div>`;
                 return;
             }
@@ -883,6 +1029,8 @@
                     if (vid) thumb = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
                 }
                 thumb = this.maybeProxy(thumb);
+                const title = media.title || (this.state.currentLanguage === 'ar' ? 'بدون عنوان' :
+                    'No title');
 
                 return `
         <div class="summary-item">
@@ -890,7 +1038,7 @@
                referrerpolicy="no-referrer" crossorigin="anonymous"
                onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">
           <div class="summary-info">
-            <h6>${media.title || 'بدون عنوان'}</h6>
+            <h6>${title}</h6>
             <span>${this.getFileTypeLabel(type)}</span>
           </div>
           <button class="btn btn-sm btn-outline-danger" onclick="mediaTabManager.removeMediaFromSummary('${media.id}')">
@@ -950,12 +1098,29 @@
             return 'file';
         }
         getFileTypeLabel(type) {
-            return {
-                image: 'صورة',
-                video: 'فيديو',
-                audio: 'صوت',
-                youtube: 'يوتيوب'
-            } [type] || 'ملف';
+            const labels = {
+                image: {
+                    ar: 'صورة',
+                    en: 'Image'
+                },
+                video: {
+                    ar: 'فيديو',
+                    en: 'Video'
+                },
+                audio: {
+                    ar: 'صوت',
+                    en: 'Audio'
+                },
+                youtube: {
+                    ar: 'يوتيوب',
+                    en: 'YouTube'
+                },
+                file: {
+                    ar: 'ملف',
+                    en: 'File'
+                }
+            };
+            return labels[type]?.[this.state.currentLanguage] || type;
         }
         placeholderThumb(url = '') {
             return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
@@ -965,63 +1130,68 @@
 
         /* ================== FIELD GROUPS ================== */
         getNormalImageTemplate() {
+            const title = this.state.currentLanguage === 'ar' ? 'إعدادات الصورة' : 'Image Settings';
             return `
     <div class="template-fields">
-      <h6 class="template-title">إعدادات الصورة</h6>
+      <h6 class="template-title" data-ar="إعدادات الصورة" data-en="Image Settings">${title}</h6>
       <div class="fields-grid">
-        ${this.createField('normal_main_image','الصورة الرئيسية','fas fa-image')}
-        ${this.createField('normal_content_image','صورة المحتوى','fas fa-image')}
-        ${this.createField('normal_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
+        ${this.createField('normal_main_image','الصورة الرئيسية','Main Image','fas fa-image')}
+        ${this.createField('normal_content_image','صورة المحتوى','Content Image','fas fa-image')}
+        ${this.createField('normal_mobile_image','صورة الموبايل','Mobile Image','fas fa-mobile-alt')}
       </div>
     </div>`;
         }
 
         getVideoTemplate() {
+            const title = this.state.currentLanguage === 'ar' ? 'إعدادات الفيديو' : 'Video Settings';
             return `
     <div class="template-fields">
-      <h6 class="template-title">إعدادات الفيديو</h6>
+      <h6 class="template-title" data-ar="إعدادات الفيديو" data-en="Video Settings">${title}</h6>
       <div class="fields-grid">
-        ${this.createField('video_main_image','صورة الفيديو الرئيسية','fas fa-image')}
-        ${this.createField('video_content_image','صورة محتوى الفيديو','fas fa-image')}
-        ${this.createField('video_mobile_image','صورة الفيديو للموبايل','fas fa-mobile-alt')}
-        ${this.createField('video_file','ملف الفيديو','fas fa-video','file')}
+        ${this.createField('video_main_image','صورة الفيديو الرئيسية','Video Main Image','fas fa-image')}
+        ${this.createField('video_content_image','صورة محتوى الفيديو','Video Content Image','fas fa-image')}
+        ${this.createField('video_mobile_image','صورة الفيديو للموبايل','Video Mobile Image','fas fa-mobile-alt')}
+        ${this.createField('video_file','ملف الفيديو','Video File','fas fa-video','file')}
       </div>
     </div>`;
         }
 
         getPodcastTemplate() {
+            const title = this.state.currentLanguage === 'ar' ? 'إعدادات البودكاست' : 'Podcast Settings';
             return `
     <div class="template-fields">
-      <h6 class="template-title">إعدادات البودكاست</h6>
+      <h6 class="template-title" data-ar="إعدادات البودكاست" data-en="Podcast Settings">${title}</h6>
       <div class="fields-grid">
-        ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','fas fa-image')}
-        ${this.createField('podcast_content_image','صورة محتوى البودكاست','fas fa-image')}
-        ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','fas fa-mobile-alt')}
-        ${this.createField('podcast_file','ملف البودكاست','fas fa-podcast','file')}
+        ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','Podcast Main Image','fas fa-image')}
+        ${this.createField('podcast_content_image','صورة محتوى البودكاست','Podcast Content Image','fas fa-image')}
+        ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','Podcast Mobile Image','fas fa-mobile-alt')}
+        ${this.createField('podcast_file','ملف البودكاست','Podcast File','fas fa-podcast','file')}
       </div>
     </div>`;
         }
 
         getAlbumTemplate() {
+            const title = this.state.currentLanguage === 'ar' ? 'إعدادات الألبوم' : 'Album Settings';
             return `
     <div class="template-fields">
-      <h6 class="template-title">إعدادات الألبوم</h6>
+      <h6 class="template-title" data-ar="إعدادات الألبوم" data-en="Album Settings">${title}</h6>
       <div class="fields-grid">
-        ${this.createField('album_main_image','صورة الألبوم الرئيسية','fas fa-image')}
-        ${this.createField('album_content_image','صورة محتوى الألبوم','fas fa-image')}
-        ${this.createField('album_mobile_image','صورة الألبوم للموبايل','fas fa-mobile-alt')}
-        ${this.createAssetsField('album_assets','أصول الألبوم')}
+        ${this.createField('album_main_image','صورة الألبوم الرئيسية','Album Main Image','fas fa-image')}
+        ${this.createField('album_content_image','صورة محتوى الألبوم','Album Content Image','fas fa-image')}
+        ${this.createField('album_mobile_image','صورة الألبوم للموبايل','Album Mobile Image','fas fa-mobile-alt')}
+        ${this.createAssetsField('album_assets','أصول الألبوم','Album Assets')}
       </div>
     </div>`;
         }
 
         getNoImageTemplate() {
+            const title = this.state.currentLanguage === 'ar' ? 'إعدادات المقال' : 'Article Settings';
             return `
     <div class="template-fields">
-      <h6 class="template-title">إعدادات المقال</h6>
+      <h6 class="template-title" data-ar="إعدادات المقال" data-en="Article Settings">${title}</h6>
       <div class="fields-grid">
-        ${this.createField('no_image_main_image','الصورة الرئيسية','fas fa-image')}
-        ${this.createField('no_image_mobile_image','صورة المقال للموبايل','fas fa-mobile-alt')}
+        ${this.createField('no_image_main_image','الصورة الرئيسية','Main Image','fas fa-image')}
+        ${this.createField('no_image_mobile_image','صورة المقال للموبايل','Article Mobile Image','fas fa-mobile-alt')}
       </div>
     </div>`;
         }
@@ -1049,23 +1219,20 @@
         box-shadow: 0 0 0 0.2rem rgba(var(--bs-danger-rgb), 0.25) !important;
     }
 
-    .field-required {
-    }
+    .field-required {}
 
     .field-preview.field-missing {
         border: 2px solid var(--bs-danger) !important;
     }
 
-    .field-preview.field-required {
-    }
+    .field-preview.field-required {}
 
     .field-card--full.field-missing .assets-wrapper {
         border: 2px solid var(--bs-danger) !important;
         box-shadow: 0 0 0 0.2rem rgba(var(--bs-danger-rgb), 0.25) !important;
     }
 
-    .field-card--full.field-required .assets-wrapper {
-    }
+    .field-card--full.field-required .assets-wrapper {}
 
     /* Media Type Selector */
     .media-type-selector .media-type-card {

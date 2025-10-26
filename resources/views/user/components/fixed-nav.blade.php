@@ -94,17 +94,24 @@
     @if (Auth::check())
         <div class="admin-top-bar">
             <div class="site-container admin-bar-content">
-                <span>مرحبًا، {{ Auth::user()->name }}</span>
+                <span>
+                    <i class="fas fa-user"></i> <!-- Font Awesome user icon -->
+                    {{ Auth::user()->name }}
+                </span>
 
                 <div class="admin-actions">
-                    <a target="_blank" href="{{ route('dashboard.index') }}">لوحة التحكم</a>
+                    <a target="_blank" href="{{ route('dashboard.index') }}" title="لوحة التحكم">
+                        <i class="fas fa-gauge"></i> <!-- Dashboard icon -->
+                    </a>
                     @if (isset($news))
                         <a target="_blank" href="{{ route('dashboard.content.edit', $news->id) }}"
-                            class="btn btn-sm btn-warning" data-en="Edit" data-ar="تعديل">تعديل</a>
+                            class="btn btn-sm btn-warning" title="تعديل">
+                            <i class="fas fa-pencil"></i> <!-- Edit icon -->
+                        </a>
                     @endif
                     <a href="{{ route('dashboard.logout') }}"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        تسجيل الخروج
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="تسجيل الخروج">
+                        <i class="fas fa-arrow-right-from-bracket"></i> <!-- Logout icon -->
                     </a>
                     <form id="logout-form" action="{{ route('dashboard.logout') }}" method="POST"
                         style="display:none;">
@@ -114,6 +121,9 @@
             </div>
         </div>
 
+        <!-- Font Awesome CDN (add once in your layout if not already included) -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
         <style>
             .admin-top-bar {
                 position: fixed;
@@ -121,9 +131,8 @@
                 left: 0;
                 width: 100%;
                 height: 36px;
-                background: #55B68B;
-                /* Green */
-                color: #fff;
+                background: #F5F5F5;
+                color: #333;
                 font-size: 14px;
                 z-index: 2000;
                 display: flex;
@@ -137,37 +146,34 @@
                 align-items: center;
             }
 
+            .admin-bar-content span {
+                font-family: asswat-bold;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
             .admin-actions a {
-                color: #fff;
+                color: #333;
                 margin-right: 15px;
                 text-decoration: none;
                 transition: color 0.2s;
+                font-family: asswat-bold;
+                font-size: 16px;
             }
 
             .admin-actions a:hover {
-                color: #c3e6cb;
-                /* Light green */
+                color: #333;
             }
 
             body {
                 padding-top: 36px;
             }
 
-            #site-main-nav {
-                margin-top: 36px;
-            }
-
-            #site-subnav {
-                margin-top: 36px;
-            }
-
-
+            #site-main-nav,
+            #site-subnav,
             #site-breaking-news {
                 margin-top: 36px;
             }
-
-            /* .site-nav-left {
-                margin-top: 16px;
-            } */
         </style>
     @endif

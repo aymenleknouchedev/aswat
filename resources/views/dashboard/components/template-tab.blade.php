@@ -382,24 +382,24 @@
     <div class="mmxx-backdrop" data-mmxx-backdrop></div>
     <div class="mmxx-container" role="document">
         <div class="mmxx-header">
-            <h5 id="mmxxMediaModalTitle">اختر الوسائط</h5>
+            <h5 id="mmxxMediaModalTitle" data-ar="اختر الوسائط" data-en="Select Media">اختر الوسائط</h5>
             <button class="mmxx-close" type="button" data-mmxx-close aria-label="إغلاق">&times;</button>
         </div>
 
         <div class="mmxx-tabs" role="tablist" aria-label="أقسام إدارة الوسائط">
             <button class="mmxx-tab-btn mmxx-is-active" role="tab" aria-selected="true"
                 aria-controls="mmxx-tab-gallery" id="mmxx-tabbtn-gallery" tabindex="0"
-                data-mmxx-tab="gallery">المعرض</button>
+                data-mmxx-tab="gallery" data-ar="المعرض" data-en="Gallery">المعرض</button>
             <button class="mmxx-tab-btn" role="tab" aria-selected="false" aria-controls="mmxx-tab-upload"
-                id="mmxx-tabbtn-upload" tabindex="-1" data-mmxx-tab="upload">الرفع من الجهاز</button>
+                id="mmxx-tabbtn-upload" tabindex="-1" data-mmxx-tab="upload" data-ar="الرفع من الجهاز" data-en="Upload from device">الرفع من الجهاز</button>
             <button class="mmxx-tab-btn" role="tab" aria-selected="false" aria-controls="mmxx-tab-import"
-                id="mmxx-tabbtn-import" tabindex="-1" data-mmxx-tab="import">الاستيراد بالرابط</button>
+                id="mmxx-tabbtn-import" tabindex="-1" data-mmxx-tab="import" data-ar="الاستيراد بالرابط" data-en="Import by URL">الاستيراد بالرابط</button>
         </div>
 
         <!-- Gallery -->
         <section id="mmxx-tab-gallery" class="mmxx-tab-panel" role="tabpanel" aria-labelledby="mmxx-tabbtn-gallery">
             <div class="mmxx-filters">
-                <input type="text" id="mmxx-search" placeholder="ابحث عن وسائط..." />
+                <input type="text" id="mmxx-search" placeholder="search..." />
                 <select id="mmxx-type-filter" aria-label="نوع الوسائط">
                     <option value="all">كل الوسائط</option>
                     <option value="image">صورة</option>
@@ -416,8 +416,8 @@
             </div>
 
             <div class="mmxx-footer">
-                <button class="mmxx-btn mmxx-btn-select" type="button" id="mmxx-btn-select">اختر</button>
-                <button class="mmxx-btn mmxx-btn-cancel" type="button" data-mmxx-close>إلغاء</button>
+                <button class="mmxx-btn mmxx-btn-select" type="button" id="mmxx-btn-select" data-ar="اختر" data-en="Select">اختر</button>
+                <button class="mmxx-btn mmxx-btn-cancel" type="button" data-mmxx-close aria-label="إلغاء" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
             </div>
         </section>
 
@@ -428,7 +428,7 @@
                 <div class="mmxx-uploader">
                     <div class="mmxx-upload-fields" style="display: flex; flex-wrap: wrap; gap: .6rem; width: 100%;">
                         <div style="flex: 1 1 220px;">
-                            <label for="mmxx-upload-input"
+                            <label for="mmxx-upload-input" data-ar="اختر ملف الوسائط" data-en="Select Media File"
                                 style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border-radius: 0; background: var(--az-soft); color: var(--az-title); text-align: center;">
                                 <i class="fa fa-upload" style="margin-right: 6px;"></i> اختر ملف الوسائط
                                 <input type="file" id="mmxx-upload-input" class="mmxx-upload-input"
@@ -448,9 +448,9 @@
                     </div>
                     <div class="mmxx-uploader-actions">
                         <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-upload-to-gallery"
-                            title="إدراج في المعرض">إدراج في المعرض</button>
+                            title="إدراج في المعرض" data-ar="إدراج في المعرض" data-en="Insert into Gallery">إدراج في المعرض</button>
                         <button class="mmxx-btn mmxx-btn-primary" type="button"
-                            id="mmxx-btn-upload-and-select-close" title="رفع ثم حفظ وإغلاق">إدراج في المقال</button>
+                            id="mmxx-btn-upload-and-select-close" title="رفع ثم حفظ وإغلاق" data-ar="رفع ثم حفظ وإغلاق" data-en="Upload then Save and Close">إدراج في المقال</button>
                     </div>
                 </div>
             </div>
@@ -499,7 +499,7 @@
                     </div>
                     <fieldset class="mmxx-url-type-group" aria-label="نوع الوسائط للرابط"
                         style="margin-bottom:.7rem; border-radius:6px; padding:.7rem 1rem; background:var(--az-card);">
-                        <legend style="font-size:.97rem; color:var(--az-title); padding:0 .3rem; font-weight:500;">نوع
+                        <legend style="font-size:.97rem; color:var(--az-title); padding:0 .3rem; font-weight:500;" data-ar="نوع الوسائط (اختياري)" data-en="Media Type (Optional)">نوع
                             الوسائط
                             (اختياري)</legend>
                         <div style="display:flex; gap:1.2rem; flex-wrap:wrap;">
@@ -519,10 +519,10 @@
                     <div class="mmxx-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
                         <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-import-to-gallery"
                             title="استيراد بالرابط ثم عرض في المعرض"
-                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المعرض</button>
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;" data-ar="إدراج في المعرض" data-en="Insert into Gallery">إدراج في المعرض</button>
                         <button class="mmxx-btn mmxx-btn-primary" type="button"
                             id="mmxx-btn-import-and-select-close" title="استيراد بالرابط ثم حفظ وإغلاق"
-                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المقال</button>
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;" data-ar="إدراج في المقال" data-en="Insert into Post">إدراج في المقال</button>
                     </div>
                 </div>
             </div>
@@ -1564,19 +1564,20 @@
 
     <div id="template" class="tab-pane show active" role="tabpanel">
         <div class="form-group col-lg-12 mb-3">
-            <label class="form-label">القالب</label><span class="text-danger"> *</span>
+            <label class="form-label" data-ar="القالب" data-en="Template">القالب</label><span class="text-danger">
+                *</span>
             <div class="d-flex flex-column mt-2">
                 <label class="form-check form-check-inline mb-2">
                     <input class="form-check-input" type="radio" name="display_method" value="simple" checked>
-                    <span class="form-check-label">أساسي</span>
+                    <span class="form-check-label" data-ar="أساسي" data-en="Basic">أساسي</span>
                 </label>
                 <label class="form-check form-check-inline mb-2">
                     <input class="form-check-input" type="radio" name="display_method" value="list">
-                    <span class="form-check-label">قائمة</span>
+                    <span class="form-check-label" data-ar="قائمة" data-en="List">قائمة</span>
                 </label>
                 <label class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="display_method" value="file">
-                    <span class="form-check-label">ملف</span>
+                    <span class="form-check-label" data-ar="ملف" data-en="File">ملف</span>
                 </label>
             </div>
         </div>
@@ -1584,12 +1585,12 @@
         <div id="dynamic-items-section" class="mt-3" style="display:none;">
             <div class="d-flex" style="margin-bottom:10px;">
                 <button type="button" id="add-item-btn" class="btn btn-primary mx-1" data-bs-toggle="modal"
-                    data-bs-target="#itemModal">
-                    <i class="fa fa-plus"></i> إضافة عنصر
+                    data-bs-target="#itemModal" data-ar="إضافة عنصر" data-en="Add Item">
+                    <i class="fa fa-plus"></i> <span data-ar="إضافة عنصر" data-en="Add Item">إضافة عنصر</span>
                 </button>
                 <button type="button" id="clear-all-btn" class="btn btn-outline-danger mx-1"
-                    style="transition:background 0.2s;">
-                    <i class="fa fa-trash"></i> حذف الكل
+                    style="transition:background 0.2s;" data-ar="حذف الكل" data-en="Delete All">
+                    <i class="fa fa-trash"></i> <span data-ar="حذف الكل" data-en="Delete All">حذف الكل</span>
                 </button>
                 <style>
                     #clear-all-btn:hover {
@@ -1609,32 +1610,41 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">إضافة / تعديل عنصر</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                <h5 class="modal-title" data-ar="إضافة / تعديل عنصر" data-en="Add / Edit Item">إضافة / تعديل عنصر</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق" data-ar="إغلاق" data-en="Close"></button>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="editIndex" />
                 <div class="row">
                     <div class="col-md-12">
                         <div class="mb-2">
-                            <label class="form-label">العنوان <span class="text-danger">*</span></label>
-                            <input id="itemTitle" class="form-control" placeholder="عنوان واضح" />
+                            <label class="form-label" data-ar="العنوان" data-en="Title">
+                                العنوان <span class="text-danger">*</span>
+                            </label>
+                            <input id="itemTitle" class="form-control" data-ar="عنوان واضح" data-en="Clear title" />
                         </div>
 
                         <div class="mb-2">
-                            <label class="form-label">الرابط <small class="text-muted" id="itemLinkNote">(مطلوب في
-                                    وضع ملف)</small></label>
-                            <input id="itemLinkUrl" class="form-control" placeholder="https://..." />
+                            <label class="form-label" data-ar="الرابط" data-en="Link">
+                                الرابط <small class="text-muted" id="itemLinkNote" data-ar="(مطلوب في وضع ملف)" data-en="(Required in File mode)">
+                                    (مطلوب في وضع ملف)
+                                </small>
+                            </label>
+                            <input id="itemLinkUrl" class="form-control" data-ar="https://..." data-en="https://..." />
                         </div>
 
                         <div class="mb-2">
-                            <label class="form-label">الوسائط <span class="text-danger">*</span></label>
+                            <label class="form-label" data-ar="الوسائط" data-en="Media">
+                                الوسائط <span class="text-danger">*</span>
+                            </label>
                             <div class="input-group mb-2">
-                                <input id="itemMediaUrl" class="form-control" placeholder="لم يتم الاختيار" readonly>
-                                <button type="button" class="btn btn-outline-secondary" id="btnPickMedia"><i
-                                        class="fa fa-images"></i></button>
-                                <button type="button" class="btn btn-outline-danger" id="btnClearMedia"
-                                    title="مسح"><i class="fa fa-xmark"></i></button>
+                                <input id="itemMediaUrl" class="form-control" data-ar="لم يتم الاختيار" data-en="Not selected" readonly />
+                                <button type="button" class="btn btn-outline-secondary" id="btnPickMedia" data-ar="اختيار الوسائط" data-en="Pick media">
+                                    <i class="fa fa-images"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-danger" id="btnClearMedia" title="مسح" data-ar="مسح" data-en="Clear">
+                                    <i class="fa fa-xmark"></i>
+                                </button>
                             </div>
                             <input type="hidden" id="itemMediaId">
                             <input type="hidden" id="itemMediaTitle">
@@ -1643,8 +1653,10 @@
                         </div>
 
                         <div class="mb-2">
-                            <label class="form-label">الوصف <span class="text-danger">*</span></label>
-                            <textarea id="itemDescription" class="form-control tinymce-simple" rows="4"></textarea>
+                            <label class="form-label" data-ar="الوصف" data-en="Description">
+                                الوصف <span class="text-danger">*</span>
+                            </label>
+                            <textarea id="itemDescription" class="form-control tinymce-simple" rows="4" data-ar="الوصف" data-en="Description"></textarea>
                         </div>
 
                         <script src="https://cdn.tiny.cloud/1/vw6sltzauw9x6b3cl3eby8nj99q4eoavzv581jnnmabxbhq2/tinymce/6/tinymce.min.js"
@@ -1841,8 +1853,8 @@
                 </div>
             </div>
             <div class="modal-footer modal-footer-sticky">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                <button id="saveItemBtn" type="button" class="btn btn-success mx-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+                <button id="saveItemBtn" type="button" class="btn btn-success mx-2" data-ar="حفظ العنصر" data-en="Save Item">
                     <i class="fa fa-floppy-disk me-1"></i> حفظ العنصر
                 </button>
             </div>
@@ -2019,6 +2031,8 @@
                 emp.style.borderRadius = '0';
                 emp.style.padding = '16px';
                 emp.textContent = 'لا توجد عناصر بعد. أضف أول عنصر.';
+                emp.setAttribute('data-ar', 'لا توجد عناصر بعد. أضف أول عنصر.');
+                emp.setAttribute('data-en', 'No items yet. Add the first item.');
                 container.appendChild(emp);
                 return;
             }
@@ -2080,6 +2094,8 @@
                 editBtn.type = 'button';
                 editBtn.className = 'btn btn-sm btn-outline-primary mx-1';
                 editBtn.innerHTML = '<i class="fa fa-pen"></i> تعديل';
+                editBtn.setAttribute('data-ar', 'تعديل');
+                editBtn.setAttribute('data-en', 'Edit');
                 editBtn.addEventListener('click', () => {
                     editIndexInput.value = String(i);
                     titleEl.value = it.title || '';
@@ -2108,6 +2124,8 @@
                 delBtn.type = 'button';
                 delBtn.className = 'btn btn-sm btn-outline-danger mx-1';
                 delBtn.innerHTML = '<i class="fa fa-trash"></i> حذف';
+                delBtn.setAttribute('data-ar', 'حذف');
+                delBtn.setAttribute('data-en', 'Delete');
                 delBtn.addEventListener('click', () => {
                     items.splice(i, 1);
                     saveItemsFor(currentModeName, items);

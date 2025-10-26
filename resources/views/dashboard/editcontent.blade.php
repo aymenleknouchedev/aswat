@@ -1092,11 +1092,11 @@
                         <div class="mt-4 d-flex">
                             <button name="status" value="published" type="submit" class="btn btn-primary btn-lg me-3"
                                 data-ar="تحديث" data-en="Update" id="publishButton">تحديث</button>
-                            <button name="status" value="draft" type="submit" class="btn btn-secondary btn-lg me-3"
-                                data-ar="حفظ كمسودة" data-en="Save as Draft">حفظ كمسودة</button>
-                            <button name="status" value="preview" type="submit" class="btn btn-secondary btn-lg"
-                                style="margin-left: 10px; color: white;" data-ar="تحديث و معاينة"
-                                data-en="Update and Preview">تحديث و معاينة</button>
+                           
+                            <a href="{{ route('news.show', $content->title) }}" target="_blank" class="btn btn-secondary btn-lg"
+                                style="margin-left: 10px;">
+                                معاينة
+                            </a>
                         </div>
                     </div>
 
