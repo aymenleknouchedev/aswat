@@ -71,7 +71,7 @@
 
         .custom-article-title {
             font-size: 40px;
-            font-family: asswat-bold;
+            font-family: asswat-regular;
             color: #222;
             line-height: 1.4;
             text-align: right;
