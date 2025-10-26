@@ -542,7 +542,6 @@ class HomePageController extends Controller
             $lastWeekNews = $lastWeekNews->concat($olderNews);
         }
 
-        // جلب الأخبار ذات نفس seo_keyword إذا وجد 4 مقالات
         if (!empty($news->seo_keyword)) {
             $relatedNews = Content::where('id', '!=', $news->id)
                 ->where('seo_keyword', $news->seo_keyword)
@@ -550,25 +549,23 @@ class HomePageController extends Controller
                 ->get();
 
             // إذا لم نجد 4 مقالات بنفس seo_keyword، نبحث حسب الوسوم (tags)
-            if ($relatedNews->count() < 4 && !empty($news->tags)) {
-                $tags =  $news->tags;
+            if ($relatedNews->count() < 4 && $news->tags->isNotEmpty()) {
+                $tagIds = $news->tags->pluck('id'); // استخراج IDs الوسوم
+
                 $relatedNews = Content::where('id', '!=', $news->id)
-                    ->where(function ($query) use ($tags) {
-                        foreach ($tags as $tag) {
-                            $query->orWhere('tags', 'like', '%' . trim($tag) . '%');
-                        }
+                    ->whereHas('tags', function ($query) use ($tagIds) {
+                        $query->whereIn('tags.id', $tagIds);
                     })
                     ->inRandomOrder()
                     ->take(4)
                     ->get();
             }
-        } else if (!empty($news->tags)) {
-            $tags = $news->tags;
+        } elseif ($news->tags->isNotEmpty()) {
+            $tagIds = $news->tags->pluck('id');
+
             $relatedNews = Content::where('id', '!=', $news->id)
-                ->where(function ($query) use ($tags) {
-                    foreach ($tags as $tag) {
-                        $query->orWhere('tags', 'like', '%' . trim($tag) . '%');
-                    }
+                ->whereHas('tags', function ($query) use ($tagIds) {
+                    $query->whereIn('tags.id', $tagIds);
                 })
                 ->inRandomOrder()
                 ->take(4)
@@ -581,6 +578,7 @@ class HomePageController extends Controller
                 ->take(4)
                 ->get();
         }
+
 
         $this->recordView($news);
 
