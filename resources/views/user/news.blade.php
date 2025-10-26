@@ -108,6 +108,17 @@
             object-fit: cover;
         }
 
+        /* Image caption styling */
+        .custom-article-image-wrapper figcaption {
+            background: #eee;
+            color: #F5F5F5;
+            font-size: 15px;
+            padding: 10px;
+            text-align: right;
+            font-family: asswat-regular;
+            direction: rtl;
+        }
+
         /* ===================== CONTENT ===================== */
         .custom-article-content {
             font-size: 16px !important;
@@ -129,7 +140,6 @@
 
         .custom-article-content * {
             font-family: asswat-regular !important;
-            /* text-align: justify !important; */
             direction: rtl !important;
             box-sizing: border-box;
         }
@@ -155,7 +165,30 @@
             display: block;
             max-width: 100% !important;
             height: auto !important;
-            margin: 25px auto !important;
+            margin: 25px 0 0 0 !important;
+        }
+
+        /* Content figure styling */
+        .custom-article-content figure {
+            width: 100%;
+            margin: 25px 0;
+        }
+
+        .custom-article-content figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .custom-article-content figcaption {
+            background: #F5F5F5;
+            color: #555;
+            font-size: 15px;
+            padding: 10px;
+            text-align: right;
+            font-family: asswat-regular;
+            direction: rtl;
         }
 
         .video-container {
@@ -184,13 +217,12 @@
         /* Blockquote */
         .custom-article-content blockquote {
             width: 100%;
-            /* background: #f5f5f5; */
             padding: 40px 20px;
             margin: 30px 0;
             text-align: center;
             position: relative;
             font-family: asswat-medium;
-            
+
         }
 
         .custom-article-content blockquote p {
@@ -484,13 +516,13 @@
 
                 {{-- صورة --}}
                 @if ($news->template !== 'no_image')
-                    <div class="custom-article-image-wrapper">
+                    <figure class="custom-article-image-wrapper">
                         <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="Feature Algeria"
                             loading="lazy">
-                        <div style="background:#eee; color:#555; font-size:15px; padding:10px; text-align:right;">
+                        <figcaption>
                             {{ $news->media()->wherePivot('type', 'detail')->first()->alt ?? $news->mobile_title }}
-                        </div>
-                    </div>
+                        </figcaption>
+                    </figure>
                 @endif
 
                 {{-- ألبوم صور --}}
