@@ -240,7 +240,7 @@
             right: 0px;
             width: 32px;
             height: 32px;
-            background: url('/user/assets/icons/quote-top.png') no-repeat center;
+            background: url('/user/assets/icons/up.svg') no-repeat center;
             background-size: contain;
             transform: scaleY(-1);
         }
@@ -252,7 +252,7 @@
             left: 0px;
             width: 32px;
             height: 32px;
-            background: url('/user/assets/icons/quote-bottom.png') no-repeat center;
+            background: url('/user/assets/icons/down.svg') no-repeat center;
             background-size: contain;
         }
 
