@@ -104,11 +104,18 @@
                         <i class="fas fa-gauge"></i> <!-- Dashboard icon -->
                     </a>
                     @if (isset($news))
-                        <a target="_blank" href="{{ route('dashboard.content.edit', $news->id) }}"
+                        <a  href="{{ route('dashboard.content.edit', $news->id) }}"
                             class="btn btn-sm btn-warning" title="تعديل">
                             <i class="fas fa-pencil"></i> <!-- Edit icon -->
                         </a>
                     @endif
+                    @if (isset($writer))
+                        <a  href="{{ route('dashboard.writer.edit', $writer->id) }}"
+                            class="btn btn-sm btn-warning" title="تعديل">
+                            <i class="fas fa-pencil"></i> <!-- Edit icon -->
+                        </a>
+                    @endif
+
                     <a href="{{ route('dashboard.logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="تسجيل الخروج">
                         <i class="fas fa-arrow-right-from-bracket"></i> <!-- Logout icon -->

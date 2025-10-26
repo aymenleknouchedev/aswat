@@ -112,6 +112,7 @@
                             <!-- زر -->
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">تحديث كاتب</button>
+                                <a href="{{ route('writer.show' , $writer->id) }}" target="_blank" class="btn btn-light ml-2" data-ar="عرض" data-en="Preview">عرض</a>
                             </div>
                         </form>
 
