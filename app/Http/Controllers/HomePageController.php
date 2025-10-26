@@ -505,13 +505,46 @@ class HomePageController extends Controller
     public function showNews($title)
     {
         $news = Content::where('title', $title)->latest()->firstOrFail();
-        $lastNews = Content::where('id', '!=', $news->title)
+
+        $categoryId = $news->category_id;
+
+        $lastNews = Content::where('title', '!=', $news->title)
+            ->where('category_id', $categoryId)
             ->latest()
             ->take(5)
             ->get();
+
+        $lastWeek = now()->subWeek();
+
+        // جلب الأخبار فقط من نفس تصنيف الخبر الحالي
+        $sectionId = $news->section_id;
+
+        // أولاً: جلب الأخبار من الأسبوع الماضي من نفس التصنيف
+        $lastWeekNews = Content::where('title', '!=', $news->title)
+            ->where('section_id', $sectionId)
+            ->where('created_at', '>=', $lastWeek)
+            ->orderByDesc('read_count')
+            ->take(5)
+            ->get();
+
+        // إذا كانت أقل من 5، نكمل بالباقي من الأقدم من نفس التصنيف
+        if ($lastWeekNews->count() < 5) {
+            $remaining = 5 - $lastWeekNews->count();
+
+            $olderNews = Content::where('title', '!=', $news->title)
+                ->where('section_id', $sectionId)
+                ->where('created_at', '<', $lastWeek)
+                ->orderByDesc('read_count')
+                ->take($remaining)
+                ->get();
+
+            // ندمج النتيجتين
+            $lastWeekNews = $lastWeekNews->concat($olderNews);
+        }
+
         $this->recordView($news);
 
-        return view('user.news', compact('news', 'lastNews'));
+        return view('user.news', compact('news', 'lastNews', 'lastWeekNews'));
     }
 
     protected function recordView($content)
