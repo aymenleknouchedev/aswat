@@ -334,7 +334,7 @@
 
         .date-text {
             color: #888;
-            font-size: 15px;
+            font-size: 14px;
             margin: 0;
         }
 
