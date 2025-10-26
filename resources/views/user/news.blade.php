@@ -570,7 +570,7 @@
                 </div>
 
                 {{-- بطاقة الكاتب --}}
-                @if (optional($news->writer))
+                @if (optional($news->writer)->id)
                     <div class="writer-card">
                         <a href="{{ route('writer.show', $news->writer->id) }}">
                             <img src="{{ $news->writer->image ?? asset('user.png') }}" alt="Writer" loading="lazy">
