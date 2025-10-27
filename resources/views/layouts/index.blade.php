@@ -21,32 +21,44 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="أصوات جزائرية" />
 
-    {{-- <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Replace "..." with «...» in all text nodes and attribute values in all tags
+
+            // Replace "..." with «...» inside visible text only
             function replaceQuotes(str) {
                 return str.replace(/"([^"]*)"/g, '«$1»');
             }
 
-            // Replace in all text nodes
+            // Traverse text nodes inside visible elements
             function traverseAndReplaceText(node) {
+                // Skip script, style, code, pre, textarea, etc.
+                if (
+                    node.nodeName === 'SCRIPT' ||
+                    node.nodeName === 'STYLE' ||
+                    node.nodeName === 'CODE' ||
+                    node.nodeName === 'PRE' ||
+                    node.nodeName === 'TEXTAREA'
+                ) {
+                    return;
+                }
+
+                // Replace text content
                 if (node.nodeType === Node.TEXT_NODE) {
-                    node.textContent = replaceQuotes(node.textContent);
+                    const text = node.textContent.trim();
+                    // Replace only if it's visible text (not empty)
+                    if (text.length > 0) {
+                        node.textContent = replaceQuotes(node.textContent);
+                    }
                 } else {
                     node.childNodes.forEach(traverseAndReplaceText);
                 }
             }
-            traverseAndReplaceText(document.body);
-            traverseAndReplaceText(document.head);
 
-            // Replace in all attribute values
-            document.querySelectorAll('*').forEach(function(el) {
-                Array.from(el.attributes).forEach(function(attr) {
-                    attr.value = replaceQuotes(attr.value);
-                });
-            });
+            // Run only on the visible body content (not head)
+            traverseAndReplaceText(document.body);
         });
-    </script> --}}
+    </script>
+
 
 
     <title>@yield('title')</title>
