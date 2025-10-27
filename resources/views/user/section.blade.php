@@ -29,7 +29,7 @@
         }
 
         .newCategory-feature h2 {
-            font-size: 24px;
+            font-size: 32px;
             margin: 0px 0px 8px 0;
             font-family: asswat-bold;
             line-height: 1.4;
