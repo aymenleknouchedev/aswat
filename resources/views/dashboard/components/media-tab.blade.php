@@ -542,7 +542,7 @@
                 'Enter caption for main image';
 
             return `
-      <div class="field-card">
+      <div class="field-card field-card--full">
         <label class="field-label" for="caption" data-ar="التعليق" data-en="Caption">${captionText}</label>
         <input type="text" 
                class="form-control caption-input" 
@@ -1166,8 +1166,8 @@
     <div class="template-fields">
       <h6 class="template-title" data-ar="إعدادات الصورة" data-en="Image Settings">${title}</h6>
       <div class="fields-grid">
-        ${this.createField('normal_main_image','الصورة الرئيسية','Main Image','fas fa-image')}
         ${this.createCaptionField()}
+        ${this.createField('normal_main_image','الصورة الرئيسية','Main Image','fas fa-image')}
         ${this.createField('normal_content_image','صورة المحتوى','Content Image','fas fa-image')}
         ${this.createField('normal_mobile_image','صورة الموبايل','Mobile Image','fas fa-mobile-alt')}
       </div>
@@ -1180,8 +1180,8 @@
     <div class="template-fields">
       <h6 class="template-title" data-ar="إعدادات الفيديو" data-en="Video Settings">${title}</h6>
       <div class="fields-grid">
-        ${this.createField('video_main_image','صورة الفيديو الرئيسية','Video Main Image','fas fa-image')}
         ${this.createCaptionField()}
+        ${this.createField('video_main_image','صورة الفيديو الرئيسية','Video Main Image','fas fa-image')}
         ${this.createField('video_content_image','صورة محتوى الفيديو','Video Content Image','fas fa-image')}
         ${this.createField('video_mobile_image','صورة الفيديو للموبايل','Video Mobile Image','fas fa-mobile-alt')}
         ${this.createField('video_file','ملف الفيديو','Video File','fas fa-video','file')}
@@ -1195,8 +1195,8 @@
     <div class="template-fields">
       <h6 class="template-title" data-ar="إعدادات البودكاست" data-en="Podcast Settings">${title}</h6>
       <div class="fields-grid">
-        ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','Podcast Main Image','fas fa-image')}
         ${this.createCaptionField()}
+        ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','Podcast Main Image','fas fa-image')}
         ${this.createField('podcast_content_image','صورة محتوى البودكاست','Podcast Content Image','fas fa-image')}
         ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','Podcast Mobile Image','fas fa-mobile-alt')}
         ${this.createField('podcast_file','ملف البودكاست','Podcast File','fas fa-podcast','file')}
@@ -1210,8 +1210,8 @@
     <div class="template-fields">
       <h6 class="template-title" data-ar="إعدادات الألبوم" data-en="Album Settings">${title}</h6>
       <div class="fields-grid">
-        ${this.createField('album_main_image','صورة الألبوم الرئيسية','Album Main Image','fas fa-image')}
         ${this.createCaptionField()}
+        ${this.createField('album_main_image','صورة الألبوم الرئيسية','Album Main Image','fas fa-image')}
         ${this.createField('album_content_image','صورة محتوى الألبوم','Album Content Image','fas fa-image')}
         ${this.createField('album_mobile_image','صورة الألبوم للموبايل','Album Mobile Image','fas fa-mobile-alt')}
         ${this.createAssetsField('album_assets','أصول الألبوم','Album Assets')}
@@ -1225,8 +1225,8 @@
     <div class="template-fields">
       <h6 class="template-title" data-ar="إعدادات المقال" data-en="Article Settings">${title}</h6>
       <div class="fields-grid">
-        ${this.createField('no_image_main_image','الصورة الرئيسية','Main Image','fas fa-image')}
         ${this.createCaptionField()}
+        ${this.createField('no_image_main_image','الصورة الرئيسية','Main Image','fas fa-image')}
         ${this.createField('no_image_mobile_image','صورة المقال للموبايل','Article Mobile Image','fas fa-mobile-alt')}
       </div>
     </div>`;
@@ -1354,6 +1354,10 @@
     .field-card {
         padding: 1rem;
         border-radius: var(--bs-border-radius);
+    }
+
+    .field-card--full {
+        grid-column: 1 / -1;
     }
 
     .field-label {

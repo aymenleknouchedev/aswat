@@ -1,9 +1,21 @@
-
 @extends('layouts.admin')
 
 @section('title', 'أصوات جزائرية | إضافة محتوى')
 
 @section('content')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // المفاتيح الخاصة بالعناصر فقط
+            const itemKeys = [
+                'az_items_list_v1',
+                'az_items_file_v1',
+                'az_display_method_v6',
+                'mediaManagerState',
+            ];
+
+            itemKeys.forEach(k => localStorage.removeItem(k));
+        });
+    </script>
 
     <style>
         /* ===== VALIDATION STYLES ===== */
@@ -449,7 +461,7 @@
             background-color: var(--bs-secondary-bg);
         }
 
-     
+
 
         .border {
             border-color: var(--bs-border-color) !important;

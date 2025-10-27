@@ -169,6 +169,26 @@
       </div>`;
         }
 
+        createCaptionField() {
+            return `
+    <div class="field-card field-card--full">
+      <label class="field-label" for="caption">التعليق</label>
+      <input type="text" 
+           class="form-control caption-input" 
+           id="caption" 
+           name="caption" 
+           required
+           placeholder="أدخل تعليق للصورة الرئيسية"
+           value="{{ old('caption', $content->caption ?? '') }}"
+           oninput="mediaTabManager.updateCaption(this.value)">
+    </div>`;
+      }
+
+        updateCaption(value) {
+            this.state.selectedMedia.caption = value;
+            this.updateHiddenFields();
+        }
+
         /* ============== COLLECTION FIELD ( *_assets ) ============== */
         createAssetsField(fieldName, label) {
             // حالة واجهة مخصصة
@@ -675,6 +695,12 @@
                     );
                 }
             });
+
+            // Add caption field
+            if (this.state.selectedMedia.caption) {
+                parts.push(`<input type="hidden" name="caption" value="${this.state.selectedMedia.caption}">`);
+            }
+
             container.innerHTML = parts.join('');
         }
 
@@ -708,6 +734,7 @@
     <div class="template-fields">
       <h6 class="template-title">إعدادات الصورة</h6>
       <div class="fields-grid">
+        ${this.createCaptionField()}
         ${this.createField('normal_main_image','الصورة الرئيسية','fas fa-image')}
         ${this.createField('normal_content_image','صورة المحتوى','fas fa-image')}
         ${this.createField('normal_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
@@ -720,6 +747,7 @@
     <div class="template-fields">
       <h6 class="template-title">إعدادات الفيديو</h6>
       <div class="fields-grid">
+        ${this.createCaptionField()}
         ${this.createField('video_main_image','صورة الفيديو الرئيسية','fas fa-image')}
         ${this.createField('video_content_image','صورة محتوى الفيديو','fas fa-image')}
         ${this.createField('video_mobile_image','صورة الفيديو للموبايل','fas fa-mobile-alt')}
@@ -733,6 +761,7 @@
     <div class="template-fields">
       <h6 class="template-title">إعدادات البودكاست</h6>
       <div class="fields-grid">
+        ${this.createCaptionField()}
         ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','fas fa-image')}
         ${this.createField('podcast_content_image','صورة محتوى البودكاست','fas fa-image')}
         ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','fas fa-mobile-alt')}
@@ -746,6 +775,7 @@
     <div class="template-fields">
       <h6 class="template-title">إعدادات الألبوم</h6>
       <div class="fields-grid">
+        ${this.createCaptionField()}
         ${this.createField('album_main_image','صورة الألبوم الرئيسية','fas fa-image')}
         ${this.createField('album_content_image','صورة محتوى الألبوم','fas fa-image')}
         ${this.createField('album_mobile_image','صورة الألبوم للموبايل','fas fa-mobile-alt')}
@@ -759,6 +789,7 @@
     <div class="template-fields">
       <h6 class="template-title">إعدادات المقال</h6>
       <div class="fields-grid">
+        ${this.createCaptionField()}
         ${this.createField('no_image_main_image','الصورة الرئيسية','fas fa-image')}
         ${this.createField('no_image_mobile_image','صورة المقال للموبايل','fas fa-mobile-alt')}
       </div>
@@ -875,11 +906,32 @@
         border-radius: var(--bs-border-radius);
     }
 
+    .field-card--full {
+        grid-column: 1 / -1;
+    }
+
     .field-label {
         font-weight: 500;
         color: var(--bs-gray);
         margin-bottom: .5rem;
         display: block;
+    }
+
+    /* Caption Input */
+    .caption-input {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        background: var(--bs-white);
+        color: var(--bs-body-color);
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .caption-input:focus {
+        border-color: var(--bs-primary);
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
     }
 
     /* Empty state */
@@ -1365,6 +1417,39 @@
         padding-top: 10px;
         border-top: 1px solid var(--az-border);
     }
+
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+        .media-manager {
+            color: var(--bs-body-color);
+        }
+
+        .template-fields,
+        .field-card,
+        .field-empty,
+        .media-preview-selected,
+        .media-summary-panel .card,
+        .summary-item,
+        .assets-empty,
+        .asset-item,
+        .field-card--full .assets-wrapper,
+        .caption-input {
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
+        }
+
+        .field-label,
+        .template-title,
+        .media-title,
+        .asset-title,
+        .summary-info h6 {
+            color: var(--bs-heading-color);
+        }
+
+        .caption-input {
+            border-color: var(--bs-border-color);
+        }
+    }
 </style>
 
 <!-- ======================= HYDRATATION INITIALE (depuis le contrôleur) ======================= -->
@@ -1417,6 +1502,9 @@
             ),
         );
     }
+
+    // Caption field
+    $initialCaption = $templateFields['caption'] ?? '';
 @endphp
 
 <script>
@@ -1469,7 +1557,16 @@
                 this.updateAssetsGrid(key);
             }
 
-            // 4) Finalisation
+            // 4) Caption field
+            if (payload.caption) {
+                this.state.selectedMedia.caption = payload.caption;
+                const captionInput = document.getElementById('caption');
+                if (captionInput) {
+                    captionInput.value = payload.caption;
+                }
+            }
+
+            // 5) Finalisation
             this.updateSummary();
             this.updateHiddenFields();
         };
@@ -1478,7 +1575,8 @@
             const bootstrap = {
                 template: @json($initialTemplate),
                 fields: @json($initialFields, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-                assets: @json($initialAssets, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+                assets: @json($initialAssets, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                caption: @json($initialCaption, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
             };
             // Laisser le temps au DOM d'apparaître
             setTimeout(() => {
