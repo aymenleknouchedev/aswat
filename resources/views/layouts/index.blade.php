@@ -21,7 +21,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="أصوات جزائرية" />
 
-    {{-- <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Replace "..." with «...» in all text nodes and attribute values in all tags
             function replaceQuotes(str) {
@@ -46,7 +46,7 @@
                 });
             });
         });
-    </script> --}}
+    </script>
 
 
     <title>@yield('title')</title>
