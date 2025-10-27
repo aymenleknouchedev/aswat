@@ -18,6 +18,9 @@
 
         {{-- Feature investigation --}}
         <style>
+            .section-title {
+            font-size: 32px;
+        }
             .custom-investigations-feature {
                 display: grid;
                 grid-template-columns: 1fr 1fr;

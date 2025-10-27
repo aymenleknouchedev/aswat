@@ -5,6 +5,9 @@
 @section('content')
 
     <style>
+        .section-title {
+            font-size: 32px;
+        }
         .newCategory-all-section {
             display: grid;
             grid-template-columns: 10fr 2fr;

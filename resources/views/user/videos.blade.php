@@ -18,6 +18,10 @@
 
         {{-- Feature videos --}}
         <style>
+            .section-title {
+                font-size: 32px;
+            }
+
             .custom-videos-feature {
                 display: grid;
                 grid-template-columns: 1fr 1fr;

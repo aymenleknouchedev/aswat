@@ -169,6 +169,10 @@
             background: #ddd;
         }
 
+        .section-title {
+            font-size: 32px;
+        }
+
         @media (max-width: 768px) {
             .web {
                 display: none;

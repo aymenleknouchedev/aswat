@@ -18,6 +18,10 @@
 
         {{-- Feature Photos --}}
         <style>
+            .section-title {
+                font-size: 32px;
+            }
+
             .custom-photos-feature {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
@@ -210,7 +214,9 @@
 
             try {
                 let response = await fetch(`/section/photos?page=${page}`, {
-                    headers: { "X-Requested-With": "XMLHttpRequest" }
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
                 });
 
                 if (!response.ok) throw new Error("خطأ في السيرفر");

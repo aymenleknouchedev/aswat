@@ -18,6 +18,10 @@
 
         {{-- Feature file --}}
         <style>
+            .section-title {
+                font-size: 32px;
+            }
+
             .custom-files-feature {
                 display: grid;
                 grid-template-columns: 1fr 1fr;

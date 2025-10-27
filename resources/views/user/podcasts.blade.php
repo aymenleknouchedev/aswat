@@ -18,6 +18,10 @@
 
         {{-- Feature podcasts --}}
         <style>
+            .section-title {
+                font-size: 32px;
+            }
+
             .custom-podcasts-feature {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
