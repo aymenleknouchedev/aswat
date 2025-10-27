@@ -21,6 +21,33 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="أصوات جزائرية" />
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Replace "..." with «...» in all text nodes and attribute values in all tags
+            function replaceQuotes(str) {
+                return str.replace(/"([^"]*)"/g, '«$1»');
+            }
+
+            // Replace in all text nodes
+            function traverseAndReplaceText(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    node.textContent = replaceQuotes(node.textContent);
+                } else {
+                    node.childNodes.forEach(traverseAndReplaceText);
+                }
+            }
+            traverseAndReplaceText(document.body);
+            traverseAndReplaceText(document.head);
+
+            // Replace in all attribute values
+            document.querySelectorAll('*').forEach(function(el) {
+                Array.from(el.attributes).forEach(function(attr) {
+                    attr.value = replaceQuotes(attr.value);
+                });
+            });
+        });
+    </script>
+
 
     <title>@yield('title')</title>
 </head>
