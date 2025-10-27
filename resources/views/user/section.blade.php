@@ -29,7 +29,7 @@
         }
 
         .newCategory-feature h2 {
-            font-size: 32px;
+            font-size: 24px;
             margin: 0px 0px 8px 0;
             font-family: asswat-bold;
             line-height: 1.4;
@@ -282,6 +282,10 @@
             font-size: 24px;
             margin-bottom: 24px;
             cursor: pointer;
+        }
+
+        .section-title {
+            font-size: 32px;
         }
 
         .art-section-grid {
