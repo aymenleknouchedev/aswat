@@ -571,7 +571,11 @@
             <div class="custom-main">
 
                 {{-- التصنيف --}}
-                <div class="custom-category">{{ $news->category->name }}</div>
+                <div class="custom-category">
+                    <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}" style="color: #888; text-decoration: none;">
+                        {{ $news->category->name }}
+                    </a>
+                </div>
 
                 {{-- العنوان --}}
                 <h1 class="custom-article-title">{{ $news->long_title }}</h1>
