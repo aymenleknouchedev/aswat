@@ -108,11 +108,6 @@
                             title="تعديل">
                             <i class="fas fa-pencil"></i> <!-- Edit icon -->
                         </a>
-                    @else
-                        <a href="{{ route('dashboard.content.create') }}" class="btn btn-sm btn-warning"
-                            title="إضافة خبر">
-                            <i class="fa-solid fa-plus"></i> <!-- Add icon -->
-                        </a>
                     @endif
                     @if (isset($writer))
                         <a href="{{ route('dashboard.writer.edit', $writer->id) }}" class="btn btn-sm btn-warning"
@@ -120,6 +115,11 @@
                             <i class="fas fa-pencil"></i> <!-- Edit icon -->
                         </a>
                     @endif
+
+                    <a href="{{ route('dashboard.content.create') }}" class="btn btn-sm btn-warning"
+                        title="إضافة خبر">
+                        <i class="fa-solid fa-plus"></i> <!-- Add icon -->
+                    </a>
 
                     <a href="{{ route('dashboard.logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
