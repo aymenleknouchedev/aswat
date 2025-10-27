@@ -536,6 +536,31 @@
       </div>`;
         }
 
+        createCaptionField() {
+            const captionText = this.state.currentLanguage === 'ar' ? 'التعليق' : 'Caption';
+            const placeholderText = this.state.currentLanguage === 'ar' ? 'أدخل تعليق للصورة الرئيسية' :
+                'Enter caption for main image';
+
+            return `
+      <div class="field-card">
+        <label class="field-label" for="caption" data-ar="التعليق" data-en="Caption">${captionText}</label>
+        <input type="text" 
+               class="form-control caption-input" 
+               id="caption" 
+               name="caption" 
+               required
+               placeholder="${placeholderText}"
+               value="${this.state.selectedMedia.caption || ''}"
+               oninput="mediaTabManager.updateCaption(this.value)">
+      </div>`;
+        }
+
+        updateCaption(value) {
+            this.state.selectedMedia.caption = value;
+            this.updateHiddenFields();
+            this.saveState();
+        }
+
         /* ============== COLLECTION FIELD ( *_assets ) ============== */
         createAssetsField(fieldName, labelAr, labelEn) {
             const label = this.state.currentLanguage === 'ar' ? labelAr : labelEn;
@@ -1084,6 +1109,12 @@
                     );
                 }
             });
+
+            // Add caption field
+            if (this.state.selectedMedia.caption) {
+                parts.push(`<input type="hidden" name="caption" value="${this.state.selectedMedia.caption}">`);
+            }
+
             container.innerHTML = parts.join('');
         }
 
@@ -1136,6 +1167,7 @@
       <h6 class="template-title" data-ar="إعدادات الصورة" data-en="Image Settings">${title}</h6>
       <div class="fields-grid">
         ${this.createField('normal_main_image','الصورة الرئيسية','Main Image','fas fa-image')}
+        ${this.createCaptionField()}
         ${this.createField('normal_content_image','صورة المحتوى','Content Image','fas fa-image')}
         ${this.createField('normal_mobile_image','صورة الموبايل','Mobile Image','fas fa-mobile-alt')}
       </div>
@@ -1149,6 +1181,7 @@
       <h6 class="template-title" data-ar="إعدادات الفيديو" data-en="Video Settings">${title}</h6>
       <div class="fields-grid">
         ${this.createField('video_main_image','صورة الفيديو الرئيسية','Video Main Image','fas fa-image')}
+        ${this.createCaptionField()}
         ${this.createField('video_content_image','صورة محتوى الفيديو','Video Content Image','fas fa-image')}
         ${this.createField('video_mobile_image','صورة الفيديو للموبايل','Video Mobile Image','fas fa-mobile-alt')}
         ${this.createField('video_file','ملف الفيديو','Video File','fas fa-video','file')}
@@ -1163,6 +1196,7 @@
       <h6 class="template-title" data-ar="إعدادات البودكاست" data-en="Podcast Settings">${title}</h6>
       <div class="fields-grid">
         ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','Podcast Main Image','fas fa-image')}
+        ${this.createCaptionField()}
         ${this.createField('podcast_content_image','صورة محتوى البودكاست','Podcast Content Image','fas fa-image')}
         ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','Podcast Mobile Image','fas fa-mobile-alt')}
         ${this.createField('podcast_file','ملف البودكاست','Podcast File','fas fa-podcast','file')}
@@ -1177,6 +1211,7 @@
       <h6 class="template-title" data-ar="إعدادات الألبوم" data-en="Album Settings">${title}</h6>
       <div class="fields-grid">
         ${this.createField('album_main_image','صورة الألبوم الرئيسية','Album Main Image','fas fa-image')}
+        ${this.createCaptionField()}
         ${this.createField('album_content_image','صورة محتوى الألبوم','Album Content Image','fas fa-image')}
         ${this.createField('album_mobile_image','صورة الألبوم للموبايل','Album Mobile Image','fas fa-mobile-alt')}
         ${this.createAssetsField('album_assets','أصول الألبوم','Album Assets')}
@@ -1191,6 +1226,7 @@
       <h6 class="template-title" data-ar="إعدادات المقال" data-en="Article Settings">${title}</h6>
       <div class="fields-grid">
         ${this.createField('no_image_main_image','الصورة الرئيسية','Main Image','fas fa-image')}
+        ${this.createCaptionField()}
         ${this.createField('no_image_mobile_image','صورة المقال للموبايل','Article Mobile Image','fas fa-mobile-alt')}
       </div>
     </div>`;
@@ -1233,6 +1269,23 @@
     }
 
     .field-card--full.field-required .assets-wrapper {}
+
+    /* Caption Input */
+    .caption-input {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        background: var(--bs-white);
+        color: var(--bs-body-color);
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .caption-input:focus {
+        border-color: var(--bs-primary);
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+    }
 
     /* Media Type Selector */
     .media-type-selector .media-type-card {
@@ -1810,7 +1863,8 @@
         .summary-item,
         .assets-empty,
         .asset-item,
-        .field-card--full .assets-wrapper {
+        .field-card--full .assets-wrapper,
+        .caption-input {
             background-color: var(--bs-body-bg);
             color: var(--bs-body-color);
         }
@@ -1821,6 +1875,10 @@
         .asset-title,
         .summary-info h6 {
             color: var(--bs-heading-color);
+        }
+
+        .caption-input {
+            border-color: var(--bs-border-color);
         }
     }
 </style>

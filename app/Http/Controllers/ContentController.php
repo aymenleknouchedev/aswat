@@ -257,6 +257,7 @@ class ContentController extends BaseController
             'review_description'  => 'nullable|string',
             'created_at'          => 'nullable|date',
             'created_at_by_admin' => 'nullable|date',
+            'caption'             => 'required|string|max:255',
 
             // Programmation
             'published_at'        => 'nullable|date',

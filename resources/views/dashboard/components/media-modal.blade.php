@@ -45,13 +45,15 @@
         <!-- Tabs -->
         <div class="mmx-tabs" role="tablist" aria-label="أقسام إدارة الوسائط">
             <button type="button" class="mmx-tab-btn mmx-is-active" role="tab" aria-selected="true"
-                aria-controls="mmx-tab-gallery" id="mmx-tabbtn-gallery" tabindex="0"
-                data-mmx-tab="gallery" data-en="Gallery" data-ar="المعرض">المعرض</button>
+                aria-controls="mmx-tab-gallery" id="mmx-tabbtn-gallery" tabindex="0" data-mmx-tab="gallery"
+                data-en="Gallery" data-ar="المعرض">المعرض</button>
             <button type="button" class="mmx-tab-btn" role="tab" aria-selected="false"
-                aria-controls="mmx-tab-upload" id="mmx-tabbtn-upload" tabindex="-1" data-mmx-tab="upload" data-en="Upload from device" data-ar="الرفع من الجهاز">الرفع من
+                aria-controls="mmx-tab-upload" id="mmx-tabbtn-upload" tabindex="-1" data-mmx-tab="upload"
+                data-en="Upload from device" data-ar="الرفع من الجهاز">الرفع من
                 الجهاز</button>
             <button type="button" class="mmx-tab-btn" role="tab" aria-selected="false"
-                aria-controls="mmx-tab-import" id="mmx-tabbtn-import" tabindex="-1" data-mmx-tab="import" data-en="Import by URL" data-ar="الاستيراد بالرابط">الاستيراد
+                aria-controls="mmx-tab-import" id="mmx-tabbtn-import" tabindex="-1" data-mmx-tab="import"
+                data-en="Import by URL" data-ar="الاستيراد بالرابط">الاستيراد
                 بالرابط</button>
         </div>
 
@@ -75,8 +77,10 @@
             </div>
 
             <div class="mmx-footer">
-                <button class="mmx-btn mmx-btn-select" type="button" id="mmx-btn-select" data-en="Select" data-ar="اختر">اختر</button>
-                <button class="mmx-btn mmx-btn-cancel" type="button" data-mmx-close data-en="Cancel" data-ar="إلغاء">إلغاء</button>
+                <button class="mmx-btn mmx-btn-select" type="button" id="mmx-btn-select" data-en="Select"
+                    data-ar="اختر">اختر</button>
+                <button class="mmx-btn mmx-btn-cancel" type="button" data-mmx-close data-en="Cancel"
+                    data-ar="إلغاء">إلغاء</button>
             </div>
         </section>
 
@@ -87,12 +91,14 @@
                 <div class="mmx-uploader">
                     <div class="mmx-upload-fields" style="display: flex; flex-wrap: wrap; gap: .6rem; width: 100%;">
                         <div style="flex: 1 1 220px;">
+                            <input type="file" id="mmx-upload-input" class="mmx-upload-input"
+                                style="display: none;" />
                             <label for="mmx-upload-input"
-                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid var(--mmx-border); border-radius: 0; background: var(--mmx-gray-100); color: var(--mmx-text); text-align: center;" data-ar="اختر ملف الوسائط" data-en="Select media file">
+                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid var(--mmx-border); border-radius: 0; background: var(--mmx-gray-100); color: var(--mmx-text); text-align: center;"
+                                data-ar="اختر ملف الوسائط" data-en="Select media file">
                                 <i class="fa fa-upload" style="margin-right: 6px;"></i> اختر ملف الوسائط
-                                <input type="file" id="mmx-upload-input" class="mmx-upload-input"
-                                    style="display: none;" />
                             </label>
+
                         </div>
                         <div style="flex: 1 1 200px;">
                             <input type="text" id="mmx-upload-name" class="mmx-upload-name"
@@ -107,9 +113,11 @@
                     </div>
                     <div class="mmx-uploader-actions">
                         <button class="mmx-btn mmx-btn-secondary" type="button" id="mmx-btn-upload-to-gallery"
-                            title="إدراج في المعرض" data-en="Insert into gallery" data-ar="إدراج في المعرض">إدراج في المعرض</button>
+                            title="إدراج في المعرض" data-en="Insert into gallery" data-ar="إدراج في المعرض">إدراج في
+                            المعرض</button>
                         <button class="mmx-btn mmx-btn-primary" type="button" id="mmx-btn-upload-and-select-close"
-                            title="إدراج في المقال" data-en="Insert into article" data-ar="إدراج في المقال">إدراج في المقال</button>
+                            title="إدراج في المقال" data-en="Insert into article" data-ar="إدراج في المقال">إدراج في
+                            المقال</button>
                     </div>
                 </div>
             </div>

@@ -17,6 +17,7 @@ class Content extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'caption',
         'user_id',
         'title',
         'long_title',

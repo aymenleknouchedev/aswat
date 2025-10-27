@@ -745,14 +745,13 @@
                     </style>
                 </div>
 
-
                 {{-- صورة --}}
                 @if ($news->template !== 'no_image')
                     <figure class="custom-article-image-wrapper">
                         <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="Feature Algeria"
                             loading="lazy">
                         <figcaption>
-                            {{ $news->media()->wherePivot('type', 'detail')->first()->alt ?? $news->mobile_title }}
+                            {{ $news->caption ?? '' }}
                         </figcaption>
                     </figure>
                 @endif
