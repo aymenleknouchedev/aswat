@@ -255,7 +255,7 @@
             right: 0px;
             width: 32px;
             height: 32px;
-            background: url('/user/assets/icons/up.svg') no-repeat center;
+            background: url('/user/assets/icons/up.png') no-repeat center;
             background-size: contain;
         }
 
@@ -266,7 +266,7 @@
             left: 0px;
             width: 32px;
             height: 32px;
-            background: url('/user/assets/icons/down.svg') no-repeat center;
+            background: url('/user/assets/icons/down.png') no-repeat center;
             background-size: contain;
         }
 
@@ -500,7 +500,7 @@
             font-size: 18px;
         }
 
-        .share-icons a i:hover {
+        .share-icons a i:hover {AA
             color: #333;
             transition: color 0.3s ease;
         }
