@@ -853,6 +853,7 @@ class ContentController extends BaseController
             'content'             => 'nullable|string',
             'seo_keyword'         => 'nullable|string|max:255',
             'template'            => 'required|string|in:normal_image,video,podcast,album,no_image',
+            'caption'             => 'required|string|max:255',
 
             // Tags (allow empty array -> sync([]))
             'tags_id'   => 'nullable|array',
