@@ -33,7 +33,6 @@ return new class extends Migration
             $table->foreignId('country_id')->nullable()->constrained('locations')->restrictOnDelete();
             $table->foreignId('trend_id')->nullable()->constrained('trends')->restrictOnDelete();
             $table->foreignId('window_id')->nullable()->constrained('windows')->restrictOnDelete();
-            $table->foreignId('writer_id')->nullable()->constrained('writers')->restrictOnDelete();
             $table->foreignId('city_id')->nullable()->constrained('locations')->restrictOnDelete();
 
             // Body

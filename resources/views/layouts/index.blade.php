@@ -21,7 +21,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="أصوات جزائرية" />
 
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
 
             // Replace "..." with «...» inside visible text only
@@ -57,7 +57,7 @@
             // Run only on the visible body content (not head)
             traverseAndReplaceText(document.body);
         });
-    </script>
+    </script> --}}
 
 
 

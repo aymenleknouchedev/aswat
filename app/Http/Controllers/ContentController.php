@@ -225,11 +225,6 @@ class ContentController extends BaseController
         }
 
         // =========================================
-        // 0quater) Gestion du mode PREVIEW (avant validation)
-        // =========================================
-
-
-        // =========================================
         // 1) Règles de validation
         // =========================================
         $rules = [
@@ -243,7 +238,7 @@ class ContentController extends BaseController
             'country_id'          => 'nullable|exists:locations,id',
             'trend_id'            => 'nullable|exists:trends,id',
             'window_id'           => 'nullable|exists:windows,id',
-            'writer_id'           => 'nullable|exists:writers,id',
+            // REMOVED: 'writer_id'           => 'nullable|exists:writers,id',
             'city_id'             => 'nullable|exists:locations,id',
             'summary'             => 'nullable|string',
             'content'             => 'nullable|string',
@@ -251,6 +246,9 @@ class ContentController extends BaseController
             'template'            => 'required|string|in:normal_image,video,podcast,album,no_image',
             'tags_id'             => 'required|array',
             'tags_id.*'           => 'integer|exists:tags,id',
+            'writers'             => 'nullable|array', // NEW: for many-to-many writers
+            'writers.*.id'        => 'nullable|integer|exists:writers,id', // NEW
+            'writers.*.role'      => 'nullable|string|max:255', // NEW
             'share_image'         => 'nullable|url|max:2048',
             'share_title'         => 'nullable|string',
             'share_description'   => 'nullable|string',
@@ -261,7 +259,7 @@ class ContentController extends BaseController
 
             // Programmation
             'published_at'        => 'nullable|date',
-            'status'              => 'nullable|in:published,draft,scheduled,preview', // preview déjà neutralisé
+            'status'              => 'nullable|in:published,draft,scheduled,preview',
             'is_latest'           => 'nullable|boolean',
             'importance'          => 'nullable|integer|min:0|max:10',
         ];
@@ -271,6 +269,7 @@ class ContentController extends BaseController
             $rules['items']               = 'required|array|min:1';
             $rules['items.*.title']       = 'required|string|max:255';
             $rules['items.*.description'] = 'required|string';
+            $rules['items.*.writer']      = 'nullable|string|max:255';
             $rules['items.*.image']       = 'required|url|max:2048';
             $rules['items.*.index']       = 'required|integer|min:1';
             $rules['items.*.url']         = $request->input('display_method') === 'list'
@@ -313,6 +312,7 @@ class ContentController extends BaseController
             $request->merge(['status' => 'draft']);
             $isPreview = true;
         }
+
         // =========================================
         // 2) Validation
         // =========================================
@@ -325,8 +325,6 @@ class ContentController extends BaseController
                 ->withErrors(['album_assets' => 'You must provide at least one album asset URL.'])
                 ->withInput();
         }
-
-
 
         // =========================================
         // 3) Création du contenu
@@ -354,6 +352,7 @@ class ContentController extends BaseController
                 $content->contentLists()->create([
                     'title'       => $item['title'],
                     'description' => $item['description'],
+                    'writer'      => $item['writer'] ?? null,
                     'url'         => $item['url'] ?? null,
                     'image'       => $item['image'] ?? null,
                     'index'       => $item['index'],
@@ -362,7 +361,20 @@ class ContentController extends BaseController
         }
 
         // =========================================
-        // 5) Médias liés (détection type simple)
+        // 5) Writers (many-to-many relationship) - NEW SECTION
+        // =========================================
+        if ($request->filled('writers') && is_array($request->writers)) {
+            $writersData = [];
+            foreach ($request->writers as $writer) {
+                if (!empty($writer['id'])) {
+                    $writersData[$writer['id']] = ['role' => $writer['role'] ?? null];
+                }
+            }
+            $content->writers()->sync($writersData);
+        }
+
+        // =========================================
+        // 6) Médias liés (détection type simple)
         // =========================================
         $templateMediaMap = [
             'normal_image' => [
@@ -449,12 +461,12 @@ class ContentController extends BaseController
         }
 
         // =========================================
-        // 6) Tags
+        // 7) Tags
         // =========================================
         $content->tags()->sync($request->tags_id);
 
         // =========================================
-        // 7) Publication / Programmation
+        // 8) Publication / Programmation
         // =========================================
         if ($request->filled('published_at')) {
             $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
@@ -524,7 +536,7 @@ class ContentController extends BaseController
             'city:id,name',
             'tags:id,name',
             'contentLists' => function ($q) {
-                $q->orderBy('index');
+                $q->orderBy('index')->with('writer:id,name'); // Added writer relationship
             },
         ])->findOrFail($id);
 
@@ -585,10 +597,21 @@ class ContentController extends BaseController
                 $mediaTable . '.media_type',
             ])->toArray();
 
-        // ===== 4) Items (list/file) =====
+        // ===== 4) Items (list/file) - FIXED: Include writer name =====
         $contentItems = [];
         if (in_array($content->display_method, ['list', 'file'], true)) {
-            $contentItems = $content->contentLists->toArray();
+            $contentItems = $content->contentLists->map(function ($item) {
+                return [
+                    'title' => $item->title,
+                    'description' => $item->description,
+                    'image' => $item->image,
+                    'url' => $item->url,
+                    'media_id' => $item->media_id,
+                    'media_title' => $item->media_title,
+                    'media_alt' => $item->media_alt,
+                    'writer_name' => $item->writer ?? '', // Added writer name
+                ];
+            })->toArray();
         }
 
         // ===== 5) Review existant =====
@@ -770,6 +793,15 @@ class ContentController extends BaseController
                     $item['index'] = $i;
                 }
 
+                // 5) FIXED: Handle writer_name -> writer (frontend sends writer_name)
+                if (isset($item['writer_name'])) {
+                    $item['writer'] = $item['writer_name'];
+                } elseif (isset($item['writer'])) {
+                    $item['writer'] = $item['writer'];
+                } else {
+                    $item['writer'] = null;
+                }
+
                 $items[$i] = $item;
             }
 
@@ -847,7 +879,7 @@ class ContentController extends BaseController
             'country_id'          => 'nullable|exists:locations,id',
             'trend_id'            => 'nullable|exists:trends,id',
             'window_id'           => 'nullable|exists:windows,id',
-            'writer_id'           => 'nullable|exists:writers,id',
+            // REMOVED: 'writer_id'           => 'nullable|exists:writers,id',
             'city_id'             => 'nullable|exists:locations,id',
             'summary'             => 'nullable|string',
             'content'             => 'nullable|string',
@@ -858,6 +890,11 @@ class ContentController extends BaseController
             // Tags (allow empty array -> sync([]))
             'tags_id'   => 'nullable|array',
             'tags_id.*' => 'integer|exists:tags,id',
+
+            // Writers (many-to-many relationship) - NEW
+            'writers'             => 'nullable|array',
+            'writers.*.id'        => 'nullable|integer|exists:writers,id',
+            'writers.*.role'      => 'nullable|string|max:255',
 
             // ---- Social Media fields ----
             'share_image'        => 'nullable|url|max:2048',
@@ -888,6 +925,8 @@ class ContentController extends BaseController
             $rules['items.*.title']       = 'required|string|max:255';
             $rules['items.*.description'] = 'required|string';
             $rules['items.*.image']       = 'required|url|max:2048';
+            // FIXED: Update validation rule for writer
+            $rules['items.*.writer']      = 'nullable|string|max:255';
             $rules['items.*.index']       = 'required|integer';
             $rules['items.*.url']         = $request->input('display_method') === 'list'
                 ? 'required|url|max:2048'
@@ -966,7 +1005,21 @@ class ContentController extends BaseController
                 \App\Models\ContentReview::where('content_id', $content->id)->delete();
             }
 
-            // ========= 5) Items (list/file) - Sync au lieu de create =========
+            // ========= 5) Writers (many-to-many relationship) - NEW SECTION =========
+            if ($request->filled('writers') && is_array($request->writers)) {
+                $writersData = [];
+                foreach ($request->writers as $writer) {
+                    if (!empty($writer['id'])) {
+                        $writersData[$writer['id']] = ['role' => $writer['role'] ?? null];
+                    }
+                }
+                $content->writers()->sync($writersData);
+            } else {
+                // If no writers provided, detach all
+                $content->writers()->sync([]);
+            }
+
+            // ========= 6) Items (list/file) - Sync au lieu de create =========
             if (in_array($request->input('display_method'), ['list', 'file'], true) && !empty($validated['items'])) {
                 $content->contentLists()->delete();
                 foreach ($validated['items'] as $item) {
@@ -974,6 +1027,8 @@ class ContentController extends BaseController
                         'title'       => $item['title'],
                         'description' => $item['description'],
                         'url'         => $item['url'] ?? null,
+                        // FIXED: Use writer field (already mapped from writer_name in normalization step)
+                        'writer'      => $item['writer'] ?? null,
                         'image'       => $item['image'] ?? null,
                         'index'       => $item['index'],
                     ]);
@@ -983,10 +1038,10 @@ class ContentController extends BaseController
                 $content->contentLists()->delete();
             }
 
-            // ========= 6) Sync des tags (supporter null -> vider) =========
+            // ========= 7) Sync des tags (supporter null -> vider) =========
             $content->tags()->sync($request->input('tags_id', []));
 
-            // ========= 7) Gestion des médias liés =========
+            // ========= 8) Gestion des médias liés =========
             $detectTypeFromUrl = function (string $url): string {
                 $u = strtolower(parse_url($url, PHP_URL_PATH) ?? '');
                 if (preg_match('/\.(jpe?g|png|gif|webp|bmp|svg)$/', $u)) return 'image';
@@ -1077,7 +1132,7 @@ class ContentController extends BaseController
                 }
             }
 
-            // ========= 8) Publication / Programmation =========
+            // ========= 9) Publication / Programmation =========
             if ($request->filled('published_at')) {
                 $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
 

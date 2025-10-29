@@ -3,7 +3,6 @@
 @section('title', 'أصوات جزائرية | تعديل محتوى')
 
 @section('content')
-
     <style>
         /* ===== VALIDATION STYLES ===== */
         .hidden-input:invalid~.selected-item {
@@ -344,6 +343,116 @@
             color: transparent;
         }
 
+        /* ===== WRITERS (MULTI-SELECT) STYLES ===== */
+        .writer-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border: 1px solid var(--bs-border-color);
+            border-radius: 4px;
+            background-color: var(--bs-secondary-bg);
+            margin-bottom: 5px;
+            color: var(--bs-body-color);
+        }
+
+        .writer-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .writer-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .writer-role {
+            font-size: 12px;
+            color: var(--bs-secondary-color);
+        }
+
+        .writer-role-input {
+            width: 120px;
+            padding: 4px 8px;
+            font-size: 12px;
+            border: 1px solid var(--bs-border-color);
+            border-radius: 4px;
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
+        }
+
+        .writer-role-input:focus {
+            outline: none;
+            border-color: var(--bs-primary);
+        }
+
+        .writer-delete {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: var(--bs-secondary-color);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .writer-delete:hover {
+            background-color: var(--bs-danger);
+            color: var(--bs-white);
+        }
+
+        .writers-selected-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+            min-height: 42px;
+            border: 1px solid var(--bs-border-color);
+            border-radius: 0px;
+            background: var(--bs-body-bg);
+            margin-top: 0;
+        }
+
+        .writers-input-wrapper {
+            position: relative;
+            display: block;
+        }
+
+        .writers-input-wrapper.hidden {
+            display: none !important;
+        }
+
+        #writers_id_search {
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            min-width: 120px;
+            flex: 1;
+            color: var(--bs-body-color);
+        }
+
+        .writers-selected-container:focus-within {
+            border-color: var(--bs-primary);
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        #writers_id_search::placeholder,
+        #writers_id_search::-webkit-input-placeholder,
+        #writers_id_search::-moz-placeholder,
+        #writers_id_search:-ms-input-placeholder,
+        #writers_id_search:-moz-placeholder {
+            color: transparent;
+        }
+
         /* ===== SOCIAL MEDIA PREVIEW STYLES ===== */
         .social-preview {
             border: 1px solid var(--bs-border-color);
@@ -499,14 +608,12 @@
                         @if (session('success'))
                             <script>
                                 document.addEventListener('DOMContentLoaded', function() {
-                                    // المفاتيح الخاصة بالعناصر فقط
                                     const itemKeys = [
                                         'az_items_list_v1',
                                         'az_items_file_v1',
                                         'az_display_method_v6',
                                         'mediaManagerState'
                                     ];
-
                                     itemKeys.forEach(k => localStorage.removeItem(k));
                                 });
                             </script>
@@ -854,48 +961,107 @@
                                     </div>
                                 </div>
 
-                                {{-- ===== WRITER & WRITER LOCATION ROW ===== --}}
+                                {{-- ===== WRITERS (MULTI-SELECT) ROW ===== --}}
                                 <div class="fields-row">
-                                    <!-- Writer -->
-                                    <div class="search-wrapper">
-                                        <div class="search-container category-selector">
-                                            <label class="form-label" for="writer" data-ar="الكاتب"
-                                                data-en="Writer">الكاتب</label>
-                                            <input type="hidden" name="writer_id" class="hidden-input"
-                                                value="{{ old('writer_id', $content->writer_id) }}">
-                                            <div class="selected-item"
-                                                style="{{ old('writer_id', $content->writer_id) ? 'display: flex;' : 'display: none;' }}">
-                                                <span class="selected-value">
-                                                    @if ($content->writer)
-                                                        {{ $content->writer->name }}
+                                    <div class="search-wrapper" style="flex: 1;">
+                                        <div class="multi-select-container">
+                                            <label class="form-label" for="writers_id" data-ar="الكتاب"
+                                                data-en="Writers">الكتاب</label>
+
+                                            {{-- SELECTED + SEARCH (SERVER-RENDER OLD WRITERS) --}}
+                                            @php
+                                                // Get existing writers data from content
+                                                $existingWriters = old(
+                                                    'writers',
+                                                    $content->writers
+                                                        ->mapWithKeys(function ($writer) {
+                                                            return [
+                                                                $writer->id => [
+                                                                    'id' => $writer->id,
+                                                                    'role' => $writer->pivot->role ?? '',
+                                                                ],
+                                                            ];
+                                                        })
+                                                        ->toArray(),
+                                                );
+                                                $writerById = $writers->keyBy('id');
+                                            @endphp
+
+                                            <div class="writers-search-container">
+                                                <div id="writers-selected-container" class="writers-selected-container">
+                                                    @if (is_array($existingWriters) && count($existingWriters))
+                                                        @foreach ($existingWriters as $writerData)
+                                                            @php
+                                                                $wid = is_array($writerData)
+                                                                    ? $writerData['id'] ?? null
+                                                                    : null;
+                                                                $role = is_array($writerData)
+                                                                    ? $writerData['role'] ?? ''
+                                                                    : '';
+                                                            @endphp
+                                                            @if ($wid && isset($writerById[$wid]))
+                                                                <div class="writer-item" data-id="{{ $wid }}">
+                                                                    <div class="writer-info">
+                                                                        <span
+                                                                            class="writer-name">{{ $writerById[$wid]->name }}</span>
+                                                                        <input type="text" class="writer-role-input"
+                                                                            name="writers[{{ $wid }}][role]"
+                                                                            value="{{ $role }}"
+                                                                            placeholder="الدور (مثل: كاتب رئيسي, محرر, ...)">
+                                                                    </div>
+                                                                    <button type="button" class="writer-delete"
+                                                                        onclick="removeWriterItem(this, '{{ $wid }}')">×</button>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
                                                     @endif
-                                                </span>
-                                                <button type="button" class="btn-delete"
-                                                    onclick="clearSelection(this)">×</button>
+
+                                                    <div class="writers-input-wrapper">
+                                                        <input id="writers_id_search" type="text"
+                                                            class="form-control search-input"
+                                                            oninput="filterWritersList(this)"
+                                                            onfocus="showWritersinDropdown(this)">
+                                                        <button type="button" class="btn-add" data-bs-toggle="modal"
+                                                            data-bs-target="#addWriterModal" tabindex="-1">+</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="indropdown">
+                                                    <ul id="writers-options-list">
+                                                        @foreach ($writers as $writer)
+                                                            <li data-id="{{ $writer->id }}"
+                                                                data-name="{{ $writer->name }}"
+                                                                class="{{ isset($existingWriters[$writer->id]) ? 'selected' : '' }}"
+                                                                onclick="selectWriterItem(this, this.dataset.name, this.dataset.id)">
+                                                                {{ $writer->name }}
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
                                             </div>
-                                            <div class="input-wrapper"
-                                                style="{{ old('writer_id', $content->writer_id) ? 'display: none;' : 'display: block;' }}">
-                                                <input id="writer_search" type="text"
-                                                    class="form-control search-input" oninput="filterList(this)"
-                                                    onfocus="showinDropdown(this)">
-                                                <button type="button" class="btn-add" data-bs-toggle="modal"
-                                                    data-bs-target="#addWriterModal" tabindex="-1">+</button>
-                                            </div>
-                                            <div class="indropdown">
-                                                <ul>
-                                                    @foreach ($writers as $writer)
-                                                        <li data-id="{{ $writer->id }}"
-                                                            data-name="{{ $writer->name }}"
-                                                            onclick="selectItem(this, '{{ $writer->name }}', '{{ $writer->id }}')"
-                                                            {{ old('writer_id', $content->writer_id) == $writer->id ? 'class=selected' : '' }}>
-                                                            {{ $writer->name }}
-                                                        </li>
+
+                                            {{-- Hidden inputs for selected writers (server-rendered) --}}
+                                            <div id="writers-hidden-inputs">
+                                                @if (is_array($existingWriters) && count($existingWriters))
+                                                    @foreach ($existingWriters as $writerData)
+                                                        @php
+                                                            $wid = is_array($writerData)
+                                                                ? $writerData['id'] ?? null
+                                                                : null;
+                                                        @endphp
+                                                        @if ($wid)
+                                                            <input type="hidden" name="writers[{{ $wid }}][id]"
+                                                                value="{{ $wid }}">
+                                                        @endif
                                                     @endforeach
-                                                </ul>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
+                                {{-- ===== WRITER LOCATION ROW ===== --}}
+                                <div class="fields-row">
                                     <!-- Writer Location -->
                                     <div class="search-wrapper">
                                         <div class="search-container category-selector">
@@ -1092,9 +1258,9 @@
                         <div class="mt-4 d-flex">
                             <button name="status" value="published" type="submit" class="btn btn-primary btn-lg me-3"
                                 data-ar="تحديث" data-en="Update" id="publishButton">تحديث</button>
-                           
-                            <a href="{{ route('news.show', $content->title) }}" target="_blank" class="btn btn-secondary btn-lg"
-                                style="margin-left: 10px;">
+
+                            <a href="{{ route('news.show', $content->title) }}" target="_blank"
+                                class="btn btn-secondary btn-lg" style="margin-left: 10px;">
                                 معاينة
                             </a>
                         </div>
@@ -1166,31 +1332,6 @@
     </div>
 
     {{-- ============================ MODALS ============================ --}}
-    {{-- Add Section Modal --}}
-    <div class="modal fade" id="addSectionModal" tabindex="-1" aria-labelledby="addSectionModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addSectionModalLabel">إضافة قسم جديد</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addSectionForm">@csrf
-                        <div class="mb-3"><label for="section_name" class="form-label">اسم القسم</label><input
-                                type="text" class="form-control" id="section_name" name="name" required></div>
-                        <div class="mb-3"><label for="section_description" class="form-label">الوصف</label>
-                            <textarea class="form-control" id="section_description" name="description" rows="3"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer"><button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">إلغاء</button><button type="button" class="btn btn-primary"
-                        onclick="addNewSection()">حفظ</button></div>
-            </div>
-        </div>
-    </div>
-
     {{-- Add Category Modal --}}
     <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel"
         aria-hidden="true">
@@ -1239,7 +1380,7 @@
                             <label for="writer_slug" class="form-label">الرابط المختصر (Slug)</label>
                             <input type="text" class="form-control" id="writer_slug" name="slug"
                                 placeholder="مثال: naji-benz" required>
-                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
+                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
                             <label for="writer_bio" class="form-label">السيرة الذاتية</label>
@@ -1304,7 +1445,7 @@
                         <div class="mb-3">
                             <label for="location_slug" class="form-label">الرابط المختصر (Slug)</label>
                             <input type="text" class="form-control" id="location_slug" name="slug" required>
-                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
+                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
                         </div>
                         <input type="hidden" name="type" value="city">
                     </form>
@@ -1335,7 +1476,7 @@
                             <label for="trend_slug" class="form-label">الرابط المختصر (Slug)</label>
                             <input type="text" class="form-control" id="trend_slug" name="slug"
                                 placeholder="مثال: world-cup-2026" required>
-                            <div class="form-text">يُولَّد تلقائيًا من العنوان ويمكن تعديله.</div>
+                            <div class="form-text">يُولَّد تلقائيًا من العنوان ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
                             <label for="trend_image" class="form-label">الصورة</label>
@@ -1371,7 +1512,7 @@
                         <div class="mb-3">
                             <label for="window_slug" class="form-label">الرابط المختصر (Slug)</label>
                             <input type="text" class="form-control" id="window_slug" name="slug" required>
-                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
+                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
                             <label for="window_image" class="form-label">الصورة</label>
@@ -1481,7 +1622,6 @@
             inputWrapper.style.display = 'block';
             hiddenInput.value = '';
 
-            // Clear the search input and focus on it
             if (searchInput) {
                 searchInput.value = '';
                 searchInput.focus();
@@ -1565,9 +1705,89 @@
             if (selectedItem) selectedItem.remove();
         }
 
-        // ========== UTILITY FUNCTIONS ==========
+        // ========== WRITERS MULTI-SELECT FUNCTIONS ==========
+        function showWritersinDropdown(input) {
+            const container = input.closest('.writers-search-container');
+            const indropdown = container.querySelector('.indropdown');
+            indropdown.style.display = 'block';
+        }
 
-        // Close indropdowns when clicking outside
+        function filterWritersList(input) {
+            const container = input.closest('.writers-search-container');
+            const indropdown = container.querySelector('.indropdown');
+            const filter = input.value.toLowerCase();
+            const items = indropdown.querySelectorAll('li');
+            let visible = false;
+
+            items.forEach(li => {
+                const text = (li.dataset.name || li.textContent).toLowerCase();
+                if (text.includes(filter)) {
+                    li.style.display = '';
+                    visible = true;
+                } else {
+                    li.style.display = 'none';
+                }
+            });
+
+            indropdown.style.display = visible ? 'block' : 'none';
+        }
+
+        function selectWriterItem(li, name, id) {
+            const container = li.closest('.writers-search-container');
+            const selectedContainer = document.getElementById('writers-selected-container');
+            const hiddenInputsContainer = document.getElementById('writers-hidden-inputs');
+            const searchInput = container.querySelector('.search-input');
+            const indropdown = container.querySelector('.indropdown');
+
+            const existingWriter = selectedContainer.querySelector(`.writer-item[data-id="${id}"]`);
+            if (existingWriter) return;
+
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = `writers[${id}][id]`;
+            hiddenInput.value = id;
+            hiddenInputsContainer.appendChild(hiddenInput);
+
+            const writerItem = document.createElement('div');
+            writerItem.className = 'writer-item';
+            writerItem.setAttribute('data-id', id);
+            writerItem.innerHTML = `
+                <div class="writer-info">
+                    <span class="writer-name">${name}</span>
+                    <input type="text" class="writer-role-input" 
+                        name="writers[${id}][role]" 
+                        placeholder="الدور (مثل: كاتب رئيسي, محرر, ...)">
+                </div>
+                <button type="button" class="writer-delete" onclick="removeWriterItem(this, '${id}')">×</button>
+            `;
+            selectedContainer.insertBefore(writerItem, selectedContainer.querySelector('.writers-input-wrapper'));
+
+            li.classList.add('selected');
+
+            searchInput.value = '';
+            indropdown.style.display = 'none';
+            searchInput.focus();
+
+            container.style.border = '';
+            container.style.padding = '';
+        }
+
+        function removeWriterItem(button, id) {
+            const selectedContainer = document.getElementById('writers-selected-container');
+            const hiddenInputsContainer = document.getElementById('writers-hidden-inputs');
+            const list = document.getElementById('writers-options-list');
+
+            const hiddenInput = hiddenInputsContainer.querySelector(`input[name="writers[${id}][id]"]`);
+            if (hiddenInput) hiddenInput.remove();
+
+            const li = list.querySelector(`li[data-id="${id}"]`);
+            if (li) li.classList.remove('selected');
+
+            const writerItem = button.closest('.writer-item');
+            if (writerItem) writerItem.remove();
+        }
+
+        // ========== UTILITY FUNCTIONS ==========
         document.addEventListener('click', function(e) {
             document.querySelectorAll('.category-selector').forEach(container => {
                 if (!container.contains(e.target)) {
@@ -1581,22 +1801,23 @@
                     if (dd) dd.style.display = 'none';
                 }
             });
+            document.querySelectorAll('.multi-select-container .writers-search-container').forEach(container => {
+                if (!container.contains(e.target)) {
+                    const dd = container.querySelector('.indropdown');
+                    if (dd) dd.style.display = 'none';
+                }
+            });
         });
 
-        // Initialize from old values
         document.addEventListener('DOMContentLoaded', function() {
             initializeSingleSelect('section_id', {{ (int) old('section_id', $content->section_id) }});
             initializeSingleSelect('category_id', {{ (int) old('category_id', $content->category_id) }});
             initializeSingleSelect('country_id', {{ (int) old('country_id', $content->country_id) }});
             initializeSingleSelect('continent_id', {{ (int) old('continent_id', $content->continent_id) }});
-            initializeSingleSelect('writer_id', {{ (int) old('writer_id', $content->writer_id) }});
             initializeSingleSelect('city_id', {{ (int) old('city_id', $content->city_id) }});
-
-            // Trend & Window
             initializeSingleSelect('trend_id', {{ (int) old('trend_id', $content->trend_id) }});
             initializeSingleSelect('window_id', {{ (int) old('window_id', $content->window_id) }});
 
-            // Tags already server-rendered
             initializeCharacterCounters();
             initializeBootstrapTabs();
             updatePreview();
@@ -1691,11 +1912,6 @@
                     e.preventDefault();
                     showValidationError(errorMessages.join('<br>'));
                     scrollToFirstError();
-                } else {
-                    const formData = new FormData(this);
-                    for (let [key, value] of formData.entries()) {
-                        console.log(key + ': ' + value);
-                    }
                 }
             });
 
@@ -1735,8 +1951,7 @@
                     top: 0,
                     behavior: 'smooth'
                 });
-                const firstError = document.querySelector(
-                        '.search-container[style*="border: 1px solid"]') ||
+                const firstError = document.querySelector('.search-container[style*="border: 1px solid"]') ||
                     document.querySelector('.multi-select-container[style*="border: 1px solid"]');
                 if (firstError) {
                     firstError.scrollIntoView({
@@ -1815,8 +2030,6 @@
         }
 
         // ========== MODAL AJAX FUNCTIONS ==========
-
-        // Add New Writer
         document.addEventListener('DOMContentLoaded', function() {
             const nameI = document.getElementById('writer_name');
             const slugI = document.getElementById('writer_slug');
@@ -1849,7 +2062,7 @@
             if (!slug) return Swal.fire({
                 icon: 'error',
                 title: 'تنبيه',
-                text: 'يرجى إدخال الرابط المختصر.'
+                text: 'يرجى إد خال الرابط المختصر.'
             });
             if (!bio) return Swal.fire({
                 icon: 'error',
@@ -1904,20 +2117,17 @@
                     const id = data.id || data.writer.id;
                     const name = data.name || (data.writer && data.writer.name);
 
-                    const writerSearch = document.querySelector('#writer_search');
-                    if (writerSearch) {
-                        const listUl = writerSearch.closest('.search-container')?.querySelector('.indropdown ul');
-                        if (listUl) {
-                            const li = document.createElement('li');
-                            li.dataset.id = String(id);
-                            li.dataset.name = name;
-                            li.textContent = name;
-                            li.onclick = function() {
-                                selectItem(li, name, String(id));
-                            };
-                            listUl.appendChild(li);
-                            selectItem(li, name, String(id));
-                        }
+                    const writersList = document.getElementById('writers-options-list');
+                    if (writersList) {
+                        const li = document.createElement('li');
+                        li.dataset.id = String(id);
+                        li.dataset.name = name;
+                        li.textContent = name;
+                        li.onclick = function() {
+                            selectWriterItem(li, name, String(id));
+                        };
+                        writersList.appendChild(li);
+                        selectWriterItem(li, name, String(id));
                     }
 
                     if (window.$) $('#addWriterModal').modal('hide');
@@ -1950,7 +2160,6 @@
             }
         }
 
-        // Add New Category
         async function addNewCategory(e) {
             if (e && e.preventDefault) e.preventDefault();
             const form = document.getElementById('addCategoryForm');
@@ -1992,8 +2201,6 @@
 
                     $('#addCategoryModal').modal('hide');
                     form.reset();
-
-                    // Auto select new category
                     selectItem(newItem, data.name, data.id);
 
                     Swal.fire({
@@ -2005,7 +2212,6 @@
                     return;
                 }
 
-                // 422 validation errors
                 if (res.status === 422 && data.messages) {
                     const msgs = Object.values(data.messages).flat().join('<br>');
                     return Swal.fire({
@@ -2015,7 +2221,6 @@
                     });
                 }
 
-                // Other errors (e.g., 500)
                 const msg = data.error || data.message || 'تعذر حفظ الصنف';
                 Swal.fire({
                     icon: 'error',
@@ -2032,13 +2237,11 @@
             }
         }
 
-        // Add New Tag
         async function addNewTag(e) {
             if (e && e.preventDefault) e.preventDefault();
             const form = document.getElementById('addTagForm');
             const fd = new FormData(form);
 
-            // تأكد أن لدينا قيمة name
             const name = (fd.get('name') || '').trim();
             if (!name) {
                 return Swal.fire({
@@ -2068,12 +2271,10 @@
                     throw new Error(text || 'استجابة غير صالحة من الخادم');
                 }
 
-                // نجاح متوقع: 201 Created
                 if (res.ok && (data.id || (data.tag && data.tag.id))) {
                     const tagId = data.id || data.tag.id;
                     const tagName = data.name || data.tag.name;
 
-                    // أضِف العنصر إلى قائمة الخيارات
                     const list = document.getElementById('tags-options-list');
                     const li = document.createElement('li');
                     li.dataset.id = String(tagId);
@@ -2084,13 +2285,8 @@
                     };
                     list.appendChild(li);
 
-                    // أغلق المودال وافرغ المدخلات
-                    if (window.$) {
-                        $('#addTagModal').modal('hide');
-                    }
+                    if (window.$) $('#addTagModal').modal('hide');
                     form.reset();
-
-                    // اختر الوسم تلقائيًا
                     selectMultiItem(li, tagName, String(tagId), 'tags_id');
 
                     Swal.fire({
@@ -2103,13 +2299,11 @@
                     return;
                 }
 
-                // أخطاء التحقق 422 (Laravel)
                 if (res.status === 422 && (data.errors || data.messages)) {
                     const msgs = Object.values(data.errors || data.messages).flat().join('\n');
                     throw new Error(msgs || 'تحقق من الحقول.');
                 }
 
-                // أي خطأ آخر من الخادم
                 throw new Error(data.message || data.error || 'تعذر إضافة الوسم.');
             } catch (err) {
                 console.error(err);
@@ -2121,7 +2315,6 @@
             }
         }
 
-        // Add New Trend
         document.addEventListener('DOMContentLoaded', function() {
             const titleI = document.getElementById('trend_title');
             const slugI = document.getElementById('trend_slug');
@@ -2250,7 +2443,6 @@
             }
         }
 
-        // ========== ADD WINDOW MODAL FUNCTION ==========
         async function addNewWindow(e) {
             if (e && e.preventDefault) e.preventDefault();
 
@@ -2261,7 +2453,6 @@
             const slug = (fd.get('slug') || '').trim();
             const file = fd.get('image');
 
-            // Validation
             if (!name) {
                 return Swal.fire({
                     icon: 'error',
@@ -2284,7 +2475,6 @@
                 });
             }
 
-            // File type validation
             const okTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
             if (!okTypes.includes(file.type)) {
                 return Swal.fire({
@@ -2294,7 +2484,6 @@
                 });
             }
 
-            // File size validation (6MB)
             if (file.size > 6 * 1024 * 1024) {
                 return Swal.fire({
                     icon: 'error',
@@ -2324,13 +2513,11 @@
                     throw new Error(text || 'استجابة غير صالحة من الخادم');
                 }
 
-                // Success response
                 if (res.ok && (data.id || (data.window && data.window.id))) {
                     const id = data.id || data.window.id;
                     const name = data.name || data.window.name;
                     const slug = data.slug || data.window.slug;
 
-                    // Add to indropdown list
                     const windowSearch = document.querySelector('#window_search');
                     if (windowSearch) {
                         const listUl = windowSearch.closest('.search-container')?.querySelector('.indropdown ul');
@@ -2343,16 +2530,11 @@
                                 selectItem(li, name, String(id));
                             };
                             listUl.appendChild(li);
-
-                            // Auto-select the new window
                             selectItem(li, name, String(id));
                         }
                     }
 
-                    // Close modal and reset form
-                    if (window.$) {
-                        $('#addWindowModal').modal('hide');
-                    }
+                    if (window.$) $('#addWindowModal').modal('hide');
                     form.reset();
 
                     Swal.fire({
@@ -2365,14 +2547,12 @@
                     return;
                 }
 
-                // Validation errors
                 if (res.status === 422 && (data.errors || data.messages)) {
                     const all = data.errors || data.messages;
                     const msgs = Object.keys(all).map(k => `• ${k}: ${all[k].join(' / ')}`).join('\n');
                     throw new Error(msgs || 'تحقق من الحقول.');
                 }
 
-                // Other server errors
                 throw new Error(data.message || data.error || 'تعذر إضافة النافذة.');
 
             } catch (err) {
@@ -2385,7 +2565,6 @@
             }
         }
 
-        // ========== SLUG GENERATION FOR WINDOW ==========
         document.addEventListener('DOMContentLoaded', function() {
             const nameInput = document.getElementById('window_name');
             const slugInput = document.getElementById('window_slug');
@@ -2403,25 +2582,6 @@
             }
         });
 
-        // ========== SLUGIFY HELPER FUNCTION ==========
-        function slugify(v) {
-            return v.toString().toLowerCase()
-                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/^-+|-+$/g, '')
-                .substring(0, 255);
-        }
-
-        // Stubs for other modal functions
-        function addNewCountry() {
-            /* similar to addNewSection */
-        }
-
-        function addNewContinent() {
-            /* similar to addNewSection */
-        }
-
-        // ========== ADD WRITER LOCATION (CITY) FUNCTION ==========
         async function addNewWriterLocation(e) {
             if (e && e.preventDefault) e.preventDefault();
 
@@ -2430,9 +2590,8 @@
 
             const name = (fd.get('name') || '').trim();
             const slug = (fd.get('slug') || '').trim();
-            const type = 'city'; // Hardcoded as per your backend
+            const type = 'city';
 
-            // Validation
             if (!name) {
                 return Swal.fire({
                     icon: 'error',
@@ -2474,13 +2633,11 @@
                     throw new Error(text || 'استجابة غير صالحة من الخادم');
                 }
 
-                // Success response
                 if (res.ok && (data.id || (data.location && data.location.id))) {
                     const id = data.id || data.location.id;
                     const name = data.name || data.location.name;
                     const slug = data.slug || data.location.slug;
 
-                    // Add to indropdown list
                     const locationSearch = document.querySelector('#writer_location_search');
                     if (locationSearch) {
                         const listUl = locationSearch.closest('.search-container')?.querySelector('.indropdown ul');
@@ -2493,16 +2650,11 @@
                                 selectItem(li, name, String(id));
                             };
                             listUl.appendChild(li);
-
-                            // Auto-select the new location
                             selectItem(li, name, String(id));
                         }
                     }
 
-                    // Close modal and reset form
-                    if (window.$) {
-                        $('#addWriterLocationModal').modal('hide');
-                    }
+                    if (window.$) $('#addWriterLocationModal').modal('hide');
                     form.reset();
 
                     Swal.fire({
@@ -2515,14 +2667,12 @@
                     return;
                 }
 
-                // Validation errors
                 if (res.status === 422 && (data.errors || data.messages)) {
                     const all = data.errors || data.messages;
                     const msgs = Object.keys(all).map(k => `• ${k}: ${all[k].join(' / ')}`).join('\n');
                     throw new Error(msgs || 'تحقق من الحقول.');
                 }
 
-                // Other server errors
                 throw new Error(data.message || data.error || 'تعذر إضافة الموقع.');
 
             } catch (err) {
@@ -2535,7 +2685,6 @@
             }
         }
 
-        // ========== SLUG GENERATION FOR WRITER LOCATION ==========
         document.addEventListener('DOMContentLoaded', function() {
             const nameInput = document.getElementById('location_name');
             const slugInput = document.getElementById('location_slug');

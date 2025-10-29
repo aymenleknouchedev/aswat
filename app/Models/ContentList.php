@@ -15,11 +15,19 @@ class ContentList extends Model
     protected $fillable = [
         'content_id',
         'title',
+        'writer',
         'description',
         'image',
         'url',
         'index',
     ];
+
+
+
+    public function writer()
+    {
+        return $this->belongsTo(Writer::class, 'writer');
+    }
 
     public function content()
     {

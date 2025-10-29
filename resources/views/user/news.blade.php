@@ -240,6 +240,14 @@
 
         }
 
+        .custom-article-content blockquote p span {
+            font-size: 28px;
+            color: #222;
+            line-height: 1.6;
+            font-family: asswat-bold !important;
+            text-align: center !important;
+        }
+
         .custom-article-content blockquote p {
             font-size: 28px;
             color: #222;
@@ -500,8 +508,8 @@
             font-size: 18px;
         }
 
-        .share-icons a i:hover {AA
-            color: #333;
+        .share-icons a i:hover {
+            AA color: #333;
             transition: color 0.3s ease;
         }
 
@@ -572,7 +580,8 @@
 
                 {{-- التصنيف --}}
                 <div class="custom-category">
-                    <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}" style="color: #888; text-decoration: none;">
+                    <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
+                        style="color: #888; text-decoration: none;">
                         {{ $news->category->name }}
                     </a>
                 </div>
@@ -583,13 +592,40 @@
                 {{-- الملخص --}}
                 <div class="custom-article-summary">{{ $news->summary }}</div>
 
-                {{-- الكاتب --}}
+                {{-- الكتاب --}}
                 <div class="custom-meta">
-
                     @if ($news->city)
                         {{ $news->city->name }} -
                     @endif
-                    @if (optional($news->writer)->name)
+
+                    @php
+                        $writers = $news->writers;
+                    @endphp
+
+                    @if ($writers->count() > 0)
+                        {{-- First writer with city --}}
+                        <a href="{{ route('writer.show', $writers[0]->id) }}">
+                            <span>
+                                {{ $writers[0]->name }}
+                                @if ($writers[0]->pivot->role)
+                                    <span style="color: #888;">{{ $writers[0]->pivot->role }}</span>
+                                @endif
+                            </span>
+                        </a>
+                        {{-- Other writers, each on a new line --}}
+                        @foreach ($writers->slice(1) as $writer)
+                            <br>
+                            <a href="{{ route('writer.show', $writer->id) }}">
+                                <span>
+                                    {{ $writer->name }}
+                                    @if ($writer->pivot->role)
+                                        <span style="color: #888;">{{ $writer->pivot->role }}</span>
+                                    @endif
+                                </span>
+                            </a>
+                        @endforeach
+                    @elseif (optional($news->writer)->name)
+                        {{-- Fallback for old single writer system --}}
                         <a href="{{ route('writer.show', $news->writer->id) }}">
                             <span> {{ $news->writer->name }}</span>
                         </a>

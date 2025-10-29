@@ -386,13 +386,15 @@
         </div>
 
         <div class="mmxx-tabs" role="tablist" aria-label="أقسام إدارة الوسائط">
-            <button class="mmxx-tab-btn mmxx-is-active" role="tab" aria-selected="true"
+            <button type="button" class="mmxx-tab-btn mmxx-is-active" role="tab" aria-selected="true"
                 aria-controls="mmxx-tab-gallery" id="mmxx-tabbtn-gallery" tabindex="0"
                 data-mmxx-tab="gallery">المعرض</button>
-            <button class="mmxx-tab-btn" role="tab" aria-selected="false" aria-controls="mmxx-tab-upload"
-                id="mmxx-tabbtn-upload" tabindex="-1" data-mmxx-tab="upload">الرفع من الجهاز</button>
-            <button class="mmxx-tab-btn" role="tab" aria-selected="false" aria-controls="mmxx-tab-import"
-                id="mmxx-tabbtn-import" tabindex="-1" data-mmxx-tab="import">الاستيراد بالرابط</button>
+            <button type="button" class="mmxx-tab-btn" role="tab" aria-selected="false"
+                aria-controls="mmxx-tab-upload" id="mmxx-tabbtn-upload" tabindex="-1" data-mmxx-tab="upload">الرفع من
+                الجهاز</button>
+            <button type="button" class="mmxx-tab-btn" role="tab" aria-selected="false"
+                aria-controls="mmxx-tab-import" id="mmxx-tabbtn-import" tabindex="-1"
+                data-mmxx-tab="import">الاستيراد بالرابط</button>
         </div>
 
         <!-- Gallery -->
@@ -1623,6 +1625,17 @@
                             <input id="itemTitle" class="form-control" placeholder="عنوان واضح" />
                         </div>
 
+                        <!-- Writer Selection Field - FIXED -->
+                        <div class="mb-2">
+                            <label class="form-label">الكاتب <span class="text-danger">*</span></label>
+                            <select id="itemWriter" class="form-control">
+                                <option value="">اختر كاتب</option>
+                                @foreach ($writers as $writer)
+                                    <option value="{{ $writer->name }}">{{ $writer->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div class="mb-2">
                             <label class="form-label">الرابط <small class="text-muted" id="itemLinkNote">(مطلوب في
                                     وضع ملف)</small></label>
@@ -1872,6 +1885,7 @@
         const descEl = document.getElementById('itemDescription');
         const linkEl = document.getElementById('itemLinkUrl');
         const linkNote = document.getElementById('itemLinkNote');
+        const writerEl = document.getElementById('itemWriter'); // Writer select element
 
         const inpUrl = document.getElementById('itemMediaUrl');
         const inpId = document.getElementById('itemMediaId');
@@ -2020,10 +2034,19 @@
                 const t = document.createElement('div');
                 t.className = 'az-title text-ellipsis';
                 t.textContent = it.title || 'بدون عنوان';
+
+                // Display writer name - FIXED: Use correct property name
+                const writerInfo = document.createElement('div');
+                writerInfo.className = 'az-desc text-ellipsis';
+                const writerName = it.writer_name || it.writer || 'غير محدد';
+                writerInfo.textContent = `الكاتب: ${writerName}`;
+
                 const d = document.createElement('div');
                 d.className = 'az-desc text-ellipsis';
                 d.textContent = textFromHtml(it.description || '');
+
                 meta.appendChild(t);
+                meta.appendChild(writerInfo);
                 meta.appendChild(d);
                 left.appendChild(meta);
 
@@ -2049,6 +2072,16 @@
                     inpUrl.value = it.image || '';
                     inpTitle.value = it.media_title || '';
                     inpAlt.value = it.media_alt || '';
+
+                    // FIXED: Enhanced writer selection with multiple property fallbacks
+                    if (writerEl) {
+                        // Try multiple possible property names for writer
+                        const writerValue = it.writer_name || it.writer || it.author_name || it
+                            .author || '';
+                        console.log('Setting writer select to:', writerValue, 'from item:', it);
+                        writerEl.value = writerValue;
+                    }
+
                     renderPreview();
 
                     if (window.bootstrap && bootstrap.Modal) {
@@ -2171,10 +2204,14 @@
             inpUrl.value = '';
             inpTitle.value = '';
             inpAlt.value = '';
+            // Reset writer selection
+            if (writerEl) {
+                writerEl.value = '';
+            }
             prev.textContent = '';
         });
 
-        // Save item
+        // Save item - FIXED writer handling
         saveBtn?.addEventListener('click', () => {
             const mode = currentModeName;
             const title = (titleEl.value || '').trim();
@@ -2182,10 +2219,12 @@
             const descriptionHTML = getTinyHtml('itemDescription');
             const imageUrl = (inpUrl.value || '').trim();
             const linkUrl = (linkEl.value || '').trim();
+            const writerName = writerEl ? writerEl.value : ''; // Get writer name directly
 
             if (!title) return alert('العنوان مطلوب');
             if (!descriptionText) return alert('الوصف مطلوب');
             if (!imageUrl) return alert('الصورة مطلوبة');
+            if (!writerName) return alert('الكاتب مطلوب'); // Validate writer
             if (mode === 'file' && !linkUrl) return alert('الرابط مطلوب في وضع ملف');
 
             const payload = {
@@ -2195,7 +2234,8 @@
                 url: linkUrl || null,
                 media_id: inpId.value || null,
                 media_title: inpTitle.value || '',
-                media_alt: inpAlt.value || ''
+                media_alt: inpAlt.value || '',
+                writer_name: writerName // Use writer_name directly
             };
 
             if (editIndexInput.value !== '') {
@@ -2247,7 +2287,7 @@
             });
         }
 
-        // Init
+        // Init - FIXED: Properly load writer data from server
         (function init() {
             // Get initial data from server using your controller variables
             const templateData = {
@@ -2263,7 +2303,7 @@
                 displayMethodRadio.checked = true;
             }
 
-            // Load items if they exist - map from your contentLists structure
+            // Load items if they exist - map from your contentLists structure with writer support
             if (templateData.items && templateData.items.length > 0) {
                 items = templateData.items.map(item => ({
                     title: item.title || '',
@@ -2272,8 +2312,13 @@
                     url: item.url || '',
                     media_id: item.media_id || '',
                     media_title: item.media_title || '',
-                    media_alt: item.media_alt || ''
+                    media_alt: item.media_alt || '',
+                    writer_name: item.writer_name || item.writer ||
+                        '' // Support multiple property names
                 }));
+
+                // Debug: Log loaded items to verify writer data
+                console.log('Loaded items with writer data:', items);
             }
 
             toggleSection();

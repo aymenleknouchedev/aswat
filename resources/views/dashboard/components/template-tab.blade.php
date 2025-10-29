@@ -1650,6 +1650,20 @@
                                 data-en="https://..." />
                         </div>
 
+                        <!-- NEW WRITER FIELD -->
+                        <div class="mb-2">
+                            <label class="form-label" data-ar="الكاتب" data-en="Writer">
+                                الكاتب <small class="text-muted" data-ar="(اختياري)"
+                                    data-en="(Optional)">(اختياري)</small>
+                            </label>
+                            <select id="itemWriter" class="form-select js-select2" data-search="on">
+                                <option value="">اختر الكاتب</option>
+                                @foreach ($writers ?? [] as $writer)
+                                    <option value="{{ $writer->id }}">{{ $writer->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div class="mb-2">
                             <label class="form-label" data-ar="الوسائط" data-en="Media">
                                 الوسائط <span class="text-danger">*</span>
@@ -1915,6 +1929,7 @@
         const titleEl = document.getElementById('itemTitle');
         const descEl = document.getElementById('itemDescription');
         const linkEl = document.getElementById('itemLinkUrl');
+        const writerEl = document.getElementById('itemWriter'); // NEW WRITER FIELD
         const linkNote = document.getElementById('itemLinkNote');
 
         const inpUrl = document.getElementById('itemMediaUrl');
@@ -2102,11 +2117,18 @@
                 const t = document.createElement('div');
                 t.className = 'az-title text-ellipsis';
                 t.textContent = it.title || 'بدون عنوان';
-                const d = document.createElement('div');
-                d.className = 'az-desc text-ellipsis';
-                d.textContent = textFromHtml(it.description || '');
+
+                // NEW: Display writer if available
+                const writerInfo = document.createElement('div');
+                writerInfo.className = 'az-desc text-ellipsis';
+                let descText = textFromHtml(it.description || '');
+                if (it.writer) {
+                    descText = `كاتب: ${it.writer} | ${descText}`;
+                }
+                writerInfo.textContent = descText;
+
                 meta.appendChild(t);
-                meta.appendChild(d);
+                meta.appendChild(writerInfo);
                 left.appendChild(meta);
 
                 const right = document.createElement('div');
@@ -2129,6 +2151,7 @@
                         if (txt) txt.value = it.description || '';
                     }
                     linkEl.value = it.url || '';
+                    writerEl.value = it.writer || ''; // NEW: Load writer value
                     inpId.value = it.media_id || '';
                     inpUrl.value = it.image || '';
                     inpTitle.value = it.media_title || '';
@@ -2252,6 +2275,7 @@
             editIndexInput.value = '';
             titleEl.value = '';
             linkEl.value = '';
+            writerEl.value = ''; // NEW: Clear writer field
             if (window.tinymce && tinymce.get('itemDescription')) tinymce.get('itemDescription').setContent(
                 '');
             inpId.value = '';
@@ -2269,6 +2293,7 @@
             const descriptionHTML = getTinyHtml('itemDescription');
             const imageUrl = (inpUrl.value || '').trim();
             const linkUrl = (linkEl.value || '').trim();
+            const writer = (writerEl.value || '').trim(); // NEW: Get writer value
 
             if (!title) return alert('العنوان مطلوب');
             if (!descriptionText) return alert('الوصف مطلوب');
@@ -2280,6 +2305,7 @@
                 description: descriptionHTML,
                 image: imageUrl,
                 url: linkUrl || null,
+                writer: writer || null, // NEW: Include writer in payload
                 media_id: inpId.value || null,
                 media_title: inpTitle.value || '',
                 media_alt: inpAlt.value || ''
@@ -2397,6 +2423,8 @@
                         ''));
                     hiddenInputsContainer.appendChild(makeHidden(`${base}[image]`, it.image || ''));
                     hiddenInputsContainer.appendChild(makeHidden(`${base}[url]`, it.url || ''));
+                    hiddenInputsContainer.appendChild(makeHidden(`${base}[writer]`, it.writer ||
+                        '')); // NEW: Include writer
                     hiddenInputsContainer.appendChild(makeHidden(`${base}[index]`, idx + 1));
                 });
             }

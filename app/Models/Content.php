@@ -164,4 +164,18 @@ class Content extends Model
     {
         return $this->hasMany(ContentAction::class);
     }
+
+    public function writers()
+    {
+        return $this->belongsToMany(Writer::class, 'content_writer')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
+    public function contents()
+    {
+        return $this->belongsToMany(Content::class, 'content_writer')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
 }
