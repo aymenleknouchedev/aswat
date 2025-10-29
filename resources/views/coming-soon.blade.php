@@ -134,40 +134,14 @@
             margin: 30px 0;
         }
 
-        /* ================== Countdown Styles ================== */
-        .countdown-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-
-        .countdown-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 15px 10px;
-            min-width: 70px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .countdown-number {
+        /* ================== Coming Soon Text ================== */
+        .coming-soon {
             font-family: 'asswat-bold';
-            font-size: 32px;
+            font-size: 36px;
             color: #52B788;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            line-height: 1;
-            margin-bottom: 5px;
-        }
-
-        .countdown-label {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.9);
-            text-transform: uppercase;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+            margin: 30px 0;
+            animation: pulse 2s infinite;
         }
 
         /* ================== Forms ================== */
@@ -574,6 +548,10 @@
                 font-size: 30px;
             }
 
+            .coming-soon {
+                font-size: 28px;
+            }
+
             input[type="email"],
             button {
                 width: 100%;
@@ -597,23 +575,6 @@
                 width: 100%;
                 justify-content: center;
             }
-
-            .countdown-container {
-                gap: 10px;
-            }
-
-            .countdown-item {
-                min-width: 60px;
-                padding: 12px 8px;
-            }
-
-            .countdown-number {
-                font-size: 26px;
-            }
-
-            .countdown-label {
-                font-size: 12px;
-            }
         }
 
         @media (max-width: 400px) {
@@ -630,13 +591,8 @@
                 gap: 18px;
             }
 
-            .countdown-item {
-                min-width: 50px;
-                padding: 10px 6px;
-            }
-
-            .countdown-number {
-                font-size: 22px;
+            .coming-soon {
+                font-size: 24px;
             }
         }
     </style>
@@ -730,82 +686,10 @@
                     بريدك الإلكتروني عند الانطلاق، أو أرسِل سيرتك الذاتية وحدّثنا عنك إن كنت مهتمًّا بالانضمام إلى
                     فريقنا.
                 </span>
-
             </p>
-            <!-- Countdown Timer -->
-            <div class="countdown-container" id="countdown">
-                <div class="countdown-item">
-                    <div class="countdown-number" id="days">00</div>
-                    <div class="countdown-label">
-                        <span id="days-label">يوم</span>
-                    </div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="hours">00</div>
-                    <div class="countdown-label">
-                        <span id="hours-label">ساعة</span>
-                    </div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="minutes">00</div>
-                    <div class="countdown-label">
-                        <span id="minutes-label">دقيقة</span>
-                    </div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="seconds">00</div>
-                    <div class="countdown-label">
-                        <span id="seconds-label">ثانية</span>
-                    </div>
-                </div>
-            </div>
-            <script>
-                // Arabic pluralization helper
-                function getArabicLabel(unit, value) {
-                    value = Number(value);
-                    if (unit === 'days') {
-                        if (value === 1) return 'يوم';
-                        if (value === 2) return 'يومان';
-                        if (value >= 3 && value <= 10) return 'أيام';
-                        return 'يوماً';
-                    }
-                    if (unit === 'hours') {
-                        if (value === 1) return 'ساعة';
-                        if (value === 2) return 'ساعتان';
-                        if (value >= 3 && value <= 10) return 'ساعات';
-                        return 'ساعة';
-                    }
-                    if (unit === 'minutes') {
-                        if (value === 1) return 'دقيقة';
-                        if (value === 2) return 'دقيقتان';
-                        if (value >= 3 && value <= 10) return 'دقائق';
-                        return 'دقيقة';
-                    }
-                    if (unit === 'seconds') {
-                        if (value === 1) return 'ثانية';
-                        if (value === 2) return 'ثانيتان';
-                        if (value >= 3 && value <= 10) return 'ثواني';
-                        return 'ثانية';
-                    }
-                    return '';
-                }
-
-                // Update labels on countdown tick
-                function updateCountdownLabels() {
-                    document.getElementById('days-label').textContent = getArabicLabel('days', document.getElementById('days')
-                        .textContent);
-                    document.getElementById('hours-label').textContent = getArabicLabel('hours', document.getElementById('hours')
-                        .textContent);
-                    document.getElementById('minutes-label').textContent = getArabicLabel('minutes', document.getElementById(
-                        'minutes').textContent);
-                    document.getElementById('seconds-label').textContent = getArabicLabel('seconds', document.getElementById(
-                        'seconds').textContent);
-                }
-
-                // Patch the existing countdown update function
-                setInterval(updateCountdownLabels, 1000);
-                document.addEventListener("DOMContentLoaded", updateCountdownLabels);
-            </script>
+            
+            <!-- Coming Soon Text -->
+            <div class="coming-soon">قريباً</div>
 
             <form id="email-form">
                 <input type="email" placeholder="أدخل بريدك الإلكتروني" required />
@@ -914,44 +798,6 @@
             const closeBtn = document.getElementById("close-modal");
             const fileInput = document.getElementById("resume");
             const fileDisplay = document.getElementById("file-display");
-
-            // ✅ Set the target date ONCE (e.g., 30 days from page load)
-            // Set countdown target to November 1st of the current year
-            const nowDate = new Date();
-            const targetDate = new Date(nowDate.getFullYear(), 10, 1, 0, 0, 0,
-                0); // Month is 0-indexed (10 = November)
-
-            function updateCountdown() {
-                const now = new Date().getTime();
-                const distance = targetDate.getTime() - now;
-
-                if (distance <= 0) {
-                    document.getElementById("days").textContent = "00";
-                    document.getElementById("hours").textContent = "00";
-                    document.getElementById("minutes").textContent = "00";
-                    document.getElementById("seconds").textContent = "00";
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                document.getElementById("days").textContent = days.toString().padStart(2, '0');
-                document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
-                document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
-                document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
-
-                // Pulse animation when seconds update
-                const secondsEl = document.getElementById("seconds");
-                secondsEl.style.animation = 'pulse 0.5s ease';
-                setTimeout(() => (secondsEl.style.animation = ''), 500);
-            }
-
-            // Initialize countdown
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
 
             // ================= Modal =================
             openBtn.onclick = () => {
