@@ -264,7 +264,7 @@
             position: relative;
             margin-top: 60px;
             background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)),
-                url('{{ asset($window->image) }}') center/cover no-repeat;
+                url('{{ asset($window->image ?? '') }}') center/cover no-repeat;
             color: #fff;
             direction: rtl;
             overflow: hidden;
@@ -338,79 +338,96 @@
 
         <div class="container">
             <div class="title">
-                <p class="section-title">{{ $arabicName }}</p>
+                <p class="section-title">{{ $arabicName ?? 'القسم' }}</p>
                 @include('user.components.ligne')
                 <div class="under-title-ligne-space"></div>
             </div>
 
-            <div class="newCategory">
-                <!-- Right: big feature -->
-                <div class="newCategory-feature">
-                    <img src="{{ $contents[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="{{ $contents[0]->title ?? '' }}">
-                    <h3>
-                        <x-category-links :content="$contents[0]" />
-
-                    </h3>
-                    <a href="{{ route('news.show', $contents[0]->title) }}" style="text-decoration: none; color: inherit;">
-                        <h2>{{ $contents[0]->title ?? '' }}</h2>
-                    </a>
-                    <p>{{ $contents[0]->summary ?? '' }}</p>
-                </div>
-
-                <!-- Left: list -->
-                <div class="newCategory-list">
-                    <div class="newCategory-feature-m">
-                        <img src="{{ $contents[1]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                            alt="{{ $contents[1]->title ?? '' }}">
-                        <h3>
-                            <x-category-links :content="$contents[1]" />
-
-                        </h3>
-                        <a href="{{ route('news.show', $contents[1]->title) }}"
-                            style="text-decoration: none; color: inherit;">
-                            <h2>{{ $contents[1]->title ?? '' }}</h2>
-                        </a>
-                        <p>{{ $contents[1]->summary ?? '' }}</p>
+            @if (isset($contents) && count($contents) > 0)
+                <div class="newCategory">
+                    <!-- Right: big feature -->
+                    <div class="newCategory-feature">
+                        @if (isset($contents[0]))
+                            <img src="{{ $contents[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                alt="{{ $contents[0]->title ?? 'عنوان الخبر' }}">
+                            <h3>
+                                <x-category-links :content="$contents[0]" />
+                            </h3>
+                            <a href="{{ route('news.show', $contents[0]->title ?? '') }}"
+                                style="text-decoration: none; color: inherit;">
+                                <h2>{{ $contents[0]->title ?? 'عنوان الخبر' }}</h2>
+                            </a>
+                            <p>{{ $contents[0]->summary ?? 'ملخص الخبر' }}</p>
+                        @else
+                            <img src="./user/assets/images/placeholder.jpg" alt="لا يوجد محتوى">
+                            <h3>لا يوجد محتوى</h3>
+                            <h2>لا توجد أخبار متاحة</h2>
+                            <p>لم يتم العثور على أي محتوى لهذا القسم.</p>
+                        @endif
                     </div>
 
-                    <div class="newCategory-list-div">
-                        @for ($i = 2; $i <= 3; $i++)
-                            @if (isset($contents[$i]))
-                                <div class="news-card-horizontal">
-                                    <div class="news-card-image">
-                                        <img src="{{ $contents[$i]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                            alt="{{ $contents[$i]->title ?? '' }}">
-                                    </div>
-                                    <div class="news-card-text">
-                                        <h3>
-                                            <x-category-links :content="$contents[$i]" />
+                    <!-- Left: list -->
+                    <div class="newCategory-list">
+                        @if (isset($contents[1]))
+                            <div class="newCategory-feature-m">
+                                <img src="{{ $contents[1]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                    alt="{{ $contents[1]->title ?? 'عنوان الخبر' }}">
+                                <h3>
+                                    <x-category-links :content="$contents[1]" />
+                                </h3>
+                                <a href="{{ route('news.show', $contents[1]->title ?? '') }}"
+                                    style="text-decoration: none; color: inherit;">
+                                    <h2>{{ $contents[1]->title ?? 'عنوان الخبر' }}</h2>
+                                </a>
+                                <p>{{ $contents[1]->summary ?? 'ملخص الخبر' }}</p>
+                            </div>
+                        @endif
 
-                                        </h3>
-                                        <a href="{{ route('news.show', $contents[$i]->title) }}"
-                                            style="text-decoration: none; color: inherit;">
-                                            <p>{{ $contents[$i]->title ?? '' }}</p>
-                                        </a>
+                        <div class="newCategory-list-div">
+                            @for ($i = 2; $i <= 3; $i++)
+                                @if (isset($contents[$i]))
+                                    <div class="news-card-horizontal">
+                                        <div class="news-card-image">
+                                            <img src="{{ $contents[$i]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                                alt="{{ $contents[$i]->title ?? 'عنوان الخبر' }}">
+                                        </div>
+                                        <div class="news-card-text">
+                                            <h3>
+                                                <x-category-links :content="$contents[$i]" />
+                                            </h3>
+                                            <a href="{{ route('news.show', $contents[$i]->title ?? '') }}"
+                                                style="text-decoration: none; color: inherit;">
+                                                <p>{{ $contents[$i]->title ?? 'عنوان الخبر' }}</p>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
-                        @endfor
+                                @endif
+                            @endfor
+                        </div>
                     </div>
                 </div>
-            </div>
+            @else
+                <div class="alert alert-info">
+                    <p>لا توجد أخبار متاحة في هذا القسم حالياً.</p>
+                </div>
+            @endif
 
-            @if (count($window->contents ?? []) >= 0 && $windowmanagement->status === 1)
+            @if (isset($window) &&
+                    isset($windowmanagement) &&
+                    $windowmanagement->status === 1 &&
+                    isset($window->contents) &&
+                    count($window->contents) > 0)
                 <section class="art-section-hero">
                     <div class="art-section-overlay">
-                        <h2 class="art-section-title">{{ $window->name }}</h2>
+                        <h2 class="art-section-title">{{ $window->name ?? 'النافذة' }}</h2>
                         <div class="art-section-grid">
-                            @foreach ($window->contents ?? [] as $content)
+                            @foreach ($window->contents as $content)
                                 <div class="art-section-card">
-                                    <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
-                                        alt="{{ $content->title }}">
-                                    <a href="{{ route('news.show', $content->title) }}"
+                                    <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
+                                        alt="{{ $content->title ?? 'عنوان الخبر' }}">
+                                    <a href="{{ route('news.show', $content->title ?? '') }}"
                                         style="text-decoration: none; color: inherit;">
-                                        <h2>{{ $content->title }}</h2>
+                                        <h2>{{ $content->title ?? 'عنوان الخبر' }}</h2>
                                     </a>
                                 </div>
                             @endforeach
@@ -419,43 +436,51 @@
                 </section>
             @endif
 
-
-
             @include('user.components.sp60')
-
 
             <div class="newCategory-all-section">
                 <!-- Left: Cards loop -->
                 <div class="newCategory-all-list">
-                    <div id="content-container">
-                        @include('user.partials.section-items', ['moreContents' => $moreContents])
-                    </div>
+                    @if (isset($moreContents) && count($moreContents) > 0)
+                        <div id="content-container">
+                            @include('user.partials.section-items', ['moreContents' => $moreContents])
+                        </div>
 
-                    <div class="text-center mt-3" id="load-more-container">
-                        <button class="photos-load-more-btn btn btn-primary" data-page="1"
-                            data-section="{{ $section }}">
-                            المزيد
-                        </button>
-                    </div>
+                        <div class="text-center mt-3" id="load-more-container">
+                            <button class="photos-load-more-btn btn btn-primary" data-page="1"
+                                data-section="{{ $section ?? '' }}">
+                                المزيد
+                            </button>
+                        </div>
+                    @else
+                        <div class="alert alert-info">
+                            <p>لا توجد المزيد من الأخبار في هذا القسم.</p>
+                        </div>
+                    @endif
                 </div>
 
-                <!-- Right: Empty -->
+                <!-- Right: Sidebar -->
                 <div class="newCategory-all-side">
                     <div>
                         <p class="section-title">الأكثر قراءة</p>
                         @include('user.components.ligne')
                         <div class="newCategoryReadMore">
-                            @foreach ($topViewed as $index => $item)
-                                <div class="newCategoryReadMore-list">
-                                    <span class="number">{{ $index + 1 }}</span>
-                                    <a href="{{ route('news.show', $item->title) }}"
-                                        style="text-decoration: none; color: inherit;">
-                                        <p>{{ $item->title }}</p>
-                                    </a>
+                            @if (isset($topViewed) && count($topViewed) > 0)
+                                @foreach ($topViewed as $index => $item)
+                                    <div class="newCategoryReadMore-list">
+                                        <span class="number">{{ $index + 1 }}</span>
+                                        <a href="{{ route('news.show', $item->title ?? '') }}"
+                                            style="text-decoration: none; color: inherit;">
+                                            <p>{{ $item->title ?? 'عنوان الخبر' }}</p>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="alert alert-info">
+                                    <p>لا توجد أخبار في قائمة الأكثر قراءة.</p>
                                 </div>
-                            @endforeach
+                            @endif
                         </div>
-
                     </div>
 
                     @include('user.components.sp60')
@@ -463,31 +488,32 @@
                     <p class="section-title">مقترحات</p>
                     @include('user.components.ligne')
 
-                    @foreach ($suggestions as $content)
-                        <div class="sp20" style="margin-top: 16px;"></div>
-                        <div class="news-card-horizontal">
-                            <div class="news-card-image">
-                                <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                                    alt="{{ $content->title ?? 'تحلية مياه البحر' }}">
+                    @if (isset($suggestions) && count($suggestions) > 0)
+                        @foreach ($suggestions as $content)
+                            <div class="sp20" style="margin-top: 16px;"></div>
+                            <div class="news-card-horizontal">
+                                <div class="news-card-image">
+                                    <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                        alt="{{ $content->title ?? 'تحلية مياه البحر' }}">
+                                </div>
+                                <div class="news-card-text">
+                                    <h3><x-category-links :content="$content" fallback="اقتصاد جزائري" /></h3>
+                                    <a href="{{ route('news.show', $content->title ?? '') }}"
+                                        style="text-decoration: none; color: inherit;">
+                                        <p>{{ $content->title ?? 'عنوان الخبر' }}</p>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="news-card-text">
-                                <h3> <x-category-links :content="$content" fallback="اقتصاد جزائري" /></h3>
-                                <a href="{{ route('news.show', $content->title) }}"
-                                    style="text-decoration: none; color: inherit;">
-                                    <p>{{ $content->title ?? '' }}</p>
-                                </a>
-                            </div>
+                        @endforeach
+                    @else
+                        <div class="alert alert-info">
+                            <p>لا توجد اقتراحات متاحة حالياً.</p>
                         </div>
-                    @endforeach
+                    @endif
                 </div>
-
-
             </div>
 
             @include('user.components.sp60')
-
-
-
         </div>
 
         @include('user.components.footer')
@@ -496,9 +522,7 @@
     <div class="mobile">
     </div>
 
-
 @endsection
-
 
 <script>
     let loading = false;
@@ -511,6 +535,12 @@
             let page = parseInt(btn.getAttribute("data-page")) + 1;
             let section = btn.getAttribute("data-section");
 
+            // Check if section is defined
+            if (!section) {
+                console.error("Section is not defined");
+                return;
+            }
+
             loading = true;
             btn.disabled = true;
             btn.textContent = "جاري التحميل...";
@@ -521,19 +551,24 @@
                         "X-Requested-With": "XMLHttpRequest"
                     }
                 });
+
                 if (!response.ok) throw new Error("خطأ في السيرفر");
 
                 let data = await response.text();
 
                 if (data.trim().length === 0) {
-                    btn.closest("#load-more-container").remove();
+                    btn.closest("#load-more-container")?.remove();
                 } else {
-                    document.querySelector("#content-container").insertAdjacentHTML("beforeend", data);
-                    btn.setAttribute("data-page", page);
-                    btn.disabled = false;
-                    btn.textContent = "المزيد";
+                    let container = document.querySelector("#content-container");
+                    if (container) {
+                        container.insertAdjacentHTML("beforeend", data);
+                        btn.setAttribute("data-page", page);
+                        btn.disabled = false;
+                        btn.textContent = "المزيد";
+                    }
                 }
             } catch (error) {
+                console.error("Error loading more content:", error);
                 alert("خطأ في تحميل المزيد");
                 btn.disabled = false;
                 btn.textContent = "المزيد";
