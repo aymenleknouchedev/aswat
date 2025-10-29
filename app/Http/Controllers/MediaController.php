@@ -9,6 +9,9 @@ use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+
 
 class MediaController extends BaseController
 {
@@ -64,35 +67,49 @@ class MediaController extends BaseController
         ], [
             'media.required' => 'الرجاء اختيار ملف وسائط.',
             'media.file' => 'الملف يجب أن يكون من نوع ملف.',
-            'media.max' => 'حجم الملف لا يجب أن يتجاوز 5 ميغابايت.',
+            'media.max' => 'حجم الملف لا يجب أن يتجاوز 100 ميغابايت.',
         ]);
 
         try {
             $file = $request->file('media');
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $extension = $file->getClientOriginalExtension();
+            $extension = strtolower($file->getClientOriginalExtension());
             $safeName = preg_replace('/\s+/', '_', $originalName);
-            $fileName = $safeName . '_' . time() . '.' . $extension;
-
-            $storedPath = $file->storeAs('media', $fileName, 'public');
-            $path = '/storage/' . $storedPath;
+            $timestamp = time();
 
             $media = new ContentMedia();
             $media->name = $request->input('name');
             $media->alt = $request->input('alt');
 
             $mimeType = $file->getClientMimeType();
-            if (str_starts_with($mimeType, 'audio/')) {
+
+            // ===== Detect file type =====
+            if (str_starts_with($mimeType, 'image/')) {
+                $media->media_type = 'image';
+
+                // ===== Convert to WebP =====
+                $manager = new ImageManager(new Driver());
+                $image = $manager->read($file->getRealPath());
+                $webpName = $safeName . "_{$timestamp}.webp";
+                $relativePath = "media/{$webpName}";
+                $absolutePath = storage_path("app/public/{$relativePath}");
+
+                // Save as WebP with good balance quality
+                $image->toWebp(85)->save($absolutePath);
+
+                $storedPath = $relativePath;
+            } elseif (str_starts_with($mimeType, 'audio/')) {
                 $media->media_type = 'voice';
+                $storedPath = $file->storeAs('media', "{$safeName}_{$timestamp}.{$extension}", 'public');
             } elseif (str_starts_with($mimeType, 'video/')) {
                 $media->media_type = 'video';
-            } elseif (str_starts_with($mimeType, 'image/')) {
-                $media->media_type = 'image';
+                $storedPath = $file->storeAs('media', "{$safeName}_{$timestamp}.{$extension}", 'public');
             } else {
                 $media->media_type = 'file';
+                $storedPath = $file->storeAs('media', "{$safeName}_{$timestamp}.{$extension}", 'public');
             }
 
-            $media->path = $path;
+            $media->path = '/storage/' . $storedPath;
             $media->user_id = Auth::id();
             $media->save();
 
