@@ -173,6 +173,16 @@
             font-size: 32px;
         }
 
+        .alert-info {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            color: #6c757d;
+            margin: 20px 0;
+        }
+
         @media (max-width: 768px) {
             .web {
                 display: none;
@@ -198,43 +208,57 @@
             </div>
 
             {{-- Feature Section --}}
-            <div class="custom-photos-feature">
-                <div class="custom-image-wrapper">
-                    <img src="{{ $reviews[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature reviews">
-                    <div class="custom-corner-icon">
-                        @include('user.icons.image')
+            @if (isset($reviews) && count($reviews) > 0 && isset($reviews[0]))
+                <div class="custom-photos-feature">
+                    <div class="custom-image-wrapper">
+                        <img src="{{ $reviews[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                            alt="{{ $reviews[0]->title ?? 'رأي مميز' }}">
+                        <div class="custom-corner-icon">
+                            @include('user.icons.image')
+                        </div>
+                    </div>
+                    <div class="custom-content">
+                        <h3>
+                            @if ($reviews[0]->writer && $reviews[0]->writer->name)
+                                <a href="{{ route('writer.show', $reviews[0]->writer->id) }}">
+                                    {{ $reviews[0]->writer->name }}
+                                </a>
+                            @else
+                                بدون كاتب
+                            @endif
+                        </h3>
+                        <a href="{{ route('news.show', $reviews[0]->title ?? '') }}"
+                            style="text-decoration: none; color: inherit;">
+                            <h2>{{ $reviews[0]->title ?? 'عنوان الرأي' }}</h2>
+                        </a>
+                        <p>{{ $reviews[0]->summary ?? 'ملخص الرأي' }}</p>
                     </div>
                 </div>
-                <div class="custom-content">
-                    <h3>
-                        @if ($reviews[0]->writer && $reviews[0]->writer->name)
-                            <a
-                                href="{{ route('writer.show', $reviews[0]->writer->id) }}">{{ $reviews[0]->writer->name }}</a>
-                        @else
-                            بدون كاتب
-                        @endif
-                    </h3>
-                    <a href="{{ route('news.show', $reviews[0]->title) }}" style="text-decoration: none; color: inherit;">
-                        <h2>{{ $reviews[0]->title }}</h2>
-                    </a>
-                    <p>{{ $reviews[0]->summary }}</p>
+            @else
+                <div class="alert alert-info">
+                    <p>لا توجد آراء متاحة حالياً.</p>
                 </div>
-            </div>
-
+            @endif
 
             <div style="display: flex; width: 100%; gap: 40px;">
                 <div style="flex: 7;">
                     {{-- Grid Section --}}
-                    <div class="custom-cards-wrapper" id="reviews-container">
-                        {{-- Cards 1-10 --}}
-                        @include('user.partials.review-items', ['otherReviews' => $otherReviews])
-                    </div>
-                    {{-- Pagination Button --}}
-                    <div class="text-center mt-3" id="load-more-container">
-                        <button class="reviews-load-more-btn btn btn-primary" data-page="1">
-                            المزيد
-                        </button>
-                    </div>
+                    @if (isset($otherReviews) && count($otherReviews) > 0)
+                        <div class="custom-cards-wrapper" id="reviews-container">
+                            {{-- Cards 1-10 --}}
+                            @include('user.partials.review-items', ['otherReviews' => $otherReviews])
+                        </div>
+                        {{-- Pagination Button --}}
+                        <div class="text-center mt-3" id="load-more-container">
+                            <button class="reviews-load-more-btn btn btn-primary" data-page="1">
+                                المزيد
+                            </button>
+                        </div>
+                    @else
+                        <div class="alert alert-info">
+                            <p>لا توجد المزيد من الآراء.</p>
+                        </div>
+                    @endif
                 </div>
                 <div style="flex: 3;"></div>
             </div>
@@ -244,7 +268,6 @@
     @include('user.components.footer')
 
     <div class="mobile"></div>
-    </div>
 @endsection
 
 {{-- Scripts --}}
@@ -258,6 +281,12 @@
             let btn = e.target;
             let page = parseInt(btn.getAttribute("data-page")) + 1;
 
+            // Check if we have a valid page number
+            if (isNaN(page)) {
+                console.error("Invalid page number");
+                return;
+            }
+
             loading = true;
             btn.disabled = true;
             btn.textContent = "جاري التحميل...";
@@ -269,20 +298,27 @@
                     }
                 });
 
-
                 if (!response.ok) throw new Error("خطأ في السيرفر");
 
                 let data = await response.text();
 
                 if (data.trim().length === 0) {
-                    btn.closest("#load-more-container").remove();
+                    // Safely remove load more container
+                    let container = btn.closest("#load-more-container");
+                    if (container) {
+                        container.remove();
+                    }
                 } else {
-                    document.querySelector("#reviews-container").insertAdjacentHTML("beforeend", data);
-                    btn.setAttribute("data-page", page);
-                    btn.disabled = false;
-                    btn.textContent = "المزيد";
+                    let reviewsContainer = document.querySelector("#reviews-container");
+                    if (reviewsContainer) {
+                        reviewsContainer.insertAdjacentHTML("beforeend", data);
+                        btn.setAttribute("data-page", page);
+                        btn.disabled = false;
+                        btn.textContent = "المزيد";
+                    }
                 }
             } catch (error) {
+                console.error("Error loading more reviews:", error);
                 alert("خطأ في تحميل المزيد");
                 btn.disabled = false;
                 btn.textContent = "المزيد";
