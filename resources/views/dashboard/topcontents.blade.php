@@ -49,23 +49,38 @@
                         </div>
 
                         <div class="mt-4">
-                            <form id="topContentSearchForm" class="mb-3">
-                                <div class="row g-2">
-                                    <div class="col-md-6 col-lg-3">
-                                        <input type="text" name="search_all" id="searchAllInput"
+                            <div class="mb-4">
+                                <form id="topContentSearchForm" class="row align-items-end gy-3 gx-2">
+                                    <div class="col-12 col-md-5 col-lg-3">
+                                        <input 
+                                            type="text" 
+                                            name="search_all" 
+                                            id="searchAllInput"
                                             class="form-control"
-                                            placeholder="ابحث في جميع المحتويات...">
+                                            placeholder="ابحث في جميع المحتويات..."
+                                        >
                                     </div>
-                                    <div class="col-md-6 col-lg-3">
-                                        <select name="section_filter" id="sectionFilter" class="form-select">
+
+                                    <div class="col-12 col-md-5 col-lg-3">
+                                        <select 
+                                            name="section_filter" 
+                                            id="sectionFilter" 
+                                            class="form-select"
+                                        >
                                             <option value="">{{ __('اختر القسم') }}</option>
                                             @foreach ($sections as $section)
                                                 <option value="{{ $section->id }}">{{ $section->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
-                            </form>
+
+                                    <div class="col-12 col-md-4 col-lg-2 ms-auto text-end">
+                                        <button id="saveChangesBtn" class="btn btn-primary w-100 w-md-auto px-4">
+                                            💾 حفظ التغييرات
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
 
                             <div class="row g-3">
                                 <!-- Left: Recent -->
@@ -121,11 +136,11 @@
                                     </div>
 
                                     <!-- Save button (sticky) -->
-                                    <div class="text-end mt-3">
+                                    {{-- <div class="text-end mt-3">
                                         <button id="saveChangesBtn" class="btn btn-primary px-4">
                                             💾 حفظ التغييرات
                                         </button>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -198,11 +213,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 const id = this.dataset.id?.toString();
                 if (!id) return;
 
-                // 🟩 Prevent adding more than 10 items
-                if (topContents.size >= 10) {
+                // 🟩 Prevent adding more than 15 items
+                if (topContents.size >= 15) {
                     Swal.fire({
                         icon: 'warning',
-                        title: 'الحد الأقصى 10 محتويات فقط',
+                        title: 'الحد الأقصى 15 محتويات فقط',
                         text: 'لا يمكنك إضافة المزيد من المحتويات المميزة.',
                         timer: 2000,
                         showConfirmButton: false
