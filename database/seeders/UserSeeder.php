@@ -9,6 +9,7 @@ use App\Models\Permission;
 use Illuminate\Support\Facades\Hash;
 use App\Models\PrincipalTrend;
 use App\Models\Trend;
+use App\Models\Section;
 
 class UserSeeder extends Seeder
 {
@@ -80,5 +81,34 @@ class UserSeeder extends Seeder
 
         // 6. Link user to admin role
         $superAdmin->roles()->syncWithoutDetaching([$adminRole->id]);
+
+        // 7. الأقسام    
+        $sections = [
+            'الجزائر',
+            'عالم',
+            'اقتصاد',
+            'رياضة',
+            'ناس',
+            'ثقافة وفنون',
+            'تكنولوجيا',
+            'صحة',
+            'بيئة',
+            'ميديا',
+            'منوعات',
+            'آراء',
+            'نوافذ',
+            'ملفات',
+            'فحص',
+            'فيديو',
+            'بودكاست',
+            'صور',
+        ];
+
+        // 8. إنشاء كل قسم إذا لم يكن موجود
+        foreach ($sections as $section) {
+            Section::firstOrCreate(
+                ['name' => $section],
+            );
+        }
     }
 }
