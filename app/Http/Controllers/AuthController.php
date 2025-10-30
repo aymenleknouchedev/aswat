@@ -205,37 +205,25 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        // ✅ التحقق من المدخلات
+        // التحقق من المدخلات
         $credentials = $request->validate([
-            'email' => 'nullable',
-            'username' => 'nullable|string',
+            'email' => 'required',
             'password' => 'required|min:6',
         ]);
 
-        // محاولة تسجيل الدخول باستخدام البريد الإلكتروني
-        if (!empty($credentials['email'])) {
-            if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
-                $request->session()->regenerate();
-                return redirect()->route('dashboard.index')
-                    ->with('success', 'تم تسجيل الدخول بنجاح');
-            }
-        }
-        $username = $credentials['username'];
-        dd($username);
+        // محاولة تسجيل الدخول باستخدام البريد الإلكتروني أو اسم المستخدم في نفس الحقل
+        $loginField = filter_var($credentials['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        // محاولة تسجيل الدخول باستخدام اسم المستخدم
-        if (!empty($credentials['username'])) {
-            if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']])) {
-                $request->session()->regenerate();
-                return redirect()->route('dashboard.index')
-                    ->with('success', 'تم تسجيل الدخول بنجاح');
-            }
+        if (Auth::attempt([$loginField => $credentials['email'], 'password' => $credentials['password']])) {
+            $request->session()->regenerate();
+            return redirect()->route('dashboard.index')
+                ->with('success', 'تم تسجيل الدخول بنجاح');
         }
 
-        // ❌ في حالة فشل الدخول
+        // في حالة فشل الدخول
         return back()->withErrors([
             'email' => 'البريد الإلكتروني أو اسم المستخدم أو كلمة المرور غير صحيحة.',
-        ])->onlyInput('email', 'username');
+        ])->onlyInput('email');
     }
     //logout
     public function logout(Request $request)
