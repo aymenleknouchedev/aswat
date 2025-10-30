@@ -79,6 +79,16 @@
                                         </div>
                                     </div>
 
+                                    <!-- اسم المستخدم -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="username" data-ar="اسم المستخدم"
+                                            data-en="Username">اسم المستخدم</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="username" class="form-control" id="username"
+                                                value="{{ old('username') }}" required>
+                                        </div>
+                                    </div>
+
                                     <!-- البريد -->
                                     <div class="form-group">
                                         <label class="form-label" for="email" data-ar="البريد الإلكتروني"
