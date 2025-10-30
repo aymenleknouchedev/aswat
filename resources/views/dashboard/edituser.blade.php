@@ -126,7 +126,7 @@
                                         <label class="form-label" for="customFile">الصورة</label>
                                         @if ($user->image)
                                             <div class="mb-2">
-                                                <img src="{{ asset('uploads/users/' . $user->image) }}" alt="صورة المستخدم"
+                                                <img src="{{ asset('users/' . $user->image) }}" alt="صورة المستخدم"
                                                     class="img-thumbnail" width="100">
                                             </div>
                                         @endif
