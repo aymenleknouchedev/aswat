@@ -207,24 +207,27 @@ class AuthController extends Controller
     {
         // ✅ التحقق من المدخلات
         $credentials = $request->validate([
-            'email' => 'required_without:username|email',
-            'username' => 'required_without:email|string',
+            'email' => 'nullable|email',
+            'username' => 'nullable|string',
             'password' => 'required|min:6',
         ]);
 
-        // إعداد بيانات الاعتماد حسب المدخلات
-        $loginData = ['password' => $credentials['password']];
+        // محاولة تسجيل الدخول باستخدام البريد الإلكتروني
         if (!empty($credentials['email'])) {
-            $loginData['email'] = $credentials['email'];
-        } elseif (!empty($credentials['username'])) {
-            $loginData['username'] = $credentials['username'];
+            if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
+                $request->session()->regenerate();
+                return redirect()->route('dashboard.index')
+                    ->with('success', 'تم تسجيل الدخول بنجاح');
+            }
         }
 
-        // محاولة تسجيل الدخول
-        if (Auth::attempt($loginData)) {
-            $request->session()->regenerate();
-            return redirect()->route('dashboard.index')
-                ->with('success', 'تم تسجيل الدخول بنجاح');
+        // محاولة تسجيل الدخول باستخدام اسم المستخدم
+        if (!empty($credentials['username'])) {
+            if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']])) {
+                $request->session()->regenerate();
+                return redirect()->route('dashboard.index')
+                    ->with('success', 'تم تسجيل الدخول بنجاح');
+            }
         }
 
         // ❌ في حالة فشل الدخول
