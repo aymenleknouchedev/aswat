@@ -74,6 +74,7 @@ class UserSeeder extends Seeder
             [
                 'name'     => 'naji',
                 'surname'  => 'admin',
+                'username' => 'najiadmin',
                 'password' => Hash::make('a1b2c3d4e5'), // 10-character hexadecimal
                 'image'    => 'user.png',
             ]
