@@ -28,17 +28,91 @@ class MediaController extends BaseController
 
             $query = ContentMedia::query();
 
-            // البحث حسب type أو path مثلاً
+            // البحث حسب الاسم، النص البديل، النوع، أو المسار
             if ($search = $request->input('search')) {
-                $query->where('type', 'LIKE', "%{$search}%")
-                    ->orWhere('path', 'LIKE', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'LIKE', "%{$search}%")
+                        ->orWhere('alt', 'LIKE', "%{$search}%")
+                        ->orWhere('media_type', 'LIKE', "%{$search}%")
+                        ->orWhere('path', 'LIKE', "%{$search}%");
+                });
             }
 
-            $medias = $query->latest()->paginate($pagination)
-                ->appends($request->all());
+            // فلترة حسب نوع الوسائط
+            if ($type = $request->input('type')) {
+                $query->where('media_type', $type);
+            }
 
-            return view('dashboard.allmedias', compact('medias'));
+            // الترتيب
+            $sort = $request->input('sort', 'newest');
+            switch ($sort) {
+                case 'oldest':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+                case 'name_asc':
+                    $query->orderBy('name', 'asc');
+                    break;
+                case 'name_desc':
+                    $query->orderBy('name', 'desc');
+                    break;
+                default: // newest
+                    $query->latest();
+                    break;
+            }
+
+            $medias = $query->paginate($pagination)->appends($request->all());
+
+            // Helper methods for media types
+            $getMediaTypeBadge = function ($type) {
+                $badges = [
+                    'image' => 'primary',
+                    'video' => 'success',
+                    'audio' => 'info',
+                    'document' => 'warning'
+                ];
+                return $badges[$type] ?? 'secondary';
+            };
+
+            $getMediaTypeLabel = function ($type) {
+                $labels = [
+                    'image' => 'صورة',
+                    'video' => 'فيديو',
+                    'audio' => 'صوت',
+                    'document' => 'مستند'
+                ];
+                return $labels[$type] ?? $type;
+            };
+
+            $getSortLabel = function ($sort) {
+                $labels = [
+                    'newest' => 'الأحدث أولاً',
+                    'oldest' => 'الأقدم أولاً',
+                    'name_asc' => 'الاسم (أ-ي)',
+                    'name_desc' => 'الاسم (ي-أ)'
+                ];
+                return $labels[$sort] ?? $sort;
+            };
+
+            // Handle AJAX requests
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'mediaGrid' => view('dashboard.partials.media-grid', compact('medias', 'getMediaTypeBadge', 'getMediaTypeLabel'))->render(),
+                    'pagination' => $medias->appends($request->except('page'))->links()->toHtml(),
+                    'resultsCount' => view('dashboard.partials.results-count', compact('medias'))->render(),
+                    'activeFilters' => view('dashboard.partials.active-filters', compact('getMediaTypeLabel', 'getSortLabel'))->render()
+                ]);
+            }
+
+            return view('dashboard.allmedias', compact('medias', 'getMediaTypeBadge', 'getMediaTypeLabel', 'getSortLabel'));
         } catch (\Throwable $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'فشل تحميل الوسائط'
+                ], 500);
+            }
+
             return redirect()
                 ->route('dashboard.medias.index')
                 ->withErrors(['error' => 'فشل تحميل الوسائط. حاول مرة أخرى.']);
