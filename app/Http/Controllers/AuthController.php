@@ -220,6 +220,8 @@ class AuthController extends Controller
                     ->with('success', 'تم تسجيل الدخول بنجاح');
             }
         }
+        $username = $credentials['username'];
+        dd($username);
 
         // محاولة تسجيل الدخول باستخدام اسم المستخدم
         if (!empty($credentials['username'])) {
