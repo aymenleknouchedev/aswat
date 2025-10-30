@@ -94,7 +94,7 @@
 
                                     <!-- كلمة المرور (اختيارية عند التعديل) -->
                                     <div class="form-group">
-                                        <label class="form-label" for="password">كلمة المرور (اختياري)</label>
+                                        <label class="form-label" for="password">كلمة المرور</label>
                                         <div class="form-control-wrap">
                                             <input type="password" name="password" class="form-control" id="password">
                                             <small class="text-soft">اترك الحقل فارغًا إذا لا تريد تغييره</small>
