@@ -145,7 +145,7 @@ class AuthController extends Controller
             'username' => 'required|string|max:255|unique:users,username,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string|min:6|confirmed',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable',
             'roles' => 'required|array',
             'roles.*' => 'exists:roles,id',
             'token' => '',
@@ -207,23 +207,30 @@ class AuthController extends Controller
     {
         // ✅ التحقق من المدخلات
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'email' => 'required_without:username|email',
+            'username' => 'required_without:email|string',
             'password' => 'required|min:6',
         ]);
 
-        // ✅ محاولة تسجيل الدخول
-        if (Auth::attempt($credentials)) {
-            // يحافظ على السيشن
-            $request->session()->regenerate();
+        // إعداد بيانات الاعتماد حسب المدخلات
+        $loginData = ['password' => $credentials['password']];
+        if (!empty($credentials['email'])) {
+            $loginData['email'] = $credentials['email'];
+        } elseif (!empty($credentials['username'])) {
+            $loginData['username'] = $credentials['username'];
+        }
 
-            return redirect()->route('dashboard.index') // غيرها للروت المناسب عندك
+        // محاولة تسجيل الدخول
+        if (Auth::attempt($loginData)) {
+            $request->session()->regenerate();
+            return redirect()->route('dashboard.index')
                 ->with('success', 'تم تسجيل الدخول بنجاح');
         }
 
         // ❌ في حالة فشل الدخول
         return back()->withErrors([
-            'email' => 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
-        ])->onlyInput('email');
+            'email' => 'البريد الإلكتروني أو اسم المستخدم أو كلمة المرور غير صحيحة.',
+        ])->onlyInput('email', 'username');
     }
     //logout
     public function logout(Request $request)
