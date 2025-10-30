@@ -142,6 +142,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string|min:6|confirmed',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -162,6 +163,7 @@ class AuthController extends Controller
         // Update user details
         $user->name = $request->name;
         $user->surname = $request->surname;
+        $user->username = $request->username;
         $user->email = $request->email;
         //roles
         $user->roles()->sync($request->roles);

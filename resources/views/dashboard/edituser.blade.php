@@ -73,6 +73,16 @@
                                         </div>
                                     </div>
 
+
+                                    <!-- اسم المستخدم -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="username">اسم المستخدم</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="username" class="form-control" id="username"
+                                                value="{{ old('username', $user->username) }}" required>
+                                        </div>
+                                    </div>
+
                                     <!-- البريد -->
                                     <div class="form-group">
                                         <label class="form-label" for="email">البريد الإلكتروني</label>
