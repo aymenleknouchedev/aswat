@@ -228,7 +228,26 @@ class MediaController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'alt' => 'required|string|max:255',
+        ]);
+
+        try {
+            $media = ContentMedia::findOrFail($id);
+            $media->name = $request->input('name');
+            $media->alt = $request->input('alt');
+            $media->save();
+
+            return redirect()
+                ->route('dashboard.medias.index')
+                ->with('success', 'تم تحديث معلومات الوسائط بنجاح.');
+        } catch (\Throwable $e) {
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'فشل تحديث معلومات الوسائط. حاول مرة أخرى.'])
+                ->withInput();
+        }
     }
 
     /**

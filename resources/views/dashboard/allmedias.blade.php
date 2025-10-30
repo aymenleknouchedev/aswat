@@ -48,39 +48,75 @@
                                         <!-- Media Grid -->
                                         <div class="row g-3" id="mediaGrid">
                                             @if ($medias->isEmpty())
-                                                @include('dashboard.media.empty-state')
+                                                <div class="col-12">
+                                                    <div class="empty-state">
+                                                        <div class="icon">
+                                                            <em class="icon ni ni-folder-open"></em>
+                                                        </div>
+                                                        <h5 data-en="No Media Found" data-ar="لا توجد وسائط">لا توجد وسائط
+                                                        </h5>
+                                                        <p data-en="You have not uploaded any media yet. Click the button above to add your first media file."
+                                                            data-ar="لم تقم برفع أي وسائط بعد. انقر على الزر أعلاه لإضافة أول ملف وسائطي لك.">
+                                                            لم تقم برفع أي وسائط بعد. انقر على الزر أعلاه لإضافة أول ملف
+                                                            وسائطي لك.
+                                                        </p>
+                                                    </div>
+                                                </div>
                                             @else
                                                 @foreach ($medias as $media)
-                                                    <div class="col-xl-5th col-lg-4 col-md-6 col-12">
+                                                    <div class="col-xl-3 col-lg-4 col-md-6 col-12">
                                                         <div class="card media-card" data-media-path="{{ $media->path }}">
                                                             <div class="card-inner">
-                                                                <!-- Media Preview -->
-                                                                <div class="media-preview">
+                                                                <!-- Media Preview with 16:9 Ratio -->
+                                                                <div class="media-preview-container">
                                                                     @if ($media->media_type === 'image')
-                                                                        <img src="{{ $media->path }}"
-                                                                            alt="{{ $media->alt }}" loading="lazy">
+                                                                        <div class="media-preview-16-9">
+                                                                            <img src="{{ $media->path }}"
+                                                                                alt="{{ $media->alt }}" loading="lazy">
+                                                                        </div>
                                                                     @elseif($media->media_type === 'video')
-                                                                        <video controls>
-                                                                            <source src="{{ $media->path }}"
-                                                                                type="video/mp4">
-                                                                            Your browser does not support the video tag.
-                                                                        </video>
-                                                                    @elseif($media->media_type === 'audio')
-                                                                        <div class="audio-preview">
-                                                                            <em class="icon ni ni-audio"></em>
-                                                                            <div class="audio-title">{{ $media->name }}
+                                                                        @if ($media->is_youtube)
+                                                                            <div class="media-preview-16-9">
+                                                                                <div class="youtube-player"
+                                                                                    data-youtube-id="{{ $media->youtube_id }}">
+                                                                                </div>
                                                                             </div>
-                                                                            <audio controls>
-                                                                                <source src="{{ $media->path }}"
-                                                                                    type="audio/mpeg">
-                                                                                Your browser does not support the audio
-                                                                                element.
-                                                                            </audio>
+                                                                        @else
+                                                                            <div class="media-preview-16-9">
+                                                                                <video controls>
+                                                                                    <source src="{{ $media->path }}"
+                                                                                        type="video/mp4">
+                                                                                    <span
+                                                                                        data-en="Your browser does not support the video tag"
+                                                                                        data-ar="متصفحك لا يدعم تشغيل الفيديو">
+                                                                                        متصفحك لا يدعم تشغيل الفيديو
+                                                                                    </span>
+                                                                                </video>
+                                                                            </div>
+                                                                        @endif
+                                                                    @elseif($media->media_type === 'audio')
+                                                                        <div class="media-preview-16-9 audio-preview">
+                                                                            <div class="audio-content">
+                                                                                <em class="icon ni ni-audio"></em>
+                                                                                <div class="audio-title">{{ $media->name }}
+                                                                                </div>
+                                                                                <audio controls>
+                                                                                    <source src="{{ $media->path }}"
+                                                                                        type="audio/mpeg">
+                                                                                    <span
+                                                                                        data-en="Your browser does not support the audio element"
+                                                                                        data-ar="متصفحك لا يدعم تشغيل الصوت">
+                                                                                        متصفحك لا يدعم تشغيل الصوت
+                                                                                    </span>
+                                                                                </audio>
+                                                                            </div>
                                                                         </div>
                                                                     @else
-                                                                        <div class="document-preview">
-                                                                            <em class="icon ni ni-file-text"></em>
-                                                                            <div class="document-title">{{ $media->name }}
+                                                                        <div class="media-preview-16-9 document-preview">
+                                                                            <div class="document-content">
+                                                                                <em class="icon ni ni-file-text"></em>
+                                                                                <div class="document-title">{{ $media->name }}
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     @endif
@@ -102,9 +138,12 @@
                                                                         class="btn btn-dim btn-sm btn-outline-primary btn-edit edit-media"
                                                                         data-media-id="{{ $media->id }}"
                                                                         data-media-name="{{ $media->name }}"
-                                                                        data-media-alt="{{ $media->alt }}">
+                                                                        data-media-alt="{{ $media->alt }}"
+                                                                        data-media-type="{{ $media->media_type }}"
+                                                                        data-is-youtube="{{ $media->is_youtube ? 'true' : 'false' }}"
+                                                                        data-youtube-id="{{ $media->youtube_id ?? '' }}">
                                                                         <em class="icon ni ni-edit"></em>
-                                                                        <span>تعديل</span>
+                                                                        <span data-en="Edit" data-ar="تعديل">تعديل</span>
                                                                     </button>
                                                                     <form
                                                                         action="{{ route('dashboard.media.destroy', $media->id) }}"
@@ -115,7 +154,7 @@
                                                                             class="btn btn-dim btn-sm btn-outline-danger btn-delete"
                                                                             onclick="return confirm('هل أنت متأكد من حذف هذا الملف؟')">
                                                                             <em class="icon ni ni-trash"></em>
-                                                                            <span>حذف</span>
+                                                                            <span data-en="Delete" data-ar="حذف">حذف</span>
                                                                         </button>
                                                                     </form>
                                                                 </div>
@@ -155,16 +194,24 @@
                         <div class="row g-gs">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label" for="editName" data-en="Name" data-ar="الاسم">الاسم</label>
+                                    <label class="form-label" for="editName" data-en="Name"
+                                        data-ar="الاسم">الاسم</label>
                                     <input required type="text" class="form-control" id="editName" name="name">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label" for="editAlt" data-en="Alt Text"
-                                        data-ar="النص البديل">النص
-                                        البديل</label>
+                                        data-ar="النص البديل">النص البديل</label>
                                     <input required type="text" class="form-control" id="editAlt" name="alt">
+                                </div>
+                            </div>
+                            <!-- YouTube ID Field (Conditional) -->
+                            <div class="col-12" id="youtubeIdField" style="display: none;">
+                                <div class="form-group">
+                                    <label class="form-label" for="editYoutubeId" data-en="YouTube ID"
+                                        data-ar="معرف يوتيوب">معرف يوتيوب</label>
+                                    <input type="text" class="form-control" id="editYoutubeId" name="youtube_id">
                                 </div>
                             </div>
                             <div class="col-12">
@@ -192,15 +239,16 @@
     <style>
         /* Media Cards */
         .media-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
             overflow: hidden;
-            border: 1px solid #e5e9f2;
+            border: 1px solid var(--border-light);
             height: 100%;
+            border-radius: 0;
+            box-shadow: none;
         }
 
         .media-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
         }
 
         .card-inner {
@@ -210,99 +258,146 @@
             height: 100%;
         }
 
-        .media-preview {
-            height: 220px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        /* 16:9 Ratio Container */
+        .media-preview-container {
             position: relative;
-            padding: 10px;
+            width: 100%;
         }
 
-        .media-preview img,
-        .media-preview video {
-            max-height: 100%;
-            max-width: 100%;
-            object-fit: contain;
+        .media-preview-16-9 {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 9/16 * 100% = 56.25% */
+            height: 0;
+            overflow: hidden;
+            background: var(--bg-light);
+        }
+
+        .media-preview-16-9 img,
+        .media-preview-16-9 video,
+        .media-preview-16-9 .youtube-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             transition: transform 0.3s ease;
-            border-radius: 4px;
         }
 
-        .media-card:hover .media-preview img,
-        .media-card:hover .media-preview video {
+        .media-card:hover .media-preview-16-9 img,
+        .media-card:hover .media-preview-16-9 video {
             transform: scale(1.02);
         }
 
-        .file-placeholder {
-            text-align: center;
-            color: #6c757d;
-            padding: 20px;
-        }
-
-        .file-placeholder .icon {
-            font-size: 3.5rem;
-            display: block;
-            margin-bottom: 10px;
-            color: #6576ff;
-        }
-
-        .audio-preview {
-            width: 100%;
-            height: 100%;
+        /* Audio Preview in 16:9 */
+        .media-preview-16-9.audio-preview {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #6576ff 0%, #8a5ced 100%);
+            background: var(--accent-gradient);
             color: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .audio-content {
+            text-align: center;
             padding: 15px;
-            border-radius: 4px;
+            width: 100%;
         }
 
         .audio-preview .icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2rem;
+            margin-bottom: 8px;
         }
 
         .audio-preview .audio-title {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-align: center;
             word-break: break-word;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            line-height: 1.3;
         }
 
         .audio-preview audio {
             width: 100%;
-            height: 40px;
+            height: 30px;
         }
 
-        .document-preview {
-            width: 100%;
-            height: 100%;
+        /* Document Preview in 16:9 */
+        .media-preview-16-9.document-preview {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 20px;
-            border-radius: 4px;
+            background: var(--bg-light);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .document-content {
+            text-align: center;
+            padding: 15px;
         }
 
         .document-preview .icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #526484;
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            color: var(--color-dark);
         }
 
         .document-preview .document-title {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-align: center;
             word-break: break-word;
-            color: #364a63;
+            color: var(--color-dark);
+            line-height: 1.3;
         }
 
+        /* YouTube Player */
+        .youtube-player {
+            position: relative;
+            background: #000;
+            cursor: pointer;
+        }
+
+        .youtube-player::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 68px;
+            height: 48px;
+            background: #ff0000;
+            border-radius: 0;
+            z-index: 1;
+        }
+
+        .youtube-player::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-35%, -50%);
+            border-style: solid;
+            border-width: 10px 0 10px 16px;
+            border-color: transparent transparent transparent #fff;
+            z-index: 2;
+        }
+
+        .youtube-player.loaded::before,
+        .youtube-player.loaded::after {
+            display: none;
+        }
+
+        /* Media Info */
         .media-info {
             padding: 15px;
             flex-grow: 1;
@@ -312,14 +407,14 @@
             font-weight: 600;
             margin-bottom: 8px;
             word-break: break-word;
-            color: #364a63;
-            font-size: 1rem;
+            color: var(--color-dark);
+            font-size: 0.95rem;
             line-height: 1.4;
         }
 
         .media-alt {
-            color: #6c757d;
-            font-size: 0.85rem;
+            color: var(--color-light);
+            font-size: 0.8rem;
             margin-bottom: 12px;
             word-break: break-word;
             line-height: 1.4;
@@ -330,9 +425,10 @@
             justify-content: space-between;
             margin-bottom: 15px;
             font-size: 0.75rem;
-            color: #8f9bba;
+            color: var(--color-light);
         }
 
+        /* Media Actions */
         .media-actions {
             display: flex;
             gap: 8px;
@@ -348,49 +444,42 @@
             justify-content: center;
             gap: 5px;
             transition: all 0.2s ease;
+            border-radius: 0;
         }
 
         .btn-delete:hover {
-            background-color: #dc3545 !important;
+            background-color: var(--danger-color) !important;
             color: #fff !important;
-            border-color: #dc3545 !important;
+            border-color: var(--danger-color) !important;
         }
 
         .btn-edit:hover {
-            background-color: #6576ff !important;
+            background-color: var(--accent-color) !important;
             color: #fff !important;
-            border-color: #6576ff !important;
+            border-color: var(--accent-color) !important;
         }
 
         /* Empty State */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: #8f9bba;
+            color: var(--color-light);
         }
 
         .empty-state .icon {
             font-size: 4rem;
             margin-bottom: 20px;
-            color: #e5e9f2;
+            color: var(--border-light);
         }
 
         .empty-state h5 {
             margin-bottom: 10px;
-            color: #526484;
+            color: var(--color-dark);
         }
 
         .empty-state p {
             max-width: 400px;
             margin: 0 auto;
-        }
-
-        /* 5 cards per row */
-        @media (min-width: 1200px) {
-            .col-xl-5th {
-                flex: 0 0 20%;
-                max-width: 20%;
-            }
         }
 
         /* Responsive adjustments */
@@ -413,10 +502,27 @@
                 flex: 0 0 100%;
                 max-width: 100%;
             }
+        }
 
-            .media-preview {
-                height: 180px;
-            }
+        /* Dark mode variables */
+        :root {
+            --bg-light: #f8f9fa;
+            --border-light: #e5e9f2;
+            --color-light: #8f9bba;
+            --color-dark: #364a63;
+            --accent-color: #6576ff;
+            --accent-gradient: linear-gradient(135deg, #6576ff 0%, #8a5ced 100%);
+            --danger-color: #dc3545;
+        }
+
+        [data-theme="dark"] {
+            --bg-light: #1e1e2d;
+            --border-light: #2d2d43;
+            --color-light: #8f9bba;
+            --color-dark: #f5f6fa;
+            --accent-color: #6576ff;
+            --accent-gradient: linear-gradient(135deg, #6576ff 0%, #8a5ced 100%);
+            --danger-color: #dc3545;
         }
     </style>
 
@@ -434,12 +540,25 @@
                     const mediaId = button.getAttribute('data-media-id');
                     const mediaName = button.getAttribute('data-media-name');
                     const mediaAlt = button.getAttribute('data-media-alt');
+                    const mediaType = button.getAttribute('data-media-type');
+                    const isYoutube = button.getAttribute('data-is-youtube') === 'true';
+                    const youtubeId = button.getAttribute('data-youtube-id');
 
                     document.getElementById('editName').value = mediaName;
                     document.getElementById('editAlt').value = mediaAlt;
 
+                    // Show/hide YouTube ID field based on media type
+                    const youtubeField = document.getElementById('youtubeIdField');
+                    if (mediaType === 'video' && isYoutube) {
+                        youtubeField.style.display = 'block';
+                        document.getElementById('editYoutubeId').value = youtubeId;
+                    } else {
+                        youtubeField.style.display = 'none';
+                        document.getElementById('editYoutubeId').value = '';
+                    }
+
                     const form = document.getElementById('editMediaForm');
-                    form.action = `/dashboard/media/${mediaId}`;
+                    form.action = "{{ route('dashboard.media.update', ':id') }}".replace(':id', mediaId);
 
                     const modal = new bootstrap.Modal(document.getElementById('editMediaModal'));
                     modal.show();
@@ -454,8 +573,23 @@
                 }
             };
 
+            // Initialize YouTube players
+            document.querySelectorAll('.youtube-player').forEach(player => {
+                const youtubeId = player.getAttribute('data-youtube-id');
+                player.addEventListener('click', function() {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
+                    iframe.allow = 'autoplay; encrypted-media';
+                    iframe.allowFullscreen = true;
+
+                    player.innerHTML = '';
+                    player.appendChild(iframe);
+                    player.classList.add('loaded');
+                });
+            });
+
             // Auto-play videos on hover
-            document.querySelectorAll('.media-preview video').forEach(video => {
+            document.querySelectorAll('.media-preview-16-9 video').forEach(video => {
                 video.addEventListener('mouseenter', function() {
                     this.play();
                 });
