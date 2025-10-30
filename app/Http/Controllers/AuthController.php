@@ -207,7 +207,7 @@ class AuthController extends Controller
     {
         // ✅ التحقق من المدخلات
         $credentials = $request->validate([
-            'email' => 'nullable|email',
+            'email' => 'nullable',
             'username' => 'nullable|string',
             'password' => 'required|min:6',
         ]);
