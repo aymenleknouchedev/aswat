@@ -916,45 +916,361 @@
         @include('user.components.footer')
     </div>
 
-    {{-- ================= MOBILE ================= --}}
-    <div class="mobile"></div>
-
-    {{-- ================= SCRIPT ================= --}}
-    <script>
-        const pagePodcast = document.getElementById("pagePodcast");
-        const floatingPodcast = document.getElementById("floatingPodcast");
-        const floatingAudio = document.getElementById("floatingAudio");
-        const closeFloating = document.getElementById("closeFloating");
-
-        pagePodcast?.addEventListener("play", () => {
-            floatingPodcast.style.display = "flex";
-            floatingAudio.play();
-            pagePodcast.pause();
-        });
-
-        closeFloating?.addEventListener("click", () => {
-            floatingAudio.pause();
-            floatingPodcast.style.display = "none";
-        });
-    </script>
-
-    <script>
-        const toggle = document.getElementById('shareToggle');
-        const shareContainer = document.getElementById('shareContainer');
-
-        function toggleShare(e) {
-            e.stopPropagation();
-            shareContainer.classList.toggle('active');
+    <style>
+        /* Clickable text styling */
+        .clickable-term {
+            color: #0066cc;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+            background-color: transparent;
+            font-family: asswat-regular !important;
+            font-size: 16px !important;
         }
 
-        toggle.addEventListener('click', toggleShare);
+        .clickable-term:hover {
+            background-color: #e6f2ff;
+            text-decoration: none;
+        }
 
-        // Close when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!shareContainer.contains(e.target)) {
-                shareContainer.classList.remove('active');
+        /* Text definition modal */
+        .text-definition-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            animation: modalBackdropFadeIn 0.3s ease;
+        }
+
+        @keyframes modalBackdropFadeIn {
+            from {
+                opacity: 0;
             }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .text-modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            animation: backdropFadeIn 0.3s ease;
+        }
+
+        @keyframes backdropFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .text-modal-container {
+            position: fixed;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            width: 90%;
+            max-width: 700px;
+            max-height: 350px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: row;
+            animation: modalFadeInBottom 0.3s ease-out;
+            overflow: hidden;
+        }
+
+        @keyframes modalFadeInBottom {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .text-modal-header {
+            padding: 0;
+            border-bottom: none;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            background: white;
+            border-radius: 0;
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            z-index: 10;
+        }
+
+        .text-modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        .text-modal-close:hover {
+            color: #333;
+            animation: closeBtnPulse 0.4s;
+        }
+
+        @keyframes closeBtnPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .text-modal-body {
+            padding: 1.25rem;
+            overflow-y: auto;
+            flex: 1;
+            animation: bodyFadeIn 0.4s;
+            display: flex;
+            flex-direction: row;
+            gap: 1.25rem;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        @keyframes bodyFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .text-modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #222;
+            font-family: asswat-bold;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 12px;
+            width: 100%;
+        }
+
+        .text-modal-body p {
+            margin: 0;
+            color: #333;
+            font-family: asswat-regular;
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: right;
+            direction: rtl;
+            flex: 1;
+        }
+
+        #textModalImageContainer {
+            margin-bottom: 0;
+            flex-shrink: 0;
+            order: 2;
+        }
+
+        #textModalImage {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .text-modal-container {
+                width: 95%;
+                max-height: 80vh;
+                flex-direction: column;
+                bottom: 20px;
+            }
+
+            .text-modal-body {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            #textModalImageContainer {
+                order: -1;
+            }
+
+            #textModalImage {
+                width: 100%;
+                height: auto;
+            }
+
+            .text-modal-body p {
+                padding: 0;
+            }
+        }
+    </style>
+
+    {{-- ===== CLICKABLE TEXT FUNCTIONALITY (ENHANCED WITH IMAGES) ===== --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Extract clickable terms from HTML directly
+            const textDefinitions = {};
+
+            // Find all clickable terms in the content
+            document.querySelectorAll('.clickable-term').forEach(function(element) {
+                const term = element.getAttribute('data-term');
+                const imagePath = element.getAttribute('data-image');
+                const description = element.getAttribute('data-description');
+
+                if (term && description) {
+                    textDefinitions[term] = {
+                        content: element.textContent,
+                        description: description,
+                        image: imagePath || null
+                    };
+                }
+            });
+
+            // Log for debugging
+            console.log('Text Definitions Loaded:', textDefinitions);
+
+            // Get modal elements
+            const modal = document.getElementById('textDefinitionModal');
+            const modalContent = document.getElementById('textModalContent');
+            const modalTitle = document.getElementById('textModalTitle');
+            const modalImage = document.getElementById('textModalImage');
+            const modalImageContainer = document.getElementById('textModalImageContainer');
+            const modalBackdrop = modal.querySelector('.text-modal-backdrop');
+            const modalClose = modal.querySelector('.text-modal-close');
+
+            // Handle clicks on clickable text
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('clickable-term')) {
+                    e.preventDefault();
+                    let term = e.target.getAttribute('data-term');
+
+                    // Try different variations of the term key
+                    let definition = textDefinitions[term] ||
+                        textDefinitions[term.toLowerCase()] ||
+                        textDefinitions[term.toLowerCase().replace(/\s+/g, '-')] ||
+                        textDefinitions[term.toLowerCase().replace(/\s+/g, '_')];
+
+                    console.log('Clicked term:', term);
+                    console.log('Definition found:', definition);
+
+                    if (definition) {
+                        showTextModal(term, definition);
+                    } else {
+                        // Show available definitions for debugging
+                        console.log('Available terms:', Object.keys(textDefinitions));
+                        // Fallback: show modal with term not found
+                        showTextModal(term, {
+                            description: 'لم يتم العثور على تعريف مفصل لهذا المصطلح.<br><br><small>المصطلح المطلوب: ' +
+                                term + '</small>',
+                            image: null
+                        });
+                    }
+                }
+            });
+
+            // Function to show modal with text definition (including image)
+            function showTextModal(term, definition) {
+                // Set title
+                modalTitle.textContent = term;
+
+                // Set description
+                modalContent.innerHTML = definition.description;
+
+                // Handle image
+                if (definition.image) {
+                    modalImageContainer.style.display = 'block';
+                    modalImage.src = definition.image;
+                    modalImage.alt = definition.content || 'صورة التعريف';
+                } else {
+                    modalImageContainer.style.display = 'none';
+                }
+
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Function to close modal
+            function closeTextModal() {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+
+            // Event listeners for closing modal
+            modalBackdrop.addEventListener('click', closeTextModal);
+            modalClose.addEventListener('click', closeTextModal);
+
+            // Close on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.style.display === 'block') {
+                    closeTextModal();
+                }
+            });
+
+            // Prevent modal container click from closing modal
+            modal.querySelector('.text-modal-container').addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
         });
     </script>
+
+    <!-- Enhanced Modal HTML Structure with Image Support -->
+    <div id="textDefinitionModal" class="text-definition-modal" style="display: none;">
+        <div class="text-modal-backdrop"></div>
+        <div class="text-modal-container">
+            <div class="text-modal-header">
+                <button class="text-modal-close" aria-label="إغلاق">×</button>
+            </div>
+            <div class="text-modal-body">
+                <!-- Image Container (Hidden by default) -->
+                <div id="textModalImageContainer" style="display: none;">
+                    <img id="textModalImage" src="" alt="صورة التعريف">
+                </div>
+                <!-- Title and Description -->
+                <div style="flex: 1;">
+                    <h3 id="textModalTitle" class="text-modal-title"></h3>
+                    <p id="textModalContent"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- ================= MOBILE ================= --}}
+    <div class="mobile"></div>
 
 @endsection

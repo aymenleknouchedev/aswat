@@ -16,7 +16,7 @@
     </symbol>
 </svg>
 
-<!-- ====== Modal ====== -->
+<!-- ====== Media Modal ====== -->
 <div id="vvcMediaModal" class="vvc-modal" aria-hidden="true" role="dialog" aria-modal="true"
     aria-labelledby="vvcMediaModalTitle">
     <div class="vvc-backdrop" data-vvc-backdrop></div>
@@ -92,6 +92,105 @@
     </div>
 </div>
 
+<!-- ====== TEXT MODAL (ENHANCED) ====== -->
+<div id="vvcTextModal" class="vvc-modal" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="vvcTextModalTitle">
+    <div class="vvc-backdrop" data-vvc-text-backdrop></div>
+    <div class="vvc-container" role="document" style="max-width: 600px;">
+        <div class="vvc-header">
+            <h5 id="vvcTextModalTitle">إضافة نص قابل للنقر</h5>
+            <button class="vvc-close" type="button" data-vvc-text-close aria-label="إغلاق">&times;</button>
+        </div>
+
+        <div class="vvc-tab-body">
+            <!-- Display Selected Text / Title -->
+            <div style="margin-bottom: 1rem;">
+                <label for="vvc-text-content"
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">النص
+                    المعروض:</label>
+                <input type="text" id="vvc-text-content" placeholder="أدخل النص الذي سيظهر في المقال"
+                    style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);">
+            </div>
+
+            <!-- Key Field (Auto-generated from title) -->
+            <div style="margin-bottom: 1rem;">
+                <label for="vvc-text-key"
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">المفتاح
+                    (للعرض في القائمة):</label>
+                <input type="text" id="vvc-text-key" placeholder="سيتم إنشاؤه تلقائياً من النص"
+                    style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);"
+                    readonly>
+                <small style="color: var(--vvc-muted);">يتم إنشاء هذا تلقائياً من النص المعروض</small>
+            </div>
+
+            <!-- Description -->
+            <div style="margin-bottom: 1rem;">
+                <label for="vvc-text-description"
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">الوصف
+                    (سيظهر في النافذة المنبثقة):</label>
+                <textarea id="vvc-text-description" rows="4" placeholder="أدخل الوصف الكامل الذي سيظهر عند النقر على النص"
+                    style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);"></textarea>
+            </div>
+
+            <!-- Image Picker Section -->
+            <div style="margin-bottom: 1rem;">
+                <label
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">صورة
+                    (اختياري):</label>
+                <button class="vvc-btn vvc-btn-secondary" type="button" id="vvc-btn-pick-image"
+                    style="margin-bottom: 0.75rem; width: 100%; padding: 0.75rem;">
+                    📷 اختر صورة من المعرض
+                </button>
+
+                <!-- Image Preview -->
+                <div id="vvc-image-preview-container" style="display: none;">
+                    <div style="position: relative; margin-bottom: 0.5rem;">
+                        <img id="vvc-image-preview" src="" alt="معاينة الصورة"
+                            style="width: 100%; max-height: 200px; object-fit: cover; border: 1px solid var(--vvc-border-color); border-radius: 4px;">
+                        <button type="button" id="vvc-btn-remove-image"
+                            style="position: absolute; top: 5px; right: 5px; background: #e85347; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;">
+                            ×
+                        </button>
+                    </div>
+                    <small id="vvc-image-path" style="color: var(--vvc-muted); display: block;"></small>
+                </div>
+            </div>
+        </div>
+
+        <div class="vvc-footer">
+            <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-insert-text">إدراج النص</button>
+            <button class="vvc-btn vvc-btn-cancel" type="button" data-vvc-text-close>إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- ====== DEFINITION MODAL (NEW) - To display term definition with image ====== -->
+<div id="vvcDefinitionModal" class="vvc-modal" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="vvcDefinitionModalTitle">
+    <div class="vvc-backdrop" data-vvc-definition-backdrop></div>
+    <div class="vvc-container" role="document" style="max-width: 600px;">
+        <div class="vvc-header">
+            <h5 id="vvcDefinitionModalTitle">تعريف المصطلح</h5>
+            <button class="vvc-close" type="button" data-vvc-definition-close aria-label="إغلاق">&times;</button>
+        </div>
+
+        <div class="vvc-tab-body">
+            <!-- Image Display -->
+            <div id="vvc-definition-image-container" style="margin-bottom: 1rem; display: none;">
+                <img id="vvc-definition-image" src="" alt="صورة التعريف"
+                    style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 4px; border: 1px solid var(--vvc-border-color);">
+            </div>
+
+            <!-- Description -->
+            <div id="vvc-definition-content" style="color: var(--vvc-body-color); line-height: 1.6;"></div>
+        </div>
+
+        <div class="vvc-footer">
+            <button class="vvc-btn vvc-btn-cancel" type="button" data-vvc-definition-close>إغلاق</button>
+        </div>
+    </div>
+</div>
+
 <!-- ====== Styles ====== -->
 <style>
     #vvcMediaModal,
@@ -148,7 +247,7 @@
         position: fixed;
         inset: 0;
         display: none;
-        z-index: 10000;
+        z-index: 10100;
     }
 
     .vvc-modal[aria-hidden="false"] {
@@ -174,7 +273,7 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        z-index: 1;
+        z-index: 10001;
         box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
         animation: vvcFade .2s ease-out;
     }
@@ -247,7 +346,9 @@
     .vvc-tab-body {
         padding: 1rem 1.25rem;
         border-bottom: 1px solid var(--vvc-border-color);
-        background: var(--vvc-body-bg)
+        background: var(--vvc-body-bg);
+        flex: 1;
+        overflow-y: auto;
     }
 
     .vvc-filters {
@@ -382,6 +483,11 @@
         border-color: #465fff
     }
 
+    .vvc-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
     .vvc-btn-secondary {
         background: var(--vvc-secondary);
         border-color: var(--vvc-secondary)
@@ -437,6 +543,22 @@
 
     .vvc-sentinel {
         height: 1px
+    }
+
+    /* Clickable text styles */
+    .clickable-term {
+        color: #0066cc;
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 2px 4px;
+        border-radius: 3px;
+        transition: background-color 0.2s;
+        background-color: transparent;
+    }
+
+    .clickable-term:hover {
+        background-color: #e6f2ff;
+        text-decoration: none;
     }
 
     @media (max-width:768px) {
@@ -894,6 +1016,254 @@
             listEl.innerHTML = '<div class="vvc-empty">لا توجد وسائط للعرض</div>';
         }
 
+        // ====== TEXT MODAL LOGIC (ENHANCED) ======
+
+        // Text definitions storage - now includes image data
+        window.vvcTextDefinitions = window.vvcTextDefinitions || {};
+
+        // Text Modal Elements
+        const textModal = document.getElementById("vvcTextModal");
+        const textBackdrop = textModal.querySelector('[data-vvc-text-backdrop]');
+        const textCloses = textModal.querySelectorAll('[data-vvc-text-close]');
+        const textContainer = textModal.querySelector('.vvc-container');
+        const textContentInput = document.getElementById('vvc-text-content');
+        const textKeyInput = document.getElementById('vvc-text-key');
+        const textDescriptionInput = document.getElementById('vvc-text-description');
+        const btnInsertText = document.getElementById('vvc-btn-insert-text');
+        const btnPickImage = document.getElementById('vvc-btn-pick-image');
+        const btnRemoveImage = document.getElementById('vvc-btn-remove-image');
+        const imagePreviewContainer = document.getElementById('vvc-image-preview-container');
+        const imagePreview = document.getElementById('vvc-image-preview');
+        const imagePath = document.getElementById('vvc-image-path');
+
+        // Definition Modal Elements
+        const definitionModal = document.getElementById("vvcDefinitionModal");
+        const definitionBackdrop = definitionModal.querySelector('[data-vvc-definition-backdrop]');
+        const definitionCloses = definitionModal.querySelectorAll('[data-vvc-definition-close]');
+        const definitionContainer = definitionModal.querySelector('.vvc-container');
+        const definitionImageContainer = document.getElementById('vvc-definition-image-container');
+        const definitionImage = document.getElementById('vvc-definition-image');
+        const definitionContent = document.getElementById('vvc-definition-content');
+
+        // State for text modal
+        let textModalState = {
+            selectedImage: null,
+            selectedImagePath: null
+        };
+
+        // Text Modal API
+        window.vvcTextModalManager = {
+            openModal() {
+                textModalState.selectedImage = null;
+                textModalState.selectedImagePath = null;
+
+                textModal.setAttribute('aria-hidden', 'false');
+                document.documentElement.style.overflow = 'hidden';
+
+                // Clear inputs
+                textContentInput.value = '';
+                textKeyInput.value = '';
+                textDescriptionInput.value = '';
+
+                // Hide image preview
+                imagePreviewContainer.style.display = 'none';
+
+                // Get selected text from TinyMCE
+                if (window.tinymce && tinymce.activeEditor) {
+                    const selectedText = tinymce.activeEditor.selection.getContent({
+                        format: 'text'
+                    });
+                    if (selectedText) {
+                        textContentInput.value = selectedText;
+                        updateKeyFromContent();
+                    }
+                }
+
+                setTimeout(() => textContentInput.focus(), 0);
+            },
+            closeModal() {
+                textModal.setAttribute('aria-hidden', 'true');
+                document.documentElement.style.overflow = '';
+                textModalState.selectedImage = null;
+                textModalState.selectedImagePath = null;
+            },
+            addTextDefinition(key, content, description, imagePath = null) {
+                window.vvcTextDefinitions[key] = {
+                    content: content,
+                    description: description,
+                    image: imagePath
+                };
+            }
+        };
+
+        // Definition Modal API
+        window.vvcDefinitionModalManager = {
+            openModal(term) {
+                const definition = window.vvcTextDefinitions[term];
+                if (!definition) return;
+
+                definitionContent.textContent = definition.description;
+
+                if (definition.image) {
+                    definitionImageContainer.style.display = 'block';
+                    definitionImage.src = definition.image;
+                    definitionImage.alt = definition.content;
+                } else {
+                    definitionImageContainer.style.display = 'none';
+                }
+
+                definitionModal.setAttribute('aria-hidden', 'false');
+                document.documentElement.style.overflow = 'hidden';
+            },
+            closeModal() {
+                definitionModal.setAttribute('aria-hidden', 'true');
+                document.documentElement.style.overflow = '';
+            }
+        };
+
+        // Update key from content
+        function updateKeyFromContent() {
+            const content = textContentInput.value.trim();
+            const key = content.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            textKeyInput.value = key || 'undefined';
+        }
+
+        // Listen to content input changes
+        textContentInput.addEventListener('input', updateKeyFromContent);
+
+        // Image Picker Button
+        btnPickImage.addEventListener('click', () => {
+            window._textModalImageCallback = (imageData) => {
+                textModalState.selectedImage = imageData;
+                textModalState.selectedImagePath = imageData.url;
+
+                // Show preview
+                imagePreviewContainer.style.display = 'block';
+                imagePreview.src = imageData.url;
+                imagePath.textContent = `مسار: ${imageData.url}`;
+            };
+
+            // Filter for images only
+            window._tinyRequestedType = 'image';
+
+            // Temporarily lower text modal z-index so media modal appears on top
+            textModal.style.zIndex = '10050';
+
+            window.vvcMediaModalManager.openModal('textmodal');
+        });
+
+        // Remove Image Button
+        btnRemoveImage.addEventListener('click', () => {
+            textModalState.selectedImage = null;
+            textModalState.selectedImagePath = null;
+            imagePreviewContainer.style.display = 'none';
+            imagePreview.src = '';
+            imagePath.textContent = '';
+        });
+
+        // Override closeModal to restore z-index
+        const originalCloseModal = window.vvcMediaModalManager.closeModal;
+        window.vvcMediaModalManager.closeModal = function() {
+            originalCloseModal.call(this);
+            // Restore text modal z-index
+            textModal.style.zIndex = '';
+        };
+        window.vvcMediaModalManager.onMediaSelectedForTextModal = function(payload) {
+            if (typeof window._textModalImageCallback === 'function') {
+                window._textModalImageCallback(payload);
+                window._textModalImageCallback = null;
+            }
+        };
+
+        // Override onMediaSelected to handle text modal image callback
+        const originalOnMediaSelected = window.vvcMediaModalManager.onMediaSelected;
+        window.vvcMediaModalManager.onMediaSelected = function(payload) {
+            // If there's a text modal image callback, use it
+            if (typeof window._textModalImageCallback === 'function') {
+                window._textModalImageCallback(payload);
+                window._textModalImageCallback = null;
+                window.vvcMediaModalManager.closeModal();
+                return;
+            }
+
+            // Otherwise use original logic
+            originalOnMediaSelected.call(this, payload);
+        };
+
+        // Text Modal Event Listeners
+        textBackdrop.addEventListener('click', () => window.vvcTextModalManager.closeModal());
+        textCloses.forEach(b => b.addEventListener('click', () => window.vvcTextModalManager.closeModal()));
+        textContainer.addEventListener('click', e => e.stopPropagation());
+
+        // Definition Modal Event Listeners
+        definitionBackdrop.addEventListener('click', () => window.vvcDefinitionModalManager.closeModal());
+        definitionCloses.forEach(b => b.addEventListener('click', () => window.vvcDefinitionModalManager
+        .closeModal()));
+        definitionContainer.addEventListener('click', e => e.stopPropagation());
+
+        // Insert clickable text into TinyMCE
+        btnInsertText.addEventListener('click', () => {
+            const content = textContentInput.value.trim();
+            const key = textKeyInput.value.trim();
+            const description = textDescriptionInput.value.trim();
+
+            if (!content) {
+                alert('⚠️ يرجى إدخال النص المعروض');
+                return;
+            }
+
+            if (!description) {
+                alert('⚠️ يرجى إدخال الوصف');
+                return;
+            }
+
+            // Store the definition with optional image
+            window.vvcTextModalManager.addTextDefinition(key, content, description, textModalState
+                .selectedImagePath);
+
+            // Insert into TinyMCE with data attributes for image and description
+            if (window.tinymce && tinymce.activeEditor) {
+                tinymce.activeEditor.focus();
+
+                // Build the span with all necessary data attributes
+                let spanAttributes =
+                    `class="clickable-term" data-term="${escapeHtml(key)}" data-description="${escapeHtml(description)}"`;
+
+                // Add image path if exists
+                if (textModalState.selectedImagePath) {
+                    spanAttributes += ` data-image="${escapeHtml(textModalState.selectedImagePath)}"`;
+                }
+
+                tinymce.activeEditor.execCommand('mceInsertContent', false,
+                    `<span ${spanAttributes}>${escapeHtml(content)}</span>`
+                );
+            } else {
+                alert('⚠️ محرر TinyMCE غير متاح');
+                return;
+            }
+
+            window.vvcTextModalManager.closeModal();
+        });
+
+        // Handle clicks on clickable text in the rendered content
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('clickable-term')) {
+                e.preventDefault();
+                const term = e.target.getAttribute('data-term');
+                window.vvcDefinitionModalManager.openModal(term);
+            }
+        });
+
+        // Close text modal with Escape key
+        document.addEventListener('keydown', e => {
+            if (textModal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') {
+                window.vvcTextModalManager.closeModal();
+            }
+            if (definitionModal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') {
+                window.vvcDefinitionModalManager.closeModal();
+            }
+        });
+
         // ---------- Safe HTML escape ----------
         window.escapeHtml = function(str) {
             if (str == null) return '';
@@ -938,13 +1308,27 @@
 
             /* ===== Style du « petit format » ===== */
             content_style: `
-      body{font-family:Arial,Helvetica,sans-serif !important;font-size:18pt !important;line-height:1.6 !important;}
-      figure.image{display:inline-block;}
-      figcaption{font-size:.9em;color:#666;}
-      /* -- Petit format par défaut -- */
-      img.tiny-sm, video.tiny-sm{width:280px;height:auto;max-width:100%;}
-      figure.image img.tiny-sm{width:280px;height:auto;max-width:100%;}
-    `,
+                body{font-family:Arial,Helvetica,sans-serif !important;font-size:18pt !important;line-height:1.6 !important;}
+                figure.image{display:inline-block;}
+                figcaption{font-size:.9em;color:#666;}
+                /* -- Petit format par défaut -- */
+                img.tiny-sm, video.tiny-sm{width:280px;height:auto;max-width:100%;}
+                figure.image img.tiny-sm{width:280px;height:auto;max-width:100%;}
+                /* -- Clickable text styles -- */
+                .clickable-term {
+                    color: #0066cc;
+                    text-decoration: underline;
+                    cursor: pointer;
+                    padding: 2px 4px;
+                    border-radius: 3px;
+                    transition: background-color 0.2s;
+                    background-color: transparent;
+                }
+                .clickable-term:hover {
+                    background-color: #e6f2ff;
+                    text-decoration: none;
+                }
+            `,
 
             setup: (editor) => {
                 // Bouton custom pour ouvrir la galerie
@@ -972,6 +1356,17 @@
                         }
                     }
                 });
+
+                // Button for clickable text
+                editor.ui.registry.addButton('vvcClickableText', {
+                    text: 'نص تفاعلي',
+                    tooltip: 'إضافة نص قابل للنقر يظهر وصفاً عند الضغط',
+                    onAction: () => {
+                        if (window.vvcTextModalManager?.openModal) {
+                            window.vvcTextModalManager.openModal();
+                        }
+                    }
+                });
             },
 
             skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
@@ -983,7 +1378,7 @@
             toolbar: [
                 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
                 '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
-                '| link table image media blockquote vvcPicker',
+                '| link table image media blockquote vvcPicker vvcClickableText',
                 '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
             ].join(' '),
 
