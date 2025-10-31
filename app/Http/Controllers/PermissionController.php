@@ -64,7 +64,7 @@ class PermissionController extends BaseController
     public function store(Request $request)
     {
         try {
-            $validated = Validator::validate($request->all(), [
+            $validated = Validator::make($request->all(), [
                 'name' => 'required|string|unique:permissions,name',
             ])->validate();
 
@@ -106,9 +106,10 @@ class PermissionController extends BaseController
     {
         $permission = Permission::findOrFail($id);
 
-        Validator::validate($request->all(), [
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|unique:permissions,name,' . $permission->id,
-        ])->validate();
+        ]);
+        $validator->validate();
 
         if ($request->input('name') === $permission->name) {
             return redirect()->back()->with('info', 'No changes made to the permission.');
