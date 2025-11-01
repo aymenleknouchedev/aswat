@@ -1,4 +1,4 @@
-<!-- ================== VVC MEDIA MODAL + TinyMCE 8 (Images & Videos Only, Small by default) ================== -->
+<!-- ================== VVC MEDIA MODAL + TinyMCE 8 with READ MORE Feature ================== -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <!-- ====== Icons Sprite (Images & Videos only) ====== -->
@@ -187,6 +187,57 @@
 
         <div class="vvc-footer">
             <button class="vvc-btn vvc-btn-cancel" type="button" data-vvc-definition-close>إغلاق</button>
+        </div>
+    </div>
+</div>
+
+<!-- ====== READ MORE MODAL ====== -->
+<div id="vvcReadMoreModal" class="vvc-modal" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="vvcReadMoreModalTitle">
+    <div class="vvc-backdrop" data-vvc-readmore-backdrop></div>
+    <div class="vvc-container" role="document" style="max-width: 800px;">
+        <div class="vvc-header">
+            <h5 id="vvcReadMoreModalTitle">إدراج محتوى "إقرأ المزيد"</h5>
+            <button class="vvc-close" type="button" data-vvc-readmore-close aria-label="إغلاق">&times;</button>
+        </div>
+
+        <div class="vvc-tab-body">
+            <!-- Search Section -->
+            <div style="margin-bottom: 1rem;">
+                <label for="vvc-readmore-search"
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">بحث
+                    في المحتوى:</label>
+                <input type="text" id="vvc-readmore-search" placeholder="ابحث عن محتوى..."
+                    style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);">
+            </div>
+
+            <!-- Database Content Selection -->
+            <div style="margin-bottom: 1rem;">
+                <label for="vvc-readmore-content"
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">اختر
+                    المحتوى:</label>
+                <select id="vvc-readmore-content"
+                    style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);">
+                    <option value="">-- اختر محتوى من قاعدة البيانات --</option>
+                </select>
+            </div>
+
+            <!-- Preview Section -->
+            <div style="margin-bottom: 1rem;">
+                <label
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">معاينة:</label>
+                <div id="vvc-readmore-preview"
+                    style="border: 1px solid var(--vvc-border-color); padding: 1rem; background: var(--vvc-gray-100); min-height: 100px;">
+                    <p style="color: var(--vvc-muted); text-align: center; margin: 2rem 0;">سيظهر معاينة المحتوى هنا
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="vvc-footer">
+            <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-insert-readmore">إدراج "إقرأ
+                المزيد"</button>
+            <button class="vvc-btn vvc-btn-cancel" type="button" data-vvc-readmore-close>إلغاء</button>
         </div>
     </div>
 </div>
@@ -561,6 +612,70 @@
         text-decoration: none;
     }
 
+    /* Read More Block Styles - Horizontal Layout Only - SMALLER SIZE */
+    .read-more-block {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 0.75rem 0;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: stretch;
+        pointer-events: none;
+    }
+
+    .read-more-block * {
+        pointer-events: auto;
+    }
+
+    .read-more-block .read-more-image {
+        width: 35%;
+        height: auto;
+        max-height: 150px;
+        object-fit: cover;
+    }
+
+    .read-more-block .read-more-content {
+        width: 65%;
+        padding: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .read-more-block .read-more-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0 0 0.35rem 0;
+        color: #364a63;
+    }
+
+    .read-more-block .read-more-summary {
+        color: #526484;
+        line-height: 1.4;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .read-more-block .read-more-link {
+        display: inline-block;
+        margin-top: 0.5rem;
+        padding: 0.35rem 0.75rem;
+        background: #6576ff;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 0.85rem;
+        transition: background 0.2s;
+        align-self: flex-start;
+    }
+
+    .read-more-block .read-more-link:hover {
+        background: #465fff;
+    }
+
     @media (max-width:768px) {
         .vvc-container {
             top: 2%;
@@ -578,6 +693,19 @@
         .vvc-uploader-actions .vvc-btn {
             width: 100%
         }
+
+        .read-more-block {
+            flex-direction: column;
+        }
+
+        .read-more-block .read-more-image {
+            width: 100%;
+            height: 120px;
+        }
+
+        .read-more-block .read-more-content {
+            width: 100%;
+        }
     }
 </style>
 
@@ -587,6 +715,8 @@
         // ---------- Endpoints (Laravel) ----------
         const FETCH_URL = "{{ route('dashboard.media.getAllMediaPaginated') }}";
         const UPLOAD_URL = "{{ route('dashboard.media.store') }}";
+        const READMORE_CONTENT_URL =
+            "{{ route('dashboard.content.getReadMoreContent') }}"; // New endpoint for read more content
         const CSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content') || '';
 
         // ---------- Elements ----------
@@ -1045,6 +1175,15 @@
         const definitionImage = document.getElementById('vvc-definition-image');
         const definitionContent = document.getElementById('vvc-definition-content');
 
+        // Read More Modal Elements
+        const readMoreModal = document.getElementById("vvcReadMoreModal");
+        const readMoreBackdrop = readMoreModal.querySelector('[data-vvc-readmore-backdrop]');
+        const readMoreCloses = readMoreModal.querySelectorAll('[data-vvc-readmore-close]');
+        const readMoreContainer = readMoreModal.querySelector('.vvc-container');
+        const readMoreContentSelect = document.getElementById('vvc-readmore-content');
+        const readMorePreview = document.getElementById('vvc-readmore-preview');
+        const btnInsertReadMore = document.getElementById('vvc-btn-insert-readmore');
+
         // State for text modal
         let textModalState = {
             selectedImage: null,
@@ -1121,6 +1260,102 @@
             }
         };
 
+        // Read More Modal API
+        window.vvcReadMoreModalManager = {
+            async openModal() {
+                readMoreModal.setAttribute('aria-hidden', 'false');
+                document.documentElement.style.overflow = 'hidden';
+
+                // Clear inputs
+                readMoreContentSelect.value = '';
+                readMorePreview.innerHTML =
+                    '<p style="color: var(--vvc-muted); text-align: center; margin: 2rem 0;">سيظهر معاينة المحتوى هنا</p>';
+
+                // Load content from database
+                await loadReadMoreContent();
+
+                setTimeout(() => readMoreContentSelect.focus(), 0);
+            },
+            closeModal() {
+                readMoreModal.setAttribute('aria-hidden', 'true');
+                document.documentElement.style.overflow = '';
+            }
+        };
+
+        // Load Read More Content from Database
+        async function loadReadMoreContent() {
+            try {
+                const res = await fetch(READMORE_CONTENT_URL, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': CSRF
+                    }
+                });
+
+                if (!res.ok) throw new Error(`Failed to fetch content: ${res.status}`);
+
+                const data = await res.json();
+                const contentList = Array.isArray(data.data) ? data.data : [];
+
+                // Clear existing options
+                readMoreContentSelect.innerHTML =
+                    '<option value="">-- اختر محتوى من قاعدة البيانات --</option>';
+
+                // Add new options
+                contentList.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.title;
+                    option.dataset.image = item.image_url || '';
+                    option.dataset.summary = item.summary || '';
+                    option.dataset.link = item.link || '';
+                    readMoreContentSelect.appendChild(option);
+                });
+
+            } catch (error) {
+                console.error('Error loading read more content:', error);
+                readMoreContentSelect.innerHTML = '<option value="">-- خطأ في تحميل المحتوى --</option>';
+            }
+        }
+
+        // Update preview when content selection changes
+        readMoreContentSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const imageUrl = selectedOption.dataset.image;
+            const summary = selectedOption.dataset.summary;
+            const title = selectedOption.textContent;
+            const link = selectedOption.dataset.link;
+
+            if (!this.value) {
+                readMorePreview.innerHTML =
+                    '<p style="color: var(--vvc-muted); text-align: center; margin: 2rem 0;">سيظهر معاينة المحتوى هنا</p>';
+                return;
+            }
+
+            // Generate preview HTML with horizontal layout
+            let previewHtml = '<div class="read-more-block">';
+
+            if (imageUrl) {
+                previewHtml +=
+                    `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(title)}" class="read-more-image">`;
+            }
+
+            previewHtml += `<div class="read-more-content">`;
+            previewHtml += `<h3 class="read-more-title">${escapeHtml(title)}</h3>`;
+
+            if (summary) {
+                previewHtml += `<p class="read-more-summary">${escapeHtml(summary)}</p>`;
+            }
+
+            if (link) {
+                previewHtml += `<a href="${escapeHtml(link)}" class="read-more-link">إقرأ المزيد</a>`;
+            }
+
+            previewHtml += `</div></div>`;
+
+            readMorePreview.innerHTML = previewHtml;
+        });
+
         // Update key from content
         function updateKeyFromContent() {
             const content = textContentInput.value.trim();
@@ -1161,6 +1396,55 @@
             imagePath.textContent = '';
         });
 
+        // Insert Read More Content
+        btnInsertReadMore.addEventListener('click', () => {
+            const selectedOption = readMoreContentSelect.options[readMoreContentSelect.selectedIndex];
+            const contentId = readMoreContentSelect.value;
+
+            if (!contentId) {
+                alert('⚠️ يرجى اختيار محتوى من القائمة');
+                return;
+            }
+
+            const title = selectedOption.textContent;
+            const imageUrl = selectedOption.dataset.image;
+            const summary = selectedOption.dataset.summary;
+            const link = selectedOption.dataset.link;
+
+            // Build the read more block HTML with horizontal layout
+            let readMoreHtml = '<div class="read-more-block">';
+
+            if (imageUrl) {
+                readMoreHtml +=
+                    `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(title)}" class="read-more-image">`;
+            }
+
+            readMoreHtml += `<div class="read-more-content">`;
+            readMoreHtml += `<h3 class="read-more-title">${escapeHtml(title)}</h3>`;
+
+            if (summary) {
+                readMoreHtml += `<p class="read-more-summary">${escapeHtml(summary)}</p>`;
+            }
+
+            if (link) {
+                readMoreHtml +=
+                    `<a href="${escapeHtml(link)}" class="read-more-link" target="_blank">إقرأ المزيد</a>`;
+            }
+
+            readMoreHtml += `</div></div>`;
+
+            // Insert into TinyMCE
+            if (window.tinymce && tinymce.activeEditor) {
+                tinymce.activeEditor.focus();
+                tinymce.activeEditor.execCommand('mceInsertContent', false, readMoreHtml);
+            } else {
+                alert('⚠️ محرر TinyMCE غير متاح');
+                return;
+            }
+
+            window.vvcReadMoreModalManager.closeModal();
+        });
+
         // Override closeModal to restore z-index
         const originalCloseModal = window.vvcMediaModalManager.closeModal;
         window.vvcMediaModalManager.closeModal = function() {
@@ -1198,8 +1482,13 @@
         // Definition Modal Event Listeners
         definitionBackdrop.addEventListener('click', () => window.vvcDefinitionModalManager.closeModal());
         definitionCloses.forEach(b => b.addEventListener('click', () => window.vvcDefinitionModalManager
-        .closeModal()));
+            .closeModal()));
         definitionContainer.addEventListener('click', e => e.stopPropagation());
+
+        // Read More Modal Event Listeners
+        readMoreBackdrop.addEventListener('click', () => window.vvcReadMoreModalManager.closeModal());
+        readMoreCloses.forEach(b => b.addEventListener('click', () => window.vvcReadMoreModalManager.closeModal()));
+        readMoreContainer.addEventListener('click', e => e.stopPropagation());
 
         // Insert clickable text into TinyMCE
         btnInsertText.addEventListener('click', () => {
@@ -1254,13 +1543,16 @@
             }
         });
 
-        // Close text modal with Escape key
+        // Close modals with Escape key
         document.addEventListener('keydown', e => {
             if (textModal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') {
                 window.vvcTextModalManager.closeModal();
             }
             if (definitionModal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') {
                 window.vvcDefinitionModalManager.closeModal();
+            }
+            if (readMoreModal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') {
+                window.vvcReadMoreModalManager.closeModal();
             }
         });
 
@@ -1328,6 +1620,74 @@
                     background-color: #e6f2ff;
                     text-decoration: none;
                 }
+                /* -- Read More Block Styles - Horizontal Layout Only -- */
+                .read-more-block {
+                    border: 1px solid #e0e0e0;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    margin: 0.75rem 0;
+                    background: #fff;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                    display: flex;
+                    align-items: stretch;
+                    pointer-events: none;
+                }
+                .read-more-block * {
+                    pointer-events: auto;
+                }
+                .read-more-block .read-more-image {
+                    width: 35%;
+                    height: auto;
+                    max-height: 150px;
+                    object-fit: cover;
+                }
+                .read-more-block .read-more-content {
+                    width: 65%;
+                    padding: 0.75rem;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+                .read-more-block .read-more-title {
+                    font-size: 1rem;
+                    font-weight: 600;
+                    margin: 0 0 0.35rem 0;
+                    color: #364a63;
+                }
+                .read-more-block .read-more-summary {
+                    color: #526484;
+                    line-height: 1.4;
+                    margin: 0;
+                    font-size: 0.9rem;
+                }
+                .read-more-block .read-more-link {
+                    display: inline-block;
+                    margin-top: 0.5rem;
+                    padding: 0.35rem 0.75rem;
+                    background: #6576ff;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    font-weight: 500;
+                    font-size: 0.85rem;
+                    transition: background 0.2s;
+                    align-self: flex-start;
+                }
+                .read-more-block .read-more-link:hover {
+                    background: #465fff;
+                }
+                @media (max-width: 768px) {
+                    .read-more-block {
+                        flex-direction: column;
+                    }
+                    .read-more-block .read-more-image {
+                        width: 100%;
+                        height: 120px;
+                    }
+                    .read-more-block .read-more-content {
+                        width: 100%;
+                    }
+                }
             `,
 
             setup: (editor) => {
@@ -1367,6 +1727,17 @@
                         }
                     }
                 });
+
+                // Button for Read More content
+                editor.ui.registry.addButton('vvcReadMore', {
+                    text: 'إقرأ المزيد',
+                    tooltip: 'إدراج محتوى "إقرأ المزيد" من قاعدة البيانات',
+                    onAction: () => {
+                        if (window.vvcReadMoreModalManager?.openModal) {
+                            window.vvcReadMoreModalManager.openModal();
+                        }
+                    }
+                });
             },
 
             skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
@@ -1378,7 +1749,7 @@
             toolbar: [
                 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
                 '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
-                '| link table image media blockquote vvcPicker vvcClickableText',
+                '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore',
                 '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
             ].join(' '),
 
@@ -1428,4 +1799,61 @@
             valid_elements: '*[*]'
         });
     })();
+
+    // Search functionality for Read More modal
+    function setupReadMoreSearch() {
+        const searchInput = document.getElementById('vvc-readmore-search');
+        const contentSelect = document.getElementById('vvc-readmore-content');
+
+        if (searchInput) {
+            let searchTimeout;
+
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = e.target.value.trim();
+                    loadReadMoreContent(searchTerm);
+                }, 350);
+            });
+        }
+    }
+
+    // Update the loadReadMoreContent function to accept search parameter
+    async function loadReadMoreContent(searchTerm = '') {
+        try {
+            const url = new URL(READMORE_CONTENT_URL, window.location.origin);
+            if (searchTerm) {
+                url.searchParams.set('search', searchTerm);
+            }
+
+            const res = await fetch(url.toString(), {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': CSRF
+                }
+            });
+
+            if (!res.ok) throw new Error(`Failed to fetch content: ${res.status}`);
+
+            const data = await res.json();
+            const contentList = Array.isArray(data.data) ? data.data : [];
+
+            // Clear existing options
+            readMoreContentSelect.innerHTML = '<option value="">-- اختر محتوى من قاعدة البيانات --</option>';
+
+            // Add new options
+            contentList.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = item.title;
+                option.dataset.image = item.image_url || '';
+                option.dataset.summary = item.summary || '';
+                readMoreContentSelect.appendChild(option);
+            });
+
+        } catch (error) {
+            console.error('Error loading read more content:', error);
+            readMoreContentSelect.innerHTML = '<option value="">-- خطأ في تحميل المحتوى --</option>';
+        }
+    }
 </script>

@@ -20,11 +20,13 @@ use App\Models\Content;
 use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 use App\Jobs\PublishContent;
 
 use App\Services\CacheService;
 use App\Enums\CacheKeys;
+use Illuminate\Http\JsonResponse;
 
 
 class ContentController extends BaseController
@@ -33,8 +35,6 @@ class ContentController extends BaseController
     {
         $this->middleware(['auth', 'check:content_access']);
     }
-
-
 
     public function index(Request $request)
     {
@@ -126,7 +126,6 @@ class ContentController extends BaseController
             'existing_albums'
         ));
     }
-
 
     public function store(Request $request)
     {
@@ -520,7 +519,6 @@ class ContentController extends BaseController
             ->with('success', 'Content created successfully.')
             ->with('clear_local_storage', true);
     }
-
 
     public function edit(string $id)
     {
@@ -1200,8 +1198,6 @@ class ContentController extends BaseController
         }
     }
 
-
-
     public function destroy(string $id)
     {
         try {
@@ -1233,5 +1229,121 @@ class ContentController extends BaseController
             return redirect()->route('dashboard.contents.index')
                 ->with('error', 'Failed to delete content: ' . $e->getMessage());
         }
+    }
+
+    public function getReadMoreContent(Request $request): JsonResponse
+    {
+        try {
+            $search = $request->get('search', '');
+
+            // Create cache key based on search term
+            $cacheKey = 'read_more_content_' . md5($search);
+
+            // Cache for 30 minutes
+            $content = Cache::remember($cacheKey, 30 * 60, function () use ($search) {
+                // Query published content with media relationship eager loaded
+                $query = Content::where('status', 'published')
+                    // ✅ Load media relationship with pivot filter for 'main' type images
+                    ->with(['media' => function ($q) {
+                        $q->wherePivot('type', 'main');
+                    }]);
+
+                // Select only needed columns
+                $query->select([
+                    'id',
+                    'title',
+                    'summary',
+                    'created_at'
+                ]);
+
+                // Add search filter if provided
+                if (!empty($search)) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('title', 'LIKE', '%' . $search . '%')
+                            ->orWhere('summary', 'LIKE', '%' . $search . '%');
+                    });
+                }
+
+                // Get results
+                $results = $query->orderBy('created_at', 'desc')
+                    ->limit(50)
+                    ->get();
+
+                // Map to expected format
+                return $results->map(function ($item) {
+                    // ✅ Get main image from media relationship (same as Blade code)
+                    $mainImage = $item->media()
+                        ->wherePivot('type', 'main')
+                        ->first();
+
+                    return [
+                        'id' => $item->id,
+                        'title' => $item->title ?? 'Untitled',
+                        // ✅ Convert image path to full URL
+                        'image_url' => $mainImage ? $this->getFullImageUrl($mainImage->path) : null,
+                        'summary' => $this->truncateSummary($item->summary),
+                        'created_at' => $item->created_at->format('Y-m-d H:i:s'),
+                    ];
+                })->toArray();
+            });
+
+            return response()->json([
+                'success' => true,
+                'data' => $content,
+                'message' => 'Content fetched successfully'
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => 'Failed to fetch content: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Generate full URL for images
+     * Handles both absolute URLs and relative storage paths
+     */
+    private function getFullImageUrl(?string $imageUrl): ?string
+    {
+        if (!$imageUrl) {
+            return null;
+        }
+
+        // Already a full URL - return as is
+        if (filter_var($imageUrl, FILTER_VALIDATE_URL)) {
+            return $imageUrl;
+        }
+
+        // Storage path starting with 'storage/'
+        if (strpos($imageUrl, 'storage/') === 0) {
+            return asset($imageUrl);
+        }
+
+        // Storage path starting with '/storage/'
+        if (strpos($imageUrl, '/storage/') === 0) {
+            return asset(ltrim($imageUrl, '/'));
+        }
+
+        // Fallback - prepend storage path
+        return asset('storage/' . ltrim($imageUrl, '/'));
+    }
+
+    /**
+     * Truncate summary to reasonable length
+     */
+    private function truncateSummary(?string $summary): string
+    {
+        if (!$summary) {
+            return 'No summary available';
+        }
+
+        if (strlen($summary) > 150) {
+            return substr($summary, 0, 147) . '...';
+        }
+
+        return $summary;
     }
 }

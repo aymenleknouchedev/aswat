@@ -48,7 +48,7 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/api/search-windows', [ApiController::class, 'search_windows'])->name('api.search.windows');
         Route::get('/api/search-tags', [ApiController::class, 'search_tags'])->name('api.search.tags');
         Route::get('/api/search-writers', [ApiController::class, 'search_writers'])->name('api.search.writers');
-        
+
         Route::get('/api/search-cities', [ApiController::class, 'search_cities'])->name('api.search.cities');
         Route::post('/api/add-category', [ApiController::class, 'add_category'])->name('api.add.category');
         Route::post('/api/add-trend', [ApiController::class, 'add_trend'])->name('api.add.trend');
@@ -118,5 +118,6 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/{id}', [ContentActionController::class, 'content_actions'])->name('dashboard.content.actions');
         Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
         Route::post('/media-url-store', [MediaController::class, 'storeMediaUrl'])->name('dashboard.media_url.store');
+        Route::get('/dashboard/getReadMoreContent', [ContentController::class, 'getReadMoreContent'])->name('dashboard.content.getReadMoreContent');
     });
 });
