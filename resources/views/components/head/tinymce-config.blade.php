@@ -1,7 +1,7 @@
-<!-- ================== VVC MEDIA MODAL + TinyMCE 8 with READ MORE Feature ================== -->
+<!-- VVC Media Modal + TinyMCE 8 with READ MORE Feature - OPTIMIZED -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<!-- ====== Icons Sprite (Images & Videos only) ====== -->
+<!-- Icons Sprite -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
     <symbol id="vvc-icon-image" viewBox="0 0 24 24">
         <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor"
@@ -16,7 +16,7 @@
     </symbol>
 </svg>
 
-<!-- ====== Media Modal ====== -->
+<!-- Media Modal -->
 <div id="vvcMediaModal" class="vvc-modal" aria-hidden="true" role="dialog" aria-modal="true"
     aria-labelledby="vvcMediaModalTitle">
     <div class="vvc-backdrop" data-vvc-backdrop></div>
@@ -26,7 +26,6 @@
             <button class="vvc-close" type="button" data-vvc-close aria-label="إغلاق">&times;</button>
         </div>
 
-        <!-- Tabs (Gallery / Upload only) -->
         <div class="vvc-tabs" role="tablist" aria-label="أقسام إدارة الوسائط">
             <button type="button" class="vvc-tab-btn vvc-is-active" role="tab" aria-selected="true"
                 aria-controls="vvc-tab-gallery" id="vvc-tabbtn-gallery" tabindex="0"
@@ -36,7 +35,7 @@
                 الجهاز</button>
         </div>
 
-        <!-- Gallery -->
+        <!-- Gallery Tab -->
         <section id="vvc-tab-gallery" class="vvc-tab-panel" role="tabpanel" aria-labelledby="vvc-tabbtn-gallery">
             <div class="vvc-filters">
                 <input type="text" id="vvc-search" placeholder="ابحث عن وسائط..." />
@@ -57,14 +56,14 @@
             </div>
         </section>
 
-        <!-- Upload -->
+        <!-- Upload Tab -->
         <section id="vvc-tab-upload" class="vvc-tab-panel" role="tabpanel" aria-labelledby="vvc-tabbtn-upload" hidden>
             <div class="vvc-tab-body">
                 <div class="vvc-uploader">
-                    <div class="vvc-upload-fields" style="display:flex; flex-wrap:wrap; gap:.6rem; width:100%;">
+                    <div class="vvc-upload-fields" style="display:flex;flex-wrap:wrap;gap:.6rem;width:100%;">
                         <div style="flex:1 1 260px;">
                             <label for="vvc-upload-input"
-                                style="display:block; width:100%; cursor:pointer; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-gray-100); color:var(--vvc-body-color); text-align:center;">
+                                style="display:block;width:100%;cursor:pointer;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-gray-100);color:var(--vvc-body-color);text-align:center;">
                                 <i class="fa fa-upload" style="margin-right:6px;"></i> اختر ملف الوسائط
                                 <input type="file" id="vvc-upload-input" class="vvc-upload-input"
                                     accept="image/*,video/*" style="display:none;" />
@@ -73,18 +72,17 @@
                         <div style="flex:1 1 220px;">
                             <input type="text" id="vvc-upload-name" class="vvc-upload-name"
                                 placeholder="اسم الملف"
-                                style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);" />
+                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);" />
                         </div>
                         <div style="flex:1 1 220px;">
                             <input type="text" id="vvc-upload-alt" class="vvc-upload-alt"
                                 placeholder="النص البديل (للصور)"
-                                style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);" />
+                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);" />
                         </div>
                     </div>
                     <div class="vvc-uploader-actions">
                         <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-upload-to-gallery"
-                            title="رفع ثم عرض في المعرض">
-                            إدراج في المعرض </button>
+                            title="رفع ثم عرض في المعرض">إدراج في المعرض</button>
                     </div>
                 </div>
             </div>
@@ -92,71 +90,55 @@
     </div>
 </div>
 
-<!-- ====== TEXT MODAL (ENHANCED) ====== -->
+<!-- Text Modal -->
 <div id="vvcTextModal" class="vvc-modal" aria-hidden="true" role="dialog" aria-modal="true"
     aria-labelledby="vvcTextModalTitle">
     <div class="vvc-backdrop" data-vvc-text-backdrop></div>
-    <div class="vvc-container" role="document" style="max-width: 600px;">
+    <div class="vvc-container" role="document" style="max-width:600px;">
         <div class="vvc-header">
             <h5 id="vvcTextModalTitle">إضافة نص قابل للنقر</h5>
             <button class="vvc-close" type="button" data-vvc-text-close aria-label="إغلاق">&times;</button>
         </div>
-
         <div class="vvc-tab-body">
-            <!-- Display Selected Text / Title -->
-            <div style="margin-bottom: 1rem;">
+            <div style="margin-bottom:1rem;">
                 <label for="vvc-text-content"
-                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">النص
+                    style="display:block;margin-bottom:0.5rem;font-weight:600;color:var(--vvc-heading-color);">النص
                     المعروض:</label>
                 <input type="text" id="vvc-text-content" placeholder="أدخل النص الذي سيظهر في المقال"
-                    style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);">
+                    style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);">
             </div>
-
-            <!-- Key Field (Auto-generated from title) -->
-            <div style="margin-bottom: 1rem;">
+            <div style="margin-bottom:1rem;">
                 <label for="vvc-text-key"
-                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">المفتاح
+                    style="display:block;margin-bottom:0.5rem;font-weight:600;color:var(--vvc-heading-color);">المفتاح
                     (للعرض في القائمة):</label>
                 <input type="text" id="vvc-text-key" placeholder="سيتم إنشاؤه تلقائياً من النص"
-                    style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);"
+                    style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);"
                     readonly>
-                <small style="color: var(--vvc-muted);">يتم إنشاء هذا تلقائياً من النص المعروض</small>
+                <small style="color:var(--vvc-muted);">يتم إنشاء هذا تلقائياً من النص المعروض</small>
             </div>
-
-            <!-- Description -->
-            <div style="margin-bottom: 1rem;">
+            <div style="margin-bottom:1rem;">
                 <label for="vvc-text-description"
-                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">الوصف
+                    style="display:block;margin-bottom:0.5rem;font-weight:600;color:var(--vvc-heading-color);">الوصف
                     (سيظهر في النافذة المنبثقة):</label>
                 <textarea id="vvc-text-description" rows="4" placeholder="أدخل الوصف الكامل الذي سيظهر عند النقر على النص"
-                    style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);"></textarea>
+                    style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);"></textarea>
             </div>
-
-            <!-- Image Picker Section -->
-            <div style="margin-bottom: 1rem;">
-                <label
-                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">صورة
+            <div style="margin-bottom:1rem;">
+                <label style="display:block;margin-bottom:0.5rem;font-weight:600;color:var(--vvc-heading-color);">صورة
                     (اختياري):</label>
                 <button class="vvc-btn vvc-btn-secondary" type="button" id="vvc-btn-pick-image"
-                    style="margin-bottom: 0.75rem; width: 100%; padding: 0.75rem;">
-                    📷 اختر صورة من المعرض
-                </button>
-
-                <!-- Image Preview -->
-                <div id="vvc-image-preview-container" style="display: none;">
-                    <div style="position: relative; margin-bottom: 0.5rem;">
+                    style="margin-bottom:0.75rem;width:100%;padding:0.75rem;">📷 اختر صورة من المعرض</button>
+                <div id="vvc-image-preview-container" style="display:none;">
+                    <div style="position:relative;margin-bottom:0.5rem;">
                         <img id="vvc-image-preview" src="" alt="معاينة الصورة"
-                            style="width: 100%; max-height: 200px; object-fit: cover; border: 1px solid var(--vvc-border-color); border-radius: 4px;">
+                            style="width:100%;max-height:200px;object-fit:cover;border:1px solid var(--vvc-border-color);border-radius:4px;">
                         <button type="button" id="vvc-btn-remove-image"
-                            style="position: absolute; top: 5px; right: 5px; background: #e85347; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;">
-                            ×
-                        </button>
+                            style="position:absolute;top:5px;right:5px;background:#e85347;color:white;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;">×</button>
                     </div>
-                    <small id="vvc-image-path" style="color: var(--vvc-muted); display: block;"></small>
+                    <small id="vvc-image-path" style="color:var(--vvc-muted);display:block;"></small>
                 </div>
             </div>
         </div>
-
         <div class="vvc-footer">
             <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-insert-text">إدراج النص</button>
             <button class="vvc-btn vvc-btn-cancel" type="button" data-vvc-text-close>إلغاء</button>
@@ -164,76 +146,63 @@
     </div>
 </div>
 
-<!-- ====== DEFINITION MODAL (NEW) - To display term definition with image ====== -->
+<!-- Definition Modal -->
 <div id="vvcDefinitionModal" class="vvc-modal" aria-hidden="true" role="dialog" aria-modal="true"
     aria-labelledby="vvcDefinitionModalTitle">
     <div class="vvc-backdrop" data-vvc-definition-backdrop></div>
-    <div class="vvc-container" role="document" style="max-width: 600px;">
+    <div class="vvc-container" role="document" style="max-width:600px;">
         <div class="vvc-header">
             <h5 id="vvcDefinitionModalTitle">تعريف المصطلح</h5>
             <button class="vvc-close" type="button" data-vvc-definition-close aria-label="إغلاق">&times;</button>
         </div>
-
         <div class="vvc-tab-body">
-            <!-- Image Display -->
-            <div id="vvc-definition-image-container" style="margin-bottom: 1rem; display: none;">
+            <div id="vvc-definition-image-container" style="margin-bottom:1rem;display:none;">
                 <img id="vvc-definition-image" src="" alt="صورة التعريف"
-                    style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 4px; border: 1px solid var(--vvc-border-color);">
+                    style="width:100%;max-height:300px;object-fit:cover;border-radius:4px;border:1px solid var(--vvc-border-color);">
             </div>
-
-            <!-- Description -->
-            <div id="vvc-definition-content" style="color: var(--vvc-body-color); line-height: 1.6;"></div>
+            <div id="vvc-definition-content" style="color:var(--vvc-body-color);line-height:1.6;"></div>
         </div>
-
         <div class="vvc-footer">
             <button class="vvc-btn vvc-btn-cancel" type="button" data-vvc-definition-close>إغلاق</button>
         </div>
     </div>
 </div>
 
-<!-- ====== READ MORE MODAL ====== -->
+<!-- Read More Modal -->
 <div id="vvcReadMoreModal" class="vvc-modal" aria-hidden="true" role="dialog" aria-modal="true"
     aria-labelledby="vvcReadMoreModalTitle">
     <div class="vvc-backdrop" data-vvc-readmore-backdrop></div>
-    <div class="vvc-container" role="document" style="max-width: 800px;">
+    <div class="vvc-container" role="document" style="max-width:800px;">
         <div class="vvc-header">
             <h5 id="vvcReadMoreModalTitle">إدراج محتوى "إقرأ المزيد"</h5>
             <button class="vvc-close" type="button" data-vvc-readmore-close aria-label="إغلاق">&times;</button>
         </div>
-
         <div class="vvc-tab-body">
-            <!-- Search Section -->
-            <div style="margin-bottom: 1rem;">
+            <div style="margin-bottom:1rem;">
                 <label for="vvc-readmore-search"
-                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">بحث
-                    في المحتوى:</label>
+                    style="display:block;margin-bottom:0.5rem;font-weight:600;color:var(--vvc-heading-color);">بحث في
+                    المحتوى:</label>
                 <input type="text" id="vvc-readmore-search" placeholder="ابحث عن محتوى..."
-                    style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);">
+                    style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);">
             </div>
-
-            <!-- Database Content Selection -->
-            <div style="margin-bottom: 1rem;">
+            <div style="margin-bottom:1rem;">
                 <label for="vvc-readmore-content"
-                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">اختر
+                    style="display:block;margin-bottom:0.5rem;font-weight:600;color:var(--vvc-heading-color);">اختر
                     المحتوى:</label>
                 <select id="vvc-readmore-content"
-                    style="width:100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color);">
+                    style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);">
                     <option value="">-- اختر محتوى من قاعدة البيانات --</option>
                 </select>
             </div>
-
-            <!-- Preview Section -->
-            <div style="margin-bottom: 1rem;">
+            <div style="margin-bottom:1rem;">
                 <label
-                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--vvc-heading-color);">معاينة:</label>
+                    style="display:block;margin-bottom:0.5rem;font-weight:600;color:var(--vvc-heading-color);">معاينة:</label>
                 <div id="vvc-readmore-preview"
-                    style="border: 1px solid var(--vvc-border-color); padding: 1rem; background: var(--vvc-gray-100); min-height: 100px;">
-                    <p style="color: var(--vvc-muted); text-align: center; margin: 2rem 0;">سيظهر معاينة المحتوى هنا
-                    </p>
+                    style="border:1px solid var(--vvc-border-color);padding:1rem;background:var(--vvc-gray-100);min-height:100px;">
+                    <p style="color:var(--vvc-muted);text-align:center;margin:2rem 0;">سيظهر معاينة المحتوى هنا</p>
                 </div>
             </div>
         </div>
-
         <div class="vvc-footer">
             <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-insert-readmore">إدراج "إقرأ
                 المزيد"</button>
@@ -242,45 +211,17 @@
     </div>
 </div>
 
-<!-- ====== Styles ====== -->
 <style>
-    #vvcMediaModal,
-    #vvcMediaModal * {
-        box-sizing: border-box;
-    }
-
-    #vvcMediaModal * {
-        border-radius: 0 !important;
-    }
-
     :root {
-        /* Updated color palette */
         --vvc-primary: #6576ff;
         --vvc-secondary: #364a63;
-        --vvc-success: #1ee0ac;
-        --vvc-info: #09c2de;
-        --vvc-warning: #f4bd0e;
-        --vvc-danger: #e85347;
-        --vvc-light: #e5e9f2;
-        --vvc-dark: #1f2b3a;
         --vvc-gray: #8091a7;
-        --vvc-lighter: #f5f6fa;
-
-        --vvc-gray-100: #ebeef2;
-        --vvc-gray-200: #e5e9f2;
-        --vvc-gray-300: #dbdfea;
-        --vvc-gray-400: #b7c2d0;
-        --vvc-gray-500: #8091a7;
-        --vvc-gray-600: #3c4d62;
-        --vvc-gray-700: #344357;
-        --vvc-gray-800: #2b3748;
-        --vvc-gray-900: #1f2b3a;
-
         --vvc-body-bg: #fff;
         --vvc-body-color: #526484;
         --vvc-heading-color: #364a63;
         --vvc-border-color: #dbdfea;
         --vvc-muted: #8091a7;
+        --vvc-gray-100: #ebeef2;
     }
 
     [data-bs-theme="dark"] {
@@ -290,8 +231,15 @@
         --vvc-border-color: #384D69;
         --vvc-muted: #b7c2d0;
         --vvc-gray-100: #2b3748;
-        --vvc-gray-200: #344357;
-        --vvc-gray-300: #3c4d62;
+    }
+
+    #vvcMediaModal,
+    #vvcMediaModal * {
+        box-sizing: border-box;
+    }
+
+    #vvcMediaModal * {
+        border-radius: 0 !important;
     }
 
     .vvc-modal {
@@ -302,14 +250,14 @@
     }
 
     .vvc-modal[aria-hidden="false"] {
-        display: block
+        display: block;
     }
 
     .vvc-backdrop {
         position: absolute;
         inset: 0;
         background: rgba(0, 0, 0, .4);
-        z-index: 0
+        z-index: 0;
     }
 
     .vvc-container {
@@ -332,12 +280,12 @@
     @keyframes vvcFade {
         from {
             opacity: 0;
-            transform: translateY(-14px)
+            transform: translateY(-14px);
         }
 
         to {
             opacity: 1;
-            transform: translateY(0)
+            transform: translateY(0);
         }
     }
 
@@ -347,7 +295,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: var(--vvc-body-bg)
+        background: var(--vvc-body-bg);
     }
 
     .vvc-header h5 {
@@ -359,8 +307,8 @@
         font-size: 1.4rem;
         border: 0;
         background: transparent;
-        color: var(--vvc-gray-500);
-        cursor: pointer
+        color: var(--vvc-gray);
+        cursor: pointer;
     }
 
     .vvc-tabs {
@@ -368,7 +316,7 @@
         gap: .25rem;
         padding: .5rem;
         border-bottom: 1px solid var(--vvc-border-color);
-        background: var(--vvc-body-bg)
+        background: var(--vvc-body-bg);
     }
 
     .vvc-tab-btn {
@@ -377,7 +325,7 @@
         padding: .55rem .9rem;
         cursor: pointer;
         font-weight: 600;
-        color: var(--vvc-body-color)
+        color: var(--vvc-body-color);
     }
 
     .vvc-tab-btn.vvc-is-active {
@@ -387,11 +335,11 @@
     }
 
     .vvc-tab-panel {
-        display: block
+        display: block;
     }
 
     .vvc-tab-panel[hidden] {
-        display: none
+        display: none;
     }
 
     .vvc-tab-body {
@@ -408,7 +356,7 @@
         gap: .65rem;
         flex-wrap: wrap;
         border-bottom: 1px solid var(--vvc-border-color);
-        background: var(--vvc-body-bg)
+        background: var(--vvc-body-bg);
     }
 
     .vvc-filters input,
@@ -418,27 +366,27 @@
         border: 1px solid var(--vvc-border-color);
         background: var(--vvc-body-bg);
         color: var(--vvc-body-color);
-        flex: 1 1 180px
+        flex: 1 1 180px;
     }
 
     .vvc-body {
         padding: 1rem 1.25rem;
         overflow: auto;
         flex: 1;
-        background: var(--vvc-body-bg)
+        background: var(--vvc-body-bg);
     }
 
     .vvc-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: .9rem
+        gap: .9rem;
     }
 
     .vvc-empty {
         text-align: center;
         color: var(--vvc-muted);
         font-size: .95rem;
-        margin: 2rem 0
+        margin: 2rem 0;
     }
 
     .vvc-item {
@@ -449,17 +397,17 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
-        padding: .6rem
+        padding: .6rem;
     }
 
     .vvc-item:hover {
         border-color: var(--vvc-primary);
-        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.1)
+        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.1);
     }
 
     .vvc-item.vvc-is-selected {
         border-color: var(--vvc-primary);
-        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.2)
+        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.2);
     }
 
     .vvc-thumb {
@@ -471,13 +419,13 @@
         background: var(--vvc-gray-100);
         overflow: hidden;
         position: relative;
-        border: 1px solid var(--vvc-gray-200)
+        border: 1px solid var(--vvc-border-color);
     }
 
     .vvc-thumb img,
     .vvc-thumb video {
         max-width: 100%;
-        max-height: 100%
+        max-height: 100%;
     }
 
     .vvc-badge {
@@ -491,7 +439,7 @@
         height: 28px;
         background: rgba(0, 0, 0, .65);
         color: #fff;
-        border: 1px solid rgba(255, 255, 255, .2)
+        border: 1px solid rgba(255, 255, 255, .2);
     }
 
     .vvc-title {
@@ -501,7 +449,7 @@
         width: 100%;
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis
+        text-overflow: ellipsis;
     }
 
     .vvc-uploader {
@@ -511,12 +459,12 @@
         gap: .6rem;
         background: var(--vvc-body-bg);
         border: 1px solid var(--vvc-border-color);
-        padding: 1rem
+        padding: 1rem;
     }
 
     .vvc-uploader-actions {
         display: flex;
-        gap: .6rem
+        gap: .6rem;
     }
 
     .vvc-btn {
@@ -526,12 +474,12 @@
         transition: background .15s, color .15s, border-color .15s;
         border: 1px solid transparent;
         background: var(--vvc-primary);
-        color: #fff
+        color: #fff;
     }
 
     .vvc-btn:hover {
         background: #465fff;
-        border-color: #465fff
+        border-color: #465fff;
     }
 
     .vvc-btn:disabled {
@@ -541,17 +489,17 @@
 
     .vvc-btn-secondary {
         background: var(--vvc-secondary);
-        border-color: var(--vvc-secondary)
+        border-color: var(--vvc-secondary);
     }
 
     .vvc-btn-secondary:hover {
         background: #2b3748;
-        border-color: #2b3748
+        border-color: #2b3748;
     }
 
     .vvc-btn-primary {
         background: var(--vvc-primary);
-        border-color: var(--vvc-primary)
+        border-color: var(--vvc-primary);
     }
 
     .vvc-footer {
@@ -560,18 +508,18 @@
         display: flex;
         justify-content: flex-end;
         gap: .6rem;
-        border-top: 1px solid var(--vvc-border-color)
+        border-top: 1px solid var(--vvc-border-color);
     }
 
     .vvc-btn-select {
         background: var(--vvc-primary);
         color: #fff;
-        border-color: var(--vvc-primary)
+        border-color: var(--vvc-primary);
     }
 
     .vvc-btn-select:hover {
         background: #465fff;
-        border-color: #465fff
+        border-color: #465fff;
     }
 
     .vvc-btn-cancel {
@@ -589,14 +537,13 @@
         text-align: center;
         color: var(--vvc-muted);
         padding: .75rem;
-        font-size: .95rem
+        font-size: .95rem;
     }
 
     .vvc-sentinel {
-        height: 1px
+        height: 1px;
     }
 
-    /* Clickable text styles */
     .clickable-term {
         color: #0066cc;
         text-decoration: underline;
@@ -612,7 +559,6 @@
         text-decoration: none;
     }
 
-    /* Read More Block Styles - Horizontal Layout Only - SMALLER SIZE */
     .read-more-block {
         border: 1px solid #e0e0e0;
         border-radius: 8px;
@@ -679,19 +625,19 @@
     @media (max-width:768px) {
         .vvc-container {
             top: 2%;
-            max-height: 96%
+            max-height: 96%;
         }
 
         .vvc-tabs {
-            flex-wrap: wrap
+            flex-wrap: wrap;
         }
 
         .vvc-filters {
-            flex-direction: column
+            flex-direction: column;
         }
 
         .vvc-uploader-actions .vvc-btn {
-            width: 100%
+            width: 100%;
         }
 
         .read-more-block {
@@ -709,23 +655,21 @@
     }
 </style>
 
-<!-- ====== Modal Logic (Gallery + Upload; small-size insertions) ====== -->
+<script src="https://cdn.tiny.cloud/1/vw6sltzauw9x6b3cl3eby8nj99q4eoavzv581jnnmabxbhq2/tinymce/8/tinymce.min.js"
+    referrerpolicy="origin" crossorigin="anonymous"></script>
+
 <script>
     (function() {
-        // ---------- Endpoints (Laravel) ----------
         const FETCH_URL = "{{ route('dashboard.media.getAllMediaPaginated') }}";
         const UPLOAD_URL = "{{ route('dashboard.media.store') }}";
-        const READMORE_CONTENT_URL =
-            "{{ route('dashboard.content.getReadMoreContent') }}"; // New endpoint for read more content
+        const READMORE_CONTENT_URL = "{{ route('dashboard.content.getReadMoreContent') }}";
         const CSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content') || '';
 
-        // ---------- Elements ----------
         const modal = document.getElementById("vvcMediaModal");
         const backdrop = modal.querySelector('[data-vvc-backdrop]');
         const closes = modal.querySelectorAll('[data-vvc-close]');
         const container = modal.querySelector('.vvc-container');
 
-        // Gallery
         const listEl = document.getElementById('vvc-list');
         const loaderEl = document.getElementById('vvc-loader');
         const sentinel = document.getElementById('vvc-sentinel');
@@ -733,13 +677,11 @@
         const typeSel = document.getElementById('vvc-type-filter');
         const btnSelect = document.getElementById('vvc-btn-select');
 
-        // Upload
         const upInput = document.getElementById('vvc-upload-input');
         const upName = document.getElementById('vvc-upload-name');
         const upAlt = document.getElementById('vvc-upload-alt');
         const btnUpGal = document.getElementById('vvc-btn-upload-to-gallery');
 
-        // ---------- State ----------
         const state = {
             isOpen: false,
             page: 1,
@@ -754,7 +696,6 @@
             currentField: 'tiny'
         };
 
-        // ---------- Helpers ----------
         const extFromPath = (p = "") => (p.split('?')[0].split('.').pop() || "").toLowerCase();
         const toAbsoluteUrl = (u) => {
             if (!u) return u;
@@ -767,18 +708,31 @@
             if (mt === 'image' || mt === 'video') return mt;
             const ext = extFromPath(m.path || m.url || '');
             if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'].includes(ext)) return 'image';
-            if (['mp4', 'webm', 'mkv', 'mov', 'avi', 'm4v'].includes(ext)) return 'video';
             return 'video';
         }
+
         const getBadgeIconId = (m) => (getMediaKind(m) === 'image' ? 'vvc-icon-image' : 'vvc-icon-video');
 
-        // ---------- Public API ----------
         window.vvcMediaModalManager = {
             openModal(fieldName = "") {
-                openModal(fieldName);
+                state.currentField = fieldName;
+                state.isOpen = true;
+                modal.setAttribute('aria-hidden', 'false');
+                document.documentElement.style.overflow = 'hidden';
+                resetState();
+                if (window._tinyRequestedType === 'image') {
+                    state.type = 'image';
+                    if (typeSel) typeSel.value = 'image';
+                }
+                switchTab('gallery');
+                resetAndLoad();
+                setTimeout(() => searchInp?.focus(), 0);
             },
             closeModal() {
-                closeModal();
+                state.isOpen = false;
+                modal.setAttribute('aria-hidden', 'true');
+                document.documentElement.style.overflow = '';
+                resetState();
             },
             onMediaSelected(payload) {
                 const normalized = {
@@ -788,17 +742,15 @@
                     type: (payload.type === 'image' ? 'image' : 'video')
                 };
 
-                // A) Bridge TinyMCE (promise)
                 if (typeof window._resolveTinyPick === 'function') {
                     const resolver = window._resolveTinyPick;
                     window._resolveTinyPick = null;
                     window._tinyRequestedType = null;
                     resolver(normalized);
-                    closeModal();
+                    this.closeModal();
                     return;
                 }
 
-                // B) Insertion directe TinyMCE (avec petite taille par défaut)
                 if (window.tinymce && tinymce.activeEditor && normalized.url) {
                     try {
                         tinymce.activeEditor.focus();
@@ -812,47 +764,28 @@
                                 `<video class="tiny-sm" src="${escapeHtml(normalized.url)}" controls preload="metadata"></video>`
                             );
                         }
-                        closeModal();
+                        this.closeModal();
                     } catch (e) {
                         console.error('Tiny insert failed:', e);
                     }
                     return;
                 }
 
-                // C) Callback externe éventuel
                 if (window.mediaTabManager?.onMediaSelected) {
                     window.mediaTabManager.onMediaSelected(normalized);
-                    closeModal();
+                    this.closeModal();
                 }
             }
         };
 
-        // ---------- Open / Close ----------
-        function openModal(fieldName = "") {
-            state.currentField = fieldName;
-            state.isOpen = true;
-            modal.setAttribute('aria-hidden', 'false');
-            document.documentElement.style.overflow = 'hidden';
-            resetState();
-            if (window._tinyRequestedType === 'image') {
-                state.type = 'image';
-                const sel = document.getElementById('vvc-type-filter');
-                if (sel) sel.value = 'image';
-            }
-            switchTab('gallery');
-            resetAndLoad();
-            setTimeout(() => document.getElementById('vvc-search')?.focus(), 0);
+        function closeModal() {
+            window.vvcMediaModalManager.closeModal();
         }
 
-        function closeModal() {
-            state.isOpen = false;
-            modal.setAttribute('aria-hidden', 'true');
-            document.documentElement.style.overflow = '';
-            resetState();
-        }
         backdrop.addEventListener('click', closeModal);
         closes.forEach(b => b.addEventListener('click', closeModal));
         container.addEventListener('click', e => e.stopPropagation());
+
         document.addEventListener('keydown', e => {
             if (!state.isOpen) return;
             if (e.key === 'Escape') closeModal();
@@ -867,7 +800,6 @@
             }
         });
 
-        // ---------- Tabs ----------
         document.querySelectorAll('.vvc-tab-btn').forEach(btn => btn.addEventListener('click', () => switchTab(btn
             .dataset.vvcTab)));
 
@@ -887,7 +819,6 @@
             Object.entries(panels).forEach(([name, p]) => p.hidden = (name !== tab));
         }
 
-        // ---------- Reset ----------
         function resetState() {
             state.page = 1;
             state.hasMore = true;
@@ -910,7 +841,6 @@
             if (btnSelect) btnSelect.disabled = true;
         }
 
-        // ---------- Fetch / Pagination ----------
         async function resetAndLoad() {
             state.page = 1;
             state.hasMore = true;
@@ -933,6 +863,7 @@
             });
             state.observer.observe(sentinel);
         }
+
         async function loadMore(reset = false) {
             if (state.isLoading || !state.hasMore) return;
             state.isLoading = true;
@@ -964,7 +895,6 @@
             }
         }
 
-        // ---------- Render ----------
         function renderList() {
             listEl.innerHTML = '';
             const filtered = state.type === 'all' ? state.list : state.list.filter(m => getMediaKind(m) === state
@@ -1023,7 +953,6 @@
             if (btnSelect) btnSelect.disabled = !state.selected;
         }
 
-        // ---------- Search / Filter ----------
         let searchTimeout;
         searchInp?.addEventListener('input', (e) => {
             clearTimeout(searchTimeout);
@@ -1037,7 +966,6 @@
             resetAndLoad();
         });
 
-        // ---------- Confirm Selection ----------
         btnSelect?.addEventListener('click', () => {
             if (!state.selected) {
                 alert('يرجى اختيار وسيط واحد على الأقل.');
@@ -1054,7 +982,6 @@
             window.vvcMediaModalManager.onMediaSelected(payload);
         });
 
-        // ---------- Upload (Images & Videos only) ----------
         async function uploadMedia(mode) {
             const files = upInput?.files;
             if (!files || !files.length) {
@@ -1138,20 +1065,14 @@
             return [];
         }
 
-        // ---------- Bindings ----------
         btnUpGal?.addEventListener('click', () => uploadMedia('gallery'));
 
-        // ---------- Initial ----------
         if (!state.list.length) {
             listEl.innerHTML = '<div class="vvc-empty">لا توجد وسائط للعرض</div>';
         }
 
-        // ====== TEXT MODAL LOGIC (ENHANCED) ======
-
-        // Text definitions storage - now includes image data
         window.vvcTextDefinitions = window.vvcTextDefinitions || {};
 
-        // Text Modal Elements
         const textModal = document.getElementById("vvcTextModal");
         const textBackdrop = textModal.querySelector('[data-vvc-text-backdrop]');
         const textCloses = textModal.querySelectorAll('[data-vvc-text-close]');
@@ -1166,7 +1087,6 @@
         const imagePreview = document.getElementById('vvc-image-preview');
         const imagePath = document.getElementById('vvc-image-path');
 
-        // Definition Modal Elements
         const definitionModal = document.getElementById("vvcDefinitionModal");
         const definitionBackdrop = definitionModal.querySelector('[data-vvc-definition-backdrop]');
         const definitionCloses = definitionModal.querySelectorAll('[data-vvc-definition-close]');
@@ -1175,7 +1095,6 @@
         const definitionImage = document.getElementById('vvc-definition-image');
         const definitionContent = document.getElementById('vvc-definition-content');
 
-        // Read More Modal Elements
         const readMoreModal = document.getElementById("vvcReadMoreModal");
         const readMoreBackdrop = readMoreModal.querySelector('[data-vvc-readmore-backdrop]');
         const readMoreCloses = readMoreModal.querySelectorAll('[data-vvc-readmore-close]');
@@ -1184,30 +1103,21 @@
         const readMorePreview = document.getElementById('vvc-readmore-preview');
         const btnInsertReadMore = document.getElementById('vvc-btn-insert-readmore');
 
-        // State for text modal
         let textModalState = {
             selectedImage: null,
             selectedImagePath: null
         };
 
-        // Text Modal API
         window.vvcTextModalManager = {
             openModal() {
                 textModalState.selectedImage = null;
                 textModalState.selectedImagePath = null;
-
                 textModal.setAttribute('aria-hidden', 'false');
                 document.documentElement.style.overflow = 'hidden';
-
-                // Clear inputs
                 textContentInput.value = '';
                 textKeyInput.value = '';
                 textDescriptionInput.value = '';
-
-                // Hide image preview
                 imagePreviewContainer.style.display = 'none';
-
-                // Get selected text from TinyMCE
                 if (window.tinymce && tinymce.activeEditor) {
                     const selectedText = tinymce.activeEditor.selection.getContent({
                         format: 'text'
@@ -1217,7 +1127,6 @@
                         updateKeyFromContent();
                     }
                 }
-
                 setTimeout(() => textContentInput.focus(), 0);
             },
             closeModal() {
@@ -1228,21 +1137,18 @@
             },
             addTextDefinition(key, content, description, imagePath = null) {
                 window.vvcTextDefinitions[key] = {
-                    content: content,
-                    description: description,
+                    content,
+                    description,
                     image: imagePath
                 };
             }
         };
 
-        // Definition Modal API
         window.vvcDefinitionModalManager = {
             openModal(term) {
                 const definition = window.vvcTextDefinitions[term];
                 if (!definition) return;
-
                 definitionContent.textContent = definition.description;
-
                 if (definition.image) {
                     definitionImageContainer.style.display = 'block';
                     definitionImage.src = definition.image;
@@ -1250,7 +1156,6 @@
                 } else {
                     definitionImageContainer.style.display = 'none';
                 }
-
                 definitionModal.setAttribute('aria-hidden', 'false');
                 document.documentElement.style.overflow = 'hidden';
             },
@@ -1260,20 +1165,14 @@
             }
         };
 
-        // Read More Modal API
         window.vvcReadMoreModalManager = {
             async openModal() {
                 readMoreModal.setAttribute('aria-hidden', 'false');
                 document.documentElement.style.overflow = 'hidden';
-
-                // Clear inputs
                 readMoreContentSelect.value = '';
                 readMorePreview.innerHTML =
-                    '<p style="color: var(--vvc-muted); text-align: center; margin: 2rem 0;">سيظهر معاينة المحتوى هنا</p>';
-
-                // Load content from database
+                    '<p style="color:var(--vvc-muted);text-align:center;margin:2rem 0;">سيظهر معاينة المحتوى هنا</p>';
                 await loadReadMoreContent();
-
                 setTimeout(() => readMoreContentSelect.focus(), 0);
             },
             closeModal() {
@@ -1282,26 +1181,21 @@
             }
         };
 
-        // Load Read More Content from Database
-        async function loadReadMoreContent() {
+        async function loadReadMoreContent(searchTerm = '') {
             try {
-                const res = await fetch(READMORE_CONTENT_URL, {
+                const url = new URL(READMORE_CONTENT_URL, window.location.origin);
+                if (searchTerm) url.searchParams.set('search', searchTerm);
+                const res = await fetch(url.toString(), {
                     headers: {
                         'Accept': 'application/json',
                         'X-CSRF-TOKEN': CSRF
                     }
                 });
-
-                if (!res.ok) throw new Error(`Failed to fetch content: ${res.status}`);
-
+                if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
                 const data = await res.json();
                 const contentList = Array.isArray(data.data) ? data.data : [];
-
-                // Clear existing options
                 readMoreContentSelect.innerHTML =
-                    '<option value="">-- اختر محتوى من قاعدة البيانات --</option>';
-
-                // Add new options
+                '<option value="">-- اختر محتوى من قاعدة البيانات --</option>';
                 contentList.forEach(item => {
                     const option = document.createElement('option');
                     option.value = item.id;
@@ -1311,83 +1205,58 @@
                     option.dataset.link = item.link || '';
                     readMoreContentSelect.appendChild(option);
                 });
-
             } catch (error) {
-                console.error('Error loading read more content:', error);
+                console.error('Error loading content:', error);
                 readMoreContentSelect.innerHTML = '<option value="">-- خطأ في تحميل المحتوى --</option>';
             }
         }
 
-        // Update preview when content selection changes
         readMoreContentSelect.addEventListener('change', function() {
             const selectedOption = this.options[this.selectedIndex];
-            const imageUrl = selectedOption.dataset.image;
-            const summary = selectedOption.dataset.summary;
-            const title = selectedOption.textContent;
-            const link = selectedOption.dataset.link;
-
             if (!this.value) {
                 readMorePreview.innerHTML =
-                    '<p style="color: var(--vvc-muted); text-align: center; margin: 2rem 0;">سيظهر معاينة المحتوى هنا</p>';
+                    '<p style="color:var(--vvc-muted);text-align:center;margin:2rem 0;">سيظهر معاينة المحتوى هنا</p>';
                 return;
             }
-
-            // Generate preview HTML with horizontal layout
-            let previewHtml = '<div class="read-more-block">';
-
-            if (imageUrl) {
-                previewHtml +=
-                    `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(title)}" class="read-more-image">`;
+            let html = '<div class="read-more-block">';
+            if (selectedOption.dataset.image) {
+                html +=
+                    `<img src="${escapeHtml(selectedOption.dataset.image)}" alt="${escapeHtml(selectedOption.textContent)}" class="read-more-image">`;
             }
-
-            previewHtml += `<div class="read-more-content">`;
-            previewHtml += `<h3 class="read-more-title">${escapeHtml(title)}</h3>`;
-
-            if (summary) {
-                previewHtml += `<p class="read-more-summary">${escapeHtml(summary)}</p>`;
+            html +=
+                `<div class="read-more-content"><h3 class="read-more-title">${escapeHtml(selectedOption.textContent)}</h3>`;
+            if (selectedOption.dataset.summary) {
+                html += `<p class="read-more-summary">${escapeHtml(selectedOption.dataset.summary)}</p>`;
             }
-
-            if (link) {
-                previewHtml += `<a href="${escapeHtml(link)}" class="read-more-link">إقرأ المزيد</a>`;
+            if (selectedOption.dataset.link) {
+                html +=
+                    `<a href="${escapeHtml(selectedOption.dataset.link)}" class="read-more-link">إقرأ المزيد</a>`;
             }
-
-            previewHtml += `</div></div>`;
-
-            readMorePreview.innerHTML = previewHtml;
+            html += '</div></div>';
+            readMorePreview.innerHTML = html;
         });
 
-        // Update key from content
         function updateKeyFromContent() {
             const content = textContentInput.value.trim();
             const key = content.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
             textKeyInput.value = key || 'undefined';
         }
 
-        // Listen to content input changes
         textContentInput.addEventListener('input', updateKeyFromContent);
 
-        // Image Picker Button
         btnPickImage.addEventListener('click', () => {
             window._textModalImageCallback = (imageData) => {
                 textModalState.selectedImage = imageData;
                 textModalState.selectedImagePath = imageData.url;
-
-                // Show preview
                 imagePreviewContainer.style.display = 'block';
                 imagePreview.src = imageData.url;
                 imagePath.textContent = `مسار: ${imageData.url}`;
             };
-
-            // Filter for images only
             window._tinyRequestedType = 'image';
-
-            // Temporarily lower text modal z-index so media modal appears on top
             textModal.style.zIndex = '10050';
-
             window.vvcMediaModalManager.openModal('textmodal');
         });
 
-        // Remove Image Button
         btnRemoveImage.addEventListener('click', () => {
             textModalState.selectedImage = null;
             textModalState.selectedImagePath = null;
@@ -1396,101 +1265,68 @@
             imagePath.textContent = '';
         });
 
-        // Insert Read More Content
         btnInsertReadMore.addEventListener('click', () => {
             const selectedOption = readMoreContentSelect.options[readMoreContentSelect.selectedIndex];
             const contentId = readMoreContentSelect.value;
-
             if (!contentId) {
                 alert('⚠️ يرجى اختيار محتوى من القائمة');
                 return;
             }
-
-            const title = selectedOption.textContent;
-            const imageUrl = selectedOption.dataset.image;
-            const summary = selectedOption.dataset.summary;
-            const link = selectedOption.dataset.link;
-
-            // Build the read more block HTML with horizontal layout
-            let readMoreHtml = '<div class="read-more-block">';
-
-            if (imageUrl) {
-                readMoreHtml +=
-                    `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(title)}" class="read-more-image">`;
+            let html = '<div class="read-more-block">';
+            if (selectedOption.dataset.image) {
+                html +=
+                    `<img src="${escapeHtml(selectedOption.dataset.image)}" alt="${escapeHtml(selectedOption.textContent)}" class="read-more-image">`;
             }
-
-            readMoreHtml += `<div class="read-more-content">`;
-            readMoreHtml += `<h3 class="read-more-title">${escapeHtml(title)}</h3>`;
-
-            if (summary) {
-                readMoreHtml += `<p class="read-more-summary">${escapeHtml(summary)}</p>`;
+            html +=
+                `<div class="read-more-content"><h3 class="read-more-title">${escapeHtml(selectedOption.textContent)}</h3>`;
+            if (selectedOption.dataset.summary) {
+                html += `<p class="read-more-summary">${escapeHtml(selectedOption.dataset.summary)}</p>`;
             }
-
-            if (link) {
-                readMoreHtml +=
-                    `<a href="${escapeHtml(link)}" class="read-more-link" target="_blank">إقرأ المزيد</a>`;
+            if (selectedOption.dataset.link) {
+                html +=
+                    `<a href="${escapeHtml(selectedOption.dataset.link)}" class="read-more-link" target="_blank">إقرأ المزيد</a>`;
             }
-
-            readMoreHtml += `</div></div>`;
-
-            // Insert into TinyMCE
+            html += '</div></div>';
             if (window.tinymce && tinymce.activeEditor) {
                 tinymce.activeEditor.focus();
-                tinymce.activeEditor.execCommand('mceInsertContent', false, readMoreHtml);
+                tinymce.activeEditor.execCommand('mceInsertContent', false, html);
             } else {
                 alert('⚠️ محرر TinyMCE غير متاح');
                 return;
             }
-
             window.vvcReadMoreModalManager.closeModal();
         });
 
-        // Override closeModal to restore z-index
         const originalCloseModal = window.vvcMediaModalManager.closeModal;
         window.vvcMediaModalManager.closeModal = function() {
             originalCloseModal.call(this);
-            // Restore text modal z-index
             textModal.style.zIndex = '';
         };
-        window.vvcMediaModalManager.onMediaSelectedForTextModal = function(payload) {
-            if (typeof window._textModalImageCallback === 'function') {
-                window._textModalImageCallback(payload);
-                window._textModalImageCallback = null;
-            }
-        };
 
-        // Override onMediaSelected to handle text modal image callback
         const originalOnMediaSelected = window.vvcMediaModalManager.onMediaSelected;
         window.vvcMediaModalManager.onMediaSelected = function(payload) {
-            // If there's a text modal image callback, use it
             if (typeof window._textModalImageCallback === 'function') {
                 window._textModalImageCallback(payload);
                 window._textModalImageCallback = null;
                 window.vvcMediaModalManager.closeModal();
                 return;
             }
-
-            // Otherwise use original logic
             originalOnMediaSelected.call(this, payload);
         };
 
-        // Text Modal Event Listeners
         textBackdrop.addEventListener('click', () => window.vvcTextModalManager.closeModal());
         textCloses.forEach(b => b.addEventListener('click', () => window.vvcTextModalManager.closeModal()));
         textContainer.addEventListener('click', e => e.stopPropagation());
 
-        // Definition Modal Event Listeners
         definitionBackdrop.addEventListener('click', () => window.vvcDefinitionModalManager.closeModal());
         definitionCloses.forEach(b => b.addEventListener('click', () => window.vvcDefinitionModalManager
-            .closeModal()));
+        .closeModal()));
         definitionContainer.addEventListener('click', e => e.stopPropagation());
 
-        // Read More Modal Event Listeners
         readMoreBackdrop.addEventListener('click', () => window.vvcReadMoreModalManager.closeModal());
         readMoreCloses.forEach(b => b.addEventListener('click', () => window.vvcReadMoreModalManager.closeModal()));
         readMoreContainer.addEventListener('click', e => e.stopPropagation());
 
-        // Insert clickable text into TinyMCE
         btnInsertText.addEventListener('click', () => {
             const content = textContentInput.value.trim();
             const key = textKeyInput.value.trim();
@@ -1500,41 +1336,30 @@
                 alert('⚠️ يرجى إدخال النص المعروض');
                 return;
             }
-
             if (!description) {
                 alert('⚠️ يرجى إدخال الوصف');
                 return;
             }
 
-            // Store the definition with optional image
             window.vvcTextModalManager.addTextDefinition(key, content, description, textModalState
                 .selectedImagePath);
 
-            // Insert into TinyMCE with data attributes for image and description
             if (window.tinymce && tinymce.activeEditor) {
                 tinymce.activeEditor.focus();
-
-                // Build the span with all necessary data attributes
-                let spanAttributes =
+                let attr =
                     `class="clickable-term" data-term="${escapeHtml(key)}" data-description="${escapeHtml(description)}"`;
-
-                // Add image path if exists
                 if (textModalState.selectedImagePath) {
-                    spanAttributes += ` data-image="${escapeHtml(textModalState.selectedImagePath)}"`;
+                    attr += ` data-image="${escapeHtml(textModalState.selectedImagePath)}"`;
                 }
-
                 tinymce.activeEditor.execCommand('mceInsertContent', false,
-                    `<span ${spanAttributes}>${escapeHtml(content)}</span>`
-                );
+                    `<span ${attr}>${escapeHtml(content)}</span>`);
             } else {
                 alert('⚠️ محرر TinyMCE غير متاح');
                 return;
             }
-
             window.vvcTextModalManager.closeModal();
         });
 
-        // Handle clicks on clickable text in the rendered content
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('clickable-term')) {
                 e.preventDefault();
@@ -1543,7 +1368,6 @@
             }
         });
 
-        // Close modals with Escape key
         document.addEventListener('keydown', e => {
             if (textModal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') {
                 window.vvcTextModalManager.closeModal();
@@ -1556,304 +1380,134 @@
             }
         });
 
-        // ---------- Safe HTML escape ----------
         window.escapeHtml = function(str) {
             if (str == null) return '';
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g,
                 '&quot;').replace(/'/g, '&#39;');
         };
     })();
-</script>
 
-<!-- ====== TinyMCE 8 CDN ====== -->
-<script src="https://cdn.tiny.cloud/1/vw6sltzauw9x6b3cl3eby8nj99q4eoavzv581jnnmabxbhq2/tinymce/8/tinymce.min.js"
-    referrerpolicy="origin" crossorigin="anonymous"></script>
+    const theme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
 
-<!-- ====== TinyMCE Init + Bridge (Images & Videos only, Small by default) ====== -->
-<script>
-    (function() {
-        const theme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
-
-        // Bridge TinyMCE <-> VVC (type: 'image' | 'media')
-        window.pickMediaForTiny = function(opts = {
-            type: 'media'
-        }) {
-            return new Promise((resolve) => {
-                window._resolveTinyPick = resolve;
-                window._tinyRequestedType = opts.type || 'media';
-                if (window.vvcMediaModalManager?.openModal) {
-                    window.vvcMediaModalManager.openModal('tiny');
-                } else {
-                    console.error('vvc Modal manager not found.');
-                    resolve(null);
-                }
-            });
-        };
-
-        tinymce.init({
-            selector: 'textarea#myeditorinstance',
-            directionality: 'rtl',
-            height: 600,
-            promotion: false,
-            onboarding: false,
-            auto_focus: false,
-
-            /* ===== Style du « petit format » ===== */
-            content_style: `
-                body{font-family:Arial,Helvetica,sans-serif !important;font-size:18pt !important;line-height:1.6 !important;}
-                figure.image{display:inline-block;}
-                figcaption{font-size:.9em;color:#666;}
-                /* -- Petit format par défaut -- */
-                img.tiny-sm, video.tiny-sm{width:280px;height:auto;max-width:100%;}
-                figure.image img.tiny-sm{width:280px;height:auto;max-width:100%;}
-                /* -- Clickable text styles -- */
-                .clickable-term {
-                    color: #0066cc;
-                    text-decoration: underline;
-                    cursor: pointer;
-                    padding: 2px 4px;
-                    border-radius: 3px;
-                    transition: background-color 0.2s;
-                    background-color: transparent;
-                }
-                .clickable-term:hover {
-                    background-color: #e6f2ff;
-                    text-decoration: none;
-                }
-                /* -- Read More Block Styles - Horizontal Layout Only -- */
-                .read-more-block {
-                    border: 1px solid #e0e0e0;
-                    border-radius: 8px;
-                    overflow: hidden;
-                    margin: 0.75rem 0;
-                    background: #fff;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-                    display: flex;
-                    align-items: stretch;
-                    pointer-events: none;
-                }
-                .read-more-block * {
-                    pointer-events: auto;
-                }
-                .read-more-block .read-more-image {
-                    width: 35%;
-                    height: auto;
-                    max-height: 150px;
-                    object-fit: cover;
-                }
-                .read-more-block .read-more-content {
-                    width: 65%;
-                    padding: 0.75rem;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                }
-                .read-more-block .read-more-title {
-                    font-size: 1rem;
-                    font-weight: 600;
-                    margin: 0 0 0.35rem 0;
-                    color: #364a63;
-                }
-                .read-more-block .read-more-summary {
-                    color: #526484;
-                    line-height: 1.4;
-                    margin: 0;
-                    font-size: 0.9rem;
-                }
-                .read-more-block .read-more-link {
-                    display: inline-block;
-                    margin-top: 0.5rem;
-                    padding: 0.35rem 0.75rem;
-                    background: #6576ff;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 4px;
-                    font-weight: 500;
-                    font-size: 0.85rem;
-                    transition: background 0.2s;
-                    align-self: flex-start;
-                }
-                .read-more-block .read-more-link:hover {
-                    background: #465fff;
-                }
-                @media (max-width: 768px) {
-                    .read-more-block {
-                        flex-direction: column;
-                    }
-                    .read-more-block .read-more-image {
-                        width: 100%;
-                        height: 120px;
-                    }
-                    .read-more-block .read-more-content {
-                        width: 100%;
-                    }
-                }
-            `,
-
-            setup: (editor) => {
-                // Bouton custom pour ouvrir la galerie
-                editor.ui.registry.addButton('vvcPicker', {
-                    text: 'وسائط',
-                    tooltip: 'اختيار وسائط من المعرض',
-                    onAction: async () => {
-                        const picked = await window.pickMediaForTiny({
-                            type: 'media'
-                        });
-                        if (!picked || !picked.url) return;
-                        const url = picked.url;
-                        const title = picked.title || '';
-                        const alt = picked.alt || title || '';
-                        const isImg = /\.(png|jpe?g|webp|gif|bmp|svg)(\?|$)/i.test(url);
-                        editor.focus();
-                        if (isImg) {
-                            editor.execCommand('mceInsertContent', false,
-                                `<figure class="image"><img class="tiny-sm" src="${escapeHtml(url)}" alt="${escapeHtml(alt)}" title="${escapeHtml(title)}"/><figcaption>${escapeHtml(title)}</figcaption></figure>`
-                            );
-                        } else {
-                            editor.execCommand('mceInsertContent', false,
-                                `<video class="tiny-sm" src="${escapeHtml(url)}" controls preload="metadata"></video>`
-                            );
-                        }
-                    }
-                });
-
-                // Button for clickable text
-                editor.ui.registry.addButton('vvcClickableText', {
-                    text: 'نص تفاعلي',
-                    tooltip: 'إضافة نص قابل للنقر يظهر وصفاً عند الضغط',
-                    onAction: () => {
-                        if (window.vvcTextModalManager?.openModal) {
-                            window.vvcTextModalManager.openModal();
-                        }
-                    }
-                });
-
-                // Button for Read More content
-                editor.ui.registry.addButton('vvcReadMore', {
-                    text: 'إقرأ المزيد',
-                    tooltip: 'إدراج محتوى "إقرأ المزيد" من قاعدة البيانات',
-                    onAction: () => {
-                        if (window.vvcReadMoreModalManager?.openModal) {
-                            window.vvcReadMoreModalManager.openModal();
-                        }
-                    }
-                });
-            },
-
-            skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
-            content_css: theme === 'dark' ? 'dark' : 'default',
-
-            plugins: 'advlist anchor autolink autosave charmap code codesample directionality emoticons fullscreen help hr image imagetools importcss insertdatetime link lists media nonbreaking pagebreak preview print quickbars save searchreplace table template visualblocks visualchars wordcount',
-
-            toolbar_mode: 'wrap',
-            toolbar: [
-                'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
-                '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
-                '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore',
-                '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
-            ].join(' '),
-
-            fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',
-            font_family_formats: 'Arial=arial,helvetica,sans-serif; Helvetica=helvetica; Times New Roman=times new roman,times; Courier New=courier;',
-
-            // Limiter aux boîtes image/media
-            file_picker_types: 'image media',
-            file_picker_callback: async (cb, value, meta) => {
-                const picked = await window.pickMediaForTiny({
-                    type: meta.filetype
-                });
-                if (!picked || !picked.url) return;
-
-                // Pour les images, on force la classe tiny-sm au moment du callback
-                if (meta.filetype === 'image') {
-                    cb(picked.url, {
-                        title: picked.title || '',
-                        alt: picked.alt || '',
-                        class: 'tiny-sm'
-                    });
-                } else {
-                    // TinyMCE peut ignorer 'class' ici; insertion finale via vvcPicker est la plus fiable
-                    cb(picked.url, {
-                        text: picked.title || picked.url
-                    });
-                }
-            },
-
-            image_caption: true,
-            image_title: true,
-            image_advtab: true,
-
-            menubar: 'file edit view insert format tools table help',
-            editimage_cors_hosts: ['picsum.photos'],
-
-            // Autosave
-            autosave_ask_before_unload: true,
-            autosave_interval: '30s',
-            autosave_prefix: '{path}{query}-{id}-',
-            autosave_restore_when_empty: false,
-            autosave_retention: '2m',
-
-            // Validation (toujours assainir côté serveur)
-            extended_valid_elements: 'script[src|async|charset],blockquote[class|lang|dir],iframe[src|width|height|frameborder|allowfullscreen]',
-            valid_children: '+body[script],+div[script]',
-            valid_elements: '*[*]'
-        });
-    })();
-
-    // Search functionality for Read More modal
-    function setupReadMoreSearch() {
-        const searchInput = document.getElementById('vvc-readmore-search');
-        const contentSelect = document.getElementById('vvc-readmore-content');
-
-        if (searchInput) {
-            let searchTimeout;
-
-            searchInput.addEventListener('input', (e) => {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    const searchTerm = e.target.value.trim();
-                    loadReadMoreContent(searchTerm);
-                }, 350);
-            });
-        }
-    }
-
-    // Update the loadReadMoreContent function to accept search parameter
-    async function loadReadMoreContent(searchTerm = '') {
-        try {
-            const url = new URL(READMORE_CONTENT_URL, window.location.origin);
-            if (searchTerm) {
-                url.searchParams.set('search', searchTerm);
+    window.pickMediaForTiny = function(opts = {
+        type: 'media'
+    }) {
+        return new Promise((resolve) => {
+            window._resolveTinyPick = resolve;
+            window._tinyRequestedType = opts.type || 'media';
+            if (window.vvcMediaModalManager?.openModal) {
+                window.vvcMediaModalManager.openModal('tiny');
+            } else {
+                console.error('vvc Modal manager not found.');
+                resolve(null);
             }
+        });
+    };
 
-            const res = await fetch(url.toString(), {
-                headers: {
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': CSRF
+    tinymce.init({
+        selector: 'textarea#myeditorinstance',
+        directionality: 'rtl',
+        height: 600,
+        promotion: false,
+        onboarding: false,
+        auto_focus: false,
+        content_style: `
+        body{font-family:Arial,Helvetica,sans-serif !important;font-size:18pt !important;line-height:1.6 !important;}
+        img.tiny-sm,video.tiny-sm{width:280px;height:auto;max-width:100%;}
+        .clickable-term{color:#0066cc;text-decoration:underline;cursor:pointer;padding:2px 4px;border-radius:3px;transition:background-color 0.2s;background-color:transparent;}
+        .clickable-term:hover{background-color:#e6f2ff;text-decoration:none;}
+        .read-more-block{border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;margin:0.75rem 0;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.05);display:flex;align-items:stretch;pointer-events:none;}
+        .read-more-block *{pointer-events:auto;}
+        .read-more-block .read-more-image{width:35%;height:auto;max-height:150px;object-fit:cover;}
+        .read-more-block .read-more-content{width:65%;padding:0.75rem;display:flex;flex-direction:column;justify-content:center;}
+        .read-more-block .read-more-title{font-size:1rem;font-weight:600;margin:0 0 0.35rem 0;color:#364a63;}
+        .read-more-block .read-more-summary{color:#526484;line-height:1.4;margin:0;font-size:0.9rem;}
+        .read-more-block .read-more-link{display:inline-block;margin-top:0.5rem;padding:0.35rem 0.75rem;background:#6576ff;color:white;text-decoration:none;border-radius:4px;font-weight:500;font-size:0.85rem;transition:background 0.2s;align-self:flex-start;}
+        .read-more-block .read-more-link:hover{background:#465fff;}
+        @media (max-width:768px){.read-more-block{flex-direction:column;}.read-more-block .read-more-image{width:100%;height:120px;}.read-more-block .read-more-content{width:100%;}}
+    `,
+        setup: (editor) => {
+            editor.ui.registry.addButton('vvcPicker', {
+                text: 'وسائط',
+                tooltip: 'اختيار وسائط من المعرض',
+                onAction: async () => {
+                    const picked = await window.pickMediaForTiny({
+                        type: 'media'
+                    });
+                    if (!picked || !picked.url) return;
+                    const isImg = /\.(png|jpe?g|webp|gif|bmp|svg)(\?|$)/i.test(picked.url);
+                    editor.focus();
+                    if (isImg) {
+                        editor.execCommand('mceInsertContent', false,
+                            `<figure class="image"><img class="tiny-sm" src="${escapeHtml(picked.url)}" alt="${escapeHtml(picked.alt||picked.title)}" title="${escapeHtml(picked.title)}"/><figcaption>${escapeHtml(picked.title)}</figcaption></figure>`
+                            );
+                    } else {
+                        editor.execCommand('mceInsertContent', false,
+                            `<video class="tiny-sm" src="${escapeHtml(picked.url)}" controls preload="metadata"></video>`
+                            );
+                    }
                 }
             });
-
-            if (!res.ok) throw new Error(`Failed to fetch content: ${res.status}`);
-
-            const data = await res.json();
-            const contentList = Array.isArray(data.data) ? data.data : [];
-
-            // Clear existing options
-            readMoreContentSelect.innerHTML = '<option value="">-- اختر محتوى من قاعدة البيانات --</option>';
-
-            // Add new options
-            contentList.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item.id;
-                option.textContent = item.title;
-                option.dataset.image = item.image_url || '';
-                option.dataset.summary = item.summary || '';
-                readMoreContentSelect.appendChild(option);
+            editor.ui.registry.addButton('vvcClickableText', {
+                text: 'نص تفاعلي',
+                tooltip: 'إضافة نص قابل للنقر',
+                onAction: () => {
+                    if (window.vvcTextModalManager?.openModal) {
+                        window.vvcTextModalManager.openModal();
+                    }
+                }
             });
-
-        } catch (error) {
-            console.error('Error loading read more content:', error);
-            readMoreContentSelect.innerHTML = '<option value="">-- خطأ في تحميل المحتوى --</option>';
-        }
-    }
+            editor.ui.registry.addButton('vvcReadMore', {
+                text: 'إقرأ المزيد',
+                tooltip: 'إدراج محتوى إقرأ المزيد',
+                onAction: () => {
+                    if (window.vvcReadMoreModalManager?.openModal) {
+                        window.vvcReadMoreModalManager.openModal();
+                    }
+                }
+            });
+        },
+        skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
+        content_css: theme === 'dark' ? 'dark' : 'default',
+        plugins: 'advlist anchor autolink autosave charmap code codesample directionality emoticons fullscreen help hr image imagetools importcss insertdatetime link lists media nonbreaking pagebreak preview print quickbars save searchreplace table template visualblocks visualchars wordcount',
+        toolbar_mode: 'wrap',
+        toolbar: [
+            'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
+            '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
+            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore',
+            '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
+        ].join(' '),
+        fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',
+        font_family_formats: 'Arial=arial,helvetica,sans-serif; Helvetica=helvetica; Times New Roman=times new roman,times; Courier New=courier;',
+        file_picker_types: 'image media',
+        file_picker_callback: async (cb, value, meta) => {
+            const picked = await window.pickMediaForTiny({
+                type: meta.filetype
+            });
+            if (!picked || !picked.url) return;
+            if (meta.filetype === 'image') {
+                cb(picked.url, {
+                    title: picked.title || '',
+                    alt: picked.alt || '',
+                    class: 'tiny-sm'
+                });
+            } else {
+                cb(picked.url, {
+                    text: picked.title || picked.url
+                });
+            }
+        },
+        image_caption: true,
+        image_title: true,
+        image_advtab: true,
+        menubar: 'file edit view insert format tools table help',
+        autosave_ask_before_unload: true,
+        autosave_interval: '30s',
+        autosave_prefix: '{path}{query}-{id}-',
+        autosave_restore_when_empty: false,
+        autosave_retention: '2m',
+        extended_valid_elements: 'script[src|async|charset],blockquote[class|lang|dir],iframe[src|width|height|frameborder|allowfullscreen]',
+        valid_children: '+body[script],+div[script]',
+        valid_elements: '*[*]'
+    });
 </script>
