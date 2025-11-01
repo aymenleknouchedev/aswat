@@ -205,26 +205,28 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        // التحقق من المدخلات
-        $credentials = $request->validate([
-            'email' => 'required',
+        $request->validate([
+            'login' => 'required|string',
             'password' => 'required|min:6',
         ]);
 
-        // محاولة تسجيل الدخول باستخدام البريد الإلكتروني أو اسم المستخدم في نفس الحقل
-        $loginField = filter_var($credentials['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $loginValue = $request->input('login');
+        $password = $request->input('password');
 
-        if (Auth::attempt([$loginField => $credentials['email'], 'password' => $credentials['password']])) {
+        // Check if it's an email or username
+        $loginField = filter_var($loginValue, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        if (Auth::attempt([$loginField => $loginValue, 'password' => $password])) {
             $request->session()->regenerate();
-            return redirect()->route('dashboard.index')
-                ->with('success', 'تم تسجيل الدخول بنجاح');
+            return redirect()->route('dashboard.index')->with('success', 'تم تسجيل الدخول بنجاح');
         }
 
-        // في حالة فشل الدخول
         return back()->withErrors([
-            'email' => 'البريد الإلكتروني أو اسم المستخدم أو كلمة المرور غير صحيحة.',
-        ])->onlyInput('email');
+            'login' => 'اسم المستخدم أو البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+        ])->onlyInput('login');
     }
+
+
     //logout
     public function logout(Request $request)
     {

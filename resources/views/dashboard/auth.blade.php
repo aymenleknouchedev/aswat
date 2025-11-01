@@ -139,13 +139,13 @@
                                 <form id="loginForm" action="{{ route('dashboard.login') }}" method="POST">
                                     @csrf
                                     <div class="form-group">
-                                        <label class="form-label" for="email">البريد الإلكتروني</label>
+                                        <label class="form-label" for="login">البريد الإلكتروني</label>
                                         <div class="form-control-wrap">
-                                            <input name="email" class="form-control form-control-lg"
-                                                id="email" placeholder="أدخل بريدك الإلكتروني" required
-                                                value="{{ old('email') }}">
+                                            <input name="login" class="form-control form-control-lg"
+                                                id="login" placeholder="أدخل بريدك الإلكتروني" required
+                                                value="{{ old('login') }}">
                                         </div>
-                                        @error('email')
+                                        @error('login')
                                             <span class="text-danger small">{{ $message }}</span>
                                         @enderror
                                     </div>
