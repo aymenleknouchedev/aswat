@@ -134,13 +134,6 @@
                                             </ul>
                                         </div>
                                     </div>
-
-                                    <!-- Save button (sticky) -->
-                                    {{-- <div class="text-end mt-3">
-                                        <button id="saveChangesBtn" class="btn btn-primary px-4">
-                                            💾 حفظ التغييرات
-                                        </button>
-                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -153,178 +146,204 @@
     </div>
 @endsection
 
-{{-- Scripts placed outside section to match original pattern (if your layout doesn't support stacks) --}}
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
 
-    const sortableList = document.getElementById("sortable-list");
-    const recentList = document.getElementById("recentContentsList");
-    const saveBtn = document.getElementById("saveChangesBtn");
+        const sortableList = document.getElementById("sortable-list");
+        const saveBtn = document.getElementById("saveChangesBtn");
 
-    let topContents = new Map();
+        let topContents = new Map();
 
-    // Initialize existing top contents
-    document.querySelectorAll("#sortable-list li").forEach(li => {
-        const id = li.dataset.id?.toString();
-        if (id) {
-            const titleEl = li.querySelector("div > div > span") || li.querySelector("span:nth-child(2)");
-            const title = titleEl ? titleEl.textContent.trim() : id;
-            topContents.set(id, title);
-        }
-    });
-
-    function updateBadges() {
-        document.querySelectorAll("#sortable-list li").forEach((li, index) => {
-            const badge = li.querySelector(".badge");
-            if (badge) badge.textContent = index + 1;
-        });
-    }
-
-    function refreshDisabledState() {
-        document.querySelectorAll("#recentContentsList li").forEach(li => {
+        // Initialize existing top contents
+        document.querySelectorAll("#sortable-list li").forEach(li => {
             const id = li.dataset.id?.toString();
-            const btn = li.querySelector(".add-content-btn");
-            if (!id || !btn) return;
-
-            if (topContents.has(id)) {
-                li.classList.add("disabled");
-                btn.classList.add("disabled");
-                btn.style.pointerEvents = "none";
-                btn.style.opacity = "0.5";
-            } else {
-                li.classList.remove("disabled");
-                btn.classList.remove("disabled");
-                btn.style.pointerEvents = "auto";
-                btn.style.opacity = "1";
+            if (id) {
+                const titleEl = li.querySelector("div > div > span") || li.querySelector("span:nth-child(2)");
+                const title = titleEl ? titleEl.textContent.trim() : id;
+                topContents.set(id, title);
             }
         });
-    }
 
-    function bindAddButtons() {
-        document.querySelectorAll(".add-content-btn").forEach(btn => {
-            btn.replaceWith(btn.cloneNode(true));
-        });
-
-        document.querySelectorAll(".add-content-btn").forEach(btn => {
-            btn.addEventListener("click", function (e) {
-                e.preventDefault();
-
-                const id = this.dataset.id?.toString();
-                if (!id) return;
-
-                // 🟩 Prevent adding more than 15 items
-                if (topContents.size >= 15) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'الحد الأقصى 15 محتويات فقط',
-                        text: 'لا يمكنك إضافة المزيد من المحتويات المميزة.',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    return;
-                }
-
-                if (topContents.has(id)) return;
-
-                const recentLi = this.closest("li");
-                const titleEl = recentLi?.querySelector("span.fw-semibold, span") || recentLi?.querySelector("span");
-                const title = titleEl ? titleEl.textContent.trim() : id;
-
-                topContents.set(id, title);
-
-                const li = document.createElement("li");
-                li.className = "list-group-item d-flex align-items-center justify-content-between";
-                li.dataset.id = id;
-                li.innerHTML = `
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-primary d-inline-flex align-items-center justify-content-center"
-                            style="width: 28px; height: 28px; border-radius: 50%; font-size: 14px;"></span>
-                        <div class="d-flex flex-column">
-                            <span style="font-size: 13px">${escapeHtml(title)}</span>
-                            <small class="text-muted">#${id}</small>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-icon btn-sm btn-outline-danger delete-top-content-btn" title="إزالة">
-                        <em class="icon ni ni-minus"></em>
-                    </button>
-                `;
-
-                sortableList.appendChild(li);
-                bindDeleteButtons();
-                updateBadges();
-                refreshDisabledState();
+        function updateBadges() {
+            document.querySelectorAll("#sortable-list li").forEach((li, index) => {
+                const badge = li.querySelector(".badge");
+                if (badge) badge.textContent = index + 1;
             });
-        });
-    }
+        }
 
-    function bindDeleteButtons() {
-        document.querySelectorAll(".delete-top-content-btn").forEach(btn => {
-            btn.replaceWith(btn.cloneNode(true));
-        });
+        // ✅ Disable Add when >=15, Disable Delete when <=7
+        function refreshDisabledState() {
+            const maxReached = topContents.size >= 15;
+            const minReached = topContents.size <= 7;
 
-        document.querySelectorAll(".delete-top-content-btn").forEach(btn => {
-            btn.addEventListener("click", function () {
-                const li = this.closest("li");
-                if (!li) return;
-
+            // Add buttons (left)
+            document.querySelectorAll("#recentContentsList li").forEach(li => {
                 const id = li.dataset.id?.toString();
-                if (id) topContents.delete(id);
+                const btn = li.querySelector(".add-content-btn");
+                if (!id || !btn) return;
 
-                li.remove();
-                updateBadges();
-                refreshDisabledState();
-            });
-        });
-    }
-
-    function escapeHtml(text) {
-        var map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-        return String(text).replace(/[&<>"']/g, m => map[m]);
-    }
-
-    new Sortable(sortableList, { animation: 150, ghostClass: 'bg-light', onEnd: updateBadges });
-
-    if (saveBtn) {
-        saveBtn.addEventListener("click", function (e) {
-            e.preventDefault();
-            const ids = Array.from(document.querySelectorAll("#sortable-list li")).map(li => li.dataset.id).filter(Boolean);
-
-            saveBtn.disabled = true;
-            saveBtn.textContent = "حفظ...";
-
-            fetch("{{ route('dashboard.topcontents.updateOrder') }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ ids })
-            })
-            .then(res => res.json())
-            .then(response => {
-                if (response && response.success) {
-                    Swal.fire({ icon: 'success', title: 'تم حفظ التغييرات بنجاح', timer: 2000, showConfirmButton: false });
+                if (topContents.has(id) || maxReached) {
+                    li.classList.add("disabled");
+                    btn.classList.add("disabled");
+                    btn.style.pointerEvents = "none";
+                    btn.style.opacity = "0.5";
                 } else {
-                    Swal.fire({ icon: 'error', title: response.message || '⚠️ حدث خطأ أثناء حفظ التغييرات.' });
+                    li.classList.remove("disabled");
+                    btn.classList.remove("disabled");
+                    btn.style.pointerEvents = "auto";
+                    btn.style.opacity = "1";
                 }
-            })
-            .catch(err => {
-                console.error(err);
-                Swal.fire({ icon: 'error', title: '⚠️ حدث خطأ أثناء حفظ التغييرات.' });
-            })
-            .finally(() => {
-                saveBtn.disabled = false;
-                saveBtn.textContent = "💾 حفظ التغييرات";
             });
-        });
-    }
 
-    bindAddButtons();
-    bindDeleteButtons();
-    updateBadges();
-    refreshDisabledState();
-});
+            // Delete buttons (right)
+            document.querySelectorAll(".delete-top-content-btn").forEach(btn => {
+                if (minReached) {
+                    btn.classList.add("disabled");
+                    btn.style.pointerEvents = "none";
+                    btn.style.opacity = "0.5";
+                } else {
+                    btn.classList.remove("disabled");
+                    btn.style.pointerEvents = "auto";
+                    btn.style.opacity = "1";
+                }
+            });
+        }
+
+        function bindAddButtons() {
+            document.querySelectorAll(".add-content-btn").forEach(btn => {
+                btn.replaceWith(btn.cloneNode(true));
+            });
+
+            document.querySelectorAll(".add-content-btn").forEach(btn => {
+                btn.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    const id = this.dataset.id?.toString();
+                    if (!id) return;
+
+                    if (topContents.size >= 15) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'الحد الأقصى 15 محتوى فقط',
+                            text: 'لا يمكنك إضافة المزيد من المحتويات المميزة.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        return;
+                    }
+
+                    if (topContents.has(id)) return;
+
+                    const recentLi = this.closest("li");
+                    const titleEl = recentLi?.querySelector("span.fw-semibold, span") || recentLi?.querySelector("span");
+                    const title = titleEl ? titleEl.textContent.trim() : id;
+
+                    topContents.set(id, title);
+
+                    const li = document.createElement("li");
+                    li.className = "list-group-item d-flex align-items-center justify-content-between";
+                    li.dataset.id = id;
+                    li.innerHTML = `
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-primary d-inline-flex align-items-center justify-content-center"
+                                style="width: 28px; height: 28px; border-radius: 50%; font-size: 14px;"></span>
+                            <div class="d-flex flex-column">
+                                <span style="font-size: 13px">${escapeHtml(title)}</span>
+                                <small class="text-muted">#${id}</small>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-icon btn-sm btn-outline-danger delete-top-content-btn" title="إزالة">
+                            <em class="icon ni ni-minus"></em>
+                        </button>
+                    `;
+
+                    sortableList.appendChild(li);
+                    bindDeleteButtons();
+                    updateBadges();
+                    refreshDisabledState();
+                });
+            });
+        }
+
+        function bindDeleteButtons() {
+            document.querySelectorAll(".delete-top-content-btn").forEach(btn => {
+                btn.replaceWith(btn.cloneNode(true));
+            });
+
+            document.querySelectorAll(".delete-top-content-btn").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    const li = this.closest("li");
+                    if (!li) return;
+
+                    if (topContents.size <= 7) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'الحد الأدنى هو 7 محتويات',
+                            text: 'لا يمكنك حذف المزيد من المحتويات.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        return;
+                    }
+
+                    const id = li.dataset.id?.toString();
+                    if (id) topContents.delete(id);
+
+                    li.remove();
+                    updateBadges();
+                    refreshDisabledState();
+                });
+            });
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return String(text).replace(/[&<>"']/g, m => map[m]);
+        }
+
+        new Sortable(sortableList, { animation: 150, ghostClass: 'bg-light', onEnd: updateBadges });
+
+        if (saveBtn) {
+            saveBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                const ids = Array.from(document.querySelectorAll("#sortable-list li"))
+                    .map(li => li.dataset.id)
+                    .filter(Boolean);
+
+                saveBtn.disabled = true;
+                saveBtn.textContent = "حفظ...";
+
+                fetch("{{ route('dashboard.topcontents.updateOrder') }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ ids })
+                })
+                .then(res => res.json())
+                .then(response => {
+                    if (response && response.success) {
+                        Swal.fire({ icon: 'success', title: 'تم حفظ التغييرات بنجاح', timer: 2000, showConfirmButton: false });
+                    } else {
+                        Swal.fire({ icon: 'error', title: response.message || '⚠️ حدث خطأ أثناء حفظ التغييرات.' });
+                    }
+                })
+                .catch(() => {
+                    Swal.fire({ icon: 'error', title: '⚠️ حدث خطأ أثناء حفظ التغييرات.' });
+                })
+                .finally(() => {
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = "💾 حفظ التغييرات";
+                });
+            });
+        }
+
+        bindAddButtons();
+        bindDeleteButtons();
+        updateBadges();
+        refreshDisabledState();
+    });
 </script>
-
