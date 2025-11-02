@@ -210,13 +210,10 @@
             position: relative;
             width: 100%;
             padding-bottom: 56.25%;
-            /* 16:9 aspect ratio */
             height: 0;
             overflow: hidden;
             border-radius: 10px;
-            /* optional, for soft edges */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            /* optional */
         }
 
         .video-container iframe {
@@ -228,7 +225,6 @@
             border: 0;
         }
 
-
         /* Blockquote */
         .custom-article-content blockquote {
             width: 100%;
@@ -237,7 +233,6 @@
             text-align: center;
             position: relative;
             font-family: asswat-medium;
-
         }
 
         .custom-article-content blockquote p span {
@@ -368,7 +363,6 @@
             gap: 10px;
             direction: rtl;
             margin-bottom: 10px;
-            /* Image right, text left for Arabic */
         }
 
         .news-card-horizontal-news .news-card-image-news img {
@@ -400,7 +394,6 @@
         .economy-grid-container-news {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            /* 4 equal cards side by side */
             gap: 20px;
         }
 
@@ -435,14 +428,12 @@
             color: #555;
         }
 
-        /* Cursor pointer for economy categories */
         .economy-card-news h3 {
             cursor: pointer;
             font-family: asswat-light;
             font-weight: lighter;
         }
 
-        /* Cursor pointer + underline on hover for economy titles */
         .economy-card-news h2:hover {
             text-decoration: underline;
             cursor: pointer;
@@ -454,10 +445,8 @@
                 padding: 10px 12px;
             }
         }
-    </style>
 
-    {{-- ===== Social Share Section ===== --}}
-    <style>
+        /* ===== Social Share Section ===== */
         .custom-date-share {
             display: flex;
             justify-content: space-between;
@@ -475,7 +464,7 @@
         .share-container {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: flex-end;
             gap: 10px;
             position: relative;
         }
@@ -484,10 +473,9 @@
             display: flex;
             gap: 8px;
             opacity: 0;
-            transform: translateX(10px);
+            transform: translateX(-10px);
             pointer-events: none;
             transition: all 0.3s ease;
-
         }
 
         .share-container.active .share-icons {
@@ -502,32 +490,34 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .share-icons a i {
-            font-size: 18px;
-        }
-
-        .share-icons a i:hover {
-            AA color: #333;
+            color: #929292;
             transition: color 0.3s ease;
         }
 
+        .share-icons a:hover {
+            color: #333;
+        }
+
         .share-icons img {
-            width: 27px;
-            height: 27px;
+            width: 30px;
+            height: 30px;
         }
 
         .share-btn {
             background: #ffffff;
             border: none;
             border-radius: 50%;
-            width: 38px;
-            height: 38px;
+            width: 27px;
+            height: 27px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .share-btn:hover {
+            background: #f5f5f5;
         }
 
         .newCategoryReadMoreNews {
@@ -543,9 +533,7 @@
             direction: rtl;
             font-family: asswat-bold;
             border-bottom: 1px solid #ddd;
-            /* الخط الرمادي */
             padding-bottom: 10px;
-            /* مسافة بين النص والخط */
         }
 
         .newCategoryReadMoreNews-list:last-child {
@@ -565,358 +553,13 @@
             line-height: 1.4;
         }
 
-
-        .share-btn:hover {
-            background: #f5f5f5;
+        .section-title {
+            font-size: 20px;
+            font-family: asswat-bold;
+            color: #141414;
+            text-align: right;
         }
-    </style>
 
-    {{-- ================= WEB ================= --}}
-    <div class="web">
-        @include('user.components.fixed-nav')
-
-        <div class="custom-container">
-            <div class="custom-main">
-
-                {{-- التصنيف --}}
-                <div class="custom-category">
-                    <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
-                        style="color: #888; text-decoration: none;">
-                        {{ $news->category->name }}
-                    </a>
-                </div>
-
-                {{-- العنوان --}}
-                <h1 class="custom-article-title">{{ $news->long_title }}</h1>
-
-                {{-- الملخص --}}
-                <div class="custom-article-summary">{{ $news->summary }}</div>
-
-                {{-- الكتاب --}}
-                <div class="custom-meta">
-                    @if ($news->city)
-                        {{ $news->city->name }} -
-                    @endif
-
-                    @php
-                        $writers = $news->writers;
-                    @endphp
-
-                    @if ($writers->count() > 0)
-                        {{-- First writer with city --}}
-                        <a href="{{ route('writer.show', $writers[0]->id) }}">
-                            <span>
-                                {{ $writers[0]->name }}
-                                @if ($writers[0]->pivot->role)
-                                    <span style="color: #888;">{{ $writers[0]->pivot->role }}</span>
-                                @endif
-                            </span>
-                        </a>
-                        {{-- Other writers, each on a new line --}}
-                        @foreach ($writers->slice(1) as $writer)
-                            <br>
-                            <a href="{{ route('writer.show', $writer->id) }}">
-                                <span>
-                                    {{ $writer->name }}
-                                    @if ($writer->pivot->role)
-                                        <span style="color: #888;">{{ $writer->pivot->role }}</span>
-                                    @endif
-                                </span>
-                            </a>
-                        @endforeach
-                    @elseif (optional($news->writer)->name)
-                        {{-- Fallback for old single writer system --}}
-                        <a href="{{ route('writer.show', $news->writer->id) }}">
-                            <span> {{ $news->writer->name }}</span>
-                        </a>
-                    @endif
-                </div>
-
-                {{-- التاريخ --}}
-                @php
-                    $months = [
-                        '01' => 'يناير',
-                        '02' => 'فبراير',
-                        '03' => 'مارس',
-                        '04' => 'أبريل',
-                        '05' => 'مايو',
-                        '06' => 'يونيو',
-                        '07' => 'يوليو',
-                        '08' => 'أغسطس',
-                        '09' => 'سبتمبر',
-                        '10' => 'أكتوبر',
-                        '11' => 'نوفمبر',
-                        '12' => 'ديسمبر',
-                    ];
-                    $date = $news->created_at;
-                    $day = $date->format('d');
-                    $month = $months[$date->format('m')];
-                    $year = $date->format('Y');
-                @endphp
-
-
-                @php
-                    $shareTitle = $news->share_title ?: $news->long_title;
-                    $shareDescription = $news->share_description ?: $news->summary;
-                    $shareImage = $news->share_image ?: $news->main_image;
-                @endphp
-
-
-
-                <div class="custom-date-share">
-                    {{-- Date on the RIGHT --}}
-                    <p class="date-text">{{ $day }} {{ $month }} {{ $year }}</p>
-
-                    {{-- Share on the LEFT --}}
-                    <div class="share-container" id="shareContainer">
-                        <div class="share-icons">
-                            {{-- Facebook --}}
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
-                                target="_blank" title="مشاركة على فيسبوك" rel="noopener" class="share-icon">
-                                <i class="fa-brands fa-facebook"></i>
-                            </a>
-
-                            {{-- X (Twitter) --}}
-                            <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($shareTitle . ' - ' . $shareDescription) }}"
-                                target="_blank" title="مشاركة على X" rel="noopener" class="share-icon">
-                                <i class="fa-brands fa-x-twitter"></i>
-                            </a>
-
-                            {{-- WhatsApp --}}
-                            <a href="https://wa.me/?text={{ urlencode($shareTitle . ' - ' . $shareDescription . ' ' . request()->fullUrl()) }}"
-                                target="_blank" title="مشاركة على واتساب" rel="noopener" class="share-icon">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </a>
-
-                            {{-- نسخ الرابط --}}
-                            <div style="position: relative; display: inline-block;">
-                                <a href="#"
-                                    onclick="navigator.clipboard.writeText('{{ request()->fullUrl() }}'); showCopyMessage(); return false;"
-                                    title="نسخ الرابط" rel="noopener" class="share-icon" style="position: relative;">
-                                    <i class="fa-solid fa-link"></i>
-                                </a>
-                                <div id="copyMessage"
-                                    style="display:none;position:absolute;top:-38px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:8px 18px;border-radius:8px;z-index:9999;font-family:asswat-medium;font-size:9px;white-space:nowrap;">
-                                    تم نسخ الرابط!
-                                </div>
-                            </div>
-                            <script>
-                                function showCopyMessage() {
-                                    const msg = document.getElementById('copyMessage');
-                                    msg.style.display = 'block';
-                                    setTimeout(() => {
-                                        msg.style.display = 'none';
-                                    }, 1800);
-                                }
-                            </script>
-                        </div>
-                        <link rel="stylesheet"
-                            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-                        <button class="share-btn" id="shareToggle" title="مشاركة">
-                            <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
-                        </button>
-                    </div>
-                    <style>
-                        .share-container {
-                            display: flex;
-                            align-items: center;
-                            justify-content: flex-end;
-                            gap: 10px;
-                            position: relative;
-                        }
-
-                        .share-icons {
-                            display: flex;
-                            gap: 8px;
-                            opacity: 0;
-                            transform: translateX(-10px);
-                            pointer-events: none;
-                            transition: all 0.3s ease;
-                        }
-
-                        .share-container.active .share-icons {
-                            transform: translateX(0);
-                            pointer-events: auto;
-                        }
-
-                        .share-icons a {
-                            border-radius: 50%;
-                            padding: 6px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            color: #929292;
-                        }
-
-                        .share-icons a:hover {
-                            border-radius: 50%;
-                            padding: 6px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            color: #929292;
-                        }
-
-                        .share-icons img {
-                            width: 30px;
-                            height: 30px;
-                        }
-
-                        .share-btn {
-                            background: #ffffff;
-                            border: none;
-                            border-radius: 50%;
-                            width: 27px;
-                            height: 27px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
-                        }
-
-                        .share-btn:hover {
-                            background: #f5f5f5;
-                        }
-                    </style>
-                </div>
-
-                {{-- صورة --}}
-                @if ($news->template !== 'no_image')
-                    <figure class="custom-article-image-wrapper">
-                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="Feature Algeria"
-                            loading="lazy">
-                        <figcaption>
-                            {{ $news->caption ?? '' }}
-                        </figcaption>
-                    </figure>
-                @endif
-
-                {{-- ألبوم صور --}}
-                @if ($news->template == 'album' && $news->media()->wherePivot('type', 'album')->count())
-                    @include('user.components.album-slider', [
-                        'albumImages' => $news->media()->wherePivot('type', 'album')->get(),
-                    ])
-                @endif
-
-                {{-- فيديو --}}
-                @if ($news->template == 'video' && $news->media()->wherePivot('type', 'video')->first())
-                    @include('user.components.video-player', [
-                        'video' => $news->media()->wherePivot('type', 'video')->first()->path,
-                        'caption' => $news->media()->wherePivot('type', 'video')->first()->alt ?? 'فيديو',
-                    ])
-                @endif
-
-                {{-- بودكاست --}}
-                @if ($news->template == 'podcast' && $news->media()->wherePivot('type', 'podcast')->first())
-                    <div class="page-podcast-player">
-                        <audio id="pagePodcast" controls style="width: 100%;">
-                            <source src="{{ $news->media()->wherePivot('type', 'podcast')->first()->path }}"
-                                type="audio/mpeg">
-                            متصفحك لا يدعم تشغيل الصوت.
-                        </audio>
-                    </div>
-
-                    <div class="floating-podcast-player" id="floatingPodcast">
-                        <button class="close-btn" id="closeFloating">&times;</button>
-                        <audio id="floatingAudio" controls style="width: 100%;">
-                            <source src="{{ $news->media()->wherePivot('type', 'podcast')->first()->path }}"
-                                type="audio/mpeg">
-                            متصفحك لا يدعم تشغيل الصوت.
-                        </audio>
-                    </div>
-                @endif
-
-                {{-- النص الكامل --}}
-                <div class="custom-article-content">{!! $news->content !!}</div>
-
-                {{-- الوسوم --}}
-                <div class="custom-tags">
-                    @foreach ($news->tags as $tag)
-                        <span>{{ $tag->name }}</span>
-                    @endforeach
-                </div>
-
-                {{-- بطاقة الكاتب --}}
-                @if (optional($news->writer)->id)
-                    <a href="{{ route('writer.show', $news->writer->id) }}">
-                        <div class="writer-card">
-                            <img src="{{ $news->writer->image ?? asset('user.png') }}" alt="Writer" loading="lazy"
-                                style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
-
-                            <div class="writer-info">
-                                <span> <span style="font-weight:bold;">{{ $news->writer->name }}</span>
-                                    {{ $news->writer->bio }}</span>
-                            </div>
-                        </div>
-                    </a>
-                @endif
-
-            </div>
-            <div class="custom-sidebar">
-                <p class="section-title">الأكثر قراءة</p>
-                @include('user.components.ligne')
-                <div class="newCategoryReadMoreNews">
-                    @foreach ($lastWeekNews as $index => $item)
-                        <div class="newCategoryReadMoreNews-list">
-                            <span class="number">{{ $index + 1 }}</span>
-                            <a href="{{ route('news.show', $item->title) }}"
-                                style="text-decoration: none; color: inherit;">
-                                <p>{{ $item->title }}</p>
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
-                @include('user.components.sp60')
-                <p class="section-title">المزيد من {{ $news->category->name }}</p>
-                @include('user.components.ligne')
-
-                @foreach ($lastNews as $content)
-                    <div class="sp20" style="margin-top: 16px;"></div>
-                    <div class="news-card-horizontal-news">
-                        <div class="news-card-image-news">
-                            <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                                alt="{{ $content->title ?? 'تحلية مياه البحر' }}">
-                        </div>
-                        <div class="news-card-text-news">
-                            {{-- <h3> <x-category-links :content="$content" fallback="اقتصاد جزائري" /></h3> --}}
-                            <a href="{{ route('news.show', $content->title) }}"
-                                style="text-decoration: none; color: inherit;">
-                                <p>{{ $content->title ?? '' }}</p>
-                            </a>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-        <section class="economy-feature-grid container">
-            <p class="section-title">ذات صلة</p>
-            <div style="height: 5px"></div>
-            @include('user.components.ligne')
-            <div style="height: 20px"></div>
-            <div class="economy-grid-container-news">
-                @foreach ($relatedNews as $item)
-                    <div class="economy-card-news">
-                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                            alt="{{ $item->title ?? '' }}">
-
-                        <h3>
-                            <x-category-links :content="$item" />
-
-                        </h3>
-                        <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
-                            <h2>{{ $item->title ?? '' }}</h2>
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-        </section>
-        @include('user.components.sp60')
-
-        @include('user.components.footer')
-    </div>
-
-    <style>
         /* Clickable text styling */
         .clickable-term {
             color: #0066cc;
@@ -950,7 +593,6 @@
             from {
                 opacity: 0;
             }
-
             to {
                 opacity: 1;
             }
@@ -970,7 +612,6 @@
             from {
                 opacity: 0;
             }
-
             to {
                 opacity: 1;
             }
@@ -998,7 +639,6 @@
                 opacity: 0;
                 transform: translateX(-50%) translateY(20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateX(-50%) translateY(0);
@@ -1045,11 +685,9 @@
             0% {
                 transform: scale(1);
             }
-
             50% {
                 transform: scale(1.2);
             }
-
             100% {
                 transform: scale(1);
             }
@@ -1071,7 +709,6 @@
             from {
                 opacity: 0;
             }
-
             to {
                 opacity: 1;
             }
@@ -1138,13 +775,416 @@
             .text-modal-body p {
                 padding: 0;
             }
+
+            .economy-grid-container-news {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .economy-grid-container-news {
+                grid-template-columns: 1fr;
+            }
+
+            .custom-article-title {
+                font-size: 28px;
+            }
         }
     </style>
 
-    {{-- ===== CLICKABLE TEXT FUNCTIONALITY (ENHANCED WITH IMAGES) ===== --}}
+    {{-- ================= WEB ================= --}}
+    <div class="web">
+        @include('user.components.fixed-nav')
+
+        <div class="custom-container">
+            <div class="custom-main">
+
+                {{-- Category --}}
+                <div class="custom-category">
+                    <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
+                        style="color: #888; text-decoration: none;">
+                        {{ $news->category->name }}
+                    </a>
+                </div>
+
+                {{-- Title --}}
+                <h1 class="custom-article-title">{{ $news->long_title }}</h1>
+
+                {{-- Summary --}}
+                <div class="custom-article-summary">{{ $news->summary }}</div>
+
+                {{-- Authors --}}
+                <div class="custom-meta">
+                    @if ($news->city)
+                        {{ $news->city->name }} -
+                    @endif
+
+                    @php
+                        $writers = $news->writers;
+                    @endphp
+
+                    @if ($writers->count() > 0)
+                        {{-- First writer with city --}}
+                        <a href="{{ route('writer.show', $writers[0]->id) }}">
+                            <span>
+                                {{ $writers[0]->name }}
+                                @if ($writers[0]->pivot->role)
+                                    <span style="color: #888;">{{ $writers[0]->pivot->role }}</span>
+                                @endif
+                            </span>
+                        </a>
+                        {{-- Other writers, each on a new line --}}
+                        @foreach ($writers->slice(1) as $writer)
+                            <br>
+                            <a href="{{ route('writer.show', $writer->id) }}">
+                                <span>
+                                    {{ $writer->name }}
+                                    @if ($writer->pivot->role)
+                                        <span style="color: #888;">{{ $writer->pivot->role }}</span>
+                                    @endif
+                                </span>
+                            </a>
+                        @endforeach
+                    @elseif (optional($news->writer)->name)
+                        {{-- Fallback for old single writer system --}}
+                        <a href="{{ route('writer.show', $news->writer->id) }}">
+                            <span>{{ $news->writer->name }}</span>
+                        </a>
+                    @endif
+                </div>
+
+                {{-- Date and Share Section --}}
+                @php
+                    $months = [
+                        '01' => 'يناير',
+                        '02' => 'فبراير',
+                        '03' => 'مارس',
+                        '04' => 'أبريل',
+                        '05' => 'مايو',
+                        '06' => 'يونيو',
+                        '07' => 'يوليو',
+                        '08' => 'أغسطس',
+                        '09' => 'سبتمبر',
+                        '10' => 'أكتوبر',
+                        '11' => 'نوفمبر',
+                        '12' => 'ديسمبر',
+                    ];
+                    $date = $news->created_at;
+                    $day = $date->format('d');
+                    $month = $months[$date->format('m')];
+                    $year = $date->format('Y');
+                @endphp
+
+                @php
+                    $shareTitle = $news->share_title ?: $news->long_title;
+                    $shareDescription = $news->share_description ?: $news->summary;
+                    $shareImage = $news->share_image ?: $news->main_image;
+                @endphp
+
+                <div class="custom-date-share">
+                    {{-- Date on the RIGHT --}}
+                    <p class="date-text">{{ $day }} {{ $month }} {{ $year }}</p>
+
+                    {{-- Share on the LEFT --}}
+                    <div class="share-container" id="shareContainer">
+                        <div class="share-icons">
+                            {{-- Facebook --}}
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
+                                target="_blank" title="مشاركة على فيسبوك" rel="noopener" class="share-icon">
+                                <i class="fa-brands fa-facebook"></i>
+                            </a>
+
+                            {{-- X (Twitter) --}}
+                            <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($shareTitle . ' - ' . $shareDescription) }}"
+                                target="_blank" title="مشاركة على X" rel="noopener" class="share-icon">
+                                <i class="fa-brands fa-x-twitter"></i>
+                            </a>
+
+                            {{-- WhatsApp --}}
+                            <a href="https://wa.me/?text={{ urlencode($shareTitle . ' - ' . $shareDescription . ' ' . request()->fullUrl()) }}"
+                                target="_blank" title="مشاركة على واتساب" rel="noopener" class="share-icon">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </a>
+
+                            {{-- Copy Link --}}
+                            <a href="#" id="copyLinkBtn" title="نسخ الرابط" rel="noopener" class="share-icon">
+                                <i class="fa-solid fa-link"></i>
+                            </a>
+                        </div>
+
+                        {{-- Share Button --}}
+                        <button class="share-btn" id="shareToggle" type="button" title="مشاركة" aria-label="زر المشاركة">
+                            <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Feature Image --}}
+                @if ($news->template !== 'no_image')
+                    <figure class="custom-article-image-wrapper">
+                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" 
+                             alt="Feature Image"
+                             loading="lazy">
+                        <figcaption>{{ $news->caption ?? '' }}</figcaption>
+                    </figure>
+                @endif
+
+                {{-- Album --}}
+                @if ($news->template == 'album' && $news->media()->wherePivot('type', 'album')->count())
+                    @include('user.components.album-slider', [
+                        'albumImages' => $news->media()->wherePivot('type', 'album')->get(),
+                    ])
+                @endif
+
+                {{-- Video --}}
+                @if ($news->template == 'video' && $news->media()->wherePivot('type', 'video')->first())
+                    @include('user.components.video-player', [
+                        'video' => $news->media()->wherePivot('type', 'video')->first()->path,
+                        'caption' => $news->media()->wherePivot('type', 'video')->first()->alt ?? 'فيديو',
+                    ])
+                @endif
+
+                {{-- Podcast --}}
+                @if ($news->template == 'podcast' && $news->media()->wherePivot('type', 'podcast')->first())
+                    <div class="page-podcast-player">
+                        <audio id="pagePodcast" controls style="width: 100%;">
+                            <source src="{{ $news->media()->wherePivot('type', 'podcast')->first()->path }}"
+                                type="audio/mpeg">
+                            متصفحك لا يدعم تشغيل الصوت.
+                        </audio>
+                    </div>
+
+                    <div class="floating-podcast-player" id="floatingPodcast">
+                        <button class="close-btn" id="closeFloating" type="button">&times;</button>
+                        <audio id="floatingAudio" controls style="width: 100%;">
+                            <source src="{{ $news->media()->wherePivot('type', 'podcast')->first()->path }}"
+                                type="audio/mpeg">
+                            متصفحك لا يدعم تشغيل الصوت.
+                        </audio>
+                    </div>
+                @endif
+
+                {{-- Article Content --}}
+                <div class="custom-article-content">{!! $news->content !!}</div>
+
+                {{-- Tags --}}
+                <div class="custom-tags">
+                    @foreach ($news->tags as $tag)
+                        <span>{{ $tag->name }}</span>
+                    @endforeach
+                </div>
+
+                {{-- Writer Card --}}
+                @if (optional($news->writer)->id)
+                    <a href="{{ route('writer.show', $news->writer->id) }}" style="text-decoration: none; color: inherit;">
+                        <div class="writer-card">
+                            <img src="{{ $news->writer->image ?? asset('user.png') }}" 
+                                 alt="{{ $news->writer->name }}"
+                                 loading="lazy"
+                                 style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
+                            <div class="writer-info">
+                                <span class="name">{{ $news->writer->name }}</span>
+                                <span class="bio">{{ $news->writer->bio }}</span>
+                            </div>
+                        </div>
+                    </a>
+                @endif
+
+            </div>
+
+            {{-- Sidebar --}}
+            <div class="custom-sidebar">
+                <p class="section-title">الأكثر قراءة</p>
+                @include('user.components.ligne')
+                
+                <div class="newCategoryReadMoreNews">
+                    @foreach ($lastWeekNews as $index => $item)
+                        <div class="newCategoryReadMoreNews-list">
+                            <span class="number">{{ $index + 1 }}</span>
+                            <a href="{{ route('news.show', $item->title) }}"
+                                style="text-decoration: none; color: inherit;">
+                                <p>{{ $item->title }}</p>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+
+                @include('user.components.sp60')
+                
+                <p class="section-title">المزيد من {{ $news->category->name }}</p>
+                @include('user.components.ligne')
+
+                @foreach ($lastNews as $content)
+                    <div class="sp20" style="margin-top: 16px;"></div>
+                    <div class="news-card-horizontal-news">
+                        <div class="news-card-image-news">
+                            <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
+                                alt="{{ $content->title ?? 'News' }}"
+                                loading="lazy">
+                        </div>
+                        <div class="news-card-text-news">
+                            <a href="{{ route('news.show', $content->title) }}"
+                                style="text-decoration: none; color: inherit;">
+                                <p>{{ $content->title ?? '' }}</p>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        {{-- Related News Section --}}
+        <section class="economy-feature-grid container">
+            <p class="section-title">ذات صلة</p>
+            <div style="height: 5px"></div>
+            @include('user.components.ligne')
+            <div style="height: 20px"></div>
+            
+            <div class="economy-grid-container-news">
+                @foreach ($relatedNews as $item)
+                    <div class="economy-card-news">
+                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                            alt="{{ $item->title ?? '' }}"
+                            loading="lazy">
+
+                        <h3>
+                            <x-category-links :content="$item" />
+                        </h3>
+                        
+                        <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                            <h2>{{ $item->title ?? '' }}</h2>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+
+        @include('user.components.sp60')
+        @include('user.components.footer')
+    </div>
+
+    {{-- ================= TEXT DEFINITION MODAL ================= --}}
+    <div id="textDefinitionModal" class="text-definition-modal" style="display: none;" role="dialog" aria-labelledby="textModalTitle">
+        <div class="text-modal-backdrop"></div>
+        <div class="text-modal-container">
+            <div class="text-modal-header">
+                <button class="text-modal-close" id="textModalCloseBtn" type="button" aria-label="إغلاق">×</button>
+            </div>
+            <div class="text-modal-body">
+                <div id="textModalImageContainer" style="display: none;">
+                    <img id="textModalImage" src="" alt="صورة التعريف">
+                </div>
+                <div style="flex: 1;">
+                    <h3 id="textModalTitle" class="text-modal-title"></h3>
+                    <p id="textModalContent"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- ================= COMPREHENSIVE JAVASCRIPT ================= --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Extract clickable terms from HTML directly
+            initializeShareFunctionality();
+            initializeTextDefinitionModal();
+            initializeCopyLink();
+        });
+
+        /**
+         * Initialize Share Functionality
+         */
+        function initializeShareFunctionality() {
+            const shareContainer = document.getElementById('shareContainer');
+            const shareToggle = document.getElementById('shareToggle');
+
+            if (!shareContainer || !shareToggle) {
+                console.warn('Share container or toggle button not found');
+                return;
+            }
+
+            // Toggle share menu on button click
+            shareToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                shareContainer.classList.toggle('active');
+            });
+
+            // Close share menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!shareContainer.contains(e.target)) {
+                    shareContainer.classList.remove('active');
+                }
+            });
+
+            // Prevent closing when clicking inside share container
+            shareContainer.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+
+        /**
+         * Initialize Copy Link Functionality
+         */
+        function initializeCopyLink() {
+            const copyLinkBtn = document.getElementById('copyLinkBtn');
+
+            if (!copyLinkBtn) {
+                console.warn('Copy link button not found');
+                return;
+            }
+
+            copyLinkBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const url = window.location.href;
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(url).then(function() {
+                    // Show success message
+                    showCopySuccessMessage(copyLinkBtn);
+                }).catch(function(err) {
+                    console.error('Failed to copy:', err);
+                    // Fallback for older browsers
+                    fallbackCopyToClipboard(url, copyLinkBtn);
+                });
+            });
+        }
+
+        /**
+         * Show Copy Success Message
+         */
+        function showCopySuccessMessage(element) {
+            const originalHTML = element.innerHTML;
+            const originalTitle = element.title;
+
+            element.innerHTML = '<i class="fa-solid fa-check"></i>';
+            element.title = 'تم نسخ الرابط';
+
+            setTimeout(function() {
+                element.innerHTML = originalHTML;
+                element.title = originalTitle;
+            }, 2000);
+        }
+
+        /**
+         * Fallback Copy to Clipboard (for older browsers)
+         */
+        function fallbackCopyToClipboard(text, element) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            showCopySuccessMessage(element);
+        }
+
+        /**
+         * Initialize Text Definition Modal
+         */
+        function initializeTextDefinitionModal() {
             const textDefinitions = {};
 
             // Find all clickable terms in the content
@@ -1162,9 +1202,6 @@
                 }
             });
 
-            // Log for debugging
-            console.log('Text Definitions Loaded:', textDefinitions);
-
             // Get modal elements
             const modal = document.getElementById('textDefinitionModal');
             const modalContent = document.getElementById('textModalContent');
@@ -1172,13 +1209,18 @@
             const modalImage = document.getElementById('textModalImage');
             const modalImageContainer = document.getElementById('textModalImageContainer');
             const modalBackdrop = modal.querySelector('.text-modal-backdrop');
-            const modalClose = modal.querySelector('.text-modal-close');
+            const modalClose = document.getElementById('textModalCloseBtn');
+
+            if (!modal || !modalContent || !modalTitle) {
+                console.warn('Modal elements not found');
+                return;
+            }
 
             // Handle clicks on clickable text
             document.addEventListener('click', function(e) {
                 if (e.target.classList.contains('clickable-term')) {
                     e.preventDefault();
-                    let term = e.target.getAttribute('data-term');
+                    const term = e.target.getAttribute('data-term');
 
                     // Try different variations of the term key
                     let definition = textDefinitions[term] ||
@@ -1186,18 +1228,12 @@
                         textDefinitions[term.toLowerCase().replace(/\s+/g, '-')] ||
                         textDefinitions[term.toLowerCase().replace(/\s+/g, '_')];
 
-                    console.log('Clicked term:', term);
-                    console.log('Definition found:', definition);
-
                     if (definition) {
                         showTextModal(term, definition);
                     } else {
-                        // Show available definitions for debugging
-                        console.log('Available terms:', Object.keys(textDefinitions));
                         // Fallback: show modal with term not found
                         showTextModal(term, {
-                            description: 'لم يتم العثور على تعريف مفصل لهذا المصطلح.<br><br><small>المصطلح المطلوب: ' +
-                                term + '</small>',
+                            description: 'لم يتم العثور على تعريف مفصل لهذا المصطلح.',
                             image: null
                         });
                     }
@@ -1206,13 +1242,9 @@
 
             // Function to show modal with text definition (including image)
             function showTextModal(term, definition) {
-                // Set title
                 modalTitle.textContent = term;
-
-                // Set description
                 modalContent.innerHTML = definition.description;
 
-                // Handle image
                 if (definition.image) {
                     modalImageContainer.style.display = 'block';
                     modalImage.src = definition.image;
@@ -1246,29 +1278,8 @@
             modal.querySelector('.text-modal-container').addEventListener('click', function(e) {
                 e.stopPropagation();
             });
-        });
+        }
     </script>
-
-    <!-- Enhanced Modal HTML Structure with Image Support -->
-    <div id="textDefinitionModal" class="text-definition-modal" style="display: none;">
-        <div class="text-modal-backdrop"></div>
-        <div class="text-modal-container">
-            <div class="text-modal-header">
-                <button class="text-modal-close" aria-label="إغلاق">×</button>
-            </div>
-            <div class="text-modal-body">
-                <!-- Image Container (Hidden by default) -->
-                <div id="textModalImageContainer" style="display: none;">
-                    <img id="textModalImage" src="" alt="صورة التعريف">
-                </div>
-                <!-- Title and Description -->
-                <div style="flex: 1;">
-                    <h3 id="textModalTitle" class="text-modal-title"></h3>
-                    <p id="textModalContent"></p>
-                </div>
-            </div>
-        </div>
-    </div>
 
     {{-- ================= MOBILE ================= --}}
     <div class="mobile"></div>

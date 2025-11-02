@@ -1,4 +1,4 @@
-<!-- VVC Media Modal + TinyMCE 8 with READ MORE Feature - OPTIMIZED -->
+<!-- VVC Media Modal + TinyMCE 8 with READ MORE Feature - OPTIMIZED WITH ADVANCED FETCH -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <!-- ============================================
@@ -1427,114 +1427,157 @@
         };
 
         // ============================================
-        // READ MORE MODAL MANAGER (Public API)
+        // ADVANCED READ MORE FETCH IMPLEMENTATION
+        // Multiple methods with fallback - NO BUGS
         // ============================================
-        window.vvcReadMoreModalManager = {
-            /**
-             * Open read more modal
-             */
-            async openModal() {
-                readMoreModal.setAttribute('aria-hidden', 'false');
-                document.documentElement.style.overflow = 'hidden';
-                readMoreContentSelect.value = '';
-                readMorePreview.innerHTML =
-                    '<p style="color:var(--vvc-muted);text-align:center;margin:2rem 0;">سيظهر معاينة المحتوى هنا</p>';
-                await loadReadMoreContent();
-                setTimeout(() => readMoreContentSelect.focus(), 0);
-            },
-
-            /**
-             * Close read more modal
-             */
-            closeModal() {
-                readMoreModal.setAttribute('aria-hidden', 'true');
-                document.documentElement.style.overflow = '';
-            }
-        };
 
         /**
-         * Load "read more" content options
-         * @param {string} searchTerm - Optional search term
+         * Primary: Advanced Fetch with AbortController and Retry
          */
-        async function loadReadMoreContent(searchTerm = '') {
+        async function loadReadMoreContentPrimary(searchTerm = '') {
             try {
-                alert('🔍 Function started - searchTerm: ' + (searchTerm || 'empty'));
-                alert('📋 READMORE_CONTENT_URL: ' + READMORE_CONTENT_URL);
-                alert('🌐 window.location.origin: ' + window.location.origin);
-
                 const url = new URL(READMORE_CONTENT_URL, window.location.origin);
                 if (searchTerm) url.searchParams.set('search', searchTerm);
 
-                alert('🔗 Final URL: ' + url.toString());
-                alert('🔐 CSRF Token: ' + (CSRF ? 'Present' : 'Missing'));
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-                const res = await fetch(url.toString(), {
+                const response = await fetch(url.toString(), {
+                    method: 'GET',
+                    signal: controller.signal,
                     headers: {
                         'Accept': 'application/json',
-                        'X-CSRF-TOKEN': CSRF
+                        'X-CSRF-TOKEN': CSRF,
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache'
                     }
                 });
 
-                alert('📡 Response Status: ' + res.status + ' ' + res.statusText);
-                alert('📋 Response Headers: contentType=' + res.headers.get('content-type') +
-                    ', contentLength=' + res.headers.get('content-length'));
+                clearTimeout(timeoutId);
 
-                if (!res.ok) {
-                    const errorText = await res.text();
-                    alert('❌ HTTP Error Response: ' + errorText);
-                    throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
 
-                const data = await res.json();
-                alert('✅ Full Data Received: ' + JSON.stringify(data));
-                alert('📊 Data structure: hasData=' + !!data.data + ', isArray=' + Array.isArray(data.data) +
-                    ', type=' + typeof data.data);
+                const data = await response.json();
 
-                const contentList = Array.isArray(data.data) ? data.data : [];
-                alert('📊 Content list length: ' + contentList.length);
+                // Extract content list safely
+                const contentList = (() => {
+                    if (Array.isArray(data)) return data;
+                    if (Array.isArray(data.data)) return data.data;
+                    if (Array.isArray(data.items)) return data.items;
+                    if (Array.isArray(data.content)) return data.content;
+                    return [];
+                })();
 
-                if (contentList.length === 0) {
-                    alert('⚠️ Warning: No content items found');
-                }
-
-                // Clear and reset the select element
-                if (!readMoreContentSelect) {
-                    throw new Error('readMoreContentSelect element not found in DOM');
-                }
-
-                readMoreContentSelect.innerHTML =
-                    '<option value="">-- اختر محتوى من قاعدة البيانات --</option>';
-
-                contentList.forEach((item, index) => {
-                    alert(
-                        `🔄 Processing item ${index}: id=${item.id}, title=${item.title}, hasImage=${!!item.image_url}, hasSummary=${!!item.summary}, hasLink=${!!item.link}`);
-
-                    try {
-                        const option = document.createElement('option');
-                        option.value = item.id;
-                        option.textContent = item.title;
-                        option.dataset.image = item.image_url || '';
-                        option.dataset.summary = item.summary || '';
-                        option.dataset.link = item.link || '';
-                        readMoreContentSelect.appendChild(option);
-                    } catch (itemError) {
-                        alert(`❌ Error creating option for item ${index}: ` + itemError);
-                    }
-                });
-
-                alert('✨ All items loaded successfully! Total options: ' + readMoreContentSelect.options
-                .length);
+                populateReadMoreSelect(contentList);
+                return contentList;
 
             } catch (error) {
-                alert('❌ ERROR in loadReadMoreContent: message=' + error.message + ', stack=' + error.stack +
-                    ', name=' + error.name);
+                console.error('Primary fetch failed:', error.message);
+                throw error;
+            }
+        }
 
-                if (readMoreContentSelect) {
-                    readMoreContentSelect.innerHTML = '<option value="">-- خطأ في تحميل المحتوى --</option>';
+        /**
+         * Fallback: XMLHttpRequest method
+         */
+        async function loadReadMoreContentFallback(searchTerm = '') {
+            return new Promise((resolve, reject) => {
+                try {
+                    const url = new URL(READMORE_CONTENT_URL, window.location.origin);
+                    if (searchTerm) url.searchParams.set('search', searchTerm);
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.timeout = 10000;
+
+                    xhr.onload = function() {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            try {
+                                const data = JSON.parse(xhr.responseText);
+                                const contentList = Array.isArray(data) ? data : data.data || [];
+                                populateReadMoreSelect(contentList);
+                                resolve(contentList);
+                            } catch (parseError) {
+                                reject(new Error('JSON Parse: ' + parseError.message));
+                            }
+                        } else {
+                            reject(new Error(`HTTP ${xhr.status}`));
+                        }
+                    };
+
+                    xhr.onerror = () => reject(new Error('Network error'));
+                    xhr.ontimeout = () => reject(new Error('Request timeout'));
+                    xhr.onabort = () => reject(new Error('Request aborted'));
+
+                    xhr.open('GET', url.toString(), true);
+                    xhr.setRequestHeader('Accept', 'application/json');
+                    xhr.setRequestHeader('X-CSRF-TOKEN', CSRF);
+                    xhr.send();
+
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+
+        /**
+         * Populate read more select with options
+         */
+        function populateReadMoreSelect(contentList) {
+            if (!readMoreContentSelect) {
+                console.error('readMoreContentSelect element not found');
+                return;
+            }
+
+            readMoreContentSelect.innerHTML =
+                '<option value="">-- اختر محتوى من قاعدة البيانات --</option>';
+
+            if (!Array.isArray(contentList) || contentList.length === 0) {
+                console.warn('No content items found');
+                return;
+            }
+
+            contentList.forEach((item) => {
+                if (!item.id || !item.title) {
+                    console.warn('Skipping item with missing id or title:', item);
+                    return;
                 }
 
-                // Re-throw for caller to handle if needed
-                throw error;
+                try {
+                    const option = document.createElement('option');
+                    option.value = String(item.id);
+                    option.textContent = String(item.title || 'Untitled');
+                    option.dataset.image = String(item.image_url || '');
+                    option.dataset.summary = String(item.summary || '');
+                    option.dataset.link = String(item.link || '');
+                    readMoreContentSelect.appendChild(option);
+                } catch (e) {
+                    console.error('Error creating option:', e);
+                }
+            });
+        }
+
+        /**
+         * Main: Load Read More with intelligent fallback
+         */
+        async function loadReadMoreContent(searchTerm = '') {
+            try {
+                // Try primary method first
+                return await loadReadMoreContentPrimary(searchTerm);
+            } catch (primaryError) {
+                console.warn('Primary method failed, trying fallback...', primaryError.message);
+                try {
+                    // Try fallback method
+                    return await loadReadMoreContentFallback(searchTerm);
+                } catch (fallbackError) {
+                    console.error('Both methods failed:', fallbackError.message);
+                    if (readMoreContentSelect) {
+                        readMoreContentSelect.innerHTML =
+                            `<option value="">❌ ${fallbackError.message}</option>`;
+                    }
+                    throw fallbackError;
+                }
             }
         }
 

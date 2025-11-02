@@ -27,7 +27,6 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('dashboard')->group(function () {
-    Route::get('/getReadMoreContent', [ContentController::class, 'getReadMoreContent'])->name('dashboard.content.getReadMoreContent');
 
     Route::middleware(['guesto'])->group(function () {
         Route::get('/auth', [AuthController::class, 'auth'])->name('dashboard.user.auth');
@@ -119,5 +118,6 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/{id}', [ContentActionController::class, 'content_actions'])->name('dashboard.content.actions');
         Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
         Route::post('/media-url-store', [MediaController::class, 'storeMediaUrl'])->name('dashboard.media_url.store');
+        Route::get('/getReadMoreContent', [ContentController::class, 'getReadMoreContent'])->name('dashboard.content.getReadMoreContent');
     });
 });
