@@ -1458,15 +1458,15 @@
          */
         async function loadReadMoreContent(searchTerm = '') {
             try {
-                console.log('🔍 Function started - searchTerm:', searchTerm || 'empty');
-                console.log('📋 READMORE_CONTENT_URL:', READMORE_CONTENT_URL);
-                console.log('🌐 window.location.origin:', window.location.origin);
+                alert('🔍 Function started - searchTerm: ' + (searchTerm || 'empty'));
+                alert('📋 READMORE_CONTENT_URL: ' + READMORE_CONTENT_URL);
+                alert('🌐 window.location.origin: ' + window.location.origin);
 
                 const url = new URL(READMORE_CONTENT_URL, window.location.origin);
                 if (searchTerm) url.searchParams.set('search', searchTerm);
 
-                console.log('🔗 Final URL:', url.toString());
-                console.log('🔐 CSRF Token:', CSRF ? 'Present' : 'Missing');
+                alert('🔗 Final URL: ' + url.toString());
+                alert('🔐 CSRF Token: ' + (CSRF ? 'Present' : 'Missing'));
 
                 const res = await fetch(url.toString(), {
                     headers: {
@@ -1475,31 +1475,26 @@
                     }
                 });
 
-                console.log('📡 Response Status:', res.status, res.statusText);
-                console.log('📋 Response Headers:', {
-                    contentType: res.headers.get('content-type'),
-                    contentLength: res.headers.get('content-length')
-                });
+                alert('📡 Response Status: ' + res.status + ' ' + res.statusText);
+                alert('📋 Response Headers: contentType=' + res.headers.get('content-type') +
+                    ', contentLength=' + res.headers.get('content-length'));
 
                 if (!res.ok) {
                     const errorText = await res.text();
-                    console.error('❌ HTTP Error Response:', errorText);
+                    alert('❌ HTTP Error Response: ' + errorText);
                     throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
                 }
 
                 const data = await res.json();
-                console.log('✅ Full Data Received:', data);
-                console.log('📊 Data structure:', {
-                    hasData: !!data.data,
-                    isArray: Array.isArray(data.data),
-                    type: typeof data.data
-                });
+                alert('✅ Full Data Received: ' + JSON.stringify(data));
+                alert('📊 Data structure: hasData=' + !!data.data + ', isArray=' + Array.isArray(data.data) +
+                    ', type=' + typeof data.data);
 
                 const contentList = Array.isArray(data.data) ? data.data : [];
-                console.log('📊 Content list length:', contentList.length);
+                alert('📊 Content list length: ' + contentList.length);
 
                 if (contentList.length === 0) {
-                    console.warn('⚠️ Warning: No content items found');
+                    alert('⚠️ Warning: No content items found');
                 }
 
                 // Clear and reset the select element
@@ -1511,13 +1506,8 @@
                     '<option value="">-- اختر محتوى من قاعدة البيانات --</option>';
 
                 contentList.forEach((item, index) => {
-                    console.log(`🔄 Processing item ${index}:`, {
-                        id: item.id,
-                        title: item.title,
-                        hasImage: !!item.image_url,
-                        hasSummary: !!item.summary,
-                        hasLink: !!item.link
-                    });
+                    alert(
+                        `🔄 Processing item ${index}: id=${item.id}, title=${item.title}, hasImage=${!!item.image_url}, hasSummary=${!!item.summary}, hasLink=${!!item.link}`);
 
                     try {
                         const option = document.createElement('option');
@@ -1528,19 +1518,16 @@
                         option.dataset.link = item.link || '';
                         readMoreContentSelect.appendChild(option);
                     } catch (itemError) {
-                        console.error(`❌ Error creating option for item ${index}:`, itemError);
+                        alert(`❌ Error creating option for item ${index}: ` + itemError);
                     }
                 });
 
-                console.log('✨ All items loaded successfully! Total options:', readMoreContentSelect.options
-                    .length);
+                alert('✨ All items loaded successfully! Total options: ' + readMoreContentSelect.options
+                .length);
 
             } catch (error) {
-                console.error('❌ ERROR in loadReadMoreContent:', {
-                    message: error.message,
-                    stack: error.stack,
-                    name: error.name
-                });
+                alert('❌ ERROR in loadReadMoreContent: message=' + error.message + ', stack=' + error.stack +
+                    ', name=' + error.name);
 
                 if (readMoreContentSelect) {
                     readMoreContentSelect.innerHTML = '<option value="">-- خطأ في تحميل المحتوى --</option>';
