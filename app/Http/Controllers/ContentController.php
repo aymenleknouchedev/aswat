@@ -1236,56 +1236,52 @@ class ContentController extends BaseController
         try {
             $search = $request->get('search', '');
 
-            // Create cache key based on search term
-            $cacheKey = 'read_more_content_' . md5($search);
+            // Query published content with media relationship eager loaded
+            $query = Content::where('status', 'published')
+                ->with(['media' => function ($q) {
+                    $q->wherePivot('type', 'main');
+                }]);
 
-            // Cache for 30 minutes
-            $content = Cache::remember($cacheKey, 30 * 60, function () use ($search) {
-                // Query published content with media relationship eager loaded
-                $query = Content::where('status', 'published')
-                    // ✅ Load media relationship with pivot filter for 'main' type images
-                    ->with(['media' => function ($q) {
-                        $q->wherePivot('type', 'main');
-                    }]);
+            // Select only needed columns
+            $query->select([
+                'id',
+                'title',
+                'summary',
+                'created_at'
+            ]);
 
-                // Select only needed columns
-                $query->select([
-                    'id',
-                    'title',
-                    'summary',
-                    'created_at'
-                ]);
+            // Add search filter if provided
+            if (!empty($search)) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'LIKE', '%' . $search . '%')
+                        ->orWhere('summary', 'LIKE', '%' . $search . '%');
+                });
+            }
 
-                // Add search filter if provided
-                if (!empty($search)) {
-                    $query->where(function ($q) use ($search) {
-                        $q->where('title', 'LIKE', '%' . $search . '%')
-                            ->orWhere('summary', 'LIKE', '%' . $search . '%');
-                    });
-                }
+            // Get results
+            $results = $query->orderBy('created_at', 'desc')
+                ->limit(50)
+                ->get();
 
-                // Get results
-                $results = $query->orderBy('created_at', 'desc')
-                    ->limit(50)
-                    ->get();
+            // Map to expected format
+            $content = $results->map(function ($item) {
+                // Get main image from media relationship
+                $mainImage = $item->media()
+                    ->wherePivot('type', 'main')
+                    ->first();
 
-                // Map to expected format
-                return $results->map(function ($item) {
-                    // ✅ Get main image from media relationship (same as Blade code)
-                    $mainImage = $item->media()
-                        ->wherePivot('type', 'main')
-                        ->first();
+                // Build content URL
+                $contentUrl = url('/content/' . $item->id);
 
-                    return [
-                        'id' => $item->id,
-                        'title' => $item->title ?? 'Untitled',
-                        // ✅ Convert image path to full URL
-                        'image_url' => $mainImage ? $this->getFullImageUrl($mainImage->path) : null,
-                        'summary' => $this->truncateSummary($item->summary),
-                        'created_at' => $item->created_at->format('Y-m-d H:i:s'),
-                    ];
-                })->toArray();
-            });
+                return [
+                    'id' => $item->id,
+                    'title' => $item->title ?? 'Untitled',
+                    'image_url' => $mainImage ? $this->getFullImageUrl($mainImage->path) : null,
+                    'summary' => $this->truncateSummary($item->summary),
+                    'link' => $contentUrl,
+                    'created_at' => $item->created_at->format('Y-m-d H:i:s'),
+                ];
+            })->toArray();
 
             return response()->json([
                 'success' => true,
@@ -1293,6 +1289,13 @@ class ContentController extends BaseController
                 'message' => 'Content fetched successfully'
             ]);
         } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error('Readmore API Error', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
 
             return response()->json([
                 'success' => false,
