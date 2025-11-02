@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'أصوات جزائرية | تحديث الترند الرئيسي')
+@section('title', 'أصوات جزائرية | إدارة الاتجاه')
 
 @section('content')
     <div class="nk-app-root">
@@ -13,13 +13,9 @@
                     <div class="container">
 
                         <div class="nk-block-head mb-4">
-                            <h4 class="nk-block-title mb-2" data-en="Update Principal Trend" data-ar="تحديث الترند الرئيسي">
-                                تحديث الترند الرئيسي
+                            <h4 class="nk-block-title mb-2" data-en="Update Principal Trend" data-ar="إدارة الاتجاه">
+                                إدارة الاتجاه
                             </h4>
-                            <p class="text-muted" data-en="Choose a new trend and status below."
-                                data-ar="اختر الترند الجديد وحالته من السطر أدناه.">
-                                اختر الترند الجديد وحالته من السطر أدناه.
-                            </p>
                         </div>
 
                         @if (session('success'))
@@ -48,8 +44,8 @@
                                     <table class="table table-hover align-middle">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th data-ar="الترند الحالي" data-en="Current Trend">الترند الحالي</th>
-                                                <th data-ar="الترند الجديد" data-en="New Trend">الترند الجديد</th>
+                                                <th data-ar="الاتجاه الحالي" data-en="Current Trend">الاتجاه الحالي</th>
+                                                <th data-ar="قائمة الاتجاهات" data-en="New Trend">قائمة الاتجاهات</th>
                                                 <th data-ar="الحالة" data-en="Status">الحالة</th>
                                                 <th data-ar="تحديث" data-en="Update">تحديث</th>
                                             </tr>
@@ -86,7 +82,7 @@
                                                     </td>
                                                     <td>
                                                         <button type="submit"
-                                                            class="btn btn-primary btn-sm px-3">تحديث</button>
+                                                            class="btn btn-primary btn-sm px-3">حفظ</button>
                                                     </td>
                                                 </form>
                                             </tr>

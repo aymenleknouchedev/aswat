@@ -64,6 +64,7 @@
             font-size: 20px;
             cursor: pointer;
             color: var(--bs-secondary-color);
+            opacity: 0;
             width: 24px;
             height: 24px;
             border-radius: 50%;
@@ -75,6 +76,7 @@
         .btn-delete:hover {
             background-color: var(--bs-tertiary-bg);
             color: var(--bs-danger);
+            opacity: 1;
         }
 
         /* ===== LAYOUT STYLES ===== */
@@ -753,8 +755,8 @@
                                     <!-- Category -->
                                     <div class="search-wrapper">
                                         <div class="search-container category-selector">
-                                            <label class="form-label required-field" for="category" data-ar="الصنف"
-                                                data-en="category">الصنف</label>
+                                            <label class="form-label required-field" for="category" data-ar="التصنيف"
+                                                data-en="category">التصنيف</label>
                                             <input type="hidden" name="category_id" required class="hidden-input"
                                                 value="{{ old('category_id') }}">
                                             <div class="selected-item" style="display: none;">
@@ -856,8 +858,8 @@
                                     <!-- Trend -->
                                     <div class="search-wrapper">
                                         <div class="search-container category-selector">
-                                            <label class="form-label" for="trend" data-ar="الترند"
-                                                data-en="Trend">الترند</label>
+                                            <label class="form-label" for="trend" data-ar="الاتجاه"
+                                                data-en="Trend">الاتجاه</label>
                                             <input type="hidden" name="trend_id" class="hidden-input"
                                                 value="{{ old('trend_id') }}">
                                             <div class="selected-item" style="display: none;">
@@ -925,8 +927,8 @@
                                 <div class="fields-row">
                                     <div class="search-wrapper" style="flex: 1;">
                                         <div class="multi-select-container">
-                                            <label class="form-label" for="writers_id" data-ar="الكتاب"
-                                                data-en="Writers">الكتاب</label>
+                                            <label class="form-label" for="writers_id" data-ar="الكاتب"
+                                                data-en="Writers">الكاتب</label>
 
                                             {{-- SELECTED + SEARCH (SERVER-RENDER OLD WRITERS) --}}
                                             @php
@@ -939,16 +941,21 @@
                                                     @if (is_array($oldWriters) && count($oldWriters))
                                                         @foreach ($oldWriters as $writerData)
                                                             @php
-                                                                $wid = is_array($writerData) ? ($writerData['id'] ?? null) : null;
-                                                                $role = is_array($writerData) ? ($writerData['role'] ?? '') : '';
+                                                                $wid = is_array($writerData)
+                                                                    ? $writerData['id'] ?? null
+                                                                    : null;
+                                                                $role = is_array($writerData)
+                                                                    ? $writerData['role'] ?? ''
+                                                                    : '';
                                                             @endphp
                                                             @if ($wid && isset($writerById[$wid]))
                                                                 <div class="writer-item" data-id="{{ $wid }}">
                                                                     <div class="writer-info">
-                                                                        <span class="writer-name">{{ $writerById[$wid]->name }}</span>
-                                                                        <input type="text" class="writer-role-input" 
-                                                                            name="writers[{{ $wid }}][role]" 
-                                                                            value="{{ $role }}" 
+                                                                        <span
+                                                                            class="writer-name">{{ $writerById[$wid]->name }}</span>
+                                                                        <input type="text" class="writer-role-input"
+                                                                            name="writers[{{ $wid }}][role]"
+                                                                            value="{{ $role }}"
                                                                             placeholder="الدور (مثل: كاتب رئيسي, محرر, ...)">
                                                                     </div>
                                                                     <button type="button" class="writer-delete"
@@ -986,7 +993,9 @@
                                                 @if (is_array($oldWriters) && count($oldWriters))
                                                     @foreach ($oldWriters as $writerData)
                                                         @php
-                                                            $wid = is_array($writerData) ? ($writerData['id'] ?? null) : null;
+                                                            $wid = is_array($writerData)
+                                                                ? $writerData['id'] ?? null
+                                                                : null;
                                                         @endphp
                                                         @if ($wid)
                                                             <input type="hidden" name="writers[{{ $wid }}][id]"
@@ -1101,17 +1110,6 @@
                                     </div>
                                 </div>
 
-                                {{-- ===== SEO KEYWORD FIELD ===== --}}
-                                <div class="form-group col-12 mb-3">
-                                    <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
-                                        data-en="SEO Keyword">الكلمة الرئيسية</label>
-                                    <span style="color:var(--bs-danger);">*</span>
-                                    <div class="form-control-wrap">
-                                        <input required id="seo_keyword" name="seo_keyword" type="text"
-                                            class="form-control form-control" maxlength="50"
-                                            value="{{ old('seo_keyword', '') }}">
-                                    </div>
-                                </div>
 
                                 {{-- ===== SUMMARY FIELD ===== --}}
                                 <div class="form-group col-12 my-3">
@@ -1133,6 +1131,18 @@
                                     <div class="form-control-wrap">
                                         <x-forms.tinymce-editor id="myeditorinstance" :value="old('content', $post->content ?? '')" name="content" />
                                     </div>
+                                </div>
+                            </div>
+
+                            {{-- ===== SEO KEYWORD FIELD ===== --}}
+                            <div class="form-group col-12 mb-3">
+                                <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
+                                    data-en="SEO Keyword">الكلمة الرئيسية</label>
+                                <span style="color:var(--bs-danger);">*</span>
+                                <div class="form-control-wrap">
+                                    <input required id="seo_keyword" name="seo_keyword" type="text"
+                                        class="form-control form-control" maxlength="50"
+                                        value="{{ old('seo_keyword', '') }}">
                                 </div>
                             </div>
 
@@ -1192,8 +1202,8 @@
                             <button name="status" value="draft" type="submit" class="btn btn-primary btn-lg me-3"
                                 data-ar="حفظ" data-en="Save as Draft">حفظ</button>
                             <button name="status" value="preview" type="submit" class="btn btn-primary btn-lg"
-                                style="margin-left: 10px; color: white;" data-ar="حفظ و معاينة"
-                                data-en="Save and Preview">حفظ و معاينة</button>
+                                style="margin-left: 10px; color: white;" data-ar="حفظ وعرض"
+                                data-en="Save and Show">حفظ وعرض</button>
                         </div>
                     </div>
 
@@ -2098,7 +2108,7 @@
                             selectWriterItem(li, name, String(id));
                         };
                         writersList.appendChild(li);
-                        
+
                         // Auto-select the new writer
                         selectWriterItem(li, name, String(id));
                     }

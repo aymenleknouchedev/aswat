@@ -11,7 +11,7 @@
                 @include('dashboard.components.header')
 
                 <div class="nk-content container">
-                    <div class="container bg-white">
+                    <div class="container bg-white ">
                         <div class="card-inner">
                             {{-- ===================== Header ===================== --}}
                             <div class="card-title mb-5">
@@ -35,26 +35,26 @@
                                                     data-ar="إدارة المحتوى">Content Management</h5>
                                             </div>
                                             <ul class="list-unstyled flex-grow-1">
+
                                                 <li class="mb-2">
                                                     <a href="{{ route('dashboard.content.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
-                                                        <em class="icon ni ni-plus text-primary me-2"></em>
+                                                        <i class="fas fa-plus text-primary me-2"></i>
                                                         <span data-en="Add Content" data-ar="إضافة محتوى">Add Content</span>
                                                     </a>
                                                 </li>
                                                 <li class="mb-2">
                                                     <a href="{{ route('dashboard.medias.index') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
-                                                        <em class="icon ni ni-upload-cloud text-success me-2"></em>
+                                                        <i class="fas fa-upload text-success me-2"></i>
                                                         <span data-en="Upload Media" data-ar="رفع وسائط">Upload Media</span>
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a href="{{ route('dashboard.breakingnew.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
-                                                        <em class="icon ni ni-alert-circle-fill text-danger me-2"></em>
-                                                        <span data-en="Add Breaking News" data-ar="إضافة خبر عاجل">Add
-                                                            Breaking News</span>
+                                                        <i class="fas fa-bolt text-danger me-2"></i>
+                                                        <span data-en="Add Breaking News" data-ar="إضافة خبر عاجل">Add Breaking News</span>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -78,22 +78,21 @@
                                                 <li class="mb-2">
                                                     <a href="{{ route('dashboard.categorie.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
-                                                        <em class="icon ni ni-list-thumb text-success me-2"></em>
-                                                        <span data-en="Add Category" data-ar="إضافة تصنيف">Add
-                                                            Category</span>
+                                                        <i class="fas fa-folder-plus text-success me-2"></i>
+                                                        <span data-en="Add Category" data-ar="إضافة تصنيف">Add Category</span>
                                                     </a>
                                                 </li>
                                                 <li class="mb-2">
                                                     <a href="{{ route('dashboard.trend.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
-                                                        <em class="icon ni ni-trend-up text-warning me-2"></em>
-                                                        <span data-en="Add Trend" data-ar="إضافة ترند">Add Trend</span>
+                                                        <i class="fas fa-chart-line text-warning me-2"></i>
+                                                        <span data-en="Add Trend" data-ar="إضافة اتجاه">Add Trend</span>
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a href="{{ route('dashboard.window.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
-                                                        <em class="icon ni ni-grid-alt text-info me-2"></em>
+                                                        <i class="fas fa-th-large text-info me-2"></i>
                                                         <span data-en="Add Window" data-ar="إضافة نافذة">Add Window</span>
                                                     </a>
                                                 </li>
@@ -118,21 +117,21 @@
                                                 <li class="mb-2">
                                                     <a href="{{ route('dashboard.user.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
-                                                        <em class="icon ni ni-user text-info me-2"></em>
+                                                        <i class="fas fa-user text-info me-2"></i>
                                                         <span data-en="Add User" data-ar="إضافة مستخدم">Add User</span>
                                                     </a>
                                                 </li>
                                                 <li class="mb-2">
                                                     <a href="{{ route('dashboard.writer.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
-                                                        <em class="icon ni ni-user-add text-primary me-2"></em>
+                                                        <i class="fas fa-user-plus text-primary me-2"></i>
                                                         <span data-en="Add Writer" data-ar="إضافة كاتب">Add Writer</span>
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a href="{{ route('dashboard.tag.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
-                                                        <em class="icon ni ni-tag-alt text-danger me-2"></em>
+                                                        <i class="fas fa-tag text-danger me-2"></i>
                                                         <span data-en="Add Tag" data-ar="إضافة وسم">Add Tag</span>
                                                     </a>
                                                 </li>

@@ -3,6 +3,13 @@
     <div class="container-fluid">
         <div class="nk-header-wrap">
 
+            <!-- Add New Content Button (Left Side) -->
+            <div class="nk-header-tools-left">
+                <a href="dashboard/content-create" class="btn btn-primary btn-sm">
+                    <em class="icon ni ni-plus"></em>
+                </a>
+            </div>
+
             <div class="nk-menu-trigger d-xl-none ms-n1">
                 <a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="sidebarMenu">
                     <em class="icon ni ni-menu"></em>

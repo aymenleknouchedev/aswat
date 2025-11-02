@@ -206,7 +206,7 @@
     <div class="vvc-backdrop" data-vvc-readmore-backdrop></div>
     <div class="vvc-container" role="document" style="max-width:800px;">
         <div class="vvc-header">
-            <h5 id="vvcReadMoreModalTitle">إدراج محتوى "إقرأ المزيد"</h5>
+            <h5 id="vvcReadMoreModalTitle">إدراج اقرأ المزيد</h5>
             <button class="vvc-close" type="button" data-vvc-readmore-close aria-label="إغلاق">&times;</button>
         </div>
         <div class="vvc-tab-body">
@@ -234,14 +234,13 @@
                     style="display:block;margin-bottom:0.5rem;font-weight:600;color:var(--vvc-heading-color);">معاينة:</label>
                 <div id="vvc-readmore-preview"
                     style="border:1px solid var(--vvc-border-color);padding:1rem;background:var(--vvc-gray-100);min-height:100px;">
-                    <p style="color:var(--vvc-muted);text-align:center;margin:2rem 0;">سيظهر معاينة المحتوى هنا</p>
+                    <p style="color:var(--vvc-muted);text-align:center;margin:2rem 0;">سوف تظهر معاينة المحتوى هنا</p>
                 </div>
             </div>
         </div>
         <!-- Footer -->
         <div class="vvc-footer">
-            <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-insert-readmore">إدراج "إقرأ
-                المزيد"</button>
+            <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-insert-readmore">إدراج</button>
             <button class="vvc-btn vvc-btn-cancel" type="button" data-vvc-readmore-close>إلغاء</button>
         </div>
     </div>
@@ -1438,7 +1437,7 @@
                 document.documentElement.style.overflow = 'hidden';
                 readMoreContentSelect.value = '';
                 readMorePreview.innerHTML =
-                    '<p style="color:var(--vvc-muted);text-align:center;margin:2rem 0;">سيظهر معاينة المحتوى هنا</p>';
+                    '<p style="color:var(--vvc-muted);text-align:center;margin:2rem 0;">ستظهر معاينة المحتوى هنا</p>';
                 await loadReadMoreContent();
                 setTimeout(() => readMoreContentSelect.focus(), 0);
             },
@@ -1508,7 +1507,7 @@
             }
             if (selectedOption.dataset.link) {
                 html +=
-                    `<a href="${escapeHtml(selectedOption.dataset.link)}" class="read-more-link">إقرأ المزيد</a>`;
+                    `<a href="${escapeHtml(selectedOption.dataset.link)}" class="read-more-link">اقرأ المزيد</a>`;
             }
             html += '</div></div>';
             readMorePreview.innerHTML = html;
@@ -1792,8 +1791,8 @@
 
             // ---- READ MORE BUTTON ----
             editor.ui.registry.addButton('vvcReadMore', {
-                text: 'إقرأ المزيد',
-                tooltip: 'إدراج محتوى إقرأ المزيد',
+                text: 'اقرأ المزيد',
+                tooltip: 'إدراج محتوى اقرأ المزيد',
                 onAction: () => {
                     if (window.vvcReadMoreModalManager?.openModal) {
                         window.vvcReadMoreModalManager.openModal();
@@ -1821,7 +1820,7 @@
                     }).catch((err) => {
                         alert(
                             '⚠️ تعذّر الوصول إلى الحافظة. يرجى استخدام Ctrl+V بدلاً من ذلك.'
-                            );
+                        );
                         console.error('Clipboard access error:', err);
                     });
                 }
@@ -1831,7 +1830,7 @@
         skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
         content_css: theme === 'dark' ? 'dark' : 'default',
         // Plugins
-        plugins: 'advlist anchor autolink autosave charmap code codesample directionality emoticons fullscreen help hr image imagetools importcss insertdatetime link lists media nonbreaking pagebreak preview print quickbars save searchreplace table template visualblocks visualchars wordcount',
+        plugins: 'advlist anchor autolink autosave charmap code codesample directionality emoticons fullscreen help hr image imagetools importcss insertdatetime link lists media nonbreaking pagebreak preview print save searchreplace table template visualblocks visualchars wordcount',
         toolbar_mode: 'wrap',
         // Toolbar configuration
         toolbar: [

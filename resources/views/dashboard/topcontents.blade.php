@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'أصوات جزائرية | إدارة المحتويات المميزة')
+@section('title', 'أصوات جزائرية | إدارة الأولى')
 
 @section('content')
     <div class="nk-app-root">
@@ -17,12 +17,10 @@
                             <div class="nk-block-head">
                                 <div class="nk-block-head-content d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h4 class="nk-block-title fw-bold" data-en="Top Contents Management" data-ar="إدارة المحتويات المميزة">
-                                            إدارة المحتويات المميزة
+                                        <h4 class="nk-block-title fw-bold" data-en="Top Contents Management" data-ar="إدارة الأولى">
+                                            إدارة الأولى
                                         </h4>
-                                        <p class="text-muted" data-en="Manage and reorder featured contents." data-ar="قم بإدارة وترتيب المحتويات المميزة.">
-                                            قم بإدارة وترتيب المحتويات المميزة.
-                                        </p>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -74,9 +72,9 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-12 col-md-4 col-lg-2 ms-auto text-end">
-                                        <button id="saveChangesBtn" class="btn btn-primary w-100 w-md-auto px-4">
-                                            💾 حفظ التغييرات
+                                    <div class="col-12 col-md-4 col-lg-2 ms-auto">
+                                        <button id="saveChangesBtn" class="btn btn-primary btn-sm px-3">
+                                            حفظ
                                         </button>
                                     </div>
                                 </form>

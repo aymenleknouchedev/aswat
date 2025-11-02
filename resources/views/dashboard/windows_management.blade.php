@@ -16,10 +16,6 @@
                         <div class="nk-block-head mb-4">
                             <h4 class="nk-block-title mb-2" data-en="Window Management" data-ar="إدارة النوافذ">إدارة النوافذ
                             </h4>
-                            <p class="text-muted" data-en="Manage all windows for each dashboard section below."
-                                data-ar="قم بإدارة جميع النوافذ لكل قسم من لوحة التحكم أدناه.">
-                                قم بإدارة جميع النوافذ لكل قسم من لوحة التحكم أدناه.
-                            </p>
                         </div>
 
                         <!-- ✅ رسائل النجاح -->
