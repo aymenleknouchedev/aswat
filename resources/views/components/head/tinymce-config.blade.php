@@ -761,7 +761,7 @@
         // ============================================
         const FETCH_URL = "{{ route('dashboard.media.getAllMediaPaginated') }}";
         const UPLOAD_URL = "{{ route('dashboard.media.store') }}";
-        const READMORE_CONTENT_URL = "/dashboard/getReadMoreContent";
+        const READMORE_CONTENT_URL = "{{ route('dashboard.content.getReadMoreContent') }}";
         const CSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content') || '';
 
         // ============================================
@@ -1458,31 +1458,96 @@
          */
         async function loadReadMoreContent(searchTerm = '') {
             try {
+                console.log('🔍 Function started - searchTerm:', searchTerm || 'empty');
+                console.log('📋 READMORE_CONTENT_URL:', READMORE_CONTENT_URL);
+                console.log('🌐 window.location.origin:', window.location.origin);
+
                 const url = new URL(READMORE_CONTENT_URL, window.location.origin);
                 if (searchTerm) url.searchParams.set('search', searchTerm);
+
+                console.log('🔗 Final URL:', url.toString());
+                console.log('🔐 CSRF Token:', CSRF ? 'Present' : 'Missing');
+
                 const res = await fetch(url.toString(), {
                     headers: {
                         'Accept': 'application/json',
                         'X-CSRF-TOKEN': CSRF
                     }
                 });
-                if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+
+                console.log('📡 Response Status:', res.status, res.statusText);
+                console.log('📋 Response Headers:', {
+                    contentType: res.headers.get('content-type'),
+                    contentLength: res.headers.get('content-length')
+                });
+
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    console.error('❌ HTTP Error Response:', errorText);
+                    throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
+                }
+
                 const data = await res.json();
+                console.log('✅ Full Data Received:', data);
+                console.log('📊 Data structure:', {
+                    hasData: !!data.data,
+                    isArray: Array.isArray(data.data),
+                    type: typeof data.data
+                });
+
                 const contentList = Array.isArray(data.data) ? data.data : [];
+                console.log('📊 Content list length:', contentList.length);
+
+                if (contentList.length === 0) {
+                    console.warn('⚠️ Warning: No content items found');
+                }
+
+                // Clear and reset the select element
+                if (!readMoreContentSelect) {
+                    throw new Error('readMoreContentSelect element not found in DOM');
+                }
+
                 readMoreContentSelect.innerHTML =
                     '<option value="">-- اختر محتوى من قاعدة البيانات --</option>';
-                contentList.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.id;
-                    option.textContent = item.title;
-                    option.dataset.image = item.image_url || '';
-                    option.dataset.summary = item.summary || '';
-                    option.dataset.link = item.link || '';
-                    readMoreContentSelect.appendChild(option);
+
+                contentList.forEach((item, index) => {
+                    console.log(`🔄 Processing item ${index}:`, {
+                        id: item.id,
+                        title: item.title,
+                        hasImage: !!item.image_url,
+                        hasSummary: !!item.summary,
+                        hasLink: !!item.link
+                    });
+
+                    try {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.textContent = item.title;
+                        option.dataset.image = item.image_url || '';
+                        option.dataset.summary = item.summary || '';
+                        option.dataset.link = item.link || '';
+                        readMoreContentSelect.appendChild(option);
+                    } catch (itemError) {
+                        console.error(`❌ Error creating option for item ${index}:`, itemError);
+                    }
                 });
+
+                console.log('✨ All items loaded successfully! Total options:', readMoreContentSelect.options
+                    .length);
+
             } catch (error) {
-                console.error('Error loading content:', error);
-                readMoreContentSelect.innerHTML = '<option value="">-- خطأ في تحميل المحتوى --</option>';
+                console.error('❌ ERROR in loadReadMoreContent:', {
+                    message: error.message,
+                    stack: error.stack,
+                    name: error.name
+                });
+
+                if (readMoreContentSelect) {
+                    readMoreContentSelect.innerHTML = '<option value="">-- خطأ في تحميل المحتوى --</option>';
+                }
+
+                // Re-throw for caller to handle if needed
+                throw error;
             }
         }
 
@@ -1821,7 +1886,7 @@
                     }).catch((err) => {
                         alert(
                             '⚠️ تعذّر الوصول إلى الحافظة. يرجى استخدام Ctrl+V بدلاً من ذلك.'
-                            );
+                        );
                         console.error('Clipboard access error:', err);
                     });
                 }
