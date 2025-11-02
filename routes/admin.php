@@ -109,6 +109,8 @@ Route::prefix('dashboard')->group(function () {
             Route::delete("/{$entity}-{id}", [$controller, 'destroy'])->name("dashboard.{$entity}.destroy");
         }
 
+
+        Route::get('/readmore', [ContentController::class, 'readmore'])->name('dashboard.readmore');
         Route::get('/top-contents', [TopContentController::class, 'index'])->name('dashboard.topcontents');
         Route::post('/top-contents/{id}', [TopContentController::class, 'store'])->name('dashboard.topcontents.store');
         Route::post('/dashboard/top-contents/update-order', [TopContentController::class, 'updateOrder'])->name('dashboard.topcontents.updateOrder');
@@ -118,6 +120,5 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/{id}', [ContentActionController::class, 'content_actions'])->name('dashboard.content.actions');
         Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
         Route::post('/media-url-store', [MediaController::class, 'storeMediaUrl'])->name('dashboard.media_url.store');
-        Route::get('/getReadMoreContent', [ContentController::class, 'getReadMoreContent'])->name('dashboard.content.getReadMoreContent');
     });
 });

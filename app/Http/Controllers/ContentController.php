@@ -1231,7 +1231,7 @@ class ContentController extends BaseController
         }
     }
 
-    public function getReadMoreContent(Request $request): JsonResponse
+    public function readmore(Request $request): JsonResponse
     {
         try {
             $search = $request->get('search', '');

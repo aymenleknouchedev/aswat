@@ -760,7 +760,7 @@
         // ============================================
         const FETCH_URL = "{{ route('dashboard.media.getAllMediaPaginated') }}";
         const UPLOAD_URL = "{{ route('dashboard.media.store') }}";
-        const READMORE_CONTENT_URL = "{{ route('dashboard.content.getReadMoreContent') }}";
+        const READMORE_CONTENT_URL = "{{ route('dashboard.readmore') }}";
         const CSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content') || '';
 
         // ============================================
