@@ -334,7 +334,7 @@
                 })
                 .finally(() => {
                     saveBtn.disabled = false;
-                    saveBtn.textContent = "💾 حفظ التغييرات";
+                    saveBtn.textContent = "حفظ التغييرات";
                 });
             });
         }

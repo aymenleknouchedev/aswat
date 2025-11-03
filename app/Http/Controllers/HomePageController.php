@@ -40,6 +40,11 @@ class HomePageController extends Controller
     {
 
         $principalTrend = PrincipalTrend::latest()->first();
+        $trends = $principalTrend->trend->contents;
+        $topContentIds = TopContent::orderByDesc('order')->take(7)->pluck('content_id')->toArray();
+        $trends = $trends->filter(function ($trend) use ($topContentIds) {
+            return !in_array($trend->id, $topContentIds);
+        })->values();
 
         $topContents = TopContent::orderByDesc('order')
             ->take(7)
@@ -88,7 +93,7 @@ class HomePageController extends Controller
             ->take(5)
             ->get();
 
-        return view('user.home', compact('topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant', 'principalTrend'));
+        return view('user.home', compact('topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant', 'principalTrend', 'trends'));
     }
 
     public function latestNews()
