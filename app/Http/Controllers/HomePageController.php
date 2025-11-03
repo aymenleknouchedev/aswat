@@ -72,10 +72,12 @@ class HomePageController extends Controller
 
         $sections = Section::pluck('id', 'name');
         $topContentIds = $topContents->pluck('content_id')->toArray();
+        $hidetrends = $trends->pluck('id')->toArray();
 
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
                 ->whereNotIn('id', $topContentIds)
+                ->whereNotIn('id', $hidetrends)
                 ->where('importance', 1)
                 ->latest()
                 ->take($count)
