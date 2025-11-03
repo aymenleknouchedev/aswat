@@ -6,6 +6,7 @@ use App\Models\Section;
 use App\Models\TopContent;
 use App\Models\Content;
 use App\Models\PrincipalTrend;
+use App\Models\Trend;
 use Illuminate\Http\Request;
 
 class TopContentController extends Controller
@@ -16,6 +17,9 @@ class TopContentController extends Controller
             $sections = Section::all();
 
             $trend = PrincipalTrend::first();
+
+            $trendId = $trend->id;
+            $trend = Trend::find($trendId);
 
             $latestTrendContents = $trend->contents()->latest()->take(4)->get();
 
