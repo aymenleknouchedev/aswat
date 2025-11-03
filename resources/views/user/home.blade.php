@@ -146,18 +146,7 @@
         @endforeach
 
 
-        @foreach ($sections as $component => [$title, $minCount])
-            @php
-                $items = ${$component} ?? [];
-            @endphp
-            @if (is_countable($items) && count($items) >= $minCount)
-                <div class="container">
-                    @include('user.components.sp60')
-                    @include('user.components.section-title', ['slot' => $title, 'key' => $component])
-                    @include("user.components.$component")
-                </div>
-            @endif
-        @endforeach
+       
 
         {{-- Arts Section --}}
         @php
