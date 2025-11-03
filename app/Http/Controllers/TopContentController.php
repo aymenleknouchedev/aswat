@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Section;
 use App\Models\TopContent;
 use App\Models\Content;
+use App\Models\Trend;
 use Illuminate\Http\Request;
 
 class TopContentController extends Controller
@@ -13,22 +14,48 @@ class TopContentController extends Controller
     {
         try {
             $sections = Section::all();
+            $latestTrendContents = collect(); // Use collection instead of array
 
-            // Get top contents (ordered)
+            $trend = Trend::latest()->first();
+            if ($trend) {
+                $trendlist = $trend->contents()
+                    ->latest()
+                    ->take(4)
+                    ->get();
+                $latestTrendContents = $trendlist; // Assign collection directly
+            }
+
+            // Get top contents (ordered by 'order' ascending - not descending)
             $topContents = TopContent::with('content')
-                ->orderBy('order', 'desc')
+                ->orderBy('order', 'asc') // Changed from 'desc' to 'asc'
                 ->get();
 
-            // Load recent contents — don’t exclude any (since we now just disable them in UI)
+            // Load recent contents
             $recentContents = Content::orderBy('created_at', 'desc')
                 ->take(50)
                 ->get();
 
-            return view("dashboard.topcontents", compact("topContents", "sections", "recentContents"));
+            return view("dashboard.topcontents", compact("topContents", "sections", "recentContents", "latestTrendContents"));
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Failed to retrieve content']);
+            return back()->withErrors(['error' => 'Failed to retrieve content: ' . $e->getMessage()]);
         }
     }
+
+    // Optional: Add this method to fix order if there are issues with the database
+    // public function fixOrderSequence()
+    // {
+    //     try {
+    //         $topContents = TopContent::orderBy('order', 'asc')->get();
+
+    //         foreach ($topContents as $index => $item) {
+    //             $item->update(['order' => $index + 1]);
+    //         }
+
+    //         return response()->json(['success' => true, 'message' => 'Order sequence fixed']);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+    //     }
+    // }
 
     /**
      * Save or update top contents order and selection.
@@ -83,5 +110,4 @@ class TopContentController extends Controller
             ], 500);
         }
     }
-
 }
