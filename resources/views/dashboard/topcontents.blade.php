@@ -20,6 +20,7 @@
                                         <h4 class="nk-block-title fw-bold" data-en="Top Contents Management" data-ar="إدارة الأولى">
                                             إدارة الأولى
                                         </h4>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -87,21 +88,14 @@
                                             <ul id="recentContentsList" class="list-group custom-scroll"
                                                 style="direction: rtl; max-height: 550px; overflow-y: auto;">
                                                 @foreach ($recentContents as $content)
-                                                    @php
-                                                        $isLatestTrend = $latestTrendContents->contains('id', $content->id);
-                                                    @endphp
                                                     <li class="list-group-item d-flex align-items-center justify-content-between"
-                                                        data-id="{{ $content->id }}"
-                                                        data-is-trend="{{ $isLatestTrend ? 'true' : 'false' }}">
+                                                        data-id="{{ $content->id }}">
                                                         <div class="d-flex align-items-center gap-2">
-                                                            <span class="fw-semibold" style="font-size: 13px; color: {{ $isLatestTrend ? '#FFC107' : 'inherit' }};">{{ $content->title }}</span>
+                                                            <span class="fw-semibold" style="font-size: 13px">{{ $content->title }}</span>
                                                             <small class="text-muted">#{{ $content->id }}</small>
                                                         </div>
-                                                        <a href="#" class="btn btn-icon btn-sm btn-outline-primary add-content-btn" 
-                                                            data-id="{{ $content->id }}"
-                                                            data-is-trend="{{ $isLatestTrend ? 'true' : 'false' }}"
-                                                            title="Add to top"
-                                                            @if($isLatestTrend) disabled @endif>
+                                                        <a href="#" class="btn btn-icon btn-sm btn-outline-primary add-content-btn" data-id="{{ $content->id }}"
+                                                            title="Add to top">
                                                             <em class="icon ni ni-plus"></em>
                                                         </a>
                                                     </li>
@@ -153,16 +147,17 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+
         const sortableList = document.getElementById("sortable-list");
         const saveBtn = document.getElementById("saveChangesBtn");
+
         let topContents = new Map();
-        let isProcessing = false; // Prevent infinite loops
 
         // Initialize existing top contents
         document.querySelectorAll("#sortable-list li").forEach(li => {
             const id = li.dataset.id?.toString();
             if (id) {
-                const titleEl = li.querySelector("div > div > span:first-of-type");
+                const titleEl = li.querySelector("div > div > span") || li.querySelector("span:nth-child(2)");
                 const title = titleEl ? titleEl.textContent.trim() : id;
                 topContents.set(id, title);
             }
@@ -171,49 +166,42 @@
         function updateBadges() {
             document.querySelectorAll("#sortable-list li").forEach((li, index) => {
                 const badge = li.querySelector(".badge");
-                if (badge) {
-                    badge.textContent = index + 1;
-                }
+                if (badge) badge.textContent = index + 1;
             });
         }
 
+        // ✅ Disable Add when >=15, Disable Delete when <=7
         function refreshDisabledState() {
-            if (isProcessing) return; // Prevent infinite loop
-            
             const maxReached = topContents.size >= 15;
             const minReached = topContents.size <= 7;
 
-            // Disable/enable add buttons
+            // Add buttons (left)
             document.querySelectorAll("#recentContentsList li").forEach(li => {
                 const id = li.dataset.id?.toString();
                 const btn = li.querySelector(".add-content-btn");
-                const isTrend = li.dataset.isTrend === 'true';
-                
                 if (!id || !btn) return;
 
-                const shouldDisable = topContents.has(id) || maxReached || isTrend;
-
-                if (shouldDisable) {
-                    btn.setAttribute("disabled", "disabled");
+                if (topContents.has(id) || maxReached) {
+                    li.classList.add("disabled");
+                    btn.classList.add("disabled");
                     btn.style.pointerEvents = "none";
                     btn.style.opacity = "0.5";
-                    li.classList.add("disabled");
                 } else {
-                    btn.removeAttribute("disabled");
+                    li.classList.remove("disabled");
+                    btn.classList.remove("disabled");
                     btn.style.pointerEvents = "auto";
                     btn.style.opacity = "1";
-                    li.classList.remove("disabled");
                 }
             });
 
-            // Disable/enable delete buttons
+            // Delete buttons (right)
             document.querySelectorAll(".delete-top-content-btn").forEach(btn => {
                 if (minReached) {
-                    btn.setAttribute("disabled", "disabled");
+                    btn.classList.add("disabled");
                     btn.style.pointerEvents = "none";
                     btn.style.opacity = "0.5";
                 } else {
-                    btn.removeAttribute("disabled");
+                    btn.classList.remove("disabled");
                     btn.style.pointerEvents = "auto";
                     btn.style.opacity = "1";
                 }
@@ -221,7 +209,6 @@
         }
 
         function bindAddButtons() {
-            // Remove old listeners by cloning
             document.querySelectorAll(".add-content-btn").forEach(btn => {
                 btn.replaceWith(btn.cloneNode(true));
             });
@@ -230,24 +217,8 @@
                 btn.addEventListener("click", function (e) {
                     e.preventDefault();
 
-                    if (isProcessing) return;
-
                     const id = this.dataset.id?.toString();
-                    const isTrend = this.dataset.isTrend === 'true';
-
                     if (!id) return;
-
-                    // Prevent adding trend contents
-                    if (isTrend) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'لا يمكن إضافة هذا المحتوى',
-                            text: 'هذا المحتوى من الاتجاهات الحالية ولا يمكن إضافته للمحتويات المميزة.',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                        return;
-                    }
 
                     if (topContents.size >= 15) {
                         Swal.fire({
@@ -262,10 +233,8 @@
 
                     if (topContents.has(id)) return;
 
-                    isProcessing = true;
-
                     const recentLi = this.closest("li");
-                    const titleEl = recentLi?.querySelector("span.fw-semibold");
+                    const titleEl = recentLi?.querySelector("span.fw-semibold, span") || recentLi?.querySelector("span");
                     const title = titleEl ? titleEl.textContent.trim() : id;
 
                     topContents.set(id, title);
@@ -291,22 +260,17 @@
                     bindDeleteButtons();
                     updateBadges();
                     refreshDisabledState();
-
-                    isProcessing = false;
                 });
             });
         }
 
         function bindDeleteButtons() {
-            // Remove old listeners by cloning
             document.querySelectorAll(".delete-top-content-btn").forEach(btn => {
                 btn.replaceWith(btn.cloneNode(true));
             });
 
             document.querySelectorAll(".delete-top-content-btn").forEach(btn => {
                 btn.addEventListener("click", function () {
-                    if (isProcessing) return;
-
                     const li = this.closest("li");
                     if (!li) return;
 
@@ -321,16 +285,12 @@
                         return;
                     }
 
-                    isProcessing = true;
-
                     const id = li.dataset.id?.toString();
                     if (id) topContents.delete(id);
 
                     li.remove();
                     updateBadges();
                     refreshDisabledState();
-
-                    isProcessing = false;
                 });
             });
         }
@@ -340,27 +300,17 @@
             return String(text).replace(/[&<>"']/g, m => map[m]);
         }
 
-        // Initialize Sortable
-        new Sortable(sortableList, {
-            animation: 150,
-            ghostClass: 'bg-light',
-            onEnd: updateBadges
-        });
+        new Sortable(sortableList, { animation: 150, ghostClass: 'bg-light', onEnd: updateBadges });
 
-        // Save button handler
         if (saveBtn) {
             saveBtn.addEventListener("click", function (e) {
                 e.preventDefault();
-                
-                if (isProcessing) return; // Prevent multiple simultaneous saves
-
                 const ids = Array.from(document.querySelectorAll("#sortable-list li"))
                     .map(li => li.dataset.id)
                     .filter(Boolean);
 
                 saveBtn.disabled = true;
                 saveBtn.textContent = "حفظ...";
-                isProcessing = true;
 
                 fetch("{{ route('dashboard.topcontents.updateOrder') }}", {
                     method: "POST",
@@ -374,35 +324,21 @@
                 .then(res => res.json())
                 .then(response => {
                     if (response && response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'تم حفظ التغييرات بنجاح',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
+                        Swal.fire({ icon: 'success', title: 'تم حفظ التغييرات بنجاح', timer: 2000, showConfirmButton: false });
                     } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: response.message || '⚠️ حدث خطأ أثناء حفظ التغييرات.'
-                        });
+                        Swal.fire({ icon: 'error', title: response.message || '⚠️ حدث خطأ أثناء حفظ التغييرات.' });
                     }
                 })
-                .catch((err) => {
-                    console.error('Save error:', err);
-                    Swal.fire({
-                        icon: 'error',
-                        title: '⚠️ حدث خطأ أثناء حفظ التغييرات.'
-                    });
+                .catch(() => {
+                    Swal.fire({ icon: 'error', title: '⚠️ حدث خطأ أثناء حفظ التغييرات.' });
                 })
                 .finally(() => {
                     saveBtn.disabled = false;
-                    saveBtn.textContent = "حفظ";
-                    isProcessing = false;
+                    saveBtn.textContent = "💾 حفظ التغييرات";
                 });
             });
         }
 
-        // Initialize everything
         bindAddButtons();
         bindDeleteButtons();
         updateBadges();
