@@ -20,8 +20,6 @@ use App\Models\Content;
 use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Cache;
-
 use App\Jobs\PublishContent;
 
 use App\Services\CacheService;
@@ -1289,14 +1287,6 @@ class ContentController extends BaseController
                 'message' => 'Content fetched successfully'
             ]);
         } catch (\Exception $e) {
-            // Log the error for debugging
-            \Log::error('Readmore API Error', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]);
-
             return response()->json([
                 'success' => false,
                 'data' => [],
