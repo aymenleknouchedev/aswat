@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Section;
 use App\Models\TopContent;
 use App\Models\Content;
-use App\Models\Trend;
+use App\Models\PrincipalTrend;
 use Illuminate\Http\Request;
 
 class TopContentController extends Controller
@@ -14,16 +14,10 @@ class TopContentController extends Controller
     {
         try {
             $sections = Section::all();
-            $latestTrendContents = collect(); // Use collection instead of array
 
-            $trend = Trend::latest()->first();
-            if ($trend) {
-                $trendlist = $trend->contents()
-                    ->latest()
-                    ->take(4)
-                    ->get();
-                $latestTrendContents = $trendlist; // Assign collection directly
-            }
+            $trend = PrincipalTrend::first();
+
+            $latestTrendContents = $trend->contents()->latest()->take(4)->get();
 
             // Get top contents (ordered by 'order' ascending - not descending)
             $topContents = TopContent::with('content')
