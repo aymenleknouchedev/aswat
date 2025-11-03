@@ -20,7 +20,6 @@
                                         <h4 class="nk-block-title fw-bold" data-en="Top Contents Management" data-ar="إدارة الأولى">
                                             إدارة الأولى
                                         </h4>
-                                       
                                     </div>
                                 </div>
                             </div>
@@ -80,13 +79,13 @@
                                 </form>
                             </div>
 
-                            <div class="row g-3">
+                            <div class="row g-3 pt-0 pb-2 px-2 rounded-5 mt-3" style="background: #f5f6fa;">
                                 <!-- Left: Recent -->
                                 <div class="col-lg-6">
                                     <div class="card">
                                         <div class="card-body p-0">
                                             <ul id="recentContentsList" class="list-group custom-scroll"
-                                                style="direction: rtl; max-height: 550px; overflow-y: auto;">
+                                                style="direction: rtl; max-height: 825px; overflow-y: auto;">
                                                 @foreach ($recentContents as $content)
                                                     <li class="list-group-item d-flex align-items-center justify-content-between"
                                                         data-id="{{ $content->id }}">
@@ -173,7 +172,7 @@
         // ✅ Disable Add when >=15, Disable Delete when <=7
         function refreshDisabledState() {
             const maxReached = topContents.size >= 15;
-            const minReached = topContents.size <= 7;
+            // const minReached = topContents.size <= 7;
 
             // Add buttons (left)
             document.querySelectorAll("#recentContentsList li").forEach(li => {
@@ -256,7 +255,8 @@
                         </button>
                     `;
 
-                    sortableList.appendChild(li);
+                    // sortableList.appendChild(li);
+                    sortableList.insertBefore(li, sortableList.firstChild);
                     bindDeleteButtons();
                     updateBadges();
                     refreshDisabledState();
@@ -273,17 +273,6 @@
                 btn.addEventListener("click", function () {
                     const li = this.closest("li");
                     if (!li) return;
-
-                    if (topContents.size <= 7) {
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'الحد الأدنى هو 7 محتويات',
-                            text: 'لا يمكنك حذف المزيد من المحتويات.',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                        return;
-                    }
 
                     const id = li.dataset.id?.toString();
                     if (id) topContents.delete(id);
