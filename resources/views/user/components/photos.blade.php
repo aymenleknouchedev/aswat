@@ -38,7 +38,8 @@
     .photos-feature .image-wrapper {
         position: relative;
         width: 100%;
-        height: 100%;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
     }
 
     .photos-feature img {
@@ -46,6 +47,7 @@
         height: 100%;
         object-fit: cover;
         display: block;
+        aspect-ratio: 16 / 9;
     }
 
     .photos-feature .corner-icon {
