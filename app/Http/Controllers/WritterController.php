@@ -28,11 +28,11 @@ class WritterController extends BaseController
 
             if (!$search) {
                 $writers = Writer::paginate($pagination)
-                           ->appends(request()->all());
+                    ->appends(request()->all());
             } else {
                 $writers = $query->orderBy('id', 'desc')
-                                    ->paginate($pagination)
-                                    ->appends(request()->all());
+                    ->paginate($pagination)
+                    ->appends(request()->all());
             }
 
             return view('dashboard.allwritters', compact('writers'));
@@ -59,22 +59,15 @@ class WritterController extends BaseController
                 'name' => 'required|string|max:150|unique:writers,name',
                 'slug' => 'required|string|max:150',
                 'bio' => 'required|string',
-                'image.*' => 'required',
+                'image' => 'required',
                 'facebook' => 'nullable|url',
                 'x' => 'nullable|url',
                 'instagram' => 'nullable|url',
                 'linkedin' => 'nullable|url',
             ]);
 
-            $writer = Writer::create($validated);
 
-            if ($request->hasFile('image')) {
-                $path = $request->file('image')->store('writers', 'public');
-                $path = asset('storage/' . $path);
-                $writer->image = $path;
-                $writer->save();
-            }
-
+            Writer::create($validated);
             return redirect()->route('dashboard.writer.create')->with('success', 'Writer added successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Failed to add writer: ' . $e->getMessage());
@@ -107,22 +100,20 @@ class WritterController extends BaseController
                 'name' => 'required|string|max:150',
                 'slug' => 'required|string|max:150|unique:writers,slug,' . $writer->id,
                 'bio' => 'required|string',
-                'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'image.*' => 'nullable',
                 'facebook' => 'nullable|url',
                 'x' => 'nullable|url',
                 'instagram' => 'nullable|url',
                 'linkedin' => 'nullable|url',
             ]);
 
+            if ($request->filled('image')) {
+                $writer->image = $request->input('image');
+            }
+
             $writer->update($validated);
 
-           
-            if ($request->hasFile('image')) {
-                $path = $request->file('image')->store('writers', 'public');
-                $path = asset('storage/' . $path);
-                $writer->image = $path;
-                $writer->save();
-            }
+
 
             return redirect()->route('dashboard.writers.index')->with('success', 'Writer updated successfully.');
         } catch (\Exception $e) {

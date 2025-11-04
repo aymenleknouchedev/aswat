@@ -58,18 +58,14 @@ class WindowController extends BaseController
             $request->validate([
                 'name' => 'required|string|max:255|unique:windows,name',
                 'slug' => 'required|string|max:255|unique:windows,slug',
-                'image' => 'required|max:6000',
+                'image' => 'required',
             ]);
 
             $window = new Window();
             $window->name = $request->input('name');
             $window->slug = $request->input('slug');
 
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $path = asset('storage/' . $file->store('media', 'public'));
-                $window->image = $path;
-            }
+            $window->image = $request->input('image');
 
             $window->save();
 
@@ -113,10 +109,8 @@ class WindowController extends BaseController
             $window->name = $request->input('name');
             $window->slug = $request->input('slug');
 
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $path = asset('storage/' . $file->store('media', 'public'));
-                $window->image = $path;
+            if ($request->filled('image')) {
+                $window->image = $request->input('image');
             }
 
             $window->save();

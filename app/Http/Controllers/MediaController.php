@@ -134,27 +134,30 @@ class MediaController extends BaseController
     {
         $request->validate([
             'media' => 'required|file|max:100000', // 100MB
-            'name' => 'required|string|max:255',
-            'alt' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
+            'alt' => 'nullable|string|max:255',
         ], [
             'media.required' => 'الرجاء اختيار ملف وسائط.',
             'media.file' => 'الملف يجب أن يكون من نوع ملف.',
-            'media.max' => 'حجم الملف لا يجب أن يتجاوز 5 ميغابايت.',
+            'media.max' => 'حجم الملف لا يجب أن يتجاوز 100 ميغابايت.',
         ]);
 
         try {
             $file = $request->file('media');
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $extension = $file->getClientOriginalExtension();
-            $safeName = preg_replace('/\s+/', '_', $originalName);
+
+            // Use Unicode-aware pattern with /u modifier
+            $safeName = preg_replace('/\s+/u', '_', $originalName);
             $fileName = $safeName . '_' . time() . '.' . $extension;
 
+            // Rest of your code remains the same...
             $storedPath = $file->storeAs('media', $fileName, 'public');
             $path = '/storage/' . $storedPath;
 
             $media = new ContentMedia();
-            $media->name = $request->input('name');
-            $media->alt = $request->input('alt');
+            $media->name = $request->input('name', $originalName);
+            $media->alt = $request->input('alt', $originalName);
 
             $mimeType = $file->getClientMimeType();
             if (str_starts_with($mimeType, 'audio/')) {
@@ -171,10 +174,31 @@ class MediaController extends BaseController
             $media->user_id = Auth::id();
             $media->save();
 
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'تم تحميل الوسائط بنجاح.',
+                    'data' => [
+                        'id' => $media->id,
+                        'name' => $media->name,
+                        'alt' => $media->alt,
+                        'path' => $media->path,
+                        'media_type' => $media->media_type,
+                    ]
+                ], 201);
+            }
+
             return redirect()
                 ->route('dashboard.medias.index')
                 ->with('success', 'تم تحميل الوسائط بنجاح.');
         } catch (\Throwable $e) {
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'فشل تحميل الوسائط. حاول مرة أخرى.'
+                ], 500);
+            }
+
             return redirect()
                 ->back()
                 ->withErrors(['error' => 'فشل تحميل الوسائط. حاول مرة أخرى.'])

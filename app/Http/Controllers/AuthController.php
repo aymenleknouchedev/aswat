@@ -62,20 +62,13 @@ class AuthController extends Controller
             'username' => 'required|string|max:255|unique:users,username',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable',
             'roles' => 'required|array',
             'roles.*' => 'exists:roles,id', // نتأكد كل role موجود
         ]);
 
-        // ✅ Default image
-        $imageName = 'user.png';
-
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $imageName = time() . '_' . $file->getClientOriginalName();
-            $path = asset('storage/' . $file->store('users', 'public'));
-            $imageName = $path;
-        }
+        // If image is not provided, assign 'user.png'
+        $image = $request->image ?? 'user.png';
 
         // ✅ Create user
         $user = User::create([
@@ -84,7 +77,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'image' => $imageName,
+            'image' => $image,
         ]);
 
         // ✅ Attach multiple roles
@@ -154,17 +147,14 @@ class AuthController extends Controller
         $user = User::findOrFail($id);
 
         // Handle image upload if provided
-        if ($request->hasFile('image')) {
-            $path = asset('storage/' . $request->file('image')->store('users', 'public'));
-            $user->image = $path;
-        }
-
-
-        // Update user details
         $user->name = $request->name;
         $user->surname = $request->surname;
         $user->username = $request->username;
         $user->email = $request->email;
+        if ($request->filled('image')) {
+            $user->image = $request->input('image');
+        }
+
         //roles
         $user->roles()->sync($request->roles);
         if ($request->filled('password')) {

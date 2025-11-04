@@ -68,11 +68,7 @@ class TrendController extends BaseController
             $trend->title = $request->input('title');
             $trend->slug = $request->input('slug');
 
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $path = asset('storage/' . $file->store('media', 'public'));
-                $trend->image = $path;
-            }
+            $trend->image = $request->input('image');
             $trend->save();
 
             return redirect()->route('dashboard.trend.create')->with('success', 'Trend created successfully.');
@@ -107,15 +103,13 @@ class TrendController extends BaseController
             $request->validate([
                 'title' => 'required|string|min:3|max:255|unique:trends,title,' . $id,
                 'slug' => 'required|string|min:3|max:255|unique:trends,slug,' . $id,
-                'image' => 'nullable|max:6000',
+                'image' => 'nullable',
             ]);
             $trend = Trend::findOrFail($id);
             $trend->title = $request->input('title');
             $trend->slug = $request->input('slug');
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $path = asset('storage/' . $file->store('media', 'public'));
-                $trend->image = $path;
+            if ($request->filled('image')) {
+                $trend->image = $request->input('image');
             }
             $trend->save();
             return redirect()->route('dashboard.trends.index')->with('success', 'Trend updated successfully.');
