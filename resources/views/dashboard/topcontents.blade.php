@@ -86,11 +86,11 @@
                                 </form>
                             </div>
 
-                            <div class="row g-3 pt-0 pb-2 px-2 rounded-5 mt-3">
+                            <div class="row g-3 pt-0 pb-2 px-2 mt-3 bg-light">
                                 <!-- Left: Recent -->
                                 <div class="col-lg-6">
                                     <div class="card">
-                                        <div class="card-body p-0">
+                                        <div class="card-body p-0 " >
                                             <ul id="recentContentsList" class="list-group custom-scroll"
                                                 style="direction: rtl; max-height: 825px; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;">
                                                 <li id="loadingMessage" class="list-group-item text-center text-muted" style="display: none;">
