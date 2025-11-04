@@ -49,12 +49,14 @@
                             <div class="mb-4">
                                 <form id="topContentSearchForm" class="row align-items-end gy-3 gx-2">
                                     <div class="col-12 col-md-5 col-lg-3">
-                                        <input 
-                                            type="text" 
-                                            name="search_all" 
+                                        <input
+                                            type="text"
+                                            name="search_all"
                                             id="searchAllInput"
                                             class="form-control"
                                             placeholder="ابحث في جميع المحتويات..."
+                                            data-ar="ابحث في جميع المحتويات..."
+                                            data-en="Search all contents..."
                                         >
                                     </div>
 
@@ -72,7 +74,7 @@
                                     </div>
 
                                     <div class="col-12 col-md-4 col-lg-2 ms-auto">
-                                        <button id="saveChangesBtn" class="btn btn-primary btn-sm px-3">
+                                        <button id="saveChangesBtn" class="btn btn-primary btn-sm px-3" data-ar="حفظ" data-en="Save">
                                             حفظ
                                         </button>
                                     </div>
@@ -86,9 +88,15 @@
                                         <div class="card-body p-0">
                                             <ul id="recentContentsList" class="list-group custom-scroll"
                                                 style="direction: rtl; max-height: 825px; overflow-y: auto;">
+                                                <li id="noResultsMessage" class="list-group-item text-center text-muted" style="display: none;">
+                                                    <span data-ar="لا توجد نتائج" data-en="No results found">لا توجد نتائج</span>
+                                                </li>
                                                 @foreach ($recentContents as $content)
-                                                    <li class="list-group-item d-flex align-items-center justify-content-between"
-                                                        data-id="{{ $content->id }}">
+                                                    <li class="list-group-item d-flex align-items-center justify-content-between content-item"
+                                                        data-id="{{ $content->id }}"
+                                                        data-title="{{ $content->title }}"
+                                                        data-section-id="{{ $content->section_id ?? '' }}"
+                                                        data-section-name="{{ $content->section->name ?? '' }}">
                                                         <div class="d-flex align-items-center gap-2">
                                                             <span class="fw-semibold" style="font-size: 13px">{{ $content->title }}</span>
                                                             <small class="text-muted">#{{ $content->id }}</small>
@@ -150,6 +158,50 @@
         const sortableList = document.getElementById("sortable-list");
         const saveBtn = document.getElementById("saveChangesBtn");
 
+        // Get current language from HTML lang attribute or default to 'ar'
+        const currentLang = document.documentElement.lang || 'ar';
+
+        // Translations object
+        const translations = {
+            maxLimit: {
+                ar: 'الحد الأقصى 15 محتوى فقط',
+                en: 'Maximum 15 contents only'
+            },
+            maxLimitText: {
+                ar: 'لا يمكنك إضافة المزيد من المحتويات المميزة.',
+                en: 'You cannot add more featured contents.'
+            },
+            minLimit: {
+                ar: 'الحد الأدنى 7 محتويات',
+                en: 'Minimum 7 contents required'
+            },
+            minLimitText: {
+                ar: 'يجب أن يكون لديك 7 محتويات على الأقل.',
+                en: 'You must have at least 7 top contents.'
+            },
+            saveSuccess: {
+                ar: 'تم حفظ التغييرات بنجاح',
+                en: 'Changes saved successfully'
+            },
+            saveError: {
+                ar: '⚠️ حدث خطأ أثناء حفظ التغييرات.',
+                en: '⚠️ An error occurred while saving changes.'
+            },
+            saving: {
+                ar: 'حفظ...',
+                en: 'Saving...'
+            },
+            save: {
+                ar: 'حفظ',
+                en: 'Save'
+            }
+        };
+
+        // Helper function to get translation
+        function t(key) {
+            return translations[key][currentLang] || translations[key]['ar'];
+        }
+
         let topContents = new Map();
 
         // Initialize existing top contents
@@ -175,7 +227,7 @@
             // const minReached = topContents.size <= 7;
 
             // Add buttons (left)
-            document.querySelectorAll("#recentContentsList li").forEach(li => {
+            document.querySelectorAll("#recentContentsList li.content-item").forEach(li => {
                 const id = li.dataset.id?.toString();
                 const btn = li.querySelector(".add-content-btn");
                 if (!id || !btn) return;
@@ -222,8 +274,8 @@
                     if (topContents.size >= 15) {
                         Swal.fire({
                             icon: 'warning',
-                            title: 'الحد الأقصى 15 محتوى فقط',
-                            text: 'لا يمكنك إضافة المزيد من المحتويات المميزة.',
+                            title: t('maxLimit'),
+                            text: t('maxLimitText'),
                             timer: 2000,
                             showConfirmButton: false
                         });
@@ -299,7 +351,7 @@
                     .filter(Boolean);
 
                 saveBtn.disabled = true;
-                saveBtn.textContent = "حفظ...";
+                saveBtn.textContent = t('saving');
 
                 fetch("{{ route('dashboard.topcontents.updateOrder') }}", {
                     method: "POST",
@@ -313,19 +365,72 @@
                 .then(res => res.json())
                 .then(response => {
                     if (response && response.success) {
-                        Swal.fire({ icon: 'success', title: 'تم حفظ التغييرات بنجاح', timer: 2000, showConfirmButton: false });
+                        Swal.fire({ icon: 'success', title: t('saveSuccess'), timer: 2000, showConfirmButton: false });
                     } else {
-                        Swal.fire({ icon: 'error', title: response.message || '⚠️ حدث خطأ أثناء حفظ التغييرات.' });
+                        // Use language-specific message from backend if available
+                        const errorMessage = currentLang === 'en'
+                            ? (response.message_en || response.message || t('saveError'))
+                            : (response.message_ar || response.message || t('saveError'));
+                        Swal.fire({ icon: 'error', title: errorMessage });
                     }
                 })
                 .catch(() => {
-                    Swal.fire({ icon: 'error', title: '⚠️ حدث خطأ أثناء حفظ التغييرات.' });
+                    Swal.fire({ icon: 'error', title: t('saveError') });
                 })
                 .finally(() => {
                     saveBtn.disabled = false;
-                    saveBtn.textContent = "حفظ التغييرات";
+                    saveBtn.textContent = t('save');
                 });
             });
+        }
+
+        // Filter functionality
+        const searchInput = document.getElementById('searchAllInput');
+        const sectionFilter = document.getElementById('sectionFilter');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const selectedSection = sectionFilter.value;
+            const recentItems = document.querySelectorAll('#recentContentsList li.content-item');
+
+            let visibleCount = 0;
+
+            recentItems.forEach(item => {
+                const title = (item.dataset.title || '').toLowerCase();
+                const itemId = (item.dataset.id || '').toString();
+                const sectionId = item.dataset.sectionId || '';
+
+                // Check if matches search term (title or ID)
+                const matchesSearch = !searchTerm ||
+                    title.includes(searchTerm) ||
+                    itemId.includes(searchTerm);
+
+                // Check if matches section filter
+                const matchesSection = !selectedSection || sectionId === selectedSection;
+
+                // Show/hide based on filters
+                if (matchesSearch && matchesSection) {
+                    item.style.display = '';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Show/hide "no results" message
+            if (noResultsMessage) {
+                noResultsMessage.style.display = visibleCount === 0 ? '' : 'none';
+            }
+        }
+
+        // Add event listeners for filters
+        if (searchInput) {
+            searchInput.addEventListener('input', applyFilters);
+        }
+
+        if (sectionFilter) {
+            sectionFilter.addEventListener('change', applyFilters);
         }
 
         bindAddButtons();

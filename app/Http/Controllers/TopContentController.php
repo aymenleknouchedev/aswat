@@ -19,8 +19,9 @@ class TopContentController extends Controller
                 ->orderBy('order', 'desc')
                 ->get();
 
-            // Load recent contents — don’t exclude any (since we now just disable them in UI)
-            $recentContents = Content::orderBy('created_at', 'desc')
+            // Load recent contents with section data — don't exclude any (since we now just disable them in UI)
+            $recentContents = Content::with('section')
+                ->orderBy('created_at', 'desc')
                 ->take(50)
                 ->get();
 
@@ -44,7 +45,11 @@ class TopContentController extends Controller
                 return response()->json([
                     'success' => false,
                     'error' => 'Not enough items',
-                    'message' => 'You must have at least 7 top contents.',
+                    'message' => app()->getLocale() === 'en'
+                        ? 'You must have at least 7 top contents.'
+                        : 'يجب أن يكون لديك 7 محتويات على الأقل.',
+                    'message_ar' => 'يجب أن يكون لديك 7 محتويات على الأقل.',
+                    'message_en' => 'You must have at least 7 top contents.',
                 ], 422);
             }
 
@@ -53,7 +58,11 @@ class TopContentController extends Controller
                 return response()->json([
                     'success' => false,
                     'error' => 'Too many items',
-                    'message' => 'You can only have up to 15 top contents.',
+                    'message' => app()->getLocale() === 'en'
+                        ? 'You can only have up to 15 top contents.'
+                        : 'يمكنك إضافة 15 محتوى فقط كحد أقصى.',
+                    'message_ar' => 'يمكنك إضافة 15 محتوى فقط كحد أقصى.',
+                    'message_en' => 'You can only have up to 15 top contents.',
                 ], 422);
             }
 

@@ -80,10 +80,15 @@
                             <span>تعديل</span>
                         </button>
                         <form action="{{ route('dashboard.media.destroy', $media->id) }}" method="POST"
-                            class="d-inline">
+                            class="d-inline delete-form">
                             @csrf
                             @method('DELETE')
-                            <button type="button" class="btn btn-dim btn-sm btn-outline-danger delete-btn" @if($media->content) disabled @endif>
+                            <button type="button" class="btn btn-dim btn-sm btn-outline-danger delete-btn"
+                                @if($media->contents->isNotEmpty()) disabled title="هذه الوسائط مرتبطة بمحتوى ولا يمكن حذفها" @endif
+                                data-ar-title="تأكيد الحذف" data-en-title="Confirm Deletion"
+                                data-ar-text="هل أنت متأكد من حذف هذه الوسائط؟" data-en-text="Are you sure you want to delete this media?"
+                                data-ar-confirm="نعم، احذف" data-en-confirm="Yes, delete"
+                                data-ar-cancel="إلغاء" data-en-cancel="Cancel">
                                 <em class="icon ni ni-trash"></em>
                                 <span>حذف</span>
                             </button>

@@ -26,7 +26,7 @@ class MediaController extends BaseController
         try {
             $pagination = config('pagination.per10', 10);
 
-            $query = ContentMedia::query();
+            $query = ContentMedia::with('contents');
 
             // البحث حسب الاسم، النص البديل، النوع، أو المسار
             if ($search = $request->input('search')) {
@@ -335,12 +335,30 @@ class MediaController extends BaseController
             $media = ContentMedia::findOrFail($id);
             $media->name = $request->input('name');
             $media->alt = $request->input('alt');
+            $media->description = $request->input('description');
             $media->save();
+
+            // إذا كان الطلب من AJAX نعيد JSON
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'تم تحديث معلومات الوسائط بنجاح.',
+                    'data' => $media
+                ]);
+            }
 
             return redirect()
                 ->route('dashboard.medias.index')
                 ->with('success', 'تم تحديث معلومات الوسائط بنجاح.');
         } catch (\Throwable $e) {
+            // إذا كان الطلب من AJAX نعيد JSON
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'فشل تحديث معلومات الوسائط. حاول مرة أخرى.'
+                ], 500);
+            }
+
             return redirect()
                 ->back()
                 ->withErrors(['error' => 'فشل تحديث معلومات الوسائط. حاول مرة أخرى.'])
@@ -354,7 +372,14 @@ class MediaController extends BaseController
     public function destroy(string $id)
     {
         try {
-            $media = ContentMedia::findOrFail($id);
+            $media = ContentMedia::with('contents')->findOrFail($id);
+
+            // التحقق من أن الوسائط غير مرتبطة بأي محتوى
+            if ($media->contents->isNotEmpty()) {
+                return redirect()
+                    ->route('dashboard.medias.index')
+                    ->withErrors(['error' => 'لا يمكن حذف هذه الوسائط لأنها مرتبطة بمحتوى.']);
+            }
 
             // حذف الملف من التخزين
             $filePath = str_replace('/storage/', 'public/', $media->path);

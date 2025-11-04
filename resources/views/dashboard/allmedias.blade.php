@@ -418,6 +418,17 @@
             font-size: 0.875rem;
         }
 
+        /* Disabled button styles */
+        .media-actions .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: auto;
+        }
+
+        .media-actions .btn:disabled:hover {
+            transform: none;
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .media-item {
@@ -565,6 +576,24 @@
     </style>
 
     <script>
+        // Language helper function
+        function getLangText(arText, enText) {
+            const currentLang = localStorage.getItem('language') || 'ar';
+            return currentLang === 'ar' ? arText : enText;
+        }
+
+        // SweetAlert helper with language support
+        function showAlert(type, titleAr, titleEn, textAr = '', textEn = '') {
+            Swal.fire({
+                icon: type,
+                title: getLangText(titleAr, titleEn),
+                text: textAr || textEn ? getLangText(textAr, textEn) : '',
+                timer: type === 'success' ? 2000 : undefined,
+                showConfirmButton: type !== 'success',
+                confirmButtonText: getLangText('حسناً', 'OK')
+            });
+        }
+
         let filterTimeout;
         let currentFilters = {
             search: "{{ request('search') }}",
@@ -659,7 +688,7 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى.');
+                    showAlert('error', 'حدث خطأ أثناء تحميل البيانات', 'An error occurred while loading data', 'يرجى المحاولة مرة أخرى.', 'Please try again.');
                 })
                 .finally(() => {
                     document.getElementById('loadingIndicator').style.display = 'none';
@@ -711,13 +740,36 @@
             });
 
             // Delete media buttons
-            document.querySelectorAll('.delete-media').forEach(button => {
+            document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    if (confirm('هل أنت متأكد من حذف هذه الوسائط؟')) {
-                        // Add your delete logic here
-                        console.log('Delete media:', this.getAttribute('data-media-id'));
-                    }
+
+                    if (this.disabled) return;
+
+                    const form = this.closest('.delete-form');
+                    const titleAr = this.getAttribute('data-ar-title');
+                    const titleEn = this.getAttribute('data-en-title');
+                    const textAr = this.getAttribute('data-ar-text');
+                    const textEn = this.getAttribute('data-en-text');
+                    const confirmAr = this.getAttribute('data-ar-confirm');
+                    const confirmEn = this.getAttribute('data-en-confirm');
+                    const cancelAr = this.getAttribute('data-ar-cancel');
+                    const cancelEn = this.getAttribute('data-en-cancel');
+
+                    Swal.fire({
+                        title: getLangText(titleAr, titleEn),
+                        text: getLangText(textAr, textEn),
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: getLangText(confirmAr, confirmEn),
+                        cancelButtonText: getLangText(cancelAr, cancelEn)
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
                 });
             });
         }
@@ -740,6 +792,15 @@
         document.addEventListener('DOMContentLoaded', function() {
             initializeMediaInteractions();
 
+            // Show success/error messages from session
+            @if(session('success'))
+                showAlert('success', '{{ session('success') }}', 'Operation completed successfully');
+            @endif
+
+            @if(session('error') || $errors->any())
+                showAlert('error', '{{ session('error') ?? $errors->first() }}', 'An error occurred');
+            @endif
+
             // Open media upload modal
             const openMediaBtn = document.getElementById('openMediaModal');
             if (openMediaBtn) {
@@ -756,8 +817,36 @@
             if (editForm) {
                 editForm.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    // Add your form submission logic here
-                    console.log('Form submitted');
+
+                    const formData = new FormData(this);
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    submitBtn.disabled = true;
+
+                    fetch(this.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                showAlert('success', 'تم تحديث الوسائط بنجاح', 'Media updated successfully');
+                                bootstrap.Modal.getInstance(document.getElementById('editMediaModal')).hide();
+                                setTimeout(() => window.location.reload(), 1500);
+                            } else {
+                                showAlert('error', data.message || 'فشل تحديث الوسائط', data.message || 'Failed to update media');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showAlert('error', 'حدث خطأ أثناء التحديث', 'An error occurred during update');
+                        })
+                        .finally(() => {
+                            submitBtn.disabled = false;
+                        });
                 });
             }
         });
