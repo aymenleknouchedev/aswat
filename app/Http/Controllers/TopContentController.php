@@ -22,12 +22,57 @@ class TopContentController extends Controller
             // Load recent contents with section data — don't exclude any (since we now just disable them in UI)
             $recentContents = Content::with('section')
                 ->orderBy('created_at', 'desc')
-                ->take(50)
+                ->take(200)
                 ->get();
 
             return view("dashboard.topcontents", compact("topContents", "sections", "recentContents"));
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Failed to retrieve content']);
+        }
+    }
+
+    /**
+     * Search/filter contents for top contents page
+     */
+    public function searchContents(Request $request)
+    {
+        try {
+            $query = Content::with('section');
+
+            // Filter by search term (title or ID)
+            if ($request->filled('search')) {
+                $searchTerm = $request->input('search');
+                $query->where(function ($q) use ($searchTerm) {
+                    $q->where('title', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('id', 'LIKE', "%{$searchTerm}%");
+                });
+            }
+
+            // Filter by section
+            if ($request->filled('section_id')) {
+                $query->where('section_id', $request->input('section_id'));
+            }
+
+            $contents = $query->orderBy('created_at', 'desc')
+                ->take(200)
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'contents' => $contents->map(function ($content) {
+                    return [
+                        'id' => $content->id,
+                        'title' => $content->title,
+                        'section_id' => $content->section_id ?? '',
+                        'section_name' => $content->section->name ?? '',
+                    ];
+                })
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 

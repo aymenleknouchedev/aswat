@@ -88,6 +88,9 @@
                                         <div class="card-body p-0">
                                             <ul id="recentContentsList" class="list-group custom-scroll"
                                                 style="direction: rtl; max-height: 825px; overflow-y: auto;">
+                                                <li id="loadingMessage" class="list-group-item text-center text-muted" style="display: none;">
+                                                    <span data-ar="جاري التحميل..." data-en="Loading...">جاري التحميل...</span>
+                                                </li>
                                                 <li id="noResultsMessage" class="list-group-item text-center text-muted" style="display: none;">
                                                     <span data-ar="لا توجد نتائج" data-en="No results found">لا توجد نتائج</span>
                                                 </li>
@@ -384,53 +387,113 @@
             });
         }
 
-        // Filter functionality
+        // Filter functionality with AJAX
         const searchInput = document.getElementById('searchAllInput');
         const sectionFilter = document.getElementById('sectionFilter');
         const noResultsMessage = document.getElementById('noResultsMessage');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const recentContentsList = document.getElementById('recentContentsList');
+        let filterTimeout = null;
 
-        function applyFilters() {
-            const searchTerm = searchInput.value.toLowerCase().trim();
+        function renderContentItem(content) {
+            const isInTop = topContents.has(content.id.toString());
+            const maxReached = topContents.size >= 15;
+            const disabled = isInTop || maxReached;
+
+            return `
+                <li class="list-group-item d-flex align-items-center justify-content-between content-item ${disabled ? 'disabled' : ''}"
+                    data-id="${content.id}"
+                    data-title="${escapeHtml(content.title)}"
+                    data-section-id="${content.section_id || ''}"
+                    data-section-name="${escapeHtml(content.section_name || '')}">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="fw-semibold" style="font-size: 13px">${escapeHtml(content.title)}</span>
+                        <small class="text-muted">#${content.id}</small>
+                    </div>
+                    <a href="#" class="btn btn-icon btn-sm btn-outline-primary add-content-btn ${disabled ? 'disabled' : ''}"
+                       data-id="${content.id}"
+                       title="Add to top"
+                       style="pointer-events: ${disabled ? 'none' : 'auto'}; opacity: ${disabled ? '0.5' : '1'}">
+                        <em class="icon ni ni-plus"></em>
+                    </a>
+                </li>
+            `;
+        }
+
+        function loadFilteredContents() {
+            const searchTerm = searchInput.value.trim();
             const selectedSection = sectionFilter.value;
-            const recentItems = document.querySelectorAll('#recentContentsList li.content-item');
 
-            let visibleCount = 0;
+            // Show loading indicator
+            if (loadingMessage) loadingMessage.style.display = '';
+            if (noResultsMessage) noResultsMessage.style.display = 'none';
 
-            recentItems.forEach(item => {
-                const title = (item.dataset.title || '').toLowerCase();
-                const itemId = (item.dataset.id || '').toString();
-                const sectionId = item.dataset.sectionId || '';
+            // Build query parameters
+            const params = new URLSearchParams();
+            if (searchTerm) params.append('search', searchTerm);
+            if (selectedSection) params.append('section_id', selectedSection);
 
-                // Check if matches search term (title or ID)
-                const matchesSearch = !searchTerm ||
-                    title.includes(searchTerm) ||
-                    itemId.includes(searchTerm);
+            // Fetch filtered results from server
+            fetch("{{ route('dashboard.topcontents.search') }}?" + params.toString(), {
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                }
+            })
+            .then(res => res.json())
+            .then(response => {
+                // Hide loading indicator
+                if (loadingMessage) loadingMessage.style.display = 'none';
 
-                // Check if matches section filter
-                const matchesSection = !selectedSection || sectionId === selectedSection;
+                if (response.success && response.contents) {
+                    // Clear existing content items
+                    const contentItems = recentContentsList.querySelectorAll('.content-item');
+                    contentItems.forEach(item => item.remove());
 
-                // Show/hide based on filters
-                if (matchesSearch && matchesSection) {
-                    item.style.display = '';
-                    visibleCount++;
-                } else {
-                    item.style.display = 'none';
+                    if (response.contents.length === 0) {
+                        // Show no results message
+                        if (noResultsMessage) {
+                            noResultsMessage.style.display = '';
+                        }
+                    } else {
+                        // Hide no results message
+                        if (noResultsMessage) {
+                            noResultsMessage.style.display = 'none';
+                        }
+
+                        // Add filtered content items
+                        response.contents.forEach(content => {
+                            const itemHTML = renderContentItem(content);
+                            recentContentsList.insertAdjacentHTML('beforeend', itemHTML);
+                        });
+
+                        // Re-bind add buttons
+                        bindAddButtons();
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Filter error:', error);
+                // Hide loading indicator on error
+                if (loadingMessage) loadingMessage.style.display = 'none';
+                if (noResultsMessage) {
+                    noResultsMessage.style.display = '';
                 }
             });
-
-            // Show/hide "no results" message
-            if (noResultsMessage) {
-                noResultsMessage.style.display = visibleCount === 0 ? '' : 'none';
-            }
         }
 
-        // Add event listeners for filters
+        // Debounced search input
         if (searchInput) {
-            searchInput.addEventListener('input', applyFilters);
+            searchInput.addEventListener('input', function() {
+                clearTimeout(filterTimeout);
+                filterTimeout = setTimeout(loadFilteredContents, 300);
+            });
         }
 
+        // Immediate filter on section change
         if (sectionFilter) {
-            sectionFilter.addEventListener('change', applyFilters);
+            sectionFilter.addEventListener('change', loadFilteredContents);
         }
 
         bindAddButtons();
