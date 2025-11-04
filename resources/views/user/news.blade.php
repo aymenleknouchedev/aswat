@@ -138,7 +138,7 @@
         .custom-article-content {
             font-size: 16px !important;
             font-family: asswat-regular;
-            color: #333;
+            color: #000000;
             line-height: 1.9;
             text-align: right;
             margin-bottom: 30px;
