@@ -593,6 +593,7 @@
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
@@ -612,6 +613,7 @@
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
@@ -639,6 +641,7 @@
                 opacity: 0;
                 transform: translateX(-50%) translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(-50%) translateY(0);
@@ -685,9 +688,11 @@
             0% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(1.2);
             }
+
             100% {
                 transform: scale(1);
             }
@@ -709,6 +714,7 @@
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
@@ -922,9 +928,8 @@
                 {{-- Feature Image --}}
                 @if ($news->template !== 'no_image')
                     <figure class="custom-article-image-wrapper">
-                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" 
-                             alt="Feature Image"
-                             loading="lazy">
+                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="Feature Image"
+                            loading="lazy">
                         <figcaption>{{ $news->caption ?? '' }}</figcaption>
                     </figure>
                 @endif
@@ -964,31 +969,32 @@
                     </div>
                 @endif
 
-                {{-- Article Content --}}
-                <div class="custom-article-content">{!! $news->content !!}</div>
+                <div style="width: 70%; margin: 0 auto;">
+                    {{-- Article Content --}}
+                    <div class="custom-article-content">{!! $news->content !!}</div>
 
-                {{-- Tags --}}
-                <div class="custom-tags">
-                    @foreach ($news->tags as $tag)
-                        <span>{{ $tag->name }}</span>
-                    @endforeach
-                </div>
+                    {{-- Tags --}}
+                    <div class="custom-tags">
+                        @foreach ($news->tags as $tag)
+                            <span>{{ $tag->name }}</span>
+                        @endforeach
+                    </div>
 
-                {{-- Writer Card --}}
-                @if (optional($news->writer)->id)
-                    <a href="{{ route('writer.show', $news->writer->id) }}" style="text-decoration: none; color: inherit;">
-                        <div class="writer-card">
-                            <img src="{{ $news->writer->image ?? asset('user.png') }}" 
-                                 alt="{{ $news->writer->name }}"
-                                 loading="lazy"
-                                 style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
-                            <div class="writer-info">
-                                <span class="name">{{ $news->writer->name }}</span>
-                                <span class="bio">{{ $news->writer->bio }}</span>
+                    {{-- Writer Card --}}
+                    @if (optional($news->writer)->id)
+                        <a href="{{ route('writer.show', $news->writer->id) }}"
+                            style="text-decoration: none; color: inherit;">
+                            <div class="writer-card">
+                                <img src="{{ $news->writer->image ?? asset('user.png') }}" alt="{{ $news->writer->name }}"
+                                    loading="lazy" style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
+                                <div class="writer-info">
+                                    <span class="name">{{ $news->writer->name }}</span>
+                                    <span class="bio">{{ $news->writer->bio }}</span>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                @endif
+                        </a>
+                    @endif
+                </div>
 
             </div>
 
@@ -996,7 +1002,7 @@
             <div class="custom-sidebar">
                 <p class="section-title">الأكثر قراءة</p>
                 @include('user.components.ligne')
-                
+
                 <div class="newCategoryReadMoreNews">
                     @foreach ($lastWeekNews as $index => $item)
                         <div class="newCategoryReadMoreNews-list">
@@ -1010,7 +1016,7 @@
                 </div>
 
                 @include('user.components.sp60')
-                
+
                 <p class="section-title">المزيد من {{ $news->category->name }}</p>
                 @include('user.components.ligne')
 
@@ -1019,8 +1025,7 @@
                     <div class="news-card-horizontal-news">
                         <div class="news-card-image-news">
                             <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                                alt="{{ $content->title ?? 'News' }}"
-                                loading="lazy">
+                                alt="{{ $content->title ?? 'News' }}" loading="lazy">
                         </div>
                         <div class="news-card-text-news">
                             <a href="{{ route('news.show', $content->title) }}"
@@ -1039,18 +1044,17 @@
             <div style="height: 5px"></div>
             @include('user.components.ligne')
             <div style="height: 20px"></div>
-            
+
             <div class="economy-grid-container-news">
                 @foreach ($relatedNews as $item)
                     <div class="economy-card-news">
                         <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                            alt="{{ $item->title ?? '' }}"
-                            loading="lazy">
+                            alt="{{ $item->title ?? '' }}" loading="lazy">
 
                         <h3>
                             <x-category-links :content="$item" />
                         </h3>
-                        
+
                         <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
                             <h2>{{ $item->title ?? '' }}</h2>
                         </a>
@@ -1064,7 +1068,8 @@
     </div>
 
     {{-- ================= TEXT DEFINITION MODAL ================= --}}
-    <div id="textDefinitionModal" class="text-definition-modal" style="display: none;" role="dialog" aria-labelledby="textModalTitle">
+    <div id="textDefinitionModal" class="text-definition-modal" style="display: none;" role="dialog"
+        aria-labelledby="textModalTitle">
         <div class="text-modal-backdrop"></div>
         <div class="text-modal-container">
             <div class="text-modal-header">
@@ -1082,7 +1087,7 @@
         </div>
     </div>
 
-    {{-- ================= COMPREHENSIVE JAVASCRIPT ================= --}}    
+    {{-- ================= COMPREHENSIVE JAVASCRIPT ================= --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             initializeShareFunctionality();
@@ -1134,9 +1139,9 @@
 
             copyLinkBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                
+
                 const url = window.location.href;
-                
+
                 // Copy to clipboard
                 navigator.clipboard.writeText(url).then(function() {
                     // Show success message
