@@ -3,6 +3,11 @@
 @section('title', 'أصوات جزائرية | إدارة الأولى')
 
 @section('content')
+<style>
+    #recentContentsList::-webkit-scrollbar {
+        display: none;
+    }
+</style>
     <div class="nk-app-root">
         <div class="nk-main">
             @include('dashboard.components.sidebar')
@@ -81,13 +86,13 @@
                                 </form>
                             </div>
 
-                            <div class="row g-3 pt-0 pb-2 px-2 rounded-5 mt-3" style="background: #f5f6fa;">
+                            <div class="row g-3 pt-0 pb-2 px-2 rounded-5 mt-3">
                                 <!-- Left: Recent -->
                                 <div class="col-lg-6">
                                     <div class="card">
                                         <div class="card-body p-0">
                                             <ul id="recentContentsList" class="list-group custom-scroll"
-                                                style="direction: rtl; max-height: 825px; overflow-y: auto;">
+                                                style="direction: rtl; max-height: 825px; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;">
                                                 <li id="loadingMessage" class="list-group-item text-center text-muted" style="display: none;">
                                                     <span data-ar="جاري التحميل..." data-en="Loading...">جاري التحميل...</span>
                                                 </li>
