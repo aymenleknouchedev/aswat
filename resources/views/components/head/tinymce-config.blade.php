@@ -33,7 +33,7 @@
             <button class="vvc-close" type="button" data-vvc-close aria-label="إغلاق">&times;</button>
         </div>
 
-        <!-- Tab navigation: Gallery and Upload -->
+        <!-- Tab navigation: Gallery, Upload, and Import -->
         <div class="vvc-tabs" role="tablist" aria-label="أقسام إدارة الوسائط">
             <button type="button" class="vvc-tab-btn vvc-is-active" role="tab" aria-selected="true"
                 aria-controls="vvc-tab-gallery" id="vvc-tabbtn-gallery" tabindex="0"
@@ -41,6 +41,8 @@
             <button type="button" class="vvc-tab-btn" role="tab" aria-selected="false"
                 aria-controls="vvc-tab-upload" id="vvc-tabbtn-upload" tabindex="-1" data-vvc-tab="upload">الرفع من
                 الجهاز</button>
+            <button type="button" class="vvc-tab-btn" role="tab" aria-selected="false"
+                aria-controls="vvc-tab-import" id="vvc-tabbtn-import" tabindex="-1" data-vvc-tab="import">استيراد عبر رابط</button>
         </div>
 
         <!-- GALLERY TAB: Browse existing media -->
@@ -76,9 +78,10 @@
                     <div class="vvc-upload-fields" style="display:flex;flex-wrap:wrap;gap:.6rem;width:100%;">
                         <!-- File picker field -->
                         <div style="flex:1 1 260px;">
-                            <label for="vvc-upload-input"
+                            <label for="vvc-upload-input" id="vvc-upload-label"
                                 style="display:block;width:100%;cursor:pointer;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-gray-100);color:var(--vvc-body-color);text-align:center;">
-                                <i class="fa fa-upload" style="margin-right:6px;"></i> اختر ملف الوسائط
+                                <i class="fa fa-upload" style="margin-right:6px;"></i>
+                                <span id="vvc-upload-label-text">اختر ملف الوسائط</span>
                                 <input type="file" id="vvc-upload-input" class="vvc-upload-input"
                                     accept="image/*,video/*" style="display:none;" />
                             </label>
@@ -100,6 +103,40 @@
                     <div class="vvc-uploader-actions">
                         <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-upload-to-gallery"
                             title="رفع ثم عرض في المعرض">إدراج في المعرض</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- IMPORT TAB: Import from URL -->
+        <section id="vvc-tab-import" class="vvc-tab-panel" role="tabpanel" aria-labelledby="vvc-tabbtn-import" hidden>
+            <div class="vvc-tab-body">
+                <div class="vvc-uploader">
+                    <!-- Import input fields: URL, name, alt text -->
+                    <div class="vvc-upload-fields" style="display:flex;flex-wrap:wrap;gap:.6rem;width:100%;">
+                        <!-- URL input field -->
+                        <div style="flex:1 1 260px;">
+                            <input type="url" id="vvc-import-url" class="vvc-import-url"
+                                placeholder="أدخل رابط الوسائط"
+                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);" />
+                        </div>
+                        <!-- Media name field -->
+                        <div style="flex:1 1 220px;">
+                            <input type="text" id="vvc-import-name" class="vvc-import-name"
+                                placeholder="اسم الملف"
+                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);" />
+                        </div>
+                        <!-- Alt text field -->
+                        <div style="flex:1 1 220px;">
+                            <input type="text" id="vvc-import-alt" class="vvc-import-alt"
+                                placeholder="النص البديل (للصور)"
+                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);" />
+                        </div>
+                    </div>
+                    <!-- Import action button -->
+                    <div class="vvc-uploader-actions">
+                        <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-import-to-gallery"
+                            title="استيراد ثم عرض في المعرض">استيراد للمعرض</button>
                     </div>
                 </div>
             </div>
@@ -756,11 +793,45 @@
      */
     (function() {
         // ============================================
+        // PRE-LOADED DATA FROM SERVER
+        // ============================================
+        @php
+        try {
+            $readMoreContent = \App\Models\Content::whereIn('status', ['published', 'draft'])
+                ->select(['id', 'title', 'summary', 'created_at'])
+                ->with(['media' => function($q) {
+                    $q->wherePivot('type', 'main');
+                }])
+                ->orderBy('created_at', 'desc')
+                ->limit(50)
+                ->get()
+                ->map(function($item) {
+                    $mainImage = $item->media()->wherePivot('type', 'main')->first();
+                    $imagePath = $mainImage ? $mainImage->path : null;
+                    if ($imagePath && !str_starts_with($imagePath, 'http')) {
+                        $imagePath = url($imagePath);
+                    }
+                    return [
+                        'id' => $item->id,
+                        'title' => $item->title ?? 'Untitled',
+                        'image_url' => $imagePath,
+                        'summary' => \Illuminate\Support\Str::limit($item->summary ?? '', 150),
+                        'link' => url('/content/' . $item->id),
+                        'created_at' => $item->created_at->format('Y-m-d H:i:s'),
+                    ];
+                });
+        } catch (\Exception $e) {
+            $readMoreContent = collect([]);
+        }
+        @endphp
+        const READ_MORE_DATA = @json($readMoreContent);
+
+        // ============================================
         // CONFIGURATION & CONSTANTS
         // ============================================
         const FETCH_URL = "{{ route('dashboard.media.getAllMediaPaginated') }}";
         const UPLOAD_URL = "{{ route('dashboard.media.store') }}";
-        const READMORE_CONTENT_URL = "{{ route('dashboard.readmore') }}";
+        const IMPORT_URL = "{{ route('dashboard.media_url.store') }}";
         const CSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content') || '';
 
         // ============================================
@@ -782,6 +853,11 @@
         const upName = document.getElementById('vvc-upload-name');
         const upAlt = document.getElementById('vvc-upload-alt');
         const btnUpGal = document.getElementById('vvc-btn-upload-to-gallery');
+
+        const impUrl = document.getElementById('vvc-import-url');
+        const impName = document.getElementById('vvc-import-name');
+        const impAlt = document.getElementById('vvc-import-alt');
+        const btnImpGal = document.getElementById('vvc-btn-import-to-gallery');
 
         // ============================================
         // APPLICATION STATE
@@ -966,13 +1042,14 @@
             .dataset.vvcTab)));
 
         /**
-         * Switch between Gallery and Upload tabs
-         * @param {string} tab - Tab name ('gallery' or 'upload')
+         * Switch between Gallery, Upload, and Import tabs
+         * @param {string} tab - Tab name ('gallery', 'upload', or 'import')
          */
         function switchTab(tab) {
             const panels = {
                 gallery: document.getElementById('vvc-tab-gallery'),
-                upload: document.getElementById('vvc-tab-upload')
+                upload: document.getElementById('vvc-tab-upload'),
+                import: document.getElementById('vvc-tab-import')
             };
             if (!panels[tab]) return;
             state.activeTab = tab;
@@ -1009,6 +1086,14 @@
             if (upInput) upInput.value = '';
             if (upName) upName.value = '';
             if (upAlt) upAlt.value = '';
+            if (impUrl) impUrl.value = '';
+            if (impName) impName.value = '';
+            if (impAlt) impAlt.value = '';
+            // Reset upload label visual feedback
+            const uploadLabel = document.getElementById('vvc-upload-label');
+            const uploadLabelText = document.getElementById('vvc-upload-label-text');
+            if (uploadLabelText) uploadLabelText.textContent = 'اختر ملف الوسائط';
+            if (uploadLabel) uploadLabel.style.border = '1px solid var(--vvc-border-color)';
             if (btnSelect) btnSelect.disabled = true;
         }
 
@@ -1282,6 +1367,112 @@
 
         btnUpGal?.addEventListener('click', () => uploadMedia('gallery'));
 
+        // Visual feedback for file selection
+        const uploadLabel = document.getElementById('vvc-upload-label');
+        const uploadLabelText = document.getElementById('vvc-upload-label-text');
+        upInput?.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const fileName = files[0].name;
+                uploadLabelText.textContent = 'تم تحميل الملف';
+                uploadLabel.style.border = '1px solid var(--vvc-primary)';
+
+                // Auto-fill name and alt fields if empty
+                if (!upName.value) {
+                    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+                    upName.value = nameWithoutExt;
+                    upAlt.value = nameWithoutExt;
+                }
+            } else {
+                uploadLabelText.textContent = 'اختر ملف الوسائط';
+                uploadLabel.style.border = '1px solid var(--vvc-border-color)';
+            }
+        });
+
+        /**
+         * Import media from URL
+         * @param {string} mode - Import mode ('gallery' to show in gallery after import)
+         */
+        async function importMedia(mode) {
+            const urlVal = (impUrl?.value || '').trim();
+            if (!urlVal) {
+                alert('⚠️ لم يتم إدخال رابط.');
+                return;
+            }
+
+            const nameVal = (impName?.value || '').trim();
+            const altVal = (impAlt?.value || '').trim();
+
+            try {
+                btnImpGal.disabled = true;
+                btnImpGal.textContent = 'جارٍ الاستيراد...';
+
+                const res = await fetch(IMPORT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': CSRF,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        url: urlVal,
+                        name: nameVal || undefined,
+                        alt: altVal || undefined,
+                        media_type: 'auto'
+                    })
+                });
+
+                const bodyText = await res.text();
+                if (!res.ok) {
+                    console.error('Import failed', res.status, bodyText);
+                    alert('فشل الاستيراد.');
+                    return;
+                }
+
+                const parsed = tryParseJson(bodyText);
+                const created = extractCreated(parsed);
+
+                if (mode === 'gallery') {
+                    switchTab('gallery');
+                    await resetAndLoad();
+                    if (created.length) {
+                        state.selected = created[0];
+                        renderList();
+                        if (btnSelect) btnSelect.disabled = false;
+                    }
+                    impUrl.value = '';
+                    impName.value = '';
+                    impAlt.value = '';
+                    return;
+                }
+            } catch (err) {
+                console.error('Import exception', err);
+                alert('حدث خطأ أثناء الاستيراد.');
+            } finally {
+                btnImpGal.disabled = false;
+                btnImpGal.textContent = 'استيراد للمعرض';
+            }
+        }
+
+        btnImpGal?.addEventListener('click', () => importMedia('gallery'));
+
+        // Visual feedback for URL input
+        impUrl?.addEventListener('input', (e) => {
+            const url = e.target.value.trim();
+            if (url) {
+                // Auto-extract name from URL if name field is empty
+                if (!impName.value) {
+                    const urlPath = new URL(url, window.location.origin).pathname;
+                    const fileName = urlPath.split('/').pop();
+                    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+                    if (nameWithoutExt && nameWithoutExt !== '') {
+                        impName.value = nameWithoutExt;
+                        impAlt.value = nameWithoutExt;
+                    }
+                }
+            }
+        });
+
         if (!state.list.length) {
             listEl.innerHTML = '<div class="vvc-empty">لا توجد وسائط للعرض</div>';
         }
@@ -1326,6 +1517,7 @@
         const readMoreBackdrop = readMoreModal.querySelector('[data-vvc-readmore-backdrop]');
         const readMoreCloses = readMoreModal.querySelectorAll('[data-vvc-readmore-close]');
         const readMoreContainer = readMoreModal.querySelector('.vvc-container');
+        const readMoreSearchInput = document.getElementById('vvc-readmore-search');
         const readMoreContentSelect = document.getElementById('vvc-readmore-content');
         const readMorePreview = document.getElementById('vvc-readmore-preview');
         const btnInsertReadMore = document.getElementById('vvc-btn-insert-readmore');
@@ -1432,13 +1624,13 @@
             /**
              * Open read more modal
              */
-            async openModal() {
+            openModal() {
                 readMoreModal.setAttribute('aria-hidden', 'false');
                 document.documentElement.style.overflow = 'hidden';
                 readMoreContentSelect.value = '';
                 readMorePreview.innerHTML =
                     '<p style="color:var(--vvc-muted);text-align:center;margin:2rem 0;">ستظهر معاينة المحتوى هنا</p>';
-                await loadReadMoreContent();
+                loadReadMoreContent();
                 setTimeout(() => readMoreContentSelect.focus(), 0);
             },
 
@@ -1452,24 +1644,35 @@
         };
 
         /**
-         * Load "read more" content options
+         * Load "read more" content options (Now using pre-loaded data)
          * @param {string} searchTerm - Optional search term
          */
-        async function loadReadMoreContent(searchTerm = '') {
+        function loadReadMoreContent(searchTerm = '') {
             try {
-                const url = new URL(READMORE_CONTENT_URL, window.location.origin);
-                if (searchTerm) url.searchParams.set('search', searchTerm);
-                const res = await fetch(url.toString(), {
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': CSRF
-                    }
-                });
-                if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-                const data = await res.json();
-                const contentList = Array.isArray(data.data) ? data.data : [];
+                // Use pre-loaded data instead of AJAX
+                let contentList = READ_MORE_DATA || [];
+
+                // Filter by search term if provided
+                if (searchTerm && searchTerm.trim()) {
+                    const search = searchTerm.trim().toLowerCase();
+                    contentList = contentList.filter(item =>
+                        (item.title && item.title.toLowerCase().includes(search)) ||
+                        (item.summary && item.summary.toLowerCase().includes(search))
+                    );
+                }
+
+                // Populate dropdown
                 readMoreContentSelect.innerHTML =
                     '<option value="">-- اختر محتوى من قاعدة البيانات --</option>';
+
+                if (contentList.length === 0) {
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = searchTerm ? '-- لا توجد نتائج --' : '-- لا يوجد محتوى --';
+                    readMoreContentSelect.appendChild(option);
+                    return;
+                }
+
                 contentList.forEach(item => {
                     const option = document.createElement('option');
                     option.value = item.id;
@@ -1484,6 +1687,17 @@
                 readMoreContentSelect.innerHTML = '<option value="">-- خطأ في تحميل المحتوى --</option>';
             }
         }
+
+        /**
+         * Handle read more search input
+         */
+        let readMoreSearchTimeout;
+        readMoreSearchInput?.addEventListener('input', function(e) {
+            clearTimeout(readMoreSearchTimeout);
+            readMoreSearchTimeout = setTimeout(() => {
+                loadReadMoreContent(e.target.value);
+            }, 300);
+        });
 
         /**
          * Handle read more content selection change
