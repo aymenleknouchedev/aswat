@@ -1627,6 +1627,7 @@
             openModal() {
                 readMoreModal.setAttribute('aria-hidden', 'false');
                 document.documentElement.style.overflow = 'hidden';
+                readMoreSearchInput.value = '';
                 readMoreContentSelect.value = '';
                 readMorePreview.innerHTML =
                     '<p style="color:var(--vvc-muted);text-align:center;margin:2rem 0;">ستظهر معاينة المحتوى هنا</p>';
