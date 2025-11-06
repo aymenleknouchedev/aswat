@@ -429,12 +429,15 @@
                 <div class="mmxx-uploader">
                     <div class="mmxx-upload-fields" style="display: flex; flex-wrap: wrap; gap: .6rem; width: 100%;">
                         <div style="flex: 1 1 220px;">
-                            <label for="mmxx-upload-input" id="mmxx-upload-label"
-                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border-radius: 0; background: var(--az-soft); color: var(--az-title); text-align: center; transition: all 0.2s;">
+                            <input type="file" id="mmxx-upload-input" class="mmxx-upload-input"
+                                style="display: none;" />
+
+                            <label for="mmxx-upload-input" id="mmxx-upload-label" data-ar="اختر ملف الوسائط" data-en="Select Media File"
+                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem;
+           border-radius: 0; background: var(--az-soft); color: var(--az-title); border: 1px solid transparent;
+           text-align: center; transition: all 0.2s;">
                                 <i class="fa fa-upload" style="margin-right: 6px;"></i>
                                 <span id="mmxx-upload-label-text">اختر ملف الوسائط</span>
-                                <input type="file" id="mmxx-upload-input" class="mmxx-upload-input"
-                                    style="display: none;" />
                             </label>
                         </div>
                         <div style="flex: 1 1 200px;">
@@ -450,9 +453,11 @@
                     </div>
                     <div class="mmxx-uploader-actions">
                         <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-upload-to-gallery"
-                            title="إدراج في المعرض">إدراج في المعرض</button>
+                            title="إدراج في المعرض" data-ar="إدراج في المعرض" data-en="Insert into Gallery">إدراج في
+                            المعرض</button>
                         <button class="mmxx-btn mmxx-btn-primary" type="button"
-                            id="mmxx-btn-upload-and-select-close" title="رفع ثم حفظ وإغلاق">إدراج في المقال</button>
+                            id="mmxx-btn-upload-and-select-close" title="إدراج في المقال"
+                            data-ar="إدراج في المقال" data-en="Insert into Post">إدراج في المقال</button>
                     </div>
                 </div>
             </div>
@@ -463,42 +468,43 @@
             hidden>
             <div class="mmxx-tab-body">
                 <div class="mmxx-uploader mmxx-uploader-url"
-                    style="padding:1.2rem; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                    <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem;">
+                    style="padding: 1rem 1.25rem; background: var(--vvc-body-bg); border: 1px solid var(--vvc-border-color);">
+                    <div style="display:flex; flex-wrap:wrap; gap:.65rem; margin-bottom:.7rem; width:100%;">
                         <input type="text" id="mmxx-upload-url"
-                            style="flex:1 1 220px; padding:.7rem 1rem; border-radius:6px; background:var(--az-card); color:var(--az-title); font-size:1rem;"
-                            placeholder="الرابط" />
+                            style="flex:1 1 100%; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color); border-radius:0; font-size:.95rem;"
+                            placeholder="أدخل رابط الوسائط" />
                         <input type="text" id="mmxx-url-name" placeholder="اسم الملف"
-                            style="flex:1 1 180px; padding:.7rem 1rem; border-radius:6px; background:var(--az-card); color:var(--az-title); font-size:1rem;" />
-                        <input type="text" id="mmxx-url-alt" placeholder="النص البديل"
-                            style="flex:1 1 180px; padding:.7rem 1rem; border-radius:6px; background:var(--az-card); color:var(--az-title); font-size:1rem;" />
+                            style="flex:1 1 220px; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color); border-radius:0; font-size:.95rem;" />
+                        <input type="text" id="mmxx-url-alt" placeholder="النص البديل (للصور)"
+                            style="flex:1 1 220px; padding:.6rem .7rem; border:1px solid var(--vvc-border-color); background:var(--vvc-body-bg); color:var(--vvc-body-color); border-radius:0; font-size:.95rem;" />
                     </div>
                     <fieldset class="mmxx-url-type-group" aria-label="نوع الوسائط للرابط"
-                        style="margin-bottom:.7rem; border-radius:6px; padding:.7rem 1rem; background:var(--az-card);">
-                        <legend style="font-size:.97rem; color:var(--az-title); padding:0 .3rem; font-weight:500;">نوع
+                        style="margin-bottom:.7rem; border:1px solid var(--vvc-border-color); padding:.6rem .8rem; background:var(--vvc-body-bg); border-radius:0;">
+                        <legend style="font-size:.9rem; color:var(--vvc-heading-color); padding:0 .25rem; font-weight:600;"
+                            data-ar="نوع الوسائط (اختياري)" data-en="Media Type (Optional)">نوع
                             الوسائط
                             (اختياري)</legend>
                         <div style="display:flex; gap:1.2rem; flex-wrap:wrap;">
-                            <label class="mmxx-radio" style="font-size:.97rem; color:var(--az-title);"><input
+                            <label class="mmxx-radio" style="font-size:.9rem; color:var(--vvc-body-color);"><input
                                     type="radio" name="mmxx-url-type" value="auto"
                                     checked /><span>Auto</span></label>
-                            <label class="mmxx-radio" style="font-size:.97rem; color:var(--az-title);"><input
+                            <label class="mmxx-radio" style="font-size:.9rem; color:var(--vvc-body-color);"><input
                                     type="radio" name="mmxx-url-type" value="image" /><span>Image</span></label>
-                            <label class="mmxx-radio" style="font-size:.97rem; color:var(--az-title);"><input
+                            <label class="mmxx-radio" style="font-size:.9rem; color:var(--vvc-body-color);"><input
                                     type="radio" name="mmxx-url-type" value="video" /><span>Video</span></label>
-                            <label class="mmxx-radio" style="font-size:.97rem; color:var(--az-title);"><input
+                            <label class="mmxx-radio" style="font-size:.9rem; color:var(--vvc-body-color);"><input
                                     type="radio" name="mmxx-url-type" value="voice" /><span>Voice</span></label>
-                            <label class="mmxx-radio" style="font-size:.97rem; color:var(--az-title);"><input
+                            <label class="mmxx-radio" style="font-size:.9rem; color:var(--vvc-body-color);"><input
                                     type="radio" name="mmxx-url-type" value="file" /><span>File</span></label>
                         </div>
                     </fieldset>
-                    <div class="mmxx-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
+                    <div class="mmxx-uploader-actions">
                         <button class="mmxx-btn mmxx-btn-secondary" type="button" id="mmxx-btn-import-to-gallery"
-                            title="استيراد بالرابط ثم عرض في المعرض"
-                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المعرض</button>
+                            title="استيراد بالرابط ثم عرض في المعرض" data-ar="إدراج في المعرض"
+                            data-en="Insert into Gallery">إدراج في المعرض</button>
                         <button class="mmxx-btn mmxx-btn-primary" type="button"
-                            id="mmxx-btn-import-and-select-close" title="استيراد بالرابط ثم حفظ وإغلاق"
-                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المقال</button>
+                            id="mmxx-btn-import-and-select-close" title="استيراد بالرابط ثم حفظ وإغلاق" data-ar="إدراج في المقال"
+                            data-en="Insert into Post">إدراج في المقال</button>
                     </div>
                 </div>
             </div>
@@ -506,56 +512,58 @@
     </div>
 </div>
 
-<!-- ======================= MMxx MODAL STYLES ======================= -->
+<!-- ======================= VVC MODAL STYLES (TinyMCE Config Matching) ======================= -->
 <style>
     #mmxxMediaModal,
     #mmxxMediaModal * {
         box-sizing: border-box;
     }
 
-    /* Updated color variables */
+    /* Color variables matching tinymce-config */
     :root {
-        --mmxx-bg: #fff;
-        --mmxx-text: #526484;
-        --mmxx-border: #dbdfea;
-        --mmxx-ring: #6576ff;
-        --mmxx-muted: #8091a7;
-        --mmxx-primary: #6576ff;
-        --mmxx-secondary: #364a63;
-        --mmxx-success: #1ee0ac;
-        --mmxx-danger: #e85347;
-        --mmxx-warning: #f4bd0e;
-        --mmxx-gray-100: #ebeef2;
-        --mmxx-gray-200: #e5e9f2;
-        --mmxx-gray-300: #dbdfea;
-        --mmxx-gray-400: #b7c2d0;
-        --mmxx-gray-500: #8091a7;
-        --mmxx-gray-600: #3c4d62;
-        --mmxx-gray-700: #344357;
-        --mmxx-gray-800: #2b3748;
-        --mmxx-gray-900: #1f2b3a;
+        --vvc-primary: #6576ff;
+        --vvc-secondary: #364a63;
+        --vvc-gray: #8091a7;
+        --vvc-body-bg: #fff;
+        --vvc-body-color: #526484;
+        --vvc-heading-color: #364a63;
+        --vvc-border-color: #dbdfea;
+        --vvc-muted: #8091a7;
+        --vvc-gray-100: #ebeef2;
+        --vvc-success: #1ee0ac;
+        --vvc-danger: #e85347;
+        --vvc-warning: #f4bd0e;
+        --vvc-gray-200: #e5e9f2;
+        --vvc-gray-300: #dbdfea;
+        --vvc-gray-400: #b7c2d0;
+        --vvc-gray-500: #8091a7;
+        --vvc-gray-600: #3c4d62;
+        --vvc-gray-700: #344357;
+        --vvc-gray-800: #2b3748;
+        --vvc-gray-900: #1f2b3a;
     }
 
     [data-bs-theme="dark"] {
-        --mmxx-bg: #0D141D;
-        --mmxx-text: #e5e9f2;
-        --mmxx-border: #384D69;
-        --mmxx-ring: #6576ff;
-        --mmxx-muted: #b7c2d0;
-        --mmxx-primary: #6576ff;
-        --mmxx-secondary: #364a63;
-        --mmxx-success: #1ee0ac;
-        --mmxx-danger: #e85347;
-        --mmxx-warning: #f4bd0e;
-        --mmxx-gray-100: #2b3748;
-        --mmxx-gray-200: #344357;
-        --mmxx-gray-300: #3c4d62;
-        --mmxx-gray-400: #8091a7;
-        --mmxx-gray-500: #b7c2d0;
-        --mmxx-gray-600: #dbdfea;
-        --mmxx-gray-700: #e5e9f2;
-        --mmxx-gray-800: #ebeef2;
-        --mmxx-gray-900: #f5f6fa;
+        --vvc-body-bg: #0D141D;
+        --vvc-body-color: #e5e9f2;
+        --vvc-heading-color: #fff;
+        --vvc-border-color: #384D69;
+        --vvc-muted: #b7c2d0;
+        --vvc-primary: #6576ff;
+        --vvc-secondary: #364a63;
+        --vvc-success: #1ee0ac;
+        --vvc-danger: #e85347;
+        --vvc-warning: #f4bd0e;
+        --vvc-gray: #b7c2d0;
+        --vvc-gray-100: #2b3748;
+        --vvc-gray-200: #344357;
+        --vvc-gray-300: #3c4d62;
+        --vvc-gray-400: #8091a7;
+        --vvc-gray-500: #b7c2d0;
+        --vvc-gray-600: #dbdfea;
+        --vvc-gray-700: #e5e9f2;
+        --vvc-gray-800: #ebeef2;
+        --vvc-gray-900: #f5f6fa;
     }
 
     .mmxx-modal {
@@ -583,8 +591,8 @@
         margin: 0 auto;
         width: clamp(320px, 92vw, 1000px);
         max-height: 90%;
-        background: var(--mmxx-bg);
-        color: var(--mmxx-text);
+        background: var(--vvc-body-bg);
+        color: var(--vvc-body-color);
         display: flex;
         flex-direction: column;
         overflow: hidden;
@@ -607,18 +615,18 @@
 
     .mmxx-header {
         padding: 1rem 1.25rem;
-        border-bottom: 1px solid var(--mmxx-border);
+        border-bottom: 1px solid var(--vvc-border-color);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: var(--mmxx-bg);
+        background: var(--vvc-body-bg);
     }
 
     .mmxx-header h5 {
         margin: 0;
         font-size: 1.05rem;
         font-weight: 600;
-        color: var(--mmxx-text);
+        color: var(--vvc-body-color);
     }
 
     .mmxx-close {
@@ -626,40 +634,40 @@
         line-height: 1;
         border: 0;
         background: transparent;
-        color: var(--mmxx-muted);
+        color: var(--vvc-muted);
         cursor: pointer;
     }
 
     .mmxx-close:hover {
-        color: var(--mmxx-text);
+        color: var(--vvc-body-color);
     }
 
     .mmxx-tabs {
         display: flex;
         gap: .25rem;
         padding: .5rem;
-        border-bottom: 1px solid var(--mmxx-border);
-        background: var(--mmxx-bg);
+        border-bottom: 1px solid var(--vvc-border-color);
+        background: var(--vvc-body-bg);
     }
 
     .mmxx-tab-btn {
         appearance: none;
-        background: var(--mmxx-bg);
-        border: 1px solid var(--mmxx-border);
+        background: var(--vvc-body-bg);
+        border: 1px solid var(--vvc-border-color);
         padding: .55rem .9rem;
         cursor: pointer;
         font-weight: 600;
-        color: var(--mmxx-text);
+        color: var(--vvc-body-color);
     }
 
     .mmxx-tab-btn:focus {
-        outline: 2px solid var(--mmxx-ring);
+        outline: 2px solid var(--vvc-ring);
         outline-offset: 1px;
     }
 
     .mmxx-tab-btn.mmxx-is-active {
-        background: var(--mmxx-primary);
-        border-color: var(--mmxx-primary);
+        background: var(--vvc-primary);
+        border-color: var(--vvc-primary);
         color: white;
     }
 
@@ -673,8 +681,8 @@
 
     .mmxx-tab-body {
         padding: 1rem 1.25rem;
-        border-bottom: 1px solid var(--mmxx-border);
-        background: var(--mmxx-bg);
+        border-bottom: 1px solid var(--vvc-border-color);
+        background: var(--vvc-body-bg);
     }
 
     .mmxx-filters {
@@ -682,28 +690,28 @@
         display: flex;
         gap: .65rem;
         flex-wrap: wrap;
-        border-bottom: 1px solid var(--mmxx-border);
-        background: var(--mmxx-bg);
+        border-bottom: 1px solid var(--vvc-border-color);
+        background: var(--vvc-body-bg);
     }
 
     .mmxx-filters input,
     .mmxx-filters select {
         padding: .6rem .7rem;
         font-size: .95rem;
-        border: 1px solid var(--mmxx-border);
-        background: var(--mmxx-bg);
-        color: var(--mmxx-text);
+        border: 1px solid var(--vvc-border-color);
+        background: var(--vvc-body-bg);
+        color: var(--vvc-body-color);
         flex: 1 1 180px;
         transition: box-shadow .15s, border-color .15s;
     }
 
     .mmxx-filters input::placeholder {
-        color: var(--mmxx-muted);
+        color: var(--vvc-muted);
     }
 
     .mmxx-filters input:focus,
     .mmxx-filters select:focus {
-        border-color: var(--mmxx-primary);
+        border-color: var(--vvc-primary);
         box-shadow: 0 0 0 2px rgba(101, 118, 255, 0.1);
         outline: none;
     }
@@ -712,7 +720,7 @@
         padding: 1rem 1.25rem;
         overflow: auto;
         flex: 1;
-        background: var(--mmxx-bg);
+        background: var(--vvc-body-bg);
     }
 
     .mmxx-grid {
@@ -723,14 +731,14 @@
 
     .mmxx-empty {
         text-align: center;
-        color: var(--mmxx-muted);
+        color: var(--vvc-muted);
         font-size: .95rem;
         margin: 2rem 0;
     }
 
     .mmxx-item {
         position: relative;
-        background: var(--mmxx-bg);
+        background: var(--vvc-body-bg);
         cursor: pointer;
         display: flex;
         flex-direction: column;
@@ -741,7 +749,7 @@
     }
 
     .mmxx-item:hover {
-        border-color: var(--mmxx-primary);
+        border-color: var(--vvc-primary);
         box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.1);
     }
 
@@ -750,7 +758,7 @@
     }
 
     .mmxx-item.mmxx-is-selected {
-        border-color: var(--mmxx-primary);
+        border-color: var(--vvc-primary);
         box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.2);
     }
 
@@ -760,10 +768,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: var(--mmxx-gray-100);
+        background: var(--vvc-gray-100);
         overflow: hidden;
         position: relative;
-        border: 1px solid var(--mmxx-gray-200);
+        border: 1px solid var(--vvc-gray-200);
     }
 
     .mmxx-thumb img,
@@ -797,7 +805,7 @@
 
     .mmxx-title {
         font-size: .9rem;
-        color: var(--mmxx-text);
+        color: var(--vvc-body-color);
         margin-top: .55rem;
         width: 100%;
         white-space: nowrap;
@@ -810,8 +818,8 @@
         flex-wrap: wrap;
         align-items: center;
         gap: .6rem;
-        background: var(--mmxx-bg);
-        border: 1px solid var(--mmxx-border);
+        background: var(--vvc-body-bg);
+        border: 1px solid var(--vvc-border-color);
         padding: 1rem;
     }
 
@@ -831,19 +839,19 @@
     #mmxx-upload-url,
     #mmxx-url-name,
     #mmxx-url-alt {
-        flex: 1 1 220px;
+        flex: 1 1 100%;
     }
 
     .mmxx-url-type-group {
         width: 100%;
         margin: .2rem 0 .4rem;
-        border: 1px solid var(--mmxx-border);
+        border: 1px solid var(--vvc-border-color);
         padding: .6rem .8rem;
     }
 
     .mmxx-url-type-group legend {
         font-size: .9rem;
-        color: var(--mmxx-text);
+        color: var(--vvc-body-color);
         padding: 0 .25rem;
     }
 
@@ -856,7 +864,7 @@
     }
 
     .mmxx-radio input {
-        accent-color: var(--mmxx-primary);
+        accent-color: var(--vvc-primary);
     }
 
     .mmxx-uploader-actions {
@@ -869,65 +877,77 @@
         font-weight: 600;
         cursor: pointer;
         transition: background .15s, color .15s, border-color .15s;
-        border: 1px solid var(--mmxx-text);
-        background: var(--mmxx-text);
-        color: #fff;
+        border: 1px solid var(--bs-secondary);
+        background: var(--bs-secondary);
+        color: var(--bs-white);
+        border-radius: var(--bs-border-radius);
     }
 
     .mmxx-btn:hover {
-        background: #222;
-        border-color: #222;
+        background: var(--bs-secondary-bg-subtle);
+        border-color: var(--bs-secondary-border-subtle);
+        color: var(--bs-body-color);
+    }
+
+    .mmxx-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
     }
 
     .mmxx-btn-secondary {
-        background: #444;
-        border-color: #444;
+        background: var(--bs-secondary);
+        border-color: var(--bs-secondary);
+        color: var(--bs-white);
     }
 
     .mmxx-btn-secondary:hover {
-        background: #222;
-        border-color: #222;
+        background: var(--bs-secondary-bg-subtle);
+        border-color: var(--bs-secondary-border-subtle);
+        color: var(--bs-body-color);
     }
 
     .mmxx-btn-primary {
-        background: var(--mmxx-text);
-        border-color: var(--mmxx-text);
+        background: var(--bs-primary);
+        border-color: var(--bs-primary);
+        color: var(--bs-white);
+    }
+
+    .mmxx-btn-primary:hover {
+        background: var(--bs-primary-bg-subtle);
+        border-color: var(--bs-primary-border-subtle);
+        color: var(--bs-primary-text-emphasis);
     }
 
     .mmxx-footer {
         padding: 1rem 1.25rem;
-        background: var(--mmxx-bg);
+        background: var(--vvc-body-bg);
         display: flex;
         justify-content: flex-end;
         gap: .6rem;
-        border-top: 1px solid var(--mmxx-border);
+        border-top: 1px solid var(--vvc-border-color);
     }
 
     .mmxx-btn-select {
-        background: var(--mmxx-text);
-        color: #fff;
-        border-color: var(--mmxx-text);
+        background: var(--bs-gray-400);
+        color: var(--bs-white);
+        border-color: var(--bs-gray-400);
+        transition: background .15s, color .15s, border-color .15s;
     }
 
     .mmxx-btn-select:hover {
-        background: #222;
-        border-color: #222;
+        background: var(--bs-gray-500);
+        border-color: var(--bs-gray-500);
+        color: var(--bs-white);
     }
 
-    .mmxx-btn-cancel {
-        background: #444;
-        border-color: #444;
-        color: #fff;
-    }
-
-    .mmxx-btn-cancel:hover {
-        background: #222;
-        border-color: #222;
+    .mmxx-btn-select:not(:disabled) {
+        background: var(--bs-success);
+        border-color: var(--bs-success);
     }
 
     .mmxx-loader {
         text-align: center;
-        color: var(--mmxx-muted);
+        color: var(--vvc-muted);
         padding: .75rem;
         font-size: .95rem;
     }
