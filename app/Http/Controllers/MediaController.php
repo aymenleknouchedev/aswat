@@ -335,7 +335,7 @@ class MediaController extends BaseController
             $media = ContentMedia::findOrFail($id);
             $media->name = $request->input('name');
             $media->alt = $request->input('alt');
-            $media->description = $request->input('description');
+            // Removed description field as requested
             $media->save();
 
             // إذا كان الطلب من AJAX نعيد JSON

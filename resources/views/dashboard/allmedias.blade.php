@@ -186,34 +186,29 @@
                         @csrf
                         @method('PUT')
                         <div class="row g-gs">
-                            <div class="col-md-6">
+                            <div class="col-12">
                                 <div class="form-group">
                                     <label class="form-label" for="editName">الاسم</label>
                                     <input required type="text" class="form-control" id="editName" name="name"
                                         placeholder="أدخل اسم الوسائط">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label" for="editAlt">النص البديل</label>
-                                    <input required type="text" class="form-control" id="editAlt" name="alt"
-                                        placeholder="أدخل النص البديل">
+                                    <div class="form-note">سيتم استخدام هذا الاسم للعرض في لوحة التحكم.</div>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="form-label" for="editDescription">الوصف</label>
-                                    <textarea class="form-control" id="editDescription" name="description" rows="3"
-                                        placeholder="أدخل وصف الوسائط (اختياري)"></textarea>
+                                    <label class="form-label" for="editAlt">النص البديل (Alt Text)</label>
+                                    <input required type="text" class="form-control" id="editAlt" name="alt"
+                                        placeholder="أدخل النص البديل">
+                                    <div class="form-note">هام لمحركات البحث وإمكانية الوصول.</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex gap-2 mt-4">
-                            <button type="submit" class="btn btn-primary">
+                        <div class="d-flex gap-2 mt-4" style="height:48px;">
+                            <button type="submit" class="btn btn-primary h-100" id="editSubmitBtn" style="height:100%;">
                                 <em class="icon ni ni-check"></em>
                                 <span>تحديث</span>
                             </button>
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                            <button type="button" class="btn btn-light h-100" data-bs-dismiss="modal" style="height:100%;">
                                 <em class="icon ni ni-cross"></em>
                                 <span>إلغاء</span>
                             </button>
@@ -688,7 +683,8 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showAlert('error', 'حدث خطأ أثناء تحميل البيانات', 'An error occurred while loading data', 'يرجى المحاولة مرة أخرى.', 'Please try again.');
+                    showAlert('error', 'حدث خطأ أثناء تحميل البيانات', 'An error occurred while loading data',
+                        'يرجى المحاولة مرة أخرى.', 'Please try again.');
                 })
                 .finally(() => {
                     document.getElementById('loadingIndicator').style.display = 'none';
@@ -718,22 +714,29 @@
                 }
             });
 
-            // Edit media buttons
+            // Edit media buttons - FIXED VERSION
             document.querySelectorAll('.edit-media').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const mediaId = this.getAttribute('data-media-id');
                     const mediaName = this.getAttribute('data-media-name');
                     const mediaAlt = this.getAttribute('data-media-alt');
-                    const mediaDescription = this.getAttribute('data-media-description') || '';
 
-                    document.getElementById('editName').value = mediaName;
-                    document.getElementById('editAlt').value = mediaAlt;
-                    document.getElementById('editDescription').value = mediaDescription;
+                    console.log('Editing media:', {
+                        mediaId,
+                        mediaName,
+                        mediaAlt
+                    }); // Debug log
 
+                    // Set form values
+                    document.getElementById('editName').value = mediaName || '';
+                    document.getElementById('editAlt').value = mediaAlt || '';
+
+                    // Update form action
                     const form = document.getElementById('editMediaForm');
                     form.action = "{{ route('dashboard.media.update', ':id') }}".replace(':id', mediaId);
 
+                    // Show modal
                     const modal = new bootstrap.Modal(document.getElementById('editMediaModal'));
                     modal.show();
                 });
@@ -774,30 +777,77 @@
             });
         }
 
-        // Handle browser back/forward buttons
-        window.addEventListener('popstate', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            currentFilters.search = urlParams.get('search') || '';
-            currentFilters.type = urlParams.get('type') || '';
-            currentFilters.sort = urlParams.get('sort') || 'newest';
+        // Handle edit form submission - FIXED VERSION
+        function initializeEditForm() {
+            const editForm = document.getElementById('editMediaForm');
+            if (editForm) {
+                editForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
 
-            document.getElementById('searchQuery').value = currentFilters.search;
-            document.getElementById('mediaType').value = currentFilters.type;
-            document.getElementById('sortBy').value = currentFilters.sort;
+                    const formData = new FormData(this);
+                    const submitBtn = document.getElementById('editSubmitBtn');
+                    const originalText = submitBtn.innerHTML;
 
-            loadMediaWithFilters();
-        });
+                    // Show loading state
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<em class="icon ni ni-loader"></em><span>جاري التحديث...</span>';
+
+                    console.log('Submitting form to:', this.action); // Debug log
+                    console.log('Form data:', Object.fromEntries(formData)); // Debug log
+
+                    fetch(this.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Response data:', data); // Debug log
+                            if (data.success) {
+                                showAlert('success', 'تم تحديث الوسائط بنجاح', 'Media updated successfully');
+                                bootstrap.Modal.getInstance(document.getElementById('editMediaModal')).hide();
+
+                                // Reload the media grid to reflect changes
+                                setTimeout(() => {
+                                    loadMediaWithFilters();
+                                }, 1000);
+                            } else {
+                                const errorMessage = data.message || 'فشل تحديث الوسائط';
+                                showAlert('error', errorMessage, errorMessage);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showAlert('error', 'حدث خطأ أثناء التحديث', 'An error occurred during update');
+                        })
+                        .finally(() => {
+                            // Reset button state
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalText;
+                        });
+                });
+            }
+        }
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             initializeMediaInteractions();
+            initializeEditForm(); // Initialize the edit form handler
 
             // Show success/error messages from session
-            @if(session('success'))
+            @if (session('success'))
                 showAlert('success', '{{ session('success') }}', 'Operation completed successfully');
             @endif
 
-            @if(session('error') || $errors->any())
+            @if (session('error') || $errors->any())
                 showAlert('error', '{{ session('error') ?? $errors->first() }}', 'An error occurred');
             @endif
 
@@ -809,44 +859,6 @@
                     if (window.mmmMediaModalManager) {
                         window.mmmMediaModalManager.openModal();
                     }
-                });
-            }
-
-            // Handle form submission
-            const editForm = document.getElementById('editMediaForm');
-            if (editForm) {
-                editForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-
-                    const formData = new FormData(this);
-                    const submitBtn = this.querySelector('button[type="submit"]');
-                    submitBtn.disabled = true;
-
-                    fetch(this.action, {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest',
-                                'Accept': 'application/json'
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                showAlert('success', 'تم تحديث الوسائط بنجاح', 'Media updated successfully');
-                                bootstrap.Modal.getInstance(document.getElementById('editMediaModal')).hide();
-                                setTimeout(() => window.location.reload(), 1500);
-                            } else {
-                                showAlert('error', data.message || 'فشل تحديث الوسائط', data.message || 'Failed to update media');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            showAlert('error', 'حدث خطأ أثناء التحديث', 'An error occurred during update');
-                        })
-                        .finally(() => {
-                            submitBtn.disabled = false;
-                        });
                 });
             }
         });
