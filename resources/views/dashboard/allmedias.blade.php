@@ -219,52 +219,55 @@
         </div>
     </div>
 
-    <!-- Media Preview Modal -->
+    <!-- Media Preview Modal - Fullscreen -->
     <div class="modal fade" tabindex="-1" role="dialog" id="previewMediaModal">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <div class="modal-body" style="padding: 2rem;">
-                    <!-- Preview Container -->
-                    <div id="previewContainer" style="text-align: center; min-height: 300px; display: flex; align-items: center; justify-content: center; background: #f5f5f5; border-radius: 8px; margin-bottom: 1.5rem;">
+        <div class="modal-dialog modal-fullscreen" role="document">
+            <div class="modal-content" style="background: #000;">
+                <div class="modal-header" style="background: rgba(0,0,0,0.9); border-bottom: 1px solid #333;">
+                    <h5 class="modal-title" style="color: #fff;" id="previewMediaTitle">معاينة الوسائط</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 0; background: #000; display: flex; flex-direction: column; height: 100%;">
+                    <!-- Preview Container - Takes up most space -->
+                    <div id="previewContainer" style="flex: 1; display: flex; align-items: center; justify-content: center; background: #1a1a1a; position: relative; overflow: auto;">
                         <!-- Image Preview -->
-                        <img id="previewImage" src="" alt="معاينة" style="max-width: 100%; max-height: 400px; object-fit: contain; display: none;">
+                        <img id="previewImage" src="" alt="معاينة" style="max-width: 100%; max-height: 100%; object-fit: contain; display: none;">
                         
                         <!-- Video Preview -->
-                        <video id="previewVideo" controls style="max-width: 100%; max-height: 400px; object-fit: contain; display: none;"></video>
+                        <video id="previewVideo" controls style="max-width: 100%; max-height: 100%; object-fit: contain; display: none;"></video>
                         
                         <!-- Audio Preview -->
-                        <div id="previewAudioContainer" style="display: none; width: 100%;">
-                            <div style="margin-bottom: 1rem;">
-                                <em class="icon ni ni-audio" style="font-size: 3rem; color: #6c757d;"></em>
+                        <div id="previewAudioContainer" style="display: none; width: 100%; text-align: center; padding: 2rem;">
+                            <div style="margin-bottom: 2rem;">
+                                <em class="icon ni ni-audio" style="font-size: 5rem; color: #fff;"></em>
                             </div>
-                            <audio id="previewAudio" controls style="width: 100%;"></audio>
+                            <audio id="previewAudio" controls style="width: 100%; max-width: 600px; margin: 0 auto; display: block;"></audio>
                         </div>
                         
                         <!-- Document Preview -->
                         <div id="previewDocumentContainer" style="display: none; text-align: center;">
-                            <em class="icon ni ni-file-text" style="font-size: 3rem; color: #6c757d; margin-bottom: 1rem; display: block;"></em>
-                            <p id="previewDocumentName" style="color: #6c757d; font-size: 1rem;"></p>
+                            <em class="icon ni ni-file-text" style="font-size: 5rem; color: #666; margin-bottom: 2rem; display: block;"></em>
+                            <p id="previewDocumentName" style="color: #999; font-size: 1.2rem;"></p>
                         </div>
                         
                         <!-- YouTube Preview -->
-                        <iframe id="previewYoutube" style="width: 100%; max-height: 400px; border-radius: 8px; display: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe id="previewYoutube" style="width: 100%; height: 100%; border: none; display: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
 
-                    <!-- Preview Info -->
-                    <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 8px;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <!-- Preview Info Footer -->
+                    <div style="background: rgba(0,0,0,0.95); border-top: 1px solid #333; padding: 1.5rem; color: #fff;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1200px;">
                             <div>
-                                <p style="margin: 0; font-size: 0.875rem; color: #6c757d; margin-bottom: 0.25rem;"><strong>الاسم:</strong></p>
-                                <p id="previewName" style="margin: 0; font-size: 1rem; color: #333;">-</p>
+                                <p style="margin: 0; font-size: 0.875rem; color: #999; margin-bottom: 0.5rem;"><strong>الاسم:</strong></p>
+                                <p id="previewName" style="margin: 0; font-size: 1rem; color: #fff; word-break: break-word;">-</p>
                             </div>
                             <div>
-                                <p style="margin: 0; font-size: 0.875rem; color: #6c757d; margin-bottom: 0.25rem;"><strong>النوع:</strong></p>
-                                <p id="previewType" style="margin: 0; font-size: 1rem; color: #333;">-</p>
+                                <p style="margin: 0; font-size: 0.875rem; color: #999; margin-bottom: 0.5rem;"><strong>النوع:</strong></p>
+                                <p id="previewType" style="margin: 0; font-size: 1rem; color: #fff;">-</p>
                             </div>
-                            <div style="grid-column: 1 / -1;">
-                                <p style="margin: 0; font-size: 0.875rem; color: #6c757d; margin-bottom: 0.25rem;"><strong>النص البديل:</strong></p>
-                                <p id="previewAlt" style="margin: 0; font-size: 1rem; color: #333;">-</p>
+                            <div>
+                                <p style="margin: 0; font-size: 0.875rem; color: #999; margin-bottom: 0.5rem;"><strong>النص البديل:</strong></p>
+                                <p id="previewAlt" style="margin: 0; font-size: 1rem; color: #fff; word-break: break-word;">-</p>
                             </div>
                         </div>
                     </div>
