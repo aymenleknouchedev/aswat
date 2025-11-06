@@ -84,6 +84,25 @@
             </div>
         </section>
 
+        <!-- Asset Preview Overlay -->
+        <div id="mmx-preview-overlay" class="mmx-preview-overlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; z-index: 10001; padding: 2rem;">
+            <div style="position: absolute; top: 1rem; right: 1rem; z-index: 2;">
+                <button id="mmx-preview-close" class="mmx-close" type="button" aria-label="إغلاق المعاينة" style="background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border: 1px solid rgba(255,255,255,0.3); color: white; font-size: 1.5rem; cursor: pointer;">×</button>
+            </div>
+            <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+                <div style="max-width: 90vw; max-height: 90vh; background: var(--mmx-bg); padding: 1.5rem; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 1rem;">
+                    <div id="mmx-preview-media" style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 200px; overflow: auto;">
+                        <!-- Preview content will be inserted here -->
+                    </div>
+                    <div id="mmx-preview-info" style="padding-top: 1rem; border-top: 1px solid var(--mmx-border); font-size: 0.9rem; color: var(--mmx-text);">
+                        <p style="margin: 0.25rem 0;"><strong>الاسم:</strong> <span id="mmx-preview-name">-</span></p>
+                        <p style="margin: 0.25rem 0;"><strong>النوع:</strong> <span id="mmx-preview-type">-</span></p>
+                        <p style="margin: 0.25rem 0;"><strong>النص البديل:</strong> <span id="mmx-preview-alt">-</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Upload -->
         <section id="mmx-tab-upload" class="mmx-tab-panel" role="tabpanel" aria-labelledby="mmx-tabbtn-upload"
             hidden>
@@ -760,6 +779,74 @@
             return "mmx-icon-file";
         }
 
+        function showMediaPreview(media) {
+            const overlay = document.getElementById('mmx-preview-overlay');
+            const previewMedia = document.getElementById('mmx-preview-media');
+            const previewName = document.getElementById('mmx-preview-name');
+            const previewType = document.getElementById('mmx-preview-type');
+            const previewAlt = document.getElementById('mmx-preview-alt');
+            
+            if (!overlay || !previewMedia) return;
+            
+            // Clear previous content
+            previewMedia.innerHTML = '';
+            
+            const kind = getMediaKind(media);
+            const typeLabel = kind === "voice" ? "صوت" : (kind === "image" ? "صورة" : (kind === "video" ? "فيديو" : "ملف"));
+            
+            // Update info
+            if (previewName) previewName.textContent = media.name || '-';
+            if (previewType) previewType.textContent = typeLabel;
+            if (previewAlt) previewAlt.textContent = media.alt || '-';
+            
+            // Create preview element based on media type
+            if (media.path && isYouTubeUrl(media.path)) {
+                const vid = getYouTubeId(media.path);
+                const iframe = document.createElement('iframe');
+                iframe.src = `https://www.youtube.com/embed/${vid}`;
+                iframe.width = '100%';
+                iframe.height = '100%';
+                iframe.frameborder = '0';
+                iframe.allow = 'autoplay; encrypted-media';
+                iframe.allowFullscreen = true;
+                iframe.style.cssText = 'min-width: 400px; min-height: 300px; max-width: 100%; max-height: 100%;';
+                previewMedia.appendChild(iframe);
+            } else if (kind === "image") {
+                const img = document.createElement('img');
+                img.src = media.path;
+                img.alt = media.alt || media.name || 'Image';
+                img.style.cssText = 'max-width: 100%; max-height: 100%; object-fit: contain;';
+                previewMedia.appendChild(img);
+            } else if (kind === "video") {
+                const video = document.createElement('video');
+                video.src = media.path;
+                video.controls = true;
+                video.style.cssText = 'max-width: 100%; max-height: 100%; object-fit: contain;';
+                previewMedia.appendChild(video);
+            } else if (kind === "voice") {
+                const audio = document.createElement('audio');
+                audio.src = media.path;
+                audio.controls = true;
+                audio.style.cssText = 'width: 100%;';
+                previewMedia.appendChild(audio);
+            } else {
+                const fileIcon = document.createElement('div');
+                fileIcon.style.cssText = 'text-align: center; color: var(--mmx-muted);';
+                fileIcon.innerHTML = '<i class="fa fa-file fa-5x" style="margin-bottom: 1rem; display: block;"></i><p style="margin: 0; font-size: 1rem;">معاينة الملف غير متاحة</p><p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: var(--mmx-text);">' + (media.name || 'File') + '</p>';
+                previewMedia.appendChild(fileIcon);
+            }
+            
+            // Show overlay
+            overlay.style.display = 'block';
+        }
+
+        function closeMediaPreview() {
+            const overlay = document.getElementById('mmx-preview-overlay');
+            if (overlay) {
+                overlay.style.display = 'none';
+            }
+        }
+
         function getSelectedUrlType() {
             const checked = Array.from(urlTypeRadios).find(r => r.checked);
             return checked ? checked.value : "auto";
@@ -924,9 +1011,35 @@
                 item.className = "mmx-item";
                 if (state.selected && state.selected.id === media.id) item.classList.add("mmx-is-selected");
                 item.addEventListener("click", () => toggleSelect(media));
+                
+                // Add preview on double-click or middle mouse button
+                item.addEventListener("contextmenu", (e) => {
+                    e.preventDefault();
+                    showMediaPreview(media);
+                });
+                
+                // Add preview button/icon
+                const previewBtn = document.createElement("button");
+                previewBtn.className = "mmx-preview-btn";
+                previewBtn.title = "معاينة";
+                previewBtn.innerHTML = '<i class="fa fa-eye"></i>';
+                previewBtn.style.cssText = "position: absolute; bottom: 0.5rem; right: 0.5rem; background: var(--mmx-primary); color: white; border: none; padding: 0.4rem 0.6rem; cursor: pointer; opacity: 0; transition: opacity 0.2s; border-radius: 4px; z-index: 1;";
+                previewBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    showMediaPreview(media);
+                });
 
                 const thumb = document.createElement("div");
                 thumb.className = "mmx-thumb";
+                thumb.style.position = "relative";
+                
+                // Add hover effect to show preview button
+                item.addEventListener("mouseenter", () => {
+                    previewBtn.style.opacity = "1";
+                });
+                item.addEventListener("mouseleave", () => {
+                    previewBtn.style.opacity = "0";
+                });
 
                 const badge = document.createElement("div");
                 badge.className = "mmx-badge";
@@ -963,7 +1076,8 @@
                     audio.controls = true;
                     thumb.appendChild(audio);
                 }
-
+                
+                thumb.appendChild(previewBtn);
                 item.appendChild(thumb);
 
                 const title = document.createElement("div");
@@ -1004,6 +1118,20 @@
                 alt: state.selected.alt || ""
             });
             closeModal();
+        });
+
+        // ===== Preview close =====
+        const previewCloseBtn = document.getElementById('mmx-preview-close');
+        const previewOverlay = document.getElementById('mmx-preview-overlay');
+        previewCloseBtn?.addEventListener("click", closeMediaPreview);
+        previewOverlay?.addEventListener("click", (e) => {
+            if (e.target === previewOverlay) closeMediaPreview();
+        });
+        // Close preview on Escape key
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && previewOverlay && previewOverlay.style.display !== 'none') {
+                closeMediaPreview();
+            }
         });
 
         // ===== Parsing & matching helpers =====

@@ -219,6 +219,60 @@
         </div>
     </div>
 
+    <!-- Media Preview Modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="previewMediaModal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body" style="padding: 2rem;">
+                    <!-- Preview Container -->
+                    <div id="previewContainer" style="text-align: center; min-height: 300px; display: flex; align-items: center; justify-content: center; background: #f5f5f5; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <!-- Image Preview -->
+                        <img id="previewImage" src="" alt="معاينة" style="max-width: 100%; max-height: 400px; object-fit: contain; display: none;">
+                        
+                        <!-- Video Preview -->
+                        <video id="previewVideo" controls style="max-width: 100%; max-height: 400px; object-fit: contain; display: none;"></video>
+                        
+                        <!-- Audio Preview -->
+                        <div id="previewAudioContainer" style="display: none; width: 100%;">
+                            <div style="margin-bottom: 1rem;">
+                                <em class="icon ni ni-audio" style="font-size: 3rem; color: #6c757d;"></em>
+                            </div>
+                            <audio id="previewAudio" controls style="width: 100%;"></audio>
+                        </div>
+                        
+                        <!-- Document Preview -->
+                        <div id="previewDocumentContainer" style="display: none; text-align: center;">
+                            <em class="icon ni ni-file-text" style="font-size: 3rem; color: #6c757d; margin-bottom: 1rem; display: block;"></em>
+                            <p id="previewDocumentName" style="color: #6c757d; font-size: 1rem;"></p>
+                        </div>
+                        
+                        <!-- YouTube Preview -->
+                        <iframe id="previewYoutube" style="width: 100%; max-height: 400px; border-radius: 8px; display: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+
+                    <!-- Preview Info -->
+                    <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 8px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <p style="margin: 0; font-size: 0.875rem; color: #6c757d; margin-bottom: 0.25rem;"><strong>الاسم:</strong></p>
+                                <p id="previewName" style="margin: 0; font-size: 1rem; color: #333;">-</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0; font-size: 0.875rem; color: #6c757d; margin-bottom: 0.25rem;"><strong>النوع:</strong></p>
+                                <p id="previewType" style="margin: 0; font-size: 1rem; color: #333;">-</p>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <p style="margin: 0; font-size: 0.875rem; color: #6c757d; margin-bottom: 0.25rem;"><strong>النص البديل:</strong></p>
+                                <p id="previewAlt" style="margin: 0; font-size: 1rem; color: #333;">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Include Media Upload Modal -->
     @include('dashboard.components.gallery-model')
 
@@ -589,6 +643,13 @@
             });
         }
 
+        // Extract YouTube ID from URL
+        function extractYouTubeIdFromUrl(url) {
+            const ytRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
+            const match = url.match(ytRegex);
+            return match ? match[1] : null;
+        }
+
         let filterTimeout;
         let currentFilters = {
             search: "{{ request('search') }}",
@@ -712,6 +773,67 @@
                         player.classList.add('loaded');
                     });
                 }
+            });
+
+            // Preview media buttons
+            document.querySelectorAll('.preview-media').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const mediaName = this.getAttribute('data-media-name');
+                    const mediaAlt = this.getAttribute('data-media-alt');
+                    const mediaType = this.getAttribute('data-media-type');
+                    const mediaPath = this.getAttribute('data-path');
+
+                    // Clear previous content
+                    document.getElementById('previewImage').style.display = 'none';
+                    document.getElementById('previewVideo').style.display = 'none';
+                    document.getElementById('previewAudioContainer').style.display = 'none';
+                    document.getElementById('previewDocumentContainer').style.display = 'none';
+                    document.getElementById('previewYoutube').style.display = 'none';
+
+                    // Update info
+                    document.getElementById('previewName').textContent = mediaName || '-';
+                    document.getElementById('previewAlt').textContent = mediaAlt || '-';
+                    
+                    // Determine type label
+                    let typeLabel = '-';
+                    if (mediaType === 'image') typeLabel = 'صورة';
+                    else if (mediaType === 'video') typeLabel = 'فيديو';
+                    else if (mediaType === 'audio') typeLabel = 'صوت';
+                    else typeLabel = 'مستند';
+                    document.getElementById('previewType').textContent = typeLabel;
+
+                    // Show appropriate preview
+                    if (mediaType === 'image') {
+                        const img = document.getElementById('previewImage');
+                        img.src = mediaPath;
+                        img.alt = mediaAlt || mediaName;
+                        img.style.display = 'block';
+                    } else if (mediaType === 'video') {
+                        // Check if it's YouTube
+                        if (mediaPath.includes('youtube.com') || mediaPath.includes('youtu.be')) {
+                            const youtubeId = extractYouTubeIdFromUrl(mediaPath);
+                            const iframe = document.getElementById('previewYoutube');
+                            iframe.src = `https://www.youtube.com/embed/${youtubeId}`;
+                            iframe.style.display = 'block';
+                        } else {
+                            const video = document.getElementById('previewVideo');
+                            video.src = mediaPath;
+                            video.style.display = 'block';
+                        }
+                    } else if (mediaType === 'audio') {
+                        const audio = document.getElementById('previewAudio');
+                        audio.src = mediaPath;
+                        document.getElementById('previewAudioContainer').style.display = 'block';
+                    } else {
+                        document.getElementById('previewDocumentName').textContent = mediaName || 'ملف';
+                        document.getElementById('previewDocumentContainer').style.display = 'block';
+                    }
+
+                    // Show modal
+                    const modal = new bootstrap.Modal(document.getElementById('previewMediaModal'));
+                    modal.show();
+                });
             });
 
             // Edit media buttons - FIXED VERSION

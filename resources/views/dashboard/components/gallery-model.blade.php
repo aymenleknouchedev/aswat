@@ -31,8 +31,8 @@
                         <div style="flex: 1 1 220px;">
                             <input type="file" id="mmm-upload-input" class="mmm-upload-input"
                                 style="display: none;" />
-                            <label for="mmm-upload-input"
-                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid var(--mmm-border); border-radius: 0; background: var(--mmm-gray-100); color: var(--mmm-text); text-align: center;"
+                            <label for="mmm-upload-input" id="mmm-upload-label"
+                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid var(--mmm-border); border-radius: 0; background: var(--mmm-gray-100); color: var(--mmm-text); text-align: center; transition: all 0.2s;"
                                 data-ar="اختر ملف الوسائط" data-en="Select media file">
                                 <i class="fa fa-upload" style="margin-right: 6px;"></i> اختر ملف الوسائط
                             </label>
@@ -46,6 +46,30 @@
                                 style="width: 100%; padding: .6rem .7rem; border: 1px solid var(--mmm-border); border-radius: 0; background: var(--mmm-bg); color: var(--mmm-text);" />
                         </div>
                     </div>
+                    <!-- Preview Section -->
+                    <div id="mmm-preview-container" style="display: none; margin-top: 1rem; padding: 1rem; border: 1px solid var(--mmm-border); background: var(--mmm-gray-100); border-radius: 0;">
+                        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                            <div style="flex: 0 0 120px;">
+                                <div id="mmm-preview-wrapper" style="width: 120px; height: 120px; background: #f0f0f0; border: 1px solid var(--mmm-border); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                    <img id="mmm-preview-image" src="" alt="معاينة" style="max-width: 100%; max-height: 100%; object-fit: contain; display: none;" />
+                                    <video id="mmm-preview-video" style="max-width: 100%; max-height: 100%; object-fit: contain; display: none;" controls muted></video>
+                                    <audio id="mmm-preview-audio" style="width: 100%; display: none;" controls></audio>
+                                    <div id="mmm-preview-icon" style="text-align: center; color: var(--mmm-muted);">
+                                        <i class="fa fa-file fa-3x" style="margin-bottom: 0.5rem;"></i>
+                                        <p style="margin: 0; font-size: 0.8rem;">معاينة غير متاحة</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="margin: 0 0 0.5rem 0; font-weight: 600; color: var(--mmm-text);">معلومات الملف:</p>
+                                <div style="font-size: 0.9rem; color: var(--mmm-text);">
+                                    <p style="margin: 0.25rem 0;"><strong>الاسم:</strong> <span id="mmm-preview-name">-</span></p>
+                                    <p style="margin: 0.25rem 0;"><strong>الحجم:</strong> <span id="mmm-preview-size">-</span></p>
+                                    <p style="margin: 0.25rem 0;"><strong>النوع:</strong> <span id="mmm-preview-type">-</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mmm-uploader-actions">
                         <button class="mmm-btn mmm-btn-primary" type="button" id="mmm-btn-upload-and-select-close"
                             title="رفع وإدراج" data-en="Upload and insert" data-ar="رفع وإدراج">رفع وإدراج</button>
@@ -53,18 +77,96 @@
                 </div>
             </div>
             <script>
-                // Change button style when file selected
+                // Change button style and label border when file selected
                 document.addEventListener('DOMContentLoaded', function() {
                     const fileInput = document.getElementById('mmm-upload-input');
+                    const uploadLabel = document.getElementById('mmm-upload-label');
+                    const uploadName = document.getElementById('mmm-upload-name');
+                    const uploadAlt = document.getElementById('mmm-upload-alt');
                     const btnUploadAndSelectClose = document.getElementById('mmm-btn-upload-and-select-close');
+                    
+                    // Preview elements
+                    const previewContainer = document.getElementById('mmm-preview-container');
+                    const previewImage = document.getElementById('mmm-preview-image');
+                    const previewVideo = document.getElementById('mmm-preview-video');
+                    const previewAudio = document.getElementById('mmm-preview-audio');
+                    const previewIcon = document.getElementById('mmm-preview-icon');
+                    const previewName = document.getElementById('mmm-preview-name');
+                    const previewSize = document.getElementById('mmm-preview-size');
+                    const previewType = document.getElementById('mmm-preview-type');
 
                     fileInput?.addEventListener('change', function() {
                         if (fileInput.files && fileInput.files.length > 0) {
+                            const file = fileInput.files[0];
+                            const fileName = file.name;
+                            const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+                            
                             btnUploadAndSelectClose.classList.add('mmm-btn-active');
+                            uploadLabel.style.borderColor = 'var(--mmm-primary)';
+                            
+                            // Auto-fill name and alt fields if empty
+                            if (uploadName && !uploadName.value) {
+                                uploadName.value = nameWithoutExt;
+                            }
+                            if (uploadAlt && !uploadAlt.value) {
+                                uploadAlt.value = nameWithoutExt;
+                            }
+                            
+                            // Update preview information
+                            if (previewName) previewName.textContent = fileName;
+                            if (previewSize) previewSize.textContent = formatFileSize(file.size);
+                            if (previewType) previewType.textContent = file.type || 'Unknown';
+                            
+                            // Reset preview elements
+                            previewImage.style.display = 'none';
+                            previewVideo.style.display = 'none';
+                            previewAudio.style.display = 'none';
+                            previewIcon.style.display = 'none';
+                            
+                            // Handle different file types
+                            const fileType = file.type;
+                            const reader = new FileReader();
+                            
+                            if (fileType.startsWith('image/')) {
+                                // Show image preview
+                                reader.onload = function(e) {
+                                    previewImage.src = e.target.result;
+                                    previewImage.style.display = 'block';
+                                };
+                                reader.readAsDataURL(file);
+                            } else if (fileType.startsWith('video/')) {
+                                // Show video preview
+                                const videoUrl = URL.createObjectURL(file);
+                                previewVideo.src = videoUrl;
+                                previewVideo.style.display = 'block';
+                            } else if (fileType.startsWith('audio/')) {
+                                // Show audio player
+                                const audioUrl = URL.createObjectURL(file);
+                                previewAudio.src = audioUrl;
+                                previewAudio.style.display = 'block';
+                            } else {
+                                // Show file icon for other types
+                                previewIcon.innerHTML = '<i class="fa fa-file fa-3x" style="margin-bottom: 0.5rem;"></i><p style="margin: 0; font-size: 0.8rem;">معاينة غير متاحة</p>';
+                                previewIcon.style.display = 'block';
+                            }
+                            
+                            // Show preview container
+                            previewContainer.style.display = 'block';
                         } else {
                             btnUploadAndSelectClose.classList.remove('mmm-btn-active');
+                            uploadLabel.style.borderColor = 'var(--mmm-border)';
+                            previewContainer.style.display = 'none';
                         }
                     });
+                    
+                    // Helper function to format file size
+                    function formatFileSize(bytes) {
+                        if (bytes === 0) return '0 Bytes';
+                        const k = 1024;
+                        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                        const i = Math.floor(Math.log(bytes) / Math.log(k));
+                        return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+                    }
                 });
             </script>
             <style>

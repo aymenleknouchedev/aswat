@@ -72,6 +72,13 @@
 
                     <!-- Media Actions -->
                     <div class="media-actions">
+                        <button class="btn btn-dim btn-sm btn-outline-info btn-preview preview-media"
+                            data-media-id="{{ $media->id }}" data-media-name="{{ $media->name }}"
+                            data-media-alt="{{ $media->alt }}" data-media-type="{{ $media->media_type }}"
+                            data-path="{{ $media->path }}" title="معاينة الوسائط">
+                            <em class="icon ni ni-eye"></em>
+                            <span>معاينة</span>
+                        </button>
                         <button class="btn btn-dim btn-sm btn-outline-primary btn-edit edit-media"
                             data-media-id="{{ $media->id }}" data-media-name="{{ $media->name }}"
                             data-media-alt="{{ $media->alt }}" data-media-type="{{ $media->type }}"
