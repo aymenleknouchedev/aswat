@@ -93,10 +93,11 @@
                         <div style="flex: 1 1 220px;">
                             <input type="file" id="mmx-upload-input" class="mmx-upload-input"
                                 style="display: none;" />
-                            <label for="mmx-upload-input"
-                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid var(--mmx-border); border-radius: 0; background: var(--mmx-gray-100); color: var(--mmx-text); text-align: center;"
+                            <label for="mmx-upload-input" id="mmx-upload-label"
+                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid var(--mmx-border); border-radius: 0; background: var(--mmx-gray-100); color: var(--mmx-text); text-align: center; transition: all 0.2s;"
                                 data-ar="اختر ملف الوسائط" data-en="Select media file">
-                                <i class="fa fa-upload" style="margin-right: 6px;"></i> اختر ملف الوسائط
+                                <i class="fa fa-upload" style="margin-right: 6px;"></i>
+                                <span id="mmx-upload-label-text">اختر ملف الوسائط</span>
                             </label>
 
                         </div>
@@ -121,32 +122,6 @@
                     </div>
                 </div>
             </div>
-            <script>
-                // Change button style when file selected
-                document.addEventListener('DOMContentLoaded', function() {
-                    const fileInput = document.getElementById('mmx-upload-input');
-                    const btnUploadToGallery = document.getElementById('mmx-btn-upload-to-gallery');
-                    const btnUploadAndSelectClose = document.getElementById('mmx-btn-upload-and-select-close');
-
-                    fileInput?.addEventListener('change', function() {
-                        if (fileInput.files && fileInput.files.length > 0) {
-                            btnUploadToGallery.classList.add('mmx-btn-active');
-                            btnUploadAndSelectClose.classList.add('mmx-btn-active');
-                        } else {
-                            btnUploadToGallery.classList.remove('mmx-btn-active');
-                            btnUploadAndSelectClose.classList.remove('mmx-btn-active');
-                        }
-                    });
-                });
-            </script>
-            <style>
-                /* Example: highlight buttons when file selected */
-                .mmx-btn-active {
-                    background: var(--mmx-success) !important;
-                    border-color: var(--mmx-success) !important;
-                    color: #fff !important;
-                }
-            </style>
         </section>
 
         <!-- Import by URL -->
@@ -573,29 +548,29 @@
         font-weight: 600;
         cursor: pointer;
         transition: background .15s, color .15s, border-color .15s;
-        border: 1px solid var(--mmx-primary);
-        background: var(--mmx-primary);
+        border: 1px solid var(--mmx-text);
+        background: var(--mmx-text);
         color: #fff;
     }
 
     .mmx-btn:hover {
-        background: #465fff;
-        border-color: #465fff;
+        background: #222;
+        border-color: #222;
     }
 
     .mmx-btn-secondary {
-        background: var(--mmx-secondary);
-        border-color: var(--mmx-secondary);
+        background: #444;
+        border-color: #444;
     }
 
     .mmx-btn-secondary:hover {
-        background: #2b3748;
-        border-color: #2b3748;
+        background: #222;
+        border-color: #222;
     }
 
     .mmx-btn-primary {
-        background: var(--mmx-primary);
-        border-color: var(--mmx-primary);
+        background: var(--mmx-text);
+        border-color: var(--mmx-text);
     }
 
     .mmx-footer {
@@ -608,25 +583,25 @@
     }
 
     .mmx-btn-select {
-        background: var(--mmx-primary);
+        background: var(--mmx-text);
         color: #fff;
-        border-color: var(--mmx-primary);
+        border-color: var(--mmx-text);
     }
 
     .mmx-btn-select:hover {
-        background: #465fff;
-        border-color: #465fff;
+        background: #222;
+        border-color: #222;
     }
 
     .mmx-btn-cancel {
-        background: var(--mmx-secondary);
-        border-color: var(--mmx-secondary);
+        background: #444;
+        border-color: #444;
         color: #fff;
     }
 
     .mmx-btn-cancel:hover {
-        background: #2b3748;
-        border-color: #2b3748;
+        background: #222;
+        border-color: #222;
     }
 
     .mmx-loader {
@@ -1305,6 +1280,46 @@
         btnUploadSelectAndClose?.addEventListener("click", () => uploadMediaAndHandle('select-close'));
         btnImportToGallery?.addEventListener("click", () => importViaUrl('gallery'));
         btnImportSelectAndClose?.addEventListener("click", () => importViaUrl('select-close'));
+
+        // Visual feedback for file selection
+        const uploadLabel = document.getElementById('mmx-upload-label');
+        const uploadLabelText = document.getElementById('mmx-upload-label-text');
+        uploadInput?.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const fileName = files[0].name;
+                if (uploadLabelText) uploadLabelText.textContent = 'تم تحميل الملف';
+                if (uploadLabel) uploadLabel.style.border = '1px solid var(--mmx-primary)';
+
+                // Auto-fill name and alt fields if empty
+                if (uploadName && !uploadName.value) {
+                    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+                    uploadName.value = nameWithoutExt;
+                    if (uploadAlt) uploadAlt.value = nameWithoutExt;
+                }
+            } else {
+                if (uploadLabelText) uploadLabelText.textContent = 'اختر ملف الوسائط';
+                if (uploadLabel) uploadLabel.style.border = '1px solid var(--mmx-border)';
+            }
+        });
+
+        // Auto-fill for URL input
+        uploadUrlInput?.addEventListener('input', (e) => {
+            const url = e.target.value.trim();
+            if (url && urlNameInput && !urlNameInput.value) {
+                try {
+                    const urlPath = new URL(url, window.location.origin).pathname;
+                    const fileName = urlPath.split('/').pop();
+                    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+                    if (nameWithoutExt && nameWithoutExt !== '') {
+                        urlNameInput.value = nameWithoutExt;
+                        if (urlAltInput) urlAltInput.value = nameWithoutExt;
+                    }
+                } catch (err) {
+                    // Invalid URL, ignore
+                }
+            }
+        });
 
         // ===== Initial render =====
         (function init() {

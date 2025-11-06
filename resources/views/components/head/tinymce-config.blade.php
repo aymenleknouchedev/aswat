@@ -573,14 +573,14 @@
         font-weight: 600;
         cursor: pointer;
         transition: background .15s, color .15s, border-color .15s;
-        border: 1px solid transparent;
-        background: var(--vvc-primary);
+        border: 1px solid var(--vvc-body-color);
+        background: var(--vvc-body-color);
         color: #fff;
     }
 
     .vvc-btn:hover {
-        background: #465fff;
-        border-color: #465fff;
+        background: #222;
+        border-color: #222;
     }
 
     .vvc-btn:disabled {
@@ -590,43 +590,43 @@
 
     /* Secondary button variant */
     .vvc-btn-secondary {
-        background: var(--vvc-secondary);
-        border-color: var(--vvc-secondary);
+        background: #444;
+        border-color: #444;
     }
 
     .vvc-btn-secondary:hover {
-        background: #2b3748;
-        border-color: #2b3748;
+        background: #222;
+        border-color: #222;
     }
 
     /* Primary button variant */
     .vvc-btn-primary {
-        background: var(--vvc-primary);
-        border-color: var(--vvc-primary);
+        background: var(--vvc-body-color);
+        border-color: var(--vvc-body-color);
     }
 
     /* Select button */
     .vvc-btn-select {
-        background: var(--vvc-primary);
+        background: var(--vvc-body-color);
         color: #fff;
-        border-color: var(--vvc-primary);
+        border-color: var(--vvc-body-color);
     }
 
     .vvc-btn-select:hover {
-        background: #465fff;
-        border-color: #465fff;
+        background: #222;
+        border-color: #222;
     }
 
     /* Cancel button */
     .vvc-btn-cancel {
-        background: var(--vvc-secondary);
-        border-color: var(--vvc-secondary);
+        background: #444;
+        border-color: #444;
         color: #fff;
     }
 
     .vvc-btn-cancel:hover {
-        background: #2b3748;
-        border-color: #2b3748;
+        background: #222;
+        border-color: #222;
     }
 
     /* ---- FOOTER STYLES ---- */
@@ -1375,7 +1375,7 @@
             if (files && files.length > 0) {
                 const fileName = files[0].name;
                 uploadLabelText.textContent = 'تم تحميل الملف';
-                uploadLabel.style.border = '1px solid var(--vvc-primary)';
+                uploadLabel.style.border = '1px solid var(--vvc-body-color)';
 
                 // Auto-fill name and alt fields if empty
                 if (!upName.value) {

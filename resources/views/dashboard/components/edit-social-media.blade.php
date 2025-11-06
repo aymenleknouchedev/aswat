@@ -1,8 +1,15 @@
 {{-- ====================== SOCIAL MEDIA (Styles) ====================== --}}
 <style>
     :root {
-        --az-border: #e5e7eb;
-        --az-muted: #6b7280;
+        --nbn-bg: #fff;
+        --nbn-text: #1a1a1a;
+        --nbn-border: #e0e0e0;
+        --nbn-muted: #6b7280;
+        --nbn-gray-100: #f5f5f5;
+        --nbn-gray-400: #9ca3af;
+        --nbn-gray-600: #4b5563;
+        --nbn-gray-700: #374151;
+        --nbn-ring: rgba(0, 0, 0, 0.1);
     }
 
     .image-preview-container img {
@@ -20,6 +27,8 @@
         inset: 0;
         display: none;
         z-index: 2075;
+        align-items: center;
+        justify-content: center;
     }
 
     .nbn-modal[aria-hidden="false"] {
@@ -38,13 +47,13 @@
         margin: auto;
         width: min(960px, 92vw);
         max-height: 90vh;
-        background: #fff;
-        color: #111;
+        background: var(--nbn-bg);
+        color: var(--nbn-text);
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        border-radius: .5rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+        border-radius: 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         z-index: 2076;
     }
 
@@ -52,162 +61,285 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 16px;
-        border-bottom: 1px solid var(--az-border);
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--nbn-border);
+        background: var(--nbn-bg);
     }
 
     .nbn-x {
         background: transparent;
         border: 0;
-        font-size: 1.6rem;
+        font-size: 1.8rem;
         cursor: pointer;
-        color: #666;
+        color: var(--nbn-text);
+        line-height: 1;
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nbn-x:hover {
+        opacity: 0.7;
     }
 
     .nbn-tabs {
         display: flex;
-        padding: 8px 16px;
-        border-bottom: 1px solid var(--az-border);
+        gap: .25rem;
+        padding: .5rem;
+        border-bottom: 1px solid var(--nbn-border);
+        background: var(--nbn-bg);
     }
 
     .nbn-tab {
-        border: 1px solid var(--az-border);
-        background: #fff;
-        padding: .45rem .8rem;
+        appearance: none;
+        border: 1px solid var(--nbn-border);
+        background: var(--nbn-bg);
+        padding: .55rem .9rem;
         cursor: pointer;
         font-weight: 600;
-        margin-right: 8px;
-        border-radius: .35rem;
+        color: var(--nbn-text);
+        transition: all 0.15s;
+    }
+
+    .nbn-tab:hover {
+        border-color: var(--nbn-gray-400);
+    }
+
+    .nbn-tab:focus {
+        outline: 2px solid var(--nbn-ring);
+        outline-offset: 1px;
     }
 
     .nbn-tab.is-active {
-        border-color: #cfcfcf;
+        border-color: var(--nbn-gray-400);
+        background: var(--nbn-bg);
+        color: var(--nbn-text);
     }
 
     .nbn-panel[hidden] {
-        display: none;
+        display: none
     }
 
     .nbn-filters {
+        padding: 1rem 1.25rem;
         display: flex;
-        padding: 12px 16px;
-        border-bottom: 1px solid var(--az-border);
+        gap: .6rem;
+        border-bottom: 1px solid var(--nbn-border);
+        background: var(--nbn-bg);
     }
 
-    .nbn-filters input,
-    .nbn-filters select {
-        border: 1px solid #dcdcdc;
-        padding: .5rem .7rem;
-        border-radius: .35rem;
+    .nbn-filters input::placeholder {
+        color: var(--nbn-muted);
     }
 
-    .nbn-filters input {
-        margin-right: 8px;
-        flex: 1 1 240px;
+    .nbn-filters input:focus,
+    .nbn-filters select:focus {
+        border-color: var(--nbn-gray-400);
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+        outline: none;
     }
 
     .nbn-body {
-        padding: 12px 16px;
+        padding: 1rem 1.25rem;
         overflow: auto;
         flex: 1;
+        background: var(--nbn-bg);
     }
 
     .nbn-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: .8rem;
+    }
+
+    .nbn-empty {
+        text-align: center;
+        color: var(--nbn-muted);
+        font-size: .95rem;
+        margin: 2rem 0;
     }
 
     .nbn-item {
-        border: 1px solid var(--az-border);
-        padding: 8px;
+        position: relative;
+        border: 1px solid var(--nbn-border);
+        background: var(--nbn-bg);
         cursor: pointer;
-        margin: 6px;
-        border-radius: .35rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: .6rem;
+        transition: border-color .15s, transform .04s ease, box-shadow .15s;
+    }
+
+    .nbn-item:hover {
+        border-color: var(--nbn-gray-400);
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .nbn-item:active {
+        transform: scale(.995);
     }
 
     .nbn-item.is-sel {
-        box-shadow: 0 0 0 3px #e5e7eb;
+        border-color: var(--nbn-gray-400);
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
     }
 
     .nbn-thumb {
+        width: 100%;
         height: 120px;
-        background: #fafafa;
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid #f0f0f0;
+        background: var(--nbn-gray-100);
+        border: 1px solid var(--nbn-border);
+        overflow: hidden;
         position: relative;
-        border-radius: .35rem;
     }
 
     .nbn-thumb img,
     .nbn-thumb video {
         max-width: 100%;
         max-height: 100%;
+        object-fit: contain;
     }
 
     .nbn-badge {
         position: absolute;
-        top: 6px;
-        left: 6px;
-        background: rgba(0, 0, 0, .65);
+        top: 4px;
+        left: 4px;
+        background: rgba(0, 0, 0, .7);
         color: #fff;
-        border-radius: .35rem;
         padding: 2px 6px;
-        font-size: .75rem;
+        font-size: .7rem;
+        text-transform: uppercase;
+        font-weight: 600;
     }
 
     .nbn-title {
-        margin-top: 6px;
+        margin-top: .4rem;
+        font-size: .85rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        width: 100%;
+        color: var(--nbn-text);
     }
 
     .nbn-foot {
         display: flex;
         justify-content: flex-end;
-        padding: 12px 16px;
-        border-top: 1px solid var(--az-border);
+        gap: .6rem;
+        padding: 1rem 1.25rem;
+        border-top: 1px solid var(--nbn-border);
+        background: var(--nbn-bg);
     }
 
     .nbn-btn {
-        border: 1px solid #000;
-        background: #000;
-        color: #fff;
-        padding: .5rem .85rem;
+        padding: .6rem 1rem;
         font-weight: 600;
         cursor: pointer;
-        margin-left: 8px;
-        border-radius: .35rem;
+        transition: background .15s, color .15s, border-color .15s;
+        border: 1px solid var(--nbn-text);
+        background: var(--nbn-text);
+        color: #fff;
+    }
+
+    .nbn-btn:hover {
+        background: var(--nbn-gray-700);
+        border-color: var(--nbn-gray-700);
+    }
+
+    .nbn-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .nbn-btn-secondary {
+        background: var(--nbn-gray-600);
+        border-color: var(--nbn-gray-600);
+    }
+
+    .nbn-btn-secondary:hover {
+        background: var(--nbn-gray-700);
+        border-color: var(--nbn-gray-700);
+    }
+
+    .nbn-btn-primary {
+        background: var(--nbn-text);
+        border-color: var(--nbn-text);
+    }
+
+    .nbn-btn-primary:hover {
+        background: var(--nbn-gray-700);
+        border-color: var(--nbn-gray-700);
     }
 
     .nbn-cancel {
-        background: #444;
-        border-color: #444;
+        background: var(--nbn-gray-600);
+        border-color: var(--nbn-gray-600);
+        color: #fff;
+    }
+
+    .nbn-cancel:hover {
+        background: var(--nbn-gray-700);
+        border-color: var(--nbn-gray-700);
     }
 
     .nbn-up {
         display: flex;
         flex-wrap: wrap;
-        padding: 12px 16px;
-        border-bottom: 1px solid var(--az-border);
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--nbn-border);
+        background: var(--nbn-bg);
     }
 
-    .nbn-up input[type="file"],
-    .nbn-up input[type="text"],
-    .nbn-up input[type="url"] {
-        border: 1px solid #dcdcdc;
-        padding: .5rem .7rem;
-        margin-right: 8px;
-        margin-bottom: 8px;
-        border-radius: .35rem;
+    .nbn-upload-fields {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .6rem;
+        width: 100%;
     }
 
-    .nbn-btn-active {
-        background: #16a34a !important;
-        border-color: #16a34a !important;
-        color: #fff !important;
+    .nbn-uploader-actions {
+        display: flex;
+        gap: .6rem;
+        margin-top: .7rem;
+    }
+
+    /* Import section specific styles */
+    .nbn-uploader-url {
+        padding: 1.2rem;
+        border: 1px solid var(--nbn-border);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .nbn-radio {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        margin-inline-end: 1rem;
+        cursor: pointer;
+        color: var(--nbn-text);
+    }
+
+    .nbn-radio input {
+        accent-color: var(--nbn-text);
+    }
+
+    @media (max-width: 768px) {
+        .nbn-box {
+            width: 96vw;
+            max-height: 94vh;
+        }
+
+        .nbn-grid {
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        }
     }
 </style>
 
@@ -350,9 +482,10 @@
                 style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--az-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
                 <div class="nbn-upload-fields" style="display:flex; flex-wrap:wrap; gap:.6rem; width:100%;">
                     <div style="flex:1 1 220px;">
-                        <label for="nbnUploadFile"
-                            style="display:block; width:100%; cursor:pointer; padding:.6rem .7rem; border:1px solid #dcdcdc; background:#fafafa; color:#333; text-align:center;">
-                            <i class="fa fa-upload" style="margin-right:6px;"></i> اختر ملف الوسائط
+                        <label for="nbnUploadFile" id="nbnUploadLabel"
+                            style="display:block; width:100%; cursor:pointer; padding:.6rem .7rem; border:1px solid #dcdcdc; background:#fafafa; color:#333; text-align:center; transition: all 0.2s;">
+                            <i class="fa fa-upload" style="margin-right:6px;"></i>
+                            <span id="nbnUploadLabelText">اختر ملف الوسائط</span>
                             <input type="file" id="nbnUploadFile" accept="image/*,video/*" style="display:none;">
                         </label>
                     </div>
@@ -739,10 +872,37 @@
                 if (upFile) upFile.value = '';
                 if (upName) upName.value = '';
                 if (upAlt) upAlt.value = '';
+                // Reset upload label visual feedback
+                const uploadLabel = document.getElementById('nbnUploadLabel');
+                const uploadLabelText = document.getElementById('nbnUploadLabelText');
+                if (uploadLabelText) uploadLabelText.textContent = 'اختر ملف الوسائط';
+                if (uploadLabel) uploadLabel.style.border = '1px solid #dcdcdc';
             }
         }
         upToGal && upToGal.addEventListener('click', () => doUpload('gallery'));
         upAndClose && upAndClose.addEventListener('click', () => doUpload('select'));
+
+        // Visual feedback for file selection
+        const uploadLabel = document.getElementById('nbnUploadLabel');
+        const uploadLabelText = document.getElementById('nbnUploadLabelText');
+        upFile && upFile.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const fileName = files[0].name;
+                if (uploadLabelText) uploadLabelText.textContent = 'تم تحميل الملف';
+                if (uploadLabel) uploadLabel.style.border = '1px solid #000';
+
+                // Auto-fill name and alt fields if empty
+                if (upName && !upName.value) {
+                    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+                    upName.value = nameWithoutExt;
+                    if (upAlt) upAlt.value = nameWithoutExt;
+                }
+            } else {
+                if (uploadLabelText) uploadLabelText.textContent = 'اختر ملف الوسائط';
+                if (uploadLabel) uploadLabel.style.border = '1px solid #dcdcdc';
+            }
+        });
 
         async function doImport(mode) {
             const u = (urlInput?.value || '').trim();
@@ -791,6 +951,24 @@
         }
         importToGal && importToGal.addEventListener('click', () => doImport('gallery'));
         importAndClose && importAndClose.addEventListener('click', () => doImport('select'));
+
+        // Auto-fill for URL input
+        urlInput && urlInput.addEventListener('input', (e) => {
+            const url = e.target.value.trim();
+            if (url && urlName && !urlName.value) {
+                try {
+                    const urlPath = new URL(url, window.location.origin).pathname;
+                    const fileName = urlPath.split('/').pop();
+                    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+                    if (nameWithoutExt && nameWithoutExt !== '') {
+                        urlName.value = nameWithoutExt;
+                        if (urlAlt) urlAlt.value = nameWithoutExt;
+                    }
+                } catch (err) {
+                    // Invalid URL, ignore
+                }
+            }
+        });
 
         // Public API
         window.nbnPicker = {

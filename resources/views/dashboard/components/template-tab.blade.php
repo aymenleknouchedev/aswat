@@ -435,12 +435,12 @@
                             <input type="file" id="mmxx-upload-input" class="mmxx-upload-input"
                                 style="display: none;" />
 
-                            <label for="mmxx-upload-input" data-ar="اختر ملف الوسائط" data-en="Select Media File"
+                            <label for="mmxx-upload-input" id="mmxx-upload-label" data-ar="اختر ملف الوسائط" data-en="Select Media File"
                                 style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem;
-           border-radius: 0; background: var(--az-soft); color: var(--az-title);
-           text-align: center;">
+           border-radius: 0; background: var(--az-soft); color: var(--az-title); border: 1px solid transparent;
+           text-align: center; transition: all 0.2s;">
                                 <i class="fa fa-upload" style="margin-right: 6px;"></i>
-                                اختر ملف الوسائط
+                                <span id="mmxx-upload-label-text">اختر ملف الوسائط</span>
                             </label>
                         </div>
                         <div style="flex: 1 1 200px;">
@@ -464,32 +464,6 @@
                     </div>
                 </div>
             </div>
-            <script>
-                // Change button style when file selected
-                document.addEventListener('DOMContentLoaded', function() {
-                    const fileInput = document.getElementById('mmxx-upload-input');
-                    const btnUploadToGallery = document.getElementById('mmxx-btn-upload-to-gallery');
-                    const btnUploadAndSelectClose = document.getElementById('mmxx-btn-upload-and-select-close');
-
-                    fileInput?.addEventListener('change', function() {
-                        if (fileInput.files && fileInput.files.length > 0) {
-                            btnUploadToGallery.classList.add('mmxx-btn-active');
-                            btnUploadAndSelectClose.classList.add('mmxx-btn-active');
-                        } else {
-                            btnUploadToGallery.classList.remove('mmxx-btn-active');
-                            btnUploadAndSelectClose.classList.remove('mmxx-btn-active');
-                        }
-                    });
-                });
-            </script>
-            <style>
-                /* Example: highlight buttons when file selected */
-                .mmxx-btn-active {
-                    background: var(--az-success) !important;
-                    border-color: var(--az-success) !important;
-                    color: #fff !important;
-                }
-            </style>
         </section>
 
         <!-- Import by URL -->
@@ -906,29 +880,29 @@
         font-weight: 600;
         cursor: pointer;
         transition: background .15s, color .15s, border-color .15s;
-        border: 1px solid var(--mmxx-primary);
-        background: var(--mmxx-primary);
+        border: 1px solid var(--mmxx-text);
+        background: var(--mmxx-text);
         color: #fff;
     }
 
     .mmxx-btn:hover {
-        background: #465fff;
-        border-color: #465fff;
+        background: #222;
+        border-color: #222;
     }
 
     .mmxx-btn-secondary {
-        background: var(--mmxx-secondary);
-        border-color: var(--mmxx-secondary);
+        background: #444;
+        border-color: #444;
     }
 
     .mmxx-btn-secondary:hover {
-        background: #2b3748;
-        border-color: #2b3748;
+        background: #222;
+        border-color: #222;
     }
 
     .mmxx-btn-primary {
-        background: var(--mmxx-primary);
-        border-color: var(--mmxx-primary);
+        background: var(--mmxx-text);
+        border-color: var(--mmxx-text);
     }
 
     .mmxx-footer {
@@ -941,25 +915,25 @@
     }
 
     .mmxx-btn-select {
-        background: var(--mmxx-primary);
+        background: var(--mmxx-text);
         color: #fff;
-        border-color: var(--mmxx-primary);
+        border-color: var(--mmxx-text);
     }
 
     .mmxx-btn-select:hover {
-        background: #465fff;
-        border-color: #465fff;
+        background: #222;
+        border-color: #222;
     }
 
     .mmxx-btn-cancel {
-        background: var(--mmxx-secondary);
-        border-color: var(--mmxx-secondary);
+        background: #444;
+        border-color: #444;
         color: #fff;
     }
 
     .mmxx-btn-cancel:hover {
-        background: #2b3748;
-        border-color: #2b3748;
+        background: #222;
+        border-color: #222;
     }
 
     .mmxx-loader {
@@ -1120,6 +1094,12 @@
             urlNameInput && (urlNameInput.value = "");
             urlAltInput && (urlAltInput.value = "");
             urlTypeRadios.forEach(r => r.checked = (r.value === "auto"));
+
+            // Reset upload label visual feedback
+            const uploadLabel = document.getElementById('mmxx-upload-label');
+            const uploadLabelText = document.getElementById('mmxx-upload-label-text');
+            if (uploadLabelText) uploadLabelText.textContent = 'اختر ملف الوسائط';
+            if (uploadLabel) uploadLabel.style.border = '1px solid transparent';
         }
 
         function resetStateFilters() {
@@ -1563,6 +1543,46 @@
         btnUploadSelectAndClose?.addEventListener("click", () => uploadMediaAndHandle('select-close'));
         btnImportToGallery?.addEventListener("click", () => importViaUrl('gallery'));
         btnImportSelectAndClose?.addEventListener("click", () => importViaUrl('select-close'));
+
+        // Visual feedback for file selection
+        const uploadLabel = document.getElementById('mmxx-upload-label');
+        const uploadLabelText = document.getElementById('mmxx-upload-label-text');
+        uploadInput?.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const fileName = files[0].name;
+                if (uploadLabelText) uploadLabelText.textContent = 'تم تحميل الملف';
+                if (uploadLabel) uploadLabel.style.border = '1px solid var(--az-accent)';
+
+                // Auto-fill name and alt fields if empty
+                if (!uploadName.value) {
+                    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+                    uploadName.value = nameWithoutExt;
+                    uploadAlt.value = nameWithoutExt;
+                }
+            } else {
+                if (uploadLabelText) uploadLabelText.textContent = 'اختر ملف الوسائط';
+                if (uploadLabel) uploadLabel.style.border = '1px solid transparent';
+            }
+        });
+
+        // Visual feedback and auto-fill for URL input
+        uploadUrlInput?.addEventListener('input', (e) => {
+            const url = e.target.value.trim();
+            if (url && !urlNameInput.value) {
+                try {
+                    const urlPath = new URL(url, window.location.origin).pathname;
+                    const fileName = urlPath.split('/').pop();
+                    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+                    if (nameWithoutExt && nameWithoutExt !== '') {
+                        urlNameInput.value = nameWithoutExt;
+                        urlAltInput.value = nameWithoutExt;
+                    }
+                } catch (err) {
+                    // Invalid URL, ignore
+                }
+            }
+        });
 
         // Initial
         (function init() {

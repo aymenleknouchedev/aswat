@@ -207,18 +207,29 @@
     }
 
     .nbn-tab {
+        appearance: none;
         border: 1px solid var(--nbn-border);
         background: var(--nbn-bg);
         padding: .55rem .9rem;
         cursor: pointer;
         font-weight: 600;
         color: var(--nbn-text);
+        transition: all 0.15s;
+    }
+
+    .nbn-tab:hover {
+        border-color: var(--nbn-gray-400);
+    }
+
+    .nbn-tab:focus {
+        outline: 2px solid var(--nbn-ring);
+        outline-offset: 1px;
     }
 
     .nbn-tab.is-active {
-        background: var(--nbn-primary);
-        border-color: var(--nbn-primary);
-        color: white;
+        border-color: var(--nbn-gray-400);
+        background: var(--nbn-bg);
+        color: var(--nbn-text);
     }
 
     .nbn-panel[hidden] {
@@ -250,8 +261,8 @@
 
     .nbn-filters input:focus,
     .nbn-filters select:focus {
-        border-color: var(--nbn-primary);
-        box-shadow: 0 0 0 2px rgba(101, 118, 255, 0.1);
+        border-color: var(--nbn-gray-400);
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
         outline: none;
     }
 
@@ -277,7 +288,7 @@
 
     .nbn-item {
         position: relative;
-        /* border: 1px solid var(--nbn-border); */
+        border: 1px solid var(--nbn-border);
         background: var(--nbn-bg);
         cursor: pointer;
         display: flex;
@@ -289,8 +300,8 @@
     }
 
     .nbn-item:hover {
-        border-color: var(--nbn-primary);
-        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.1);
+        border-color: var(--nbn-gray-400);
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.03);
     }
 
     .nbn-item:active {
@@ -298,8 +309,8 @@
     }
 
     .nbn-item.is-sel {
-        border-color: var(--nbn-primary);
-        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.2);
+        border-color: var(--nbn-gray-400);
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
     }
 
     .nbn-thumb {
@@ -363,40 +374,50 @@
         font-weight: 600;
         cursor: pointer;
         transition: background .15s, color .15s, border-color .15s;
-        border: 1px solid var(--nbn-primary);
-        background: var(--nbn-primary);
+        border: 1px solid var(--nbn-text);
+        background: var(--nbn-text);
         color: #fff;
     }
 
     .nbn-btn:hover {
-        background: #465fff;
-        border-color: #465fff;
+        background: var(--nbn-gray-700);
+        border-color: var(--nbn-gray-700);
+    }
+
+    .nbn-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 
     .nbn-btn-secondary {
-        background: var(--nbn-secondary);
-        border-color: var(--nbn-secondary);
+        background: var(--nbn-gray-600);
+        border-color: var(--nbn-gray-600);
     }
 
     .nbn-btn-secondary:hover {
-        background: #2b3748;
-        border-color: #2b3748;
+        background: var(--nbn-gray-700);
+        border-color: var(--nbn-gray-700);
     }
 
     .nbn-btn-primary {
-        background: var(--nbn-primary);
-        border-color: var(--nbn-primary);
+        background: var(--nbn-text);
+        border-color: var(--nbn-text);
+    }
+
+    .nbn-btn-primary:hover {
+        background: var(--nbn-gray-700);
+        border-color: var(--nbn-gray-700);
     }
 
     .nbn-cancel {
-        background: var(--nbn-secondary);
-        border-color: var(--nbn-secondary);
+        background: var(--nbn-gray-600);
+        border-color: var(--nbn-gray-600);
         color: #fff;
     }
 
     .nbn-cancel:hover {
-        background: #2b3748;
-        border-color: #2b3748;
+        background: var(--nbn-gray-700);
+        border-color: var(--nbn-gray-700);
     }
 
     .nbn-up {
@@ -443,12 +464,6 @@
         margin-top: .7rem;
     }
 
-    .nbn-btn-active {
-        background: var(--nbn-success) !important;
-        border-color: var(--nbn-success) !important;
-        color: #fff !important;
-    }
-
     /* Import section specific styles */
     .nbn-uploader-url {
         padding: 1.2rem;
@@ -482,7 +497,7 @@
     }
 
     .nbn-radio input {
-        accent-color: var(--nbn-primary);
+        accent-color: var(--nbn-text);
     }
 
     @media (max-width: 768px) {
@@ -530,11 +545,11 @@
         </div>
 
         <div class="nbn-tabs" role="tablist">
-            <button class="nbn-tab is-active" data-nbn-tab="gallery" role="tab" aria-selected="true"
+            <button type="button" class="nbn-tab is-active" data-nbn-tab="gallery" role="tab" aria-selected="true"
                 aria-controls="nbn-panel-gallery" id="nbn-tab-gallery">المعرض</button>
-            <button class="nbn-tab" data-nbn-tab="upload" role="tab" aria-selected="false"
+            <button type="button" class="nbn-tab" data-nbn-tab="upload" role="tab" aria-selected="false"
                 aria-controls="nbn-panel-upload" id="nbn-tab-upload">رفع</button>
-            <button class="nbn-tab" data-nbn-tab="import" role="tab" aria-selected="false"
+            <button type="button" class="nbn-tab" data-nbn-tab="import" role="tab" aria-selected="false"
                 aria-controls="nbn-panel-import" id="nbn-tab-import">استيراد بالرابط</button>
         </div>
 
@@ -566,9 +581,10 @@
             <div class="nbn-up">
                 <div class="nbn-upload-fields">
                     <div style="flex: 1 1 220px;">
-                        <label for="nbnUploadFile"
-                            style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid var(--nbn-border); background: var(--nbn-gray-100); color: var(--nbn-text); text-align: center;">
-                            <i class="fa fa-upload" style="margin-right: 6px;"></i> اختر ملف الوسائط
+                        <label for="nbnUploadFile" id="nbnUploadLabel"
+                            style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid var(--nbn-border); background: var(--nbn-gray-100); color: var(--nbn-text); text-align: center; transition: all 0.2s;">
+                            <i class="fa fa-upload" style="margin-right: 6px;"></i>
+                            <span id="nbnUploadLabelText">اختر ملف الوسائط</span>
                             <input type="file" id="nbnUploadFile" accept="image/*,video/*"
                                 style="display: none;" />
                         </label>
@@ -589,23 +605,6 @@
                         المقال</button>
                 </div>
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const fileInput = document.getElementById('nbnUploadFile');
-                    const btnUploadToGallery = document.getElementById('nbnUploadToGallery');
-                    const btnUploadAndClose = document.getElementById('nbnUploadAndClose');
-
-                    fileInput?.addEventListener('change', function() {
-                        if (fileInput.files && fileInput.files.length > 0) {
-                            btnUploadToGallery.classList.add('nbn-btn-active');
-                            btnUploadAndClose.classList.add('nbn-btn-active');
-                        } else {
-                            btnUploadToGallery.classList.remove('nbn-btn-active');
-                            btnUploadAndClose.classList.remove('nbn-btn-active');
-                        }
-                    });
-                });
-            </script>
         </section>
 
         <!-- Import -->
@@ -1000,10 +999,55 @@
                 if (upFile) upFile.value = '';
                 if (upName) upName.value = '';
                 if (upAlt) upAlt.value = '';
+                // Reset upload label visual feedback
+                const uploadLabel = document.getElementById('nbnUploadLabel');
+                const uploadLabelText = document.getElementById('nbnUploadLabelText');
+                if (uploadLabelText) uploadLabelText.textContent = 'اختر ملف الوسائط';
+                if (uploadLabel) uploadLabel.style.border = '1px solid var(--nbn-border)';
             }
         }
         upToGal && upToGal.addEventListener('click', () => doUpload('gallery'));
         upAndClose && upAndClose.addEventListener('click', () => doUpload('select'));
+
+        // Visual feedback for file selection
+        const uploadLabel = document.getElementById('nbnUploadLabel');
+        const uploadLabelText = document.getElementById('nbnUploadLabelText');
+        upFile && upFile.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const fileName = files[0].name;
+                if (uploadLabelText) uploadLabelText.textContent = 'تم تحميل الملف';
+                if (uploadLabel) uploadLabel.style.border = '1px solid var(--nbn-text)';
+
+                // Auto-fill name and alt fields if empty
+                if (upName && !upName.value) {
+                    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+                    upName.value = nameWithoutExt;
+                    if (upAlt) upAlt.value = nameWithoutExt;
+                }
+            } else {
+                if (uploadLabelText) uploadLabelText.textContent = 'اختر ملف الوسائط';
+                if (uploadLabel) uploadLabel.style.border = '1px solid var(--nbn-border)';
+            }
+        });
+
+        // Auto-fill for URL input
+        urlInput && urlInput.addEventListener('input', (e) => {
+            const url = e.target.value.trim();
+            if (url && urlName && !urlName.value) {
+                try {
+                    const urlPath = new URL(url, window.location.origin).pathname;
+                    const fileName = urlPath.split('/').pop();
+                    const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+                    if (nameWithoutExt && nameWithoutExt !== '') {
+                        urlName.value = nameWithoutExt;
+                        if (urlAlt) urlAlt.value = nameWithoutExt;
+                    }
+                } catch (err) {
+                    // Invalid URL, ignore
+                }
+            }
+        });
 
         function selTypeFromName(v) {
             return v;
