@@ -8,7 +8,10 @@ use Illuminate\Routing\Controller as BaseController;
 use App\Models\ContentMedia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 
 class MediaController extends BaseController
@@ -146,25 +149,67 @@ class MediaController extends BaseController
             $file = $request->file('media');
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $extension = $file->getClientOriginalExtension();
+            $mimeType = $file->getClientMimeType();
 
             // Use Unicode-aware pattern with /u modifier
             $safeName = preg_replace('/\s+/u', '_', $originalName);
-            $fileName = $safeName . '_' . time() . '.' . $extension;
 
-            // Rest of your code remains the same...
-            $storedPath = $file->storeAs('media', $fileName, 'public');
-            $path = '/storage/' . $storedPath;
+            // Determine media type first
+            $isImage = str_starts_with($mimeType, 'image/');
+            $isAudio = str_starts_with($mimeType, 'audio/');
+            $isVideo = str_starts_with($mimeType, 'video/');
 
+            // For images: convert to WebP (if GD extension is available)
+            if ($isImage) {
+                $fileName = $safeName . '_' . time() . '.webp';
+
+                try {
+                    // Check if GD extension is loaded
+                    if (!extension_loaded('gd')) {
+                        throw new \Exception('GD extension not installed');
+                    }
+
+                    // Store original file temporarily
+                    $tempPath = $file->store('temp', 'local');
+
+                    // Convert image to WebP using Intervention Image
+                    $manager = new ImageManager(new Driver());
+                    $image = $manager->read(storage_path('app/' . $tempPath));
+                    
+                    // Encode to WebP and save
+                    $webpPath = 'media/' . $fileName;
+                    Storage::disk('public')->put($webpPath, (string) $image->toWebp());
+
+                    // Delete temporary file
+                    Storage::disk('local')->delete($tempPath);
+
+                    $path = '/storage/' . $webpPath;
+                } catch (\Throwable $conversionError) {
+                    // Fallback: if conversion fails, store original image
+                    Log::warning('Image conversion to WebP failed, storing original: ' . $conversionError->getMessage());
+                    
+                    $fileName = $safeName . '_' . time() . '.' . $extension;
+                    $storedPath = $file->storeAs('media', $fileName, 'public');
+                    $path = '/storage/' . $storedPath;
+                }
+            } else {
+                // For non-images: store as-is
+                $fileName = $safeName . '_' . time() . '.' . $extension;
+                $storedPath = $file->storeAs('media', $fileName, 'public');
+                $path = '/storage/' . $storedPath;
+            }
+
+            // Create media record
             $media = new ContentMedia();
             $media->name = $request->input('name', $originalName);
             $media->alt = $request->input('alt', $originalName);
 
-            $mimeType = $file->getClientMimeType();
-            if (str_starts_with($mimeType, 'audio/')) {
+            // Determine and set media type
+            if ($isAudio) {
                 $media->media_type = 'voice';
-            } elseif (str_starts_with($mimeType, 'video/')) {
+            } elseif ($isVideo) {
                 $media->media_type = 'video';
-            } elseif (str_starts_with($mimeType, 'image/')) {
+            } elseif ($isImage) {
                 $media->media_type = 'image';
             } else {
                 $media->media_type = 'file';
@@ -192,10 +237,18 @@ class MediaController extends BaseController
                 ->route('dashboard.medias.index')
                 ->with('success', 'تم تحميل الوسائط بنجاح.');
         } catch (\Throwable $e) {
+            // Log the error for debugging
+            Log::error('Media upload failed: ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
             if ($request->expectsJson() || $request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'فشل تحميل الوسائط. حاول مرة أخرى.'
+                    'message' => 'فشل تحميل الوسائط. حاول مرة أخرى.',
+                    'error' => config('app.debug') ? $e->getMessage() : 'حدث خطأ غير متوقع'
                 ], 500);
             }
 

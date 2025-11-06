@@ -326,6 +326,25 @@
             flex-shrink: 0;
         }
 
+        /* Clickable Media Preview Container */
+        .media-preview-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem 0.5rem 0 0;
+            transition: all 0.3s ease;
+        }
+
+        .media-preview-container:hover {
+            opacity: 0.85;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(101, 118, 255, 0.3);
+        }
+
+        .media-preview-container:focus {
+            outline: 2px solid #6576ff;
+            outline-offset: 2px;
+        }
+
         .media-preview-inner {
             position: absolute;
             top: 0;

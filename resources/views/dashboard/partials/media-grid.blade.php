@@ -18,8 +18,11 @@
         <div class="col-xl-3 col-lg-4 col-md-6 col-12">
             <div class="card media-card">
                 <div class="card-inner">
-                    <!-- Media Preview with 16:9 Ratio -->
-                    <div class="media-preview-container">
+                    <!-- Media Preview with 16:9 Ratio (Clickable) -->
+                    <div class="media-preview-container preview-media" role="button" tabindex="0" style="cursor: pointer;"
+                        data-media-id="{{ $media->id }}" data-media-name="{{ $media->name }}"
+                        data-media-alt="{{ $media->alt }}" data-media-type="{{ $media->media_type }}"
+                        data-path="{{ $media->path }}">
                         @if ($media->media_type === 'image')
                             <div class="media-preview-16-9"
                                 style="width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
@@ -72,13 +75,6 @@
 
                     <!-- Media Actions -->
                     <div class="media-actions">
-                        <button class="btn btn-dim btn-sm btn-outline-info btn-preview preview-media"
-                            data-media-id="{{ $media->id }}" data-media-name="{{ $media->name }}"
-                            data-media-alt="{{ $media->alt }}" data-media-type="{{ $media->media_type }}"
-                            data-path="{{ $media->path }}" title="معاينة الوسائط">
-                            <em class="icon ni ni-eye"></em>
-                            <span>معاينة</span>
-                        </button>
                         <button class="btn btn-dim btn-sm btn-outline-primary btn-edit edit-media"
                             data-media-id="{{ $media->id }}" data-media-name="{{ $media->name }}"
                             data-media-alt="{{ $media->alt }}" data-media-type="{{ $media->type }}"
