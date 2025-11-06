@@ -1132,19 +1132,21 @@
                                         <x-forms.tinymce-editor id="myeditorinstance" :value="old('content', $post->content ?? '')" name="content" />
                                     </div>
                                 </div>
-                            </div>
 
-                            {{-- ===== SEO KEYWORD FIELD ===== --}}
-                            <div class="form-group col-12 mb-3">
-                                <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
-                                    data-en="SEO Keyword">الكلمة الرئيسية</label>
-                                <span style="color:var(--bs-danger);">*</span>
-                                <div class="form-control-wrap">
-                                    <input required id="seo_keyword" name="seo_keyword" type="text"
-                                        class="form-control form-control" maxlength="50"
-                                        value="{{ old('seo_keyword', '') }}">
+                                {{-- ===== SEO KEYWORD FIELD ===== --}}
+                                <div class="form-group col-12 mb-3">
+                                    <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
+                                        data-en="SEO Keyword">الكلمة الرئيسية</label>
+                                    <span style="color:var(--bs-danger);">*</span>
+                                    <div class="form-control-wrap">
+                                        <input required id="seo_keyword" name="seo_keyword" type="text"
+                                            class="form-control form-control" maxlength="50"
+                                            value="{{ old('seo_keyword', '') }}">
+                                    </div>
                                 </div>
                             </div>
+
+
 
                             {{-- ===== TEMPLATE TAB ===== --}}
                             <div class="tab-pane fade" id="template" role="tabpanel" aria-labelledby="template-tab">
@@ -1202,8 +1204,8 @@
                             <button name="status" value="draft" type="submit" class="btn btn-primary btn-lg me-3"
                                 data-ar="حفظ" data-en="Save as Draft">حفظ</button>
                             <button name="status" value="preview" type="submit" class="btn btn-primary btn-lg"
-                                style="margin-left: 10px; color: white;" data-ar="حفظ وعرض"
-                                data-en="Save and Show">حفظ وعرض</button>
+                                style="margin-left: 10px; color: white;" data-ar="حفظ وعرض" data-en="Save and Show">حفظ
+                                وعرض</button>
                         </div>
                     </div>
 
