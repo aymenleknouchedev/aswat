@@ -79,8 +79,8 @@
                         <!-- File picker field -->
                         <div style="flex:1 1 260px;">
                             <label for="vvc-upload-input" id="vvc-upload-label"
-                                style="display:block;width:100%;cursor:pointer;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-gray-100);color:var(--vvc-body-color);text-align:center;">
-                                <i class="fa fa-upload" style="margin-right:6px;"></i>
+                                style="display:block;width:100%;cursor:pointer;padding:.6rem .7rem;border:1px solid var(--bs-border-color);background:var(--bs-body-bg);color:var(--bs-body-color);text-align:center;border-radius:var(--bs-border-radius);">
+                                <i class="fa fa-upload" style="margin-left:6px;"></i>
                                 <span id="vvc-upload-label-text">اختر ملف الوسائط</span>
                                 <input type="file" id="vvc-upload-input" class="vvc-upload-input"
                                     accept="image/*,video/*" style="display:none;" />
@@ -90,13 +90,13 @@
                         <div style="flex:1 1 220px;">
                             <input type="text" id="vvc-upload-name" class="vvc-upload-name"
                                 placeholder="اسم الملف"
-                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);" />
+                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--bs-border-color);background:var(--bs-body-bg);color:var(--bs-body-color);border-radius:var(--bs-border-radius);" />
                         </div>
                         <!-- Alt text field (for images) -->
                         <div style="flex:1 1 220px;">
                             <input type="text" id="vvc-upload-alt" class="vvc-upload-alt"
                                 placeholder="النص البديل (للصور)"
-                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);" />
+                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--bs-border-color);background:var(--bs-body-bg);color:var(--bs-body-color);border-radius:var(--bs-border-radius);" />
                         </div>
                     </div>
                     <!-- Upload action button -->
@@ -114,23 +114,23 @@
                 <div class="vvc-uploader">
                     <!-- Import input fields: URL, name, alt text -->
                     <div class="vvc-upload-fields" style="display:flex;flex-wrap:wrap;gap:.6rem;width:100%;">
-                        <!-- URL input field -->
-                        <div style="flex:1 1 260px;">
+                        <!-- URL input field - Full Width -->
+                        <div style="flex:1 1 100%;">
                             <input type="url" id="vvc-import-url" class="vvc-import-url"
                                 placeholder="أدخل رابط الوسائط"
-                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);" />
+                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--bs-border-color);background:var(--bs-body-bg);color:var(--bs-body-color);border-radius:var(--bs-border-radius);direction:rtl;" />
                         </div>
-                        <!-- Media name field -->
-                        <div style="flex:1 1 220px;">
+                        <!-- Media name field - 50% -->
+                        <div style="flex:1 1 calc(50% - 0.3rem);">
                             <input type="text" id="vvc-import-name" class="vvc-import-name"
                                 placeholder="اسم الملف"
-                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);" />
+                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--bs-border-color);background:var(--bs-body-bg);color:var(--bs-body-color);border-radius:var(--bs-border-radius);" />
                         </div>
-                        <!-- Alt text field -->
-                        <div style="flex:1 1 220px;">
+                        <!-- Alt text field - 50% -->
+                        <div style="flex:1 1 calc(50% - 0.3rem);">
                             <input type="text" id="vvc-import-alt" class="vvc-import-alt"
                                 placeholder="النص البديل (للصور)"
-                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);" />
+                                style="width:100%;padding:.6rem .7rem;border:1px solid var(--bs-border-color);background:var(--bs-body-bg);color:var(--bs-body-color);border-radius:var(--bs-border-radius);" />
                         </div>
                     </div>
                     <!-- Import action button -->
@@ -573,14 +573,16 @@
         font-weight: 600;
         cursor: pointer;
         transition: background .15s, color .15s, border-color .15s;
-        border: 1px solid var(--vvc-body-color);
-        background: var(--vvc-body-color);
-        color: #fff;
+        border: 1px solid var(--bs-secondary);
+        background: var(--bs-secondary);
+        color: var(--bs-white);
+        border-radius: var(--bs-border-radius);
     }
 
     .vvc-btn:hover {
-        background: #222;
-        border-color: #222;
+        background: var(--bs-secondary-bg-subtle);
+        border-color: var(--bs-secondary-border-subtle);
+        color: var(--bs-body-color);
     }
 
     .vvc-btn:disabled {
@@ -590,43 +592,60 @@
 
     /* Secondary button variant */
     .vvc-btn-secondary {
-        background: #444;
-        border-color: #444;
+        background: var(--bs-secondary);
+        border-color: var(--bs-secondary);
+        color: var(--bs-white);
     }
 
     .vvc-btn-secondary:hover {
-        background: #222;
-        border-color: #222;
+        background: var(--bs-secondary-bg-subtle);
+        border-color: var(--bs-secondary-border-subtle);
+        color: var(--bs-body-color);
     }
 
     /* Primary button variant */
     .vvc-btn-primary {
-        background: var(--vvc-body-color);
-        border-color: var(--vvc-body-color);
+        background: var(--bs-primary);
+        border-color: var(--bs-primary);
+        color: var(--bs-white);
+    }
+
+    .vvc-btn-primary:hover {
+        background: var(--bs-primary-bg-subtle);
+        border-color: var(--bs-primary-border-subtle);
+        color: var(--bs-primary-text-emphasis);
     }
 
     /* Select button */
     .vvc-btn-select {
-        background: var(--vvc-body-color);
-        color: #fff;
-        border-color: var(--vvc-body-color);
+        background: var(--bs-success);
+        color: var(--bs-white);
+        border-color: var(--bs-success);
     }
 
     .vvc-btn-select:hover {
-        background: #222;
-        border-color: #222;
+        background: var(--bs-success-bg-subtle);
+        border-color: var(--bs-success-border-subtle);
+        color: var(--bs-success-text-emphasis);
+    }
+
+    .vvc-btn-select:disabled {
+        background: var(--bs-gray-400);
+        border-color: var(--bs-gray-400);
+        color: var(--bs-white);
     }
 
     /* Cancel button */
     .vvc-btn-cancel {
-        background: #444;
-        border-color: #444;
-        color: #fff;
+        background: var(--bs-danger);
+        border-color: var(--bs-danger);
+        color: var(--bs-white);
     }
 
     .vvc-btn-cancel:hover {
-        background: #222;
-        border-color: #222;
+        background: var(--bs-danger-bg-subtle);
+        border-color: var(--bs-danger-border-subtle);
+        color: var(--bs-danger-text-emphasis);
     }
 
     /* ---- FOOTER STYLES ---- */
