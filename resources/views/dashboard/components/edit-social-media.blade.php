@@ -1,171 +1,244 @@
 {{-- ====================== SOCIAL MEDIA (Styles) ====================== --}}
 <style>
-    :root {
-        --nbn-bg: #fff;
-        --nbn-text: #1a1a1a;
-        --nbn-border: #e0e0e0;
-        --nbn-muted: #6b7280;
-        --nbn-gray-100: #f5f5f5;
-        --nbn-gray-400: #9ca3af;
-        --nbn-gray-600: #4b5563;
-        --nbn-gray-700: #374151;
-        --nbn-ring: rgba(0, 0, 0, 0.1);
-    }
-
     .image-preview-container img {
         max-height: 200px;
     }
 
-    /* nbn Picker */
-    #nbnMediaPicker,
-    #nbnMediaPicker * {
+    /* ===== MMXc NAMESPACE – Updated for white/dark mode compatibility ===== */
+    #mmxcMediaModal,
+    #mmxcMediaModal * {
         box-sizing: border-box;
     }
 
-    .nbn-modal {
+    #mmxcMediaModal * {
+        border-radius: 0 !important;
+    }
+
+    :root {
+        /* Light mode colors */
+        --mmxc-primary: #6576ff;
+        --mmxc-secondary: #364a63;
+        --mmxc-success: #1ee0ac;
+        --mmxc-danger: #e85347;
+        --mmxc-warning: #f4bd0e;
+        --mmxc-info: #09c2de;
+
+        --mmxc-bg: #fff;
+        --mmxc-text: #526484;
+        --mmxc-border: #dbdfea;
+        --mmxc-ring: #6576ff;
+        --mmxc-muted: #8091a7;
+
+        --mmxc-gray-100: #ebeef2;
+        --mmxc-gray-200: #e5e9f2;
+        --mmxc-gray-300: #dbdfea;
+        --mmxc-gray-400: #b7c2d0;
+        --mmxc-gray-500: #8091a7;
+        --mmxc-gray-600: #3c4d62;
+        --mmxc-gray-700: #344357;
+        --mmxc-gray-800: #2b3748;
+        --mmxc-gray-900: #1f2b3a;
+    }
+
+    [data-bs-theme="dark"] {
+        /* Dark mode colors */
+        --mmxc-primary: #6576ff;
+        --mmxc-secondary: #364a63;
+        --mmxc-success: #1ee0ac;
+        --mmxc-danger: #e85347;
+        --mmxc-warning: #f4bd0e;
+        --mmxc-info: #09c2de;
+
+        --mmxc-bg: #0D141D;
+        --mmxc-text: #e5e9f2;
+        --mmxc-border: #384D69;
+        --mmxc-ring: #6576ff;
+        --mmxc-muted: #b7c2d0;
+
+        --mmxc-gray-100: #2b3748;
+        --mmxc-gray-200: #344357;
+        --mmxc-gray-300: #3c4d62;
+        --mmxc-gray-400: #8091a7;
+        --mmxc-gray-500: #b7c2d0;
+        --mmxc-gray-600: #dbdfea;
+        --mmxc-gray-700: #e5e9f2;
+        --mmxc-gray-800: #ebeef2;
+        --mmxc-gray-900: #f5f6fa;
+    }
+
+    .mmxc-modal {
         position: fixed;
         inset: 0;
         display: none;
-        z-index: 2075;
-        align-items: center;
-        justify-content: center;
+        z-index: 10000;
     }
 
-    .nbn-modal[aria-hidden="false"] {
-        display: flex;
+    .mmxc-modal[aria-hidden="false"] {
+        display: block;
     }
 
-    .nbn-backdrop {
+    .mmxc-backdrop {
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, .5);
-        z-index: 2070;
+        background: rgba(0, 0, 0, .4);
+        z-index: 0;
     }
 
-    .nbn-box {
-        position: relative;
-        margin: auto;
-        width: min(960px, 92vw);
-        max-height: 90vh;
-        background: var(--nbn-bg);
-        color: var(--nbn-text);
+    .mmxc-container {
+        position: absolute;
+        inset: auto 0;
+        top: 5%;
+        margin: 0 auto;
+        width: clamp(320px, 92vw, 1000px);
+        max-height: 90%;
+        background: var(--mmxc-bg);
+        color: var(--mmxc-text);
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        border-radius: 0;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 2076;
+        z-index: 1;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+        animation: mmxcFade .2s ease-out;
     }
 
-    .nbn-head {
+    @keyframes mmxcFade {
+        from {
+            opacity: 0;
+            transform: translateY(-14px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .mmxc-header {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--mmxc-border);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid var(--nbn-border);
-        background: var(--nbn-bg);
+        background: var(--mmxc-bg);
     }
 
-    .nbn-x {
-        background: transparent;
-        border: 0;
-        font-size: 1.8rem;
-        cursor: pointer;
-        color: var(--nbn-text);
+    .mmxc-header h5 {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--mmxc-text);
+    }
+
+    .mmxc-close {
+        font-size: 1.4rem;
         line-height: 1;
-        padding: 0;
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        border: 0;
+        background: transparent;
+        color: var(--mmxc-muted);
+        cursor: pointer;
     }
 
-    .nbn-x:hover {
-        opacity: 0.7;
+    .mmxc-close:hover {
+        color: var(--mmxc-text);
     }
 
-    .nbn-tabs {
+    .mmxc-tabs {
         display: flex;
         gap: .25rem;
         padding: .5rem;
-        border-bottom: 1px solid var(--nbn-border);
-        background: var(--nbn-bg);
+        border-bottom: 1px solid var(--mmxc-border);
+        background: var(--mmxc-bg);
     }
 
-    .nbn-tab {
+    .mmxc-tab-btn {
         appearance: none;
-        border: 1px solid var(--nbn-border);
-        background: var(--nbn-bg);
+        background: var(--mmxc-bg);
+        border: 1px solid var(--mmxc-border);
         padding: .55rem .9rem;
         cursor: pointer;
         font-weight: 600;
-        color: var(--nbn-text);
-        transition: all 0.15s;
+        color: var(--mmxc-text);
     }
 
-    .nbn-tab:hover {
-        border-color: var(--nbn-gray-400);
-    }
-
-    .nbn-tab:focus {
-        outline: 2px solid var(--nbn-ring);
+    .mmxc-tab-btn:focus {
+        outline: 2px solid var(--mmxc-ring);
         outline-offset: 1px;
     }
 
-    .nbn-tab.is-active {
-        border-color: var(--nbn-gray-400);
-        background: var(--nbn-bg);
-        color: var(--nbn-text);
+    .mmxc-tab-btn.mmxc-is-active {
+        background: var(--mmxc-primary);
+        border-color: var(--mmxc-primary);
+        color: white;
     }
 
-    .nbn-panel[hidden] {
-        display: none
+    .mmxc-tab-panel {
+        display: block;
     }
 
-    .nbn-filters {
+    .mmxc-tab-panel[hidden] {
+        display: none;
+    }
+
+    .mmxc-tab-body {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--mmxc-border);
+        background: var(--mmxc-bg);
+    }
+
+    .mmxc-filters {
         padding: 1rem 1.25rem;
         display: flex;
-        gap: .6rem;
-        border-bottom: 1px solid var(--nbn-border);
-        background: var(--nbn-bg);
+        gap: .65rem;
+        flex-wrap: wrap;
+        border-bottom: 1px solid var(--mmxc-border);
+        background: var(--mmxc-bg);
     }
 
-    .nbn-filters input::placeholder {
-        color: var(--nbn-muted);
+    .mmxc-filters input,
+    .mmxc-filters select {
+        padding: .6rem .7rem;
+        font-size: .95rem;
+        border: 1px solid var(--mmxc-border);
+        background: var(--mmxc-bg);
+        color: var(--mmxc-text);
+        flex: 1 1 180px;
+        transition: box-shadow .15s, border-color .15s;
     }
 
-    .nbn-filters input:focus,
-    .nbn-filters select:focus {
-        border-color: var(--nbn-gray-400);
-        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+    .mmxc-filters input::placeholder {
+        color: var(--mmxc-muted);
+    }
+
+    .mmxc-filters input:focus,
+    .mmxc-filters select:focus {
+        border-color: var(--mmxc-primary);
+        box-shadow: 0 0 0 2px rgba(101, 118, 255, 0.1);
         outline: none;
     }
 
-    .nbn-body {
+    .mmxc-body {
         padding: 1rem 1.25rem;
         overflow: auto;
         flex: 1;
-        background: var(--nbn-bg);
+        background: var(--mmxc-bg);
     }
 
-    .nbn-grid {
+    .mmxc-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: .8rem;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: .9rem;
     }
 
-    .nbn-empty {
+    .mmxc-empty {
         text-align: center;
-        color: var(--nbn-muted);
+        color: var(--mmxc-muted);
         font-size: .95rem;
         margin: 2rem 0;
     }
 
-    .nbn-item {
+    .mmxc-item {
         position: relative;
-        border: 1px solid var(--nbn-border);
-        background: var(--nbn-bg);
+        background: var(--mmxc-bg);
         cursor: pointer;
         display: flex;
         flex-direction: column;
@@ -175,170 +248,258 @@
         transition: border-color .15s, transform .04s ease, box-shadow .15s;
     }
 
-    .nbn-item:hover {
-        border-color: var(--nbn-gray-400);
-        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.03);
+    .mmxc-item:hover {
+        border-color: var(--mmxc-primary);
+        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.1);
     }
 
-    .nbn-item:active {
+    .mmxc-item:active {
         transform: scale(.995);
     }
 
-    .nbn-item.is-sel {
-        border-color: var(--nbn-gray-400);
-        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+    .mmxc-item.mmxc-is-selected {
+        border-color: var(--mmxc-primary);
+        box-shadow: 0 0 0 3px rgba(101, 118, 255, 0.2);
     }
 
-    .nbn-thumb {
+    .mmxc-thumb {
         width: 100%;
         height: 120px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: var(--nbn-gray-100);
-        border: 1px solid var(--nbn-border);
+        background: var(--mmxc-gray-100);
         overflow: hidden;
         position: relative;
+        border: 1px solid var(--mmxc-gray-200);
     }
 
-    .nbn-thumb img,
-    .nbn-thumb video {
+    .mmxc-thumb img,
+    .mmxc-thumb video {
         max-width: 100%;
         max-height: 100%;
-        object-fit: contain;
     }
 
-    .nbn-badge {
+    .mmxc-thumb audio {
+        width: 100%;
+    }
+
+    .mmxc-badge {
         position: absolute;
-        top: 4px;
-        left: 4px;
-        background: rgba(0, 0, 0, .7);
+        top: 6px;
+        left: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: rgba(0, 0, 0, .65);
         color: #fff;
-        padding: 2px 6px;
-        font-size: .7rem;
-        text-transform: uppercase;
-        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, .2);
     }
 
-    .nbn-title {
-        margin-top: .4rem;
-        font-size: .85rem;
+    .mmxc-badge svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .mmxc-title {
+        font-size: .9rem;
+        color: var(--mmxc-text);
+        margin-top: .55rem;
+        width: 100%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        width: 100%;
-        color: var(--nbn-text);
     }
 
-    .nbn-foot {
-        display: flex;
-        justify-content: flex-end;
-        gap: .6rem;
-        padding: 1rem 1.25rem;
-        border-top: 1px solid var(--nbn-border);
-        background: var(--nbn-bg);
-    }
-
-    .nbn-btn {
-        padding: .6rem 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background .15s, color .15s, border-color .15s;
-        border: 1px solid var(--nbn-text);
-        background: var(--nbn-text);
-        color: #fff;
-    }
-
-    .nbn-btn:hover {
-        background: var(--nbn-gray-700);
-        border-color: var(--nbn-gray-700);
-    }
-
-    .nbn-btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .nbn-btn-secondary {
-        background: var(--nbn-gray-600);
-        border-color: var(--nbn-gray-600);
-    }
-
-    .nbn-btn-secondary:hover {
-        background: var(--nbn-gray-700);
-        border-color: var(--nbn-gray-700);
-    }
-
-    .nbn-btn-primary {
-        background: var(--nbn-text);
-        border-color: var(--nbn-text);
-    }
-
-    .nbn-btn-primary:hover {
-        background: var(--nbn-gray-700);
-        border-color: var(--nbn-gray-700);
-    }
-
-    .nbn-cancel {
-        background: var(--nbn-gray-600);
-        border-color: var(--nbn-gray-600);
-        color: #fff;
-    }
-
-    .nbn-cancel:hover {
-        background: var(--nbn-gray-700);
-        border-color: var(--nbn-gray-700);
-    }
-
-    .nbn-up {
+    .mmxc-uploader {
         display: flex;
         flex-wrap: wrap;
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid var(--nbn-border);
-        background: var(--nbn-bg);
+        align-items: center;
+        gap: .6rem;
+        background: var(--mmxc-bg);
+        border: 1px solid var(--mmxc-border);
+        padding: 1rem;
     }
 
-    .nbn-upload-fields {
-        display: flex;
-        flex-wrap: wrap;
-        gap: .6rem;
+    .mmxc-uploader-url {
+        border-style: solid;
+    }
+
+    #mmxc-upload-input {
+        flex: 1 1 220px;
+    }
+
+    #mmxc-upload-name,
+    #mmxc-upload-alt {
+        flex: 1 1 200px;
+    }
+
+    #mmxc-upload-url,
+    #mmxc-url-name,
+    #mmxc-url-alt {
+        flex: 1 1 220px;
+    }
+
+    /* NEW: URL type radios */
+    .mmxc-url-type-group {
         width: 100%;
+        margin: .2rem 0 .4rem;
+        border: 1px solid var(--mmxc-border);
+        padding: .6rem .8rem;
     }
 
-    .nbn-uploader-actions {
-        display: flex;
-        gap: .6rem;
-        margin-top: .7rem;
+    .mmxc-url-type-group legend {
+        font-size: .9rem;
+        color: var(--mmxc-text);
+        padding: 0 .25rem;
     }
 
-    /* Import section specific styles */
-    .nbn-uploader-url {
-        padding: 1.2rem;
-        border: 1px solid var(--nbn-border);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    }
-
-    .nbn-radio {
+    .mmxc-radio {
         display: inline-flex;
         align-items: center;
         gap: .4rem;
         margin-inline-end: 1rem;
         cursor: pointer;
-        color: var(--nbn-text);
     }
 
-    .nbn-radio input {
-        accent-color: var(--nbn-text);
+    .mmxc-radio input {
+        accent-color: var(--mmxc-primary);
+    }
+
+    .mmxc-uploader-actions {
+        display: flex;
+        gap: .6rem;
+    }
+
+    .mmxc-btn {
+        padding: .6rem 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s, color .15s, border-color .15s;
+        border: 1px solid var(--bs-secondary);
+        background: var(--bs-secondary);
+        color: var(--bs-white);
+        border-radius: var(--bs-border-radius);
+    }
+
+    .mmxc-btn:hover {
+        background: var(--bs-secondary-bg-subtle);
+        border-color: var(--bs-secondary-border-subtle);
+        color: var(--bs-body-color);
+    }
+
+    .mmxc-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .mmxc-btn-secondary {
+        background: var(--bs-secondary);
+        border-color: var(--bs-secondary);
+        color: var(--bs-white);
+    }
+
+    .mmxc-btn-secondary:hover {
+        background: var(--bs-secondary-bg-subtle);
+        border-color: var(--bs-secondary-border-subtle);
+        color: var(--bs-body-color);
+    }
+
+    .mmxc-btn-primary {
+        background: var(--bs-primary);
+        border-color: var(--bs-primary);
+        color: var(--bs-white);
+    }
+
+    .mmxc-btn-primary:hover {
+        background: var(--bs-primary-bg-subtle);
+        border-color: var(--bs-primary-border-subtle);
+        color: var(--bs-primary-text-emphasis);
+    }
+
+    .mmxc-footer {
+        padding: 1rem 1.25rem;
+        background: var(--mmxc-bg);
+        display: flex;
+        justify-content: flex-end;
+        gap: .6rem;
+        border-top: 1px solid var(--mmxc-border);
+    }
+
+    .mmxc-btn-select {
+        background: var(--bs-gray-400);
+        color: var(--bs-white);
+        border-color: var(--bs-gray-400);
+        transition: background .15s, color .15s, border-color .15s;
+    }
+
+    .mmxc-btn-select:hover {
+        background: var(--bs-gray-500);
+        border-color: var(--bs-gray-500);
+        color: var(--bs-white);
+    }
+
+    .mmxc-btn-select:not(:disabled) {
+        background: var(--bs-success);
+        border-color: var(--bs-success);
+    }
+
+    .mmxc-btn-cancel {
+        background: var(--bs-danger);
+        border-color: var(--bs-danger);
+        color: var(--bs-white);
+    }
+
+    .mmxc-btn-cancel:hover {
+        background: var(--bs-danger-bg-subtle);
+        border-color: var(--bs-danger-border-subtle);
+        color: var(--bs-danger-text-emphasis);
+    }
+
+    .mmxc-loader {
+        text-align: center;
+        color: var(--mmxc-muted);
+        padding: .75rem;
+        font-size: .95rem;
+    }
+
+    .mmxc-sentinel {
+        height: 1px;
     }
 
     @media (max-width: 768px) {
-        .nbn-box {
-            width: 96vw;
-            max-height: 94vh;
+        .mmxc-container {
+            top: 2%;
+            max-height: 96%;
         }
 
-        .nbn-grid {
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        .mmxc-tabs {
+            flex-wrap: wrap;
+        }
+
+        .mmxc-filters {
+            flex-direction: column;
+        }
+
+        .mmxc-filters input,
+        .mmxc-filters select,
+        .mmxc-uploader {
+            width: 100%;
+        }
+
+        .mmxc-uploader {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .mmxc-uploader-actions {
+            width: 100%;
+        }
+
+        .mmxc-uploader-actions .mmxc-btn {
+            width: 100%;
         }
     }
 </style>
@@ -437,94 +598,172 @@
 </div>
 
 {{-- ====================== nbn PICKER (Unique Modal) ====================== --}}
-<div id="nbnMediaPicker" class="nbn-modal" aria-hidden="true" role="dialog" aria-modal="true"
-    aria-labelledby="nbnTitle">
-    <div class="nbn-backdrop" data-nbn-backdrop></div>
-    <div class="nbn-box" role="document">
-        <div class="nbn-head">
-            <h5 id="nbnTitle" class="mb-0">اختيار وسائط</h5>
-            <button type="button" class="nbn-x" data-nbn-close aria-label="إغلاق">&times;</button>
+<!-- Sprite d'icônes (optionnel) -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol id="mmxc-icon-image" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor"
+            stroke-width="2" />
+        <circle cx="8" cy="10" r="1.5" fill="currentColor" />
+        <path d="M21 19l-5.5-7-4.5 6-3-4-4 5" fill="none" stroke="currentColor" stroke-width="2" />
+    </symbol>
+    <symbol id="mmxc-icon-video" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor"
+            stroke-width="2" />
+        <polygon points="10,9 16,12 10,15" fill="currentColor" />
+    </symbol>
+    <symbol id="mmxc-icon-voice" viewBox="0 0 24 24">
+        <rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="currentColor"
+            stroke-width="2" />
+        <rect x="9" y="7" width="2" height="10" rx="1" fill="currentColor" />
+        <rect x="13" y="11" width="2" height="6" rx="1" fill="currentColor" />
+    </symbol>
+    <symbol id="mmxc-icon-file" viewBox="0 0 24 24">
+        <rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="currentColor"
+            stroke-width="2" />
+        <path d="M9 7h6M9 11h6M9 15h2" fill="none" stroke="currentColor" stroke-width="2" />
+    </symbol>
+    <symbol id="mmxc-icon-youtube" viewBox="0 0 24 24">
+        <rect x="2" y="6" width="20" height="12" rx="4" fill="none" stroke="currentColor"
+            stroke-width="2" />
+        <polygon points="10,9 16,12 10,15" fill="currentColor" />
+    </symbol>
+</svg>
+
+<!-- CSRF -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<div id="mmxcMediaModal" class="mmxc-modal" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="mmxcMediaModalTitle">
+    <div class="mmxc-backdrop" data-mmxc-backdrop></div>
+    <div class="mmxc-container" role="document">
+        <div class="mmxc-header">
+            <h5 id="mmxcMediaModalTitle">اختر الوسائط</h5>
+            <button class="mmxc-close" type="button" data-mmxc-close aria-label="إغلاق">&times;</button>
         </div>
 
-        <div class="nbn-tabs" role="tablist">
-            <button type="button" class="nbn-tab is-active" data-nbn-tab="gallery" role="tab"
-                aria-selected="true" aria-controls="nbn-panel-gallery" id="nbn-tab-gallery">المعرض</button>
-            <button type="button" class="nbn-tab" data-nbn-tab="upload" role="tab" aria-selected="false"
-                aria-controls="nbn-panel-upload" id="nbn-tab-upload">رفع</button>
-            <button type="button" class="nbn-tab" data-nbn-tab="import" role="tab" aria-selected="false"
-                aria-controls="nbn-panel-import" id="nbn-tab-import">استيراد بالرابط</button>
+        <!-- Tabs -->
+        <div class="mmxc-tabs" role="tablist" aria-label="أقسام إدارة الوسائط">
+            <button type="button" class="mmxc-tab-btn mmxc-is-active" role="tab" aria-selected="true"
+                aria-controls="mmxc-tab-gallery" id="mmxc-tabbtn-gallery" tabindex="0" data-mmxc-tab="gallery"
+                data-en="Gallery" data-ar="المعرض">المعرض</button>
+            <button type="button" class="mmxc-tab-btn" role="tab" aria-selected="false"
+                aria-controls="mmxc-tab-upload" id="mmxc-tabbtn-upload" tabindex="-1" data-mmxc-tab="upload"
+                data-en="Upload from device" data-ar="الرفع من الجهاز">الرفع من
+                الجهاز</button>
+            <button type="button" class="mmxc-tab-btn" role="tab" aria-selected="false"
+                aria-controls="mmxc-tab-import" id="mmxc-tabbtn-import" tabindex="-1" data-mmxc-tab="import"
+                data-en="Import by URL" data-ar="الاستيراد بالرابط">الاستيراد
+                بالرابط</button>
         </div>
 
-        {{-- Gallery --}}
-        <section id="nbn-panel-gallery" class="nbn-panel" role="tabpanel" aria-labelledby="nbn-tab-gallery">
-            <div class="nbn-filters">
-                <input type="text" id="nbnSearch" placeholder="ابحث ...">
-                <select id="nbnType">
-                    <option value="all">كل الأنواع</option>
-                    <option value="image" selected>صور</option>
+        <!-- Gallery -->
+        <section id="mmxc-tab-gallery" class="mmxc-tab-panel" role="tabpanel" aria-labelledby="mmxc-tabbtn-gallery">
+            <div class="mmxc-filters">
+                <input type="text" id="mmxc-search" placeholder="ابحث عن وسائط..." />
+                <select id="mmxc-type-filter" aria-label="نوع الوسائط">
+                    <option value="all">كل الوسائط</option>
+                    <option value="image">صورة</option>
                     <option value="video">فيديو</option>
+                    <option value="voice">صوت</option>
+                    <option value="file">ملف</option>
                 </select>
             </div>
-            <div class="nbn-body">
-                <div id="nbnList" class="nbn-grid"></div>
-                <div id="nbnLoader" class="text-muted text-center py-2" hidden>...تحميل</div>
-                <div id="nbnSentinel" class="nbn-sentinel"></div>
+
+            <div class="mmxc-body">
+                <div id="mmxc-list" class="mmxc-grid"></div>
+                <div id="mmxc-loader" class="mmxc-loader" hidden>جاري التحميل...</div>
+                <div id="mmxc-sentinel" class="mmxc-sentinel"></div>
             </div>
-            <div class="nbn-foot">
-                <button type="button" class="nbn-btn" id="nbnChoose">اختيار</button>
-                <button type="button" class="nbn-btn nbn-cancel" data-nbn-close>إلغاء</button>
+
+            <div class="mmxc-footer">
+                <button class="mmxc-btn mmxc-btn-select" type="button" id="mmxc-btn-select" data-en="Select"
+                    data-ar="اختر">اختر</button>
+                <button class="mmxc-btn mmxc-btn-cancel" type="button" data-mmxc-close data-en="Cancel"
+                    data-ar="إلغاء">إلغاء</button>
             </div>
         </section>
 
-        {{-- Upload --}}
-        <section id="nbn-panel-upload" class="nbn-panel" role="tabpanel" aria-labelledby="nbn-tab-upload" hidden>
-            <div class="nbn-up"
-                style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--az-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                <div class="nbn-upload-fields" style="display:flex; flex-wrap:wrap; gap:.6rem; width:100%;">
-                    <div style="flex:1 1 220px;">
-                        <label for="nbnUploadFile" id="nbnUploadLabel"
-                            style="display:block; width:100%; cursor:pointer; padding:.6rem .7rem; border:1px solid #dcdcdc; background:#fafafa; color:#333; text-align:center; transition: all 0.2s;">
-                            <i class="fa fa-upload" style="margin-right:6px;"></i>
-                            <span id="nbnUploadLabelText">اختر ملف الوسائط</span>
-                            <input type="file" id="nbnUploadFile" accept="image/*,video/*" style="display:none;">
-                        </label>
+        <!-- Upload -->
+        <section id="mmxc-tab-upload" class="mmxc-tab-panel" role="tabpanel" aria-labelledby="mmxc-tabbtn-upload"
+            hidden>
+            <div class="mmxc-tab-body">
+                <div class="mmxc-uploader">
+                    <div class="mmxc-upload-fields" style="display: flex; flex-wrap: wrap; gap: .6rem; width: 100%;">
+                        <div style="flex: 1 1 220px;">
+                            <input type="file" id="mmxc-upload-input" class="mmxc-upload-input"
+                                style="display: none;" />
+                            <label for="mmxc-upload-input" id="mmxc-upload-label"
+                                style="display: block; width: 100%; cursor: pointer; padding: .6rem .7rem; border: 1px solid var(--mmxc-border); border-radius: 0; background: var(--mmxc-gray-100); color: var(--mmxc-text); text-align: center; transition: all 0.2s;"
+                                data-ar="اختر ملف الوسائط" data-en="Select media file">
+                                <i class="fa fa-upload" style="margin-right: 6px;"></i>
+                                <span id="mmxc-upload-label-text">اختر ملف الوسائط</span>
+                            </label>
+
+                        </div>
+                        <div style="flex: 1 1 200px;">
+                            <input type="text" id="mmxc-upload-name" class="mmxc-upload-name"
+                                placeholder="اسم الملف"
+                                style="width: 100%; padding: .6rem .7rem; border: 1px solid var(--mmxc-border); border-radius: 0; background: var(--mmxc-bg); color: var(--mmxc-text);" />
+                        </div>
+                        <div style="flex: 1 1 200px;">
+                            <input type="text" id="mmxc-upload-alt" class="mmxc-upload-alt"
+                                placeholder="النص البديل"
+                                style="width: 100%; padding: .6rem .7rem; border: 1px solid var(--mmxc-border); border-radius: 0; background: var(--mmxc-bg); color: var(--mmxc-text);" />
+                        </div>
                     </div>
-                    <div style="flex:1 1 200px;">
-                        <input type="text" id="nbnUploadName" placeholder="اسم الملف"
-                            style="width:100%; padding:.6rem .7rem; border:1px solid #dcdcdc; background:#fff;">
+                    <div class="mmxc-uploader-actions">
+                        <button class="mmxc-btn mmxc-btn-secondary" type="button" id="mmxc-btn-upload-to-gallery"
+                            title="إدراج في المعرض" data-en="Insert into gallery" data-ar="إدراج في المعرض">إدراج في
+                            المعرض</button>
+                        <button class="mmxc-btn mmxc-btn-primary" type="button" id="mmxc-btn-upload-and-select-close"
+                            title="إدراج في المقال" data-en="Insert into article" data-ar="إدراج في المقال">إدراج في
+                            المقال</button>
                     </div>
-                    <div style="flex:1 1 200px;">
-                        <input type="text" id="nbnUploadAlt" placeholder="النص البديل"
-                            style="width:100%; padding:.6rem .7rem; border:1px solid #dcdcdc; background:#fff;">
-                    </div>
-                </div>
-                <div class="nbn-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
-                    <button type="button" class="nbn-btn nbn-btn-secondary" id="nbnUploadToGallery"
-                        style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المعرض</button>
-                    <button type="button" class="nbn-btn nbn-btn-primary" id="nbnUploadAndClose"
-                        style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المقال</button>
                 </div>
             </div>
         </section>
 
-        {{-- Import --}}
-        <section id="nbn-panel-import" class="nbn-panel" role="tabpanel" aria-labelledby="nbn-tab-import" hidden>
-            <div class="x-tab-body">
-                <div class="x-uploader x-uploader-url"
-                    style="padding:1.2rem; border-radius:8px; background:#fafbfc; border:1px solid var(--x-border,#e5e7eb); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                    <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem;">
-                        <input type="text" id="nbnUrl"
-                            style="flex:1 1 220px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;"
-                            placeholder="الرابط">
-                        <input type="text" id="nbnUrlName" placeholder="اسم الملف"
-                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;">
-                        <input type="text" id="nbnUrlAlt" placeholder="النص البديل"
-                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid #dcdcdc; border-radius:6px; background:#fff; font-size:1rem;">
+        <!-- Import by URL -->
+        <section id="mmxc-tab-import" class="mmxc-tab-panel" role="tabpanel" aria-labelledby="mmxc-tabbtn-import"
+            hidden>
+            <div class="mmxc-tab-body">
+                <div class="mmxc-uploader mmxc-uploader-url"
+                    style="padding:1.2rem; border-radius:8px; border:1px solid var(--mmxc-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                    <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem; width:100%;">
+                        <input type="text" id="mmxc-upload-url"
+                            style="flex:1 1 100%; padding:.7rem 1rem; border:1px solid var(--mmxc-border); border-radius:6px; background:var(--mmxc-bg); color:var(--mmxc-text); font-size:1rem;"
+                            placeholder="الرابط" />
+                        <input type="text" id="mmxc-url-name" placeholder="اسم الملف"
+                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid var(--mmxc-border); border-radius:6px; background:var(--mmxc-bg); color:var(--mmxc-text); font-size:1rem;" />
+                        <input type="text" id="mmxc-url-alt" placeholder="النص البديل"
+                            style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid var(--mmxc-border); border-radius:6px; background:var(--mmxc-bg); color:var(--mmxc-text); font-size:1rem;" />
                     </div>
-                    <div class="x-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
-                        <button class="x-btn x-btn-secondary nbn-btn" type="button" id="nbnImportToGallery"
-                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المعرض</button>
-                        <button class="x-btn x-btn-primary nbn-btn" type="button" id="nbnImportAndClose"
+                    <fieldset class="mmxc-url-type-group" aria-label="نوع الوسائط للرابط"
+                        style="margin-bottom:.7rem; border-radius:6px; border:1px solid var(--mmxc-border); padding:.7rem 1rem; background:var(--mmxc-bg);">
+                        <legend style="font-size:.97rem; color:var(--mmxc-text); padding:0 .3rem; font-weight:500;">نوع
+                            الوسائط
+                            (اختياري)</legend>
+                        <div style="display:flex; gap:1.2rem; flex-wrap:wrap;">
+                            <label class="mmxc-radio" style="font-size:.97rem; color:var(--mmxc-text);"><input
+                                    type="radio" name="mmxc-url-type" value="auto"
+                                    checked /><span>Auto</span></label>
+                            <label class="mmxc-radio" style="font-size:.97rem; color:var(--mmxc-text);"><input
+                                    type="radio" name="mmxc-url-type" value="image" /><span>Image</span></label>
+                            <label class="mmxc-radio" style="font-size:.97rem; color:var(--mmxc-text);"><input
+                                    type="radio" name="mmxc-url-type" value="video" /><span>Video</span></label>
+                            <label class="mmxc-radio" style="font-size:.97rem; color:var(--mmxc-text);"><input
+                                    type="radio" name="mmxc-url-type" value="voice" /><span>Voice</span></label>
+                            <label class="mmxc-radio" style="font-size:.97rem; color:var(--mmxc-text);"><input
+                                    type="radio" name="mmxc-url-type" value="file" /><span>File</span></label>
+                        </div>
+                    </fieldset>
+                    <div class="mmxc-uploader-actions" style="display:flex; gap:.7rem; margin-bottom:.7rem;">
+                        <button class="mmxc-btn mmxc-btn-secondary" type="button" id="mmxc-btn-import-to-gallery"
+                            title="استيراد بالرابط ثم عرض في المعرض"
+                            style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المعرض
+                        </button>
+                        <button class="mmxc-btn mmxc-btn-primary" type="button" id="mmxc-btn-import-and-select-close"
+                            title="استيراد بالرابط ثم حفظ وإغلاق"
                             style="border-radius:6px; font-size:1rem; padding:.7rem 1.2rem;">إدراج في المقال</button>
                     </div>
                 </div>
@@ -535,434 +774,669 @@
 
 {{-- ====================== Scripts (picker + bridge + hydration) ====================== --}}
 <script>
-    (function() {
-        // Safe routes
-        function azSafeRoute(possibleBladeRoute, fallbackPath) {
-            try {
-                if (!possibleBladeRoute || /\{\{.+\}\}/.test(possibleBladeRoute)) {
-                    return new URL(fallbackPath, window.location.origin).toString();
-                }
-                return new URL(possibleBladeRoute, window.location.origin).toString();
-            } catch {
-                return fallbackPath;
-            }
-        }
-        const nbn_FETCH_URL = azSafeRoute("{{ route('dashboard.media.getAllMediaPaginated') }}",
-            "/dashboard/media/paginated");
-        const nbn_UPLOAD_URL = azSafeRoute("{{ route('dashboard.media.store') }}", "/dashboard/media");
-        const nbn_IMPORT_URL = azSafeRoute("{{ route('dashboard.media_url.store') }}", "/dashboard/media-url");
-        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
-        const CSRF = csrfMeta ? csrfMeta.getAttribute('content') : '';
+    (() => {
+        // ===== Endpoints =====
+        const FETCH_URL = "{{ route('dashboard.media.getAllMediaPaginated') }}";
+        const UPLOAD_URL = "{{ route('dashboard.media.store') }}";
+        const IMPORT_URL = "{{ route('dashboard.media_url.store') }}"; // عرّفه عند وجود خدمة الاستيراد عبر الرابط
 
-        // ------------- Picker Core (gallery/upload/import; minimal) -------------
-        const root = document.getElementById('nbnMediaPicker');
-        if (!root) return;
-        const back = root.querySelector('[data-nbn-backdrop]');
-        const closes = root.querySelectorAll('[data-nbn-close]');
-        const tabs = Array.from(root.querySelectorAll('.nbn-tab'));
-        const panels = {
-            gallery: document.getElementById('nbn-panel-gallery'),
-            upload: document.getElementById('nbn-panel-upload'),
-            import: document.getElementById('nbn-panel-import')
+        const modal = document.getElementById("mmxcMediaModal");
+        const backdrop = modal.querySelector("[data-mmxc-backdrop]");
+        const closes = modal.querySelectorAll("[data-mmxc-close]");
+        const CSRF = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+        // Gallery
+        const listEl = document.getElementById("mmxc-list");
+        const loaderEl = document.getElementById("mmxc-loader");
+        const sentinel = document.getElementById("mmxc-sentinel");
+        const searchInput = document.getElementById("mmxc-search");
+        const typeSelect = document.getElementById("mmxc-type-filter");
+        const btnSelect = document.getElementById("mmxc-btn-select");
+
+        // Upload
+        const uploadInput = document.getElementById("mmxc-upload-input");
+        const uploadName = document.getElementById("mmxc-upload-name");
+        const uploadAlt = document.getElementById("mmxc-upload-alt");
+        const btnUploadToGallery = document.getElementById("mmxc-btn-upload-to-gallery");
+        const btnUploadSelectAndClose = document.getElementById("mmxc-btn-upload-and-select-close");
+
+        // Import URL
+        const uploadUrlInput = document.getElementById("mmxc-upload-url");
+        const urlNameInput = document.getElementById("mmxc-url-name");
+        const urlAltInput = document.getElementById("mmxc-url-alt");
+        const btnImportToGallery = document.getElementById("mmxc-btn-import-to-gallery");
+        const btnImportSelectAndClose = document.getElementById("mmxc-btn-import-and-select-close");
+        const urlTypeRadios = modal.querySelectorAll("input[name='mmxc-url-type']");
+
+        // Tabs
+        const tabButtons = Array.from(modal.querySelectorAll('.mmxc-tab-btn'));
+        const tabPanels = {
+            gallery: document.getElementById('mmxc-tab-gallery'),
+            upload: document.getElementById('mmxc-tab-upload'),
+            import: document.getElementById('mmxc-tab-import'),
         };
-        const listEl = document.getElementById('nbnList');
-        const loaderEl = document.getElementById('nbnLoader');
-        const sentinel = document.getElementById('nbnSentinel');
-        const searchEl = document.getElementById('nbnSearch');
-        const typeEl = document.getElementById('nbnType');
-        const chooseBtn = document.getElementById('nbnChoose');
-        const upFile = document.getElementById('nbnUploadFile');
-        const upName = document.getElementById('nbnUploadName');
-        const upAlt = document.getElementById('nbnUploadAlt');
-        const upToGal = document.getElementById('nbnUploadToGallery');
-        const upAndClose = document.getElementById('nbnUploadAndClose');
-        const urlInput = document.getElementById('nbnUrl');
-        const urlName = document.getElementById('nbnUrlName');
-        const urlAlt = document.getElementById('nbnUrlAlt');
-        const importToGal = document.getElementById('nbnImportToGallery');
-        const importAndClose = document.getElementById('nbnImportAndClose');
 
         const state = {
-            open: false,
+            isOpen: false,
             page: 1,
+            perPage: 12,
             hasMore: true,
             isLoading: false,
+            search: "",
+            type: "all",
             list: [],
-            search: '',
-            type: 'all',
             selected: null,
-            obs: null,
-            cb: null
+            currentField: "",
+            observer: null,
+            activeTab: 'gallery'
         };
-        const YT =
+
+        // ===== Helpers =====
+        const YT_REGEX =
             /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
-        const isYT = u => YT.test(u || "");
-        const youId = u => u && u.match(YT) ? u.match(YT)[1] : null;
-        const ext = p => (p || '').split('?')[0].split('.').pop()?.toLowerCase() || '';
-        const mapType = t => t === 'voice' ? 'audio' : t;
+        const isYouTubeUrl = (url = "") => YT_REGEX.test(url);
+        const getYouTubeId = (url = "") => (url.match(YT_REGEX)?.[1] ?? null);
+        const extFromPath = (p = "") => (p.split("?")[0].split(".").pop() || "").toLowerCase();
 
-        function kind(m) {
-            const p = m.path || m.url || '';
-            if (isYT(p)) return 'video';
-            const mt = (m.media_type || '').toLowerCase();
-            if (['image', 'video', 'audio', 'voice', 'file'].includes(mt)) return mt === 'audio' ? 'voice' : mt;
-            const e = ext(p);
-            if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'].includes(e)) return 'image';
-            if (['mp4', 'webm', 'mkv', 'mov', 'avi', 'm4v'].includes(e)) return 'video';
-            if (['mp3', 'wav', 'ogg', 'm4a', 'aac', 'flac'].includes(e)) return 'voice';
-            return 'file';
+        function getMediaKind(media) {
+            if (media.path && isYouTubeUrl(media.path)) return "video";
+            const mt = (media.media_type || "").toLowerCase();
+            if (["image", "video", "audio", "voice", "file"].includes(mt)) return (mt === "audio" ? "voice" : mt);
+            const ext = extFromPath(media.path || media.url || "");
+            if (["jpg", "jpeg", "png", "gif", "webp", "bmp", "svg"].includes(ext)) return "image";
+            if (["mp4", "webm", "mkv", "mov", "avi", "m4v"].includes(ext)) return "video";
+            if (["mp3", "wav", "ogg", "m4a", "aac", "flac"].includes(ext)) return "voice";
+            return "file";
         }
-        const iconText = m => (kind(m) === 'image' ? 'IMG' : kind(m) === 'video' ? 'VID' : 'FILE');
+        const mapFilterForServer = (t) => (t === "voice" ? "audio" : t);
 
-        function switchTab(t) {
-            tabs.forEach(b => {
-                const act = b.dataset.nbnTab === t;
-                b.classList.toggle('is-active', act);
-                b.setAttribute('aria-selected', String(act));
-            });
-            Object.entries(panels).forEach(([k, el]) => el && (el.hidden = (k !== t)));
-        }
-        tabs.forEach(b => b.addEventListener('click', () => switchTab(b.dataset.nbnTab)));
-
-        function lock() {
-            document.documentElement.style.overflow = 'hidden';
-            document.body.classList.add('modal-open');
+        function getBadgeIconId(media) {
+            if (media.path && isYouTubeUrl(media.path)) return "mmxc-icon-youtube";
+            const kind = getMediaKind(media);
+            if (kind === "image") return "mmxc-icon-image";
+            if (kind === "video") return "mmxc-icon-video";
+            if (kind === "voice") return "mmxc-icon-voice";
+            return "mmxc-icon-file";
         }
 
-        function unlock() {
-            document.documentElement.style.overflow = '';
-            document.body.classList.remove('modal-open');
+        function getSelectedUrlType() {
+            const checked = Array.from(urlTypeRadios).find(r => r.checked);
+            return checked ? checked.value : "auto";
         }
 
-        let prevModal = null,
-            restore = false;
-
-        function hideParent() {
-            try {
-                const shown = document.querySelector('.modal.show');
-                if (shown && window.bootstrap?.Modal) {
-                    window.bootstrap.Modal.getOrCreateInstance(shown).hide();
-                    prevModal = shown;
-                    restore = true;
-                    setTimeout(() => {
-                        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-                        document.body.classList.remove('modal-open');
-                        document.documentElement.style.overflow = '';
-                    }, 150);
+        // ===== Public API =====
+        window.mmxcMediaModalManager = {
+            openModal(fieldName) {
+                openModal(fieldName);
+            },
+            closeModal() {
+                closeModal();
+            },
+            onMediaSelected(payload) {
+                if (window.mediaTabManager && typeof window.mediaTabManager.onMediaSelected === "function") {
+                    window.mediaTabManager.onMediaSelected(payload);
                 }
-            } catch (e) {}
-        }
-
-        function showParent() {
-            try {
-                if (restore && prevModal && window.bootstrap?.Modal) {
-                    window.bootstrap.Modal.getOrCreateInstance(prevModal).show();
-                }
-            } catch (e) {} finally {
-                prevModal = null;
-                restore = false;
-                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-                document.body.classList.remove('modal-open');
-                document.documentElement.style.overflow = '';
             }
+        };
+
+        // ===== Reset UI/state =====
+        function clearAllInputs() {
+            searchInput && (searchInput.value = "");
+            typeSelect && (typeSelect.value = "all");
+            uploadInput && (uploadInput.value = "");
+            uploadName && (uploadName.value = "");
+            uploadAlt && (uploadAlt.value = "");
+            uploadUrlInput && (uploadUrlInput.value = "");
+            urlNameInput && (urlNameInput.value = "");
+            urlAltInput && (urlAltInput.value = "");
+            // reset radios to Auto
+            urlTypeRadios.forEach(r => {
+                r.checked = (r.value === "auto");
+            });
         }
 
-        function open() {
-            state.open = true;
-            hideParent();
-            root.setAttribute('aria-hidden', 'false');
-            lock();
+        function resetStateFilters() {
+            state.search = "";
+            state.type = "all";
+            state.selected = null;
+        }
+
+        // ===== Open/close =====
+        function openModal(fieldName = "") {
+            state.currentField = fieldName;
+            state.isOpen = true;
+            modal.setAttribute("aria-hidden", "false");
+            document.documentElement.style.overflow = "hidden";
+            resetStateFilters();
+            clearAllInputs();
             switchTab('gallery');
             resetAndLoad();
-            document.addEventListener('keydown', onEsc, {
-                passive: true
+            setTimeout(() => document.getElementById("mmxc-search")?.focus(), 0);
+        }
+
+        function closeModal() {
+            state.isOpen = false;
+            modal.setAttribute("aria-hidden", "true");
+            document.documentElement.style.overflow = "";
+            resetStateFilters();
+            clearAllInputs();
+        }
+
+        backdrop.addEventListener("click", closeModal);
+        closes.forEach(b => b.addEventListener("click", closeModal));
+        modal.querySelector(".mmxc-container").addEventListener("click", e => e.stopPropagation());
+        document.addEventListener("keydown", e => {
+            if (!state.isOpen) return;
+            if (e.key === "Escape") closeModal();
+            if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+                const idx = tabButtons.findIndex(b => b.getAttribute('aria-selected') === "true");
+                if (idx > -1) {
+                    const dir = e.key === "ArrowRight" ? 1 : -1;
+                    const next = (idx + dir + tabButtons.length) % tabButtons.length;
+                    tabButtons[next].click();
+                    tabButtons[next].focus();
+                }
+            }
+        });
+
+        // ===== Tabs =====
+        tabButtons.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.mmxcTab)));
+
+        function switchTab(tab) {
+            if (!tabPanels[tab]) return;
+            state.activeTab = tab;
+            tabButtons.forEach(b => {
+                const active = b.dataset.mmxcTab === tab;
+                b.classList.toggle('mmxc-is-active', active);
+                b.setAttribute('aria-selected', String(active));
+                b.tabIndex = active ? 0 : -1;
+            });
+            Object.entries(tabPanels).forEach(([name, panel]) => {
+                panel.hidden = (name !== tab);
             });
         }
 
-        function close() {
-            state.open = false;
-            root.setAttribute('aria-hidden', 'true');
-            state.obs?.disconnect();
-            state.obs = null;
-            state.cb = null;
-            state.selected = null;
-            unlock();
-            showParent();
-            document.removeEventListener('keydown', onEsc);
-        }
-
-        function onEsc(e) {
-            if (e.key === 'Escape' && root.getAttribute('aria-hidden') === 'false') {
-                e.preventDefault();
-                close();
-            }
-        }
-        back && back.addEventListener('click', close);
-        closes.forEach(b => b.addEventListener('click', close));
-
+        // ===== Fetch/pagination =====
         async function resetAndLoad() {
             state.page = 1;
             state.hasMore = true;
             state.list = [];
-            render();
-            await load();
-            state.obs?.disconnect();
-            state.obs = null;
-            const body = panels.gallery?.querySelector('.nbn-body');
-            if (!body || !sentinel) return;
-            state.obs = new IntersectionObserver(es => es.forEach(e => {
-                if (e.isIntersecting) load();
-            }), {
-                root: body,
+            renderList();
+            await loadMore(true);
+            setupObserver();
+        }
+
+        function setupObserver() {
+            if (state.observer) state.observer.disconnect();
+            const rootEl = tabPanels.gallery.querySelector(".mmxc-body");
+            state.observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) loadMore();
+                });
+            }, {
+                root: rootEl,
                 threshold: 1
             });
-            state.obs.observe(sentinel);
+            state.observer.observe(sentinel);
         }
-        async function load() {
+        async function loadMore(reset = false) {
             if (state.isLoading || !state.hasMore) return;
             state.isLoading = true;
             loaderEl.hidden = false;
             try {
-                const u = new URL(nbn_FETCH_URL);
-                u.searchParams.set('page', state.page);
-                u.searchParams.set('search', (state.search || '').trim());
-                u.searchParams.set('type', state.type === 'all' ? 'all' : mapType(state.type));
-                const r = await fetch(u.toString(), {
+                const url = new URL(FETCH_URL, window.location.origin);
+                url.searchParams.set("page", state.page);
+                url.searchParams.set("search", state.search.trim());
+                url.searchParams.set("type", mapFilterForServer(state.type));
+                const res = await fetch(url.toString(), {
                     headers: {
-                        Accept: 'application/json'
+                        Accept: "application/json"
                     }
                 });
-                const j = await r.json().catch(() => ({}));
-                const items = Array.isArray(j.data) ? j.data : [];
-                state.list = state.list.concat(items);
-                state.hasMore = !!j.next_page_url;
+                const data = await res.json();
+                const items = Array.isArray(data.data) ? data.data : [];
+                const hasMore = !!data.next_page_url;
+                state.list = reset ? items : state.list.concat(items);
+                state.hasMore = hasMore;
                 state.page += 1;
-            } catch {
-                state.hasMore = false;
+            } catch (err) {
+                console.error(err);
             } finally {
                 state.isLoading = false;
                 loaderEl.hidden = true;
-                render();
+                renderList();
             }
         }
 
-        function render() {
-            listEl.textContent = '';
-            const arr = state.type === 'all' ? state.list : state.list.filter(m => (state.type === 'image' ? kind(
-                m) === 'image' : true));
-            if (!arr.length) {
-                const empty = document.createElement('div');
-                empty.className = 'text-center text-muted py-2';
-                empty.textContent = 'لا توجد وسائط';
-                listEl.appendChild(empty);
+        // ===== Render =====
+        function renderList() {
+            listEl.innerHTML = "";
+            const filtered = state.type === "all" ? state.list : state.list.filter(m => getMediaKind(m) === state
+                .type);
+            if (!filtered.length) {
+                listEl.innerHTML = `<div class="mmxc-empty">لا توجد وسائط للعرض</div>`;
                 return;
             }
-            arr.forEach(m => {
-                const it = document.createElement('div');
-                it.className = 'nbn-item' + (state.selected && state.selected.id === m.id ? ' is-sel' : '');
-                it.addEventListener('click', () => {
-                    state.selected = (state.selected && state.selected.id === m.id) ? null : m;
-                    render();
-                });
-                const th = document.createElement('div');
-                th.className = 'nbn-thumb';
-                const badge = document.createElement('div');
-                badge.className = 'nbn-badge';
-                badge.textContent = iconText(m);
-                th.appendChild(badge);
-                const p = m.path || m.url || '';
-                if (isYT(p)) {
-                    const id = youId(p);
-                    const img = new Image();
-                    img.loading = 'lazy';
-                    img.alt = m.name || 'YouTube';
-                    img.src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-                    th.appendChild(img);
-                } else {
-                    const k = kind(m);
-                    if (k === 'image') {
-                        const img = new Image();
-                        img.loading = 'lazy';
-                        img.alt = m.alt || m.name || '';
-                        img.src = p;
-                        th.appendChild(img);
-                    } else if (k === 'video' && /(\.|\/)(mp4|webm|mkv|mov|avi|m4v)(\?|$)/i.test(p)) {
-                        const v = document.createElement('video');
-                        v.src = p;
-                        v.muted = true;
-                        v.preload = 'metadata';
-                        th.appendChild(v);
+            filtered.forEach(media => {
+                const kind = getMediaKind(media);
+                const item = document.createElement("div");
+                item.className = "mmxc-item";
+                if (state.selected && state.selected.id === media.id) item.classList.add("mmxc-is-selected");
+                item.addEventListener("click", () => toggleSelect(media));
+
+                const thumb = document.createElement("div");
+                thumb.className = "mmxc-thumb";
+
+                const badge = document.createElement("div");
+                badge.className = "mmxc-badge";
+                badge.title = kind === "voice" ? "audio" : (isYouTubeUrl(media.path) ? "youtube" : kind);
+                const iconId = getBadgeIconId(media);
+                badge.innerHTML = `<svg aria-hidden="true"><use href="#${iconId}"></use></svg>`;
+                thumb.appendChild(badge);
+
+                if (media.path && isYouTubeUrl(media.path)) {
+                    const vid = getYouTubeId(media.path);
+                    const img = document.createElement("img");
+                    img.src = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
+                    img.alt = media.name || "YouTube";
+                    img.loading = "lazy";
+                    thumb.appendChild(img);
+                } else if (kind === "image") {
+                    const img = document.createElement("img");
+                    img.src = media.path;
+                    img.alt = media.alt || media.name || "";
+                    img.loading = "lazy";
+                    thumb.appendChild(img);
+                } else if (kind === "video") {
+                    if (/\.(mp4|webm|mkv|mov|avi|m4v)(\?|$)/i.test(media.path || "")) {
+                        const video = document.createElement("video");
+                        video.src = media.path;
+                        video.muted = true;
+                        video.preload = "metadata";
+                        thumb.appendChild(video);
                     }
+                } else if (kind === "voice") {
+                    const audio = document.createElement("audio");
+                    audio.src = media.path;
+                    audio.preload = "metadata";
+                    audio.controls = true;
+                    thumb.appendChild(audio);
                 }
-                const tt = document.createElement('div');
-                tt.className = 'nbn-title';
-                tt.textContent = m.name || '';
-                it.appendChild(th);
-                it.appendChild(tt);
-                listEl.appendChild(it);
+
+                item.appendChild(thumb);
+
+                const title = document.createElement("div");
+                title.className = "mmxc-title";
+                title.textContent = media.name || "";
+                item.appendChild(title);
+
+                listEl.appendChild(item);
             });
         }
-        searchEl && searchEl.addEventListener('input', () => {
-            state.search = searchEl.value;
-            resetAndLoad();
-        });
-        typeEl && typeEl.addEventListener('change', () => {
-            state.type = typeEl.value;
-            resetAndLoad();
-        });
 
-        function choose() {
-            if (!state.selected) {
-                alert('يرجى اختيار وسيط');
-                return;
-            }
-            const m = state.selected;
-            const payload = {
-                id: m.id,
-                url: m.url || m.path || '',
-                title: m.name || '',
-                alt: m.alt || ''
-            };
-            if (!payload.url) {
-                alert('الرابط غير متاح');
-                return;
-            }
-            state.cb && state.cb(payload);
-            close();
+        function toggleSelect(media) {
+            const isSame = state.selected && state.selected.id === media.id;
+            state.selected = isSame ? null : media;
+            renderList();
         }
-        chooseBtn && chooseBtn.addEventListener('click', choose);
 
-        async function doUpload(mode) {
-            const f = upFile?.files?.[0] || null;
-            if (!f) return alert('اختر ملفاً');
-            const form = new FormData();
-            form.append('media', f);
-            if (upName?.value) form.append('name', upName.value);
-            if (upAlt?.value) form.append('alt', upAlt.value);
+        // ===== Search/filter =====
+        searchInput?.addEventListener("input", async e => {
+            state.search = e.target.value;
+            await resetAndLoad();
+        });
+        typeSelect?.addEventListener("change", async e => {
+            state.type = e.target.value;
+            await resetAndLoad();
+        });
+
+        // ===== Confirm selection =====
+        btnSelect?.addEventListener("click", () => {
+            if (!state.selected) {
+                alert("يرجى اختيار وسيط واحد على الأقل.");
+                return;
+            }
+            window.mmxcMediaModalManager.onMediaSelected({
+                id: state.selected.id,
+                url: state.selected.path,
+                title: state.selected.name || "",
+                alt: state.selected.alt || ""
+            });
+            closeModal();
+        });
+
+        // ===== Parsing & matching helpers =====
+        function tryParseJsonFromText(text) {
+            if (!text) return null;
+            const clean = text.replace(/^\uFEFF/, "").trim();
             try {
-                upToGal && (upToGal.disabled = true, upToGal.textContent = '...');
-                upAndClose && (upAndClose.disabled = true, upAndClose.textContent = '...');
-                const r = await fetch(nbn_UPLOAD_URL, {
-                    method: 'POST',
+                return JSON.parse(clean);
+            } catch {
+                const m = clean.match(/\{[\s\S]*\}/);
+                if (m) {
+                    try {
+                        return JSON.parse(m[0]);
+                    } catch {}
+                }
+                return {
+                    __nonJson: true,
+                    __raw: clean
+                };
+            }
+        }
+
+        function extractCreatedFromPayload(payload) {
+            if (!payload || typeof payload !== "object") return [];
+            if (Array.isArray(payload.data)) return payload.data;
+            if (Array.isArray(payload.media)) return payload.media;
+            if (payload.data) return [payload.data];
+            if (payload.media) return [payload.media];
+            return [];
+        }
+
+        function basenameNoExt(filename = "") {
+            const base = filename.split("/").pop() || filename;
+            return base.replace(/\.[^.]+$/, "").trim();
+        }
+
+        function findJustUploadedInState({
+            fileName,
+            nameVal
+        }) {
+            const base = basenameNoExt(fileName || "");
+            if (nameVal) {
+                const byName = state.list.find(m => (m.name || "").trim() === nameVal.trim());
+                if (byName) return byName;
+            }
+            if (base) {
+                const byBase = state.list.find(m => (m.name || "").trim() === base || (m.title || "").trim() ===
+                    base);
+                if (byBase) return byBase;
+            }
+            return state.list[0] || null;
+        }
+
+        // ===== Upload (open gallery / select-close) =====
+        async function uploadMediaAndHandle(mode) {
+            const files = uploadInput.files;
+            if (!files || !files.length) {
+                alert("⚠️ لم يتم اختيار أي ملف للرفع.");
+                return;
+            }
+            const file0 = files[0];
+            const nameVal = (uploadName.value || "").trim();
+            const altVal = (uploadAlt.value || "").trim();
+
+            const form = new FormData();
+            form.append("media", file0);
+            if (nameVal) form.append("name", nameVal);
+            if (altVal) form.append("alt", altVal);
+
+            let created = null;
+            try {
+                btnUploadToGallery.disabled = true;
+                btnUploadSelectAndClose.disabled = true;
+                btnUploadToGallery.textContent = "جارٍ الرفع...";
+                btnUploadSelectAndClose.textContent = "جارٍ الرفع...";
+
+                const res = await fetch(UPLOAD_URL, {
+                    method: "POST",
                     headers: {
-                        'X-CSRF-TOKEN': CSRF,
-                        Accept: 'application/json'
+                        "X-CSRF-TOKEN": CSRF,
+                        "Accept": "application/json"
                     },
                     body: form
                 });
-                if (!r.ok) return alert('فشل الرفع');
-                await resetAndLoad();
-                if (mode === 'gallery') {
+                const bodyText = await res.text();
+                if (!res.ok) {
+                    console.error("❌ Upload failed:", res.status, bodyText);
+                    alert("فشل رفع الملف.\nStatus: " + res.status);
+                    return;
+                }
+
+                const parsed = tryParseJsonFromText(bodyText);
+                created = parsed && !parsed.__nonJson ? extractCreatedFromPayload(parsed) : null;
+
+                if (mode === "gallery") {
                     switchTab('gallery');
-                } else {
-                    const first = state.list[0] || null;
-                    if (first && state.cb) state.cb({
+                    await resetAndLoad();
+                    let picked = null;
+                    if (created && created.length) {
+                        const cid = created[0].id;
+                        picked = state.list.find(m => m.id === cid) || null;
+                    }
+                    if (!picked) {
+                        picked = findJustUploadedInState({
+                            fileName: file0.name,
+                            nameVal
+                        });
+                    }
+                    if (picked) {
+                        state.selected = picked;
+                        renderList();
+                        requestAnimationFrame(() => {
+                            const items = [...listEl.querySelectorAll('.mmxc-item')];
+                            const el = items.find(elm => {
+                                const title = elm.querySelector('.mmxc-title')?.textContent
+                                    .trim() || "";
+                                return (picked.name || "") === title;
+                            }) || items[0];
+                            el?.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        });
+                    }
+                    uploadInput.value = "";
+                    uploadName.value = "";
+                    uploadAlt.value = "";
+                    return;
+                }
+
+                // select-close
+                if (created && created.length) {
+                    const first = created[0];
+                    window.mmxcMediaModalManager.onMediaSelected({
                         id: first.id,
                         url: first.url || first.path,
-                        title: first.name || '',
-                        alt: first.alt || ''
+                        title: first.name || nameVal || "",
+                        alt: first.alt || altVal || ""
                     });
-                    close();
+                    closeModal();
+                } else {
+                    await resetAndLoad();
+                    const picked = findJustUploadedInState({
+                        fileName: file0.name,
+                        nameVal
+                    });
+                    if (picked) {
+                        window.mmxcMediaModalManager.onMediaSelected({
+                            id: picked.id,
+                            url: picked.url || picked.path,
+                            title: picked.name || nameVal || "",
+                            alt: picked.alt || altVal || ""
+                        });
+                    } else {
+                        console.warn("Upload OK but unable to determine the created media from response.");
+                    }
+                    closeModal();
                 }
-            } catch {
-                alert('فشل الرفع');
+            } catch (err) {
+                console.error("🔥 Exception during upload:", err);
+                alert("حدث خطأ أثناء الرفع:\n" + (err && err.message ? err.message : err));
             } finally {
-                upToGal && (upToGal.disabled = false, upToGal.textContent = 'إدراج في المعرض');
-                upAndClose && (upAndClose.disabled = false, upAndClose.textContent = 'إدراج في المقال');
-                if (upFile) upFile.value = '';
-                if (upName) upName.value = '';
-                if (upAlt) upAlt.value = '';
-                // Reset upload label visual feedback
-                const uploadLabel = document.getElementById('nbnUploadLabel');
-                const uploadLabelText = document.getElementById('nbnUploadLabelText');
-                if (uploadLabelText) uploadLabelText.textContent = 'اختر ملف الوسائط';
-                if (uploadLabel) uploadLabel.style.border = '1px solid #dcdcdc';
+                btnUploadToGallery.disabled = false;
+                btnUploadSelectAndClose.disabled = false;
+                btnUploadToGallery.textContent = "إدراج في المعرض";
+                btnUploadSelectAndClose.textContent = "إدراج في المقال";
             }
         }
-        upToGal && upToGal.addEventListener('click', () => doUpload('gallery'));
-        upAndClose && upAndClose.addEventListener('click', () => doUpload('select'));
+
+        // ===== Import via URL (with media type radio) =====
+        async function importViaUrl(mode) {
+            if (!IMPORT_URL) {
+                alert("⚠️ لم يتم ضبط مسار الاستيراد عبر الرابط في الخادم.");
+                return;
+            }
+            const urlVal = (uploadUrlInput.value || "").trim();
+            const nameVal = (urlNameInput.value || "").trim();
+            const altVal = (urlAltInput.value || "").trim();
+            const typeVal = getSelectedUrlType(); // auto | image | video | voice | file
+            if (!urlVal) {
+                alert("⚠️ يرجى إدخال الرابط أولاً.");
+                return;
+            }
+
+            // إذا اختار المستخدم voice نمرره كـ audio إلى الخادم
+            const payloadType = typeVal === "auto" ? undefined : mapFilterForServer(typeVal);
+
+            let created = null;
+            try {
+                btnImportToGallery.disabled = true;
+                btnImportSelectAndClose.disabled = true;
+                btnImportToGallery.textContent = "جارٍ الاستيراد...";
+                btnImportSelectAndClose.textContent = "جارٍ الاستيراد...";
+
+                const res = await fetch(IMPORT_URL, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": CSRF,
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        url: urlVal,
+                        name: nameVal || undefined,
+                        alt: altVal || undefined,
+                        media_type: payloadType // قد يتجاهله الخادم إن كان Auto/undefined
+                    })
+                });
+                const bodyText = await res.text();
+                if (!res.ok) {
+                    console.error("❌ Import failed:", res.status, bodyText);
+                    alert("فشل الاستيراد.\nStatus: " + res.status);
+                    return;
+                }
+
+                const parsed = tryParseJsonFromText(bodyText);
+                created = parsed && !parsed.__nonJson ? extractCreatedFromPayload(parsed) : null;
+
+                if (mode === "gallery") {
+                    switchTab('gallery');
+                    await resetAndLoad();
+
+                    let picked = null;
+                    if (created && created.length) {
+                        const cid = created[0].id;
+                        picked = state.list.find(m => m.id === cid) || null;
+                    }
+                    if (!picked) {
+                        picked = nameVal ?
+                            state.list.find(m => (m.name || "").trim() === nameVal.trim()) :
+                            (state.list[0] || null);
+                    }
+                    if (picked) {
+                        state.selected = picked;
+                        renderList();
+                        requestAnimationFrame(() => {
+                            const items = [...listEl.querySelectorAll('.mmxc-item')];
+                            const el = items.find(elm => {
+                                const title = elm.querySelector('.mmxc-title')?.textContent
+                                    .trim() || "";
+                                return (picked.name || "") === title;
+                            }) || items[0];
+                            el?.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        });
+                    }
+                    uploadUrlInput.value = "";
+                    urlNameInput.value = "";
+                    urlAltInput.value = "";
+                    urlTypeRadios.forEach(r => {
+                        r.checked = (r.value === "auto");
+                    });
+                    return;
+                }
+
+                // select-close
+                if (created && created.length) {
+                    const first = created[0];
+                    window.mmxcMediaModalManager.onMediaSelected({
+                        id: first.id,
+                        url: first.url || first.path,
+                        title: first.name || nameVal || "",
+                        alt: first.alt || altVal || ""
+                    });
+                    closeModal();
+                } else {
+                    await resetAndLoad();
+                    const picked = nameVal ?
+                        state.list.find(m => (m.name || "").trim() === nameVal.trim()) :
+                        (state.list[0] || null);
+                    if (picked) {
+                        window.mmxcMediaModalManager.onMediaSelected({
+                            id: picked.id,
+                            url: picked.url || picked.path,
+                            title: picked.name || nameVal || "",
+                            alt: picked.alt || altVal || ""
+                        });
+                    } else {
+                        console.warn("Import OK but unable to determine created media.");
+                    }
+                    closeModal();
+                }
+            } catch (err) {
+                console.error("🔥 Exception during import:", err);
+                alert("حدث خطأ أثناء الاستيراد:\n" + (err && err.message ? err.message : err));
+            } finally {
+                btnImportToGallery.disabled = false;
+                btnImportSelectAndClose.disabled = false;
+                btnImportToGallery.textContent = "إدراج في المعرض";
+                btnImportSelectAndClose.textContent = "إدراج في المقال";
+            }
+        }
+
+        // ===== Bindings =====
+        btnUploadToGallery?.addEventListener("click", () => uploadMediaAndHandle('gallery'));
+        btnUploadSelectAndClose?.addEventListener("click", () => uploadMediaAndHandle('select-close'));
+        btnImportToGallery?.addEventListener("click", () => importViaUrl('gallery'));
+        btnImportSelectAndClose?.addEventListener("click", () => importViaUrl('select-close'));
 
         // Visual feedback for file selection
-        const uploadLabel = document.getElementById('nbnUploadLabel');
-        const uploadLabelText = document.getElementById('nbnUploadLabelText');
-        upFile && upFile.addEventListener('change', (e) => {
+        const uploadLabel = document.getElementById('mmxc-upload-label');
+        const uploadLabelText = document.getElementById('mmxc-upload-label-text');
+        uploadInput?.addEventListener('change', (e) => {
             const files = e.target.files;
             if (files && files.length > 0) {
                 const fileName = files[0].name;
                 if (uploadLabelText) uploadLabelText.textContent = 'تم تحميل الملف';
-                if (uploadLabel) uploadLabel.style.border = '1px solid #000';
+                if (uploadLabel) uploadLabel.style.border = '1px solid var(--mmxc-primary)';
 
                 // Auto-fill name and alt fields if empty
-                if (upName && !upName.value) {
+                if (uploadName && !uploadName.value) {
                     const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
-                    upName.value = nameWithoutExt;
-                    if (upAlt) upAlt.value = nameWithoutExt;
+                    uploadName.value = nameWithoutExt;
+                    if (uploadAlt) uploadAlt.value = nameWithoutExt;
                 }
             } else {
                 if (uploadLabelText) uploadLabelText.textContent = 'اختر ملف الوسائط';
-                if (uploadLabel) uploadLabel.style.border = '1px solid #dcdcdc';
+                if (uploadLabel) uploadLabel.style.border = '1px solid var(--mmxc-border)';
             }
         });
 
-        async function doImport(mode) {
-            const u = (urlInput?.value || '').trim();
-            if (!u) return alert('أدخل الرابط');
-            const body = {
-                url: u
-            };
-            if (urlName?.value) body.name = urlName.value;
-            if (urlAlt?.value) body.alt = urlAlt.value;
-            try {
-                importToGal && (importToGal.disabled = true, importToGal.textContent = '...');
-                importAndClose && (importAndClose.disabled = true, importAndClose.textContent = '...');
-                const r = await fetch(nbn_IMPORT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': CSRF,
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
-                if (!r.ok) return alert('فشل الاستيراد');
-                await resetAndLoad();
-                if (mode === 'gallery') {
-                    switchTab('gallery');
-                } else {
-                    const first = state.list[0] || null;
-                    if (first && state.cb) state.cb({
-                        id: first.id,
-                        url: first.url || first.path,
-                        title: first.name || '',
-                        alt: first.alt || ''
-                    });
-                    close();
-                }
-            } catch {
-                alert('فشل الاستيراد');
-            } finally {
-                importToGal && (importToGal.disabled = false, importToGal.textContent = 'إدراج في المعرض');
-                importAndClose && (importAndClose.disabled = false, importAndClose.textContent =
-                    'إدراج في المقال');
-                if (urlInput) urlInput.value = '';
-                if (urlName) urlName.value = '';
-                if (urlAlt) urlAlt.value = '';
-            }
-        }
-        importToGal && importToGal.addEventListener('click', () => doImport('gallery'));
-        importAndClose && importAndClose.addEventListener('click', () => doImport('select'));
-
         // Auto-fill for URL input
-        urlInput && urlInput.addEventListener('input', (e) => {
+        uploadUrlInput?.addEventListener('input', (e) => {
             const url = e.target.value.trim();
-            if (url && urlName && !urlName.value) {
+            if (url && urlNameInput && !urlNameInput.value) {
                 try {
                     const urlPath = new URL(url, window.location.origin).pathname;
                     const fileName = urlPath.split('/').pop();
                     const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
                     if (nameWithoutExt && nameWithoutExt !== '') {
-                        urlName.value = nameWithoutExt;
-                        if (urlAlt) urlAlt.value = nameWithoutExt;
+                        urlNameInput.value = nameWithoutExt;
+                        if (urlAltInput) urlAltInput.value = nameWithoutExt;
                     }
                 } catch (err) {
                     // Invalid URL, ignore
@@ -970,143 +1444,115 @@
             }
         });
 
-        // Public API
-        window.nbnPicker = {
-            open(onSelect) {
-                state.cb = (typeof onSelect === 'function') ? onSelect : null;
-                open();
-            },
-            close() {
-                close();
-            }
-        };
-
-        // ---------- Social Media form helpers ----------
-        const shareUrl = document.getElementById('share_image_url');
-        const shareId = document.getElementById('share_image_id');
-        const shareTitle = document.getElementById('share_image_title');
-        const shareAlt = document.getElementById('share_image_alt');
-
-        const previewWrap = document.getElementById('share_image_preview_wrapper');
-        const previewImg = document.getElementById('share_image_preview');
-        const previewName = document.getElementById('share_image_name');
-        const placeholder = document.getElementById('share_image_placeholder');
-
-        const btnPick = document.getElementById('btnPickShareImage');
-        const btnClear = document.getElementById('btnClearShareImage');
-
-        const prevTitle = document.getElementById('preview_title');
-        const prevDesc = document.getElementById('preview_description');
-        const prevImgWrap = document.getElementById('preview_image_container');
-        const prevImg = document.getElementById('preview_image');
-
-        window.setShareImage = function(payload) {
-            shareId.value = payload.id || '';
-            shareUrl.value = payload.url || '';
-            shareTitle.value = payload.title || '';
-            shareAlt.value = payload.alt || '';
-            if (payload.url) {
-                if (previewImg) {
-                    previewImg.src = payload.url;
-                    previewImg.alt = payload.alt || payload.title || '';
-                }
-                if (previewName) {
-                    previewName.textContent = payload.title || payload.url;
-                }
-                previewWrap && previewWrap.classList.remove('d-none');
-                placeholder && (placeholder.style.display = 'none');
-                if (prevImg) {
-                    prevImg.src = payload.url;
-                    prevImg.alt = payload.alt || payload.title || '';
-                }
-                if (prevImgWrap) prevImgWrap.style.display = '';
-            } else {
-                previewWrap && previewWrap.classList.add('d-none');
-                placeholder && (placeholder.style.display = 'block');
-                if (prevImg) {
-                    prevImg.removeAttribute('src');
-                }
-                if (prevImgWrap) prevImgWrap.style.display = 'none';
-            }
-        };
-        window.removeShareImage = function() {
-            setShareImage({
-                id: '',
-                url: '',
-                title: '',
-                alt: ''
-            });
-        };
-        window.updatePreview = function() {
-            const t = document.getElementById('share_title')?.value || '';
-            const d = document.getElementById('share_description')?.value || '';
-            if (prevTitle) prevTitle.textContent = t.trim() || 'عنوان المشاركة';
-            if (prevDesc) prevDesc.textContent = d.trim() || 'وصف المشاركة';
-        };
-
-        function opennbnForSocial() {
-            window.nbnPicker.open(function(media) {
-                if (!media || !media.url) {
-                    alert('لا يمكن استخدام هذا الوسيط');
-                    return;
-                }
-                setShareImage({
-                    id: media.id || '',
-                    url: media.url || '',
-                    title: media.title || '',
-                    alt: media.alt || ''
-                });
-            });
-        }
-        btnPick && btnPick.addEventListener('click', opennbnForSocial);
-        btnClear && btnClear.addEventListener('click', () => removeShareImage());
-
-        // On submit: copy URL into "share_image" if your backend expects that exact name
-        document.addEventListener('DOMContentLoaded', function() {
-            const tab = document.getElementById('social-media');
-            const form = tab ? tab.closest('form') : null;
-            if (!form) return;
-            form.addEventListener('submit', function() {
-                let hidden = form.querySelector('input[name="share_image"]');
-                if (!hidden) {
-                    hidden = document.createElement('input');
-                    hidden.type = 'hidden';
-                    hidden.name = 'share_image';
-                    form.appendChild(hidden);
-                }
-                hidden.value = shareUrl?.value || '';
-            });
-        });
-
-        // ---------------------- HYDRATION FROM $content ----------------------
-        document.addEventListener('DOMContentLoaded', function() {
-            // Ensure input values reflect old()/DB even if browser delays
-            const t = document.getElementById('share_title');
-            const d = document.getElementById('share_description');
-            if (t) t.value = t.value || @json(old('share_title', $content->share_title ?? ''));
-            if (d) d.value = d.value || @json(old('share_description', $content->share_description ?? ''));
-
-            // Build initial image payload from DB (or old())
-            const initialShare = {
-                id: @json(old('share_image_id', $content->share_image_id ?? '')),
-                url: @json(old('share_image_url', $content->share_image ?? '')),
-                title: @json(old('share_image_title', $content->share_image_title ?? '')),
-                alt: @json(old('share_image_alt', $content->share_image_alt ?? '')),
-            };
-
-            // Hydrate UI
-            if (initialShare.url && typeof window.setShareImage === 'function') {
-                window.setShareImage(initialShare);
-            } else {
-                // make sure empty state is visible correctly
-                window.setShareImage({
-                    id: '',
-                    url: '',
-                    title: '',
-                    alt: ''
-                });
-            }
-            if (typeof window.updatePreview === 'function') window.updatePreview();
-        });
+        // ===== Initial render =====
+        (function init() {
+            if (!state.list.length) listEl.innerHTML = `<div class="mmxc-empty">لا توجد وسائط للعرض</div>`;
+        })();
     })();
+
+    // --------- BRIDGE Social Media ↔ MMXc ----------
+    const shareUrl = document.getElementById('share_image_url');
+    const shareId = document.getElementById('share_image_id');
+    const shareTitle = document.getElementById('share_image_title');
+    const shareAlt = document.getElementById('share_image_alt');
+
+    const previewWrap = document.getElementById('share_image_preview_wrapper');
+    const previewImg = document.getElementById('share_image_preview');
+    const previewName = document.getElementById('share_image_name');
+    const placeholder = document.getElementById('share_image_placeholder');
+
+    const btnPick = document.getElementById('btnPickShareImage');
+    const btnClear = document.getElementById('btnClearShareImage');
+    const btnRemove = document.getElementById('btnRemoveShareImage');
+
+    const prevTitle = document.getElementById('preview_title');
+    const prevDesc = document.getElementById('preview_description');
+    const prevImgWrap = document.getElementById('preview_image_container');
+    const prevImg = document.getElementById('preview_image');
+
+    function setShareImage(payload) {
+        shareId.value = payload.id || '';
+        shareUrl.value = payload.url || '';
+        shareTitle.value = payload.title || '';
+        shareAlt.value = payload.alt || '';
+        if (payload.url) {
+            previewImg.src = payload.url;
+            previewImg.alt = payload.alt || payload.title || '';
+            previewName.textContent = payload.title || payload.url;
+            previewWrap.classList.remove('d-none');
+            placeholder.style.display = 'none';
+            if (prevImg) {
+                prevImg.src = payload.url;
+                prevImg.alt = payload.alt || payload.title || '';
+                prevImgWrap && (prevImgWrap.style.display = '');
+            }
+        } else {
+            previewWrap.classList.add('d-none');
+            placeholder.style.display = 'block';
+            if (prevImg) {
+                prevImg.removeAttribute('src');
+                prevImgWrap && (prevImgWrap.style.display = 'none');
+            }
+        }
+    }
+
+    // FIXED: Proper remove function
+    function removeShareImage() {
+        setShareImage({
+            id: '',
+            url: '',
+            title: '',
+            alt: ''
+        });
+    }
+
+    // Attach the function to window for onclick
+    window.removeShareImage = removeShareImage;
+
+    window.updatePreview = function() {
+        const t = document.getElementById('share_title')?.value || '';
+        const d = document.getElementById('share_description')?.value || '';
+        if (prevTitle) prevTitle.textContent = t.trim() || 'عنوان المشاركة';
+        if (prevDesc) prevDesc.textContent = d.trim() || 'وصف المشاركة';
+    };
+
+    function openMMXcForSocial() {
+        window.mmxcMediaModalManager.openModal('social_media');
+        // Override the onMediaSelected callback for this specific use case
+        window.mmxcMediaModalManager.onMediaSelected = function(media) {
+            if (!media || !media.url) {
+                alert('لا يمكن استخدام هذا الوسيط');
+                return;
+            }
+            setShareImage({
+                id: media.id || '',
+                url: media.url || '',
+                title: media.title || '',
+                alt: media.alt || ''
+            });
+        };
+    }
+
+    // FIXED: Proper event listeners for all delete buttons
+    btnPick && btnPick.addEventListener('click', openMMXcForSocial);
+    btnClear && btnClear.addEventListener('click', removeShareImage);
+    btnRemove && btnRemove.addEventListener('click', removeShareImage);
+
+    // Bridge de soumission: recopier share_image_url → share_image (nom back)
+    document.addEventListener('DOMContentLoaded', function() {
+        const tab = document.getElementById('social-media');
+        if (!tab) return;
+        const form = tab.closest('form');
+        if (!form) return;
+        form.addEventListener('submit', function() {
+            let hidden = form.querySelector('input[name="share_image"]');
+            if (!hidden) {
+                hidden = document.createElement('input');
+                hidden.type = 'hidden';
+                hidden.name = 'share_image';
+                form.appendChild(hidden);
+            }
+            hidden.value = shareUrl?.value || '';
+        });
+    });
 </script>
