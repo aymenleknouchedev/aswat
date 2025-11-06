@@ -130,9 +130,9 @@
             <div class="mmx-tab-body">
                 <div class="mmx-uploader mmx-uploader-url"
                     style="padding:1.2rem; border-radius:8px; border:1px solid var(--mmx-border); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                    <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem;">
+                    <div style="display:flex; flex-wrap:wrap; gap:.7rem; margin-bottom:.7rem; width:100%;">
                         <input type="text" id="mmx-upload-url"
-                            style="flex:1 1 220px; padding:.7rem 1rem; border:1px solid var(--mmx-border); border-radius:6px; background:var(--mmx-bg); color:var(--mmx-text); font-size:1rem;"
+                            style="flex:1 1 100%; padding:.7rem 1rem; border:1px solid var(--mmx-border); border-radius:6px; background:var(--mmx-bg); color:var(--mmx-text); font-size:1rem;"
                             placeholder="الرابط" />
                         <input type="text" id="mmx-url-name" placeholder="اسم الملف"
                             style="flex:1 1 180px; padding:.7rem 1rem; border:1px solid var(--mmx-border); border-radius:6px; background:var(--mmx-bg); color:var(--mmx-text); font-size:1rem;" />
@@ -548,29 +548,45 @@
         font-weight: 600;
         cursor: pointer;
         transition: background .15s, color .15s, border-color .15s;
-        border: 1px solid var(--mmx-text);
-        background: var(--mmx-text);
-        color: #fff;
+        border: 1px solid var(--bs-secondary);
+        background: var(--bs-secondary);
+        color: var(--bs-white);
+        border-radius: var(--bs-border-radius);
     }
 
     .mmx-btn:hover {
-        background: #222;
-        border-color: #222;
+        background: var(--bs-secondary-bg-subtle);
+        border-color: var(--bs-secondary-border-subtle);
+        color: var(--bs-body-color);
+    }
+
+    .mmx-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
     }
 
     .mmx-btn-secondary {
-        background: #444;
-        border-color: #444;
+        background: var(--bs-secondary);
+        border-color: var(--bs-secondary);
+        color: var(--bs-white);
     }
 
     .mmx-btn-secondary:hover {
-        background: #222;
-        border-color: #222;
+        background: var(--bs-secondary-bg-subtle);
+        border-color: var(--bs-secondary-border-subtle);
+        color: var(--bs-body-color);
     }
 
     .mmx-btn-primary {
-        background: var(--mmx-text);
-        border-color: var(--mmx-text);
+        background: var(--bs-primary);
+        border-color: var(--bs-primary);
+        color: var(--bs-white);
+    }
+
+    .mmx-btn-primary:hover {
+        background: var(--bs-primary-bg-subtle);
+        border-color: var(--bs-primary-border-subtle);
+        color: var(--bs-primary-text-emphasis);
     }
 
     .mmx-footer {
@@ -583,25 +599,33 @@
     }
 
     .mmx-btn-select {
-        background: var(--mmx-text);
-        color: #fff;
-        border-color: var(--mmx-text);
+        background: var(--bs-gray-400);
+        color: var(--bs-white);
+        border-color: var(--bs-gray-400);
+        transition: background .15s, color .15s, border-color .15s;
     }
 
     .mmx-btn-select:hover {
-        background: #222;
-        border-color: #222;
+        background: var(--bs-gray-500);
+        border-color: var(--bs-gray-500);
+        color: var(--bs-white);
+    }
+
+    .mmx-btn-select:not(:disabled) {
+        background: var(--bs-success);
+        border-color: var(--bs-success);
     }
 
     .mmx-btn-cancel {
-        background: #444;
-        border-color: #444;
-        color: #fff;
+        background: var(--bs-danger);
+        border-color: var(--bs-danger);
+        color: var(--bs-white);
     }
 
     .mmx-btn-cancel:hover {
-        background: #222;
-        border-color: #222;
+        background: var(--bs-danger-bg-subtle);
+        border-color: var(--bs-danger-border-subtle);
+        color: var(--bs-danger-text-emphasis);
     }
 
     .mmx-loader {
