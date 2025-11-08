@@ -572,6 +572,21 @@
             <div class="nk-wrap">
                 @include('dashboard.components.header')
 
+
+                @if (session('success'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم بنجاح',
+                                text: '{{ session('success') }}',
+                                confirmButtonText: 'حسناً',
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+                        });
+                    </script>
+                @endif
                 {{-- ============================ CONTENT FORM ============================ --}}
                 <form class="nk-content container row" action="{{ route('dashboard.content.update', $content->id) }}"
                     method="POST" enctype="multipart/form-data" id="contentForm">

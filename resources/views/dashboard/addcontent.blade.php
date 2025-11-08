@@ -2,6 +2,7 @@
 
 @section('title', 'أصوات جزائرية | إضافة محتوى')
 
+
 @section('content')
 
 
@@ -613,6 +614,17 @@
                         @if (session('success'))
                             <script>
                                 document.addEventListener('DOMContentLoaded', function() {
+                                    // Show success alert
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'نجح!',
+                                        text: '{{ session('success') }}',
+                                        confirmButtonText: 'موافق',
+                                        allowOutsideClick: false,
+                                        allowEscapeKey: false
+                                    });
+
+                                    // Clear localStorage
                                     const itemKeys = [
                                         'az_items_list_v1',
                                         'az_items_file_v1',
@@ -682,7 +694,7 @@
                                         </label>
                                         <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
-                                            <input required id="title" name="title" type="text"
+                                            <input id="title" name="title" type="text"
                                                 class="form-control form-control" maxlength="68" data-ar="العنوان"
                                                 data-en="Title" value="{{ old('title', '') }}">
                                         </div>
@@ -696,7 +708,7 @@
                                         </label>
                                         <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
-                                            <input required id="long_title" name="long_title" type="text"
+                                            <input id="long_title" name="long_title" type="text"
                                                 class="form-control form-control" maxlength="210"
                                                 data-ar="العنوان الطويل" data-en="Long Title"
                                                 value="{{ old('long_title', '') }}">
@@ -711,7 +723,7 @@
                                         </label>
                                         <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
-                                            <input required id="mobile_title" name="mobile_title" type="text"
+                                            <input id="mobile_title" name="mobile_title" type="text"
                                                 class="form-control form-control" maxlength="40" data-ar="عنوان الموبايل"
                                                 data-en="Mobile Title" value="{{ old('mobile_title', '') }}">
                                         </div>
@@ -1117,7 +1129,7 @@
                                         data-en="Summary">الملخص</label>
                                     <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
-                                        <textarea required id="summary" name="summary" class="form-control form-control" rows="3"
+                                        <textarea  id="summary" name="summary" class="form-control form-control" rows="3"
                                             style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130">{{ old('summary', '') }}</textarea>
                                     </div>
                                     <small class="text-muted"><span id="summary-count">0</span> / 130</small>
@@ -1139,11 +1151,11 @@
                                         data-en="SEO Keyword">الكلمة الرئيسية</label>
                                     <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
-                                        <input required id="seo_keyword" name="seo_keyword" type="text"
+                                        <input  id="seo_keyword" name="seo_keyword" type="text"
                                             class="form-control form-control" maxlength="50"
                                             value="{{ old('seo_keyword', '') }}">
                                     </div>
-                                </div>
+                                </div>                             
                             </div>
 
 
@@ -1529,6 +1541,7 @@
     <script src="/dashlite/js/album.js"></script>
     <script src="/dashlite/js/form-toggle.js"></script>
     <script src="/dashlite/js/media-tab.js"></script>
+    <script src="/dashlite/js/validation.js"></script>
 
     <script>
         // ========== SINGLE SELECTION FUNCTIONS ==========
@@ -1854,93 +1867,12 @@
         }
 
         // ========== FORM VALIDATION ==========
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('contentForm');
-
-            form.addEventListener('submit', function(e) {
-                let isValid = true;
-                const errorMessages = [];
-
-                const sectionInput = document.querySelector('input[name="section_id"]');
-                if (!sectionInput.value) {
-                    isValid = false;
-                    errorMessages.push('يرجى اختيار القسم');
-                    highlightField(sectionInput);
-                }
-
-                const categoryInput = document.querySelector('input[name="category_id"]');
-                if (!categoryInput.value) {
-                    isValid = false;
-                    errorMessages.push('يرجى اختيار الصنف');
-                    highlightField(categoryInput);
-                }
-
-                const tagsInputs = document.querySelectorAll('input[name="tags_id[]"]');
-                if (tagsInputs.length === 0) {
-                    isValid = false;
-                    errorMessages.push('يرجى اختيار وسم واحد على الأقل');
-                    highlightField(document.getElementById('tags_id-hidden-inputs'));
-                }
-
-                if (!isValid) {
-                    e.preventDefault();
-                    showValidationError(errorMessages.join('<br>'));
-                    scrollToFirstError();
-                } else {
-                    const formData = new FormData(this);
-                    for (let [key, value] of formData.entries()) {
-                        console.log(key + ': ' + value);
-                    }
-                }
-            });
-
-            function highlightField(input) {
-                const container = input.closest('.search-container') || input.closest('.multi-select-container');
-                if (container) {
-                    container.style.border = '1px solid var(--bs-form-invalid-color)';
-                    container.style.borderRadius = '4px';
-                    container.style.padding = '4px';
-                    setTimeout(() => {
-                        container.style.border = '';
-                        container.style.padding = '';
-                    }, 3000);
-                }
-            }
-
-            function showValidationError(message) {
-                const existingError = document.getElementById('validation-error');
-                if (existingError) existingError.remove();
-
-                const errorDiv = document.createElement('div');
-                errorDiv.id = 'validation-error';
-                errorDiv.className = 'alert alert-danger alert-dismissible fade show';
-                errorDiv.innerHTML =
-                    `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
-
-                const firstHeading = form.querySelector('.nk-block-head');
-                if (firstHeading) {
-                    firstHeading.parentNode.insertBefore(errorDiv, firstHeading.nextSibling);
-                } else {
-                    form.insertBefore(errorDiv, form.firstChild);
-                }
-            }
-
-            function scrollToFirstError() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-                const firstError = document.querySelector(
-                        '.search-container[style*="border: 1px solid"]') ||
-                    document.querySelector('.multi-select-container[style*="border: 1px solid"]');
-                if (firstError) {
-                    firstError.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-                }
-            }
-        });
+        // Form validation has been moved to /dashlite/js/validation.js
+        // The validation is now global and covers all tabs:
+        // - Add Content Tab (titles, section, category, tags, summary, content, SEO keyword, caption)
+        // - Template Tab (template-specific fields)
+        // - Media Tab (all media fields for the selected template)
+        // - Social Media Tab (optional fields)
 
         // ========== TEMPLATE SELECTION ==========
         function selectTemplate(templateName) {

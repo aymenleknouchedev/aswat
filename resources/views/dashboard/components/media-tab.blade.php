@@ -11,11 +11,7 @@
 <div class="media-manager">
     @csrf
 
-    <!-- Validation Alert -->
-    <div id="media-validation-alert" class="alert alert-danger d-none" role="alert">
-        <i class="fas fa-exclamation-triangle me-2"></i>
-        <span id="validation-message"></span>
-    </div>
+ 
 
     <!-- Media Type Selection -->
     <div class="media-type-selector mb-4">
@@ -414,72 +410,22 @@
 
         /* ================== STATE PERSISTENCE ================== */
         saveState() {
-            try {
-                const stateToSave = {
-                    currentTemplate: this.state.currentTemplate,
-                    selectedMedia: this.state.selectedMedia,
-                    currentLanguage: this.state.currentLanguage
-                };
-                localStorage.setItem('mediaManagerState', JSON.stringify(stateToSave));
-            } catch (e) {
-                console.warn('Failed to save media manager state:', e);
-            }
+            // State persistence to localStorage is disabled
         }
 
         restoreState() {
             try {
-                const savedState = localStorage.getItem('mediaManagerState');
-                if (savedState) {
-                    const parsedState = JSON.parse(savedState);
-
-                    // Restore template
-                    if (parsedState.currentTemplate) {
-                        this.state.currentTemplate = parsedState.currentTemplate;
-                        const radio = document.querySelector(`input[value="${parsedState.currentTemplate}"]`);
-                        if (radio) radio.checked = true;
-                    }
-
-                    // Restore language
-                    if (parsedState.currentLanguage) {
-                        this.state.currentLanguage = parsedState.currentLanguage;
-                    }
-
-                    // Restore media selections
-                    if (parsedState.selectedMedia) {
-                        this.state.selectedMedia = parsedState.selectedMedia;
-
-                        // Update UI for all fields
-                        Object.keys(this.state.selectedMedia).forEach(fieldName => {
-                            if (fieldName.endsWith('_assets')) {
-                                this.updateAssetsGrid(fieldName);
-                            } else {
-                                this.updateFieldPreview(fieldName);
-                            }
-                        });
-                    }
-
-                    // Update UI texts
-                    this.updateUITexts();
-
-                    // Highlight required fields after restoration
-                    setTimeout(() => this.highlightRequiredFields(), 100);
-                } else {
-                    // Highlight required fields for initial template
-                    setTimeout(() => this.highlightRequiredFields(), 100);
-                }
+                // Highlight required fields for initial template
+                setTimeout(() => this.highlightRequiredFields(), 100);
             } catch (e) {
-                console.warn('Failed to restore media manager state:', e);
-                // Highlight required fields even if restoration fails
+                console.warn('Failed to initialize media manager state:', e);
+                // Highlight required fields even if initialization fails
                 setTimeout(() => this.highlightRequiredFields(), 100);
             }
         }
 
         clearState() {
-            try {
-                localStorage.removeItem('mediaManagerState');
-            } catch (e) {
-                console.warn('Failed to clear media manager state:', e);
-            }
+            // State cleanup is disabled (no localStorage to clean)
         }
 
         /* ================== URL HELPERS ================== */
@@ -548,7 +494,6 @@
                class="form-control caption-input" 
                id="caption" 
                name="caption" 
-               required
                placeholder="${placeholderText}"
                value="${this.state.selectedMedia.caption || ''}"
                oninput="mediaTabManager.updateCaption(this.value)">
