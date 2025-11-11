@@ -64,6 +64,7 @@ class UserSeeder extends Seeder
         $permissions = [
             'dashboard_access',
             'content_access',
+            'publish_content',
             'media_access',
             'content_management_access',
             'sections_access',

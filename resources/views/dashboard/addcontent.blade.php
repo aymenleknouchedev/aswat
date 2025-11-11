@@ -1211,12 +1211,12 @@
 
                         {{-- ===== SUBMIT BUTTONS ===== --}}
                         <div class="mt-4 d-flex">
-                            <button name="status" value="published" type="submit" class="btn btn-primary btn-lg me-3"
-                                data-ar="نشر" data-en="Publish" id="publishButton">نشر</button>
-                            <button name="status" value="draft" type="submit" class="btn btn-primary btn-lg me-3"
-                                data-ar="حفظ" data-en="Save as Draft">حفظ</button>
-                            <button name="status" value="preview" type="submit" class="btn btn-primary btn-lg"
-                                style="margin-left: 10px; color: white;" data-ar="حفظ وعرض" data-en="Save and Show">حفظ
+                            <button type="submit" class="btn btn-primary btn-lg me-3"
+                                data-ar="نشر" data-en="Publish" id="publishButton" onclick="setStatus(this, 'published')">نشر</button>
+                            <button type="submit" class="btn btn-primary btn-lg me-3"
+                                data-ar="حفظ" data-en="Save as Draft" onclick="setStatus(this, 'draft')">حفظ</button>
+                            <button type="submit" class="btn btn-primary btn-lg"
+                                style="margin-left: 10px; color: white;" data-ar="حفظ وعرض" data-en="Save and Show" onclick="setStatus(this, 'preview')">حفظ
                                 وعرض</button>
                         </div>
                     </div>
@@ -2539,6 +2539,20 @@
                 .substring(0, 255);
         }
 
+        // ========== SET STATUS FUNCTION ==========
+        function setStatus(button, statusValue) {
+            // Create or update hidden input for status
+            let statusInput = document.getElementById('status_hidden_input');
+            if (!statusInput) {
+                statusInput = document.createElement('input');
+                statusInput.type = 'hidden';
+                statusInput.id = 'status_hidden_input';
+                statusInput.name = 'status';
+                document.getElementById('contentForm').appendChild(statusInput);
+            }
+            statusInput.value = statusValue;
+        }
+
         // ========== ADD WRITER LOCATION (CITY) FUNCTION ==========
         async function addNewWriterLocation(e) {
             if (e && e.preventDefault) e.preventDefault();
@@ -2668,6 +2682,48 @@
                 slugInput.addEventListener('input', () => {
                     slugInput.dataset.touched = '1';
                 });
+            }
+
+            // ========== SCHEDULE PUBLISHING VALIDATION ==========
+            const publishAtInput = document.getElementById('publish_at');
+            const contentForm = document.getElementById('contentForm');
+
+            if (publishAtInput && contentForm) {
+                // Intercept form submission to validate schedule time
+                contentForm.addEventListener('submit', function(e) {
+                    const statusButton = document.activeElement;
+                    const status = statusButton?.value || 'published';
+
+                    // Only validate if publishing
+                    if (status !== 'published') {
+                        return;
+                    }
+
+                    const publishAtValue = publishAtInput.value.trim();
+
+                    // If schedule time is provided, validate it
+                    if (publishAtValue) {
+                        // Convert datetime-local to Date object
+                        const scheduledDate = new Date(publishAtValue);
+                        const now = new Date();
+
+                        if (scheduledDate <= now) {
+                            e.preventDefault();
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'تاريخ غير صحيح',
+                                text: 'تاريخ النشر المجدول يجب أن يكون في المستقبل',
+                                confirmButtonText: 'حسناً'
+                            });
+                            return;
+                        }
+                    }
+                });
+
+                // Set minimum date to now
+                const now = new Date();
+                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+                publishAtInput.min = now.toISOString().slice(0, 16);
             }
         });
     </script>

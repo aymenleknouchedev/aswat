@@ -23,12 +23,23 @@ class PublishContent implements ShouldQueue
 
     /**
      * Execute the job.
+     * 
+     * This job publishes scheduled content.
+     * It preserves the originally scheduled published_at time
+     * instead of overwriting it with the current time.
      */
     public function handle(): void
     {
         $content = Content::findOrFail($this->contentId);
+        
+        // Only publish if still in scheduled status
+        if ($content->status !== 'scheduled') {
+            return;
+        }
+        
+        // Update status to published, preserving the scheduled time
         $content->status = 'published';
-        $content->published_at = now();
+        // Note: Do NOT overwrite published_at - keep the originally scheduled time
         $content->save();
     }
 }

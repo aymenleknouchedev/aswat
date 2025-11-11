@@ -465,28 +465,11 @@ class ContentController extends BaseController
         // =========================================
         // 8) Publication / Programmation
         // =========================================
-        if ($request->filled('published_at')) {
-            $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
 
-            if ($scheduledTime->gt(now('Africa/Algiers'))) {
-                $content->status       = 'scheduled';
-                $content->published_at = $scheduledTime;
-                $content->save();
-
-                $delayInSeconds = now('Africa/Algiers')->diffInSeconds($scheduledTime, false);
-                if ($delayInSeconds < 0) $delayInSeconds = 0;
-
-                \App\Jobs\PublishContent::dispatch($content->id)->delay(now()->addSeconds($delayInSeconds));
-            } else {
-                $content->status       = 'published';
-                $content->published_at = $scheduledTime;
-                $content->save();
-            }
-        } elseif ($isPreview) {
-            // On a inséré 'draft' mais on reste en parcours preview (non publié)
+        if ($isPreview === true) {
+            $content->status = 'draft';
             $content->published_at = null;
             $content->save();
-
             return redirect()
                 ->route('dashboard.content.edit', $content->id)
                 ->with('success', 'Content created successfully in preview mode.')
@@ -495,25 +478,32 @@ class ContentController extends BaseController
             $content->status = 'draft';
             $content->published_at = null;
             $content->save();
-
-            return redirect()
-                ->route('dashboard.contents.index')
-                ->with('success', 'Content created successfully.')
-                ->with('clear_local_storage', true);
         } elseif ($request->input('status') === 'published') {
-            $content->status = 'published';
-            $content->published_at = now('Africa/Algiers');
-            $content->save();
+            if ($request->filled('published_at')) {
+                $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
 
-            return redirect()
-                ->route('dashboard.contents.index')
-                ->with('success', 'Content created successfully.')
-                ->with('clear_local_storage', true);
+                if ($scheduledTime->gt(now('Africa/Algiers'))) {
+                    $content->status       = 'scheduled';
+                    $content->published_at = $scheduledTime;
+                    $content->save();
+
+                    $delayInSeconds = now('Africa/Algiers')->diffInSeconds($scheduledTime, false);
+                    if ($delayInSeconds < 0) $delayInSeconds = 0;
+
+                    \App\Jobs\PublishContent::dispatch($content->id)->delay(now()->addSeconds($delayInSeconds));
+                } else {
+                    $content->status       = 'published';
+                    $content->published_at = $scheduledTime;
+                    $content->save();
+                }
+            } else {
+                $content->status = 'published';
+                $content->save();
+            }
         }
 
-        // fallback
         return redirect()
-            ->back()
+            ->route('dashboard.contents.index')
             ->with('success', 'Content created successfully.')
             ->with('clear_local_storage', true);
     }

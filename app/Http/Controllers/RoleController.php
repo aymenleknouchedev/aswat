@@ -55,10 +55,8 @@ class RoleController extends BaseController
     public function create()
     {
         try {
-            $ttl = config('cache_ttl.permissions', 3600);
-            $permissions = CacheService::remember(CacheKeys::PERMISSIONS, function () {
-                return Permission::all();
-            }, $ttl);
+            $permissions = Permission::all();
+            
             return view('dashboard.addrole', compact('permissions'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'حدث خطأ أثناء جلب الصلاحيات.');

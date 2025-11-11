@@ -86,8 +86,7 @@
                             </li>
                             <li class="nk-menu-item">
                                 <a href="{{ route('dashboard.principal_trend') }}" class="nk-menu-link">
-                                    <span class="nk-menu-text" data-en="Manage Trend"
-                                        data-ar="إدارة الترند">
+                                    <span class="nk-menu-text" data-en="Manage Trend" data-ar="إدارة الترند">
                                         إدارة الترند
                                     </span>
                                 </a>
@@ -329,7 +328,7 @@
                             </li>
 
                             <!-- Permissions -->
-                            {{-- <li class="nk-menu-item">
+                            <li class="nk-menu-item">
                                 <a href="{{ route('dashboard.permissions.index') }}" class="nk-menu-link">
                                     <span class="nk-menu-text" data-en="All Permissions" data-ar="كل الصلاحيات">All
                                         Permissions</span>
@@ -340,7 +339,7 @@
                                     <span class="nk-menu-text" data-en="Add Permission" data-ar="إضافة صلاحية">Add
                                         Permission</span>
                                 </a>
-                            </li> --}}
+                            </li>
                         </ul>
                     </li>
                     @endcanDo
