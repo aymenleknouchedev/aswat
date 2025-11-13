@@ -571,6 +571,47 @@
         .text-muted {
             color: var(--bs-secondary-color) !important;
         }
+
+        /* ===== INPUT TYPOGRAPHY OVERRIDES ===== */
+        input.form-control,
+        textarea.form-control,
+        select.form-control,
+        .search-input,
+        .writer-role-input,
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="datetime-local"] {
+            font-size: 18pt !important;
+            font-family: Arial, sans-serif !important;
+        }
+
+        /* Hide all placeholder texts globally */
+        ::-webkit-input-placeholder {
+            /* Chrome/Opera/Safari */
+            color: transparent !important;
+        }
+
+        ::-moz-placeholder {
+            /* Firefox 19+ */
+            color: transparent !important;
+            opacity: 1 !important;
+        }
+
+        :-ms-input-placeholder {
+            /* IE 10+ */
+            color: transparent !important;
+        }
+
+        ::-ms-input-placeholder {
+            /* Microsoft Edge */
+            color: transparent !important;
+        }
+
+        ::placeholder {
+            /* Standard modern browsers */
+            color: transparent !important;
+        }
     </style>
 
     <div class="nk-app-root">
@@ -967,8 +1008,7 @@
                                                                             class="writer-name">{{ $writerById[$wid]->name }}</span>
                                                                         <input type="text" class="writer-role-input"
                                                                             name="writers[{{ $wid }}][role]"
-                                                                            value="{{ $role }}"
-                                                                            placeholder="الدور (مثل: كاتب رئيسي, محرر, ...)">
+                                                                            value="{{ $role }}">
                                                                     </div>
                                                                     <button type="button" class="writer-delete"
                                                                         onclick="removeWriterItem(this, '{{ $wid }}')">×</button>
@@ -1129,7 +1169,7 @@
                                         data-en="Summary">الملخص</label>
                                     <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
-                                        <textarea  id="summary" name="summary" class="form-control form-control" rows="3"
+                                        <textarea id="summary" name="summary" class="form-control form-control" rows="3"
                                             style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130">{{ old('summary', '') }}</textarea>
                                     </div>
                                     <small class="text-muted"><span id="summary-count">0</span> / 130</small>
@@ -1151,11 +1191,11 @@
                                         data-en="SEO Keyword">الكلمة الرئيسية</label>
                                     <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
-                                        <input  id="seo_keyword" name="seo_keyword" type="text"
+                                        <input id="seo_keyword" name="seo_keyword" type="text"
                                             class="form-control form-control" maxlength="50"
                                             value="{{ old('seo_keyword', '') }}">
                                     </div>
-                                </div>                             
+                                </div>
                             </div>
 
 
@@ -1211,12 +1251,13 @@
 
                         {{-- ===== SUBMIT BUTTONS ===== --}}
                         <div class="mt-4 d-flex">
-                            <button type="submit" class="btn btn-primary btn-lg me-3"
-                                data-ar="نشر" data-en="Publish" id="publishButton" onclick="setStatus(this, 'published')">نشر</button>
-                            <button type="submit" class="btn btn-primary btn-lg me-3"
-                                data-ar="حفظ" data-en="Save as Draft" onclick="setStatus(this, 'draft')">حفظ</button>
+                            <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر" data-en="Publish"
+                                id="publishButton" onclick="setStatus(this, 'published')">نشر</button>
+                            <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="حفظ"
+                                data-en="Save as Draft" onclick="setStatus(this, 'draft')">حفظ</button>
                             <button type="submit" class="btn btn-primary btn-lg"
-                                style="margin-left: 10px; color: white;" data-ar="حفظ وعرض" data-en="Save and Show" onclick="setStatus(this, 'preview')">حفظ
+                                style="margin-left: 10px; color: white;" data-ar="حفظ وعرض" data-en="Save and Show"
+                                onclick="setStatus(this, 'preview')">حفظ
                                 وعرض</button>
                         </div>
                     </div>
@@ -1235,7 +1276,9 @@
                                         class="form-control" value="{{ old('published_at') }}"
                                         onclick="this.showPicker && this.showPicker()"
                                         onfocus="this.showPicker && this.showPicker()">
-                                    <small class="text-muted d-block mt-1" data-ar="إن اخترت تاريخًا في الماضي سيتم النشر مباشرة، وإن كان في المستقبل سيتم الجدولة تلقائيًا" data-en="If you pick a past date it will publish immediately; if it’s in the future it will be scheduled automatically"></small>
+                                    <small class="text-muted d-block mt-1"
+                                        data-ar="إن اخترت تاريخًا في الماضي سيتم النشر مباشرة، وإن كان في المستقبل سيتم الجدولة تلقائيًا"
+                                        data-en="If you pick a past date it will publish immediately; if it’s in the future it will be scheduled automatically"></small>
                                 </div>
 
                                 {{-- LATEST NEWS CHECKBOX --}}
@@ -1319,8 +1362,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="category_slug" class="form-label">الرابط المختصر</label>
-                            <input type="text" class="form-control" id="category_slug" name="slug"
-                                placeholder="مثال: politics" required>
+                            <input type="text" class="form-control" id="category_slug" name="slug" required>
                         </div>
                     </form>
                 </div>
@@ -1349,8 +1391,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="writer_slug" class="form-label">الرابط المختصر (Slug)</label>
-                            <input type="text" class="form-control" id="writer_slug" name="slug"
-                                placeholder="مثال: naji-benz" required>
+                            <input type="text" class="form-control" id="writer_slug" name="slug" required>
                             <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
@@ -1371,20 +1412,16 @@
                             <label class="form-label">روابط السوشيال (اختياري)</label>
                             <div class="row g-2">
                                 <div class="col-md-6">
-                                    <input type="url" class="form-control" id="writer_facebook" name="facebook"
-                                        placeholder="https://facebook.com/username">
+                                    <input type="url" class="form-control" id="writer_facebook" name="facebook">
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="url" class="form-control" id="writer_x" name="x"
-                                        placeholder="https://x.com/username">
+                                    <input type="url" class="form-control" id="writer_x" name="x">
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="url" class="form-control" id="writer_instagram" name="instagram"
-                                        placeholder="https://instagram.com/username">
+                                    <input type="url" class="form-control" id="writer_instagram" name="instagram">
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="url" class="form-control" id="writer_linkedin" name="linkedin"
-                                        placeholder="https://linkedin.com/in/username">
+                                    <input type="url" class="form-control" id="writer_linkedin" name="linkedin">
                                 </div>
                             </div>
                         </div>
@@ -1445,8 +1482,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="trend_slug" class="form-label">الرابط المختصر (Slug)</label>
-                            <input type="text" class="form-control" id="trend_slug" name="slug"
-                                placeholder="مثال: world-cup-2026" required>
+                            <input type="text" class="form-control" id="trend_slug" name="slug" required>
                             <div class="form-text">يُولَّد تلقائيًا من العنوان ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
@@ -1724,8 +1760,7 @@
                 <div class="writer-info">
                     <span class="writer-name">${name}</span>
                     <input type="text" class="writer-role-input" 
-                        name="writers[${id}][role]" 
-                        placeholder="الدور (مثل: كاتب رئيسي, محرر, ...)">
+                        name="writers[${id}][role]">
                 </div>
                 <button type="button" class="writer-delete" onclick="removeWriterItem(this, '${id}')">×</button>
             `;

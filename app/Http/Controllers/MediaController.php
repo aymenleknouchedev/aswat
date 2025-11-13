@@ -27,7 +27,7 @@ class MediaController extends BaseController
     public function index(Request $request)
     {
         try {
-            $pagination = config('pagination.per10', 10);
+            $pagination = config('pagination.per12', 12);
 
             $query = ContentMedia::with('contents');
 
@@ -456,7 +456,7 @@ class MediaController extends BaseController
     public function getAllMediaPaginated(Request $request)
     {
         try {
-            $pagination = config('pagination.per10', 10);
+            $pagination = config('pagination.per12', 12);
 
             $query = ContentMedia::query();
 

@@ -2,8 +2,8 @@
 <div class="tab-pane" id="social-media" role="tabpanel" aria-labelledby="social-media-tab">
     <div class="social-media-tab-content">
         <div class="row g-3 mt-3">
-            <!-- Content Image -->
-            <div class="col-md-6">
+            <!-- Content Image (full width) -->
+            <div class="col-12">
                 <div class="card h-100">
                     <div class="card-header">
                         <h6 class="card-title mb-0">الصورة</h6>
@@ -49,19 +49,30 @@
                 </div>
             </div>
 
-            <!-- Share Content -->
-            <div class="col-md-6">
+            <!-- Share Title (full width) -->
+            <div class="col-12">
                 <div class="card h-100">
                     <div class="card-header">
-                        <h6 class="card-title mb-0">محتوى المشاركة</h6>
+                        <h6 class="card-title mb-0">العنوان</h6>
                     </div>
                     <div class="card-body">
-                        <div class="mb-3">
+                        <div class="mb-0">
                             <label for="share_title" class="form-label">العنوان</label>
                             <input type="text" id="share_title" name="share_title" class="form-control"
                                 value="{{ old('share_title', '') }}" placeholder="أدخل عنوان المشاركة" maxlength="100"
                                 oninput="updatePreview()">
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Share Description (full width) -->
+            <div class="col-12">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h6 class="card-title mb-0">الوصف</h6>
+                    </div>
+                    <div class="card-body">
                         <div class="mb-0">
                             <label for="share_description" class="form-label">الوصف</label>
                             <textarea id="share_description" name="share_description" class="form-control" rows="4"

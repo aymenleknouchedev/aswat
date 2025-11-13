@@ -509,7 +509,7 @@
     <div class="social-media-tab-content">
         <div class="row g-3 mt-3">
             {{-- Content Image --}}
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="card h-100">
                     <div class="card-header">
                         <h6 class="card-title mb-0">الصورة</h6>
@@ -560,7 +560,7 @@
             </div>
 
             {{-- Share Content --}}
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="card h-100">
                     <div class="card-header">
                         <h6 class="card-title mb-0">محتوى المشاركة</h6>

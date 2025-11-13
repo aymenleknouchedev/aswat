@@ -2,6 +2,7 @@
 
 return [
     'per10' => 10, // 10 items per page
+    'per12' => 12, // 12 items per page
     'per15' => 15, // 15 items per page
     'per20' => 20, // 20 items per page
     'per25' => 25, // 25 items per page

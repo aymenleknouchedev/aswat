@@ -895,9 +895,10 @@
         font-weight: 600;
     }
 
+    /* Force single-column layout for all media fields */
     .fields-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+        display: flex;
+        flex-direction: column;
         gap: 10px;
     }
 

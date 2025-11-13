@@ -474,8 +474,10 @@
             const label = this.state.currentLanguage === 'ar' ? labelAr : labelEn;
             const media = this.state.selectedMedia[fieldName];
             return `
-      <div class="field-card">
+      <div class="field-card field-card--full">
         <label class="field-label" data-ar="${labelAr}" data-en="${labelEn}">${label}</label>
+      </div>
+      <div class="field-card">
         <div class="field-preview" id="${fieldName}_preview">
           ${media ? this.getMediaPreview(media, fieldName) : this.getEmptyState(fieldName, icon, type)}
         </div>
@@ -1290,9 +1292,10 @@
         font-weight: 600;
     }
 
+    /* Changed from CSS Grid to flex column: each field now spans full width */
     .fields-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+        display: flex;
+        flex-direction: column;
         gap: 10px;
     }
 
@@ -1543,7 +1546,7 @@
     /* Responsive */
     @media (max-width: 768px) {
         .fields-grid {
-            grid-template-columns: 1fr;
+            flex-direction: column;
         }
 
         .media-type-selector .d-flex {

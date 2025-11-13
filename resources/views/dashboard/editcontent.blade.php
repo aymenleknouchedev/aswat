@@ -151,6 +151,42 @@
             color: var(--bs-secondary-color);
         }
 
+        /* ===== INPUT TYPOGRAPHY OVERRIDES ===== */
+        input.form-control,
+        textarea.form-control,
+        select.form-control,
+        .search-input,
+        .writer-role-input,
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="datetime-local"] {
+            font-size: 18pt !important;
+            font-family: Arial, sans-serif !important;
+        }
+
+        /* Hide all placeholder texts globally */
+        ::-webkit-input-placeholder {
+            color: transparent !important;
+        }
+
+        ::-moz-placeholder {
+            color: transparent !important;
+            opacity: 1 !important;
+        }
+
+        :-ms-input-placeholder {
+            color: transparent !important;
+        }
+
+        ::-ms-input-placeholder {
+            color: transparent !important;
+        }
+
+        ::placeholder {
+            color: transparent !important;
+        }
+
         /* ===== SEARCH inDROPDOWN STYLES ===== */
         .search-container {
             position: relative;
@@ -1021,8 +1057,7 @@
                                                                             class="writer-name">{{ $writerById[$wid]->name }}</span>
                                                                         <input type="text" class="writer-role-input"
                                                                             name="writers[{{ $wid }}][role]"
-                                                                            value="{{ $role }}"
-                                                                            placeholder="الدور (مثل: كاتب رئيسي, محرر, ...)">
+                                                                            value="{{ $role }}">
                                                                     </div>
                                                                     <button type="button" class="writer-delete"
                                                                         onclick="removeWriterItem(this, '{{ $wid }}')">×</button>
@@ -1183,17 +1218,7 @@
                                     </div>
                                 </div>
 
-                                {{-- ===== SEO KEYWORD FIELD ===== --}}
-                                <div class="form-group col-12 mb-3">
-                                    <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
-                                        data-en="SEO Keyword">الكلمة الرئيسية</label>
-                                    <span style="color:var(--bs-danger);">*</span>
-                                    <div class="form-control-wrap">
-                                        <input required id="seo_keyword" name="seo_keyword" type="text"
-                                            class="form-control form-control" maxlength="50"
-                                            value="{{ old('seo_keyword', $content->seo_keyword) }}">
-                                    </div>
-                                </div>
+
 
                                 {{-- ===== SUMMARY FIELD ===== --}}
                                 <div class="form-group col-12 my-3">
@@ -1216,6 +1241,18 @@
                                     <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <x-forms.tinymce-editor id="myeditorinstance" :value="old('content', $content->content ?? '')" name="content" />
+                                    </div>
+                                </div>
+
+                                {{-- ===== SEO KEYWORD FIELD ===== --}}
+                                <div class="form-group col-12 mb-3">
+                                    <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
+                                        data-en="SEO Keyword">الكلمة الرئيسية</label>
+                                    <span style="color:var(--bs-danger);">*</span>
+                                    <div class="form-control-wrap">
+                                        <input required id="seo_keyword" name="seo_keyword" type="text"
+                                            class="form-control form-control" maxlength="50"
+                                            value="{{ old('seo_keyword', $content->seo_keyword) }}">
                                     </div>
                                 </div>
                             </div>
@@ -1279,7 +1316,8 @@
                                     onclick="setStatus(this, 'published')">نشر</button>
                             @else
                                 <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="حفظ و إلغاء النشر"
-                                    data-en="save and draft" id="publishButton" data-action="publish" onclick="setStatus(this, 'draft')">حفظ و إلغاء النشر</button>
+                                    data-en="save and draft" id="publishButton" data-action="publish"
+                                    onclick="setStatus(this, 'draft')">حفظ و إلغاء النشر</button>
                             @endif
                             @endcanDo
 
@@ -1317,8 +1355,6 @@
 
 
                                 @if ($content->status === 'published' || $content->status === 'scheduled')
-                                
-                                
                                 @else
                                     {{-- SCHEDULE PUBLISH --}}
                                     <div class="mb-3">
@@ -1399,8 +1435,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="category_slug" class="form-label">الرابط المختصر</label>
-                            <input type="text" class="form-control" id="category_slug" name="slug"
-                                placeholder="مثال: politics" required>
+                            <input type="text" class="form-control" id="category_slug" name="slug" required>
                         </div>
                     </form>
                 </div>
@@ -1429,8 +1464,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="writer_slug" class="form-label">الرابط المختصر (Slug)</label>
-                            <input type="text" class="form-control" id="writer_slug" name="slug"
-                                placeholder="مثال: naji-benz" required>
+                            <input type="text" class="form-control" id="writer_slug" name="slug" required>
                             <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
@@ -1451,20 +1485,16 @@
                             <label class="form-label">روابط السوشيال (اختياري)</label>
                             <div class="row g-2">
                                 <div class="col-md-6">
-                                    <input type="url" class="form-control" id="writer_facebook" name="facebook"
-                                        placeholder="https://facebook.com/username">
+                                    <input type="url" class="form-control" id="writer_facebook" name="facebook">
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="url" class="form-control" id="writer_x" name="x"
-                                        placeholder="https://x.com/username">
+                                    <input type="url" class="form-control" id="writer_x" name="x">
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="url" class="form-control" id="writer_instagram" name="instagram"
-                                        placeholder="https://instagram.com/username">
+                                    <input type="url" class="form-control" id="writer_instagram" name="instagram">
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="url" class="form-control" id="writer_linkedin" name="linkedin"
-                                        placeholder="https://linkedin.com/in/username">
+                                    <input type="url" class="form-control" id="writer_linkedin" name="linkedin">
                                 </div>
                             </div>
                         </div>
@@ -1525,8 +1555,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="trend_slug" class="form-label">الرابط المختصر (Slug)</label>
-                            <input type="text" class="form-control" id="trend_slug" name="slug"
-                                placeholder="مثال: world-cup-2026" required>
+                            <input type="text" class="form-control" id="trend_slug" name="slug" required>
                             <div class="form-text">يُولَّد تلقائيًا من العنوان ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
@@ -1806,8 +1835,7 @@
                 <div class="writer-info">
                     <span class="writer-name">${name}</span>
                     <input type="text" class="writer-role-input" 
-                        name="writers[${id}][role]" 
-                        placeholder="الدور (مثل: كاتب رئيسي, محرر, ...)">
+                        name="writers[${id}][role]">
                 </div>
                 <button type="button" class="writer-delete" onclick="removeWriterItem(this, '${id}')">×</button>
             `;
@@ -1944,10 +1972,10 @@
 
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                
+
                 // Check if clicked button is the "update" button
                 const isUpdateAction = clickedButton && clickedButton.dataset.action === 'update';
-                
+
                 let isValid = true;
                 const errorMessages = [];
 
@@ -2844,7 +2872,7 @@
                     });
 
                     console.log('Success response:', data);
-                    
+
                     // Optional: Redirect after success if provided
                     if (data.redirect) {
                         setTimeout(() => {
@@ -2854,12 +2882,13 @@
                 } else {
                     // Error handling
                     let errorMessage = 'حدث خطأ أثناء حفظ المحتوى';
-                    
+
                     if (response.status === 422) {
                         // Validation errors
                         if (data.errors) {
                             errorMessage = Object.entries(data.errors)
-                                .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
+                                .map(([field, errors]) =>
+                                    `${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
                                 .join('\n');
                         } else if (data.message) {
                             errorMessage = data.message;
@@ -2885,7 +2914,7 @@
                 }
             } catch (error) {
                 console.error('AJAX Error:', error);
-                
+
                 // Reset button states on error
                 const submitButtons = form.querySelectorAll('button[type="submit"]');
                 submitButtons.forEach(btn => {
