@@ -192,6 +192,9 @@ let textIndex2 = 0;
 let charIndex2 = 0;
 const speed2 = 20;
 
+// Add cursor pointer style
+element2.style.cursor = 'pointer';
+
 function typeWriter2() {
     if (charIndex2 < texts2[textIndex2].length) {
         element2.textContent += texts2[textIndex2].charAt(charIndex2++);
@@ -205,6 +208,15 @@ function typeWriter2() {
         }, 3000);
     }
 }
+
+// Add click event to latest news text
+element2.addEventListener('click', () => {
+    if (texts2.length > 0) {
+        const currentText = texts2[textIndex2];
+        const encodedTitle = encodeURIComponent(currentText);
+        window.location.href = `/news/${encodedTitle}`;
+    }
+});
 
 fetch('/api/latest-news')
     .then(response => response.json())
