@@ -1,3 +1,18 @@
+<style>
+    /* Ensure taller cards without changing preview image height */
+    .media-card.media-card--tall {
+        display: flex;
+    }
+    .media-card .card-inner {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .media-card .media-actions {
+        margin-top: auto;
+    }
+</style>
+
 @if ($medias->isEmpty())
     <div class="col-12">
         <div class="empty-state">
@@ -16,7 +31,7 @@
 @else
     @foreach ($medias as $media)
         <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-            <div class="card media-card">
+            <div class="card media-card media-card--tall">
                 <div class="card-inner">
                     <!-- Media Preview with 16:9 Ratio (Clickable) -->
                     <div class="media-preview-container preview-media" role="button" tabindex="0" style="cursor: pointer;"
@@ -71,6 +86,10 @@
                     <div class="media-info my-2">
                         <h6 class="media-name">{{ \Illuminate\Support\Str::limit($media->name, 30) }}</h6>
                         <p class="media-alt">{{ $media->alt ?: 'لا يوجد نص بديل' }}</p>
+                        <div class="media-date text-muted" style="font-size: 0.8rem; display:flex; align-items:center; gap:.35rem;">
+                            <em class="icon ni ni-calendar"></em>
+                            <span>تاريخ الإضافة: {{ optional($media->created_at)->format('Y-m-d H:i') }}</span>
+                        </div>
                     </div>
 
                     <!-- Media Actions -->
