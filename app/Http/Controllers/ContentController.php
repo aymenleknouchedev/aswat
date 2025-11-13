@@ -251,7 +251,6 @@ class ContentController extends BaseController
             'share_description'   => 'nullable|string',
             'review_description'  => 'nullable|string',
             'created_at'          => 'nullable|date',
-            'created_at_by_admin' => 'nullable|date',
             'caption'             => 'required|string|max:255',
 
             // Programmation
@@ -471,18 +470,20 @@ class ContentController extends BaseController
             $content->published_at = null;
             $content->save();
             return redirect()
-                ->route('dashboard.content.edit', $content->id)
-                ->with('success', 'Content created successfully in preview mode.')
-                ->with('clear_local_storage', true);
+                ->route('dashboard.content.edit', ['id' => $content->id])
+                ->with('success');
         } elseif ($request->input('status') === 'draft') {
+            // Draft: no publication, clear published_at
             $content->status = 'draft';
             $content->published_at = null;
             $content->save();
         } elseif ($request->input('status') === 'published') {
+            // Check if scheduled publish time is provided
             if ($request->filled('published_at')) {
                 $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
 
                 if ($scheduledTime->gt(now('Africa/Algiers'))) {
+                    // Future time: schedule for later
                     $content->status       = 'scheduled';
                     $content->published_at = $scheduledTime;
                     $content->save();
@@ -492,12 +493,15 @@ class ContentController extends BaseController
 
                     \App\Jobs\PublishContent::dispatch($content->id)->delay(now()->addSeconds($delayInSeconds));
                 } else {
+                    // Past time: publish immediately with that timestamp
                     $content->status       = 'published';
                     $content->published_at = $scheduledTime;
                     $content->save();
                 }
             } else {
-                $content->status = 'published';
+                // No scheduled time: publish immediately with current time
+                $content->status       = 'published';
+                $content->published_at = now('Africa/Algiers');
                 $content->save();
             }
         }
@@ -889,21 +893,13 @@ class ContentController extends BaseController
 
             'review_description'  => 'nullable|string',
             'created_at'          => 'nullable|date',
-            'created_at_by_admin' => 'nullable|date',
 
             // Programmation
             'published_at'        => 'nullable|date',
-            'status'              => 'nullable|in:published,draft,scheduled,preview',
+            'status'              => 'nullable|in:published,draft,scheduled',
             'is_latest'           => 'nullable|boolean',
             'importance'          => 'nullable|integer|min:0|max:10',
         ];
-
-        // Mode preview spécial
-        $preview = false;
-        if ($request->input('status') === 'preview') {
-            $request->merge(['status' => 'draft']);
-            $preview = true;
-        }
 
         // items pour display_method list/file (URLs, pas fichiers)
         if (in_array($request->input('display_method'), ['list', 'file'], true)) {
@@ -1118,64 +1114,72 @@ class ContentController extends BaseController
                 }
             }
 
-            // ========= 9) Publication / Programmation =========
-            if ($request->filled('published_at')) {
-                $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
+            if ($request->input('status') === 'draft') {
+                // Draft: no publication, clear published_at
+                // Also delete any pending scheduled jobs
+                \Illuminate\Support\Facades\DB::table('jobs')
+                    ->where('payload', 'LIKE', '%"contentId":' . $content->id . '%')
+                    ->delete();
 
-                if ($scheduledTime->gt(now('Africa/Algiers'))) {
-                    $content->status       = 'scheduled';
-                    $content->published_at = $scheduledTime;
-                    $content->save();
-
-                    $delayInSeconds = now('Africa/Algiers')->diffInSeconds($scheduledTime, false);
-                    if ($delayInSeconds < 0) $delayInSeconds = 0;
-
-                    \App\Jobs\PublishContent::dispatch($content->id)->delay(now()->addSeconds($delayInSeconds));
-                } else {
-                    $content->status       = 'published';
-                    $content->published_at = $scheduledTime;
-                    $content->save();
-                }
-            } elseif ($request->filled('status') && $request->status === 'draft') {
                 $content->status = 'draft';
                 $content->published_at = null;
-                $content->save();
+                $content->update();
+            } elseif (in_array($request->input('status'), ['published', 'scheduled'], true)) {
+                // ========= 9) Publication / Re-Scheduling Logic =========
+                // Always re-evaluate the desired published_at when user submits publish/schedule.
+                $newPublishedAtProvided = $request->filled('published_at');
+                $prevPublishedAt        = $content->published_at ? \Carbon\Carbon::parse($content->published_at, 'Africa/Algiers') : null;
 
-                \Illuminate\Support\Facades\DB::commit();
+                if ($newPublishedAtProvided) {
+                    $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
+                    if ($scheduledTime->gt(now('Africa/Algiers'))) {
+                        // Future time -> schedule (or reschedule) job
+                        // Delete any existing scheduled job for this content
+                        \Illuminate\Support\Facades\DB::table('jobs')
+                            ->where('payload', 'LIKE', '%"contentId":' . $content->id . '%')
+                            ->delete();
 
-                return redirect()
-                    ->route('dashboard.contents.index')
-                    ->with('success', 'Content updated successfully.')
-                    ->with('clear_local_storage', true);
-            } elseif ($request->filled('status') && $request->status === 'published') {
-                $content->status = 'published';
-                $content->published_at = now();
-                $content->save();
+                        // If date changed OR status changed, we re-dispatch
+                        $content->status       = 'scheduled';
+                        $content->published_at = $scheduledTime;
+                        $content->update();
 
-                \Illuminate\Support\Facades\DB::commit();
+                        $delayInSeconds = now('Africa/Algiers')->diffInSeconds($scheduledTime, false);
+                        if ($delayInSeconds < 0) $delayInSeconds = 0;
 
-                return redirect()
-                    ->route('dashboard.contents.index')
-                    ->with('success', 'Content updated successfully.')
-                    ->with('clear_local_storage', true);
-            } elseif ($request->filled('status') && $preview === true) {
-                $content->published_at = null;
-                $content->save();
+                        \App\Jobs\PublishContent::dispatch($content->id)->delay(now()->addSeconds($delayInSeconds));
+                    } else {
+                        // Past or present -> publish immediately with provided timestamp
+                        \Illuminate\Support\Facades\DB::table('jobs')
+                            ->where('payload', 'LIKE', '%"contentId":' . $content->id . '%')
+                            ->delete();
 
-                \Illuminate\Support\Facades\DB::commit();
+                        $content->status       = 'published';
+                        $content->published_at = $scheduledTime; // keep chosen past datetime
+                        $content->update();
+                    }
+                } else {
+                    // No date provided -> immediate publish now (even if user clicked schedule)
+                    \Illuminate\Support\Facades\DB::table('jobs')
+                        ->where('payload', 'LIKE', '%"contentId":' . $content->id . '%')
+                        ->delete();
 
-                return redirect()
-                    ->route('dashboard.content.edit', $content->id)
-                    ->with('success', 'Content updated successfully in preview mode.')
-                    ->with('clear_local_storage', true);
+                    $content->status       = 'published';
+                    $content->published_at = now('Africa/Algiers');
+                    $content->update();
+                }
+            } else {
+                // Preserve status and published_at if already set
+                $content->update();
             }
+
+
 
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()
                 ->route('dashboard.content.edit', $content->id)
-                ->with('success', 'Content updated successfully.')
-                ->with('clear_local_storage', true);
+                ->with('success');
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\DB::rollBack();
             report($e);

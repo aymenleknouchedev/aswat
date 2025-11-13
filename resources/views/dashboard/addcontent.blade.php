@@ -1226,14 +1226,6 @@
                         <div class="mb-3"
                             style="border: 1px solid var(--bs-border-color); border-radius: 4px; padding: 10px;">
                             <div class="card-body">
-                                {{-- CREATION DATE --}}
-                                <div class="mb-3">
-                                    <label class="form-label d-block mb-2" for="created_at_by_admin"
-                                        data-ar="تاريخ الإنشاء" data-en="Created At">تاريخ الإنشاء</label>
-                                    <input type="datetime-local" id="created_at_by_admin" name="created_at_by_admin"
-                                        class="form-control" value="{{ old('created_at_by_admin') }}">
-                                </div>
-
                                 {{-- SCHEDULE PUBLISH --}}
                                 <div class="mb-3">
                                     <label class="form-label d-block mb-2" for="publish_at">
@@ -1243,6 +1235,7 @@
                                         class="form-control" value="{{ old('published_at') }}"
                                         onclick="this.showPicker && this.showPicker()"
                                         onfocus="this.showPicker && this.showPicker()">
+                                    <small class="text-muted d-block mt-1" data-ar="إن اخترت تاريخًا في الماضي سيتم النشر مباشرة، وإن كان في المستقبل سيتم الجدولة تلقائيًا" data-en="If you pick a past date it will publish immediately; if it’s in the future it will be scheduled automatically"></small>
                                 </div>
 
                                 {{-- LATEST NEWS CHECKBOX --}}
@@ -2684,46 +2677,17 @@
                 });
             }
 
-            // ========== SCHEDULE PUBLISHING VALIDATION ==========
+            // ========== SCHEDULE PUBLISHING INFO ==========
+            // Allow selecting past dates (publish immediately) or future dates (schedule)
+            // Backend already handles this logic; no client-side blocking needed.
             const publishAtInput = document.getElementById('publish_at');
             const contentForm = document.getElementById('contentForm');
-
             if (publishAtInput && contentForm) {
-                // Intercept form submission to validate schedule time
-                contentForm.addEventListener('submit', function(e) {
-                    const statusButton = document.activeElement;
-                    const status = statusButton?.value || 'published';
-
-                    // Only validate if publishing
-                    if (status !== 'published') {
-                        return;
-                    }
-
-                    const publishAtValue = publishAtInput.value.trim();
-
-                    // If schedule time is provided, validate it
-                    if (publishAtValue) {
-                        // Convert datetime-local to Date object
-                        const scheduledDate = new Date(publishAtValue);
-                        const now = new Date();
-
-                        if (scheduledDate <= now) {
-                            e.preventDefault();
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'تاريخ غير صحيح',
-                                text: 'تاريخ النشر المجدول يجب أن يكون في المستقبل',
-                                confirmButtonText: 'حسناً'
-                            });
-                            return;
-                        }
-                    }
+                contentForm.addEventListener('submit', function() {
+                    // No validation blocking: past date means immediate publish, future means schedule.
+                    // This mirrors server-side behavior.
                 });
-
-                // Set minimum date to now
-                const now = new Date();
-                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-                publishAtInput.min = now.toISOString().slice(0, 16);
+                // Do not set a minimum; allow picking any date/time.
             }
         });
     </script>

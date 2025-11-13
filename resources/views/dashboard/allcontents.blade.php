@@ -128,7 +128,8 @@
                                                 <th></th>
                                                 <th>القسم</th>
                                                 <th>الحالة</th>
-                                                <th>التاريخ</th>
+                                                <th>تاريخ الإنشاء</th>
+                                                <th>تاريخ النشر</th>
                                                 <th>الإجراءات</th>
                                             </tr>
                                         </thead>
@@ -232,43 +233,56 @@
 
                                                     <td>
                                                         @php
-                                                            $adminRaw = $content->created_at_by_admin ?? null;
-                                                            $adminDate = null;
-                                                            if ($adminRaw instanceof \Carbon\Carbon) {
-                                                                $adminDate = $adminRaw;
-                                                            } elseif (is_string($adminRaw) && !empty($adminRaw)) {
+                                                            // Normalize created_at to Africa/Algiers timezone for display
+                                                            $createdRaw = $content->created_at;
+                                                            $createdDate = null;
+                                                            $displayTz = 'Africa/Algiers';
+                                                            if ($createdRaw instanceof \Carbon\Carbon) {
+                                                                // clone to avoid mutating original instance
+                                                                $createdDate = $createdRaw->copy()->setTimezone($displayTz);
+                                                            } elseif (is_string($createdRaw) && !empty($createdRaw)) {
                                                                 try {
-                                                                    $adminDate = \Carbon\Carbon::parse($adminRaw);
+                                                                    // Explicitly parse as app timezone (UTC) then shift
+                                                                    $createdDate = \Carbon\Carbon::parse($createdRaw, config('app.timezone', 'UTC'))
+                                                                        ->setTimezone($displayTz);
                                                                 } catch (\Exception $e) {
-                                                                    $adminDate = null;
+                                                                    $createdDate = null;
                                                                 }
                                                             }
-
-                                                            $fallbackRaw = $content->created_at ?? null;
-                                                            $fallbackDate = null;
-                                                            if ($fallbackRaw instanceof \Carbon\Carbon) {
-                                                                $fallbackDate = $fallbackRaw;
-                                                            } elseif (is_string($fallbackRaw) && !empty($fallbackRaw)) {
-                                                                try {
-                                                                    $fallbackDate = \Carbon\Carbon::parse($fallbackRaw);
-                                                                } catch (\Exception $e) {
-                                                                    $fallbackDate = null;
-                                                                }
-                                                            }
-
-                                                            $displayDate = $adminDate
-                                                                ? $adminDate->format('Y-m-d')
-                                                                : ($fallbackDate
-                                                                    ? $fallbackDate->format('Y-m-d')
-                                                                    : '');
-                                                            $displayTime = $adminDate
-                                                                ? $adminDate->format('H:i')
-                                                                : ($fallbackDate
-                                                                    ? $fallbackDate->format('H:i')
-                                                                    : '');
                                                         @endphp
-                                                        <div>{{ $displayDate }}</div>
-                                                        <small class="text-muted">{{ $displayTime }}</small>
+                                                        <div>{{ $createdDate ? $createdDate->format('Y-m-d') : '' }}</div>
+                                                        <small class="text-muted" title="UTC: {{ $content->created_at }} | TZ: {{ $displayTz }}">
+                                                            {{ $createdDate ? $createdDate->format('H:i:s') : '' }}
+                                                        </small>
+                                                    </td>
+
+                                                    <td>
+                                                        @if ($content->published_at)
+                                                            @php
+                                                                // Normalize published_at to Africa/Algiers timezone for display
+                                                                $publishedRaw = $content->published_at;
+                                                                $publishedDate = null;
+                                                                $displayTz = 'Africa/Algiers';
+                                                                if ($publishedRaw instanceof \Carbon\Carbon) {
+                                                                    $publishedDate = $publishedRaw->copy()->setTimezone($displayTz);
+                                                                } elseif (is_string($publishedRaw) && !empty($publishedRaw)) {
+                                                                    try {
+                                                                        $publishedDate = \Carbon\Carbon::parse($publishedRaw, config('app.timezone', 'UTC'))
+                                                                            ->setTimezone($displayTz);
+                                                                    } catch (\Exception $e) {
+                                                                        $publishedDate = null;
+                                                                    }
+                                                                }
+                                                            @endphp
+                                                            <div>
+                                                                {{ $publishedDate ? $publishedDate->format('Y-m-d') : '' }}
+                                                            </div>
+                                                            <small class="text-muted" title="UTC: {{ $content->published_at }} | TZ: {{ $displayTz }}">
+                                                                {{ $publishedDate ? $publishedDate->format('H:i:s') : '' }}
+                                                            </small>
+                                                        @else
+                                                            -
+                                                        @endif
                                                     </td>
 
                                                     <td>

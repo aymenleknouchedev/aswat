@@ -1270,9 +1270,21 @@
                         </div>
 
                         {{-- ===== SUBMIT BUTTONS ===== --}}
+
                         <div class="mt-4 d-flex">
-                            <button name="status" value="published" type="submit" class="btn btn-primary btn-lg me-3"
-                                data-ar="تحديث" data-en="Update" id="publishButton">تحديث</button>
+                            @canDo('publish_content')
+                            @if ($content->status === 'draft')
+                                <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر"
+                                    data-en="Publish" id="publishButton"
+                                    onclick="setStatus(this, 'published')">نشر</button>
+                            @else
+                                <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="حفظ و إلغاء النشر"
+                                    data-en="save and draft" onclick="setStatus(this, 'draft')">حفظ و إلغاء النشر</button>
+                            @endif
+                            @endcanDo
+
+                            <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="تحديث" data-en="Update"
+                                id="publishButton">تحديث</button>
 
                             <a href="{{ route('news.show', $content->title) }}" target="_blank"
                                 class="btn btn-secondary btn-lg" style="margin-left: 10px;">
@@ -1281,31 +1293,55 @@
                         </div>
                     </div>
 
+                    <script>
+                        // ========== SET STATUS FUNCTION ==========
+                        function setStatus(button, statusValue) {
+                            // Create or update hidden input for status
+                            let statusInput = document.getElementById('status_hidden_input');
+                            if (!statusInput) {
+                                statusInput = document.createElement('input');
+                                statusInput.type = 'hidden';
+                                statusInput.id = 'status_hidden_input';
+                                statusInput.name = 'status';
+                                document.getElementById('contentForm').appendChild(statusInput);
+                            }
+                            statusInput.value = statusValue;
+                        }
+                    </script>
+
                     {{-- ===== RIGHT SIDEBAR ===== --}}
                     <div class="col-md-3 mt-4">
                         <div class="mb-3"
                             style="border: 1px solid var(--bs-border-color); border-radius: 4px; padding: 10px;">
                             <div class="card-body">
-                                {{-- CREATION DATE --}}
-                                <div class="mb-3">
-                                    <label class="form-label d-block mb-2" for="created_at_by_admin"
-                                        data-ar="تاريخ الإنشاء" data-en="Created At">تاريخ الإنشاء</label>
-                                    <input type="datetime-local" id="created_at_by_admin" name="created_at_by_admin"
-                                        class="form-control"
-                                        value="{{ old('created_at_by_admin', $content->created_at_by_admin ? \Carbon\Carbon::parse($content->created_at_by_admin)->format('Y-m-d\TH:i') : '') }}">
-                                </div>
 
-                                {{-- SCHEDULE PUBLISH --}}
-                                <div class="mb-3">
-                                    <label class="form-label d-block mb-2" for="publish_at">
-                                        <span data-ar="جدولة النشر" data-en="Schedule Publish">جدولة النشر</span>
-                                    </label>
-                                    <input type="datetime-local" id="publish_at" name="published_at"
-                                        class="form-control"
-                                        value="{{ old('published_at', $content->published_at ? \Carbon\Carbon::parse($content->published_at)->format('Y-m-d\TH:i') : '') }}"
-                                        onclick="this.showPicker && this.showPicker()"
-                                        onfocus="this.showPicker && this.showPicker()">
-                                </div>
+
+                                @if ($content->status === 'published' || $content->status === 'scheduled')
+                                
+                                
+                                @else
+                                    {{-- SCHEDULE PUBLISH --}}
+                                    <div class="mb-3">
+                                        <label class="form-label d-block mb-2" for="publish_at">
+                                            <span data-ar="جدولة النشر" data-en="Schedule Publish">جدولة النشر</span>
+                                        </label>
+                                        <input type="datetime-local" id="publish_at" name="published_at"
+                                            class="form-control"
+                                            value="{{ old('published_at', $content->published_at ? \Carbon\Carbon::parse($content->published_at)->format('Y-m-d\TH:i') : '') }}"
+                                            onclick="this.showPicker && this.showPicker()"
+                                            onfocus="this.showPicker && this.showPicker()">
+                                        <small class="text-muted d-block mt-2" data-ar="اختياري: اترك فارغاً للنشر الفوري"
+                                            data-en="Optional: Leave empty for immediate publish">
+                                            اختياري: اترك فارغاً للنشر الفوري
+                                        </small>
+                                        <small class="text-muted d-block"
+                                            data-ar="المنطقة الزمنية: شمال أفريقيا/الجزائر (GMT+1)"
+                                            data-en="Timezone: Africa/Algiers (GMT+1)">
+                                            المنطقة الزمنية: شمال أفريقيا/الجزائر (GMT+1)
+                                        </small>
+                                    </div>
+                                @endif
+
 
                                 {{-- LATEST NEWS CHECKBOX --}}
                                 <div class="form-check mb-3">

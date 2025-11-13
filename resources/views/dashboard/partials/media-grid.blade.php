@@ -16,8 +16,8 @@
 @else
     @foreach ($medias as $media)
         <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-            <div class="card media-card">
-                <div class="card-inner">
+            <div class="card media-card" style="display: flex; flex-direction: column; height: auto; min-height: 400px;">
+                <div class="card-inner" style="display: flex; flex-direction: column; flex: 1;">
                     <!-- Media Preview with 16:9 Ratio (Clickable) -->
                     <div class="media-preview-container preview-media" role="button" tabindex="0" style="cursor: pointer;"
                         data-media-id="{{ $media->id }}" data-media-name="{{ $media->name }}"
@@ -68,13 +68,16 @@
                     </div>
 
                     <!-- Media Info -->
-                    <div class="media-info my-2">
+                    <div class="media-info my-2" style="flex: 1;">
                         <h6 class="media-name">{{ \Illuminate\Support\Str::limit($media->name, 30) }}</h6>
                         <p class="media-alt">{{ $media->alt ?: 'لا يوجد نص بديل' }}</p>
+                        <p class="media-date" style="font-size: 0.85rem; color: #666; margin-top: 0.75rem; margin-bottom: 0;">
+                            <strong>التاريخ:</strong> {{ $media->created_at->format('Y-m-d H:i') }}
+                        </p>
                     </div>
 
                     <!-- Media Actions -->
-                    <div class="media-actions">
+                    <div class="media-actions" style="margin-top: auto; padding-top: 1rem;">
                         <button class="btn btn-dim btn-sm btn-outline-primary btn-edit edit-media"
                             data-media-id="{{ $media->id }}" data-media-name="{{ $media->name }}"
                             data-media-alt="{{ $media->alt }}" data-media-type="{{ $media->type }}"
