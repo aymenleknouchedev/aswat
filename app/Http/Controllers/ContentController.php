@@ -1177,12 +1177,31 @@ class ContentController extends BaseController
 
             \Illuminate\Support\Facades\DB::commit();
 
+            // Check if request is AJAX
+            if ($request->expectsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest') {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'تم حفظ المحتوى بنجاح',
+                    'content_id' => $content->id,
+                    'redirect' => route('dashboard.content.edit', $content->id)
+                ], 200);
+            }
+
             return redirect()
                 ->route('dashboard.content.edit', $content->id)
                 ->with('success');
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\DB::rollBack();
             report($e);
+
+            // Check if request is AJAX
+            if ($request->expectsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'حدث خطأ أثناء حفظ المحتوى',
+                    'error' => 'An unexpected error occurred while updating the content.'
+                ], 500);
+            }
 
             return back()
                 ->withErrors(['general' => 'An unexpected error occurred while updating the content.'])

@@ -1275,16 +1275,16 @@
                             @canDo('publish_content')
                             @if ($content->status === 'draft')
                                 <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر"
-                                    data-en="Publish" id="publishButton"
+                                    data-en="Publish" id="publishButton" data-action="publish"
                                     onclick="setStatus(this, 'published')">نشر</button>
                             @else
                                 <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="حفظ و إلغاء النشر"
-                                    data-en="save and draft" onclick="setStatus(this, 'draft')">حفظ و إلغاء النشر</button>
+                                    data-en="save and draft" id="publishButton" data-action="publish" onclick="setStatus(this, 'draft')">حفظ و إلغاء النشر</button>
                             @endif
                             @endcanDo
 
                             <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="تحديث" data-en="Update"
-                                id="publishButton">تحديث</button>
+                                id="updateButton" data-action="update">تحديث</button>
 
                             <a href="{{ route('news.show', $content->title) }}" target="_blank"
                                 class="btn btn-secondary btn-lg" style="margin-left: 10px;">
@@ -1930,11 +1930,24 @@
             });
         }
 
-        // ========== FORM VALIDATION ==========
+        // ========== FORM VALIDATION AND AJAX SUBMISSION ==========
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('contentForm');
+            let clickedButton = null;
 
-            form.addEventListener('submit', function(e) {
+            // Track which button was clicked
+            form.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON' && e.target.type === 'submit') {
+                    clickedButton = e.target;
+                }
+            });
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Check if clicked button is the "update" button
+                const isUpdateAction = clickedButton && clickedButton.dataset.action === 'update';
+                
                 let isValid = true;
                 const errorMessages = [];
 
@@ -1960,9 +1973,17 @@
                 }
 
                 if (!isValid) {
-                    e.preventDefault();
                     showValidationError(errorMessages.join('<br>'));
                     scrollToFirstError();
+                    return;
+                }
+
+                // If update button was clicked, use AJAX; otherwise, submit normally
+                if (isUpdateAction) {
+                    await submitFormViaAjax(form);
+                } else {
+                    // Normal form submission for publish buttons
+                    form.submit();
                 }
             });
 
@@ -2752,6 +2773,132 @@
                 });
             }
         });
+
+        // ========== AJAX FORM SUBMISSION ==========
+        async function submitFormViaAjax(form) {
+            try {
+                // IMPORTANT: Sync TinyMCE content to textarea before submission
+                if (typeof tinymce !== 'undefined' && tinymce.get('myeditorinstance')) {
+                    tinymce.get('myeditorinstance').save();
+                }
+
+                // Show loading state with spinner only
+                const submitButtons = form.querySelectorAll('button[type="submit"]');
+                const originalHtml = Array.from(submitButtons).map(btn => btn.innerHTML);
+                submitButtons.forEach((btn) => {
+                    btn.disabled = true;
+                    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                });
+
+                // Prepare form data
+                const formData = new FormData(form);
+
+                // Get the form action URL
+                const url = form.getAttribute('action');
+
+                console.log('Submitting to:', url);
+                console.log('Form data keys:', Array.from(formData.keys()));
+                console.log('Content value:', formData.get('content'));
+
+                // Submit via AJAX
+                const response = await fetch(url, {
+                    method: form.getAttribute('method') || 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+
+                // Reset button states
+                submitButtons.forEach((btn, idx) => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml[idx];
+                });
+
+                // Get response body first
+                const responseText = await response.text();
+                console.log('Response body:', responseText);
+
+                let data = {};
+                try {
+                    if (responseText) {
+                        data = JSON.parse(responseText);
+                    }
+                } catch (e) {
+                    console.error('Failed to parse JSON:', e);
+                }
+
+                // Handle response
+                if (response.ok) {
+                    // Success
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم الحفظ بنجاح',
+                        text: data.message || 'تم حفظ المحتوى بنجاح',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    console.log('Success response:', data);
+                    
+                    // Optional: Redirect after success if provided
+                    if (data.redirect) {
+                        setTimeout(() => {
+                            // window.location.href = data.redirect;
+                        }, 2500);
+                    }
+                } else {
+                    // Error handling
+                    let errorMessage = 'حدث خطأ أثناء حفظ المحتوى';
+                    
+                    if (response.status === 422) {
+                        // Validation errors
+                        if (data.errors) {
+                            errorMessage = Object.entries(data.errors)
+                                .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
+                                .join('\n');
+                        } else if (data.message) {
+                            errorMessage = data.message;
+                        }
+                    } else {
+                        errorMessage = data.message || data.error || errorMessage;
+                    }
+
+                    console.error('Error response:', data);
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'خطأ',
+                        text: errorMessage,
+                        didOpen: () => {
+                            // Log error for debugging
+                            console.error('Full error data:', {
+                                status: response.status,
+                                data: data
+                            });
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('AJAX Error:', error);
+                
+                // Reset button states on error
+                const submitButtons = form.querySelectorAll('button[type="submit"]');
+                submitButtons.forEach(btn => {
+                    btn.disabled = false;
+                });
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: error.message || 'حدث خطأ في الاتصال بالخادم'
+                });
+            }
+        }
     </script>
 
 @endsection
