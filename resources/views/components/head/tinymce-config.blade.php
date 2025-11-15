@@ -1758,7 +1758,7 @@
                 return;
             }
             let html = '<div class="read-more-block">';
-            html += '<span class="read-more-label-text">اقرأ أيضا</span>';
+            html += '<span class="read-more-label-text">اقرأ أيضاً</span>';
             if (selectedOption.dataset.image) {
                 html +=
                     `<img src="${escapeHtml(selectedOption.dataset.image)}" alt="${escapeHtml(selectedOption.textContent)}" class="read-more-image">`;
