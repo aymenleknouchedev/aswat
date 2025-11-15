@@ -940,7 +940,7 @@
             font-size: 18px;
             font-family: asswat-bold;
             color: #666;
-            padding: 4px 12px;
+            padding: 4px 6px;
             display: flex;
             align-items: center;
             margin-left: 12px;
