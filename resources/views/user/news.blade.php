@@ -1114,7 +1114,7 @@
                             <a href="{{ route('writer.show', $writer->id) }}">
                                 <span>
                                     @if ($writer->pivot->role)
-                                        <span style="color: #888;">{{ $writer->pivot->role }}</span>
+                                        <span style="color: #888;">{{ $writer->pivot->role }}:</span>
                                     @endif
                                     {{ $writer->name }}
 
