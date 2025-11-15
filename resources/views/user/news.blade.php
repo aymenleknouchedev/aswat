@@ -930,7 +930,6 @@
             cursor: pointer;
             text-decoration: none;
             color: inherit;
-            border: 1px solid #eee;
             position: relative;
         }
 
