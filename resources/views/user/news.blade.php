@@ -790,7 +790,6 @@
         /* Full-screen image viewer */
         .feature-image-clickable {
             cursor: pointer;
-            transition: opacity 0.2s;
         }
 
         .feature-image-clickable:hover {
@@ -1175,7 +1174,7 @@
                 {{-- Feature Image --}}
                 @if ($news->template !== 'no_image')
                     <figure class="custom-article-image-wrapper">
-                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="Feature Image"
+                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="{{ $news->caption }}"
                             loading="lazy" style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;"
                             class="feature-image-clickable"
                             data-full-image="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}">
