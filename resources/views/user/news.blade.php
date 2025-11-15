@@ -193,7 +193,6 @@
         }
 
         .custom-article-content h2,
-        .custom-article-content h3,
         .custom-article-content h4 {
             font-family: asswat-medium !important;
             color: #111 !important;
@@ -204,7 +203,6 @@
         }
 
         .custom-article-content h3 {
-            font-size: 22px !important;
             color: #333 !important;
             margin: 0 !important;
         }
@@ -988,7 +986,7 @@
         }
 
         .read-more-title {
-            font-size: 16px !important;
+            font-size: 16px;
             font-family: asswat-bold;
             color: #222;
             margin-top: 0px !important;
