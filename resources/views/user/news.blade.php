@@ -1264,6 +1264,7 @@
                                     </div>
                                 </div>
                             </a>
+                            <br>
                         @endforeach
                     @endif
                 </div>
@@ -1349,7 +1350,7 @@
         </div>
     </div>
 
-    
+
     {{-- ================= TEXT DEFINITION MODAL ================= --}}
     <div id="textDefinitionModal" class="text-definition-modal" style="display: none;" role="dialog"
         aria-labelledby="textModalTitle">
