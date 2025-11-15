@@ -871,8 +871,9 @@
             background: rgba(0, 0, 0, 0.7);
             color: #fff;
             padding: 15px 25px;
-            text-align: center;
+            text-align: right;
             font-family: asswat-regular;
+            direction: rtl;
         }
 
         @media (max-width: 768px) {
