@@ -1079,7 +1079,7 @@
                         {{-- First writer with city --}}
                         <span>
                             @if ($writers[0]->pivot->role)
-                                <span style="color: #888;">{{ $writers[0]->pivot->role }}</span>
+                                <span style="color: #888;">{{ $writers[0]->pivot->role }}</span>:
                             @endif
                         </span>
                         <a href="{{ route('writer.show', $writers[0]->id) }}">
