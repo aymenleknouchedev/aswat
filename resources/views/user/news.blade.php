@@ -603,6 +603,18 @@
             font-size: 16px !important;
         }
 
+        .clickable-term span {
+            color: #0066cc;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+            background-color: transparent;
+            font-family: asswat-regular !important;
+            font-size: 16px !important;
+        }
+
         .clickable-term:hover {
             background-color: #e6f2ff;
             text-decoration: none;
