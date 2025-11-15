@@ -763,13 +763,13 @@
                                         <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input required id="mobile_title" name="mobile_title" type="text"
-                                                class="form-control form-control" maxlength="40" data-ar="عنوان الموبايل"
+                                                class="form-control form-control" maxlength="50" data-ar="عنوان الموبايل"
                                                 data-en="Mobile Title"
                                                 value="{{ old('mobile_title', $content->mobile_title) }}">
                                         </div>
                                         <small class="text-muted"><span
                                                 id="mobile_title-count">{{ strlen(old('mobile_title', $content->mobile_title)) }}</span>
-                                            / 40</small>
+                                            / 50</small>
                                     </div>
                                 </div>
 
@@ -1928,7 +1928,7 @@
                 },
                 {
                     id: "mobile_title",
-                    max: 40
+                    max: 50
                 },
                 {
                     id: "summary",

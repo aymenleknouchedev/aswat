@@ -210,7 +210,6 @@
                 <img src="{{ $algeria[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature algeria">
                 <h3>
                     <x-category-links :content="$algeria[0]" />
-
                 </h3>
                 <a href="{{ route('news.show', $algeria[0]->title) }}" style="text-decoration: none; color: inherit;">
                     <h2>{{ $algeria[0]->title }}</h2>

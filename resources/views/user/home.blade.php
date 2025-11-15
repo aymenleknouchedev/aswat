@@ -169,9 +169,23 @@
         @if ($reviewsCount >= 3)
             @include('user.components.sp60')
             <div class="container">
-                <a href="{{ route('reviews') }}" class="section-title">آراء</a>
-                @include('user.components.ligne')
-                <div class="under-title-ligne-space"></div>
+                <div class="title">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <a href="{{ route('reviews') }}" class="section-title">آراء</a>
+                        @include('user.components.ligne')
+                        <div class="under-title-ligne-space"></div>
+                        <div style="display: flex;" class="icons">
+                            <div id="reviewBackArrow" style="height: 32px; width: 32px; cursor: pointer;">
+                                <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
+                            </div>
+                            <div id="reviewNextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
+                                <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+                            </div>
+                        </div>
+                    </div>
+                    @include('user.components.ligne')
+                    <div class="under-title-ligne-space"></div>
+                </div>
                 @include('user.components.reviews')
             </div>
         @endif

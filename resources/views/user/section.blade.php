@@ -538,23 +538,34 @@
             // Check if section is defined
             if (!section) {
                 console.error("Section is not defined");
+                alert("خطأ: لم يتم تحديد القسم");
                 return;
             }
+
+            console.log(`Loading more for section: ${section}, page: ${page}`);
 
             loading = true;
             btn.disabled = true;
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`/section/${section}?page=${page}`, {
+                const url = `/api/section/${section}?page=${page}`;
+                console.log(`Fetching URL: ${url}`);
+                
+                let response = await fetch(url, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
                 });
 
-                if (!response.ok) throw new Error("خطأ في السيرفر");
+                console.log(`Response status: ${response.status}`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+                }
 
                 let data = await response.text();
+                console.log(`Received data length: ${data.length}`);
 
                 if (data.trim().length === 0) {
                     btn.closest("#load-more-container")?.remove();
@@ -569,7 +580,7 @@
                 }
             } catch (error) {
                 console.error("Error loading more content:", error);
-                alert("خطأ في تحميل المزيد");
+                alert("خطأ في تحميل المزيد: " + error.message);
                 btn.disabled = false;
                 btn.textContent = "المزيد";
             }

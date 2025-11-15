@@ -214,7 +214,9 @@
         <div class="container">
             <!-- Writer Info -->
             <div class="writer-header">
-                <img src="{{ $writer->image ?? 'user.png' }}" alt="{{ $writer->name }}">
+                @if ($writer->image)
+                    <img src="{{ $writer->image }}" alt="{{ $writer->name }}">
+                @endif
                 <div class="writer-info">
                     <h1>{{ $writer->name }}</h1>
                     <p>{{ $writer->bio ?? '' }}</p>

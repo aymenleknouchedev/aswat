@@ -57,7 +57,7 @@ class HomePageController extends Controller
             'sports' => ['رياضة', 6],
             'people' => ['ناس', 3],
             'arts' => ['ثقافة وفنون', 8],
-            'reviews' => ['آراء', 3],
+            'reviews' => ['آراء', 100],  // Request all available reviews
             'videos' => ['فيديو', 4],
             'files' => ['ملفات', 3],
             'technology' => ['تكنولوجيا', 3],
@@ -490,6 +490,47 @@ class HomePageController extends Controller
         ));
     }
 
+    public function sectionLoadMore(Request $request, $section)
+    {
+        // Find the Arabic name for the given English section
+        $sectionTopArabic = [
+            'algeria' => 'الجزائر',
+            'world' => 'عالم',
+            'economy' => 'اقتصاد',
+            'sports' => 'رياضة',
+            'people' => 'ناس',
+            'technology' => 'تكنولوجيا',
+            'health' => 'صحة',
+            'environment' => 'بيئة',
+            'media' => 'ميديا',
+            'variety' => 'منوعات',
+            'culture' => 'ثقافة وفنون',
+        ];
+
+        $arabicName = $sectionTopArabic[$section] ?? null;
+        if (!$arabicName) {
+            return response('', 404);
+        }
+
+        $sectionId = Section::where('name', $arabicName)->value('id');
+        if (!$sectionId) {
+            return response('', 404);
+        }
+
+        $count = 4;
+        $perPage = 10;
+        $page = $request->get('page', 1);
+        $skip = $count + (($page - 1) * $perPage);
+
+        $moreContents = Content::where('section_id', $sectionId)
+            ->latest()
+            ->skip($skip)
+            ->take($perPage)
+            ->get();
+
+        return view('user.partials.section-items', compact('moreContents'))->render();
+    }
+
     public function reviewSection(Request $request, $section)
     {
         return view('user.reviews', compact('section'));
@@ -703,7 +744,8 @@ class HomePageController extends Controller
         $writer = Writer::findOrFail($id);
         $perPage = 10;
 
-        $articles = Content::where('writer_id', $id)
+        // Get articles where this writer is associated through the many-to-many relationship
+        $articles = $writer->contents()
             ->latest()
             ->paginate($perPage);
 

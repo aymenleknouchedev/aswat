@@ -8,6 +8,9 @@ let isHoveringLink = false;
 let isHoveringSubnav = false;
 let hideTimeout = null;
 
+// Track if the link is active on page load (from Blade template)
+const isLatestNewsPageActive = siteFirstNavLink.getAttribute('class').includes('active');
+
 siteFirstNavLink.addEventListener('mouseenter', () => {
     isHoveringLink = true;
     clearTimeout(hideTimeout);
@@ -38,7 +41,10 @@ function startHideTimeout() {
     hideTimeout = setTimeout(() => {
         if (!isHoveringLink && !isHoveringSubnav) {
             siteSubnav.style.display = 'none';
-            siteFirstNavLink.classList.remove('active'); // أزل الكلاس عند الإخفاء
+            // Only keep active if it was active from the route (page load)
+            if (!isLatestNewsPageActive) {
+                siteFirstNavLink.classList.remove('active');
+            }
         }
     }, 200); // تأخير 200ms لتفادي اختفاء مفاجئ
 }

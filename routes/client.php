@@ -11,6 +11,7 @@ Route::middleware(['coming.soon'])->group(function () {
     Route::get('/api/photos', [HomePageController::class, 'photosApi'])->name('api.photos');
     Route::get('/api/breaking-news', [HomePageController::class, 'breakingNewsApi'])->name('api.breaking.news');
     Route::get('/api/latest-news', [HomePageController::class, 'latestNewsApi'])->name('api.latest.news');
+    Route::get('/api/section/{section}', [HomePageController::class, 'sectionLoadMore'])->name('api.section.load-more');
     Route::get('/search', [HomePageController::class, 'search'])->name('search');
     Route::get('/reviews', [HomePageController::class, 'reviews'])->name('reviews');
     Route::get('/windows', [HomePageController::class, 'windows'])->name('windows');

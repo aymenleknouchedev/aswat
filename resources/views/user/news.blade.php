@@ -10,6 +10,38 @@
                 el.setAttribute('target', '_blank');
                 el.setAttribute('rel', 'noopener');
             });
+
+            // Read more card click handler - for dynamically inserted content from TinyMCE
+            document.addEventListener('click', function(e) {
+                const card = e.target.closest('.read-more-block');
+                if (card) {
+                    const titleElement = card.querySelector('.read-more-title');
+                    if (titleElement) {
+                        const title = titleElement.textContent.trim();
+                        if (title) {
+                            e.preventDefault();
+                            window.location.href = '/news/' + title;
+                        }
+                    }
+                }
+            });
+
+            // Keyboard support for read more cards
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const card = e.target.closest('.read-more-block');
+                    if (card) {
+                        const titleElement = card.querySelector('.read-more-title');
+                        if (titleElement) {
+                            const title = titleElement.textContent.trim();
+                            if (title) {
+                                e.preventDefault();
+                                window.location.href = '/news/' + title;
+                            }
+                        }
+                    }
+                }
+            });
         });
     </script>
 
@@ -145,7 +177,7 @@
         }
 
         .custom-article-content p span {
-            font-size: 16px !important;
+            font-size: 28px !important;
             font-family: asswat-regular;
             color: #333;
             line-height: 1.9;
@@ -180,7 +212,6 @@
             display: block;
             max-width: 100% !important;
             height: auto !important;
-            margin: 25px 0 0 0 !important;
         }
 
         /* Content figure styling */
@@ -756,6 +787,95 @@
             border: 1px solid #eee;
         }
 
+        /* Full-screen image viewer */
+        .feature-image-clickable {
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .feature-image-clickable:hover {
+            opacity: 0.8;
+        }
+
+        .fullscreen-image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fullscreen-image-modal.active {
+            display: flex;
+        }
+
+        .fullscreen-image-container {
+            position: relative;
+            width: 90%;
+            height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fullscreen-image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .fullscreen-image-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 40px;
+            cursor: pointer;
+            padding: 0;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .fullscreen-image-close:hover {
+            transform: scale(1.2);
+        }
+
+        .fullscreen-image-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 5px;
+            max-width: 80%;
+            text-align: center;
+            font-family: asswat-regular;
+        }
+
         @media (max-width: 768px) {
             .text-modal-container {
                 width: 95%;
@@ -796,6 +916,107 @@
                 font-size: 28px;
             }
         }
+
+        /* ===== Read More Card ===== */
+        .read-more-block {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 14px 18px 14px 14px;
+            direction: rtl;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background: #fafafa;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid #eee;
+        }
+
+        .read-more-image {
+            width: 160px;
+            height: 90px;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            flex-shrink: 0;
+            display: block;
+            position: relative;
+        }
+
+        .read-more-label {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: #e7e7e7;
+            color: #333;
+            font-family: asswat-bold;
+            font-size: 13px;
+            padding: 3px 12px 3px 8px;
+            border-bottom-left-radius: 12px;
+            border-top-right-radius: 4px;
+            z-index: 2;
+            letter-spacing: 0.5px;
+        }
+
+        .read-more-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .read-more-title {
+            font-size: 16px;
+            font-family: asswat-bold;
+            color: #222;
+            margin: 0;
+            line-height: 1.3;
+            text-align: right;
+        }
+
+        .read-more-summary {
+            font-size: 14px;
+            font-family: asswat-regular;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+            text-align: right;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .read-more-link {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .read-more-block {
+                flex-direction: column;
+                gap: 12px;
+                padding: 12px 8px;
+            }
+
+            .read-more-image {
+                width: 100%;
+                height: 200px;
+            }
+
+            .read-more-label {
+                font-size: 12px;
+                padding: 2px 10px 2px 6px;
+            }
+
+            .read-more-title {
+                font-size: 15px;
+            }
+
+            .read-more-summary {
+                font-size: 13px;
+            }
+        }
     </style>
 
     {{-- ================= WEB ================= --}}
@@ -805,13 +1026,38 @@
         <div class="custom-container">
             <div class="custom-main">
 
+
+
                 {{-- Category --}}
                 <div class="custom-category">
-                    <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
-                        style="color: #888; text-decoration: none;">
-                        {{ $news->category->name }}
-                    </a>
+                    @if (isset($news->country))
+                        <a href="{{ route('category.show', ['id' => $news->country->id, 'type' => 'Country']) }}"
+                            style="color: #888; text-decoration: none;">
+                            {{ $news->country->name ?? '' }}
+                        </a>
+                        -
+                        <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
+                            style="color: #888; text-decoration: none;">
+                            {{ $news->category->name ?? '' }}
+                        </a>
+                    @elseif (isset($news->continent))
+                        <a href="{{ route('category.show', ['id' => $news->continent->id, 'type' => 'Continent']) }}"
+                            style="color: #888; text-decoration: none;">
+                            {{ $news->continent->name ?? '' }}
+                        </a>
+                        -
+                        <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
+                            style="color: #888; text-decoration: none;">
+                            {{ $news->category->name ?? '' }}
+                        </a>
+                    @else
+                        <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
+                            style="color: #888; text-decoration: none;">
+                            {{ $news->category->name ?? '' }}
+                        </a>
+                    @endif
                 </div>
+
 
                 {{-- Title --}}
                 <h1 class="custom-article-title">{{ $news->long_title }}</h1>
@@ -821,9 +1067,6 @@
 
                 {{-- Authors --}}
                 <div class="custom-meta">
-                    @if ($news->city)
-                        {{ $news->city->name }} -
-                    @endif
 
                     @php
                         $writers = $news->writers;
@@ -833,30 +1076,32 @@
                         {{-- First writer with city --}}
                         <a href="{{ route('writer.show', $writers[0]->id) }}">
                             <span>
-                                {{ $writers[0]->name }}
                                 @if ($writers[0]->pivot->role)
                                     <span style="color: #888;">{{ $writers[0]->pivot->role }}</span>
                                 @endif
                             </span>
+                            {{ $writers[0]->name }}
+
                         </a>
+                        @if ($news->city)
+                            - {{ $news->city->name }}
+                        @endif
                         {{-- Other writers, each on a new line --}}
                         @foreach ($writers->slice(1) as $writer)
                             <br>
                             <a href="{{ route('writer.show', $writer->id) }}">
                                 <span>
-                                    {{ $writer->name }}
                                     @if ($writer->pivot->role)
                                         <span style="color: #888;">{{ $writer->pivot->role }}</span>
                                     @endif
+                                    {{ $writer->name }}
+
                                 </span>
                             </a>
                         @endforeach
-                    @elseif (optional($news->writer)->name)
-                        {{-- Fallback for old single writer system --}}
-                        <a href="{{ route('writer.show', $news->writer->id) }}">
-                            <span>{{ $news->writer->name }}</span>
-                        </a>
                     @endif
+
+
                 </div>
 
                 {{-- Date and Share Section --}}
@@ -887,7 +1132,7 @@
                     $shareImage = $news->share_image ?: $news->main_image;
                 @endphp
 
-                <div class="custom-date-share">
+                <div style="margin-top: 10px" class="custom-date-share">
                     {{-- Date on the RIGHT --}}
                     <p class="date-text">{{ $day }} {{ $month }} {{ $year }}</p>
 
@@ -929,7 +1174,8 @@
                 @if ($news->template !== 'no_image')
                     <figure class="custom-article-image-wrapper">
                         <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="Feature Image"
-                            loading="lazy">
+                            loading="lazy" style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;"
+                            class="feature-image-clickable" data-full-image="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}">
                         <figcaption>{{ $news->caption ?? '' }}</figcaption>
                     </figure>
                 @endif
@@ -981,18 +1227,20 @@
                     </div>
 
                     {{-- Writer Card --}}
-                    @if (optional($news->writer)->id)
-                        <a href="{{ route('writer.show', $news->writer->id) }}"
-                            style="text-decoration: none; color: inherit;">
-                            <div class="writer-card">
-                                <img src="{{ $news->writer->image ?? asset('user.png') }}" alt="{{ $news->writer->name }}"
-                                    loading="lazy" style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
-                                <div class="writer-info">
-                                    <span class="name">{{ $news->writer->name }}</span>
-                                    <span class="bio">{{ $news->writer->bio }}</span>
+                    @if ($writers->count() > 0)
+                        @foreach ($writers as $writer)
+                            <a href="{{ route('writer.show', $writer->id) }}"
+                                style="text-decoration: none; color: inherit;">
+                                <div class="writer-card">
+                                    <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
+                                        loading="lazy" style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
+                                    <div class="writer-info">
+                                        <span class="name">{{ $writer->name }}</span>
+                                        <span class="bio">{{ $writer->bio }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        @endforeach
                     @endif
                 </div>
 
@@ -1065,6 +1313,15 @@
 
         @include('user.components.sp60')
         @include('user.components.footer')
+    </div>
+
+    {{-- ================= FULLSCREEN IMAGE MODAL ================= --}}
+    <div id="fullscreenImageModal" class="fullscreen-image-modal">
+        <div class="fullscreen-image-container">
+            <button class="fullscreen-image-close" id="fullscreenImageClose" type="button" aria-label="إغلاق">×</button>
+            <img id="fullscreenImageContent" src="" alt="صورة بحجم كامل">
+            <div class="fullscreen-image-caption" id="fullscreenImageCaption"></div>
+        </div>
     </div>
 
     {{-- ================= TEXT DEFINITION MODAL ================= --}}
@@ -1282,6 +1539,56 @@
                 e.stopPropagation();
             });
         }
+
+        // ================= FULLSCREEN IMAGE MODAL FUNCTIONALITY =================
+        const fullscreenModal = document.getElementById('fullscreenImageModal');
+        const fullscreenImageContent = document.getElementById('fullscreenImageContent');
+        const fullscreenImageCaption = document.getElementById('fullscreenImageCaption');
+        const fullscreenImageClose = document.getElementById('fullscreenImageClose');
+        const featureImages = document.querySelectorAll('.feature-image-clickable');
+
+        // Open fullscreen image modal
+        featureImages.forEach(img => {
+            img.addEventListener('click', function() {
+                const fullImagePath = this.getAttribute('data-full-image');
+                const caption = this.getAttribute('alt') || '{{ $news->caption ?? '' }}';
+                
+                if (fullImagePath) {
+                    fullscreenImageContent.src = fullImagePath;
+                    fullscreenImageCaption.textContent = caption;
+                    fullscreenModal.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Prevent body scroll
+                }
+            });
+        });
+
+        // Close fullscreen image modal
+        function closeFullscreenImageModal() {
+            fullscreenModal.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore body scroll
+        }
+
+        // Close button click
+        fullscreenImageClose.addEventListener('click', closeFullscreenImageModal);
+
+        // Close on backdrop click (modal container)
+        fullscreenModal.addEventListener('click', function(e) {
+            if (e.target === fullscreenModal) {
+                closeFullscreenImageModal();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && fullscreenModal.classList.contains('active')) {
+                closeFullscreenImageModal();
+            }
+        });
+
+        // Prevent modal container click from closing modal
+        fullscreenModal.querySelector('.fullscreen-image-container').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
     </script>
 
     {{-- ================= MOBILE ================= --}}

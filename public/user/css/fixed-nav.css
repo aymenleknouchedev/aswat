@@ -113,6 +113,22 @@
     /* New bold on hover */
 }
 
+.site-nav-link.active {
+    font-weight: bold;
+}
+
+.nav-arrow {
+    margin-right: 5px;
+    margin-left: 5px;
+    font-size: 0.7em;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+#site-show-subnav.active .nav-arrow {
+    transform: rotate(90deg);
+}
+
 /* === Main Nav Left === */
 .site-nav-left {
     display: flex;
