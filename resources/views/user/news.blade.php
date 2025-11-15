@@ -1259,8 +1259,7 @@
                                         loading="lazy"
                                         style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
                                     <div class="writer-info">
-                                        <span class="name">{{ $writer->name }}</span>
-                                        <span class="bio">{{ $writer->bio }}</span>
+                                        <span class="bio"><strong style="color: #000">{{ $writer->name }}</strong> {{ $writer->bio }}</span>
                                     </div>
                                 </div>
                             </a>
