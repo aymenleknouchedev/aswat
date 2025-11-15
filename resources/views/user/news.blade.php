@@ -205,6 +205,7 @@
         .custom-article-content h3 {
             font-size: 22px !important;
             color: #333 !important;
+            margin: 0 !important;
         }
 
         /* Image spacing and captions */
@@ -966,26 +967,26 @@
             justify-content: center;
         }
 
+        .read-more-category {
+            font-size: 12px;
+            font-family: asswat-regular;
+            color: #888;
+            text-align: right;
+            margin: 0;
+        }
+
         .read-more-title {
             font-size: 16px;
             font-family: asswat-bold;
             color: #222;
-            margin: 0;
+            margin-top: 0px !important;
+            margin-bottom: 0px !important;
             line-height: 1.3;
             text-align: right;
         }
 
         .read-more-summary {
-            font-size: 14px;
-            font-family: asswat-regular;
-            color: #666;
-            margin: 0;
-            line-height: 1.5;
-            text-align: right;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            display: none;
         }
 
         .read-more-link {
@@ -1007,6 +1008,10 @@
             .read-more-label {
                 font-size: 12px;
                 padding: 2px 10px 2px 6px;
+            }
+
+            .read-more-category {
+                font-size: 11px;
             }
 
             .read-more-title {
@@ -1175,9 +1180,9 @@
                 {{-- Feature Image --}}
                 @if ($news->template !== 'no_image')
                     <figure class="custom-article-image-wrapper">
-                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="{{ $news->caption }}"
-                            loading="lazy" style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;"
-                            class="feature-image-clickable"
+                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}"
+                            alt="{{ $news->caption }}" loading="lazy"
+                            style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;" class="feature-image-clickable"
                             data-full-image="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}">
                         <figcaption>{{ $news->caption ?? '' }}</figcaption>
                     </figure>

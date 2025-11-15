@@ -723,6 +723,14 @@
         justify-content: center;
     }
 
+    /* Read more category */
+    .read-more-block .read-more-category {
+        font-size: 0.75rem;
+        color: #888;
+        text-align: right;
+        margin: 0 0 0.25rem 0;
+    }
+
     /* Read more title */
     .read-more-block .read-more-title {
         font-size: 1rem;
@@ -817,10 +825,13 @@
         @php
         try {
             $readMoreContent = \App\Models\Content::whereIn('status', ['published', 'draft'])
-                ->select(['id', 'title', 'summary', 'created_at'])
-                ->with(['media' => function($q) {
-                    $q->wherePivot('type', 'main');
-                }])
+                ->select(['id', 'title', 'summary', 'created_at', 'category_id'])
+                ->with([
+                    'media' => function($q) {
+                        $q->wherePivot('type', 'main');
+                    },
+                    'category'
+                ])
                 ->orderBy('created_at', 'desc')
                 ->limit(50)
                 ->get()
@@ -833,6 +844,7 @@
                     return [
                         'id' => $item->id,
                         'title' => $item->title ?? 'Untitled',
+                        'category' => $item->category->name ?? null,
                         'image_url' => $imagePath,
                         'summary' => \Illuminate\Support\Str::limit($item->summary ?? '', 150),
                         'link' => url('/content/' . $item->id),
@@ -1697,6 +1709,7 @@
                     const option = document.createElement('option');
                     option.value = item.id;
                     option.textContent = item.title;
+                    option.dataset.category = item.category || '';
                     option.dataset.image = item.image_url || '';
                     option.dataset.summary = item.summary || '';
                     option.dataset.link = item.link || '';
@@ -1734,8 +1747,11 @@
                 html +=
                     `<img src="${escapeHtml(selectedOption.dataset.image)}" alt="${escapeHtml(selectedOption.textContent)}" class="read-more-image">`;
             }
-            html +=
-                `<div class="read-more-content"><h3 class="read-more-title">${escapeHtml(selectedOption.textContent)}</h3>`;
+            html += `<div class="read-more-content">`;
+            if (selectedOption.dataset.category) {
+                html += `<p class="read-more-category">${escapeHtml(selectedOption.dataset.category)}</p>`;
+            }
+            html += `<h3 class="read-more-title">${escapeHtml(selectedOption.textContent)}</h3>`;
             if (selectedOption.dataset.summary) {
                 html += `<p class="read-more-summary">${escapeHtml(selectedOption.dataset.summary)}</p>`;
             }
@@ -1800,8 +1816,11 @@
                 html +=
                     `<img src="${escapeHtml(selectedOption.dataset.image)}" alt="${escapeHtml(selectedOption.textContent)}" class="read-more-image">`;
             }
-            html +=
-                `<div class="read-more-content"><h3 class="read-more-title">${escapeHtml(selectedOption.textContent)}</h3>`;
+            html += `<div class="read-more-content">`;
+            if (selectedOption.dataset.category) {
+                html += `<p class="read-more-category">${escapeHtml(selectedOption.dataset.category)}</p>`;
+            }
+            html += `<h3 class="read-more-title">${escapeHtml(selectedOption.textContent)}</h3>`;
             if (selectedOption.dataset.summary) {
                 html += `<p class="read-more-summary">${escapeHtml(selectedOption.dataset.summary)}</p>`;
             }
@@ -1982,6 +2001,7 @@
         .read-more-block *{pointer-events:auto;user-select:text;}
         .read-more-block .read-more-image{width:35%;height:auto;max-height:150px;object-fit:cover;}
         .read-more-block .read-more-content{width:65%;padding:0.75rem;display:flex;flex-direction:column;justify-content:center;}
+        .read-more-block .read-more-category{font-size:0.75rem;color:#888;text-align:right;margin:0 0 0.25rem 0;}
         .read-more-block .read-more-title{font-size:1rem;font-weight:600;margin:0 0 0.35rem 0;color:#364a63;}
         .read-more-block .read-more-summary{color:#526484;line-height:1.4;margin:0;font-size:0.9rem;}
         .read-more-block .read-more-link{display:inline-block;margin-top:0.5rem;padding:0.35rem 0.75rem;background:#6576ff;color:white;text-decoration:none;border-radius:4px;font-weight:500;font-size:0.85rem;transition:background 0.2s;align-self:flex-start;}
