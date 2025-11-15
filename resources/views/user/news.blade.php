@@ -926,7 +926,7 @@
             direction: rtl;
             margin-top: 20px;
             margin-bottom: 20px;
-            background: #fafafa;
+            background: #F5F5F5;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
