@@ -792,10 +792,6 @@
             cursor: pointer;
         }
 
-        .feature-image-clickable:hover {
-            opacity: 0.8;
-        }
-
         .fullscreen-image-modal {
             position: fixed;
             top: 0;
