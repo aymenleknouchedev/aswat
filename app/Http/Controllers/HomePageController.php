@@ -552,6 +552,7 @@ class HomePageController extends Controller
 
     public function showNews($title)
     {
+
         $news = Content::where('title', $title)->latest()->firstOrFail();
 
         $categoryId = $news->category_id;

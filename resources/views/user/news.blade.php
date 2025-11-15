@@ -20,6 +20,7 @@
                         const title = titleElement.textContent.trim();
                         if (title) {
                             e.preventDefault();
+                            const filteredTitle = title.replace(/«|»/g, '"');
                             window.location.href = '/news/' + title;
                         }
                     }
