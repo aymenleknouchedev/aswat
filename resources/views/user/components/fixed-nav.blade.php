@@ -6,14 +6,24 @@
                     <img class="site-logo" src="{{ asset('user/assets/images/logo.svg') }}" alt="Logo">
                 </a>
                 <ul class="site-nav-links">
-                    <li class="site-nav-link {{ request()->routeIs('latestNews') ? 'active' : '' }}" id="site-show-subnav"><a href="{{ route('latestNews') }}">أخبار <i class="fas fa-chevron-down nav-arrow"></i></a></li>
-                    <li class="site-nav-link {{ request()->routeIs('reviews') ? 'active' : '' }}"><a href="{{ route('reviews') }}">آراء</a></li>
-                    <li class="site-nav-link {{ request()->routeIs('windows') ? 'active' : '' }}"><a href="{{ route('windows') }}">نوافذ</a></li>
-                    <li class="site-nav-link {{ request()->routeIs('files') ? 'active' : '' }}"><a href="{{ route('files') }}">ملفات</a></li>
-                    <li class="site-nav-link {{ request()->routeIs('investigation') ? 'active' : '' }}"><a href="{{ route('investigation') }}">فحص</a></li>
-                    <li class="site-nav-link {{ request()->routeIs('videos') ? 'active' : '' }}"><a href="{{ route('videos') }}">فيديو</a></li>
-                    <li class="site-nav-link {{ request()->routeIs('podcasts') ? 'active' : '' }}"><a href="{{ route('podcasts') }}">بودكاست</a></li>
-                    <li class="site-nav-link {{ request()->routeIs('photos') ? 'active' : '' }}"><a href="{{ route('photos') }}">صور</a></li>
+                    <li class="site-nav-link {{ request()->routeIs('latestNews') ? 'active' : '' }}"
+                        id="site-show-subnav"><a href="{{ route('latestNews') }}">أخبار <i
+                                class="fa-solid fa-chevron-down nav-arrow"></i>
+                        </a></li>
+                    <li class="site-nav-link {{ request()->routeIs('reviews') ? 'active' : '' }}"><a
+                            href="{{ route('reviews') }}">آراء</a></li>
+                    <li class="site-nav-link {{ request()->routeIs('windows') ? 'active' : '' }}"><a
+                            href="{{ route('windows') }}">نوافذ</a></li>
+                    <li class="site-nav-link {{ request()->routeIs('files') ? 'active' : '' }}"><a
+                            href="{{ route('files') }}">ملفات</a></li>
+                    <li class="site-nav-link {{ request()->routeIs('investigation') ? 'active' : '' }}"><a
+                            href="{{ route('investigation') }}">فحص</a></li>
+                    <li class="site-nav-link {{ request()->routeIs('videos') ? 'active' : '' }}"><a
+                            href="{{ route('videos') }}">فيديو</a></li>
+                    <li class="site-nav-link {{ request()->routeIs('podcasts') ? 'active' : '' }}"><a
+                            href="{{ route('podcasts') }}">بودكاست</a></li>
+                    <li class="site-nav-link {{ request()->routeIs('photos') ? 'active' : '' }}"><a
+                            href="{{ route('photos') }}">صور</a></li>
                 </ul>
             </div>
             <div class="site-nav-left">
