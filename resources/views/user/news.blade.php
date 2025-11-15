@@ -350,9 +350,8 @@
         }
 
         .writer-info .name {
-            font-size: 18px;
+            font-size: 16px;
             font-family: asswat-bold;
-            color: #222;
         }
 
         .writer-info .bio {
@@ -1259,7 +1258,7 @@
                                         loading="lazy"
                                         style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
                                     <div class="writer-info">
-                                        <span class="bio"><span>{{ $writer->name }}</span> {{ $writer->bio }}</span>
+                                        <span class="bio"><span class="name">{{ $writer->name }}</span> {{ $writer->bio }}</span>
                                     </div>
                                 </div>
                             </a>
