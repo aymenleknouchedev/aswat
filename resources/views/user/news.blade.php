@@ -1073,19 +1073,21 @@
                     @endphp
 
                     @if ($writers->count() > 0)
+                        @if ($news->city)
+                            {{ $news->city->name }} -
+                        @endif
                         {{-- First writer with city --}}
+                        <span>
+                            @if ($writers[0]->pivot->role)
+                                <span style="color: #888;">{{ $writers[0]->pivot->role }}</span>
+                            @endif
+                        </span>
                         <a href="{{ route('writer.show', $writers[0]->id) }}">
-                            <span>
-                                @if ($writers[0]->pivot->role)
-                                    <span style="color: #888;">{{ $writers[0]->pivot->role }}</span>
-                                @endif
-                            </span>
+
                             {{ $writers[0]->name }}
 
                         </a>
-                        @if ($news->city)
-                            - {{ $news->city->name }}
-                        @endif
+
                         {{-- Other writers, each on a new line --}}
                         @foreach ($writers->slice(1) as $writer)
                             <br>
