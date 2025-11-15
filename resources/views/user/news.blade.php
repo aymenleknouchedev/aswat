@@ -1031,24 +1031,24 @@
                 {{-- Category --}}
                 <div class="custom-category">
                     @if (isset($news->country))
+                        <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
+                            style="color: #888; text-decoration: none;">
+                            {{ $news->category->name ?? '' }}
+                        </a>
+                        -
                         <a href="{{ route('category.show', ['id' => $news->country->id, 'type' => 'Country']) }}"
                             style="color: #888; text-decoration: none;">
                             {{ $news->country->name ?? '' }}
                         </a>
-                        -
+                    @elseif (isset($news->continent))
                         <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
                             style="color: #888; text-decoration: none;">
                             {{ $news->category->name ?? '' }}
                         </a>
-                    @elseif (isset($news->continent))
+                        -
                         <a href="{{ route('category.show', ['id' => $news->continent->id, 'type' => 'Continent']) }}"
                             style="color: #888; text-decoration: none;">
                             {{ $news->continent->name ?? '' }}
-                        </a>
-                        -
-                        <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
-                            style="color: #888; text-decoration: none;">
-                            {{ $news->category->name ?? '' }}
                         </a>
                     @else
                         <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
@@ -1175,7 +1175,8 @@
                     <figure class="custom-article-image-wrapper">
                         <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="Feature Image"
                             loading="lazy" style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;"
-                            class="feature-image-clickable" data-full-image="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}">
+                            class="feature-image-clickable"
+                            data-full-image="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}">
                         <figcaption>{{ $news->caption ?? '' }}</figcaption>
                     </figure>
                 @endif
@@ -1233,7 +1234,8 @@
                                 style="text-decoration: none; color: inherit;">
                                 <div class="writer-card">
                                     <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
-                                        loading="lazy" style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
+                                        loading="lazy"
+                                        style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
                                     <div class="writer-info">
                                         <span class="name">{{ $writer->name }}</span>
                                         <span class="bio">{{ $writer->bio }}</span>
@@ -1318,7 +1320,8 @@
     {{-- ================= FULLSCREEN IMAGE MODAL ================= --}}
     <div id="fullscreenImageModal" class="fullscreen-image-modal">
         <div class="fullscreen-image-container">
-            <button class="fullscreen-image-close" id="fullscreenImageClose" type="button" aria-label="إغلاق">×</button>
+            <button class="fullscreen-image-close" id="fullscreenImageClose" type="button"
+                aria-label="إغلاق">×</button>
             <img id="fullscreenImageContent" src="" alt="صورة بحجم كامل">
             <div class="fullscreen-image-caption" id="fullscreenImageCaption"></div>
         </div>
@@ -1552,7 +1555,7 @@
             img.addEventListener('click', function() {
                 const fullImagePath = this.getAttribute('data-full-image');
                 const caption = this.getAttribute('alt') || '{{ $news->caption ?? '' }}';
-                
+
                 if (fullImagePath) {
                     fullscreenImageContent.src = fullImagePath;
                     fullscreenImageCaption.textContent = caption;
