@@ -1324,28 +1324,10 @@
                             <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="تحديث" data-en="Update"
                                 id="updateButton" data-action="update">تحديث</button>
 
-                            <a href="#" target="_blank"
-                                class="btn btn-secondary btn-lg" style="margin-left: 10px;"
-                                id="preview-link">
+                            <a href="{{ route('news.show', $content->title) }}" target="_blank"
+                                class="btn btn-secondary btn-lg" style="margin-left: 10px;">
                                 معاينة
                             </a>
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    const previewLink = document.getElementById('preview-link');
-                                    const titleInput = document.getElementById('title');
-                                    function updatePreviewLink() {
-                                        const title = titleInput.value.trim();
-                                        if (title) {
-                                            const encodedTitle = encodeURIComponent(title);
-                                            previewLink.href = "{{ url('news/show') }}/" + encodedTitle;
-                                        } else {
-                                            previewLink.href = "#";
-                                        }
-                                    }
-                                    titleInput.addEventListener('input', updatePreviewLink);
-                                    updatePreviewLink();
-                                });
-                            </script>
                         </div>
                     </div>
 
