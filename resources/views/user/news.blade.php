@@ -792,6 +792,7 @@
             cursor: pointer;
         }
 
+
         .fullscreen-image-modal {
             position: fixed;
             top: 0;
@@ -859,7 +860,7 @@
 
         .fullscreen-image-caption {
             position: absolute;
-            bottom: 20px;
+            bottom: 0px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.7);
@@ -869,6 +870,7 @@
             max-width: 80%;
             text-align: center;
             font-family: asswat-regular;
+            width: 100%;
         }
 
         @media (max-width: 768px) {
