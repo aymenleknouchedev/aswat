@@ -986,7 +986,7 @@
         }
 
         .read-more-title {
-            font-size: 18px;
+            font-size: 20px;
             font-family: asswat-bold;
             color: #222;
             margin-top: 0px !important;
