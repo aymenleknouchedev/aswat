@@ -937,16 +937,15 @@
         }
 
         .read-more-label-text {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            font-size: 13px;
+            font-size: 14px;
             font-family: asswat-bold;
             color: #666;
-            background: #e7e7e7;
             padding: 4px 12px;
-            border-radius: 4px;
-            z-index: 2;
+            display: flex;
+            align-items: center;
+            margin-left: 12px;
+            white-space: nowrap;
+            order: -1;
         }
 
         .read-more-image {
@@ -1028,8 +1027,7 @@
             .read-more-label-text {
                 font-size: 12px;
                 padding: 3px 10px;
-                top: 8px;
-                right: 8px;
+                margin-left: 8px;
             }
 
             .read-more-category {
