@@ -937,7 +937,7 @@
         }
 
         .read-more-label-text {
-            font-size: 14px;
+            font-size: 18px;
             font-family: asswat-bold;
             color: #666;
             padding: 4px 12px;
