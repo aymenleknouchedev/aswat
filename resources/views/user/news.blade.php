@@ -942,7 +942,6 @@
             color: #666;
             display: flex;
             align-items: center;
-            margin-left: 12px;
             white-space: nowrap;
             order: -1;
         }
