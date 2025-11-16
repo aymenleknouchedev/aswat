@@ -7,7 +7,7 @@
     <style>
         .newCategory-all-section {
             display: grid;
-            grid-template-columns: 8fr 4fr;
+            grid-template-columns: 10fr 2fr;
             gap: 70px;
         }
 
@@ -46,26 +46,32 @@
             flex-direction: column;
         }
 
-        .newCategory-all-card-text h3 {
-            font-family: asswat-light;
-            font-size: 12px;
-            color: #74747C;
-            margin: 0 0 4px 0;
+
+
+        .newCategory-all-card-text p {
+            font-size: 16px !important;
+            color: #555 !important;
+            line-height: 1.5 !important;
+            margin: 0 !important;
         }
 
         .newCategory-all-card-text h2 {
-            font-family: asswat-bold;
-            font-size: 18px;
-            margin: 0 0 8px 0;
-            line-height: 1.4;
+           font-family: asswat-bold !important;
+            font-weight: normal !important;
+            font-size: 20px !important;
+            color: #333 !important;
+            margin: 0 0 4px 0 !important;
         }
 
-        .newCategory-all-card-text p {
-            font-size: 15px;
-            color: #555;
-            line-height: 1.5;
-            margin: 0;
+        .newCategory-all-card-text h3 {
+           font-family: asswat-regular !important;
+            font-weight: normal !important;
+            font-size: 16px !important;
+            color: #555 !important;
+            margin: 0 0 4px 0 !important;
         }
+
+
 
         /* Responsive */
         @media (max-width: 768px) {
