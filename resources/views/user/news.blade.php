@@ -69,16 +69,16 @@
             position: absolute;
             left: 0;
             right: 0;
-            bottom: 0;
-            top: 100%;
+            bottom: -3px;
+            height: 0;
             background-color: #b2ec52;
             z-index: -1;
-            transition: top 0.3s ease;
+            transition: height 0.3s ease;
             border-radius: 0;
         }
 
         .custom-article-content a:hover::before {
-            top: 0;
+            height: calc(100% + 3px);
         }
 
         .custom-article-content a:hover {
