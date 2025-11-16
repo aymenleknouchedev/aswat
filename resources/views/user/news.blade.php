@@ -597,9 +597,9 @@
             cursor: pointer;
             padding: 0;
             border-radius: 50%;
-            background-color: #7ddcb5;
+            background-color: #b2ec52;
             font-family: asswat-bold !important;
-            font-size: 10px !important;
+            font-size: 8px !important;
             vertical-align: super;
             display: inline-flex;
             align-items: center;
