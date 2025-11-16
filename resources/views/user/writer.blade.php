@@ -105,7 +105,6 @@
 
         .newCategory-all-card {
             display: flex;
-            align-items: center;
             gap: 20px;
             direction: rtl;
             align-items: center;
@@ -129,7 +128,6 @@
         .newCategory-all-card-text {
             flex: 1;
             display: flex;
-            align-self: flex-start;
             flex-direction: column;
         }
 
