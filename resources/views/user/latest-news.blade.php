@@ -8,6 +8,7 @@
         .section-title {
             font-size: 32px;
         }
+
         .newCategory-all-section {
             display: grid;
             grid-template-columns: 10fr 2fr;
@@ -46,22 +47,23 @@
         }
 
         .newCategory-all-card-text h3 {
-             font-family: asswat-regular !important;
+            font-family: asswat-regular !important;
             font-weight: normal !important;
-            font-size: 16px;
-            color: #7c7c74;
-            margin: 0 0 4px 0;
+            font-size: 16px !important;
+            color: #7c7c74 !important;
+            margin: 0 0 4px 0 !important;
         }
 
         .newCategory-all-card-text h2 {
-             font-family: asswat-bold;
-            font-size: 22px;
-            margin: 0 0 8px 0;
-            line-height: 1.4;
+            font-family: asswat-regular !important;
+            font-weight: normal !important;
+            font-size: 16px !important;
+            color: #7c7c74 !important;
+            margin: 0 0 4px 0 !important;
         }
 
         .newCategory-all-card-text p {
-            font-size: 16px !important;
+             font-size: 16px !important;
             color: #555 !important;
             line-height: 1.5 !important;
             margin: 0 !important;
