@@ -598,17 +598,19 @@
             padding: 0;
             border-radius: 50%;
             background-color: #b2ec52;
-            font-family: asswat-bold !important;
-            font-size: 6px !important;
+            font-family: Arial, sans-serif !important;
+            font-size: 7px !important;
+            font-weight: bold;
             vertical-align: super;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            line-height: 18px;
-            width: 10px;
-            height: 10px;
+            line-height: 1;
+            min-width: 12px;
+            height: 12px;
             text-align: center;
             aspect-ratio: 1 / 1;
+            box-sizing: border-box;
             /* Ensures perfect circle even for double digits */
         }
 
