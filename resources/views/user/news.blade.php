@@ -612,10 +612,7 @@
             transition: transform 0.2s ease, background-color 0.2s ease;
         }
 
-        .custom-article-content p .clickable-term:hover {
-            transform: scale(1.15);
-            background-color: #9dd944;
-        }
+        
 
         /* Text definition modal */
         .text-definition-modal {
