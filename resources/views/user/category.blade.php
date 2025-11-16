@@ -47,18 +47,18 @@
         }
 
         .newCategory-all-card-text h3 {
-            font-family: asswat-light;
-            font-size: 12px;
-            color: #74747C;
+            font-family: asswat-regular !important;
+            font-size: 16px;
+            color: #7c7c74;
             margin: 0 0 4px 0;
         }
 
-        .newCategory-all-card-text h2 {
+        /* .newCategory-all-card-text h2 {
             font-family: asswat-bold;
             font-size: 18px;
             margin: 0 0 8px 0;
             line-height: 1.4;
-        }
+        } */
 
         .newCategory-all-card-text p {
             font-size: 15px;
