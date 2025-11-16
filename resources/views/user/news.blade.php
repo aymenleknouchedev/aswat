@@ -595,13 +595,15 @@
             color: #000000;
             text-decoration: none;
             cursor: pointer;
-            padding: 4px 6px;
+            padding: 0;
             border-radius: 50%;
             background-color: #7ddcb5;
             font-family: asswat-bold !important;
             font-size: 10px !important;
             vertical-align: super;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             line-height: 1;
             min-width: 18px;
             height: 18px;
