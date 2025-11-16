@@ -55,12 +55,12 @@
 
         .custom-article-content a {
             color: #000000;
-            text-decoration: underline;
-            text-decoration-color: #b2ec52;
-            text-decoration-thickness: 2px;
-            text-underline-offset: 3px;
+            text-decoration: none;
             position: relative;
+            border-bottom: 2px solid #b2ec52;
             border-radius: 0;
+            padding-bottom: 1px;
+            display: inline;
             transition: color 0.3s ease;
         }
 
@@ -69,7 +69,7 @@
             position: absolute;
             left: 0;
             right: 0;
-            bottom: -3px;
+            bottom: -2px;
             height: 0;
             background-color: #b2ec52;
             z-index: -1;
@@ -78,11 +78,7 @@
         }
 
         .custom-article-content a:hover::before {
-            height: calc(100% + 3px);
-        }
-
-        .custom-article-content a:hover {
-            text-decoration: none;
+            height: calc(100% + 2px);
         }
 
         .custom-container {
