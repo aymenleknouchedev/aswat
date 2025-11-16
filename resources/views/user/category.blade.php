@@ -68,6 +68,7 @@
          .newCategory-all-card-text p {
             font-size: 16px !important;
             line-height: 1.5 !important;
+            color: #555 !important;
             margin: 0 !important;
         }
 
@@ -167,7 +168,7 @@
                                     style="text-decoration: none; color: inherit;">
                                     <h2>{{ $item->title }}</h2>
                                 </a>
-                                <h3>{{ $item->summary }}</h3>
+                                <p>{{ $item->summary }}</p>
                             </div>
                         </div>
                     @endforeach
