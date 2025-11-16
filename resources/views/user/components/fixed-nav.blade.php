@@ -84,8 +84,7 @@
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a>
                 </li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'people']) }}">ناس</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة و
-                        فنون</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة وفنون</a></li>
                 <li class="site-subnav-link"><a
                         href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a></li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>

@@ -637,7 +637,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             animation: backdropFadeIn 0.3s ease;
         }
 
@@ -653,30 +655,27 @@
 
         .text-modal-container {
             position: fixed;
-            bottom: 150px;
-            left: 50%;
-            transform: translateX(-50%);
+            bottom: 0;
+            left: 0;
+            right: 0;
             background: white;
-            width: 90%;
-            max-width: 700px;
-            max-height: 350px;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-height: 80vh;
+            
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
             display: flex;
-            flex-direction: row;
-            animation: modalFadeInBottom 0.3s ease-out;
+            flex-direction: column;
+            animation: modalSlideUp 0.4s ease-out;
             overflow: hidden;
         }
 
-        @keyframes modalFadeInBottom {
+        @keyframes modalSlideUp {
             from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(20px);
+                transform: translateY(100%);
             }
 
             to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
+                transform: translateY(0);
             }
         }
 
@@ -689,31 +688,33 @@
             background: white;
             border-radius: 0;
             position: absolute;
-            top: 8px;
-            left: 8px;
+            top: 12px;
+            left: 12px;
             z-index: 10;
         }
 
         .text-modal-close {
-            background: none;
+            background: rgba(0, 0, 0, 0.05);
             border: none;
-            font-size: 20px;
+            font-size: 28px;
             cursor: pointer;
             color: #666;
             padding: 0;
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: color 0.2s;
+            transition: all 0.2s;
             font-family: Arial, sans-serif;
             font-weight: bold;
+            border-radius: 50%;
         }
 
         .text-modal-close:hover {
             color: #333;
-            animation: closeBtnPulse 0.4s;
+            background: rgba(0, 0, 0, 0.1);
+            transform: scale(1.1);
         }
 
         @keyframes closeBtnPulse {
@@ -731,15 +732,17 @@
         }
 
         .text-modal-body {
-            padding: 1.25rem;
+            padding: 2rem;
             overflow-y: auto;
             flex: 1;
             animation: bodyFadeIn 0.4s;
             display: flex;
             flex-direction: row;
-            gap: 1.25rem;
+            gap: 2rem;
             align-items: flex-start;
             width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         @keyframes bodyFadeIn {
@@ -753,39 +756,42 @@
         }
 
         .text-modal-title {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
             color: #222;
             font-family: asswat-bold;
             text-align: right;
             direction: rtl;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             width: 100%;
         }
 
         .text-modal-body p {
             margin: 0;
-            color: #333;
+            color: #444;
             font-family: asswat-regular;
-            font-size: 16px;
-            line-height: 1.6;
+            font-size: 18px;
+            line-height: 1.8;
             text-align: right;
             direction: rtl;
-            flex: 1;
         }
 
         #textModalImageContainer {
             margin-bottom: 0;
             flex-shrink: 0;
-            order: 2;
+            flex-grow: 0;
+            order: 0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
         }
 
         #textModalImage {
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid #eee;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 150px;
+            object-fit: contain;
         }
 
         /* Full-screen image viewer */
@@ -879,28 +885,39 @@
 
         @media (max-width: 768px) {
             .text-modal-container {
-                width: 95%;
-                max-height: 80vh;
-                flex-direction: column;
-                bottom: 20px;
+                width: 100%;
+                max-height: 90vh;
+                bottom: 0;
+                border-radius: 12px 12px 0 0;
             }
 
             .text-modal-body {
                 flex-direction: column;
                 gap: 1rem;
+                padding: 1.5rem;
+                max-width: 100%;
             }
 
             #textModalImageContainer {
                 order: -1;
+                justify-content: center;
             }
 
             #textModalImage {
-                width: 100%;
+                width: auto;
                 height: auto;
+                max-width: 100%;
+                max-height: 300px;
             }
 
             .text-modal-body p {
                 padding: 0;
+                font-size: 16px;
+            }
+
+            .text-modal-title {
+                font-size: 22px;
+                margin-bottom: 12px;
             }
 
             .economy-grid-container-news {
@@ -1363,7 +1380,7 @@
                 <div id="textModalImageContainer" style="display: none;">
                     <img id="textModalImage" src="" alt="صورة التعريف">
                 </div>
-                <div style="flex: 1;">
+                <div>
                     <h3 id="textModalTitle" class="text-modal-title"></h3>
                     <p id="textModalContent"></p>
                 </div>
