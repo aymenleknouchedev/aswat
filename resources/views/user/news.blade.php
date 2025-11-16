@@ -57,6 +57,7 @@
             color: #000000;
             text-decoration: underline;
             text-decoration-color: #b2ec52;
+            text-decoration-thickness: 2px;
             text-underline-offset: 3px;
             position: relative;
             border-radius: 0;
