@@ -18,6 +18,7 @@
         .newCategory-all-list {
             display: flex;
             flex-direction: column;
+            
             gap: 20px;
         }
 
@@ -25,6 +26,7 @@
             display: flex;
             gap: 20px;
             direction: rtl;
+            align-items: center;
         }
 
         .newCategory-all-card-image img {
