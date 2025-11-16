@@ -62,10 +62,10 @@
         }
 
         .newCategory-all-card-text p {
-            font-size: 15px;
-            color: #555;
-            line-height: 1.5;
-            margin: 0;
+            font-size: 16px !important;
+            color: #555 !important;
+            line-height: 1.5 !important;
+            margin: 0 !important;
         }
 
         /* Load more button */
