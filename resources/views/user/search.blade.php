@@ -50,7 +50,7 @@
 
         .newCategory-all-card-text p {
             font-size: 16px !important;
-            color: #555 !important;
+            color: #7c7c74 !important;
             line-height: 1.5 !important;
             margin: 0 !important;
         }
