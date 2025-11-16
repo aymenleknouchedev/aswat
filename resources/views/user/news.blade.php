@@ -599,15 +599,15 @@
             border-radius: 50%;
             background-color: #b2ec52;
             font-family: Arial, sans-serif !important;
-            font-size: 9px !important;
+            font-size: 10px !important;
             font-weight: bold;
             vertical-align: super;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             line-height: 1;
-            min-width: 12px;
-            height: 12px;
+            min-width: 13px;
+            height: 13px;
             text-align: center;
             aspect-ratio: 1 / 1;
             box-sizing: border-box;
