@@ -57,7 +57,7 @@
             color: #000000;
             text-decoration: none;
             position: relative;
-            border-bottom: 2px solid #e9f2ef;
+            border-bottom: 2px solid #e4f0ef;
             border-radius: 0;
             padding-bottom: 1px;
             display: inline;
@@ -71,7 +71,7 @@
             right: 0;
             bottom: -2px;
             height: 0;
-            background-color: #e9f2ef;
+            background-color: #e4f0ef;
             z-index: -1;
             transition: height 0.3s ease;
             border-radius: 0;
@@ -619,7 +619,7 @@
             text-decoration: none;
             cursor: pointer;
             border-radius: 50%;
-            background-color: #e9f2ef;
+            background-color: #e4f0ef;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", Arial, sans-serif !important;
             font-size: 9px !important;
             font-weight: 700;
