@@ -595,23 +595,26 @@
             color: #000000;
             text-decoration: none;
             cursor: pointer;
-            padding: 0;
             border-radius: 50%;
             background-color: #b2ec52;
-            font-family: Arial, sans-serif !important;
-            font-size: 10px !important;
-            font-weight: bold;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", Arial, sans-serif !important;
+            font-size: 9px !important;
+            font-weight: 700;
             vertical-align: super;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            display: inline-grid;
+            place-items: center;
             line-height: 1;
-            min-width: 15px;
-            height: 15px;
-            text-align: center;
-            aspect-ratio: 1 / 1;
+            min-width: 16px;
+            min-height: 16px;
+            aspect-ratio: 1;
+            padding: 3px;
             box-sizing: border-box;
-            /* Ensures perfect circle even for double digits */
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .custom-article-content p .clickable-term:hover {
+            transform: scale(1.15);
+            background-color: #9dd944;
         }
 
         /* Text definition modal */
