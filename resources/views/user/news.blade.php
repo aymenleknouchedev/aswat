@@ -56,6 +56,32 @@
         .custom-article-content a {
             color: #000000;
             text-decoration: underline;
+            text-decoration-color: #b2ec52;
+            text-underline-offset: 3px;
+            position: relative;
+            border-radius: 0;
+            transition: color 0.3s ease;
+        }
+
+        .custom-article-content a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 100%;
+            background-color: #b2ec52;
+            z-index: -1;
+            transition: top 0.3s ease;
+            border-radius: 0;
+        }
+
+        .custom-article-content a:hover::before {
+            top: 0;
+        }
+
+        .custom-article-content a:hover {
+            text-decoration: none;
         }
 
         .custom-container {
