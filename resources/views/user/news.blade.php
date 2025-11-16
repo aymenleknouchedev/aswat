@@ -679,6 +679,34 @@
             }
         }
 
+        @keyframes modalSlideDown {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(100%);
+            }
+        }
+
+        .text-modal-container.closing {
+            animation: modalSlideDown 0.3s ease-out forwards;
+        }
+
+        .text-definition-modal.closing .text-modal-backdrop {
+            animation: backdropFadeOut 0.3s ease forwards;
+        }
+
+        @keyframes backdropFadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
         .text-modal-header {
             padding: 0;
             border-bottom: none;
@@ -694,11 +722,11 @@
         }
 
         .text-modal-close {
-            background: rgba(0, 0, 0, 0.05);
+            background: none;
             border: none;
             font-size: 28px;
             cursor: pointer;
-            color: #666;
+            color: #000;
             padding: 0;
             width: 32px;
             height: 32px;
@@ -708,12 +736,10 @@
             transition: all 0.2s;
             font-family: Arial, sans-serif;
             font-weight: bold;
-            border-radius: 50%;
         }
 
         .text-modal-close:hover {
-            color: #333;
-            background: rgba(0, 0, 0, 0.1);
+            color: #000;
             transform: scale(1.1);
         }
 
@@ -756,13 +782,13 @@
         }
 
         .text-modal-title {
-            font-size: 26px;
+            font-size: 16px;
             font-weight: bold;
             color: #222;
             font-family: asswat-bold;
             text-align: right;
             direction: rtl;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
             width: 100%;
         }
 
@@ -770,7 +796,7 @@
             margin: 0;
             color: #444;
             font-family: asswat-regular;
-            font-size: 18px;
+            font-size: 16px;
             line-height: 1.8;
             text-align: right;
             direction: rtl;
@@ -1563,8 +1589,19 @@
 
             // Function to close modal
             function closeTextModal() {
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
+                const modalContainer = modal.querySelector('.text-modal-container');
+
+                // Add closing animation classes
+                modal.classList.add('closing');
+                modalContainer.classList.add('closing');
+
+                // Wait for animation to complete before hiding
+                setTimeout(function() {
+                    modal.style.display = 'none';
+                    modal.classList.remove('closing');
+                    modalContainer.classList.remove('closing');
+                    document.body.style.overflow = '';
+                }, 300); // Match animation duration
             }
 
             // Event listeners for closing modal
