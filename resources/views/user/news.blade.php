@@ -356,7 +356,7 @@
 
         .writer-info .bio {
             font-size: 16px;
-            color: #555555;
+            color: #f5f5f5;
             font-family: asswat-regular;
         }
 
@@ -592,22 +592,20 @@
 
         /* Clickable text styling */
         .custom-article-content p .clickable-term {
-            color: #0066cc;
-            text-decoration: underline;
-            cursor: pointer;
-            padding: 2px 4px;
-            border-radius: 3px;
-            transition: background-color 0.2s;
-            background-color: transparent;
-            font-family: asswat-regular !important;
-            font-size: 16px !important;
-        }
-
-        
-
-        .clickable-term:hover {
-            background-color: #e6f2ff;
+            color: #000000;
             text-decoration: none;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 50%;
+            background-color: #7ddcb5;
+            font-family: asswat-bold !important;
+            font-size: 10px !important;
+            vertical-align: super;
+            display: inline-block;
+            line-height: 1;
+            min-width: 18px;
+            height: 18px;
+            text-align: center;
         }
 
         /* Text definition modal */
