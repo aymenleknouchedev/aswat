@@ -606,8 +606,8 @@
             align-items: center;
             justify-content: center;
             line-height: 1;
-            min-width: 13px;
-            height: 13px;
+            min-width: 15px;
+            height: 15px;
             text-align: center;
             aspect-ratio: 1 / 1;
             box-sizing: border-box;
