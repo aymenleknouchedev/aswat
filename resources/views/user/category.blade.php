@@ -56,6 +56,7 @@
 
         .newCategory-all-card-text h2 {
             font-family: asswat-bold;
+            font-size: 22px;
             margin: 0 0 8px 0;
             line-height: 1.4;
         }
