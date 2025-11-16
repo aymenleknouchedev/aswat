@@ -606,6 +606,8 @@
             min-width: 18px;
             height: 18px;
             text-align: center;
+            aspect-ratio: 1 / 1;
+            /* Ensures perfect circle even for double digits */
         }
 
         /* Text definition modal */
