@@ -145,7 +145,7 @@
             font-family: asswat-bold !important;
             font-weight: normal !important;
             font-size: 20px !important;
-            color: #7c7c74 !important;
+            color: #333 !important;
             margin: 0 0 4px 0 !important;
         }
 
