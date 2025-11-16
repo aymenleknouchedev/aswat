@@ -49,6 +49,7 @@
         .newCategory-all-card-text h3 {
             font-family: asswat-regular !important;
             font-weight: normal !important;
+            margin-top: 8px;
             font-size: 16px;
             color: #7c7c74;
             margin: 0 0 4px 0;
