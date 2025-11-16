@@ -148,7 +148,7 @@
         }
 
         .newCategory-all-card-text p {
-             font-size: 15px;
+             font-size: 16px;
             color: #555;
             line-height: 1.5;
             margin: 0;
