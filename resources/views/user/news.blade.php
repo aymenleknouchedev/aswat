@@ -604,7 +604,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            line-height: 1;
+            line-height: 18px;
             min-width: 18px;
             height: 18px;
             text-align: center;
