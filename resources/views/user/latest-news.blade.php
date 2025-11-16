@@ -70,6 +70,7 @@
         .newCategory-all-card-text p {
             font-size: 16px !important;
             line-height: 1.5 !important;
+            color: #555 !important;
             margin: 0 !important;
         }
 
