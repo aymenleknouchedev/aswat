@@ -599,7 +599,7 @@
             border-radius: 50%;
             background-color: #b2ec52;
             font-family: asswat-bold !important;
-            font-size: 8px !important;
+            font-size: 6px !important;
             vertical-align: super;
             display: inline-flex;
             align-items: center;
