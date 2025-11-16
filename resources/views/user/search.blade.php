@@ -50,6 +50,7 @@
 
         .newCategory-all-card-text p {
             font-size: 16px !important;
+            color: #555 !important;
             line-height: 1.5 !important;
             margin: 0 !important;
         }
@@ -66,7 +67,7 @@
            font-family: asswat-regular !important;
             font-weight: normal !important;
             font-size: 16px !important;
-            color: #555 !important;
+            color: #7c7c74 !important;
             margin: 0 0 4px 0 !important;
         }
 
