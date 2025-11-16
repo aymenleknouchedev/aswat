@@ -68,7 +68,7 @@
             font-family: asswat-regular !important;
             font-weight: normal !important;
             font-size: 16px !important;
-            color: #7c7c74 !important;
+            color: #555 !important;
             margin: 0 0 4px 0 !important;
         }
 
