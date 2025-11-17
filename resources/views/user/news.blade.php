@@ -1217,6 +1217,7 @@
                     $day = $date->format('d');
                     $month = $months[$date->format('m')];
                     $year = $date->format('Y');
+                    $time = $date->format('H:i');
                 @endphp
 
                 @php
@@ -1227,7 +1228,7 @@
 
                 <div style="margin-top: 10px" class="custom-date-share">
                     {{-- Date on the RIGHT --}}
-                    <p class="date-text">{{ $day }} {{ $month }} {{ $year }}</p>
+                    <p class="date-text">{{ $day }} {{ $month }} {{ $year }} | {{ $time }}</p>
 
                     {{-- Share on the LEFT --}}
                     <div class="share-container" id="shareContainer">
