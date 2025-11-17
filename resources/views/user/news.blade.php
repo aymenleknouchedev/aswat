@@ -1368,8 +1368,10 @@
                     <div class="sp20" style="margin-top: 16px;"></div>
                     <div class="news-card-horizontal-news">
                         <div class="news-card-image-news">
-                            <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                                alt="{{ $content->title ?? 'News' }}" loading="lazy">
+                            <a href="{{ route('news.show', $content->title) }}">
+                                <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
+                                    alt="{{ $content->title ?? 'News' }}" loading="lazy">
+                            </a>
                         </div>
                         <div class="news-card-text-news">
                             <a href="{{ route('news.show', $content->title) }}"
@@ -1392,8 +1394,10 @@
             <div class="economy-grid-container-news">
                 @foreach ($relatedNews as $item)
                     <div class="economy-card-news">
-                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                            alt="{{ $item->title ?? '' }}" loading="lazy">
+                        <a href="{{ route('news.show', $item->title) }}">
+                            <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                alt="{{ $item->title ?? '' }}" loading="lazy">
+                        </a>
 
                         <h3>
                             <x-category-links :content="$item" />
