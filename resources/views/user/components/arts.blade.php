@@ -53,8 +53,10 @@
     <div class="arts-grid-container">
         @foreach ($arts as $item)
             <div class="arts-card">
-                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                    alt="{{ $item->title ?? '' }}">
+                <a href="{{ route('news.show', $item->title) }}">
+                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $item->title ?? '' }}">
+                </a>
                 <h3>
                     <x-category-links :content="$item" />
 

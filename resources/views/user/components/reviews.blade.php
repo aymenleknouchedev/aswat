@@ -95,7 +95,9 @@
                 <div class="review-card">
                     <div class="review-card-image">
                         @if ($firstWriter && $firstWriter->image)
-                            <img src="{{ $firstWriter->image }}" alt="{{ $firstWriter->name }}">
+                            <a href="{{ route('writer.show', $firstWriter->id) }}">
+                                <img src="{{ $firstWriter->image }}" alt="{{ $firstWriter->name }}">
+                            </a>
                         @else
                             <img src="{{ asset('user/assets/images/b2.jpeg') }}" alt="خبر">
                         @endif

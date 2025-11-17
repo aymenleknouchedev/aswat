@@ -55,8 +55,10 @@
     <div class="economy-grid-container">
         @foreach ($economy as $item)
             <div class="economy-card">
-                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                    alt="{{ $item->title ?? '' }}">
+                <a href="{{ route('news.show', $item->title) }}">
+                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $item->title ?? '' }}">
+                </a>
                 <h3>
                     <x-category-links :content="$item" />
 

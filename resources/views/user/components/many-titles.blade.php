@@ -141,8 +141,10 @@
                 @if (isset($technology[0]))
                     <div class="many-titles-feature-m">
                         <div class="top">
-                            <img src="{{ $technology[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                alt="{{ $technology[0]->title ?? '' }}">
+                            <a href="{{ route('news.show', $technology[0]->title) }}">
+                                <img src="{{ $technology[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $technology[0]->title ?? '' }}">
+                            </a>
                             <h3>
                                 <x-category-links :content="$technology[0]" />
 
@@ -160,8 +162,10 @@
                 @foreach ($technology->slice(1, 2) as $item)
                     <div class="many-titles-card">
                         <div class="many-titles-card-image">
-                            <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                alt="{{ $item->title ?? '' }}">
+                            <a href="{{ route('news.show', $item->title) }}">
+                                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $item->title ?? '' }}">
+                            </a>
                         </div>
                         <div class="many-titles-card-text">
                             <span>
@@ -192,8 +196,10 @@
                 @if (isset($health[0]))
                     <div class="many-titles-feature-m">
                         <div class="top">
-                            <img src="{{ $health[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                alt="{{ $health[0]->title ?? '' }}">
+                            <a href="{{ route('news.show', $health[0]->title) }}">
+                                <img src="{{ $health[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $health[0]->title ?? '' }}">
+                            </a>
                             <h3>
                                 <x-category-links :content="$health[0]" />
 
@@ -211,8 +217,10 @@
                 @foreach ($health->slice(1, 2) as $item)
                     <div class="many-titles-card">
                         <div class="many-titles-card-image">
-                            <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                alt="{{ $item->title ?? '' }}">
+                            <a href="{{ route('news.show', $item->title) }}">
+                                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $item->title ?? '' }}">
+                            </a>
                         </div>
                         <div class="many-titles-card-text">
                             <span>
@@ -242,8 +250,10 @@
                 @if (isset($environment[0]))
                     <div class="many-titles-feature-m">
                         <div class="top">
-                            <img src="{{ $environment[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                alt="{{ $environment[0]->title ?? '' }}">
+                            <a href="{{ route('news.show', $environment[0]->title) }}">
+                                <img src="{{ $environment[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $environment[0]->title ?? '' }}">
+                            </a>
                             <h3>
                                 <x-category-links :content="$environment[0]" />
 
@@ -261,8 +271,10 @@
                 @foreach ($environment->slice(1, 2) as $item)
                     <div class="many-titles-card">
                         <div class="many-titles-card-image">
-                            <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                alt="{{ $item->title ?? '' }}">
+                            <a href="{{ route('news.show', $item->title) }}">
+                                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $item->title ?? '' }}">
+                            </a>
                         </div>
                         <div class="many-titles-card-text">
                             <span>

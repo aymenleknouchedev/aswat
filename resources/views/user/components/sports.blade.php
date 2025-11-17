@@ -95,8 +95,10 @@
     <div class="sport-grid-container">
         <!-- Column 1 -->
         <div class="sport-feature">
-            <img src="{{ $sports[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                alt="{{ $sports[0]->title ?? '' }}">
+            <a href="{{ route('news.show', $sports[0]->title) }}">
+                <img src="{{ $sports[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="{{ $sports[0]->title ?? '' }}">
+            </a>
             <h3>
                 <x-category-links :content="$sports[0]" />
             </h3>
@@ -108,8 +110,10 @@
 
         <!-- Column 2 -->
         <div class="sport-feature">
-            <img src="{{ $sports[1]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                alt="{{ $sports[1]->title ?? '' }}">
+            <a href="{{ route('news.show', $sports[1]->title) }}">
+                <img src="{{ $sports[1]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="{{ $sports[1]->title ?? '' }}">
+            </a>
             <h3>
                 <x-category-links :content="$sports[1]" />
             </h3>
@@ -125,8 +129,10 @@
                 @if (isset($sports[$i]))
                     <div class="sport-card-horizontal">
                         <div class="sport-card-image">
-                            <img src="{{ $sports[$i]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                alt="{{ $sports[$i]->title ?? '' }}">
+                            <a href="{{ route('news.show', $sports[$i]->title) }}">
+                                <img src="{{ $sports[$i]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $sports[$i]->title ?? '' }}">
+                            </a>
                         </div>
                         <div class="sport-card-text">
                             <h3>

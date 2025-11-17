@@ -89,8 +89,10 @@
     <div class="world-grid-container">
         <!-- Right column: big feature -->
         <div class="world-feature">
-            <img src="{{ $world[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                alt="{{ $world[0]->title ?? '' }}">
+            <a href="{{ route('news.show', $world[0]->title) }}">
+                <img src="{{ $world[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="{{ $world[0]->title ?? '' }}">
+            </a>
 
             <h3>
                 <x-category-links :content="$world[0]" />
@@ -107,8 +109,10 @@
             @if (isset($world[1]))
                 @php $item = $world[1]; @endphp
                 <div class="world-feature-m">
-                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="{{ $item->title ?? '' }}">
+                    <a href="{{ route('news.show', $item->title) }}">
+                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                            alt="{{ $item->title ?? '' }}">
+                    </a>
                     <h3>
                         <x-category-links :content="$item" />
 
@@ -122,8 +126,10 @@
             @if (isset($world[2]))
                 @php $item = $world[2]; @endphp
                 <div class="world-feature-m">
-                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="{{ $item->title ?? '' }}">
+                    <a href="{{ route('news.show', $item->title) }}">
+                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                            alt="{{ $item->title ?? '' }}">
+                    </a>
                     <h3>
                         <x-category-links :content="$item" />
 
@@ -140,8 +146,10 @@
             @if (isset($world[3]))
                 @php $item = $world[3]; @endphp
                 <div class="world-feature-m">
-                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="{{ $item->title ?? '' }}">
+                    <a href="{{ route('news.show', $item->title) }}">
+                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                            alt="{{ $item->title ?? '' }}">
+                    </a>
                     <h3>
                         <x-category-links :content="$item" />
                     </h3>
@@ -154,8 +162,10 @@
             @if (isset($world[4]))
                 @php $item = $world[4]; @endphp
                 <div class="world-feature-m">
-                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="{{ $item->title ?? '' }}">
+                    <a href="{{ route('news.show', $item->title) }}">
+                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                            alt="{{ $item->title ?? '' }}">
+                    </a>
                     <h3>
                         <x-category-links :content="$item" />
                     </h3>

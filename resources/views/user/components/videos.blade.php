@@ -73,16 +73,17 @@
     <div class="videos-grid-container container">
         @foreach ($videos as $item)
             <div class="videos-card">
-                <div class="image-wrapper">
-                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="{{ $item->title ?? '' }}">
-                    <div class="video-icon">
-                        @include('user.icons.play')
+                <a href="{{ route('news.show', $item->title) }}">
+                    <div class="image-wrapper">
+                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                            alt="{{ $item->title ?? '' }}">
+                        <div class="video-icon">
+                            @include('user.icons.play')
+                        </div>
                     </div>
-                </div>
+                </a>
                 <h3>
                     <x-category-links :content="$item" />
-
                 </h3>
                 <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
                     <h2>{{ $item->title ?? '' }}</h2>

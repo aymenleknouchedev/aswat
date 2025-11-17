@@ -131,8 +131,10 @@
     <div class="people-grid-container">
         <!-- Right: big feature -->
         <div class="people-feature">
-            <img src="{{ $people[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                alt="{{ $people[0]->title ?? '' }}">
+            <a href="{{ route('news.show', $people[0]->title) }}">
+                <img src="{{ $people[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="{{ $people[0]->title ?? '' }}">
+            </a>
             <div class="buttom-side">
                 <h3>
                     <x-category-links :content="$people[0]" />
@@ -149,8 +151,10 @@
         <div class="people-list">
             @foreach ($people->slice(1, 2) as $person)
                 <div class="people-feature-m">
-                    <img src="{{ $person->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="{{ $person->title ?? '' }}">
+                    <a href="{{ route('news.show', $person->title) }}">
+                        <img src="{{ $person->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                            alt="{{ $person->title ?? '' }}">
+                    </a>
                     <h3>
                         <x-category-links :content="$person" />
 
