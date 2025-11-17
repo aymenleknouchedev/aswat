@@ -53,8 +53,10 @@
     <div class="check-grid-container">
         @foreach ($cheeck as $item)
             <div class="check-card">
-                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                    alt="{{ $item->title ?? '' }}">
+                <a href="{{ route('news.show', $item->title) }}">
+                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $item->title ?? '' }}">
+                </a>
                 <h3>
                     <x-category-links :content="$item" />
 

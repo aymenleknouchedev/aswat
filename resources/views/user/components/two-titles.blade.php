@@ -201,11 +201,12 @@
         <div class="two-titles-right-card">
             <div class="second-grid">
                 <div class="sport-feature">
-                    <img src="{{ $variety[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="{{ $variety[0]->title ?? '' }}">
+                    <a href="{{ route('news.show', $variety[0]->title) }}">
+                        <img src="{{ $variety[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                            alt="{{ $variety[0]->title ?? '' }}">
+                    </a>
                     <h3>
                         <x-category-links :content="$variety[0]" />
-
                     </h3>
                     <a href="{{ route('news.show', $variety[0]->title) }}"
                         style="text-decoration: none; color: inherit;">
@@ -218,8 +219,10 @@
                     @foreach ($variety->slice(1, 4) as $variet)
                         <div class="two-titles-files-card">
                             <div class="two-titles-files-card-image">
-                                <img src="{{ $variet->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                    alt="{{ $variet->title ?? '' }}">
+                                <a href="{{ route('news.show', $variet->title) }}">
+                                    <img src="{{ $variet->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                        alt="{{ $variet->title ?? '' }}">
+                                </a>
                             </div>
                             <div class="two-titles-files-card-text">
                                 <span>

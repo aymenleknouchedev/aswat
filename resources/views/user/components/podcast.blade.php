@@ -72,13 +72,15 @@
     <div class="podcasts-grid-container container">
         @foreach ($podcasts as $podcast)
             <div class="podcasts-card">
-                <div class="image-wrapper">
-                    <img src="{{ $podcast->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="{{ $podcast->title ?? '' }}">
-                    <div class="video-icon">
-                        @include('user.icons.headphones')
+                <a href="{{ route('news.show', $podcast->title) }}">
+                    <div class="image-wrapper">
+                        <img src="{{ $podcast->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                            alt="{{ $podcast->title ?? '' }}">
+                        <div class="video-icon">
+                            @include('user.icons.headphones')
+                        </div>
                     </div>
-                </div>
+                </a>
                 <h3>
                     <x-category-links :content="$podcast" />
 
