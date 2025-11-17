@@ -527,26 +527,26 @@
                 }
                 const fallbackThumb = 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg';
                 const visual =
-                    `<img class="media-thumb" src="${fallbackThumb}" alt="${media.title || ''}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous">`;
+                    `<img class="media-thumb" src="${fallbackThumb}" alt="${media.title || ''}" loading="lazy">`;
                 return wrap(visual, media.title || 'YouTube', 'يوتيوب');
             }
 
             if (type === 'video') {
                 const safe = this.maybeProxy(url);
-                const visual = `<video src="${safe}" controls preload="metadata" crossorigin="anonymous"></video>`;
+                const visual = `<video src="${safe}" controls preload="metadata"></video>`;
                 return wrap(visual, media.title || 'ملف فيديو', 'فيديو');
             }
 
             if (type === 'audio') {
                 const safe = this.maybeProxy(url);
                 const visual =
-                    `<audio src="${safe}" controls preload="metadata" crossorigin="anonymous" style="width:100%"></audio>`;
+                    `<audio src="${safe}" controls preload="metadata" style="width:100%"></audio>`;
                 return wrap(visual, media.title || 'ملف صوت', 'صوت', true);
             }
 
             const safeImg = this.maybeProxy(url);
             const visual =
-                `<img class="media-thumb" src="${safeImg}" alt="${media.title || ''}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`;
+                `<img class="media-thumb" src="${safeImg}" alt="${media.title || ''}" loading="lazy" onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`;
             return wrap(visual, media.title || 'بدون عنوان', this.getFileTypeLabel(type));
         }
 
@@ -646,7 +646,6 @@
                 return `
         <div class="summary-item">
           <img src="${thumb}" alt="${media.title || ''}" loading="lazy"
-               referrerpolicy="no-referrer" crossorigin="anonymous"
                onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">
           <div class="summary-info">
             <h6>${media.title || 'بدون عنوان'}</h6>
