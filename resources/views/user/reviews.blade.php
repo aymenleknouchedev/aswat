@@ -210,13 +210,15 @@
             {{-- Feature Section --}}
             @if (isset($reviews) && count($reviews) > 0 && isset($reviews[0]))
                 <div class="custom-photos-feature">
-                    <div class="custom-image-wrapper">
-                        <img src="{{ $reviews[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
-                            alt="{{ $reviews[0]->title ?? 'رأي مميز' }}">
-                        <div class="custom-corner-icon">
-                            @include('user.icons.image')
+                    <a href="{{ route('news.show', $reviews[0]->title ?? '') }}">
+                        <div class="custom-image-wrapper">
+                            <img src="{{ $reviews[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                alt="{{ $reviews[0]->title ?? 'رأي مميز' }}">
+                            <div class="custom-corner-icon">
+                                @include('user.icons.image')
+                            </div>
                         </div>
-                    </div>
+                    </a>
                     <div class="custom-content">
                         <h3>
                             @if ($reviews[0]->writer && $reviews[0]->writer->name)
