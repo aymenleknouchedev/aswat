@@ -1309,6 +1309,13 @@
                         {{-- ===== SUBMIT BUTTONS ===== --}}
 
                         <div class="mt-4 d-flex">
+                            <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="تحديث" data-en="Update"
+                                id="updateButton" data-action="update">تحديث</button>
+
+                            <a href="{{ route('news.show', $content->title) }}" target="_blank"
+                                class="btn btn-secondary btn-lg" style="margin-left: 10px;">
+                                معاينة
+                            </a>
                             @canDo('publish_content')
                             @if ($content->status === 'draft')
                                 <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر"
@@ -1321,13 +1328,7 @@
                             @endif
                             @endcanDo
 
-                            <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="تحديث" data-en="Update"
-                                id="updateButton" data-action="update">تحديث</button>
-
-                            <a href="{{ route('news.show', $content->title) }}" target="_blank"
-                                class="btn btn-secondary btn-lg" style="margin-left: 10px;">
-                                معاينة
-                            </a>
+                            
                         </div>
                     </div>
 
