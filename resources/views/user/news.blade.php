@@ -925,6 +925,61 @@
             transform: scale(1.2);
         }
 
+        .fullscreen-image-prev,
+        .fullscreen-image-next {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: #fff;
+            font-size: 60px;
+            cursor: pointer;
+            padding: 20px 15px;
+            width: 60px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10003;
+            font-family: Arial, sans-serif;
+            font-weight: 100;
+        }
+
+        .fullscreen-image-prev {
+            right: 20px;
+        }
+
+        .fullscreen-image-next {
+            left: 20px;
+        }
+
+        .fullscreen-image-prev:hover,
+        .fullscreen-image-next:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .fullscreen-image-prev:disabled,
+        .fullscreen-image-next:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .fullscreen-image-counter {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-family: asswat-medium;
+            font-size: 16px;
+            z-index: 10003;
+        }
+
         .fullscreen-image-caption {
             position: absolute;
             bottom: 0;
@@ -936,6 +991,16 @@
             text-align: right;
             font-family: asswat-regular;
             direction: rtl;
+        }
+
+        /* Make content images clickable */
+        .custom-article-content img {
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .custom-article-content img:hover {
+            opacity: 0.9;
         }
 
         @media (max-width: 768px) {
@@ -977,6 +1042,35 @@
 
             .economy-grid-container-news {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .fullscreen-image-prev,
+            .fullscreen-image-next {
+                font-size: 40px;
+                width: 50px;
+                height: 60px;
+                padding: 10px 8px;
+            }
+
+            .fullscreen-image-prev {
+                right: 10px;
+            }
+
+            .fullscreen-image-next {
+                left: 10px;
+            }
+
+            .fullscreen-image-counter {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+
+            .fullscreen-image-close {
+                font-size: 32px;
+                width: 40px;
+                height: 40px;
+                top: 15px;
+                right: 15px;
             }
         }
 
@@ -1424,8 +1518,13 @@
         <div class="fullscreen-image-container">
             <button class="fullscreen-image-close" id="fullscreenImageClose" type="button"
                 aria-label="إغلاق">×</button>
+            <button class="fullscreen-image-prev" id="fullscreenImagePrev" type="button"
+                aria-label="الصورة السابقة">‹</button>
+            <button class="fullscreen-image-next" id="fullscreenImageNext" type="button"
+                aria-label="الصورة التالية">›</button>
             <img id="fullscreenImageContent" src="" alt="صورة بحجم كامل">
             <div class="fullscreen-image-caption" id="fullscreenImageCaption"></div>
+            <div class="fullscreen-image-counter" id="fullscreenImageCounter"></div>
         </div>
     </div>
 
@@ -1657,48 +1756,140 @@
             });
         }
 
-        // ================= FULLSCREEN IMAGE MODAL FUNCTIONALITY =================
+        // ================= FULLSCREEN IMAGE GALLERY FUNCTIONALITY =================
         const fullscreenModal = document.getElementById('fullscreenImageModal');
         const fullscreenImageContent = document.getElementById('fullscreenImageContent');
         const fullscreenImageCaption = document.getElementById('fullscreenImageCaption');
+        const fullscreenImageCounter = document.getElementById('fullscreenImageCounter');
         const fullscreenImageClose = document.getElementById('fullscreenImageClose');
-        const featureImages = document.querySelectorAll('.feature-image-clickable');
+        const fullscreenImagePrev = document.getElementById('fullscreenImagePrev');
+        const fullscreenImageNext = document.getElementById('fullscreenImageNext');
 
-        // Open fullscreen image modal
-        featureImages.forEach(img => {
-            img.addEventListener('click', function() {
-                const fullImagePath = this.getAttribute('data-full-image');
-                const caption = this.getAttribute('alt') || '{{ $news->caption ?? '' }}';
+        // Gallery state
+        let galleryImages = [];
+        let currentImageIndex = 0;
 
-                if (fullImagePath) {
-                    fullscreenImageContent.src = fullImagePath;
-                    fullscreenImageCaption.textContent = caption;
-                    fullscreenModal.classList.add('active');
-                    document.body.style.overflow = 'hidden'; // Prevent body scroll
-                }
+        // Initialize gallery
+        function initializeGallery() {
+            galleryImages = [];
+
+            // Add feature image if exists
+            const featureImage = document.querySelector('.feature-image-clickable');
+            if (featureImage) {
+                galleryImages.push({
+                    src: featureImage.getAttribute('data-full-image'),
+                    caption: featureImage.getAttribute('alt') || '{{ $news->caption ?? '' }}',
+                    element: featureImage
+                });
+            }
+
+            // Add all content images
+            const contentImages = document.querySelectorAll('.custom-article-content img');
+            contentImages.forEach(img => {
+                // Skip if image is inside a figure with caption (will be handled separately)
+                const figure = img.closest('figure');
+                const caption = figure ? (figure.querySelector('figcaption')?.textContent || img.getAttribute('alt') || '') : (img.getAttribute('alt') || '');
+
+                galleryImages.push({
+                    src: img.src,
+                    caption: caption,
+                    element: img
+                });
             });
-        });
 
-        // Close fullscreen image modal
-        function closeFullscreenImageModal() {
-            fullscreenModal.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Restore body scroll
+            // Add click handlers to all gallery images
+            galleryImages.forEach((imageData, index) => {
+                imageData.element.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openGallery(index);
+                });
+            });
         }
 
-        // Close button click
-        fullscreenImageClose.addEventListener('click', closeFullscreenImageModal);
+        // Open gallery at specific index
+        function openGallery(index) {
+            currentImageIndex = index;
+            showCurrentImage();
+            fullscreenModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            updateNavigationButtons();
+        }
 
-        // Close on backdrop click (modal container)
+        // Show current image
+        function showCurrentImage() {
+            if (galleryImages.length === 0) return;
+
+            const currentImage = galleryImages[currentImageIndex];
+            fullscreenImageContent.src = currentImage.src;
+            fullscreenImageCaption.textContent = currentImage.caption;
+
+            // Update counter (1-based index for display)
+            fullscreenImageCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+
+            updateNavigationButtons();
+        }
+
+        // Update navigation button states
+        function updateNavigationButtons() {
+            fullscreenImagePrev.disabled = currentImageIndex === galleryImages.length - 1;
+            fullscreenImageNext.disabled = currentImageIndex === 0;
+
+            // Hide buttons if only one image
+            if (galleryImages.length <= 1) {
+                fullscreenImagePrev.style.display = 'none';
+                fullscreenImageNext.style.display = 'none';
+                fullscreenImageCounter.style.display = 'none';
+            } else {
+                fullscreenImagePrev.style.display = 'flex';
+                fullscreenImageNext.style.display = 'flex';
+                fullscreenImageCounter.style.display = 'block';
+            }
+        }
+
+        // Navigate to previous image
+        function showPreviousImage() {
+            if (currentImageIndex < galleryImages.length - 1) {
+                currentImageIndex++;
+                showCurrentImage();
+            }
+        }
+
+        // Navigate to next image
+        function showNextImage() {
+            if (currentImageIndex > 0) {
+                currentImageIndex--;
+                showCurrentImage();
+            }
+        }
+
+        // Close gallery
+        function closeFullscreenImageModal() {
+            fullscreenModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Event listeners
+        fullscreenImageClose.addEventListener('click', closeFullscreenImageModal);
+        fullscreenImagePrev.addEventListener('click', showPreviousImage);
+        fullscreenImageNext.addEventListener('click', showNextImage);
+
+        // Close on backdrop click
         fullscreenModal.addEventListener('click', function(e) {
             if (e.target === fullscreenModal) {
                 closeFullscreenImageModal();
             }
         });
 
-        // Close on Escape key
+        // Keyboard navigation
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && fullscreenModal.classList.contains('active')) {
-                closeFullscreenImageModal();
+            if (fullscreenModal.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closeFullscreenImageModal();
+                } else if (e.key === 'ArrowLeft') {
+                    showNextImage();
+                } else if (e.key === 'ArrowRight') {
+                    showPreviousImage();
+                }
             }
         });
 
@@ -1706,6 +1897,9 @@
         fullscreenModal.querySelector('.fullscreen-image-container').addEventListener('click', function(e) {
             e.stopPropagation();
         });
+
+        // Initialize gallery when page loads
+        initializeGallery();
     </script>
 
     {{-- ================= MOBILE ================= --}}
