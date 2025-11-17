@@ -1720,9 +1720,9 @@
                     modalImage.src = definition.image;
                     modalImage.alt = definition.content || 'صورة التعريف';
 
-                    // Add click handler to open image in fullscreen
+                    // Add click handler to open image in fullscreen without caption
                     modalImage.onclick = function() {
-                        openSingleImage(this.src, this.alt || term);
+                        openSingleImage(this.src, '');
                     };
                 } else {
                     modalImageContainer.style.display = 'none';
