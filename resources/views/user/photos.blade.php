@@ -96,14 +96,16 @@
 
         @if ($featured)
             <div class="custom-photos-feature">
-                <div class="custom-image-wrapper">
-                    <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
-                        alt="{{ $featured->title }}"
-                        style="aspect-ratio: 16 / 9; object-fit: cover; width: 100%; display: block;">
-                    <div class="custom-corner-icon">
-                        @include('user.icons.image')
+                <a href="{{ route('news.show', $featured->title) }}">
+                    <div class="custom-image-wrapper">
+                        <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
+                            alt="{{ $featured->title }}"
+                            style="aspect-ratio: 16 / 9; object-fit: cover; width: 100%; display: block;">
+                        <div class="custom-corner-icon">
+                            @include('user.icons.image')
+                        </div>
                     </div>
-                </div>
+                </a>
                 <div class="custom-content">
                     <h3><x-category-links :content="$featured" /></h3>
                     <a href="{{ route('news.show', $featured->title) }}" style="text-decoration: none; color: inherit;">

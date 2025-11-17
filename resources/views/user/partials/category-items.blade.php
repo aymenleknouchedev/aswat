@@ -18,8 +18,10 @@
 
         <!-- Image -->
         <div class="newCategory-all-card-image">
-            <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}" 
-                 alt="{{ $item->title }}">
+            <a href="{{ route('news.show', $item->title) }}">
+                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
+                     alt="{{ $item->title }}">
+            </a>
         </div>
 
         <!-- Text -->

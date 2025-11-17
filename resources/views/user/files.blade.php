@@ -96,10 +96,12 @@
 
         @if ($featured)
             <div class="custom-files-feature">
-                <div class="custom-image-wrapper">
-                    <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
-                        alt="{{ $featured->title }}">
-                </div>
+                <a href="{{ route('news.show', $featured->title) }}">
+                    <div class="custom-image-wrapper">
+                        <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
+                            alt="{{ $featured->title }}">
+                    </div>
+                </a>
                 <div class="custom-content">
                     <h3> <x-category-links :content="$featured" /></h3>
                     <a href="{{ route('news.show', $featured->title) }}" style="text-decoration: none; color: inherit;">

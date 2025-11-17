@@ -31,7 +31,7 @@
 
         <div class="newCategory-all-card-text">
             <h3><x-category-links :content="$item" /></h3>
-            <a href="{{ route('news.show', $item->title ?? Str::slug($item->title)) }}"
+            <a href="{{ route('news.show', $item->title) }}"
                 style="text-decoration: none; color: inherit;">
                 <h2>{{ $item->title }}</h2>
             </a>
