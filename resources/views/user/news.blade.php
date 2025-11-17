@@ -847,6 +847,12 @@
             max-width: 100%;
             max-height: 150px;
             object-fit: contain;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        #textModalImage:hover {
+            opacity: 0.9;
         }
 
         /* Full-screen image viewer */
@@ -1024,6 +1030,7 @@
                 height: auto;
                 max-width: 100%;
                 max-height: 300px;
+                cursor: pointer;
             }
 
             .text-modal-body p {
@@ -1712,8 +1719,14 @@
                     modalImageContainer.style.display = 'block';
                     modalImage.src = definition.image;
                     modalImage.alt = definition.content || 'صورة التعريف';
+
+                    // Add click handler to open image in fullscreen
+                    modalImage.onclick = function() {
+                        openSingleImage(this.src, this.alt || term);
+                    };
                 } else {
                     modalImageContainer.style.display = 'none';
+                    modalImage.onclick = null;
                 }
 
                 modal.style.display = 'block';
