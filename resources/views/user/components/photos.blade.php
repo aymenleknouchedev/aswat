@@ -1,11 +1,13 @@
 <div class="photos-feature">
-    <div class="image-wrapper">
-        <img id="photoImage" src="{{ $photos[0]->media()->wherePivot('type', 'main')->first()->path }}"
-            alt="Feature Algeria">
-        <div class="corner-icon">
-            @include('user.icons.image')
+    <a href="{{ route('news.show', $photos[0]->title) }}">
+        <div class="image-wrapper">
+            <img id="photoImage" src="{{ $photos[0]->media()->wherePivot('type', 'main')->first()->path }}"
+                alt="Feature Algeria">
+            <div class="corner-icon">
+                @include('user.icons.image')
+            </div>
         </div>
-    </div>
+    </a>
 
     <div class="content">
         <h3 id="photoCategory">
