@@ -207,7 +207,9 @@
     <div class="algeria-grid-container">
         @if (isset($algeria) && count($algeria) >= 4)
             <div class="algeria-feature">
-                <img src="{{ $algeria[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature algeria">
+                <a href="{{ route('news.show', $algeria[0]->title) }}">
+                    <img src="{{ $algeria[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature algeria">
+                </a>
                 <h3>
                     <x-category-links :content="$algeria[0]" />
                 </h3>
@@ -219,8 +221,10 @@
 
             <div class="algeria-list">
                 <div class="algeria-feature-m">
-                    <img src="{{ $algeria[1]->media()->wherePivot('type', 'main')->first()->path }}"
-                        alt="Feature algeria small">
+                    <a href="{{ route('news.show', $algeria[1]->title) }}">
+                        <img src="{{ $algeria[1]->media()->wherePivot('type', 'main')->first()->path }}"
+                            alt="Feature algeria small">
+                    </a>
                     <h3>
                         <x-category-links :content="$algeria[1]" />
 
@@ -235,8 +239,10 @@
                 <div class="algeria-list-div">
                     <div class="news-card-horizontal">
                         <div class="news-card-image">
-                            <img src="{{ $algeria[2]->media()->wherePivot('type', 'main')->first()->path }}"
-                                alt="{{ $algeria[2]->title }}">
+                            <a href="{{ route('news.show', $algeria[2]->title) }}">
+                                <img src="{{ $algeria[2]->media()->wherePivot('type', 'main')->first()->path }}"
+                                    alt="{{ $algeria[2]->title }}">
+                            </a>
                         </div>
                         <div class="news-card-text">
                             <h3>
@@ -252,8 +258,10 @@
 
                     <div class="news-card-horizontal">
                         <div class="news-card-image">
-                            <img src="{{ $algeria[3]->media()->wherePivot('type', 'main')->first()->path }}"
-                                alt="{{ $algeria[3]->title }}">
+                            <a href="{{ route('news.show', $algeria[3]->title) }}">
+                                <img src="{{ $algeria[3]->media()->wherePivot('type', 'main')->first()->path }}"
+                                    alt="{{ $algeria[3]->title }}">
+                            </a>
                         </div>
                         <div class="news-card-text">
                             <h3>
