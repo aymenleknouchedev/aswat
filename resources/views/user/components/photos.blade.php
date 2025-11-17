@@ -38,7 +38,8 @@
     .photos-feature .image-wrapper {
         position: relative;
         width: 100%;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 4 / 3;
+
         overflow: hidden;
     }
 

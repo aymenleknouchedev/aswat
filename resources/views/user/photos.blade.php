@@ -37,7 +37,7 @@
 
             .custom-photos-feature img {
                 width: 100%;
-                aspect-ratio: 4 / 3;
+                height: 100%;
                 object-fit: cover;
                 display: block;
             }
