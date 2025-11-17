@@ -9,6 +9,7 @@ class Writer extends Model
     protected $fillable = [
         'name',
         'slug',
+        'bio',
         'image',      // لو خزن صورة واحدة
         // 'images',   // لو حابب تخزن صور متعددة كـ JSON
         'facebook',

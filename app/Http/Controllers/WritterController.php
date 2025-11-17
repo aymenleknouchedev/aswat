@@ -58,7 +58,7 @@ class WritterController extends BaseController
             $validated = $request->validate([
                 'name' => 'required|string|max:150|unique:writers,name',
                 'slug' => 'required|string|max:150',
-                'bio' => 'string|max:200',
+                'bio' => 'nullable|string|max:200',
                 'image' => 'required',
                 'facebook' => 'nullable|url',
                 'x' => 'nullable|url',
@@ -99,7 +99,7 @@ class WritterController extends BaseController
             $validated = $request->validate([
                 'name' => 'required|string|max:150',
                 'slug' => 'required|string|max:150|unique:writers,slug,' . $writer->id,
-                'bio' => 'string|max:200',
+                'bio' => 'nullable|string|max:200',
                 'image.*' => 'nullable',
                 'facebook' => 'nullable|url',
                 'x' => 'nullable|url',
