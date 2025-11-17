@@ -966,8 +966,7 @@
 
         .fullscreen-image-prev:disabled,
         .fullscreen-image-next:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
+            display: none;
         }
 
         .fullscreen-image-counter {
