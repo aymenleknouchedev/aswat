@@ -43,7 +43,7 @@
         <div class="site-container site-breaking-news-container">
             <div class="site-breaking-news-content">
                 <span class="site-breaking-label" style="font-weight: bold;">عاجل</span>
-                <p class="site-breaking-text" id="site-breaking-text" style="font-weight: bold;"></p>
+                <p class="site-breaking-text" id="site-breaking-text"></p>
             </div> <button class="site-close-breaking" aria-label="إغلاق">✖</button>
         </div>
     </nav>
