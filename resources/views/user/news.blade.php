@@ -987,7 +987,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: none;
+            background: rgba(0, 0, 0, 0.7);
             color: #fff;
             padding: 15px 25px;
             text-align: right;
@@ -1826,7 +1826,14 @@
         function openSingleImage(imagePath, caption) {
             isGalleryMode = false;
             fullscreenImageContent.src = imagePath;
-            fullscreenImageCaption.textContent = caption;
+
+            // Show or hide caption based on whether caption exists
+            if (caption && caption.trim() !== '') {
+                fullscreenImageCaption.textContent = caption;
+                fullscreenImageCaption.style.display = 'block';
+            } else {
+                fullscreenImageCaption.style.display = 'none';
+            }
 
             // Hide navigation controls for single image
             fullscreenImagePrev.style.display = 'none';
@@ -1854,6 +1861,7 @@
             const currentImage = galleryImages[currentImageIndex];
             fullscreenImageContent.src = currentImage.src;
             fullscreenImageCaption.textContent = currentImage.caption;
+            fullscreenImageCaption.style.display = 'block'; // Always show caption in gallery mode
 
             // Update counter (1-based index for display)
             fullscreenImageCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
