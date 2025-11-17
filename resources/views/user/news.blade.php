@@ -987,7 +987,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: none;
             color: #fff;
             padding: 15px 25px;
             text-align: right;
