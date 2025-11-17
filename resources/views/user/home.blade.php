@@ -94,10 +94,12 @@
                         <h2 class="art-section-title">{{ $principalTrend->trend->title ?? '' }}</h2>
 
                         <div class="art-section-grid">
-                            @foreach (($trends) as $content)
+                            @foreach ($trends as $content)
                                 <div class="art-section-card">
-                                    <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
-                                        alt="{{ $content->title }}">
+                                    <a href="{{ route('news.show', $content->title) }}">
+                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
+                                            alt="{{ $content->title }}">
+                                    </a>
                                     <a href="{{ route('news.show', $content->title) }}"
                                         style="text-decoration: none; color: inherit;">
                                         <h2>{{ $content->title }}</h2>
@@ -146,7 +148,7 @@
         @endforeach
 
 
-       
+
 
         {{-- Arts Section --}}
         @php
