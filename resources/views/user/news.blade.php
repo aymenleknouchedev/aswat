@@ -928,7 +928,7 @@
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
+            background: none;
             border: none;
             color: #fff;
             font-size: 60px;
@@ -955,7 +955,7 @@
 
         .fullscreen-image-prev:hover,
         .fullscreen-image-next:hover {
-            background: rgba(0, 0, 0, 0.8);
+            transform: translateY(-50%) scale(1.2);
         }
 
         .fullscreen-image-prev:disabled,
