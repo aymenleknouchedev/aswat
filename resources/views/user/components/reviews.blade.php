@@ -111,7 +111,7 @@
                                 <span>{{ $firstWriter->name }}</span>
                             </a>
                         @else
-                            <span>بدون كاتب</span>
+                            <span></span>
                         @endif
                         <a href="{{ route('news.show', $review->title) }}" style="text-decoration: none; color: inherit;">
                             <p>{{ $review->title ?? '' }}</p>
