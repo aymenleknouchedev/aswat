@@ -188,7 +188,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="bio" data-en="Bio" data-ar="نبذة">نبذة</label>
                                 <div class="form-control-wrap">
-                                    <textarea name="bio" class="form-control" id="bio" rows="4" maxlength="200" required>{{ old('bio', $writer->bio) }}</textarea>
+                                    <textarea name="bio" class="form-control" id="bio" rows="4" maxlength="200">{{ old('bio', $writer->bio) }}</textarea>
                                     <small class="text-muted">
                                         <span id="bio-count">{{ strlen(old('bio', $writer->bio)) }}</span>
                                         / 200
