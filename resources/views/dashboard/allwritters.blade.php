@@ -91,7 +91,8 @@
                                             <tr class="tb-odr-item">
                                                 <td>
                                                     <a
-                                                        href="{{ route('writer.show', $writer->id) }}">
+                                                        href="{{ route('writer.show', $writer->id) }}"
+                                                        style="color: #000;">
                                                         {{ $writer->name }}
                                                     </a>
                                                 </td>
