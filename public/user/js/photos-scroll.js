@@ -22,6 +22,8 @@ const photoCategory = document.getElementById('photoCategory');
 const photoTitle = document.getElementById('photoTitle');
 const photoDescription = document.getElementById('photoDescription');
 const content = document.querySelector('.photos-feature .content');
+const photoLink = document.querySelector('.photos-feature a');
+const photoTitleLink = document.querySelector('.photos-feature .content a');
 
 const backArrow = document.getElementById('backArrow');
 const nextArrow = document.getElementById('nextArrow');
@@ -71,7 +73,16 @@ function changePhoto(next = true) {
             photoCategory.textContent = nextPhoto.category;
             photoTitle.textContent = nextPhoto.title;
             photoDescription.textContent = nextPhoto.summary;
-            
+
+            // Update image link
+            if (photoLink && nextPhoto.title) {
+                photoLink.href = `/news/${nextPhoto.title}`;
+            }
+
+            // Update title link
+            if (photoTitleLink && nextPhoto.title) {
+                photoTitleLink.href = `/news/${nextPhoto.title}`;
+            }
 
             // Fade back in
             photoImage.classList.remove('fade-out');
