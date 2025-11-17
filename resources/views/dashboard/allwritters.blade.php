@@ -91,7 +91,7 @@
                                             <tr class="tb-odr-item">
                                                 <td>
                                                     <a
-                                                        href="{{ route('dashboard.writer.show', ['title' => $writer->title]) }}">
+                                                        href="{{ route('writer.show', ['title' => $writer->title]) }}">
                                                         {{ $writer->name }}
                                                     </a>
                                                 </td>
