@@ -967,8 +967,7 @@
         .fullscreen-image-counter {
             position: fixed;
             top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 20px;
             background: rgba(0, 0, 0, 0.7);
             color: #fff;
             padding: 10px 20px;
@@ -1061,6 +1060,8 @@
             .fullscreen-image-counter {
                 font-size: 14px;
                 padding: 8px 15px;
+                top: 15px;
+                left: 15px;
             }
 
             .fullscreen-image-close {
