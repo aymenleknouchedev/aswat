@@ -131,7 +131,7 @@ function typeWriter() {
     } else {
         // Wait 3 seconds before switching to next text
         switchingTimeout = setTimeout(() => {
-            textIndex = (textIndex + 1) % texts.length;
+            textIndex = (textIndex - 1) % texts.length;
             element.textContent = '';
             charIndex = 0;
             typeWriter();
