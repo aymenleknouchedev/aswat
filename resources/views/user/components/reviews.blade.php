@@ -193,7 +193,7 @@
         const reviewsContainer = document.getElementById('reviewsContainer');
         const reviewBackArrow = document.getElementById('reviewBackArrow');
         const reviewNextArrow = document.getElementById('reviewNextArrow');
-        const totalReviews = 9;
+        const totalReviews = 6;
         const visibleReviews = 3;
 
         // Make sure elements exist
