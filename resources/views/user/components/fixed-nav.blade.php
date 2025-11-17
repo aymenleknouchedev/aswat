@@ -42,7 +42,7 @@
     <nav id="site-breaking-news">
         <div class="site-container site-breaking-news-container">
             <div class="site-breaking-news-content">
-                <span class="site-breaking-label" style="font-weight: bold;">عاجل</span>
+                <span class="site-breaking-label" style="font-family: asswat-bold;">عاجل</span>
                 <p class="site-breaking-text" id="site-breaking-text"></p>
             </div> <button class="site-close-breaking" aria-label="إغلاق">✖</button>
         </div>
@@ -84,7 +84,8 @@
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a>
                 </li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'people']) }}">ناس</a></li>
-                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة وفنون</a></li>
+                <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة
+                        وفنون</a></li>
                 <li class="site-subnav-link"><a
                         href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a></li>
                 <li class="site-subnav-link"><a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>
