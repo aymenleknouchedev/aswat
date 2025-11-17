@@ -850,6 +850,10 @@
         }
 
         /* Full-screen image viewer */
+        .feature-image-clickable {
+            cursor: pointer;
+        }
+
         .fullscreen-image-modal {
             position: fixed;
             top: 0;
@@ -1762,15 +1766,30 @@
         // Gallery state
         let galleryImages = [];
         let currentImageIndex = 0;
+        let isGalleryMode = false; // Track if we're in gallery mode or single image mode
 
-        // Initialize gallery
+        // Initialize feature image (principal image)
+        function initializeFeatureImage() {
+            const featureImage = document.querySelector('.feature-image-clickable');
+            if (featureImage) {
+                featureImage.addEventListener('click', function() {
+                    const fullImagePath = this.getAttribute('data-full-image');
+                    const caption = this.getAttribute('alt') || '{{ $news->caption ?? '' }}';
+
+                    if (fullImagePath) {
+                        openSingleImage(fullImagePath, caption);
+                    }
+                });
+            }
+        }
+
+        // Initialize content images gallery
         function initializeGallery() {
             galleryImages = [];
 
             // Add all content images only (excluding feature image)
             const contentImages = document.querySelectorAll('.custom-article-content img');
             contentImages.forEach(img => {
-                // Skip if image is inside a figure with caption (will be handled separately)
                 const figure = img.closest('figure');
                 const caption = figure ? (figure.querySelector('figcaption')?.textContent || img.getAttribute('alt') || '') : (img.getAttribute('alt') || '');
 
@@ -1790,8 +1809,24 @@
             });
         }
 
-        // Open gallery at specific index
+        // Open single image (for feature image)
+        function openSingleImage(imagePath, caption) {
+            isGalleryMode = false;
+            fullscreenImageContent.src = imagePath;
+            fullscreenImageCaption.textContent = caption;
+
+            // Hide navigation controls for single image
+            fullscreenImagePrev.style.display = 'none';
+            fullscreenImageNext.style.display = 'none';
+            fullscreenImageCounter.style.display = 'none';
+
+            fullscreenModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Open gallery at specific index (for content images)
         function openGallery(index) {
+            isGalleryMode = true;
             currentImageIndex = index;
             showCurrentImage();
             fullscreenModal.classList.add('active');
@@ -1799,7 +1834,7 @@
             updateNavigationButtons();
         }
 
-        // Show current image
+        // Show current image in gallery
         function showCurrentImage() {
             if (galleryImages.length === 0) return;
 
@@ -1815,6 +1850,8 @@
 
         // Update navigation button states
         function updateNavigationButtons() {
+            if (!isGalleryMode) return;
+
             fullscreenImagePrev.disabled = currentImageIndex === galleryImages.length - 1;
             fullscreenImageNext.disabled = currentImageIndex === 0;
 
@@ -1832,6 +1869,7 @@
 
         // Navigate to previous image
         function showPreviousImage() {
+            if (!isGalleryMode) return;
             if (currentImageIndex < galleryImages.length - 1) {
                 currentImageIndex++;
                 showCurrentImage();
@@ -1840,13 +1878,14 @@
 
         // Navigate to next image
         function showNextImage() {
+            if (!isGalleryMode) return;
             if (currentImageIndex > 0) {
                 currentImageIndex--;
                 showCurrentImage();
             }
         }
 
-        // Close gallery
+        // Close modal
         function closeFullscreenImageModal() {
             fullscreenModal.classList.remove('active');
             document.body.style.overflow = 'auto';
@@ -1869,10 +1908,12 @@
             if (fullscreenModal.classList.contains('active')) {
                 if (e.key === 'Escape') {
                     closeFullscreenImageModal();
-                } else if (e.key === 'ArrowLeft') {
-                    showNextImage();
-                } else if (e.key === 'ArrowRight') {
-                    showPreviousImage();
+                } else if (isGalleryMode) {
+                    if (e.key === 'ArrowLeft') {
+                        showNextImage();
+                    } else if (e.key === 'ArrowRight') {
+                        showPreviousImage();
+                    }
                 }
             }
         });
@@ -1882,7 +1923,8 @@
             e.stopPropagation();
         });
 
-        // Initialize gallery when page loads
+        // Initialize both feature image and gallery when page loads
+        initializeFeatureImage();
         initializeGallery();
     </script>
 
