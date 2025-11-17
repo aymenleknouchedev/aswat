@@ -99,7 +99,10 @@
                                 <img src="{{ $firstWriter->image }}" alt="{{ $firstWriter->name }}">
                             </a>
                         @else
-                            <img src="{{ asset('user/assets/images/b2.jpeg') }}" alt="خبر">
+                            <a href="{{ route('news.show', $review->title) }}">
+                                <img src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
+                                    alt="خبر">
+                            </a>
                         @endif
                     </div>
                     <div class="review-card-text">
