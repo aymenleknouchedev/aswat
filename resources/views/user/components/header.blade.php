@@ -154,11 +154,12 @@
     <div class="news-grid-container">
         <!-- Right column: big feature -->
         <div class="news-feature">
-            <img src="{{ $topContents[0]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                alt="{{ $topContents[0]->content->title ?? '' }}">
+            <a href="{{ route('news.show', $topContents[0]->content->title) }}">
+                <img src="{{ $topContents[0]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="{{ $topContents[0]->content->title ?? '' }}">
+            </a>
             <h3>
                 <x-category-links :content="$topContents[0]->content" />
-
             </h3>
             <a href="{{ route('news.show', $topContents[0]->content->title) }}"
                 style="text-decoration: none; color: inherit;">
@@ -170,8 +171,10 @@
         <!-- Left column: small news cards -->
         <div class="news-list">
             <div class="news-item">
-                <img src="{{ $topContents[1]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                    alt="News 1">
+                <a href="{{ route('news.show', $topContents[1]->content->title) }}">
+                    <img src="{{ $topContents[1]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="News 1">
+                </a>
                 <h3>
                     <x-category-links :content="$topContents[1]->content" />
 
@@ -182,8 +185,10 @@
                 </a>
             </div>
             <div class="news-item">
-                <img src="{{ $topContents[2]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                    alt="News 2">
+                <a href="{{ route('news.show', $topContents[2]->content->title) }}">
+                    <img src="{{ $topContents[2]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="News 2">
+                </a>
                 <h3>
                     <x-category-links :content="$topContents[2]->content" />
 
@@ -207,8 +212,10 @@
         <!-- Left column: small news cards -->
         <div class="news-list">
             <div class="news-item">
-                <img src="{{ $topContents[4]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                    alt="News 1">
+                <a href="{{ route('news.show', $topContents[4]->content->title) }}">
+                    <img src="{{ $topContents[4]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="News 1">
+                </a>
                 <h3>
                     <x-category-links :content="$topContents[4]->content" />
                 </h3>
@@ -218,8 +225,10 @@
                 </a>
             </div>
             <div class="news-item">
-                <img src="{{ $topContents[5]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                    alt="News 2">
+                <a href="{{ route('news.show', $topContents[5]->content->title) }}">
+                    <img src="{{ $topContents[5]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="News 2">
+                </a>
                 <h3>
                     <x-category-links :content="$topContents[5]->content" />
                 </h3>

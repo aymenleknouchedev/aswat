@@ -18,7 +18,6 @@
         .newCategory-all-list {
             display: flex;
             flex-direction: column;
-
             gap: 20px;
         }
 
@@ -48,9 +47,6 @@
             flex-direction: column;
         }
 
-
-
-
         .newCategory-all-card-text h3 {
             font-family: asswat-regular !important;
             font-weight: normal !important;
@@ -73,8 +69,6 @@
             color: #555 !important;
             margin: 0 !important;
         }
-
-
 
         .newCategory-all-card-date {
             display: flex;
@@ -150,8 +144,6 @@
                                         </div>
                                     @endif
                                 </h4>
-
-
                             </div>
                             <div class="newCategory-all-card-image">
                                 <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
