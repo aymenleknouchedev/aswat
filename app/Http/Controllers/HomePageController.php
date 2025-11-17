@@ -14,10 +14,16 @@ use App\Models\Category;
 use App\Models\Location;
 use App\Models\Writer;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
+use App\Services\ContentService;
 
 class HomePageController extends Controller
 {
+    protected $contentService;
+
+    public function __construct(ContentService $contentService)
+    {
+        $this->contentService = $contentService;
+    }
 
     public function search(Request $request)
     {
@@ -552,140 +558,21 @@ class HomePageController extends Controller
 
     public function showNews($title)
     {
-
         $news = Content::where('title', $title)->latest()->firstOrFail();
 
-        $categoryId = $news->category_id;
+        // Get latest news from same category
+        $lastNews = $this->contentService->getLatestFromCategory($news, $news->category_id);
 
-        $lastNews = Content::where('title', '!=', $news->title)
-            ->where('category_id', $categoryId)
-            ->latest()
-            ->take(5)
-            ->get();
+        // Get most viewed news from last week (same section)
+        $lastWeekNews = $this->contentService->getLastWeekMostViewed($news, $news->section_id);
 
-        $lastWeek = now()->subWeek();
+        // Get related news using multiple strategies
+        $relatedNews = $this->contentService->getRelatedNews($news);
 
-        // جلب الأخبار فقط من نفس تصنيف الخبر الحالي
-        $sectionId = $news->section_id;
-
-        // أولاً: جلب الأخبار من الأسبوع الماضي من نفس التصنيف
-        $lastWeekNews = Content::where('title', '!=', $news->title)
-            ->where('section_id', $sectionId)
-            ->where('created_at', '>=', $lastWeek)
-            ->orderByDesc('read_count')
-            ->take(5)
-            ->get();
-
-        // إذا كانت أقل من 5، نكمل بالباقي من الأقدم من نفس التصنيف
-        if ($lastWeekNews->count() < 5) {
-            $remaining = 5 - $lastWeekNews->count();
-
-            $olderNews = Content::where('title', '!=', $news->title)
-                ->where('section_id', $sectionId)
-                ->where('created_at', '<', $lastWeek)
-                ->orderByDesc('read_count')
-                ->take($remaining)
-                ->get();
-
-            // ندمج النتيجتين
-            $lastWeekNews = $lastWeekNews->concat($olderNews);
-        }
-
-        // بداية الكود
-        $relatedNews = collect();
-
-        if (!empty($news->seo_keyword)) {
-            // 🟢 1. حسب seo_keyword
-            $relatedNews = Content::where('id', '!=', $news->id)
-                ->where('seo_keyword', $news->seo_keyword)
-                ->take(4)
-                ->get();
-        }
-
-        // 🟡 2. حسب tags إذا لم نجد كفاية
-        if ($relatedNews->count() < 4 && $news->tags->isNotEmpty()) {
-            $tagIds = $news->tags->pluck('id');
-
-            $tagBased = Content::where('id', '!=', $news->id)
-                ->whereHas('tags', function ($query) use ($tagIds) {
-                    $query->whereIn('tags.id', $tagIds);
-                })
-                ->inRandomOrder()
-                ->take(4 - $relatedNews->count())
-                ->get();
-
-            $relatedNews = $relatedNews->merge($tagBased);
-        }
-
-        // 🔵 3. إذا لا يوجد seo_keyword ولا tags، نستخدم تشابه النصوص
-        if ($relatedNews->count() < 4 && empty($news->seo_keyword) && $news->tags->isEmpty()) {
-            // نحضر كلمات من العنوان والملخص والمحتوى
-            $text = strtolower(strip_tags($news->title . ' ' . $news->summary . ' ' . $news->content));
-
-            // تقسيم إلى كلمات رئيسية بعد حذف الكلمات القصيرة
-            $keywords = collect(explode(' ', $text))
-                ->filter(fn($word) => strlen($word) > 4)
-                ->unique()
-                ->take(8) // نأخذ 8 كلمات فقط لتقليل الحمل
-                ->values();
-
-            $relatedByText = Content::where('id', '!=', $news->id)
-                ->where(function ($query) use ($keywords) {
-                    foreach ($keywords as $word) {
-                        $query->orWhere('title', 'like', "%{$word}%")
-                            ->orWhere('summary', 'like', "%{$word}%")
-                            ->orWhere('content', 'like', "%{$word}%");
-                    }
-                })
-                ->inRandomOrder()
-                ->take(4 - $relatedNews->count())
-                ->get();
-
-            $relatedNews = $relatedNews->merge($relatedByText);
-        }
-
-        // ⚪️ 4. إذا لم تكفِ النتائج حتى الآن → جلب عشوائي من نفس القسم
-        if ($relatedNews->count() < 4) {
-            $fallback = Content::where('id', '!=', $news->id)
-                ->where('section_id', $news->section_id)
-                ->inRandomOrder()
-                ->take(4 - $relatedNews->count())
-                ->get();
-
-            $relatedNews = $relatedNews->merge($fallback);
-        }
-
-        $this->recordView($news);
+        // Record the view
+        $this->contentService->recordView($news);
 
         return view('user.news', compact('news', 'lastNews', 'lastWeekNews', 'relatedNews'));
-    }
-
-    protected function recordView($content)
-    {
-        $ip = request()->ip();
-        $agent = request()->header('User-Agent');
-        $key = 'news_view_' . md5($content->id . $ip . $agent);
-
-        // منع تكرار نفس الزيارة خلال 6 ساعات
-        if (!Cache::has($key)) {
-            Cache::put($key, true, now()->addHours(6));
-
-            // زيادة العدد العام في جدول المحتوى
-            $content->increment('read_count');
-
-            // زيادة عدد المشاهدات اليومية في جدول content_daily_views
-            DB::table('content_daily_views')->updateOrInsert(
-                [
-                    'content_id' => $content->id,
-                    'date' => now()->toDateString(),
-                ],
-                [
-                    'views' => DB::raw('views + 1'),
-                    'updated_at' => now(),
-                    'created_at' => now(),
-                ]
-            );
-        }
     }
 
     public function category(Request $request, $id, $type)
