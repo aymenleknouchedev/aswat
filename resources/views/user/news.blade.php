@@ -850,12 +850,6 @@
         }
 
         /* Full-screen image viewer */
-        .feature-image-clickable {
-            cursor: pointer;
-        }
-
-
-
         .fullscreen-image-modal {
             position: fixed;
             top: 0;
@@ -1773,17 +1767,7 @@
         function initializeGallery() {
             galleryImages = [];
 
-            // Add feature image if exists
-            const featureImage = document.querySelector('.feature-image-clickable');
-            if (featureImage) {
-                galleryImages.push({
-                    src: featureImage.getAttribute('data-full-image'),
-                    caption: featureImage.getAttribute('alt') || '{{ $news->caption ?? '' }}',
-                    element: featureImage
-                });
-            }
-
-            // Add all content images
+            // Add all content images only (excluding feature image)
             const contentImages = document.querySelectorAll('.custom-article-content img');
             contentImages.forEach(img => {
                 // Skip if image is inside a figure with caption (will be handled separately)
