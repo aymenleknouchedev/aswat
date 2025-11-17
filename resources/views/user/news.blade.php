@@ -370,16 +370,18 @@
             display: flex;
             flex-direction: column;
             text-align: right;
+            color: #555 !important;
         }
 
         .writer-info .name {
             font-size: 16px;
+            color: #555 !important;
             font-family: asswat-bold;
         }
 
         .writer-info .bio {
             font-size: 16px;
-            color: #f5f5f5;
+            color: #555 !important;
             font-family: asswat-regular;
         }
 
@@ -635,7 +637,7 @@
             transition: transform 0.2s ease, background-color 0.2s ease;
         }
 
-        
+
 
         /* Text definition modal */
         .text-definition-modal {
@@ -688,7 +690,7 @@
             background: white;
             width: 100%;
             max-height: 80vh;
-            
+
             box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
@@ -1228,7 +1230,8 @@
 
                 <div style="margin-top: 10px" class="custom-date-share">
                     {{-- Date on the RIGHT --}}
-                    <p class="date-text">{{ $day }} {{ $month }} {{ $year }} | {{ $time }}</p>
+                    <p class="date-text">{{ $day }} {{ $month }} {{ $year }} |
+                        {{ $time }}</p>
 
                     {{-- Share on the LEFT --}}
                     <div class="share-container" id="shareContainer">
@@ -1331,7 +1334,8 @@
                                         loading="lazy"
                                         style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
                                     <div class="writer-info">
-                                        <span class="bio"><span class="name">{{ $writer->name }}</span> {{ $writer->bio }}</span>
+                                        <span class="bio"><span class="name">{{ $writer->name }}</span>
+                                            {{ $writer->bio }}</span>
                                     </div>
                                 </div>
                             </a>
