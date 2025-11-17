@@ -131,7 +131,7 @@ function typeWriter() {
     } else {
         // Wait 3 seconds before switching to next text
         switchingTimeout = setTimeout(() => {
-            textIndex = (textIndex - 1) % texts.length;
+            textIndex = (textIndex + 1) % texts.length;
             element.textContent = '';
             charIndex = 0;
             typeWriter();
@@ -197,6 +197,7 @@ const texts2 = [];
 let textIndex2 = 0;
 let charIndex2 = 0;
 const speed2 = 20;
+let currentDisplayedNews = null; // Track the currently displayed news for click handling
 
 // Add cursor pointer style
 element2.style.cursor = 'pointer';
@@ -211,6 +212,7 @@ function typeWriter2() {
             element2.textContent = '';
             charIndex2 = 0;
             textIndex2 = (textIndex2 + 1) % texts2.length;
+            currentDisplayedNews = texts2[textIndex2]; // Update tracking before typing starts
             typeWriter2();
         }, 3000);
     }
@@ -218,10 +220,9 @@ function typeWriter2() {
 
 // Add click event to latest news text
 element2.addEventListener('click', () => {
-    // Use the actual displayed text to ensure correct redirection
-    const displayedText = element2.textContent.trim();
-    if (displayedText) {
-        const encodedTitle = encodeURIComponent(displayedText);
+    // Use the tracked current news to ensure correct redirection
+    if (currentDisplayedNews) {
+        const encodedTitle = encodeURIComponent(currentDisplayedNews);
         window.location.href = `/news/${encodedTitle}`;
     }
 });
@@ -231,6 +232,7 @@ fetch('/api/latest-news')
     .then(data2 => {
         if (Array.isArray(data2) && data2.length > 0) {
             texts2.push(...data2);
+            currentDisplayedNews = texts2[0]; // Initialize with first news item
             typeWriter2(); // ✅ Start typing after data loads
         }
     })
