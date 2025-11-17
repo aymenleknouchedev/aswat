@@ -92,7 +92,9 @@
                                                 <td>
                                                     <a
                                                         href="{{ route('writer.show', $writer->id) }}"
-                                                        style="color: #000;">
+                                                        style="color: #000;"
+                                                        target="_blank"
+                                                        rel="noopener">
                                                         {{ $writer->name }}
                                                     </a>
                                                 </td>
