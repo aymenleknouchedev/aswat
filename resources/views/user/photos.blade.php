@@ -98,7 +98,8 @@
             <div class="custom-photos-feature">
                 <div class="custom-image-wrapper">
                     <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
-                        alt="{{ $featured->title }}">
+                        alt="{{ $featured->title }}"
+                        style="aspect-ratio: 16 / 9; object-fit: cover; width: 100%; display: block;">
                     <div class="custom-corner-icon">
                         @include('user.icons.image')
                     </div>
@@ -130,7 +131,7 @@
 
             .photos-section-item img {
                 width: 100%;
-                aspect-ratio: 4 / 3;
+                aspect-ratio: 16 / 9;
                 object-fit: cover;
                 display: block;
             }

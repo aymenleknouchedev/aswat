@@ -98,7 +98,8 @@
             <div class="custom-videos-feature">
                 <div class="custom-image-wrapper">
                     <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
-                        alt="{{ $featured->title }}">
+                        alt="{{ $featured->title }}"
+                        style="width: 100%; aspect-ratio: 16 / 9; object-fit: cover;">
                     <div class="custom-corner-icon">
                         @include('user.icons.play')
                     </div>
