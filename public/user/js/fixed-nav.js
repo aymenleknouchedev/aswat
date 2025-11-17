@@ -206,10 +206,11 @@ function typeWriter2() {
         element2.textContent += texts2[textIndex2].charAt(charIndex2++);
         setTimeout(typeWriter2, speed2);
     } else {
-        textIndex2 = (textIndex2 + 1) % texts2.length;
+        // Wait 3 seconds, then clear and move to next text
         setTimeout(() => {
             element2.textContent = '';
             charIndex2 = 0;
+            textIndex2 = (textIndex2 + 1) % texts2.length;
             typeWriter2();
         }, 3000);
     }
@@ -217,9 +218,10 @@ function typeWriter2() {
 
 // Add click event to latest news text
 element2.addEventListener('click', () => {
-    if (texts2.length > 0) {
-        const currentText = texts2[textIndex2];
-        const encodedTitle = encodeURIComponent(currentText);
+    // Use the actual displayed text to ensure correct redirection
+    const displayedText = element2.textContent.trim();
+    if (displayedText) {
+        const encodedTitle = encodeURIComponent(displayedText);
         window.location.href = `/news/${encodedTitle}`;
     }
 });

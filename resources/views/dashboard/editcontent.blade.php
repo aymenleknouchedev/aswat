@@ -1328,7 +1328,7 @@
                             @endif
                             @endcanDo
 
-                            
+
                         </div>
                     </div>
 
