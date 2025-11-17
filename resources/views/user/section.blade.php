@@ -348,8 +348,10 @@
                     <!-- Right: big feature -->
                     <div class="newCategory-feature">
                         @if (isset($contents[0]))
-                            <img src="{{ $contents[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
-                                alt="{{ $contents[0]->title ?? 'عنوان الخبر' }}">
+                            <a href="{{ route('news.show', $contents[0]->title ?? '') }}">
+                                <img src="{{ $contents[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                    alt="{{ $contents[0]->title ?? 'عنوان الخبر' }}">
+                            </a>
                             <h3>
                                 <x-category-links :content="$contents[0]" />
                             </h3>
@@ -370,8 +372,10 @@
                     <div class="newCategory-list">
                         @if (isset($contents[1]))
                             <div class="newCategory-feature-m">
-                                <img src="{{ $contents[1]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
-                                    alt="{{ $contents[1]->title ?? 'عنوان الخبر' }}">
+                                <a href="{{ route('news.show', $contents[1]->title ?? '') }}">
+                                    <img src="{{ $contents[1]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                        alt="{{ $contents[1]->title ?? 'عنوان الخبر' }}">
+                                </a>
                                 <h3>
                                     <x-category-links :content="$contents[1]" />
                                 </h3>
@@ -388,8 +392,10 @@
                                 @if (isset($contents[$i]))
                                     <div class="news-card-horizontal">
                                         <div class="news-card-image">
-                                            <img src="{{ $contents[$i]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
-                                                alt="{{ $contents[$i]->title ?? 'عنوان الخبر' }}">
+                                            <a href="{{ route('news.show', $contents[$i]->title ?? '') }}">
+                                                <img src="{{ $contents[$i]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                                    alt="{{ $contents[$i]->title ?? 'عنوان الخبر' }}">
+                                            </a>
                                         </div>
                                         <div class="news-card-text">
                                             <h3>
@@ -423,8 +429,10 @@
                         <div class="art-section-grid">
                             @foreach ($window->contents as $content)
                                 <div class="art-section-card">
-                                    <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
-                                        alt="{{ $content->title ?? 'عنوان الخبر' }}">
+                                    <a href="{{ route('news.show', $content->title ?? '') }}">
+                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
+                                            alt="{{ $content->title ?? 'عنوان الخبر' }}">
+                                    </a>
                                     <a href="{{ route('news.show', $content->title ?? '') }}"
                                         style="text-decoration: none; color: inherit;">
                                         <h2>{{ $content->title ?? 'عنوان الخبر' }}</h2>
@@ -493,8 +501,10 @@
                             <div class="sp20" style="margin-top: 16px;"></div>
                             <div class="news-card-horizontal">
                                 <div class="news-card-image">
-                                    <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
-                                        alt="{{ $content->title ?? 'تحلية مياه البحر' }}">
+                                    <a href="{{ route('news.show', $content->title ?? '') }}">
+                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                            alt="{{ $content->title ?? 'تحلية مياه البحر' }}">
+                                    </a>
                                 </div>
                                 <div class="news-card-text">
                                     <h3><x-category-links :content="$content" fallback="اقتصاد جزائري" /></h3>
