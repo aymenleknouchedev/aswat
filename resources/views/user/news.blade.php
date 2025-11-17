@@ -968,10 +968,9 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            background: rgba(0, 0, 0, 0.7);
+            background: none;
             color: #fff;
             padding: 10px 20px;
-            border-radius: 20px;
             font-family: asswat-medium;
             font-size: 16px;
             z-index: 10003;
