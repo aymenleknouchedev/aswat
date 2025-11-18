@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\Writer;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Cache;
 use App\Services\ContentService;
 
@@ -644,5 +645,40 @@ class HomePageController extends Controller
 
         // Otherwise return full page
         return view('user.writer', compact('writer', 'articles'));
+    }
+
+    public function showTag(Request $request, $tag)
+    {
+        // Find the tag by ID
+        $theme = Tag::findOrFail($tag);
+        $current_id = $tag;
+        $type = 'Tag';
+
+        $perPage = 9;
+        $page = $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        // Get articles for AJAX requests (pagination)
+        $articles = Content::whereHas('tags', function ($query) use ($tag) {
+            $query->where('tags.id', $tag);
+        })
+            ->latest()
+            ->skip($skip)
+            ->take($perPage)
+            ->get();
+
+        if ($request->ajax()) {
+            return view('user.partials.tag-items', compact('articles'))->render();
+        }
+
+        // For initial page load, get the first page
+        $articles = Content::whereHas('tags', function ($query) use ($tag) {
+            $query->where('tags.id', $tag);
+        })
+            ->latest()
+            ->take($perPage)
+            ->get();
+
+        return view('user.tags', compact('theme', 'articles', 'type', 'current_id'));
     }
 }
