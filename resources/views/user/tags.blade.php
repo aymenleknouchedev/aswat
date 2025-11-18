@@ -36,7 +36,7 @@
         }
 
 
-         .newCategory-all-card-text h3 {
+        .newCategory-all-card-text h3 {
             font-family: asswat-regular !important;
             font-weight: normal !important;
             font-size: 16px !important;
@@ -52,7 +52,7 @@
             margin: 0 0 4px 0 !important;
         }
 
-         .newCategory-all-card-text p {
+        .newCategory-all-card-text p {
             font-size: 16px !important;
             line-height: 1.5 !important;
             color: #555 !important;
@@ -125,7 +125,34 @@
 
                             <!-- Text -->
                             <div class="newCategory-all-card-text">
-                                <h3>{{ $item->category->name ?? '' }}</h3>
+                                <h3>
+                                    @if (isset($item->country))
+                                        <a
+                                            href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
+                                            {{ $item->category->name ?? '' }}
+                                        </a>
+                                        -
+                                        <a
+                                            href="{{ route('category.show', ['id' => $item->country->id, 'type' => 'Country']) }}">
+                                            {{ $item->country->name ?? '' }}
+                                        </a>
+                                    @elseif (isset($item->continent))
+                                        <a
+                                            href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
+                                            {{ $item->category->name ?? '' }}
+                                        </a>
+                                        -
+                                        <a
+                                            href="{{ route('category.show', ['id' => $item->continent->id, 'type' => 'Continent']) }}">
+                                            {{ $item->continent->name ?? '' }}
+                                        </a>
+                                    @else
+                                        <a
+                                            href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
+                                            {{ $item->category->name ?? '' }}
+                                        </a>
+                                    @endif
+                                </h3>
                                 <a href="{{ route('news.show', $item->title) }}"
                                     style="text-decoration: none; color: inherit;">
                                     <h2>{{ $item->title }}</h2>
@@ -154,44 +181,44 @@
         const categoryId = @json($current_id ?? null);
         const categoryType = @json($type ?? '');
 
-    document.addEventListener("click", async function(e) {
-        if (e.target.classList.contains("category-load-more-btn")) {
-            if (loading) return;
+        document.addEventListener("click", async function(e) {
+            if (e.target.classList.contains("category-load-more-btn")) {
+                if (loading) return;
 
-            let btn = e.target;
-            let page = parseInt(btn.getAttribute("data-page")) + 1;
+                let btn = e.target;
+                let page = parseInt(btn.getAttribute("data-page")) + 1;
 
-            loading = true;
-            btn.disabled = true;
-            btn.textContent = "جاري التحميل...";
+                loading = true;
+                btn.disabled = true;
+                btn.textContent = "جاري التحميل...";
 
-            try {
-                let response = await fetch(`/tag/${categoryId}?page=${page}`, {
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest"
+                try {
+                    let response = await fetch(`/tag/${categoryId}?page=${page}`, {
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
+                    });
+
+                    if (!response.ok) throw new Error("خطأ في السيرفر");
+
+                    let data = await response.text();
+
+                    if (data.trim().length === 0) {
+                        btn.closest("#load-more-container").remove();
+                    } else {
+                        document.getElementById("category-container").insertAdjacentHTML("beforeend", data);
+                        btn.setAttribute("data-page", page);
+                        btn.disabled = false;
+                        btn.textContent = "المزيد";
                     }
-                });
-
-                if (!response.ok) throw new Error("خطأ في السيرفر");
-
-                let data = await response.text();
-
-                if (data.trim().length === 0) {
-                    btn.closest("#load-more-container").remove();
-                } else {
-                    document.getElementById("category-container").insertAdjacentHTML("beforeend", data);
-                    btn.setAttribute("data-page", page);
+                } catch (error) {
+                    alert("خطأ في تحميل المزيد");
                     btn.disabled = false;
                     btn.textContent = "المزيد";
                 }
-            } catch (error) {
-                alert("خطأ في تحميل المزيد");
-                btn.disabled = false;
-                btn.textContent = "المزيد";
-            }
 
-            loading = false;
-        }
-    });
+                loading = false;
+            }
+        });
     </script>
 @endsection
