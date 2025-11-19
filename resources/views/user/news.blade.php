@@ -1104,6 +1104,20 @@
             position: relative;
         }
 
+        /* Placeholder state (before content loads) */
+        .read-more-block .read-more-placeholder {
+            display: block;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            padding: 1rem;
+        }
+
+        /* Hide placeholder when content is loaded */
+        .read-more-block:has(.read-more-content) .read-more-placeholder {
+            display: none;
+        }
+
         .read-more-label-text {
             font-size: 18px;
             font-family: asswat-bold;
@@ -1166,10 +1180,6 @@
         }
 
         .read-more-summary {
-            display: none;
-        }
-
-        .read-more-link {
             display: none;
         }
 
@@ -1954,5 +1964,8 @@
 
     {{-- ================= MOBILE ================= --}}
     <div class="mobile"></div>
+
+    {{-- ================= DYNAMIC READMORE LOADER ================= --}}
+    @include('components.readmore-loader')
 
 @endsection

@@ -1827,25 +1827,13 @@
                 alert('⚠️ يرجى اختيار محتوى من القائمة');
                 return;
             }
-            let html = '<div class="read-more-block">';
-            html += '<span class="read-more-label-text">اقرأ أيضاً</span>';
-            if (selectedOption.dataset.image) {
-                html +=
-                    `<img src="${escapeHtml(selectedOption.dataset.image)}" alt="${escapeHtml(selectedOption.textContent)}" class="read-more-image">`;
-            }
-            html += `<div class="read-more-content">`;
-            if (selectedOption.dataset.category) {
-                html += `<p class="read-more-category">${escapeHtml(selectedOption.dataset.category)}</p>`;
-            }
-            html += `<h3 class="read-more-title">${escapeHtml(selectedOption.textContent)}</h3>`;
-            if (selectedOption.dataset.summary) {
-                html += `<p class="read-more-summary">${escapeHtml(selectedOption.dataset.summary)}</p>`;
-            }
-            if (selectedOption.dataset.link) {
-                html +=
-                    `<a href="${escapeHtml(selectedOption.dataset.link)}" class="read-more-link" target="_blank">إقرأ المزيد</a>`;
-            }
-            html += '</div></div><p>&nbsp;</p>';
+
+            // Insert only a placeholder div with data-content-id attribute
+            // The frontend will dynamically load and render the actual content
+            let html = `<div class="read-more-block mceNonEditable" data-content-id="${escapeHtml(contentId)}" contenteditable="false">`;
+            html += '<span class="read-more-placeholder">جاري تحميل المحتوى...</span>';
+            html += '</div><p>&nbsp;</p>';
+
             if (window.tinymce && tinymce.activeEditor) {
                 tinymce.activeEditor.focus();
                 tinymce.activeEditor.execCommand('mceInsertContent', false, html);
@@ -2014,17 +2002,12 @@
         img.tiny-sm,video.tiny-sm{width:280px;height:auto;max-width:100%;}
         .clickable-term{color:#0066cc;text-decoration:underline;cursor:pointer;padding:2px 4px;border-radius:3px;transition:background-color 0.2s;background-color:transparent;}
         .clickable-term:hover{background-color:#e6f2ff;text-decoration:none;}
-        .read-more-block{border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;margin:0.75rem 0;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.05);display:flex;align-items:stretch;pointer-events:auto;user-select:none;position:relative;}
-        .read-more-block *{pointer-events:auto;user-select:text;}
-        .read-more-block .read-more-label-text{font-size:0.8rem;font-weight:600;color:#666;background:#e7e7e7;padding:0.25rem 0.75rem;border-radius:4px;display:flex;align-items:center;margin-left:0.75rem;white-space:nowrap;order:-1;}
-        .read-more-block .read-more-image{width:35%;height:auto;max-height:150px;object-fit:cover;}
-        .read-more-block .read-more-content{width:65%;padding:0.75rem;display:flex;flex-direction:column;justify-content:center;}
-        .read-more-block .read-more-category{font-size:0.75rem;color:#888;text-align:right;margin:0 0 0.25rem 0;}
-        .read-more-block .read-more-title{font-size:1rem;font-weight:600;margin:0 0 0.35rem 0;color:#364a63;}
-        .read-more-block .read-more-summary{color:#526484;line-height:1.4;margin:0;font-size:0.9rem;}
-        .read-more-block .read-more-link{display:inline-block;margin-top:0.5rem;padding:0.35rem 0.75rem;background:#6576ff;color:white;text-decoration:none;border-radius:4px;font-weight:500;font-size:0.85rem;transition:background 0.2s;align-self:flex-start;}
-        .read-more-block .read-more-link:hover{background:#465fff;}
-        @media (max-width:768px){.read-more-block{flex-direction:column;}.read-more-block .read-more-image{width:100%;height:120px;}.read-more-block .read-more-content{width:100%;}}
+        .read-more-block{border:2px dashed #6576ff;border-radius:8px;overflow:hidden;margin:0.75rem 0;background:#f0f4ff;padding:1rem;display:block;cursor:pointer;position:relative;user-select:none;}
+        .read-more-block:hover{background:#e6f0ff;border-color:#465fff;}
+        .read-more-block .read-more-placeholder{display:block;text-align:center;color:#6576ff;font-weight:600;font-size:0.95rem;padding:0.5rem;}
+        .read-more-block::before{content:"📖 اقرأ أيضاً";display:block;text-align:center;font-weight:bold;color:#364a63;margin-bottom:0.5rem;font-size:0.9rem;}
+        .mceNonEditable{outline:2px solid transparent;transition:outline-color 0.2s;}
+        .mceNonEditable:focus,.mceNonEditable.mce-edit-focus{outline-color:#6576ff !important;}
     `,
         setup: (editor) => {
             // ---- MEDIA PICKER BUTTON ----
@@ -2102,7 +2085,8 @@
         skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
         content_css: theme === 'dark' ? 'dark' : 'default',
         // Plugins
-        plugins: 'advlist anchor autolink autosave charmap code codesample directionality emoticons fullscreen help hr image imagetools importcss insertdatetime link lists media nonbreaking pagebreak preview print save searchreplace table template visualblocks visualchars wordcount',
+        plugins: 'advlist anchor autolink autosave charmap code codesample directionality emoticons fullscreen help hr image imagetools importcss insertdatetime link lists media nonbreaking noneditable pagebreak preview print save searchreplace table template visualblocks visualchars wordcount',
+        noneditable_class: 'mceNonEditable',
         toolbar_mode: 'wrap',
         // Toolbar configuration
         toolbar: [
