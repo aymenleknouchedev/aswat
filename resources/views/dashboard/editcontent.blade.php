@@ -1313,7 +1313,7 @@
                                 id="updateButton" data-action="update">تحديث</button>
 
                             <a href="{{ route('news.show', $content->title) }}" target="_blank"
-                                class="btn btn-secondary btn-lg" style="margin-left: 10px;">
+                                class="btn btn-secondary btn-lg" id="previewButton" style="margin-left: 10px;">
                                 معاينة
                             </a>
                             @canDo('publish_content')
@@ -2882,6 +2882,17 @@
                     // Refresh ReadMore cards after successful save
                     if (typeof window.refreshReadMoreCards === 'function') {
                         window.refreshReadMoreCards();
+                    }
+
+                    // Update preview button with new title
+                    if (data.title) {
+                        const previewButton = document.getElementById('previewButton');
+                        if (previewButton) {
+                            // Construct the new preview URL with the updated title
+                            const newPreviewUrl = '{{ route("news.show", ":title") }}'.replace(':title', encodeURIComponent(data.title));
+                            previewButton.href = newPreviewUrl;
+                            console.log('Preview button updated with new title:', data.title);
+                        }
                     }
 
                     // Optional: Redirect after success if provided

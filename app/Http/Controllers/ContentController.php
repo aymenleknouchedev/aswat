@@ -1183,6 +1183,7 @@ class ContentController extends BaseController
                     'success' => true,
                     'message' => 'تم حفظ المحتوى بنجاح',
                     'content_id' => $content->id,
+                    'title' => $content->title,
                     'redirect' => route('dashboard.content.edit', $content->id)
                 ], 200);
             }
