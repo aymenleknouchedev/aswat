@@ -52,25 +52,14 @@
 
     .play-button {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        bottom: 15px;
+        left: 15px;
         transition: transform 0.3s ease;
         pointer-events: none;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 50%;
-        width: 80px;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .video-cover:hover .play-button {
-        transform: translate(-50%, -50%) scale(1.1);
+        transform: scale(1.1);
     }
 </style>
 
