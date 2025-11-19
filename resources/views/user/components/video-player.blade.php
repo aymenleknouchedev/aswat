@@ -83,6 +83,21 @@ function loadVimeoVideo(videoId) {
         player.style.display = 'block';
     }
 }
+
+function loadLocalVideo(videoId) {
+    const cover = document.getElementById('videoCover' + videoId);
+    const player = document.getElementById('videoPlayer' + videoId);
+
+    if (cover && player) {
+        cover.style.display = 'none';
+        player.style.display = 'block';
+        // Auto-play the local video
+        const videoElement = player.querySelector('video');
+        if (videoElement) {
+            videoElement.play();
+        }
+    }
+}
 </script>
 
 @php
@@ -172,8 +187,7 @@ function loadVimeoVideo(videoId) {
                 // If not a valid URL and not a storage path, try asset helper
                 $videoUrl = asset($video);
             }
-        @endphp
-        @php
+
             // Use provided poster, or default placeholder
             $posterImage = $poster ?? asset('user/assets/img/video-placeholder.jpg');
 
@@ -181,11 +195,33 @@ function loadVimeoVideo(videoId) {
             if (isset($poster) && str_starts_with($poster, '/storage/')) {
                 $posterImage = asset($poster);
             }
+
+            // Generate unique ID for local video
+            $localVideoId = 'local_' . md5($videoUrl);
         @endphp
-        <video controls preload="metadata" poster="{{ $posterImage }}">
-            <source src="{{ $videoUrl }}" type="video/mp4">
-            متصفحك لا يدعم تشغيل الفيديو.
-        </video>
+
+        @if ($hasPoster)
+            {{-- Show poster as clickable cover for local videos --}}
+            <div class="video-cover" id="videoCover{{ $localVideoId }}" onclick="loadLocalVideo('{{ $localVideoId }}')">
+                <img src="{{ $posterImage }}" alt="Video thumbnail" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16/9;">
+                <div class="play-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M12 8L30 20L12 32V8Z" fill="#FFFFFF"/>
+                    </svg>
+                </div>
+            </div>
+            <div id="videoPlayer{{ $localVideoId }}" style="display: none;">
+                <video controls preload="metadata" style="width: 100%; aspect-ratio: 16/9;">
+                    <source src="{{ $videoUrl }}" type="video/mp4">
+                    متصفحك لا يدعم تشغيل الفيديو.
+                </video>
+            </div>
+        @else
+            <video controls preload="metadata" poster="{{ $posterImage }}">
+                <source src="{{ $videoUrl }}" type="video/mp4">
+                متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+        @endif
     @endif
 
     @if (!empty($caption))
