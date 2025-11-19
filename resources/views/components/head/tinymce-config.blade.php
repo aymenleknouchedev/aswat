@@ -247,6 +247,15 @@
             <button class="vvc-close" type="button" data-vvc-readmore-close aria-label="إغلاق">&times;</button>
         </div>
         <div class="vvc-tab-body">
+            <!-- Section filter dropdown -->
+            <div style="margin-bottom:1rem;">
+                <label for="vvc-readmore-section"
+                    style="display:block;margin-bottom:0.5rem;font-weight:600;color:var(--vvc-heading-color);">القسم:</label>
+                <select id="vvc-readmore-section"
+                    style="width:100%;padding:.6rem .7rem;border:1px solid var(--vvc-border-color);background:var(--vvc-body-bg);color:var(--vvc-body-color);">
+                    <option value="">-- كل الأقسام --</option>
+                </select>
+            </div>
             <!-- Search field -->
             <div style="margin-bottom:1rem;">
                 <label for="vvc-readmore-search"
@@ -840,12 +849,13 @@
         @php
         try {
             $readMoreContent = \App\Models\Content::whereIn('status', ['published', 'draft'])
-                ->select(['id', 'title', 'summary', 'created_at', 'category_id'])
+                ->select(['id', 'title', 'summary', 'created_at', 'category_id', 'section_id'])
                 ->with([
                     'media' => function($q) {
                         $q->wherePivot('type', 'main');
                     },
-                    'category'
+                    'category',
+                    'section'
                 ])
                 ->orderBy('created_at', 'desc')
                 ->limit(50)
@@ -860,17 +870,24 @@
                         'id' => $item->id,
                         'title' => $item->title ?? 'Untitled',
                         'category' => $item->category->name ?? null,
+                        'section_id' => $item->section_id ?? null,
+                        'section' => $item->section->name ?? null,
                         'image_url' => $imagePath,
                         'summary' => \Illuminate\Support\Str::limit($item->summary ?? '', 150),
                         'link' => url('/content/' . $item->id),
                         'created_at' => $item->created_at->format('Y-m-d H:i:s'),
                     ];
                 });
+
+            // Load sections for the filter dropdown
+            $sections = \App\Models\Section::orderBy('name')->get(['id', 'name']);
         } catch (\Exception $e) {
             $readMoreContent = collect([]);
+            $sections = collect([]);
         }
         @endphp
         const READ_MORE_DATA = @json($readMoreContent);
+        const SECTIONS_DATA = @json($sections);
 
         // ============================================
         // CONFIGURATION & CONSTANTS
@@ -1563,6 +1580,7 @@
         const readMoreBackdrop = readMoreModal.querySelector('[data-vvc-readmore-backdrop]');
         const readMoreCloses = readMoreModal.querySelectorAll('[data-vvc-readmore-close]');
         const readMoreContainer = readMoreModal.querySelector('.vvc-container');
+        const readMoreSectionSelect = document.getElementById('vvc-readmore-section');
         const readMoreSearchInput = document.getElementById('vvc-readmore-search');
         const readMoreContentSelect = document.getElementById('vvc-readmore-content');
         const readMorePreview = document.getElementById('vvc-readmore-preview');
@@ -1673,6 +1691,20 @@
             openModal() {
                 readMoreModal.setAttribute('aria-hidden', 'false');
                 document.documentElement.style.overflow = 'hidden';
+
+                // Populate sections dropdown
+                readMoreSectionSelect.innerHTML = '<option value="">-- كل الأقسام --</option>';
+                if (SECTIONS_DATA && SECTIONS_DATA.length > 0) {
+                    SECTIONS_DATA.forEach(section => {
+                        const option = document.createElement('option');
+                        option.value = section.id;
+                        option.textContent = section.name;
+                        readMoreSectionSelect.appendChild(option);
+                    });
+                }
+
+                // Reset filters and load content
+                readMoreSectionSelect.value = '';
                 readMoreSearchInput.value = '';
                 readMoreContentSelect.value = '';
                 readMorePreview.innerHTML =
@@ -1693,11 +1725,19 @@
         /**
          * Load "read more" content options (Now using pre-loaded data)
          * @param {string} searchTerm - Optional search term
+         * @param {string} sectionId - Optional section filter
          */
-        function loadReadMoreContent(searchTerm = '') {
+        function loadReadMoreContent(searchTerm = '', sectionId = '') {
             try {
                 // Use pre-loaded data instead of AJAX
                 let contentList = READ_MORE_DATA || [];
+
+                // Filter by section if provided
+                if (sectionId && sectionId.trim()) {
+                    contentList = contentList.filter(item =>
+                        item.section_id == sectionId
+                    );
+                }
 
                 // Filter by search term if provided
                 if (searchTerm && searchTerm.trim()) {
@@ -1737,13 +1777,23 @@
         }
 
         /**
+         * Handle read more section filter change
+         */
+        readMoreSectionSelect?.addEventListener('change', function(e) {
+            const searchTerm = readMoreSearchInput.value || '';
+            const sectionId = e.target.value || '';
+            loadReadMoreContent(searchTerm, sectionId);
+        });
+
+        /**
          * Handle read more search input
          */
         let readMoreSearchTimeout;
         readMoreSearchInput?.addEventListener('input', function(e) {
             clearTimeout(readMoreSearchTimeout);
             readMoreSearchTimeout = setTimeout(() => {
-                loadReadMoreContent(e.target.value);
+                const sectionId = readMoreSectionSelect.value || '';
+                loadReadMoreContent(e.target.value, sectionId);
             }, 300);
         });
 
