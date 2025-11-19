@@ -1645,6 +1645,11 @@
     <script src="/dashlite/js/form-toggle.js"></script>
     <script src="/dashlite/js/media-tab.js"></script>
 
+    {{-- Set current content ID for ReadMore filtering --}}
+    <script>
+        window.CURRENT_CONTENT_ID = {{ $content->id ?? 'null' }};
+    </script>
+
     <script>
         // ========== SINGLE SELECTION FUNCTIONS ==========
         function showinDropdown(input) {

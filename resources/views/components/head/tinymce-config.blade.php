@@ -848,7 +848,11 @@
         // ============================================
         @php
         try {
+            $currentContentId = isset($content) ? $content->id : null;
             $readMoreContent = \App\Models\Content::whereIn('status', ['published', 'draft'])
+                ->when($currentContentId, function($query, $contentId) {
+                    return $query->where('id', '!=', $contentId);
+                })
                 ->select(['id', 'title', 'summary', 'created_at', 'category_id', 'section_id'])
                 ->with([
                     'media' => function($q) {
@@ -1731,6 +1735,13 @@
             try {
                 // Use pre-loaded data instead of AJAX
                 let contentList = READ_MORE_DATA || [];
+
+                // Exclude current content being edited (prevent self-reference)
+                if (window.CURRENT_CONTENT_ID) {
+                    contentList = contentList.filter(item =>
+                        item.id != window.CURRENT_CONTENT_ID
+                    );
+                }
 
                 // Filter by section if provided
                 if (sectionId && sectionId.trim()) {
