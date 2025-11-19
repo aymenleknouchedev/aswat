@@ -1375,8 +1375,8 @@
                     </div>
                 </div>
 
-                {{-- Feature Image --}}
-                @if ($news->template !== 'no_image')
+                {{-- Feature Image (hidden for video/album templates since they use it as cover) --}}
+                @if ($news->template !== 'no_image' && $news->template !== 'video' && $news->template !== 'album')
                     <figure class="custom-article-image-wrapper">
                         <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}"
                             alt="{{ $news->caption }}" loading="lazy"
@@ -1388,16 +1388,35 @@
 
                 {{-- Album --}}
                 @if ($news->template == 'album' && $news->media()->wherePivot('type', 'album')->count())
+                    @php
+                        // Use the article's main image as the first slide (cover) in the album
+                        $mainImage = $news->media()->wherePivot('type', 'main')->first();
+                        $albumImages = $news->media()->wherePivot('type', 'album')->get();
+
+                        // Prepend main image as the first slide if it exists
+                        if ($mainImage) {
+                            $allAlbumImages = collect([$mainImage])->concat($albumImages);
+                        } else {
+                            $allAlbumImages = $albumImages;
+                        }
+                    @endphp
                     @include('user.components.album-slider', [
-                        'albumImages' => $news->media()->wherePivot('type', 'album')->get(),
+                        'albumImages' => $allAlbumImages,
+                        'caption' => $news->caption ?? '',
                     ])
                 @endif
 
                 {{-- Video --}}
                 @if ($news->template == 'video' && $news->media()->wherePivot('type', 'video')->first())
+                    @php
+                        // Use the article's main image as the video poster/thumbnail
+                        $mainImage = $news->media()->wherePivot('type', 'main')->first();
+                        $posterImage = $mainImage ? $mainImage->path : null;
+                    @endphp
                     @include('user.components.video-player', [
                         'video' => $news->media()->wherePivot('type', 'video')->first()->path,
                         'caption' => $news->media()->wherePivot('type', 'video')->first()->alt ?? 'فيديو',
+                        'poster' => $posterImage,
                     ])
                 @endif
 

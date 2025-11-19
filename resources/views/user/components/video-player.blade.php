@@ -18,6 +18,11 @@
         border: none;
     }
 
+    /* Make video poster/thumbnail cover the entire video area */
+    .custom-video-wrapper video {
+        object-fit: cover;
+    }
+
     .custom-video-caption {
         background: #f6f6f6;
         color: #555;
@@ -72,7 +77,16 @@
                 $videoUrl = asset($video);
             }
         @endphp
-        <video controls preload="metadata" poster="{{ $poster ?? asset('user/assets/img/video-placeholder.jpg') }}">
+        @php
+            // Use provided poster, or default placeholder
+            $posterImage = $poster ?? asset('user/assets/img/video-placeholder.jpg');
+
+            // If poster is a path starting with /storage/, convert to full URL
+            if (isset($poster) && str_starts_with($poster, '/storage/')) {
+                $posterImage = asset($poster);
+            }
+        @endphp
+        <video controls preload="metadata" poster="{{ $posterImage }}">
             <source src="{{ $videoUrl }}" type="video/mp4">
             متصفحك لا يدعم تشغيل الفيديو.
         </video>

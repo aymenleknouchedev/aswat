@@ -11,7 +11,11 @@
 
             @foreach($albumImages as $index => $image)
                 <div class="slide {{ $index === 0 ? 'active' : '' }}">
-                    <img src="{{ $image->path }}" alt="Album Image {{ $index + 1 }}">
+                    <img src="{{ $image->path }}"
+                         alt="{{ $image->alt ?? 'Album Image ' . ($index + 1) }}"
+                         class="album-image-clickable"
+                         data-index="{{ $index }}"
+                         data-caption="{{ $index === 0 && isset($caption) ? $caption : ($image->alt ?? '') }}">
                 </div>
             @endforeach
 
@@ -21,6 +25,13 @@
                 </svg>
             </button>
         </div>
+
+        {{-- Persistent caption for all slides --}}
+        @if(isset($caption) && $caption)
+            <div class="slide-caption">
+                {{ $caption }}
+            </div>
+        @endif
     @else
         <p>لا توجد صور في الألبوم.</p>
     @endif
@@ -50,7 +61,6 @@
 
 .slide {
     display: none;
-    animation: fade 0.8s ease-in-out;
 }
 
 .slide.active {
@@ -62,11 +72,23 @@
     height: 400px;
     object-fit: cover;
     user-select: none;
-    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    transition: opacity 0.3s;
 }
 
 .slide img:hover {
-    transform: scale(1.02);
+    opacity: 0.9;
+}
+
+/* ===== Caption ===== */
+.slide-caption {
+    background: #f6f6f6;
+    color: #555;
+    padding: 10px 14px;
+    font-size: 15px;
+    text-align: right;
+    font-family: asswat-regular;
+    direction: rtl;
 }
 
 /* ===== Arrows ===== */
@@ -112,12 +134,6 @@
 
 .prev-btn { left: 15px; }
 .next-btn { right: 15px; }
-
-/* ===== Animation ===== */
-@keyframes fade {
-    from { opacity: 0.3; }
-    to { opacity: 1; }
-}
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
@@ -173,5 +189,139 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Make moveSlide globally accessible for the buttons
     window.moveSlide = moveSlide;
+
+    // Initialize album gallery for fullscreen viewing
+    initializeAlbumGallery();
 });
+
+/**
+ * Initialize album gallery for fullscreen preview
+ */
+function initializeAlbumGallery() {
+    const albumImages = [];
+    const clickableImages = document.querySelectorAll('.album-image-clickable');
+
+    // Collect all album images with their data
+    clickableImages.forEach((img, index) => {
+        albumImages.push({
+            src: img.src,
+            caption: img.getAttribute('data-caption') || '',
+            element: img,
+            index: index
+        });
+    });
+
+    // Add click handlers to all album images
+    albumImages.forEach((imageData, index) => {
+        imageData.element.addEventListener('click', function(e) {
+            e.preventDefault();
+            openAlbumGallery(index);
+        });
+    });
+
+    /**
+     * Open album gallery at specific index
+     */
+    function openAlbumGallery(index) {
+        // Check if fullscreen modal exists (from news.blade.php)
+        const fullscreenModal = document.getElementById('fullscreenImageModal');
+        if (!fullscreenModal) {
+            console.warn('Fullscreen modal not found');
+            return;
+        }
+
+        const fullscreenImageContent = document.getElementById('fullscreenImageContent');
+        const fullscreenImageCaption = document.getElementById('fullscreenImageCaption');
+        const fullscreenImageCounter = document.getElementById('fullscreenImageCounter');
+        const fullscreenImagePrev = document.getElementById('fullscreenImagePrev');
+        const fullscreenImageNext = document.getElementById('fullscreenImageNext');
+
+        let currentAlbumIndex = index;
+
+        // Show current album image
+        function showAlbumImage() {
+            if (albumImages.length === 0) return;
+
+            const currentImage = albumImages[currentAlbumIndex];
+            fullscreenImageContent.src = currentImage.src;
+
+            // Only show caption for the first image (main image/cover)
+            if (currentAlbumIndex === 0 && currentImage.caption) {
+                fullscreenImageCaption.textContent = currentImage.caption;
+                fullscreenImageCaption.style.display = 'block';
+            } else {
+                fullscreenImageCaption.style.display = 'none';
+            }
+
+            // Update counter
+            fullscreenImageCounter.textContent = `${currentAlbumIndex + 1} / ${albumImages.length}`;
+
+            // Update navigation buttons
+            fullscreenImagePrev.disabled = currentAlbumIndex === albumImages.length - 1;
+            fullscreenImageNext.disabled = currentAlbumIndex === 0;
+
+            // Show/hide navigation based on image count
+            if (albumImages.length <= 1) {
+                fullscreenImagePrev.style.display = 'none';
+                fullscreenImageNext.style.display = 'none';
+                fullscreenImageCounter.style.display = 'none';
+            } else {
+                fullscreenImagePrev.style.display = 'flex';
+                fullscreenImageNext.style.display = 'flex';
+                fullscreenImageCounter.style.display = 'block';
+            }
+        }
+
+        // Navigate to previous image
+        function showPreviousAlbumImage() {
+            if (currentAlbumIndex < albumImages.length - 1) {
+                currentAlbumIndex++;
+                showAlbumImage();
+            }
+        }
+
+        // Navigate to next image
+        function showNextAlbumImage() {
+            if (currentAlbumIndex > 0) {
+                currentAlbumIndex--;
+                showAlbumImage();
+            }
+        }
+
+        // Set up navigation handlers
+        const prevHandler = () => showPreviousAlbumImage();
+        const nextHandler = () => showNextAlbumImage();
+
+        // Remove any existing handlers and add new ones
+        fullscreenImagePrev.onclick = prevHandler;
+        fullscreenImageNext.onclick = nextHandler;
+
+        // Show the modal with the current image
+        showAlbumImage();
+        fullscreenModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Handle keyboard navigation
+        function handleKeyPress(e) {
+            if (fullscreenModal.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') {
+                    showNextAlbumImage();
+                } else if (e.key === 'ArrowRight') {
+                    showPreviousAlbumImage();
+                }
+            }
+        }
+
+        // Add keyboard listener
+        document.addEventListener('keydown', handleKeyPress);
+
+        // Clean up when modal closes
+        const closeHandler = function() {
+            document.removeEventListener('keydown', handleKeyPress);
+            fullscreenModal.removeEventListener('transitionend', closeHandler);
+        };
+
+        fullscreenModal.addEventListener('transitionend', closeHandler);
+    }
+}
 </script>
