@@ -2002,10 +2002,108 @@
         img.tiny-sm,video.tiny-sm{width:280px;height:auto;max-width:100%;}
         .clickable-term{color:#0066cc;text-decoration:underline;cursor:pointer;padding:2px 4px;border-radius:3px;transition:background-color 0.2s;background-color:transparent;}
         .clickable-term:hover{background-color:#e6f2ff;text-decoration:none;}
-        .read-more-block{border:2px dashed #6576ff;border-radius:8px;overflow:hidden;margin:0.75rem 0;background:#f0f4ff;padding:1rem;display:block;cursor:pointer;position:relative;user-select:none;}
-        .read-more-block:hover{background:#e6f0ff;border-color:#465fff;}
-        .read-more-block .read-more-placeholder{display:block;text-align:center;color:#6576ff;font-weight:600;font-size:0.95rem;padding:0.5rem;}
-        .read-more-block::before{content:"📖 اقرأ أيضاً";display:block;text-align:center;font-weight:bold;color:#364a63;margin-bottom:0.5rem;font-size:0.9rem;}
+
+        /* ReadMore Block Container */
+        .read-more-block{
+            border:2px solid #e0e0e0;
+            border-radius:8px;
+            overflow:hidden;
+            margin:1rem 0;
+            background:#fff;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+            display:flex;
+            align-items:stretch;
+            position:relative;
+            user-select:none;
+            cursor:pointer;
+            transition:all 0.2s ease;
+        }
+        .read-more-block:hover{
+            box-shadow:0 4px 12px rgba(0,0,0,0.15);
+            border-color:#6576ff;
+        }
+
+        /* ReadMore Label Badge */
+        .read-more-block .read-more-label-text{
+            position:absolute;
+            top:8px;
+            left:8px;
+            font-size:0.7rem;
+            font-weight:600;
+            color:#fff;
+            background:#6576ff;
+            padding:4px 12px;
+            border-radius:12px;
+            z-index:10;
+            box-shadow:0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* ReadMore Image (Right Side) */
+        .read-more-block .read-more-image{
+            width:180px;
+            min-width:180px;
+            max-width:180px;
+            height:auto;
+            max-height:150px;
+            object-fit:cover;
+            order:2;
+            flex-shrink:0;
+        }
+
+        /* ReadMore Content Area (Left Side) */
+        .read-more-block .read-more-content{
+            flex:1;
+            padding:1rem;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            order:1;
+            min-width:0;
+        }
+
+        /* Category Label */
+        .read-more-block .read-more-category{
+            font-size:0.75rem;
+            color:#888;
+            text-align:right;
+            margin:0 0 0.5rem 0;
+            font-weight:500;
+        }
+
+        /* Title */
+        .read-more-block .read-more-title{
+            font-size:1.1rem;
+            font-weight:700;
+            margin:0 0 0.5rem 0;
+            color:#2c3e50;
+            line-height:1.4;
+            text-align:right;
+        }
+
+        /* Summary Text */
+        .read-more-block .read-more-summary{
+            color:#555;
+            line-height:1.5;
+            margin:0;
+            font-size:0.9rem;
+            text-align:right;
+            overflow:hidden;
+            display:-webkit-box;
+            -webkit-line-clamp:2;
+            -webkit-box-orient:vertical;
+        }
+
+        /* Placeholder (Loading State) */
+        .read-more-block .read-more-placeholder{
+            display:block;
+            text-align:center;
+            color:#6576ff;
+            font-weight:600;
+            font-size:0.95rem;
+            padding:2rem;
+            width:100%;
+        }
+
         .mceNonEditable{outline:2px solid transparent;transition:outline-color 0.2s;}
         .mceNonEditable:focus,.mceNonEditable.mce-edit-focus{outline-color:#6576ff !important;}
     `,
