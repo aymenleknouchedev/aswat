@@ -31,16 +31,79 @@
         text-align: right;
         font-family: asswat-regular;
     }
+
+    /* Video cover with play button */
+    .video-cover {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        cursor: pointer;
+        overflow: hidden;
+        background: #000;
+    }
+
+    .video-cover img {
+        transition: transform 0.3s ease;
+    }
+
+    .video-cover:hover img {
+        transform: scale(1.05);
+    }
+
+    .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: transform 0.3s ease;
+        pointer-events: none;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .video-cover:hover .play-button {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
 </style>
+
+<script>
+function loadYouTubeVideo(videoId) {
+    const cover = document.getElementById('videoCover' + videoId);
+    const player = document.getElementById('videoPlayer' + videoId);
+
+    if (cover && player) {
+        cover.style.display = 'none';
+        player.style.display = 'block';
+    }
+}
+
+function loadVimeoVideo(videoId) {
+    const cover = document.getElementById('videoCover' + videoId);
+    const player = document.getElementById('videoPlayer' + videoId);
+
+    if (cover && player) {
+        cover.style.display = 'none';
+        player.style.display = 'block';
+    }
+}
+</script>
 
 @php
     // Detect if video is YouTube or Vimeo link
-    $isYouTube = Str::contains($video, ['youtube.com', 'youtu.be']);
+    $isYouTube = Str::contains($video, ['youtube.com', 'youtu.be', 'youtube.com/shorts']);
     $isVimeo = Str::contains($video, ['vimeo.com']);
 
     // Extract embed ID for YouTube
     if ($isYouTube) {
-        preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/', $video, $matches);
+        preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([^&?\/\s]+)/', $video, $matches);
         $youtubeId = $matches[1] ?? null;
     }
 
@@ -49,18 +112,62 @@
         preg_match('/vimeo\.com\/(\d+)/', $video, $matches);
         $vimeoId = $matches[1] ?? null;
     }
+
+    // Check if poster is provided for YouTube/Vimeo
+    $hasPoster = isset($poster) && !empty($poster);
 @endphp
 
 <div class="custom-video-wrapper">
     @if ($isYouTube && !empty($youtubeId))
-        <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}" title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen loading="lazy">
-        </iframe>
+        @if ($hasPoster)
+            {{-- Show poster as clickable cover for YouTube videos --}}
+            @php
+                $posterUrl = str_starts_with($poster, '/storage/') ? asset($poster) : $poster;
+            @endphp
+            <div class="video-cover" id="videoCover{{ $youtubeId }}" onclick="loadYouTubeVideo('{{ $youtubeId }}')">
+                <img src="{{ $posterUrl }}" alt="Video thumbnail" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16/9;">
+                <div class="play-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M12 8L30 20L12 32V8Z" fill="#FFFFFF"/>
+                    </svg>
+                </div>
+            </div>
+            <div id="videoPlayer{{ $youtubeId }}" style="display: none;">
+                <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}?autoplay=1" title="YouTube video player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen loading="lazy">
+                </iframe>
+            </div>
+        @else
+            <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}" title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen loading="lazy">
+            </iframe>
+        @endif
     @elseif ($isVimeo && !empty($vimeoId))
-        <iframe src="https://player.vimeo.com/video/{{ $vimeoId }}" title="Vimeo video player"
-            allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy">
-        </iframe>
+        @if ($hasPoster)
+            {{-- Show poster as clickable cover for Vimeo videos --}}
+            @php
+                $posterUrl = str_starts_with($poster, '/storage/') ? asset($poster) : $poster;
+            @endphp
+            <div class="video-cover" id="videoCover{{ $vimeoId }}" onclick="loadVimeoVideo('{{ $vimeoId }}')">
+                <img src="{{ $posterUrl }}" alt="Video thumbnail" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16/9;">
+                <div class="play-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M12 8L30 20L12 32V8Z" fill="#FFFFFF"/>
+                    </svg>
+                </div>
+            </div>
+            <div id="videoPlayer{{ $vimeoId }}" style="display: none;">
+                <iframe src="https://player.vimeo.com/video/{{ $vimeoId }}?autoplay=1" title="Vimeo video player"
+                    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy">
+                </iframe>
+            </div>
+        @else
+            <iframe src="https://player.vimeo.com/video/{{ $vimeoId }}" title="Vimeo video player"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy">
+            </iframe>
+        @endif
     @else
         {{-- Local or hosted MP4 --}}
         @php
