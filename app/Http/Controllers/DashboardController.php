@@ -21,6 +21,8 @@ class DashboardController extends Controller
         // $this->middleware(['auth', 'check:dashboard_access']);
     }
 
+    
+
     public function index()
     {
         try {
