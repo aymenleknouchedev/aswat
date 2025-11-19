@@ -1,6 +1,4 @@
 <div class="album-slider">
-    <h3>ألبوم الصور</h3>
-
     @if(isset($albumImages) && $albumImages->count())
         <div class="slider-container" id="albumSlider">
             <button class="slider-btn prev-btn" onclick="moveSlide(-1)">
@@ -44,13 +42,6 @@
     max-width: 700px;
     margin: 50px auto;
     font-family: 'Tajawal', sans-serif;
-}
-
-.album-slider h3 {
-    margin-bottom: 15px;
-    font-size: 1.6rem;
-    color: #111;
-    font-weight: 600;
 }
 
 .slider-container {
