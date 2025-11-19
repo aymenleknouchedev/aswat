@@ -1428,11 +1428,11 @@
                     {{-- Tags --}}
                     <div class="custom-tags">
                         @foreach ($news->tags as $tag)
-                            <span>
-                                <a href="{{ route('tag.show', $tag->id) }}" style="text-decoration: none; color: inherit;">
+                            <a href="{{ route('tag.show', $tag->id) }}" style="text-decoration: none; color: inherit;">
+                                <span>
                                     {{ $tag->name }}
-                                </a>
-                            </span>
+                                </span>
+                            </a>
                         @endforeach
                     </div>
 
