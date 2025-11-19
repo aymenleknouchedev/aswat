@@ -1595,7 +1595,9 @@
         // ============================================
         let textModalState = {
             selectedImage: null,
-            selectedImagePath: null
+            selectedImagePath: null,
+            editingElement: null, // Element being edited (null for new insertion)
+            isEditMode: false      // Track if we're in edit mode
         };
 
         // ============================================
@@ -1604,26 +1606,65 @@
         window.vvcTextModalManager = {
             /**
              * Open text modal
+             * @param {HTMLElement} elementToEdit - Optional: existing clickable-term element to edit
              */
-            openModal() {
+            openModal(elementToEdit = null) {
                 textModalState.selectedImage = null;
                 textModalState.selectedImagePath = null;
+                textModalState.editingElement = elementToEdit;
+                textModalState.isEditMode = !!elementToEdit;
+
                 textModal.setAttribute('aria-hidden', 'false');
                 document.documentElement.style.overflow = 'hidden';
-                textContentInput.value = '';
-                textKeyInput.value = '';
-                textDescriptionInput.value = '';
-                imagePreviewContainer.style.display = 'none';
-                // Get selected text from editor if available
-                if (window.tinymce && tinymce.activeEditor) {
-                    const selectedText = tinymce.activeEditor.selection.getContent({
-                        format: 'text'
-                    });
-                    if (selectedText) {
-                        textContentInput.value = selectedText;
-                        updateKeyFromContent();
+
+                // If editing an existing element, pre-fill the form
+                if (elementToEdit) {
+                    textContentInput.value = elementToEdit.textContent || '';
+                    textKeyInput.value = elementToEdit.getAttribute('data-term') || '';
+                    textDescriptionInput.value = elementToEdit.getAttribute('data-description') || '';
+
+                    const imageUrl = elementToEdit.getAttribute('data-image');
+                    if (imageUrl) {
+                        textModalState.selectedImagePath = imageUrl;
+                        imagePreview.src = imageUrl;
+                        imagePath.textContent = imageUrl;
+                        imagePreviewContainer.style.display = 'block';
+                    } else {
+                        imagePreviewContainer.style.display = 'none';
                     }
+
+                    // Make key field editable in edit mode
+                    textKeyInput.removeAttribute('readonly');
+                    textKeyInput.style.background = 'var(--vvc-body-bg)';
+
+                    // Update button text for edit mode
+                    btnInsertText.textContent = 'تحديث النص';
+                } else {
+                    // Clear form for new insertion
+                    textContentInput.value = '';
+                    textKeyInput.value = '';
+                    textDescriptionInput.value = '';
+                    imagePreviewContainer.style.display = 'none';
+
+                    // Make key field readonly in insert mode (auto-generated)
+                    textKeyInput.setAttribute('readonly', 'readonly');
+                    textKeyInput.style.background = '';
+
+                    // Get selected text from editor if available
+                    if (window.tinymce && tinymce.activeEditor) {
+                        const selectedText = tinymce.activeEditor.selection.getContent({
+                            format: 'text'
+                        });
+                        if (selectedText) {
+                            textContentInput.value = selectedText;
+                            updateKeyFromContent();
+                        }
+                    }
+
+                    // Update button text for insert mode
+                    btnInsertText.textContent = 'إدراج النص';
                 }
+
                 setTimeout(() => textContentInput.focus(), 0);
             },
 
@@ -1635,6 +1676,8 @@
                 document.documentElement.style.overflow = '';
                 textModalState.selectedImage = null;
                 textModalState.selectedImagePath = null;
+                textModalState.editingElement = null;
+                textModalState.isEditMode = false;
             },
 
             /**
@@ -1945,7 +1988,7 @@
         readMoreContainer.addEventListener('click', e => e.stopPropagation());
 
         /**
-         * Insert clickable text into editor
+         * Insert or update clickable text in editor
          */
         btnInsertText.addEventListener('click', () => {
             const content = textContentInput.value.trim();
@@ -1961,21 +2004,49 @@
                 return;
             }
 
+            // Add or update text definition in storage
             window.vvcTextModalManager.addTextDefinition(key, content, description, textModalState
                 .selectedImagePath);
 
-            if (window.tinymce && tinymce.activeEditor) {
-                tinymce.activeEditor.focus();
-                let attr =
-                    `class="clickable-term" data-term="${escapeHtml(key)}" data-description="${escapeHtml(description)}"`;
+            if (textModalState.isEditMode && textModalState.editingElement) {
+                // UPDATE MODE: Update existing element
+                const oldKey = textModalState.editingElement.getAttribute('data-term');
+
+                // Update the element's attributes and content
+                textModalState.editingElement.textContent = content;
+                textModalState.editingElement.setAttribute('data-term', key);
+                textModalState.editingElement.setAttribute('data-description', description);
+
                 if (textModalState.selectedImagePath) {
-                    attr += ` data-image="${escapeHtml(textModalState.selectedImagePath)}"`;
+                    textModalState.editingElement.setAttribute('data-image', textModalState.selectedImagePath);
+                } else {
+                    textModalState.editingElement.removeAttribute('data-image');
                 }
-                tinymce.activeEditor.execCommand('mceInsertContent', false,
-                    `<span ${attr}>${escapeHtml(content)}</span>`);
+
+                // If key changed, remove old definition from storage
+                if (oldKey && oldKey !== key && window.vvcTextDefinitions[oldKey]) {
+                    delete window.vvcTextDefinitions[oldKey];
+                }
+
+                // Trigger TinyMCE change event
+                if (window.tinymce && tinymce.activeEditor) {
+                    tinymce.activeEditor.fire('change');
+                }
             } else {
-                alert('⚠️ محرر TinyMCE غير متاح');
-                return;
+                // INSERT MODE: Create new element
+                if (window.tinymce && tinymce.activeEditor) {
+                    tinymce.activeEditor.focus();
+                    let attr =
+                        `class="clickable-term" data-term="${escapeHtml(key)}" data-description="${escapeHtml(description)}"`;
+                    if (textModalState.selectedImagePath) {
+                        attr += ` data-image="${escapeHtml(textModalState.selectedImagePath)}"`;
+                    }
+                    tinymce.activeEditor.execCommand('mceInsertContent', false,
+                        `<span ${attr}>${escapeHtml(content)}</span>`);
+                } else {
+                    alert('⚠️ محرر TinyMCE غير متاح');
+                    return;
+                }
             }
             window.vvcTextModalManager.closeModal();
         });
@@ -2276,6 +2347,43 @@
                 setTimeout(loadReadMoreBlocksInEditor, 100);
             });
 
+            // ---- CLICKABLE TEXT DOUBLE-CLICK EDIT HANDLER ----
+            // Track double-clicks manually since TinyMCE's dblclick event is unreliable with inline elements
+            let lastClickTime = 0;
+            let lastClickTarget = null;
+            const DOUBLE_CLICK_DELAY = 500; // milliseconds
+
+            editor.on('click', function(e) {
+                const target = e.target;
+                const currentTime = Date.now();
+
+                // Check if the clicked element is a clickable term
+                if (target.classList && target.classList.contains('clickable-term')) {
+                    // Check if this is a double-click (same target within delay)
+                    if (lastClickTarget === target && (currentTime - lastClickTime) < DOUBLE_CLICK_DELAY) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        // Open modal in edit mode with the current element
+                        if (window.vvcTextModalManager?.openModal) {
+                            window.vvcTextModalManager.openModal(target);
+                        }
+
+                        // Reset tracking
+                        lastClickTime = 0;
+                        lastClickTarget = null;
+                    } else {
+                        // First click - track it
+                        lastClickTime = currentTime;
+                        lastClickTarget = target;
+                    }
+                } else {
+                    // Reset tracking if clicking elsewhere
+                    lastClickTime = 0;
+                    lastClickTarget = null;
+                }
+            });
+
             // ---- MEDIA PICKER BUTTON ----
             editor.ui.registry.addButton('vvcPicker', {
                 text: 'وسائط',
@@ -2325,6 +2433,26 @@
             editor.ui.registry.addContextMenu('copy_cut_paste', {
                 predicate: (node) => true,
                 items: 'copy cut paste'
+            });
+
+            // ---- CONTEXT MENU ITEM FOR EDITING CLICKABLE TEXT ----
+            editor.ui.registry.addMenuItem('editClickableText', {
+                text: 'تعديل النص التفاعلي',
+                icon: 'edit-block',
+                onAction: function() {
+                    const selectedNode = editor.selection.getNode();
+                    if (selectedNode && selectedNode.classList && selectedNode.classList.contains('clickable-term')) {
+                        window.vvcTextModalManager.openModal(selectedNode);
+                    }
+                }
+            });
+
+            // Add context menu for clickable text elements
+            editor.ui.registry.addContextMenu('clickable_text', {
+                predicate: (node) => {
+                    return node.classList && node.classList.contains('clickable-term');
+                },
+                items: 'editClickableText | copy cut paste'
             });
 
             // ---- CUSTOM PASTE BUTTON ----
