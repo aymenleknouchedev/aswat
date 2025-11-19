@@ -38,10 +38,7 @@
 {{-- ================= CSS ================= --}}
 <style>
 .album-slider {
-    position: relative;
-    max-width: 700px;
-    margin: 50px auto;
-    font-family: 'Tajawal', sans-serif;
+  
 }
 
 .slider-container {
