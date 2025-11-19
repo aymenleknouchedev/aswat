@@ -189,6 +189,10 @@
     --}}
 
     @include('components.head.tinymce-config')
+
+    {{-- ================= DYNAMIC READMORE LOADER ================= --}}
+    @include('components.readmore-loader')
+
     @stack('scripts')
 </body>
 

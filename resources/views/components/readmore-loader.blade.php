@@ -123,5 +123,59 @@
         } else {
             loadReadMoreBlocks();
         }
+
+        // Expose global refresh function for external use
+        window.refreshReadMoreCards = function() {
+            console.log('Refreshing ReadMore cards...');
+
+            // Refresh cards in the main document
+            loadReadMoreBlocks();
+
+            // Also refresh cards inside TinyMCE editor if it exists
+            if (typeof tinymce !== 'undefined' && tinymce.activeEditor) {
+                const editor = tinymce.activeEditor;
+                const editorBody = editor.getBody();
+                const editorBlocks = editorBody.querySelectorAll('.read-more-block[data-content-id]');
+
+                if (editorBlocks.length > 0) {
+                    console.log(`Found ${editorBlocks.length} readmore cards in TinyMCE editor`);
+
+                    // Extract content IDs from editor
+                    const contentIds = Array.from(editorBlocks).map(block => block.dataset.contentId);
+
+                    // Batch fetch all ReadMore contents
+                    fetch('/api/readmore-batch', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                        },
+                        body: JSON.stringify({ ids: contentIds })
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success && result.data) {
+                            // Replace each placeholder with updated content in editor
+                            editorBlocks.forEach(block => {
+                                const contentId = block.dataset.contentId;
+                                const contentData = result.data.find(item => item.id == contentId);
+
+                                if (contentData) {
+                                    console.log(`Updating TinyMCE ReadMore card for ID: ${contentId}`);
+                                    renderReadMoreCard(block, contentData);
+                                }
+                            });
+
+                            // Mark editor as dirty so changes are detected
+                            editor.setDirty(true);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error refreshing ReadMore cards in TinyMCE:', error);
+                    });
+                }
+            }
+        };
     })();
 </script>

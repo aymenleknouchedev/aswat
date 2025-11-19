@@ -2874,6 +2874,11 @@
 
                     console.log('Success response:', data);
 
+                    // Refresh ReadMore cards after successful save
+                    if (typeof window.refreshReadMoreCards === 'function') {
+                        window.refreshReadMoreCards();
+                    }
+
                     // Optional: Redirect after success if provided
                     if (data.redirect) {
                         setTimeout(() => {
