@@ -187,16 +187,28 @@ class MediaController extends BaseController
                 } catch (\Throwable $conversionError) {
                     // Fallback: if conversion fails, store original image
                     Log::warning('Image conversion to WebP failed, storing original: ' . $conversionError->getMessage());
-                    
+
                     $fileName = $safeName . '_' . time() . '.' . $extension;
                     $storedPath = $file->storeAs('media', $fileName, 'public');
-                    $path = '/storage/' . $storedPath;
+
+                    // Normalize the path
+                    $normalizedPath = str_replace('\\', '/', $storedPath);
+                    $path = '/storage/' . ltrim($normalizedPath, '/');
                 }
             } else {
-                // For non-images: store as-is
+                // For non-images (videos, audio, documents): store as-is
                 $fileName = $safeName . '_' . time() . '.' . $extension;
                 $storedPath = $file->storeAs('media', $fileName, 'public');
-                $path = '/storage/' . $storedPath;
+
+                // Normalize the path to ensure it's valid
+                // Remove any duplicate slashes and ensure proper format
+                $normalizedPath = str_replace('\\', '/', $storedPath);
+                $path = '/storage/' . ltrim($normalizedPath, '/');
+
+                // Verify the file was stored successfully
+                if (!Storage::disk('public')->exists($normalizedPath)) {
+                    throw new \Exception('Failed to store file: ' . $fileName);
+                }
             }
 
             // Create media record
@@ -209,6 +221,15 @@ class MediaController extends BaseController
                 $media->media_type = 'voice';
             } elseif ($isVideo) {
                 $media->media_type = 'video';
+
+                // Log video upload details for debugging
+                Log::info('Video file uploaded', [
+                    'fileName' => $fileName,
+                    'originalName' => $originalName,
+                    'mimeType' => $mimeType,
+                    'size' => $file->getSize(),
+                    'extension' => $extension
+                ]);
             } elseif ($isImage) {
                 $media->media_type = 'image';
             } else {
@@ -218,6 +239,15 @@ class MediaController extends BaseController
             $media->path = $path;
             $media->user_id = Auth::id();
             $media->save();
+
+            // Log successful upload for debugging
+            Log::info('Media uploaded successfully', [
+                'id' => $media->id,
+                'name' => $media->name,
+                'type' => $media->media_type,
+                'path' => $media->path,
+                'fileName' => $fileName
+            ]);
 
             if ($request->expectsJson() || $request->ajax()) {
                 return response()->json([
@@ -434,10 +464,16 @@ class MediaController extends BaseController
                     ->withErrors(['error' => 'لا يمكن حذف هذه الوسائط لأنها مرتبطة بمحتوى.']);
             }
 
-            // حذف الملف من التخزين
-            $filePath = str_replace('/storage/', 'public/', $media->path);
-            if (Storage::exists($filePath)) {
-                Storage::delete($filePath);
+            // حذف الملف من التخزين إذا كان ملف محلي وليس رابط خارجي
+            if (str_starts_with($media->path, '/storage/')) {
+                // Normalize the path for deletion
+                $filePath = str_replace('/storage/', '', $media->path);
+                $filePath = str_replace('\\', '/', $filePath);
+
+                if (Storage::disk('public')->exists($filePath)) {
+                    Storage::disk('public')->delete($filePath);
+                    Log::info('Media file deleted from storage', ['path' => $filePath]);
+                }
             }
 
             // حذف السجل من قاعدة البيانات
@@ -456,7 +492,7 @@ class MediaController extends BaseController
     public function getAllMediaPaginated(Request $request)
     {
         try {
-            $pagination = config('pagination.per12', 12);
+            $pagination = config('pagination.per12', 10);
 
             $query = ContentMedia::query();
 

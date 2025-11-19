@@ -57,4 +57,33 @@ class ContentMedia extends Model
 
         return $labels[$this->type] ?? $this->type;
     }
+
+    /**
+     * Get the full URL for the media file
+     * This accessor ensures paths are properly converted to valid URLs
+     */
+    public function getUrlAttribute()
+    {
+        if (empty($this->path)) {
+            return null;
+        }
+
+        // If it's already a full URL (external link), return as-is
+        if (filter_var($this->path, FILTER_VALIDATE_URL)) {
+            return $this->path;
+        }
+
+        // If it starts with /storage/, convert to asset URL
+        if (str_starts_with($this->path, '/storage/')) {
+            return asset($this->path);
+        }
+
+        // If it starts with storage/ (missing leading slash), add it
+        if (str_starts_with($this->path, 'storage/')) {
+            return asset('/' . $this->path);
+        }
+
+        // For any other path, use asset helper
+        return asset($this->path);
+    }
 }

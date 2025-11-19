@@ -58,8 +58,22 @@
         </iframe>
     @else
         {{-- Local or hosted MP4 --}}
+        @php
+            // Generate proper URL for local videos
+            $videoUrl = $video;
+            if (str_starts_with($video, '/storage/')) {
+                // Convert to asset URL for local storage videos
+                $videoUrl = asset($video);
+            } elseif (str_starts_with($video, 'storage/')) {
+                // Handle missing leading slash
+                $videoUrl = asset('/' . $video);
+            } elseif (!filter_var($video, FILTER_VALIDATE_URL)) {
+                // If not a valid URL and not a storage path, try asset helper
+                $videoUrl = asset($video);
+            }
+        @endphp
         <video controls preload="metadata" poster="{{ $poster ?? asset('user/assets/img/video-placeholder.jpg') }}">
-            <source src="{{ $video }}" type="video/mp4">
+            <source src="{{ $videoUrl }}" type="video/mp4">
             متصفحك لا يدعم تشغيل الفيديو.
         </video>
     @endif
