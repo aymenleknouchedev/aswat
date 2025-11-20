@@ -362,33 +362,49 @@ class MediaController extends BaseController
      */
     protected function guessMediaTypeFromUrl(string $url): string
     {
-        // YouTube
-        if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/|youtube\.com\/embed\/)/i', $url)) {
+        // YouTube - matches various YouTube URL formats
+        // Examples: youtube.com/watch?v=ID, youtu.be/ID, youtube.com/shorts/ID, youtube.com/embed/ID
+        if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{6,})/i', $url)) {
             return 'video';
         }
 
-        // Vimeo
-        if (preg_match('/(?:vimeo\.com\/|player\.vimeo\.com\/video\/)/i', $url)) {
+        // Vimeo - matches vimeo.com/ID and player.vimeo.com/video/ID
+        // Example: vimeo.com/123456789, player.vimeo.com/video/123456789
+        if (preg_match('/(?:vimeo\.com\/|player\.vimeo\.com\/video\/)([0-9]+)/i', $url)) {
             return 'video';
         }
 
-        // Dailymotion
-        if (preg_match('/(?:dailymotion\.com\/video\/|dai\.ly\/)/i', $url)) {
+        // Dailymotion - matches dailymotion.com/video/ID and dai.ly/ID
+        // Example: dailymotion.com/video/x8abc123, dai.ly/x8abc123
+        if (preg_match('/(?:dailymotion\.com\/video\/|dailymotion\.com\/embed\/video\/|dai\.ly\/)([a-zA-Z0-9]+)/i', $url)) {
             return 'video';
         }
 
-        // Other video platforms
-        if (preg_match('/(?:wistia\.com|vidyard\.com|brightcove\.net)/i', $url)) {
+        // Other video platforms (Wistia, Vidyard, Brightcove, Twitch, Facebook Video, etc.)
+        if (preg_match('/(?:wistia\.com|vidyard\.com|brightcove\.net|twitch\.tv|facebook\.com\/.*\/videos|fb\.watch)/i', $url)) {
             return 'video';
         }
 
+        // Check file extension
         $path = parse_url($url, PHP_URL_PATH) ?? '';
         $ext  = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-        if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'], true)) return 'image';
-        if (in_array($ext, ['mp4', 'webm', 'mkv', 'mov', 'avi', 'm4v'], true))      return 'video';
-        if (in_array($ext, ['mp3', 'wav', 'ogg', 'm4a', 'aac', 'flac'], true))       return 'voice';
+        // Image extensions
+        if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'], true)) {
+            return 'image';
+        }
 
+        // Video file extensions
+        if (in_array($ext, ['mp4', 'webm', 'mkv', 'mov', 'avi', 'm4v'], true)) {
+            return 'video';
+        }
+
+        // Audio/Voice file extensions
+        if (in_array($ext, ['mp3', 'wav', 'ogg', 'm4a', 'aac', 'flac'], true)) {
+            return 'voice';
+        }
+
+        // Default to file if unable to determine
         return 'file';
     }
 
@@ -397,6 +413,21 @@ class MediaController extends BaseController
      */
     protected function defaultNameFromUrl(string $url): string
     {
+        // Check for video platforms and use platform-specific names
+        if (preg_match('/youtube\.com\/watch\?v=([A-Za-z0-9_-]{6,})/i', $url, $matches)) {
+            return 'YouTube Video - ' . $matches[1];
+        }
+        if (preg_match('/youtu\.be\/([A-Za-z0-9_-]{6,})/i', $url, $matches)) {
+            return 'YouTube Video - ' . $matches[1];
+        }
+        if (preg_match('/vimeo\.com\/([0-9]+)/i', $url, $matches)) {
+            return 'Vimeo Video - ' . $matches[1];
+        }
+        if (preg_match('/dailymotion\.com\/video\/([a-zA-Z0-9]+)/i', $url, $matches)) {
+            return 'Dailymotion Video - ' . $matches[1];
+        }
+
+        // For regular URLs, extract filename
         $path = parse_url($url, PHP_URL_PATH) ?? '';
         $base = basename($path) ?: 'Imported Media';
         // إزالة الاستعلام والامتداد
@@ -516,8 +547,20 @@ class MediaController extends BaseController
             // فلترة بالبحث
             if ($search = $request->input('search')) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('name', 'LIKE', "%{$search}%");
+                    $q->where('name', 'LIKE', "%{$search}%")
+                      ->orWhere('alt', 'LIKE', "%{$search}%")
+                      ->orWhere('path', 'LIKE', "%{$search}%");
                 });
+            }
+
+            // فلترة حسب نوع الوسائط
+            if ($type = $request->input('type')) {
+                // If type is not 'all', filter by media_type
+                if ($type !== 'all') {
+                    // Map 'audio' to 'voice' for consistency
+                    $mediaType = ($type === 'audio') ? 'voice' : $type;
+                    $query->where('media_type', $mediaType);
+                }
             }
 
             $medias = $query->latest()->paginate($pagination)
