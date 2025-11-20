@@ -153,84 +153,76 @@ class MediaController extends BaseController
             $extension = $file->getClientOriginalExtension();
             $mimeType = $file->getClientMimeType();
 
-            // Use Unicode-aware pattern with /u modifier
+            // Normalize filename (Arabic-friendly + Unicode-safe)
             $safeName = preg_replace('/\s+/u', '_', $originalName);
 
-            // Determine media type first
+            // Determine media type
             $isImage = str_starts_with($mimeType, 'image/');
             $isAudio = str_starts_with($mimeType, 'audio/');
             $isVideo = str_starts_with($mimeType, 'video/');
 
-            // For images: convert to WebP (if GD extension is available)
+            // ======== IMAGE HANDLING (WEBP) ========
             if ($isImage) {
                 $fileName = $safeName . '_' . time() . '.webp';
 
                 try {
-                    // Check if GD extension is loaded
                     if (!extension_loaded('gd')) {
                         throw new \Exception('GD extension not installed');
                     }
 
-                    // Store original file temporarily
+                    // Temporary original file
                     $tempPath = $file->store('temp', 'local');
 
-                    // Convert image to WebP using Intervention Image
                     $manager = new ImageManager(new Driver());
                     $image = $manager->read(storage_path('app/' . $tempPath));
-                    
-                    // Encode to WebP and save
+
+                    // Save WebP file
                     $webpPath = 'media/' . $fileName;
                     Storage::disk('public')->put($webpPath, (string) $image->toWebp());
 
-                    // Delete temporary file
                     Storage::disk('local')->delete($tempPath);
 
-                    $path = '/storage/' . $webpPath;
+                    // FULL URL PATH
+                    $path = asset('storage/' . $webpPath);
                 } catch (\Throwable $conversionError) {
-                    // Fallback: if conversion fails, store original image
-                    Log::warning('Image conversion to WebP failed, storing original: ' . $conversionError->getMessage());
+                    Log::warning('Image WebP conversion failed: ' . $conversionError->getMessage());
 
                     $fileName = $safeName . '_' . time() . '.' . $extension;
                     $storedPath = $file->storeAs('media', $fileName, 'public');
 
-                    // Normalize the path
                     $normalizedPath = str_replace('\\', '/', $storedPath);
-                    $path = '/storage/' . ltrim($normalizedPath, '/');
-                }
-            } else {
-                // For non-images (videos, audio, documents): store as-is
-                $fileName = $safeName . '_' . time() . '.' . $extension;
-                $storedPath = $file->storeAs('media', $fileName, 'public');
-
-                // Normalize the path to ensure it's valid
-                // Remove any duplicate slashes and ensure proper format
-                $normalizedPath = str_replace('\\', '/', $storedPath);
-                $path = '/storage/' . ltrim($normalizedPath, '/');
-
-                // Verify the file was stored successfully
-                if (!Storage::disk('public')->exists($normalizedPath)) {
-                    throw new \Exception('Failed to store file: ' . $fileName);
+                    $path = asset('storage/' . ltrim($normalizedPath, '/'));
                 }
             }
 
-            // Create media record
+            // ======== OTHER MEDIA (VIDEO / AUDIO / ANY FILE) ========
+            else {
+                $fileName = $safeName . '_' . time() . '.' . $extension;
+                $storedPath = $file->storeAs('media', $fileName, 'public');
+
+                $normalizedPath = str_replace('\\', '/', $storedPath);
+
+                if (!Storage::disk('public')->exists($normalizedPath)) {
+                    throw new \Exception('Failed to store file: ' . $fileName);
+                }
+
+                // FULL URL
+                $path = asset('storage/' . ltrim($normalizedPath, '/'));
+            }
+
+            // ======== SAVE MEDIA IN DATABASE ========
             $media = new ContentMedia();
             $media->name = $request->input('name', $originalName);
             $media->alt = $request->input('alt', $originalName);
 
-            // Determine and set media type
             if ($isAudio) {
                 $media->media_type = 'voice';
             } elseif ($isVideo) {
                 $media->media_type = 'video';
-
-                // Log video upload details for debugging
-                Log::info('Video file uploaded', [
+                Log::info('Video uploaded', [
                     'fileName' => $fileName,
-                    'originalName' => $originalName,
                     'mimeType' => $mimeType,
                     'size' => $file->getSize(),
-                    'extension' => $extension
                 ]);
             } elseif ($isImage) {
                 $media->media_type = 'image';
@@ -238,17 +230,14 @@ class MediaController extends BaseController
                 $media->media_type = 'file';
             }
 
-            $media->path = $path;
+            $media->path = $path; // FULL URL
             $media->user_id = Auth::id();
             $media->save();
 
-            // Log successful upload for debugging
             Log::info('Media uploaded successfully', [
                 'id' => $media->id,
-                'name' => $media->name,
                 'type' => $media->media_type,
-                'path' => $media->path,
-                'fileName' => $fileName
+                'path' => $media->path
             ]);
 
             if ($request->expectsJson() || $request->ajax()) {
@@ -268,8 +257,10 @@ class MediaController extends BaseController
             return redirect()
                 ->route('dashboard.medias.index')
                 ->with('success', 'تم تحميل الوسائط بنجاح.');
-        } catch (\Throwable $e) {
-            // Log the error for debugging
+        }
+
+        // ======== ERROR HANDLING ========
+        catch (\Throwable $e) {
             Log::error('Media upload failed: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
@@ -290,6 +281,7 @@ class MediaController extends BaseController
                 ->withInput();
         }
     }
+
 
     public function storeMediaUrl(Request $request)
     {
@@ -548,8 +540,8 @@ class MediaController extends BaseController
             if ($search = $request->input('search')) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'LIKE', "%{$search}%")
-                      ->orWhere('alt', 'LIKE', "%{$search}%")
-                      ->orWhere('path', 'LIKE', "%{$search}%");
+                        ->orWhere('alt', 'LIKE', "%{$search}%")
+                        ->orWhere('path', 'LIKE', "%{$search}%");
                 });
             }
 

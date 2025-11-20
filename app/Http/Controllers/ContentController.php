@@ -1068,6 +1068,7 @@ class ContentController extends BaseController
 
             // Attacher les nouveaux
             $mediaMap = $templateMediaMap[$request->template] ?? null;
+            
             if ($mediaMap) {
                 foreach ($mediaMap as $field => $type) {
                     // Champs unitaires
@@ -1078,15 +1079,6 @@ class ContentController extends BaseController
                         $existing = \App\Models\ContentMedia::where('path', $url)->first();
                         if ($existing) {
                             $content->media()->attach($existing->id, ['type' => $type]);
-                        } else {
-                            $media = \App\Models\ContentMedia::create([
-                                'path'       => $url,
-                                'media_type' => $mediaType,
-                                'user_id'    => \Illuminate\Support\Facades\Auth::id(),
-                                'name'       => basename(parse_url($url, PHP_URL_PATH) ?? ('url_' . \Illuminate\Support\Str::random(8))),
-                                'alt'        => $content->title,
-                            ]);
-                            $content->media()->attach($media->id, ['type' => $type]);
                         }
                         continue;
                     }
@@ -1099,15 +1091,6 @@ class ContentController extends BaseController
 
                             if ($existing) {
                                 $content->media()->attach($existing->id, ['type' => $type]);
-                            } else {
-                                $media = \App\Models\ContentMedia::create([
-                                    'path'       => $url,
-                                    'media_type' => $mediaType,
-                                    'user_id'    => \Illuminate\Support\Facades\Auth::id(),
-                                    'name'       => basename(parse_url($url, PHP_URL_PATH) ?? ('url_' . \Illuminate\Support\Str::random(8))),
-                                    'alt'        => $content->title,
-                                ]);
-                                $content->media()->attach($media->id, ['type' => $type]);
                             }
                         }
                     }
