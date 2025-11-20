@@ -667,9 +667,31 @@
 
         // Extract YouTube ID from URL
         function extractYouTubeIdFromUrl(url) {
-            const ytRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
+            const ytRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{6,})/i;
             const match = url.match(ytRegex);
             return match ? match[1] : null;
+        }
+
+        // Extract Vimeo ID from URL
+        function extractVimeoIdFromUrl(url) {
+            const vimeoRegex = /^(?:https?:\/\/)?(?:www\.)?(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/i;
+            const match = url.match(vimeoRegex);
+            return match ? match[1] : null;
+        }
+
+        // Extract Dailymotion ID from URL
+        function extractDailymotionIdFromUrl(url) {
+            const dmRegex = /^(?:https?:\/\/)?(?:www\.)?(?:dailymotion\.com\/video\/|dai\.ly\/)([A-Za-z0-9]+)/i;
+            const match = url.match(dmRegex);
+            return match ? match[1] : null;
+        }
+
+        // Detect video platform type
+        function detectVideoPlatform(url) {
+            if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube';
+            if (url.includes('vimeo.com')) return 'vimeo';
+            if (url.includes('dailymotion.com') || url.includes('dai.ly')) return 'dailymotion';
+            return 'direct'; // Direct video file
         }
 
         let filterTimeout;
@@ -832,13 +854,31 @@
                         img.alt = mediaAlt || mediaName;
                         img.style.display = 'block';
                     } else if (mediaType === 'video') {
-                        // Check if it's YouTube
-                        if (mediaPath.includes('youtube.com') || mediaPath.includes('youtu.be')) {
+                        const platform = detectVideoPlatform(mediaPath);
+
+                        if (platform === 'youtube') {
                             const youtubeId = extractYouTubeIdFromUrl(mediaPath);
-                            const iframe = document.getElementById('previewYoutube');
-                            iframe.src = `https://www.youtube.com/embed/${youtubeId}`;
-                            iframe.style.display = 'block';
+                            if (youtubeId) {
+                                const iframe = document.getElementById('previewYoutube');
+                                iframe.src = `https://www.youtube.com/embed/${youtubeId}`;
+                                iframe.style.display = 'block';
+                            }
+                        } else if (platform === 'vimeo') {
+                            const vimeoId = extractVimeoIdFromUrl(mediaPath);
+                            if (vimeoId) {
+                                const iframe = document.getElementById('previewYoutube');
+                                iframe.src = `https://player.vimeo.com/video/${vimeoId}`;
+                                iframe.style.display = 'block';
+                            }
+                        } else if (platform === 'dailymotion') {
+                            const dmId = extractDailymotionIdFromUrl(mediaPath);
+                            if (dmId) {
+                                const iframe = document.getElementById('previewYoutube');
+                                iframe.src = `https://www.dailymotion.com/embed/video/${dmId}`;
+                                iframe.style.display = 'block';
+                            }
                         } else {
+                            // Direct video file
                             const video = document.getElementById('previewVideo');
                             video.src = mediaPath;
                             video.style.display = 'block';

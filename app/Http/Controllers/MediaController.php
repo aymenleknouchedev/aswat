@@ -363,7 +363,22 @@ class MediaController extends BaseController
     protected function guessMediaTypeFromUrl(string $url): string
     {
         // YouTube
-        if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)/i', $url)) {
+        if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/|youtube\.com\/embed\/)/i', $url)) {
+            return 'video';
+        }
+
+        // Vimeo
+        if (preg_match('/(?:vimeo\.com\/|player\.vimeo\.com\/video\/)/i', $url)) {
+            return 'video';
+        }
+
+        // Dailymotion
+        if (preg_match('/(?:dailymotion\.com\/video\/|dai\.ly\/)/i', $url)) {
+            return 'video';
+        }
+
+        // Other video platforms
+        if (preg_match('/(?:wistia\.com|vidyard\.com|brightcove\.net)/i', $url)) {
             return 'video';
         }
 
