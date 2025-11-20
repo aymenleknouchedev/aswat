@@ -753,16 +753,25 @@
 
         // ===== Helpers =====
         const YT_REGEX =
-            /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
+            /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{6,})/i;
+        const VIMEO_REGEX = /^(?:https?:\/\/)?(?:www\.)?(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/i;
+        const DAILYMOTION_REGEX = /^(?:https?:\/\/)?(?:www\.)?(?:dailymotion\.com\/video\/|dai\.ly\/)([A-Za-z0-9]+)/i;
+
         const isYouTubeUrl = (url = "") => YT_REGEX.test(url);
         const getYouTubeId = (url = "") => (url.match(YT_REGEX)?.[1] ?? null);
+        const isVimeoUrl = (url = "") => VIMEO_REGEX.test(url);
+        const getVimeoId = (url = "") => (url.match(VIMEO_REGEX)?.[1] ?? null);
+        const isDailymotionUrl = (url = "") => DAILYMOTION_REGEX.test(url);
+        const getDailymotionId = (url = "") => (url.match(DAILYMOTION_REGEX)?.[1] ?? null);
+
         const extFromPath = (p = "") => (p.split("?")[0].split(".").pop() || "").toLowerCase();
 
         function getMediaKind(media) {
-            if (media.path && isYouTubeUrl(media.path)) return "video";
+            const path = media.path || media.url || "";
+            if (path && (isYouTubeUrl(path) || isVimeoUrl(path) || isDailymotionUrl(path))) return "video";
             const mt = (media.media_type || "").toLowerCase();
             if (["image", "video", "audio", "voice", "file"].includes(mt)) return (mt === "audio" ? "voice" : mt);
-            const ext = extFromPath(media.path || media.url || "");
+            const ext = extFromPath(path);
             if (["jpg", "jpeg", "png", "gif", "webp", "bmp", "svg"].includes(ext)) return "image";
             if (["mp4", "webm", "mkv", "mov", "avi", "m4v"].includes(ext)) return "video";
             if (["mp3", "wav", "ogg", "m4a", "aac", "flac"].includes(ext)) return "voice";
@@ -771,7 +780,8 @@
         const mapFilterForServer = (t) => (t === "voice" ? "audio" : t);
 
         function getBadgeIconId(media) {
-            if (media.path && isYouTubeUrl(media.path)) return "mmx-icon-youtube";
+            const path = media.path || media.url || "";
+            if (path && (isYouTubeUrl(path) || isVimeoUrl(path) || isDailymotionUrl(path))) return "mmx-icon-youtube";
             const kind = getMediaKind(media);
             if (kind === "image") return "mmx-icon-image";
             if (kind === "video") return "mmx-icon-video";
@@ -800,14 +810,38 @@
             if (previewAlt) previewAlt.textContent = media.alt || '-';
             
             // Create preview element based on media type
-            if (media.path && isYouTubeUrl(media.path)) {
-                const vid = getYouTubeId(media.path);
+            const path = media.path || media.url || "";
+
+            if (path && isYouTubeUrl(path)) {
+                const vid = getYouTubeId(path);
                 const iframe = document.createElement('iframe');
                 iframe.src = `https://www.youtube.com/embed/${vid}`;
                 iframe.width = '100%';
                 iframe.height = '100%';
                 iframe.frameborder = '0';
                 iframe.allow = 'autoplay; encrypted-media';
+                iframe.allowFullscreen = true;
+                iframe.style.cssText = 'min-width: 400px; min-height: 300px; max-width: 100%; max-height: 100%;';
+                previewMedia.appendChild(iframe);
+            } else if (path && isVimeoUrl(path)) {
+                const vid = getVimeoId(path);
+                const iframe = document.createElement('iframe');
+                iframe.src = `https://player.vimeo.com/video/${vid}`;
+                iframe.width = '100%';
+                iframe.height = '100%';
+                iframe.frameborder = '0';
+                iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+                iframe.allowFullscreen = true;
+                iframe.style.cssText = 'min-width: 400px; min-height: 300px; max-width: 100%; max-height: 100%;';
+                previewMedia.appendChild(iframe);
+            } else if (path && isDailymotionUrl(path)) {
+                const vid = getDailymotionId(path);
+                const iframe = document.createElement('iframe');
+                iframe.src = `https://www.dailymotion.com/embed/video/${vid}`;
+                iframe.width = '100%';
+                iframe.height = '100%';
+                iframe.frameborder = '0';
+                iframe.allow = 'autoplay; fullscreen';
                 iframe.allowFullscreen = true;
                 iframe.style.cssText = 'min-width: 400px; min-height: 300px; max-width: 100%; max-height: 100%;';
                 previewMedia.appendChild(iframe);
@@ -1048,12 +1082,35 @@
                 badge.innerHTML = `<svg aria-hidden="true"><use href="#${iconId}"></use></svg>`;
                 thumb.appendChild(badge);
 
-                if (media.path && isYouTubeUrl(media.path)) {
-                    const vid = getYouTubeId(media.path);
+                const path = media.path || media.url || "";
+
+                if (path && isYouTubeUrl(path)) {
+                    const vid = getYouTubeId(path);
                     const img = document.createElement("img");
                     img.src = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
                     img.alt = media.name || "YouTube";
                     img.loading = "lazy";
+                    thumb.appendChild(img);
+                } else if (path && isVimeoUrl(path)) {
+                    // Vimeo - use video icon as placeholder (thumbnails require API)
+                    const placeholder = document.createElement("div");
+                    placeholder.style.cssText = "width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1ab7ea 0%, #0088cc 100%);";
+                    placeholder.innerHTML = '<svg style="width: 48px; height: 48px; fill: white;" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"></polygon></svg>';
+                    thumb.appendChild(placeholder);
+                } else if (path && isDailymotionUrl(path)) {
+                    const vid = getDailymotionId(path);
+                    const img = document.createElement("img");
+                    img.src = `https://www.dailymotion.com/thumbnail/video/${vid}`;
+                    img.alt = media.name || "Dailymotion";
+                    img.loading = "lazy";
+                    img.onerror = function() {
+                        // Fallback to placeholder if thumbnail fails
+                        this.style.display = 'none';
+                        const placeholder = document.createElement("div");
+                        placeholder.style.cssText = "width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0066DC 0%, #0047AB 100%);";
+                        placeholder.innerHTML = '<svg style="width: 48px; height: 48px; fill: white;" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"></polygon></svg>';
+                        thumb.appendChild(placeholder);
+                    };
                     thumb.appendChild(img);
                 } else if (kind === "image") {
                     const img = document.createElement("img");

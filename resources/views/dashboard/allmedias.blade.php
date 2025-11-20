@@ -8,7 +8,6 @@
             @include('dashboard.components.sidebar')
             <div class="nk-wrap">
                 @include('dashboard.components.header')
-
                 <div class="nk-content">
                     <div class="container">
                         <div class="container-fluid">

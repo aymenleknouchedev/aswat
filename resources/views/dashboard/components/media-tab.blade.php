@@ -2,6 +2,8 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="preconnect" href="https://www.youtube.com">
 <link rel="preconnect" href="https://i.ytimg.com">
+<link rel="preconnect" href="https://player.vimeo.com">
+<link rel="preconnect" href="https://www.dailymotion.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
 <!-- ======================= MMX MEDIA MODAL INCLUDE (required) ======================= -->
@@ -91,8 +93,10 @@
             this.USE_PROXY = false;
             this.PROXY_URL = '/media/proxy?url=';
 
-            // YouTube helpers
-            this.YT_REGEX = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{6,})/i;
+            // Video platform helpers
+            this.YT_REGEX = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{6,})/i;
+            this.VIMEO_REGEX = /(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/i;
+            this.DAILYMOTION_REGEX = /(?:dailymotion\.com\/video\/|dai\.ly\/)([A-Za-z0-9]+)/i;
 
             // Complete validation rules for each media type - ALL fields are required
             this.validationRules = {
@@ -436,6 +440,20 @@
             const m = url.match(this.YT_REGEX);
             return m ? m[1] : null;
         }
+        isVimeoUrl(url = '') {
+            return this.VIMEO_REGEX.test(url);
+        }
+        getVimeoId(url = '') {
+            const m = url.match(this.VIMEO_REGEX);
+            return m ? m[1] : null;
+        }
+        isDailymotionUrl(url = '') {
+            return this.DAILYMOTION_REGEX.test(url);
+        }
+        getDailymotionId(url = '') {
+            const m = url.match(this.DAILYMOTION_REGEX);
+            return m ? m[1] : null;
+        }
 
         normalizeUrl(url = '') {
             if (!url) return '';
@@ -575,11 +593,19 @@
         getAssetCardSelectable(media, fieldName, index) {
             const url = this.normalizeUrl(media.url || '');
             const type = this.getFileType(url);
-            const thumb = this.maybeProxy(
-                type === 'youtube' && this.getYouTubeId(url) ?
-                `https://i.ytimg.com/vi/${this.getYouTubeId(url)}/hqdefault.jpg` :
-                url
-            );
+            let thumb = url;
+
+            // Get thumbnail for video platforms
+            if (type === 'youtube' && this.getYouTubeId(url)) {
+                thumb = `https://i.ytimg.com/vi/${this.getYouTubeId(url)}/hqdefault.jpg`;
+            } else if (type === 'vimeo' && this.getVimeoId(url)) {
+                // Vimeo thumbnails need to be fetched via API, use placeholder for now
+                thumb = url;
+            } else if (type === 'dailymotion' && this.getDailymotionId(url)) {
+                thumb = `https://www.dailymotion.com/thumbnail/video/${this.getDailymotionId(url)}`;
+            }
+
+            thumb = this.maybeProxy(thumb);
             const ui = this.state._assetsUi[fieldName];
             const selected = ui.selected.has(this._assetKey(media)) ? ' is-selected' : '';
             const title = media.title || (this.state.currentLanguage === 'ar' ? 'بدون عنوان' : 'No title');
@@ -879,6 +905,30 @@
                 return wrap(visual, media.title || youtubeText, youtubeText);
             }
 
+            if (type === 'vimeo') {
+                const vid = this.getVimeoId(url);
+                const vimeoText = this.state.currentLanguage === 'ar' ? 'فيميو' : 'Vimeo';
+                if (vid) {
+                    const embed = `https://player.vimeo.com/video/${vid}`;
+                    const visual =
+                        `<iframe class="mmx-yt-embed" src="${embed}" title="${media.title || vimeoText}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+                    return wrap(visual, media.title || vimeoText, vimeoText);
+                }
+                return wrap(`<div class="asset-audio">${media.title || vimeoText}</div>`, media.title || vimeoText, vimeoText);
+            }
+
+            if (type === 'dailymotion') {
+                const vid = this.getDailymotionId(url);
+                const dmText = this.state.currentLanguage === 'ar' ? 'ديلي موشن' : 'Dailymotion';
+                if (vid) {
+                    const embed = `https://www.dailymotion.com/embed/video/${vid}`;
+                    const visual =
+                        `<iframe class="mmx-yt-embed" src="${embed}" title="${media.title || dmText}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+                    return wrap(visual, media.title || dmText, dmText);
+                }
+                return wrap(`<div class="asset-audio">${media.title || dmText}</div>`, media.title || dmText, dmText);
+            }
+
             if (type === 'video') {
                 const safe = this.maybeProxy(url);
                 const visual = `<video src="${safe}" controls preload="metadata"></video>`;
@@ -996,10 +1046,18 @@
                 const url = this.normalizeUrl(raw);
                 const type = this.getFileType(url);
                 let thumb = url;
+
                 if (type === 'youtube') {
                     const vid = this.getYouTubeId(url);
                     if (vid) thumb = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
+                } else if (type === 'vimeo') {
+                    // Vimeo thumbnails - use placeholder for now
+                    thumb = url;
+                } else if (type === 'dailymotion') {
+                    const vid = this.getDailymotionId(url);
+                    if (vid) thumb = `https://www.dailymotion.com/thumbnail/video/${vid}`;
                 }
+
                 thumb = this.maybeProxy(thumb);
                 const title = media.title || (this.state.currentLanguage === 'ar' ? 'بدون عنوان' :
                     'No title');
@@ -1069,6 +1127,8 @@
             if (!url) return 'file';
             const u = this.normalizeUrl(url);
             if (this.isYouTubeUrl(u)) return 'youtube';
+            if (this.isVimeoUrl(u)) return 'vimeo';
+            if (this.isDailymotionUrl(u)) return 'dailymotion';
             if (/(\.jpeg|\.jpg|\.gif|\.png|\.webp|\.bmp|\.svg)(\?|#|$)/i.test(u)) return 'image';
             if (/(\.mp4|\.avi|\.mov|\.wmv|\.webm|\.m4v)(\?|#|$)/i.test(u)) return 'video';
             if (/(\.mp3|\.wav|\.ogg|\.m4a|\.aac|\.flac)(\?|#|$)/i.test(u)) return 'audio';
@@ -1091,6 +1151,14 @@
                 youtube: {
                     ar: 'يوتيوب',
                     en: 'YouTube'
+                },
+                vimeo: {
+                    ar: 'فيميو',
+                    en: 'Vimeo'
+                },
+                dailymotion: {
+                    ar: 'ديلي موشن',
+                    en: 'Dailymotion'
                 },
                 file: {
                     ar: 'ملف',
