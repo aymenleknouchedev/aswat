@@ -1290,7 +1290,7 @@
             color: #ffffff;
         }
 
-        /* Updated Creative podcast lines - Aligned with play icon */
+        /* Updated Creative podcast lines - Aligned with play icon - Interactive for seeking */
         .podcast-lines {
             position: absolute;
             bottom: 20px;
@@ -1303,10 +1303,12 @@
             justify-content: flex-start;
             gap: 4px;
             height: 35px;
+            cursor: pointer;
         }
 
         .audio-player-wrapper.playing .podcast-lines {
             opacity: 1;
+            pointer-events: auto;
         }
 
         .podcast-line {
@@ -1451,7 +1453,29 @@
             direction: rtl;
         }
 
-        /* Responsive styles for podcast lines */
+        /* Audio time display - positioned on the right side */
+        .audio-time-display {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .audio-player-wrapper.playing .audio-time-display {
+            opacity: 1;
+        }
+
+        /* Responsive styles for podcast lines and audio controls */
         @media (max-width: 768px) {
             .podcast-lines {
                 left: 55px;
@@ -1479,6 +1503,23 @@
             .podcast-line:nth-child(13) { height: 13px; }
             .podcast-line:nth-child(14) { height: 8px; }
             .podcast-line:nth-child(15) { height: 6px; }
+
+            .audio-time-display {
+                font-size: 12px;
+                padding: 6px 10px;
+                right: 15px;
+                bottom: 15px;
+            }
+
+            .audio-progress-container {
+                padding: 0 15px;
+                height: 40px;
+            }
+
+            .audio-progress-handle {
+                width: 14px;
+                height: 14px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1508,6 +1549,23 @@
             .podcast-line:nth-child(13) { height: 11px; }
             .podcast-line:nth-child(14) { height: 7px; }
             .podcast-line:nth-child(15) { height: 5px; }
+
+            .audio-time-display {
+                font-size: 11px;
+                padding: 5px 8px;
+                right: 10px;
+                bottom: 12px;
+            }
+
+            .audio-progress-container {
+                padding: 0 10px;
+                height: 35px;
+            }
+
+            .audio-progress-handle {
+                width: 12px;
+                height: 12px;
+            }
         }
     </style>
 
@@ -1729,8 +1787,8 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                             <div class="audio-play-icon" id="audioPlayIcon">
                                 <i class="fa-solid fa-play"></i>
                             </div>
-                            {{-- Vertical podcast lines aligned with play icon --}}
-                            <div class="podcast-lines">
+                            {{-- Vertical podcast lines aligned with play icon - Interactive for seeking --}}
+                            <div class="podcast-lines" id="podcastLines">
                                 <div class="podcast-line"></div>
                                 <div class="podcast-line"></div>
                                 <div class="podcast-line"></div>
@@ -1746,7 +1804,10 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                                 <div class="podcast-line"></div>
                                 <div class="podcast-line"></div>
                                 <div class="podcast-line"></div>
-                                
+                            </div>
+                            {{-- Time display on the right side --}}
+                            <div class="audio-time-display" id="audioTimeDisplay">
+                                <span id="currentTime">0:00</span> / <span id="totalDuration">0:00</span>
                             </div>
                         </div>
 
@@ -1756,36 +1817,6 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                                 <source src="{{ $audioPath }}" type="audio/mpeg">
                                 متصفحك لا يدعم تشغيل الصوتيات.
                             </audio>
-                            <style>
-                                /* Cloudflare-style audio progress bar overlay */
-                                .audio-player-image {
-                                    position: relative;
-                                }
-
-                                .audio-progress-bar.cloudflare-style {
-                                    position: absolute;
-                                    left: 0;
-                                    bottom: 0;
-                                    width: 100%;
-                                    height: 5px;
-                                    background: rgba(255, 255, 255, 0.35);
-                                    border-radius: 3px;
-                                    overflow: hidden;
-                                    z-index: 2;
-                                    margin: 0;
-                                }
-
-                                .audio-progress-fill {
-                                    height: 100%;
-                                    width: 0%;
-                                    background: linear-gradient(90deg, #06f, #0cf 80%);
-                                    border-radius: 3px;
-                                    transition: width 0.2s linear;
-                                    position: absolute;
-                                    left: 0;
-                                    top: 0;
-                                }
-                            </style>
                         </div>
 
                         {{-- Caption --}}
@@ -1956,27 +1987,100 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             const audioPlayerWrapper = document.getElementById('audioPlayerWrapper');
             const audioElement = document.getElementById('podcastAudio');
             const playIcon = document.getElementById('audioPlayIcon');
-            const audioProgressBar = document.getElementById('audioProgressBar');
-            const audioProgressFill = document.getElementById('audioProgressFill');
+            const audioProgressBarInteractive = document.getElementById('audioProgressBarInteractive');
+            const audioProgressFillInteractive = document.getElementById('audioProgressFillInteractive');
+            const audioProgressHandle = document.getElementById('audioProgressHandle');
+            const currentTimeDisplay = document.getElementById('currentTime');
+            const totalDurationDisplay = document.getElementById('totalDuration');
 
             if (!audioPlayerWrapper || !audioElement) return;
 
-            // Update progress bar
+            let isDragging = false;
+
+            // Format time helper
+            function formatTime(seconds) {
+                if (!seconds || isNaN(seconds)) return '0:00';
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            // Update progress bar and time display
             function updateProgress() {
-                if (audioElement.duration && audioProgressFill) {
+                if (audioElement.duration && audioProgressFillInteractive && audioProgressHandle) {
                     const percent = (audioElement.currentTime / audioElement.duration) * 100;
-                    audioProgressFill.style.width = percent + '%';
+                    audioProgressFillInteractive.style.width = percent + '%';
+                    audioProgressHandle.style.left = percent + '%';
+                }
+
+                // Update time displays
+                if (currentTimeDisplay) {
+                    currentTimeDisplay.textContent = formatTime(audioElement.currentTime);
+                }
+                if (totalDurationDisplay && audioElement.duration) {
+                    totalDurationDisplay.textContent = formatTime(audioElement.duration);
                 }
             }
 
-            // Allow seeking by clicking the progress bar
-            if (audioProgressBar) {
-                audioProgressBar.addEventListener('click', function(e) {
-                    const rect = audioProgressBar.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const percent = x / rect.width;
-                    if (audioElement.duration) {
-                        audioElement.currentTime = percent * audioElement.duration;
+            // Seek to position
+            function seekToPosition(clientX) {
+                const rect = audioProgressBarInteractive.getBoundingClientRect();
+                const pos = (clientX - rect.left) / rect.width;
+                const clampedPos = Math.max(0, Math.min(1, pos));
+
+                if (audioElement.duration) {
+                    audioElement.currentTime = clampedPos * audioElement.duration;
+
+                    // Update UI immediately
+                    const percent = clampedPos * 100;
+                    audioProgressFillInteractive.style.width = percent + '%';
+                    audioProgressHandle.style.left = percent + '%';
+                }
+            }
+
+            // Click on progress bar
+            if (audioProgressBarInteractive) {
+                audioProgressBarInteractive.addEventListener('click', function(e) {
+                    seekToPosition(e.clientX);
+                });
+
+                // Mouse drag handlers
+                audioProgressHandle.addEventListener('mousedown', function(e) {
+                    e.preventDefault();
+                    isDragging = true;
+                    audioProgressHandle.classList.add('dragging');
+                });
+
+                document.addEventListener('mousemove', function(e) {
+                    if (isDragging) {
+                        seekToPosition(e.clientX);
+                    }
+                });
+
+                document.addEventListener('mouseup', function() {
+                    if (isDragging) {
+                        isDragging = false;
+                        audioProgressHandle.classList.remove('dragging');
+                    }
+                });
+
+                // Touch drag handlers for mobile
+                audioProgressHandle.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    isDragging = true;
+                    audioProgressHandle.classList.add('dragging');
+                });
+
+                document.addEventListener('touchmove', function(e) {
+                    if (isDragging && e.touches.length > 0) {
+                        seekToPosition(e.touches[0].clientX);
+                    }
+                });
+
+                document.addEventListener('touchend', function() {
+                    if (isDragging) {
+                        isDragging = false;
+                        audioProgressHandle.classList.remove('dragging');
                     }
                 });
             }
