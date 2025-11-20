@@ -79,8 +79,8 @@
                                                                     <option value="video"
                                                                         {{ request('type') == 'video' ? 'selected' : '' }}>
                                                                         فيديو</option>
-                                                                    <option value="audio"
-                                                                        {{ request('type') == 'audio' ? 'selected' : '' }}>
+                                                                    <option value="voice"
+                                                                        {{ request('type') == 'voice' ? 'selected' : '' }}>
                                                                         صوت</option>
                                                                     <option value="document"
                                                                         {{ request('type') == 'document' ? 'selected' : '' }}>
@@ -821,7 +821,7 @@
                     let typeLabel = '-';
                     if (mediaType === 'image') typeLabel = 'صورة';
                     else if (mediaType === 'video') typeLabel = 'فيديو';
-                    else if (mediaType === 'audio') typeLabel = 'صوت';
+                    else if (mediaType === 'voice' || mediaType === 'audio') typeLabel = 'صوت';
                     else typeLabel = 'مستند';
                     document.getElementById('previewType').textContent = typeLabel;
 
@@ -843,7 +843,7 @@
                             video.src = mediaPath;
                             video.style.display = 'block';
                         }
-                    } else if (mediaType === 'audio') {
+                    } else if (mediaType === 'voice' || mediaType === 'audio') {
                         const audio = document.getElementById('previewAudio');
                         audio.src = mediaPath;
                         document.getElementById('previewAudioContainer').style.display = 'block';

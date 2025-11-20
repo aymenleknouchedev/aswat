@@ -70,6 +70,7 @@ class MediaController extends BaseController
                 $badges = [
                     'image' => 'primary',
                     'video' => 'success',
+                    'voice' => 'info',
                     'audio' => 'info',
                     'document' => 'warning'
                 ];
@@ -80,6 +81,7 @@ class MediaController extends BaseController
                 $labels = [
                     'image' => 'صورة',
                     'video' => 'فيديو',
+                    'voice' => 'صوت',
                     'audio' => 'صوت',
                     'document' => 'مستند'
                 ];

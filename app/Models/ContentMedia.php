@@ -34,6 +34,7 @@ class ContentMedia extends Model
         $badges = [
             'image' => 'primary',
             'video' => 'success',
+            'voice' => 'info',
             'audio' => 'info',
             'document' => 'warning',
             'file' => 'secondary'
@@ -50,6 +51,7 @@ class ContentMedia extends Model
         $labels = [
             'image' => 'صورة',
             'video' => 'فيديو',
+            'voice' => 'صوت',
             'audio' => 'صوت',
             'document' => 'مستند',
             'file' => 'ملف'

@@ -45,30 +45,19 @@
                                     style="max-width: 100%; max-height: 100%; object-fit: cover; width: 100%; height: 100%;">
                             </div>
                         @elseif($media->media_type === 'video')
-                            @if (str_contains($media->path, 'youtube.com') || str_contains($media->path, 'youtu.be'))
-                                <div class="media-preview-16-9" style="width: 100%; height: 180px;">
-                                    <div class="youtube-player" data-youtube-id="{{ extractYouTubeId($media->path) }}"
-                                        style="width: 100%; height: 100%;">
-                                    </div>
+                            <div class="media-preview-16-9"
+                                style="width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <div style="text-align: center; color: white;">
+                                    <em class="icon ni ni-play-circle" style="font-size: 4rem; margin-bottom: 0.5rem;"></em>
+                                    <div style="font-size: 0.875rem; font-weight: 500;">انقر للتشغيل</div>
                                 </div>
-                            @else
-                                <div class="media-preview-16-9" style="width: 100%; height: 180px;">
-                                    <video controls style="width: 100%; height: 100%; object-fit: cover;">
-                                        <source src="{{ $media->path }}" type="video/mp4">
-                                        <span>متصفحك لا يدعم تشغيل الفيديو</span>
-                                    </video>
-                                </div>
-                            @endif
-                        @elseif($media->media_type === 'audio')
-                            <div class="media-preview-16-9 audio-preview"
-                                style="width: 100%; height: 180px; display: flex; align-items: center; justify-content: center;">
-                                <div class="audio-content">
-                                    <em class="icon ni ni-audio"></em>
-                                    <div class="audio-title">{{ $media->name }}</div>
-                                    <audio controls>
-                                        <source src="{{ $media->path }}" type="audio/mpeg">
-                                        <span>متصفحك لا يدعم تشغيل الصوت</span>
-                                    </audio>
+                            </div>
+                        @elseif($media->media_type === 'voice')
+                            <div class="media-preview-16-9"
+                                style="width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <div style="text-align: center; color: white;">
+                                    <em class="icon ni ni-volume" style="font-size: 4rem; margin-bottom: 0.5rem;"></em>
+                                    <div style="font-size: 0.875rem; font-weight: 500;">انقر للاستماع</div>
                                 </div>
                             </div>
                         @else
@@ -84,8 +73,7 @@
 
                     <!-- Media Info -->
                     <div class="media-info my-2">
-                        <h6 class="media-name">{{ \Illuminate\Support\Str::limit($media->name, 30) }}</h6>
-                        <p class="media-alt">{{ $media->alt ?: 'لا يوجد نص بديل' }}</p>
+                        <h6 class="media-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.5rem;">{{ $media->name }}</h6>
                         <div class="media-date text-muted" style="font-size: 0.8rem; display:flex; align-items:center; gap:.35rem;">
                             <em class="icon ni ni-calendar"></em>
                             <span>تاريخ الإضافة: {{ optional($media->created_at)->format('Y-m-d H:i') }}</span>
