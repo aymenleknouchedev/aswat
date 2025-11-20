@@ -170,6 +170,7 @@
             width: 100%;
             overflow: hidden;
             margin-bottom: 20px;
+            position: relative;
         }
 
         .custom-article-image-wrapper img {
@@ -636,8 +637,6 @@
             box-sizing: border-box;
             transition: transform 0.2s ease, background-color 0.2s ease;
         }
-
-
 
         /* Text definition modal */
         .text-definition-modal {
@@ -1218,6 +1217,298 @@
                 font-size: 13px;
             }
         }
+
+        /* ===== IMPROVED AUDIO PLAYER STYLES ===== */
+        .audio-player-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .audio-player-image {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .audio-player-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            aspect-ratio: 16/9;
+            transition: filter 0.3s ease;
+        }
+
+        .audio-player-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .audio-player-wrapper.playing .audio-player-overlay {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .audio-player-wrapper.playing .audio-player-image img {
+            filter: brightness(0.7);
+        }
+
+        .audio-play-icon {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+
+
+
+        .audio-play-icon i {
+            font-size: 30px;
+            color: #ffffff;
+            margin-left: 2px;
+        }
+
+
+        .audio-player-wrapper.playing .audio-play-icon i {
+            color: #ffffff;
+        }
+
+        /* Updated Creative podcast lines - Aligned with play icon */
+        .podcast-lines {
+            position: absolute;
+            bottom: 20px;
+            left: 65px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 4px;
+            height: 35px;
+        }
+
+        .audio-player-wrapper.playing .podcast-lines {
+            opacity: 1;
+        }
+
+        .podcast-line {
+            width: 3px;
+            background: #ffffff89;
+            border-radius: 2px;
+            animation: wave 1.5s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        /* Fade effect for lines - darker to lighter from left to right */
+        .podcast-line:nth-child(1) { opacity: 1; }
+        .podcast-line:nth-child(2) { opacity: 0.95; }
+        .podcast-line:nth-child(3) { opacity: 0.9; }
+        .podcast-line:nth-child(4) { opacity: 0.85; }
+        .podcast-line:nth-child(5) { opacity: 0.8; }
+        .podcast-line:nth-child(6) { opacity: 0.75; }
+        .podcast-line:nth-child(7) { opacity: 0.7; }
+        .podcast-line:nth-child(8) { opacity: 0.65; }
+        .podcast-line:nth-child(9) { opacity: 0.6; }
+        .podcast-line:nth-child(10) { opacity: 0.55; }
+        .podcast-line:nth-child(11) { opacity: 0.5; }
+        .podcast-line:nth-child(12) { opacity: 0.45; }
+        .podcast-line:nth-child(13) { opacity: 0.4; }
+        .podcast-line:nth-child(14) { opacity: 0.35; }
+        .podcast-line:nth-child(15) { opacity: 0.3; }
+
+        /* Different heights and animation delays for each line */
+        .podcast-line:nth-child(1) {
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .podcast-line:nth-child(2) {
+            height: 28px;
+            animation-delay: 0.1s;
+        }
+
+        .podcast-line:nth-child(3) {
+            height: 15px;
+            animation-delay: 0.2s;
+        }
+
+        .podcast-line:nth-child(4) {
+            height: 22px;
+            animation-delay: 0.3s;
+        }
+
+        .podcast-line:nth-child(5) {
+            height: 18px;
+            animation-delay: 0.4s;
+        }
+
+        .podcast-line:nth-child(6) {
+            height: 25px;
+            animation-delay: 0.5s;
+        }
+
+        .podcast-line:nth-child(7) {
+            height: 30px;
+            animation-delay: 0.6s;
+        }
+
+        .podcast-line:nth-child(8) {
+            height: 20px;
+            animation-delay: 0.7s;
+        }
+
+        .podcast-line:nth-child(9) {
+            height: 12px;
+            animation-delay: 0.8s;
+        }
+
+        .podcast-line:nth-child(10) {
+            height: 18px;
+            animation-delay: 0.9s;
+        }
+
+        .podcast-line:nth-child(11) {
+            height: 14px;
+            animation-delay: 1.0s;
+        }
+
+        .podcast-line:nth-child(12) {
+            height: 22px;
+            animation-delay: 1.1s;
+        }
+
+        .podcast-line:nth-child(13) {
+            height: 16px;
+            animation-delay: 1.2s;
+        }
+
+        .podcast-line:nth-child(14) {
+            height: 10px;
+            animation-delay: 1.3s;
+        }
+
+        .podcast-line:nth-child(15) {
+            height: 8px;
+            animation-delay: 1.4s;
+        }
+
+        @keyframes wave {
+            0%, 100% {
+                transform: scaleY(1);
+            }
+            50% {
+                transform: scaleY(0.6);
+            }
+        }
+
+        .audio-player-controls {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .audio-player-controls audio {
+            flex: 1;
+            height: 40px;
+        }
+
+        .audio-time {
+            font-family: asswat-regular;
+            font-size: 14px;
+            color: #666;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .audio-caption {
+            background: #F5F5F5;
+            color: #555;
+            font-size: 15px;
+            padding: 10px;
+            text-align: right;
+            font-family: asswat-regular;
+            direction: rtl;
+        }
+
+        /* Responsive styles for podcast lines */
+        @media (max-width: 768px) {
+            .podcast-lines {
+                left: 55px;
+                width: 50%;
+                height: 30px;
+                gap: 3px;
+            }
+
+            .podcast-line {
+                width: 2px;
+            }
+
+            .podcast-line:nth-child(1) { height: 16px; }
+            .podcast-line:nth-child(2) { height: 22px; }
+            .podcast-line:nth-child(3) { height: 12px; }
+            .podcast-line:nth-child(4) { height: 18px; }
+            .podcast-line:nth-child(5) { height: 14px; }
+            .podcast-line:nth-child(6) { height: 20px; }
+            .podcast-line:nth-child(7) { height: 24px; }
+            .podcast-line:nth-child(8) { height: 16px; }
+            .podcast-line:nth-child(9) { height: 10px; }
+            .podcast-line:nth-child(10) { height: 14px; }
+            .podcast-line:nth-child(11) { height: 11px; }
+            .podcast-line:nth-child(12) { height: 18px; }
+            .podcast-line:nth-child(13) { height: 13px; }
+            .podcast-line:nth-child(14) { height: 8px; }
+            .podcast-line:nth-child(15) { height: 6px; }
+        }
+
+        @media (max-width: 480px) {
+            .podcast-lines {
+                left: 50px;
+                width: 50%;
+                height: 25px;
+                gap: 2px;
+            }
+
+            .podcast-line {
+                width: 2px;
+            }
+
+            .podcast-line:nth-child(1) { height: 14px; }
+            .podcast-line:nth-child(2) { height: 18px; }
+            .podcast-line:nth-child(3) { height: 10px; }
+            .podcast-line:nth-child(4) { height: 15px; }
+            .podcast-line:nth-child(5) { height: 12px; }
+            .podcast-line:nth-child(6) { height: 17px; }
+            .podcast-line:nth-child(7) { height: 20px; }
+            .podcast-line:nth-child(8) { height: 14px; }
+            .podcast-line:nth-child(9) { height: 8px; }
+            .podcast-line:nth-child(10) { height: 12px; }
+            .podcast-line:nth-child(11) { height: 9px; }
+            .podcast-line:nth-child(12) { height: 15px; }
+            .podcast-line:nth-child(13) { height: 11px; }
+            .podcast-line:nth-child(14) { height: 7px; }
+            .podcast-line:nth-child(15) { height: 5px; }
+        }
     </style>
 
     {{-- ================= WEB ================= --}}
@@ -1226,8 +1517,6 @@
 
         <div class="custom-container">
             <div class="custom-main">
-
-
 
                 {{-- Category --}}
                 <div class="custom-category">
@@ -1258,7 +1547,6 @@
                         </a>
                     @endif
                 </div>
-
 
                 {{-- Title --}}
                 <h1 class="custom-article-title">{{ $news->long_title }}</h1>
@@ -1303,7 +1591,6 @@
                             </a>
                         @endforeach
                     @endif
-
 
                 </div>
 
@@ -1375,8 +1662,12 @@
                     </div>
                 </div>
 
-                {{-- Feature Image (hidden for video/album templates since they use it as cover) --}}
-                @if ($news->template !== 'no_image' && $news->template !== 'video' && $news->template !== 'album')
+                {{-- Feature Image (hidden for video/album/podcast templates since they use it as cover) --}}
+                @if (
+                    $news->template !== 'no_image' &&
+                        $news->template !== 'video' &&
+                        $news->template !== 'album' &&
+                        $news->template !== 'podcast')
                     <figure class="custom-article-image-wrapper">
                         <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}"
                             alt="{{ $news->caption }}" loading="lazy"
@@ -1390,8 +1681,8 @@
                 @if ($news->template == 'album' && $news->media()->wherePivot('type', 'album')->count())
                     @php
                         // Use the article's main image as the first slide (cover) in the album
-                        $mainImage = $news->media()->wherePivot('type', 'main')->first();
-                        $albumImages = $news->media()->wherePivot('type', 'album')->get();
+$mainImage = $news->media()->wherePivot('type', 'main')->first();
+$albumImages = $news->media()->wherePivot('type', 'album')->get();
 
                         // Prepend main image as the first slide if it exists
                         if ($mainImage) {
@@ -1410,7 +1701,7 @@
                 @if ($news->template == 'video' && $news->media()->wherePivot('type', 'video')->first())
                     @php
                         // Use the article's main image as the video poster/thumbnail
-                        $mainImage = $news->media()->wherePivot('type', 'main')->first();
+$mainImage = $news->media()->wherePivot('type', 'main')->first();
                         $posterImage = $mainImage ? $mainImage->path : null;
                     @endphp
                     @include('user.components.video-player', [
@@ -1420,23 +1711,87 @@
                     ])
                 @endif
 
-                {{-- Podcast --}}
+                {{-- Podcast/Audio --}}
                 @if ($news->template == 'podcast' && $news->media()->wherePivot('type', 'podcast')->first())
-                    <div class="page-podcast-player">
-                        <audio id="pagePodcast" controls style="width: 100%;">
-                            <source src="{{ $news->media()->wherePivot('type', 'podcast')->first()->path }}"
-                                type="audio/mpeg">
-                            متصفحك لا يدعم تشغيل الصوت.
-                        </audio>
-                    </div>
+                    @php
+                        // Use the article's main image as the audio cover
+$mainImage = $news->media()->wherePivot('type', 'main')->first();
+$coverImage = $mainImage ? $mainImage->path : null;
+$audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
+                    @endphp
 
-                    <div class="floating-podcast-player" id="floatingPodcast">
-                        <button class="close-btn" id="closeFloating" type="button">&times;</button>
-                        <audio id="floatingAudio" controls style="width: 100%;">
-                            <source src="{{ $news->media()->wherePivot('type', 'podcast')->first()->path }}"
-                                type="audio/mpeg">
-                            متصفحك لا يدعم تشغيل الصوت.
-                        </audio>
+                    {{-- Enhanced Audio Player --}}
+                    <div class="audio-player-wrapper" id="audioPlayerWrapper">
+
+                        <div class="audio-player-image" style="position:relative;">
+                            <img src="{{ $coverImage }}" alt="{{ $news->caption ?? 'بودكاست' }}" loading="lazy">
+                            {{-- Play icon positioned at bottom left --}}
+                            <div class="audio-play-icon" id="audioPlayIcon">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                            {{-- Vertical podcast lines aligned with play icon --}}
+                            <div class="podcast-lines">
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                <div class="podcast-line"></div>
+                                
+                            </div>
+                        </div>
+
+                        {{-- Audio controls --}}
+                        <div class="audio-player-controls">
+                            <audio id="podcastAudio" preload="metadata">
+                                <source src="{{ $audioPath }}" type="audio/mpeg">
+                                متصفحك لا يدعم تشغيل الصوتيات.
+                            </audio>
+                            <style>
+                                /* Cloudflare-style audio progress bar overlay */
+                                .audio-player-image {
+                                    position: relative;
+                                }
+
+                                .audio-progress-bar.cloudflare-style {
+                                    position: absolute;
+                                    left: 0;
+                                    bottom: 0;
+                                    width: 100%;
+                                    height: 5px;
+                                    background: rgba(255, 255, 255, 0.35);
+                                    border-radius: 3px;
+                                    overflow: hidden;
+                                    z-index: 2;
+                                    margin: 0;
+                                }
+
+                                .audio-progress-fill {
+                                    height: 100%;
+                                    width: 0%;
+                                    background: linear-gradient(90deg, #06f, #0cf 80%);
+                                    border-radius: 3px;
+                                    transition: width 0.2s linear;
+                                    position: absolute;
+                                    left: 0;
+                                    top: 0;
+                                }
+                            </style>
+                        </div>
+
+                        {{-- Caption --}}
+                        @if ($news->caption)
+                            <div class="audio-caption">{{ $news->caption }}</div>
+                        @endif
                     </div>
                 @endif
 
@@ -1591,7 +1946,75 @@
             initializeShareFunctionality();
             initializeTextDefinitionModal();
             initializeCopyLink();
+            initializeAudioPlayer();
         });
+
+        /**
+         * Initialize Enhanced Audio Player
+         */
+        function initializeAudioPlayer() {
+            const audioPlayerWrapper = document.getElementById('audioPlayerWrapper');
+            const audioElement = document.getElementById('podcastAudio');
+            const playIcon = document.getElementById('audioPlayIcon');
+            const audioProgressBar = document.getElementById('audioProgressBar');
+            const audioProgressFill = document.getElementById('audioProgressFill');
+
+            if (!audioPlayerWrapper || !audioElement) return;
+
+            // Update progress bar
+            function updateProgress() {
+                if (audioElement.duration && audioProgressFill) {
+                    const percent = (audioElement.currentTime / audioElement.duration) * 100;
+                    audioProgressFill.style.width = percent + '%';
+                }
+            }
+
+            // Allow seeking by clicking the progress bar
+            if (audioProgressBar) {
+                audioProgressBar.addEventListener('click', function(e) {
+                    const rect = audioProgressBar.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const percent = x / rect.width;
+                    if (audioElement.duration) {
+                        audioElement.currentTime = percent * audioElement.duration;
+                    }
+                });
+            }
+
+            // Toggle play/pause
+            function togglePlayPause() {
+                if (audioElement.paused) {
+                    audioElement.play();
+                    audioPlayerWrapper.classList.add('playing');
+                    playIcon.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                } else {
+                    audioElement.pause();
+                    audioPlayerWrapper.classList.remove('playing');
+                    playIcon.innerHTML = '<i class="fa-solid fa-play"></i>';
+                }
+            }
+
+            // Event listeners
+            playIcon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                togglePlayPause();
+            });
+
+            audioPlayerWrapper.querySelector('.audio-player-image').addEventListener('click', function() {
+                togglePlayPause();
+            });
+
+            audioElement.addEventListener('timeupdate', updateProgress);
+
+            audioElement.addEventListener('loadedmetadata', function() {
+                updateProgress();
+            });
+
+            audioElement.addEventListener('ended', function() {
+                audioPlayerWrapper.classList.remove('playing');
+                playIcon.innerHTML = '<i class="fa-solid fa-play"></i>';
+            });
+        }
 
         /**
          * Initialize Share Functionality
@@ -1835,7 +2258,8 @@
             const contentImages = document.querySelectorAll('.custom-article-content img');
             contentImages.forEach(img => {
                 const figure = img.closest('figure');
-                const caption = figure ? (figure.querySelector('figcaption')?.textContent || img.getAttribute('alt') || '') : (img.getAttribute('alt') || '');
+                const caption = figure ? (figure.querySelector('figcaption')?.textContent || img.getAttribute(
+                    'alt') || '') : (img.getAttribute('alt') || '');
 
                 galleryImages.push({
                     src: img.src,
