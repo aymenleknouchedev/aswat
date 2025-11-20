@@ -1458,11 +1458,7 @@
             position: absolute;
             bottom: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.7);
             color: #ffffff;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-family: 'Courier New', monospace;
             font-size: 14px;
             font-weight: 600;
             z-index: 5;
