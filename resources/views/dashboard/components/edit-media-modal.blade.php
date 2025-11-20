@@ -378,46 +378,6 @@
         box-shadow: 0 0 0 3px #e5e7eb;
     }
 
-    .xmm-thumb {
-        width: 100%;
-        height: 120px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #fafafa;
-        overflow: hidden;
-        position: relative;
-        border: 1px solid #f0f0f0;
-    }
-
-    .xmm-thumb img,
-    .xmm-thumb video {
-        max-width: 100%;
-        max-height: 100%;
-    }
-
-    .xmm-thumb audio {
-        width: 100%;
-    }
-
-    .xmm-badge {
-        position: absolute;
-        top: 6px;
-        left: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 28px;
-        height: 28px;
-        background: rgba(0, 0, 0, .65);
-        color: #fff;
-        border: 1px solid rgba(255, 255, 255, .2);
-    }
-
-    .xmm-badge svg {
-        width: 18px;
-        height: 18px;
-    }
 
     .xmm-title {
         font-size: .9rem;
@@ -850,47 +810,6 @@
                 item.className = "xmm-item";
                 if (state.selected && state.selected.id === media.id) item.classList.add("xmm-is-selected");
                 item.addEventListener("click", () => toggleSelect(media));
-
-                const thumb = document.createElement("div");
-                thumb.className = "xmm-thumb";
-
-                const badge = document.createElement("div");
-                badge.className = "xmm-badge";
-                badge.title = kind === "voice" ? "audio" : (isYouTubeUrl(media.path) ? "youtube" : kind);
-                const iconId = getBadgeIconId(media);
-                badge.innerHTML = `<svg aria-hidden="true"><use href="#${iconId}"></use></svg>`;
-                thumb.appendChild(badge);
-
-                if (media.path && isYouTubeUrl(media.path)) {
-                    const vid = getYouTubeId(media.path);
-                    const img = document.createElement("img");
-                    img.src = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
-                    img.alt = media.name || "YouTube";
-                    img.loading = "lazy";
-                    thumb.appendChild(img);
-                } else if (kind === "image") {
-                    const img = document.createElement("img");
-                    img.src = media.path;
-                    img.alt = media.alt || media.name || "";
-                    img.loading = "lazy";
-                    thumb.appendChild(img);
-                } else if (kind === "video") {
-                    if (/\.(mp4|webm|mkv|mov|avi|m4v)(\?|$)/i.test(media.path || "")) {
-                        const video = document.createElement("video");
-                        video.src = media.path;
-                        video.muted = true;
-                        video.preload = "metadata";
-                        thumb.appendChild(video);
-                    }
-                } else if (kind === "voice") {
-                    const audio = document.createElement("audio");
-                    audio.src = media.path;
-                    audio.preload = "metadata";
-                    audio.controls = true;
-                    thumb.appendChild(audio);
-                }
-
-                item.appendChild(thumb);
 
                 const title = document.createElement("div");
                 title.className = "xmm-title";

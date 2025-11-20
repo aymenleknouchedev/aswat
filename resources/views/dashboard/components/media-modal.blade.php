@@ -789,98 +789,6 @@
             return "mmx-icon-file";
         }
 
-        function showMediaPreview(media) {
-            const overlay = document.getElementById('mmx-preview-overlay');
-            const previewMedia = document.getElementById('mmx-preview-media');
-            const previewName = document.getElementById('mmx-preview-name');
-            const previewType = document.getElementById('mmx-preview-type');
-            const previewAlt = document.getElementById('mmx-preview-alt');
-            
-            if (!overlay || !previewMedia) return;
-            
-            // Clear previous content
-            previewMedia.innerHTML = '';
-            
-            const kind = getMediaKind(media);
-            const typeLabel = kind === "voice" ? "صوت" : (kind === "image" ? "صورة" : (kind === "video" ? "فيديو" : "ملف"));
-            
-            // Update info
-            if (previewName) previewName.textContent = media.name || '-';
-            if (previewType) previewType.textContent = typeLabel;
-            if (previewAlt) previewAlt.textContent = media.alt || '-';
-            
-            // Create preview element based on media type
-            const path = media.path || media.url || "";
-
-            if (path && isYouTubeUrl(path)) {
-                const vid = getYouTubeId(path);
-                const iframe = document.createElement('iframe');
-                iframe.src = `https://www.youtube.com/embed/${vid}`;
-                iframe.width = '100%';
-                iframe.height = '100%';
-                iframe.frameborder = '0';
-                iframe.allow = 'autoplay; encrypted-media';
-                iframe.allowFullscreen = true;
-                iframe.style.cssText = 'min-width: 400px; min-height: 300px; max-width: 100%; max-height: 100%;';
-                previewMedia.appendChild(iframe);
-            } else if (path && isVimeoUrl(path)) {
-                const vid = getVimeoId(path);
-                const iframe = document.createElement('iframe');
-                iframe.src = `https://player.vimeo.com/video/${vid}`;
-                iframe.width = '100%';
-                iframe.height = '100%';
-                iframe.frameborder = '0';
-                iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-                iframe.allowFullscreen = true;
-                iframe.style.cssText = 'min-width: 400px; min-height: 300px; max-width: 100%; max-height: 100%;';
-                previewMedia.appendChild(iframe);
-            } else if (path && isDailymotionUrl(path)) {
-                const vid = getDailymotionId(path);
-                const iframe = document.createElement('iframe');
-                iframe.src = `https://www.dailymotion.com/embed/video/${vid}`;
-                iframe.width = '100%';
-                iframe.height = '100%';
-                iframe.frameborder = '0';
-                iframe.allow = 'autoplay; fullscreen';
-                iframe.allowFullscreen = true;
-                iframe.style.cssText = 'min-width: 400px; min-height: 300px; max-width: 100%; max-height: 100%;';
-                previewMedia.appendChild(iframe);
-            } else if (kind === "image") {
-                const img = document.createElement('img');
-                img.src = media.path;
-                img.alt = media.alt || media.name || 'Image';
-                img.style.cssText = 'max-width: 100%; max-height: 100%; object-fit: contain;';
-                previewMedia.appendChild(img);
-            } else if (kind === "video") {
-                const video = document.createElement('video');
-                video.src = media.path;
-                video.controls = true;
-                video.style.cssText = 'max-width: 100%; max-height: 100%; object-fit: contain;';
-                previewMedia.appendChild(video);
-            } else if (kind === "voice") {
-                const audio = document.createElement('audio');
-                audio.src = media.path;
-                audio.controls = true;
-                audio.style.cssText = 'width: 100%;';
-                previewMedia.appendChild(audio);
-            } else {
-                const fileIcon = document.createElement('div');
-                fileIcon.style.cssText = 'text-align: center; color: var(--mmx-muted);';
-                fileIcon.innerHTML = '<i class="fa fa-file fa-5x" style="margin-bottom: 1rem; display: block;"></i><p style="margin: 0; font-size: 1rem;">معاينة الملف غير متاحة</p><p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: var(--mmx-text);">' + (media.name || 'File') + '</p>';
-                previewMedia.appendChild(fileIcon);
-            }
-            
-            // Show overlay
-            overlay.style.display = 'block';
-        }
-
-        function closeMediaPreview() {
-            const overlay = document.getElementById('mmx-preview-overlay');
-            if (overlay) {
-                overlay.style.display = 'none';
-            }
-        }
-
         function getSelectedUrlType() {
             const checked = Array.from(urlTypeRadios).find(r => r.checked);
             return checked ? checked.value : "auto";
@@ -1133,8 +1041,7 @@
                     audio.controls = true;
                     thumb.appendChild(audio);
                 }
-                
-                thumb.appendChild(previewBtn);
+
                 item.appendChild(thumb);
 
                 const title = document.createElement("div");
@@ -1175,20 +1082,6 @@
                 alt: state.selected.alt || ""
             });
             closeModal();
-        });
-
-        // ===== Preview close =====
-        const previewCloseBtn = document.getElementById('mmx-preview-close');
-        const previewOverlay = document.getElementById('mmx-preview-overlay');
-        previewCloseBtn?.addEventListener("click", closeMediaPreview);
-        previewOverlay?.addEventListener("click", (e) => {
-            if (e.target === previewOverlay) closeMediaPreview();
-        });
-        // Close preview on Escape key
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape" && previewOverlay && previewOverlay.style.display !== 'none') {
-                closeMediaPreview();
-            }
         });
 
         // ===== Parsing & matching helpers =====
