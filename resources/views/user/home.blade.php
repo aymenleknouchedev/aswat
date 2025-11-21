@@ -60,15 +60,6 @@
             text-decoration: underline;
         }
 
-        @media (max-width: 768px) {
-            .web {
-                display: none;
-            }
-
-            .mobile {
-                display: none;
-            }
-        }
     </style>
 
 
