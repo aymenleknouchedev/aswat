@@ -20,6 +20,7 @@ Route::middleware(['coming.soon'])->group(function () {
     Route::get('/api/readmore-list', [ReadMoreController::class, 'getContentBySection'])->name('api.readmore.list');
     Route::get('/search', [HomePageController::class, 'search'])->name('search');
     Route::get('/reviews', [HomePageController::class, 'reviews'])->name('reviews');
+    Route::get('/list', [HomePageController::class, 'list'])->name('list');
     Route::get('/windows', [HomePageController::class, 'windows'])->name('windows');
     Route::get('/files', [HomePageController::class, 'files'])->name('files');
     Route::get('/investigation', [HomePageController::class, 'investigation'])->name('investigation');

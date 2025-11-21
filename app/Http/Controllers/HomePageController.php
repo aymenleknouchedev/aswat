@@ -681,4 +681,9 @@ class HomePageController extends Controller
 
         return view('user.tags', compact('theme', 'articles', 'type', 'current_id'));
     }
+
+    public function list()
+    {
+        return view('user.list');
+    }
 }
