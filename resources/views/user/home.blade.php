@@ -5,6 +5,9 @@
 @section('content')
 
     <style>
+        .web {
+            display: none;
+        }
         .art-section-hero {
             position: relative;
             background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)),
@@ -62,9 +65,9 @@
 
     </style>
 
+        @include('user.components.fixed-nav')
 
     <div class="web">
-        @include('user.components.fixed-nav')
 
         {{-- topContents --}}
         @php
@@ -339,8 +342,6 @@
 
     </div>
 
-    <div class="mobile">
-    </div>
 
 
 
