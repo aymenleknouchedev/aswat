@@ -339,6 +339,24 @@
     </div>
 
     <div class="mobile">
+        <!-- Full Screen Post with Background Image -->
+        <div class="mobile-featured-post" style="background-image: url('{{ asset($principalTrend->trend->image ?? 'user/assets/images/default-post.jpg') }}');">
+            <!-- Overlay -->
+            <div class="post-overlay-dark"></div>
+            
+            <!-- Post Content -->
+            <div class="featured-post-content">
+                <h1 class="featured-post-title">{{ $principalTrend->trend->title ?? 'اخبار رئيسية' }}</h1>
+                <p class="featured-post-description">{{ $principalTrend->trend->description ?? '' }}</p>
+            </div>
+
+            <!-- Post Meta -->
+            <div class="featured-post-meta">
+                <span class="post-category">{{ $principalTrend->trend->category->name ?? 'أخبار' }}</span>
+                <span class="post-date">{{ now()->format('d/m/Y') }}</span>
+            </div>
+        </div>
+
         @include('user.mobile.mobile-home')
        
     </div>
@@ -346,11 +364,102 @@
 
     <style>
         @media (max-width: 991px) {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
             .web {
                 display: none !important;
             }
             .mobile {
                 display: block !important;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Full Screen Featured Post */
+            .mobile-featured-post {
+                width: 100%;
+                height: 100vh;
+                position: relative;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                overflow: hidden;
+            }
+
+            /* Dark Overlay */
+            .post-overlay-dark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+                z-index: 1;
+            }
+
+            /* Featured Post Content */
+            .featured-post-content {
+                position: relative;
+                z-index: 2;
+                padding: 40px 20px 20px;
+                color: #fff;
+                direction: rtl;
+                text-align: right;
+            }
+
+            .featured-post-title {
+                margin: 0 0 15px 0;
+                font-size: 28px;
+                font-weight: bold;
+                line-height: 1.3;
+                color: #fff;
+            }
+
+            .featured-post-description {
+                margin: 0 0 20px 0;
+                font-size: 14px;
+                color: #e0e0e0;
+                line-height: 1.5;
+                max-height: 80px;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+            }
+
+            /* Featured Post Meta */
+            .featured-post-meta {
+                position: relative;
+                z-index: 2;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 20px;
+                background-color: rgba(0, 0, 0, 0.8);
+                direction: rtl;
+                gap: 10px;
+            }
+
+            .post-category {
+                display: inline-block;
+                background-color: #d32f2f;
+                color: #fff;
+                padding: 6px 14px;
+                border-radius: 3px;
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+
+            .post-date {
+                font-size: 12px;
+                color: #999;
             }
         }
         @media (min-width: 992px) {

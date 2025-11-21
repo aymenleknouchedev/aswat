@@ -59,11 +59,14 @@
                 background-color: transparent;
                 border-bottom: none;
                 padding: 0;
-                position: sticky;
+                position: fixed;
                 top: 0;
+                left: 0;
+                right: 0;
                 z-index: 1500;
                 display: flex;
                 flex-direction: column;
+                width: 100%;
             }
 
            
@@ -278,6 +281,7 @@
 
             .mobile-content {
                 padding: 16px;
+                padding-top: 56px;
             }
         }
     </style>
