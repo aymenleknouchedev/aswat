@@ -102,10 +102,15 @@
                 position: relative;
                 min-width: 44px;
                 min-height: 44px;
+                -webkit-tap-highlight-color: transparent;
             }
 
             .menu-toggle:focus {
                 outline: none;
+            }
+
+            .menu-toggle:active {
+                background-color: transparent;
             }
 
             /* Hamburger Icon */
