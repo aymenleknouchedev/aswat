@@ -183,15 +183,7 @@
             margin: 20px 0;
         }
 
-        @media (max-width: 768px) {
-            .web {
-                display: none;
-            }
-
-            .mobile {
-                display: none;
-            }
-        }
+       
     </style>
 
     <div class="web">
