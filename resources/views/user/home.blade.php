@@ -350,11 +350,7 @@
                 <p class="featured-post-description">{{ $principalTrend->trend->description ?? '' }}</p>
             </div>
 
-            <!-- Post Meta -->
-            <div class="featured-post-meta">
-                <span class="post-category">{{ $principalTrend->trend->category->name ?? 'أخبار' }}</span>
-                <span class="post-date">{{ now()->format('d/m/Y') }}</span>
-            </div>
+           
         </div>
 
         @include('user.mobile.mobile-home')
