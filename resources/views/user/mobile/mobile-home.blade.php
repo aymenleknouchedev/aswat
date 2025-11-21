@@ -158,7 +158,7 @@
                 width: 100%;
                 height: 100%;
                 background-color: #252525;
-                transition: left 0.3s ease;
+                transition: left 0.5s ease;
                 z-index: 1400;
                 display: flex;
                 flex-direction: column;
@@ -213,6 +213,35 @@
                 font-size: 16px;
                 font-weight: 500;
                 transition: all 0.2s ease;
+                opacity: 0;
+                animation: slideInText 0.5s ease forwards;
+            }
+
+            .mobile-sidebar:not(.active) .menu-list a {
+                animation: none;
+                opacity: 0;
+            }
+
+            .menu-list li:nth-child(1) a { animation-delay: 0.1s; }
+            .menu-list li:nth-child(2) a { animation-delay: 0.15s; }
+            .menu-list li:nth-child(3) a { animation-delay: 0.2s; }
+            .menu-list li:nth-child(4) a { animation-delay: 0.25s; }
+            .menu-list li:nth-child(5) a { animation-delay: 0.3s; }
+            .menu-list li:nth-child(6) a { animation-delay: 0.35s; }
+            .menu-list li:nth-child(7) a { animation-delay: 0.4s; }
+            .menu-list li:nth-child(8) a { animation-delay: 0.45s; }
+            .menu-list li:nth-child(9) a { animation-delay: 0.5s; }
+            .menu-list li:nth-child(10) a { animation-delay: 0.55s; }
+
+            @keyframes slideInText {
+                from {
+                    opacity: 0;
+                    transform: translateX(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
             }
 
             .menu-list a:active {
