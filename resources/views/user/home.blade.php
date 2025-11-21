@@ -5,9 +5,6 @@
 @section('content')
 
     <style>
-        .web {
-            display: none;
-        }
         .art-section-hero {
             position: relative;
             background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)),
@@ -62,12 +59,11 @@
             cursor: pointer;
             text-decoration: underline;
         }
-
     </style>
 
-        @include('user.components.fixed-nav')
 
     <div class="web">
+        @include('user.components.fixed-nav')
 
         {{-- topContents --}}
         @php
@@ -342,6 +338,30 @@
 
     </div>
 
+    <div class="mobile">
+        @include('user.mobile.mobile-home')
+       
+    </div>
+
+
+    <style>
+        @media (max-width: 991px) {
+            .web {
+                display: none !important;
+            }
+            .mobile {
+                display: block !important;
+            }
+        }
+        @media (min-width: 992px) {
+            .web {
+                display: block !important;
+            }
+            .mobile {
+                display: none !important;
+            }
+        }
+    </style>
 
 
 
