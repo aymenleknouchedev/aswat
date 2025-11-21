@@ -861,7 +861,7 @@ class ContentController extends BaseController
         $rules = [
             'title'               => 'required|string|max:75',
             'long_title'          => 'required|string|max:210',
-            'mobile_title'        => 'required|string|max:40',
+            'mobile_title'        => 'required|string|max:50',
             'display_method'      => 'required|string|in:simple,list,file',
             'section_id'          => 'required|exists:sections,id',
             'category_id'         => 'required|exists:categories,id',
