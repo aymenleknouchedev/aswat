@@ -66,9 +66,7 @@
                 flex-direction: column;
             }
 
-            .mobile-navbar.expanded {
-                background-color: #252525;
-            }
+           
 
             .navbar-content {
                 display: flex;
@@ -151,20 +149,20 @@
             .mobile-sidebar {
                 position: fixed;
                 top: 0;
-                right: -100%;
+                left: -100%;
                 width: 100%;
                 height: 100%;
                 background-color: #252525;
-                transition: right 0.3s ease;
+                transition: left 0.3s ease;
                 z-index: 1400;
                 display: flex;
                 flex-direction: column;
-                box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+                box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
                 padding-top: 56px;
             }
 
             .mobile-sidebar.active {
-                right: 0;
+                left: 0;
             }
 
             .sidebar-content {
