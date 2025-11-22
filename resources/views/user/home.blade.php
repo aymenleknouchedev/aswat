@@ -411,35 +411,42 @@
 
         <!-- Vertical snap container for mobile sections -->
         <div class="mobile-snap">
-            @php $topcontentslist = min(5, $topContents->count()); @endphp
-            <div class="mobile-h-wrapper">
-                <div class="section-fixed-ui">
-                    <div class="featured-post-section-badge">أصوات جزائرية</div>
-                    <div class="h-indicators" role="tablist" aria-label="slides">
-                        @for ($i = 0; $i < $topcontentslist; $i++)
-                            <span class="h-indicator @if ($i === 0) active @endif"
-                                aria-label="{{ $i + 1 }}"
-                                aria-current="@if ($i === 0) true @else false @endif"></span>
-                        @endfor
+
+            {{-- top contents (featured first slider) --}}
+            @if(isset($topContents) && is_countable($topContents) && $topContents->count())
+                @php $topcontentslist = min(5, $topContents->count()); @endphp
+                <div class="mobile-h-wrapper">
+                    <div class="section-fixed-ui">
+                        <div class="h-indicators" role="tablist" aria-label="slides">
+                            @for ($i = 0; $i < $topcontentslist; $i++)
+                                <span class="h-indicator @if ($i === 0) active @endif"
+                                      aria-label="{{ $i + 1 }}"
+                                      aria-current="@if ($i === 0) true @else false @endif"></span>
+                            @endfor
+                        </div>
+                    </div>
+                    <div class="h-snap" dir="rtl">
+                        @foreach ($topContents->take(5) as $tc)
+                            @php $c = $tc->content ?? null; @endphp
+                            @if($c)
+                                <a href="{{ route('news.show', $c->title) }}" class="h-snap-slide mobile-featured-post"
+                                   style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? $c->media()->wherePivot('type','main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                    <div class="post-overlay-dark"></div>
+                                    <div class="featured-post-content">
+                                        <p class="featured-post-category-name">{{ $c->category->name ?? 'أصوات جزائرية' }}</p>
+                                        <h1 class="featured-post-title">{{ \Illuminate\Support\Str::limit($c->mobile_title ?? $c->title, 50) }}</h1>
+                                        <p class="featured-post-description">
+                                            {{ \Illuminate\Support\Str::limit(strip_tags($c->summary ?? ($c->description ?? '')), 130) }}
+                                        </p>
+                                    </div>
+                                </a>
+                            @endif
+                        @endforeach
                     </div>
                 </div>
-                <div class="h-snap" dir="rtl">
-                    @foreach ($topContents->take(5) as $content)
-                        <a href="{{ route('news.show', $content->title) }}" class="h-snap-slide mobile-featured-post"
-                            style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
-                            <div class="post-overlay-dark"></div>
-                            <div class="featured-post-content">
-                                <p class="featured-post-category-name">
-                                    {{ $content->category->name ?? 'أصوات جزائرية' }}</p>
-                                <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
-                                <p class="featured-post-description">
-                                    {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
-                                </p>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
+            @endif
+
+            {{-- sections --}}
             @foreach ($sectionscontents ?? [] as $sectionTitle => $collection)
                 @if ($collection && $collection->count())
                     @php $slideCount = min(5, $collection->count()); @endphp
