@@ -495,10 +495,13 @@
                                         style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
                                         <div class="post-overlay-dark"></div>
                                         <div class="featured-post-content">
-                                            <div class="featured-post-author">
-                                                <img class="author-avatar" src="{{ asset($content->writer?->image ?? 'user/assets/images/default-post.jpg') }}" alt="{{ $content->writer?->name ?? '' }}">
-                                                <span class="author-name">{{ $content->writer?->name ?? '' }}</span>
-                                            </div>
+                                            @php($firstWriter = $content->writers()->first())
+                                            @if($firstWriter)
+                                                <div class="featured-post-author">
+                                                    <img class="author-avatar" src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}" alt="{{ $firstWriter->name ?? '' }}">
+                                                    <span class="author-name">{{ $firstWriter->name }}</span>
+                                                </div>
+                                            @endif
                                             <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
                                         </div>
                                     </a>
@@ -810,12 +813,10 @@
             }
 
             .featured-post-author .author-avatar {
-                width: 36px;
-                height: 36px;
+                width: 90px;
+                height: 90px;
                 border-radius: 50%;
                 object-fit: cover;
-                border: 2px solid rgba(255, 255, 255, 0.85);
-                background: rgba(255, 255, 255, 0.1);
             }
 
             .featured-post-author .author-name {
