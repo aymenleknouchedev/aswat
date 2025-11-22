@@ -597,10 +597,9 @@
             }
 
             .featured-post-category-name {
-                margin: 0 0 10px 0;
-                font-size: 20px;
+                margin: 0 0 14px 0;
+                font-size: 22px;
                 color: #ffffff;
-                text-transform: uppercase;
                 letter-spacing: 1px;
             }
 
