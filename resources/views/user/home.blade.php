@@ -856,9 +856,8 @@
                 height: 110px;
                 border-radius: 50%;
                 object-fit: cover;
-                border: 3px solid rgba(255,255,255,0.85);
+                border: 1px solid rgba(255,255,255,0.85);
                 margin-bottom: 12px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.35);
             }
             .opinion-author {
                 font-size: 22px;
