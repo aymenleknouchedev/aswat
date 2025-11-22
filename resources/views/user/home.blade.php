@@ -427,7 +427,7 @@
                         </div>
                     </div>
                     <div class="h-snap" dir="rtl">
-                        @foreach ($topContents->take(5) as $tc)
+                        @foreach ($topContents->take(7) as $tc)
                             @php $c = $tc->content ?? null; @endphp
                             @if($c)
                                 <a href="{{ route('news.show', $c->title) }}" class="h-snap-slide mobile-featured-post"
