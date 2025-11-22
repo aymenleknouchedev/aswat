@@ -435,7 +435,7 @@
                                             {{ $content->category->name ?? $sectionTitle }}</p>
                                         <h1 class="featured-post-title">{{ $content->title }}</h1>
                                         <p class="featured-post-description">
-                                            {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 120) }}
+                                            {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
                                         </p>
                                     </div>
                                 </a>
