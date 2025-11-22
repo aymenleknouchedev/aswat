@@ -447,6 +447,8 @@
                 </div>
             @endif
 
+            
+
             {{-- sections --}}
             @foreach ($sectionscontents ?? [] as $sectionTitle => $collection)
                 @if ($collection && $collection->count())
