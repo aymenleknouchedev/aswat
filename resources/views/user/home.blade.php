@@ -631,7 +631,7 @@
                 margin: 0;
                 /* bottom space handled by container padding */
                 font-size: 16px;
-                color: #e0e0e0;
+                color: #ffffff;
                 line-height: 1.5;
                 overflow: hidden;
                 display: -webkit-box;
