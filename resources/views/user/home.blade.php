@@ -574,6 +574,7 @@
                 width: 4px; /* thin vertical line */
                 height: 100%; /* same height as badge */
                 background: rgba(255, 255, 255, 0.262);
+                border-radius: 2px;
             }
             .h-indicator.active {
                 background: #ffffff;
