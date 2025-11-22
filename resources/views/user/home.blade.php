@@ -679,59 +679,85 @@
                 }, 300);
             }
         });
-        // Mobile auto horizontal scroll every 4s
+        // Mobile auto horizontal scroll ONLY for currently visible vertical section
         document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth > 991) return; // mobile only
-            const sliders = document.querySelectorAll('.h-snap');
-            sliders.forEach(setupAutoScroll);
+            const wrappers = Array.from(document.querySelectorAll('.mobile-h-wrapper'));
+            const states = new Map();
+            const INTERVAL = 4000;
+            const PAUSE_AFTER_INTERACTION = 12000; // pause after manual interaction
+            let activeWrapper = null;
 
-            function setupAutoScroll(track) {
+            wrappers.forEach(w => {
+                const track = w.querySelector('.h-snap');
+                if (!track) return;
                 const slides = Array.from(track.querySelectorAll('.h-snap-slide'));
-                if (slides.length < 2) return; // nothing to auto-scroll
-                let index = 0;
-                let userPausedUntil = 0;
-                const INTERVAL = 4000;
-                const PAUSE_AFTER_INTERACTION = 12000; // 12s pause after user input
-
-                function goTo(i) {
-                    index = (i + slides.length) % slides.length;
-                    const target = slides[index];
-                    if (!target) return;
-                    track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
-                }
-
-                function autoAdvance() {
-                    const now = Date.now();
-                    if (now < userPausedUntil) return; // user interaction pause
-                    // Determine current nearest slide (in case of manual swipe)
-                    const currentLeft = track.scrollLeft;
-                    let nearest = index;
-                    let minDist = Infinity;
-                    slides.forEach((s, i) => {
-                        const dist = Math.abs(s.offsetLeft - currentLeft);
-                        if (dist < minDist) { minDist = dist; nearest = i; }
-                    });
-                    index = nearest;
-                    goTo(index + 1);
-                }
-
-                let intervalId = setInterval(autoAdvance, INTERVAL);
-
-                // Pause on user interaction (touch / scroll / wheel)
+                if (slides.length < 2) return; // no need for auto scroll
+                states.set(w, {
+                    track,
+                    slides,
+                    index: 0,
+                    userPausedUntil: 0,
+                    intervalId: null
+                });
+                // user interaction pause
                 ['touchstart','wheel','mousedown'].forEach(evt => {
                     track.addEventListener(evt, () => {
-                        userPausedUntil = Date.now() + PAUSE_AFTER_INTERACTION;
+                        const st = states.get(w); if (!st) return;
+                        st.userPausedUntil = Date.now() + PAUSE_AFTER_INTERACTION;
                     }, { passive: true });
                 });
-                // If visibility changes (tab hidden), pause progression
-                document.addEventListener('visibilitychange', () => {
-                    if (document.hidden) {
-                        clearInterval(intervalId);
-                    } else {
-                        intervalId = setInterval(autoAdvance, INTERVAL);
-                    }
-                });
+            });
+
+            function startAuto(w) {
+                const st = states.get(w); if (!st || st.intervalId) return;
+                st.intervalId = setInterval(() => advance(st), INTERVAL);
             }
+            function stopAuto(w) {
+                const st = states.get(w); if (!st || !st.intervalId) return;
+                clearInterval(st.intervalId); st.intervalId = null;
+            }
+            function advance(st) {
+                const now = Date.now();
+                if (now < st.userPausedUntil) return;
+                const currentLeft = st.track.scrollLeft;
+                // sync index to nearest slide first
+                let nearest = st.index, minDist = Infinity;
+                st.slides.forEach((s,i) => { const d = Math.abs(s.offsetLeft - currentLeft); if (d < minDist){minDist=d; nearest=i;} });
+                st.index = nearest;
+                const next = (st.index + 1) % st.slides.length;
+                st.index = next;
+                const target = st.slides[next];
+                if (target) st.track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+            }
+
+            // IntersectionObserver to determine visible wrapper
+            const observer = new IntersectionObserver(entries => {
+                // find most visible intersecting entry
+                let candidate = null; let ratio = 0;
+                entries.forEach(e => {
+                    if (e.isIntersecting && e.intersectionRatio > ratio) { ratio = e.intersectionRatio; candidate = e.target; }
+                });
+                if (candidate && candidate !== activeWrapper) {
+                    // switch active
+                    if (activeWrapper) stopAuto(activeWrapper);
+                    activeWrapper = candidate;
+                    startAuto(activeWrapper);
+                } else if (!candidate && activeWrapper) {
+                    // none visible, stop current
+                    stopAuto(activeWrapper); activeWrapper = null;
+                }
+            }, { threshold: [0.2,0.4,0.6,0.8,1] });
+
+            wrappers.forEach(w => observer.observe(w));
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    if (activeWrapper) stopAuto(activeWrapper);
+                } else {
+                    if (activeWrapper) startAuto(activeWrapper);
+                }
+            });
         });
     </script>
 
