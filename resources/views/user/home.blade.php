@@ -433,7 +433,7 @@
                                 <a href="{{ route('news.show', $c->title) }}" class="h-snap-slide mobile-featured-post"
                                     style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}');">
                                     <div class="post-overlay-dark"></div>
-                                    <div class="featured-post-content">
+                                    <div class="featured-post-content2">
                                         <p class="featured-post-category-name">{{ $c->category->name ?? 'أصوات جزائرية' }}
                                         </p>
                                         <h1 class="featured-post-title">
@@ -504,7 +504,6 @@
                                                     <span class="author-name">{{ $firstWriter->name }}</span>
                                                 </div>
                                             @endif
-                                            <br>
                                             <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
                                         </div>
                                     </a>
@@ -776,6 +775,21 @@
                 direction: rtl;
                 text-align: right;
             }
+            /* Featured Post Content */
+            .featured-post-content2 {
+                position: absolute;
+                /* pin block to bottom area */
+                bottom: 90px;
+                /* keep 80px empty space at the bottom of the page */
+                left: 0;
+                right: 0;
+                z-index: 2;
+                padding: 0 20px;
+                /* horizontal padding only */
+                color: #fff;
+                direction: rtl;
+                text-align: right;
+            }
 
             .featured-post-category-name {
                 margin: 0 0 14px 0;
@@ -812,7 +826,7 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 10px;
-                margin: 0 0 14px 0;
+                margin: 0 0 30px 0;
             }
 
             .featured-post-author .author-avatar {
