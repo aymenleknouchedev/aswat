@@ -341,35 +341,40 @@
     <div class="mobile">
         @include('user.mobile.mobile-home')
 
-        <!-- Full Screen Post with Background Image -->
-        <div class="mobile-featured-post"
-            style="background-image: url('{{ asset($principalTrend->trend->image ?? 'user/assets/images/default-post.jpg') }}');">
-            <!-- Overlay -->
-            <div class="post-overlay-dark"></div>
-
-            <!-- Post Content -->
-            <div class="featured-post-content">
-                <p class="featured-post-category-name">الجزائر</p>
-                <h1 class="featured-post-title">وزير سابق يفتح ملفات تاريخية مسكوتاً عنها</h1>
-                <p class="featured-post-description">
-                    قدََّم وزير الداخلية الجزائري الأسبق، دحو ولد قابلية (2010 - 2013)، رواية جديدة عن جهاز الاستخبارات
-                    خلال حرب الاستقلال عن فرنسا
-                </p>
+        <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
+        <div class="mobile-h-wrapper">
+            <div class="h-snap" dir="rtl">
+                @for ($i = 1; $i <= 5; $i++)
+                    <a href="#"
+                       class="h-snap-slide mobile-featured-post"
+                       style="background-image: url('https://blog.govnet.co.uk/hs-fs/hubfs/shutterstock_2055335264.jpg?width=8088&height=4000&name=shutterstock_2055335264.jpg');"
+                       aria-disabled="true" onclick="return false;">
+                        <div class="post-overlay-dark"></div>
+                        <div class="featured-post-content">
+                            <p class="featured-post-category-name">تصنيف</p>
+                            <h1 class="featured-post-title">عنوان تجريبي {{ $i }}</h1>
+                            <p class="featured-post-description">وصف تجريبي مختصر لهذا المنشور لعرض النص أسفل الصورة.</p>
+                        </div>
+                    </a>
+                @endfor
             </div>
         </div>
-        <div class="mobile-featured-post"
-            style="background-image: url('{{ asset($principalTrend->trend->image ?? 'user/assets/images/default-post.jpg') }}');">
-            <!-- Overlay -->
-            <div class="post-overlay-dark"></div>
-
-            <!-- Post Content -->
-            <div class="featured-post-content">
-                <p class="featured-post-category-name">الجزائر</p>
-                <h1 class="featured-post-title">وزير سابق يفتح ملفات تاريخية مسكوتاً عنها</h1>
-                <p class="featured-post-description">
-                    قدََّم وزير الداخلية الجزائري الأسبق، دحو ولد قابلية (2010 - 2013)، رواية جديدة عن جهاز الاستخبارات
-                    خلال حرب الاستقلال عن فرنسا
-                </p>
+        <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
+        <div class="mobile-h-wrapper">
+            <div class="h-snap" dir="rtl">
+                @for ($i = 1; $i <= 5; $i++)
+                    <a href="#"
+                       class="h-snap-slide mobile-featured-post"
+                       style="background-image: url('https://blog.govnet.co.uk/hs-fs/hubfs/shutterstock_2055335264.jpg?width=8088&height=4000&name=shutterstock_2055335264.jpg');"
+                       aria-disabled="true" onclick="return false;">
+                        <div class="post-overlay-dark"></div>
+                        <div class="featured-post-content">
+                            <p class="featured-post-category-name">تصنيف</p>
+                            <h1 class="featured-post-title">عنوان تجريبي {{ $i }}</h1>
+                            <p class="featured-post-description">وصف تجريبي مختصر لهذا المنشور لعرض النص أسفل الصورة.</p>
+                        </div>
+                    </a>
+                @endfor
             </div>
         </div>
 
@@ -410,6 +415,44 @@
                 overflow: hidden;
             }
 
+            /* Horizontal snap wrapper (one vertical step) */
+            .mobile-h-wrapper {
+                width: 100%;
+                height: 100vh;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+            }
+
+            /* Horizontal snap track */
+            .h-snap {
+                height: 100%;
+                width: 100%;
+                display: grid;
+                grid-auto-flow: column;
+                grid-auto-columns: 100vw;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior-x: contain;
+                scrollbar-width: none; /* Firefox */
+                direction: rtl; /* First slide at right for RTL */
+            }
+
+            .h-snap::-webkit-scrollbar {
+                display: none; /* Hide scrollbar on WebKit */
+            }
+
+            .h-snap-slide {
+                width: 100vw;
+                height: 100%;
+                scroll-snap-align: start;
+                position: relative;
+                display: block;
+                text-decoration: none;
+                color: inherit;
+            }
+
             /* Dark Overlay */
             .post-overlay-dark {
                 position: absolute;
@@ -423,9 +466,12 @@
 
             /* Featured Post Content */
             .featured-post-content {
-                position: relative;
+                position: absolute; /* pin block to bottom area */
+                bottom: 80px; /* keep 80px empty space at the bottom of the page */
+                left: 0;
+                right: 0;
                 z-index: 2;
-                padding: 40px 20px 20px;
+                padding: 0 20px; /* horizontal padding only */
                 color: #fff;
                 direction: rtl;
                 text-align: right;
@@ -448,7 +494,7 @@
             }
 
             .featured-post-description {
-                margin: 0 0 80px 0;
+                margin: 0; /* bottom space handled by container padding */
                 font-size: 16px;
                 color: #e0e0e0;
                 line-height: 1.5;
@@ -499,19 +545,22 @@
                 height: 100dvh;
                 overflow-y: scroll;
                 scroll-behavior: smooth;
+                scroll-snap-type: y mandatory;
+                scroll-padding-top: 0;
                 -webkit-overflow-scrolling: touch;
-                /* Removed scroll-snap-type for better iOS compatibility */
             }
 
             .mobile-featured-post {
                 height: 100vh;
                 width: 100%;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
                 flex-shrink: 0;
-                /* Removed scroll-snap properties for better iOS compatibility */
             }
 
             .mobile-container {
-                /* Removed scroll-snap properties for better iOS compatibility */
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
             }
 
             /* Disable momentum scrolling interruption */
@@ -535,43 +584,71 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth <= 991) {
-                let scrollTimeout;
-                let isScrolling = false;
-                const snapDelay = 500; // Reduced from 800
+                let lastWheelTime = 0;
+                const wheelDelay = 1000;
+                let isPreventingScroll = false;
 
-                // Scroll snap for mobile - works with Safari/Chrome on iOS
-                window.addEventListener('scroll', function() {
-                    // Clear any existing timeout
-                    if (scrollTimeout) {
-                        clearTimeout(scrollTimeout);
+                // Prevent rapid wheel events
+                window.addEventListener('wheel', function(e) {
+                    const now = Date.now();
+
+                    if (now - lastWheelTime < wheelDelay) {
+                        e.preventDefault();
+                        return;
                     }
 
-                    // Set a timeout to run after scrolling stops
+                    lastWheelTime = now;
+                }, {
+                    passive: false
+                });
+
+                // Intercept touchmove to ensure smooth native scroll
+                let touchStartY = 0;
+                let lastTouchTime = 0;
+                const touchDelay = 1000;
+
+                document.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                    lastTouchTime = Date.now();
+                }, {
+                    passive: true
+                });
+
+                document.addEventListener('touchmove', function(e) {
+                    const now = Date.now();
+                    const touchCurrentY = e.touches[0].clientY;
+                    const distance = Math.abs(touchCurrentY - touchStartY);
+
+                    // Prevent small unintended scrolls
+                    if (distance < 20 && (now - lastTouchTime) < 100) {
+                        e.preventDefault();
+                    }
+                }, {
+                    passive: false
+                });
+
+                // Smooth snapping on scroll end
+                let scrollTimeout;
+                window.addEventListener('scroll', function() {
+                    clearTimeout(scrollTimeout);
+
                     scrollTimeout = setTimeout(function() {
-                        if (isScrolling) return;
-                        
-                        isScrolling = true;
-                        
-                        const scrollTop = window.scrollY || window.pageYOffset;
-                        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+                        const scrollTop = window.scrollY;
+                        const viewportHeight = window.innerHeight;
                         const currentSection = Math.round(scrollTop / viewportHeight);
                         const targetScroll = currentSection * viewportHeight;
-                        const diff = Math.abs(scrollTop - targetScroll);
 
-                        // Only snap if not already at target
-                        if (diff > 10) {
-                            // Use regular scrollTo without smooth behavior for better Safari support
-                            window.scroll(0, targetScroll);
-                            
-                            // Re-enable snapping after animation
-                            setTimeout(() => {
-                                isScrolling = false;
-                            }, snapDelay);
-                        } else {
-                            isScrolling = false;
+                        if (Math.abs(scrollTop - targetScroll) > 2) {
+                            window.scrollTo({
+                                top: targetScroll,
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
                         }
-                    }, 150); // Wait 150ms after scroll ends before snapping
-                }, { passive: true });
+                    }, 150);
+                }, {
+                    passive: true
+                });
             }
         });
     </script>
