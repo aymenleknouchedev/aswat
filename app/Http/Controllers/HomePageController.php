@@ -138,7 +138,6 @@ class HomePageController extends Controller
         return view('user.home', compact('sectionscontents','topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant', 'principalTrend', 'trends'));
     }
 
-    public function allSections() {}
 
 
     public function latestNews()
