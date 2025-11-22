@@ -127,7 +127,7 @@
             .line {
                 width: 20px;
                 height: 2px;
-                background-color: #333;
+                background-color: #ffffff;
                 transition: all 0.3s ease;
                 border-radius: 2px;
             }
