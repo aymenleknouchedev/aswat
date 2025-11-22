@@ -417,6 +417,7 @@
                 @php $topcontentslist = min(5, $topContents->count()); @endphp
                 <div class="mobile-h-wrapper">
                     <div class="section-fixed-ui">
+                        <div class="featured-post-section-badge">أهم الأخبار</div>
                         <div class="h-indicators" role="tablist" aria-label="slides">
                             @for ($i = 0; $i < $topcontentslist; $i++)
                                 <span class="h-indicator @if ($i === 0) active @endif"
