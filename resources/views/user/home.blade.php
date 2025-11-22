@@ -498,13 +498,13 @@
                                             @php
                                                 $firstWriter = $content->writers()->first();
                                             @endphp
-                                            @if ($firstWriter)
-                                                <div class="featured-post-author">
-                                                    <img class="author-avatar" src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}" alt="{{ $firstWriter->name ?? '' }}">
-                                                    <span class="author-name">{{ $firstWriter->name }}</span>
-                                                </div>
-                                            @endif
-                                            <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
+                                            <div class="opinion-center">
+                                                @if ($firstWriter)
+                                                    <img class="opinion-avatar" src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}" alt="{{ $firstWriter->name ?? '' }}">
+                                                    <span class="opinion-author">{{ $firstWriter->name }}</span>
+                                                @endif
+                                                <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
+                                            </div>
                                         </div>
                                     </a>
                                 @endforeach
@@ -841,6 +841,39 @@
                 color: #ffffff;
                 letter-spacing: 0.5px;
                 font-family: 'asswat-bold';
+            }
+
+            /* Centered opinion layout (آراء) */
+            .opinion-center {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin: 0 0 20px 0;
+            }
+            .opinion-avatar {
+                width: 110px;
+                height: 110px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 3px solid rgba(255,255,255,0.85);
+                margin-bottom: 12px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+            }
+            .opinion-author {
+                font-size: 22px;
+                color: #fff;
+                font-family: 'asswat-bold';
+                margin-bottom: 10px;
+            }
+            .opinion-title {
+                margin: 0;
+                font-size: 30px;
+                font-weight: 900;
+                line-height: 1.35;
+                color: #fff;
+                font-family: 'asswat-bold';
+                max-width: 90%;
             }
 
             /* Featured Post Meta */
