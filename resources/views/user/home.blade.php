@@ -545,7 +545,7 @@
             .most-reads-screen {
                 width: 100%;
                 height: 100dvh;
-                background: #f2f2f2; /* grey background */
+                background: #252525; /* grey background */
                 color: #000;
                 display: flex;
                 align-items: center;
@@ -579,7 +579,7 @@
             }
             .mr-title {
                 display: inline-block;
-                color: #000;
+                color: #fff;
                 text-decoration: none;
                 font-size: 20px;
                 font-weight: 800;
