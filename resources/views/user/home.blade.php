@@ -496,8 +496,8 @@
                                         <div class="post-overlay-dark"></div>
                                         <div class="featured-post-content">
                                             <div class="featured-post-author">
-                                                <img class="author-avatar" src="{{ asset($content->writer->image ?? 'user/assets/images/default-post.jpg') }}" alt="{{ $content->writer->name ?? '' }}">
-                                                <span class="author-name">{{ $content->writer->name ?? '' }}</span>
+                                                <img class="author-avatar" src="{{ asset($content->writer?->image ?? 'user/assets/images/default-post.jpg') }}" alt="{{ $content->writer?->name ?? '' }}">
+                                                <span class="author-name">{{ $content->writer?->name ?? '' }}</span>
                                             </div>
                                             <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
                                         </div>
@@ -799,6 +799,30 @@
                 -webkit-box-orient: vertical;
                 font-family: 'asswat-regular';
 
+            }
+
+            /* Author block (آراء) */
+            .featured-post-author {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                margin: 0 0 14px 0;
+            }
+
+            .featured-post-author .author-avatar {
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid rgba(255, 255, 255, 0.85);
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .featured-post-author .author-name {
+                font-size: 20px;
+                color: #ffffff;
+                letter-spacing: 0.5px;
+                font-family: 'asswat-bold';
             }
 
             /* Featured Post Meta */
