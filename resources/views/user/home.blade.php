@@ -467,7 +467,7 @@
             /* Featured Post Content */
             .featured-post-content {
                 position: absolute; /* pin block to bottom area */
-                bottom: 80px; /* keep 80px empty space at the bottom of the page */
+                bottom: 120px; /* keep 80px empty space at the bottom of the page */
                 left: 0;
                 right: 0;
                 z-index: 2;
