@@ -571,7 +571,7 @@
 
             .most-reads-item {
                 display: flex;
-                align-items: flex-start;
+                align-items: center;
                 gap: 21px; /* spacing between number and title */
                 padding: 18px 0; /* consistent vertical rhythm */
             }
