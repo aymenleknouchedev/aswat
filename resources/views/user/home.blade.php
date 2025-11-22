@@ -339,20 +339,34 @@
     </div>
 
     <div class="mobile">
+        @include('user.mobile.mobile-home')
+
         <!-- Full Screen Post with Background Image -->
-        <div class="mobile-featured-post" style="background-image: url('{{ asset($principalTrend->trend->image ?? 'user/assets/images/default-post.jpg') }}');">
+        <div class="mobile-featured-post"
+            style="background-image: url('{{ asset($principalTrend->trend->image ?? 'user/assets/images/default-post.jpg') }}');">
             <!-- Overlay -->
             <div class="post-overlay-dark"></div>
-            
+
             <!-- Post Content -->
             <div class="featured-post-content">
                 <h1 class="featured-post-title">{{ $principalTrend->trend->title ?? 'اخبار رئيسية' }}</h1>
                 <p class="featured-post-description">{{ $principalTrend->trend->description ?? '' }}</p>
-            </div>           
+            </div>
         </div>
-        
-        @include('user.mobile.mobile-home')
-       
+        <!-- Full Screen Post with Background Image -->
+        <div class="mobile-featured-post"
+            style="background-image: url('{{ asset($principalTrend->trend->image ?? 'user/assets/images/default-post.jpg') }}');">
+            <!-- Overlay -->
+            <div class="post-overlay-dark"></div>
+
+            <!-- Post Content -->
+            <div class="featured-post-content">
+                <h1 class="featured-post-title">{{ $principalTrend->trend->title ?? 'اخبار رئيسية' }}</h1>
+                <p class="featured-post-description">{{ $principalTrend->trend->description ?? '' }}</p>
+            </div>
+        </div>
+
+
     </div>
 
 
@@ -367,6 +381,7 @@
             .web {
                 display: none !important;
             }
+
             .mobile {
                 display: block !important;
                 margin: 0;
@@ -457,17 +472,123 @@
                 font-size: 12px;
                 color: #999;
             }
+
+            /* Scroll Snap for Instagram Reels style */
+            html {
+                scroll-behavior: smooth;
+            }
+
+            .mobile {
+                scroll-snap-type: y mandatory;
+                overflow-y: scroll;
+            }
+
+            .mobile-featured-post {
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+            }
+
+            .mobile-container {
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+            }
         }
+
         @media (min-width: 992px) {
             .web {
                 display: block !important;
             }
+
             .mobile {
                 display: none !important;
             }
         }
     </style>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Only enable on mobile
+            if (window.innerWidth <= 991) {
+                let isScrolling = false;
+                let lastScrollTime = 0;
+                const scrollDelay = 600; // milliseconds between scrolls
 
+                window.addEventListener('wheel', function(e) {
+                    if (window.innerWidth > 991) return;
 
-@endsection
+                    const now = Date.now();
+                    
+                    // Check if enough time has passed since last scroll
+                    if (isScrolling || (now - lastScrollTime) < scrollDelay) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    isScrolling = true;
+                    lastScrollTime = now;
+
+                    const viewportHeight = window.innerHeight;
+                    const scrollAmount = viewportHeight;
+                    const currentScroll = window.scrollY;
+
+                    if (e.deltaY > 0) {
+                        // Scroll down by one viewport height
+                        window.scrollBy({
+                            top: scrollAmount,
+                            behavior: 'smooth'
+                        });
+                    } else {
+                        // Scroll up by one viewport height
+                        window.scrollBy({
+                            top: -scrollAmount,
+                            behavior: 'smooth'
+                        });
+                    }
+
+                    setTimeout(() => {
+                        isScrolling = false;
+                    }, scrollDelay);
+                }, { passive: false });
+
+                // Handle touch swipe for mobile
+                let touchStartY = 0;
+                let touchEndY = 0;
+
+                window.addEventListener('touchstart', function(e) {
+                    touchStartY = e.changedTouches[0].screenY;
+                }, false);
+
+                window.addEventListener('touchend', function(e) {
+                    touchEndY = e.changedTouches[0].screenY;
+                    const now = Date.now();
+                    
+                    if (isScrolling || (now - lastScrollTime) < scrollDelay) {
+                        return;
+                    }
+
+                    isScrolling = true;
+                    lastScrollTime = now;
+
+                    const viewportHeight = window.innerHeight;
+                    
+                    if (touchStartY - touchEndY > 50) {
+                        // Swipe up - scroll down
+                        window.scrollBy({
+                            top: viewportHeight,
+                            behavior: 'smooth'
+                        });
+                    } else if (touchEndY - touchStartY > 50) {
+                        // Swipe down - scroll up
+                        window.scrollBy({
+                            top: -viewportHeight,
+                            behavior: 'smooth'
+                        });
+                    }
+
+                    setTimeout(() => {
+                        isScrolling = false;
+                    }, scrollDelay);
+                }, false);
+            }
+        });
+    </script>
