@@ -563,17 +563,17 @@
                 max-width: 820px;
                 display: flex;
                 flex-direction: column;
-                gap: 53px;
+                gap: 0; /* use padding + borders on items for consistent spacing */
             }
 
             .most-reads-item {
                 display: flex;
                 align-items: flex-start;
-                gap: 21px;
+                gap: 21px; /* spacing between number and title */
+                padding: 16px 0; /* consistent vertical rhythm */
             }
-            .most-reads-item:not(:last-child) {
-                border-bottom: 1px solid rgba(255, 255, 255, 0.18); /* grey divider between items */
-                padding-bottom: 12px;
+            .most-reads-item + .most-reads-item {
+                border-top: 1px solid rgba(255, 255, 255, 0.18); /* single divider between items */
             }
 
             .mr-index {
