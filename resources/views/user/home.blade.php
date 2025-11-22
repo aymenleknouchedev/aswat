@@ -473,24 +473,39 @@
                 color: #999;
             }
 
-            /* Scroll Snap for Instagram Reels style */
-            html {
-                scroll-behavior: smooth;
+            /* Professional CSS Scroll Snap - Instagram Reels Style */
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
             }
 
             .mobile {
-                scroll-snap-type: y mandatory;
+                height: 100vh;
                 overflow-y: scroll;
+                scroll-behavior: smooth;
+                scroll-snap-type: y mandatory;
+                scroll-padding-top: 0;
+                -webkit-overflow-scrolling: touch;
             }
 
             .mobile-featured-post {
+                height: 100vh;
+                width: 100%;
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
+                flex-shrink: 0;
             }
 
             .mobile-container {
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
+            }
+
+            /* Disable momentum scrolling interruption */
+            body {
+                -webkit-user-select: none;
+                user-select: none;
             }
         }
 
@@ -507,118 +522,63 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Only enable on mobile
             if (window.innerWidth <= 991) {
-                let isScrolling = false;
-                let touchStartY = 0;
-                let touchStartTime = 0;
-                let scrollTimeout;
-                const scrollThreshold = 50;
-                const scrollDuration = 800;
+                let lastWheelTime = 0;
+                const wheelDelay = 1000;
+                let isPreventingScroll = false;
 
-                function snapToNearestSection() {
-                    const viewportHeight = window.innerHeight;
-                    const currentScroll = window.scrollY;
-                    const currentSection = Math.round(currentScroll / viewportHeight);
-                    const targetScroll = currentSection * viewportHeight;
-
-                    if (Math.abs(targetScroll - currentScroll) > 1) {
-                        window.scrollTo({
-                            top: targetScroll,
-                            behavior: 'smooth'
-                        });
+                // Prevent rapid wheel events
+                window.addEventListener('wheel', function(e) {
+                    const now = Date.now();
+                    
+                    if (now - lastWheelTime < wheelDelay) {
+                        e.preventDefault();
+                        return;
                     }
-                }
+                    
+                    lastWheelTime = now;
+                }, { passive: false });
 
-                // Prevent scroll snapping while user is scrolling
-                let userScrolling = false;
+                // Intercept touchmove to ensure smooth native scroll
+                let touchStartY = 0;
+                let lastTouchTime = 0;
+                const touchDelay = 1000;
 
-                window.addEventListener('scroll', function() {
-                    userScrolling = true;
-                    clearTimeout(scrollTimeout);
-
-                    // After scroll stops for 100ms, snap to nearest section
-                    scrollTimeout = setTimeout(() => {
-                        userScrolling = false;
-                        if (!isScrolling) {
-                            snapToNearestSection();
-                        }
-                    }, 1);
+                document.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                    lastTouchTime = Date.now();
                 }, { passive: true });
 
-                // Wheel event for desktop/trackpad
-                window.addEventListener('wheel', function(e) {
-                    if (window.innerWidth > 991 || isScrolling) return;
+                document.addEventListener('touchmove', function(e) {
+                    const now = Date.now();
+                    const touchCurrentY = e.touches[0].clientY;
+                    const distance = Math.abs(touchCurrentY - touchStartY);
 
-                    const absDelta = Math.abs(e.deltaY);
-
-                    // Only trigger on significant scroll (> threshold)
-                    if (absDelta > scrollThreshold) {
+                    // Prevent small unintended scrolls
+                    if (distance < 20 && (now - lastTouchTime) < 100) {
                         e.preventDefault();
-                        isScrolling = true;
-
-                        const viewportHeight = window.innerHeight;
-                        const currentScroll = window.scrollY;
-                        let targetScroll;
-
-                        if (e.deltaY > 0) {
-                            // Scroll down
-                            targetScroll = currentScroll + viewportHeight;
-                        } else {
-                            // Scroll up
-                            targetScroll = Math.max(0, currentScroll - viewportHeight);
-                        }
-
-                        window.scrollTo({
-                            top: targetScroll,
-                            behavior: 'smooth'
-                        });
-
-                        setTimeout(() => {
-                            isScrolling = false;
-                        }, scrollDuration);
                     }
                 }, { passive: false });
 
-                // Touch swipe for mobile
-                window.addEventListener('touchstart', function(e) {
-                    if (window.innerWidth > 991) return;
-                    touchStartY = e.touches[0].clientY;
-                    touchStartTime = Date.now();
-                }, { passive: true });
-
-                window.addEventListener('touchend', function(e) {
-                    if (window.innerWidth > 991) return;
-
-                    const touchEndY = e.changedTouches[0].clientY;
-                    const touchTime = Date.now() - touchStartTime;
-                    const swipeDistance = touchStartY - touchEndY;
-
-                    // Only trigger on meaningful swipes
-                    if (Math.abs(swipeDistance) > scrollThreshold && touchTime < 600 && !isScrolling) {
-                        isScrolling = true;
-
+                // Smooth snapping on scroll end
+                let scrollTimeout;
+                window.addEventListener('scroll', function() {
+                    clearTimeout(scrollTimeout);
+                    
+                    scrollTimeout = setTimeout(function() {
+                        const scrollTop = window.scrollY;
                         const viewportHeight = window.innerHeight;
-                        const currentScroll = window.scrollY;
-                        let targetScroll;
+                        const currentSection = Math.round(scrollTop / viewportHeight);
+                        const targetScroll = currentSection * viewportHeight;
 
-                        if (swipeDistance > scrollThreshold) {
-                            // Swipe up - scroll down
-                            targetScroll = currentScroll + viewportHeight;
-                        } else if (swipeDistance < -scrollThreshold) {
-                            // Swipe down - scroll up
-                            targetScroll = Math.max(0, currentScroll - viewportHeight);
+                        if (Math.abs(scrollTop - targetScroll) > 2) {
+                            window.scrollTo({
+                                top: targetScroll,
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
                         }
-
-                        window.scrollTo({
-                            top: targetScroll,
-                            behavior: 'smooth'
-                        });
-
-                        setTimeout(() => {
-                            isScrolling = false;
-                        }, scrollDuration);
-                    }
+                    }, 150);
                 }, { passive: true });
             }
         });
