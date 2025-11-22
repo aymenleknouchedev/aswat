@@ -341,40 +341,43 @@
     <div class="mobile">
         @include('user.mobile.mobile-home')
 
-        <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
-        <div class="mobile-h-wrapper">
-            <div class="h-snap" dir="rtl">
-                @for ($i = 1; $i <= 5; $i++)
-                    <a href="#"
-                       class="h-snap-slide mobile-featured-post"
-                       style="background-image: url('https://blog.govnet.co.uk/hs-fs/hubfs/shutterstock_2055335264.jpg?width=8088&height=4000&name=shutterstock_2055335264.jpg');"
-                       aria-disabled="true" onclick="return false;">
-                        <div class="post-overlay-dark"></div>
-                        <div class="featured-post-content">
-                            <p class="featured-post-category-name">تصنيف</p>
-                            <h1 class="featured-post-title">عنوان تجريبي {{ $i }}</h1>
-                            <p class="featured-post-description">وصف تجريبي مختصر لهذا المنشور لعرض النص أسفل الصورة.</p>
-                        </div>
-                    </a>
-                @endfor
+        <!-- Vertical snap container for mobile sections -->
+        <div class="mobile-snap">
+            <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
+            <div class="mobile-h-wrapper">
+                <div class="h-snap" dir="rtl">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <a href="#"
+                           class="h-snap-slide mobile-featured-post"
+                           style="background-image: url('https://blog.govnet.co.uk/hs-fs/hubfs/shutterstock_2055335264.jpg?width=8088&height=4000&name=shutterstock_2055335264.jpg');"
+                           aria-disabled="true" onclick="return false;">
+                            <div class="post-overlay-dark"></div>
+                            <div class="featured-post-content">
+                                <p class="featured-post-category-name">تصنيف</p>
+                                <h1 class="featured-post-title">عنوان تجريبي {{ $i }}</h1>
+                                <p class="featured-post-description">وصف تجريبي مختصر لهذا المنشور لعرض النص أسفل الصورة.</p>
+                            </div>
+                        </a>
+                    @endfor
+                </div>
             </div>
-        </div>
-        <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
-        <div class="mobile-h-wrapper">
-            <div class="h-snap" dir="rtl">
-                @for ($i = 1; $i <= 5; $i++)
-                    <a href="#"
-                       class="h-snap-slide mobile-featured-post"
-                       style="background-image: url('https://blog.govnet.co.uk/hs-fs/hubfs/shutterstock_2055335264.jpg?width=8088&height=4000&name=shutterstock_2055335264.jpg');"
-                       aria-disabled="true" onclick="return false;">
-                        <div class="post-overlay-dark"></div>
-                        <div class="featured-post-content">
-                            <p class="featured-post-category-name">تصنيف</p>
-                            <h1 class="featured-post-title">عنوان تجريبي {{ $i }}</h1>
-                            <p class="featured-post-description">وصف تجريبي مختصر لهذا المنشور لعرض النص أسفل الصورة.</p>
-                        </div>
-                    </a>
-                @endfor
+            <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
+            <div class="mobile-h-wrapper">
+                <div class="h-snap" dir="rtl">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <a href="#"
+                           class="h-snap-slide mobile-featured-post"
+                           style="background-image: url('https://blog.govnet.co.uk/hs-fs/hubfs/shutterstock_2055335264.jpg?width=8088&height=4000&name=shutterstock_2055335264.jpg');"
+                           aria-disabled="true" onclick="return false;">
+                            <div class="post-overlay-dark"></div>
+                            <div class="featured-post-content">
+                                <p class="featured-post-category-name">تصنيف</p>
+                                <h1 class="featured-post-title">عنوان تجريبي {{ $i }}</h1>
+                                <p class="featured-post-description">وصف تجريبي مختصر لهذا المنشور لعرض النص أسفل الصورة.</p>
+                            </div>
+                        </a>
+                    @endfor
+                </div>
             </div>
         </div>
 
@@ -541,13 +544,14 @@
                 padding: 0;
             }
 
-            .mobile {
+            /* Vertical snap scroller container */
+            .mobile-snap {
                 height: 100dvh;
-                overflow-y: scroll;
+                overflow-y: auto;
                 scroll-behavior: smooth;
                 scroll-snap-type: y mandatory;
                 scroll-padding-top: 0;
-                -webkit-overflow-scrolling: touch;
+                -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
             }
 
             .mobile-featured-post {
@@ -581,74 +585,4 @@
         }
     </style>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if (window.innerWidth <= 991) {
-                let lastWheelTime = 0;
-                const wheelDelay = 1000;
-                let isPreventingScroll = false;
-
-                // Prevent rapid wheel events
-                window.addEventListener('wheel', function(e) {
-                    const now = Date.now();
-
-                    if (now - lastWheelTime < wheelDelay) {
-                        e.preventDefault();
-                        return;
-                    }
-
-                    lastWheelTime = now;
-                }, {
-                    passive: false
-                });
-
-                // Intercept touchmove to ensure smooth native scroll
-                let touchStartY = 0;
-                let lastTouchTime = 0;
-                const touchDelay = 1000;
-
-                document.addEventListener('touchstart', function(e) {
-                    touchStartY = e.touches[0].clientY;
-                    lastTouchTime = Date.now();
-                }, {
-                    passive: true
-                });
-
-                document.addEventListener('touchmove', function(e) {
-                    const now = Date.now();
-                    const touchCurrentY = e.touches[0].clientY;
-                    const distance = Math.abs(touchCurrentY - touchStartY);
-
-                    // Prevent small unintended scrolls
-                    if (distance < 20 && (now - lastTouchTime) < 100) {
-                        e.preventDefault();
-                    }
-                }, {
-                    passive: false
-                });
-
-                // Smooth snapping on scroll end
-                let scrollTimeout;
-                window.addEventListener('scroll', function() {
-                    clearTimeout(scrollTimeout);
-
-                    scrollTimeout = setTimeout(function() {
-                        const scrollTop = window.scrollY;
-                        const viewportHeight = window.innerHeight;
-                        const currentSection = Math.round(scrollTop / viewportHeight);
-                        const targetScroll = currentSection * viewportHeight;
-
-                        if (Math.abs(scrollTop - targetScroll) > 2) {
-                            window.scrollTo({
-                                top: targetScroll,
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-                        }
-                    }, 150);
-                }, {
-                    passive: true
-                });
-            }
-        });
-    </script>
+    
