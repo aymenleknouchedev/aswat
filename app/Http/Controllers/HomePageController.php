@@ -102,8 +102,41 @@ class HomePageController extends Controller
             ->take(5)
             ->get();
 
-        return view('user.home', compact('topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant', 'principalTrend', 'trends'));
+
+        $sectionstitles = [
+            'الجزائر',
+            'عالم',
+            'اقتصاد',
+            'رياضة',
+            'ناس',
+            'ثقافة وفنون',
+            'آراء',
+            'فيديو',
+            'ملفات',
+            'تكنولوجيا',
+            'صحة',
+            'بيئة',
+            'ميديا',
+            'فحص',
+            'بودكاست',
+            'منوعات',
+            'صور',
+        ];
+
+        $sectionscontents = [];
+        foreach ($sectionstitles as $name) {
+            $sectionId = Section::where('name', $name)->value('id');
+            $sectionscontents[$name] = Content::where('section_id', $sectionId)
+                ->latest()
+                ->take(5)
+                ->get();
+        }
+
+        return view('user.home', compact('sectionscontents','topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant', 'principalTrend', 'trends'));
     }
+
+    public function allSections() {}
+
 
     public function latestNews()
     {
@@ -686,6 +719,4 @@ class HomePageController extends Controller
     {
         return view('user.list');
     }
-
-    
 }

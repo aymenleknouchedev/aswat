@@ -389,78 +389,26 @@
 
         <!-- Vertical snap container for mobile sections -->
         <div class="mobile-snap">
-            <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
-            <div class="mobile-h-wrapper">
-                <div class="h-snap" dir="rtl">
-                    @for ($i = 1; $i <= 5; $i++)
-                        <a href="#"
-                           class="h-snap-slide mobile-featured-post"
-                           style="background-image: url('https://blog.govnet.co.uk/hs-fs/hubfs/shutterstock_2055335264.jpg?width=8088&height=4000&name=shutterstock_2055335264.jpg');"
-                           aria-disabled="true" onclick="return false;">
-                            <div class="post-overlay-dark"></div>
-                            <div class="featured-post-content">
-                                <p class="featured-post-category-name">تصنيف</p>
-                                <h1 class="featured-post-title">عنوان تجريبي {{ $i }}</h1>
-                                <p class="featured-post-description">وصف تجريبي مختصر لهذا المنشور لعرض النص أسفل الصورة.</p>
-                            </div>
-                        </a>
-                    @endfor
-                </div>
-            </div>
-            <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
-            <div class="mobile-h-wrapper">
-                <div class="h-snap" dir="rtl">
-                    @for ($i = 1; $i <= 5; $i++)
-                        <a href="#"
-                           class="h-snap-slide mobile-featured-post"
-                           style="background-image: url('https://blog.govnet.co.uk/hs-fs/hubfs/shutterstock_2055335264.jpg?width=8088&height=4000&name=shutterstock_2055335264.jpg');"
-                           aria-disabled="true" onclick="return false;">
-                            <div class="post-overlay-dark"></div>
-                            <div class="featured-post-content">
-                                <p class="featured-post-category-name">تصنيف</p>
-                                <h1 class="featured-post-title">عنوان تجريبي {{ $i }}</h1>
-                                <p class="featured-post-description">وصف تجريبي مختصر لهذا المنشور لعرض النص أسفل الصورة.</p>
-                            </div>
-                        </a>
-                    @endfor
-                </div>
-            </div>
-            <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
-            <div class="mobile-h-wrapper">
-                <div class="h-snap" dir="rtl">
-                    @for ($i = 1; $i <= 5; $i++)
-                        <a href="#"
-                           class="h-snap-slide mobile-featured-post"
-                           style="background-image: url('https://blog.govnet.co.uk/hs-fs/hubfs/shutterstock_2055335264.jpg?width=8088&height=4000&name=shutterstock_2055335264.jpg');"
-                           aria-disabled="true" onclick="return false;">
-                            <div class="post-overlay-dark"></div>
-                            <div class="featured-post-content">
-                                <p class="featured-post-category-name">تصنيف</p>
-                                <h1 class="featured-post-title">عنوان تجريبي {{ $i }}</h1>
-                                <p class="featured-post-description">وصف تجريبي مختصر لهذا المنشور لعرض النص أسفل الصورة.</p>
-                            </div>
-                        </a>
-                    @endfor
-                </div>
-            </div>
-            <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
-            <div class="mobile-h-wrapper">
-                <div class="h-snap" dir="rtl">
-                    @for ($i = 1; $i <= 5; $i++)
-                        <a href="#"
-                           class="h-snap-slide mobile-featured-post"
-                           style="background-image: url('https://blog.govnet.co.uk/hs-fs/hubfs/shutterstock_2055335264.jpg?width=8088&height=4000&name=shutterstock_2055335264.jpg');"
-                           aria-disabled="true" onclick="return false;">
-                            <div class="post-overlay-dark"></div>
-                            <div class="featured-post-content">
-                                <p class="featured-post-category-name">تصنيف</p>
-                                <h1 class="featured-post-title">عنوان تجريبي {{ $i }}</h1>
-                                <p class="featured-post-description">وصف تجريبي مختصر لهذا المنشور لعرض النص أسفل الصورة.</p>
-                            </div>
-                        </a>
-                    @endfor
-                </div>
-            </div>
+            @foreach (($sectionscontents ?? []) as $sectionTitle => $collection)
+                @if ($collection && $collection->count())
+                    <div class="mobile-h-wrapper">
+                        <div class="h-snap" dir="rtl">
+                            @foreach ($collection->take(5) as $content)
+                                <a href="{{ route('news.show', $content->title) }}"
+                                   class="h-snap-slide mobile-featured-post"
+                                   style="background-image: url('{{ $content->media()->wherePivot('type','main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                    <div class="post-overlay-dark"></div>
+                                    <div class="featured-post-content">
+                                        <p class="featured-post-category-name">{{ $sectionTitle }}</p>
+                                        <h1 class="featured-post-title">{{ $content->title }}</h1>
+                                        <p class="featured-post-description">{{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? $content->description ?? ''), 120) }}</p>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            @endforeach
         </div>
 
 
