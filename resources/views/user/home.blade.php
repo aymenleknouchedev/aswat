@@ -418,7 +418,9 @@
                             <div class="featured-post-section-badge">{{ $sectionTitle }}</div>
                             <div class="h-indicators" role="tablist" aria-label="slides">
                                 @for ($i = 0; $i < $slideCount; $i++)
-                                    <span class="h-indicator @if($i===0) active @endif" aria-label="{{ $i+1 }}" aria-current="@if($i===0) true @else false @endif"></span>
+                                    <span class="h-indicator @if ($i === 0) active @endif"
+                                        aria-label="{{ $i + 1 }}"
+                                        aria-current="@if ($i === 0) true @else false @endif"></span>
                                 @endfor
                             </div>
                         </div>
@@ -429,7 +431,8 @@
                                     style="background-image: url('{{ $content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content">
-                                        <p class="featured-post-category-name">{{ $content->category->name ?? $sectionTitle }}</p>
+                                        <p class="featured-post-category-name">
+                                            {{ $content->category->name ?? $sectionTitle }}</p>
                                         <h1 class="featured-post-title">{{ $content->title }}</h1>
                                         <p class="featured-post-description">
                                             {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 120) }}
@@ -486,7 +489,8 @@
                 height: 100vh;
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
-                position: relative; /* to anchor fixed badge within wrapper */
+                position: relative;
+                /* to anchor fixed badge within wrapper */
             }
 
             /* Horizontal snap track */
@@ -537,7 +541,8 @@
             .featured-post-section-badge {
                 position: absolute;
                 top: 90px;
-                right: 16px; /* RTL alignment */
+                right: 16px;
+                /* RTL alignment */
                 z-index: 2;
                 background: #fff;
                 color: #000;
@@ -549,6 +554,7 @@
                 display: inline-block;
                 text-align: center;
             }
+
             /* Fixed UI container holding badge + vertical indicators */
             .section-fixed-ui {
                 position: absolute;
@@ -559,23 +565,32 @@
                 align-items: stretch;
                 gap: 8px;
             }
+
             /* When badge is inside the fixed UI, make it flow-static to allow indicators sized to its height */
             .section-fixed-ui .featured-post-section-badge {
                 position: static;
             }
+
             .h-indicators {
                 display: flex;
-                flex-direction: row; /* horizontal array */
-                align-items: stretch; /* match badge height */
+                flex-direction: row;
+                /* horizontal array */
+                align-items: stretch;
+                /* match badge height */
                 justify-content: flex-start;
-                gap: 5px; /* spacing between vertical lines */
+                gap: 5px;
+                /* spacing between vertical lines */
             }
+
             .h-indicator {
-                width: 4px; /* thin vertical line */
-                height: 100%; /* same height as badge */
+                width: 4px;
+                /* thin vertical line */
+                height: 100%;
+                /* same height as badge */
                 background: rgba(255, 255, 255, 0.262);
                 border-radius: 2px;
             }
+
             .h-indicator.active {
                 background: #ffffff;
             }
@@ -622,6 +637,8 @@
                 display: -webkit-box;
                 -webkit-line-clamp: 3;
                 -webkit-box-orient: vertical;
+                font-family: 'asswat-regular';
+
             }
 
             /* Featured Post Meta */
@@ -757,7 +774,9 @@
                         syncIndexToNearest(st);
                         updateIndicators(st);
                     }, 120);
-                }, { passive: true });
+                }, {
+                    passive: true
+                });
             });
 
             function schedule(st, delay) {
@@ -792,10 +811,14 @@
 
             function syncIndexToNearest(st) {
                 const currentLeft = st.track.scrollLeft;
-                let nearest = st.index, minDist = Infinity;
+                let nearest = st.index,
+                    minDist = Infinity;
                 st.slides.forEach((s, i) => {
                     const d = Math.abs(s.offsetLeft - currentLeft);
-                    if (d < minDist) { minDist = d; nearest = i; }
+                    if (d < minDist) {
+                        minDist = d;
+                        nearest = i;
+                    }
                 });
                 st.index = nearest;
             }
@@ -814,7 +837,10 @@
                 const next = (st.index + 1) % st.slides.length;
                 st.index = next;
                 const target = st.slides[next];
-                if (target) st.track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+                if (target) st.track.scrollTo({
+                    left: target.offsetLeft,
+                    behavior: 'smooth'
+                });
                 updateIndicators(st);
             }
 
