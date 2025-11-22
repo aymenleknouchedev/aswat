@@ -481,7 +481,7 @@
             }
 
             .mobile {
-                height: 100vh;
+                height: 100dvh;
                 overflow-y: scroll;
                 scroll-behavior: smooth;
                 scroll-snap-type: y mandatory;
