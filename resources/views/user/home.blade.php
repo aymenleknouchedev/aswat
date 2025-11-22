@@ -495,8 +495,10 @@
                                         style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
                                         <div class="post-overlay-dark"></div>
                                         <div class="featured-post-content">
-                                            @php($firstWriter = $content->writers()->first())
-                                            @if($firstWriter)
+                                            @php
+                                                $firstWriter = $content->writers()->first();
+                                            @endphp
+                                            @if ($firstWriter)
                                                 <div class="featured-post-author">
                                                     <img class="author-avatar" src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}" alt="{{ $firstWriter->name ?? '' }}">
                                                     <span class="author-name">{{ $firstWriter->name }}</span>
