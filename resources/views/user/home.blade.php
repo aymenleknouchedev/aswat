@@ -512,21 +512,25 @@
                 let isScrolling = false;
                 let touchStartY = 0;
                 let touchStartTime = 0;
+                const scrollThreshold = 50; // minimum swipe/scroll distance to trigger
+                const scrollDuration = 800;
 
-                function snapToSection() {
+                function snapToNearestSection() {
                     const viewportHeight = window.innerHeight;
                     const currentScroll = window.scrollY;
                     const currentSection = Math.round(currentScroll / viewportHeight);
                     const targetScroll = currentSection * viewportHeight;
 
-                    window.scrollTo({
-                        top: targetScroll,
-                        behavior: 'smooth'
-                    });
+                    if (Math.abs(targetScroll - currentScroll) > 1) {
+                        window.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
+                    }
 
                     setTimeout(() => {
                         isScrolling = false;
-                    }, 800);
+                    }, scrollDuration);
                 }
 
                 // Wheel event for desktop/trackpad
@@ -534,28 +538,38 @@
                     if (window.innerWidth > 991 || isScrolling) return;
 
                     e.preventDefault();
-                    isScrolling = true;
-
+                    
                     const viewportHeight = window.innerHeight;
                     const currentScroll = window.scrollY;
                     let targetScroll;
 
-                    if (e.deltaY > 0) {
-                        // Scroll down
+                    if (e.deltaY > scrollThreshold) {
+                        // Scroll down intentionally
+                        isScrolling = true;
                         targetScroll = currentScroll + viewportHeight;
-                    } else {
-                        // Scroll up
+                        
+                        window.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
+
+                        setTimeout(() => {
+                            isScrolling = false;
+                        }, scrollDuration);
+                    } else if (e.deltaY < -scrollThreshold) {
+                        // Scroll up intentionally
+                        isScrolling = true;
                         targetScroll = Math.max(0, currentScroll - viewportHeight);
+                        
+                        window.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
+
+                        setTimeout(() => {
+                            isScrolling = false;
+                        }, scrollDuration);
                     }
-
-                    window.scrollTo({
-                        top: targetScroll,
-                        behavior: 'smooth'
-                    });
-
-                    setTimeout(() => {
-                        isScrolling = false;
-                    }, 800);
                 }, { passive: false });
 
                 // Touch swipe for mobile
@@ -566,25 +580,25 @@
                 }, { passive: true });
 
                 window.addEventListener('touchend', function(e) {
-                    if (window.innerWidth > 991 || isScrolling) return;
+                    if (window.innerWidth > 991) return;
 
                     const touchEndY = e.changedTouches[0].clientY;
                     const touchTime = Date.now() - touchStartTime;
                     const swipeDistance = touchStartY - touchEndY;
-                    const minSwipeDistance = 30;
 
-                    // Quick swipe or significant distance
-                    if (touchTime < 500 && Math.abs(swipeDistance) > minSwipeDistance) {
+                    // Only trigger on meaningful swipes (more than threshold, quick action)
+                    if (Math.abs(swipeDistance) > scrollThreshold && touchTime < 600) {
+                        if (isScrolling) return;
                         isScrolling = true;
 
                         const viewportHeight = window.innerHeight;
                         const currentScroll = window.scrollY;
                         let targetScroll;
 
-                        if (swipeDistance > 0) {
+                        if (swipeDistance > scrollThreshold) {
                             // Swipe up - scroll down
                             targetScroll = currentScroll + viewportHeight;
-                        } else {
+                        } else if (swipeDistance < -scrollThreshold) {
                             // Swipe down - scroll up
                             targetScroll = Math.max(0, currentScroll - viewportHeight);
                         }
@@ -596,8 +610,22 @@
 
                         setTimeout(() => {
                             isScrolling = false;
-                        }, 800);
+                        }, scrollDuration);
+                    } else if (!isScrolling && Math.abs(swipeDistance) < scrollThreshold && touchTime > 300) {
+                        // Small accidental swipe/scroll - snap to nearest section
+                        snapToNearestSection();
                     }
+                }, { passive: true });
+
+                // Snap to section on scroll end
+                let scrollTimeout;
+                window.addEventListener('scroll', function() {
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                        if (!isScrolling) {
+                            snapToNearestSection();
+                        }
+                    }, 300);
                 }, { passive: true });
             }
         });
