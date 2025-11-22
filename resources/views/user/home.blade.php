@@ -447,6 +447,7 @@
                         @endforeach
                     </div>
                 </div>
+
             @endif
 
 
@@ -471,42 +472,46 @@
                 </div>
             @endif
 
-
             {{-- sections --}}
             @foreach ($sectionscontents ?? [] as $sectionTitle => $collection)
-                @if ($collection && $collection->count())
-                    @php $slideCount = min(5, $collection->count()); @endphp
-                    <div class="mobile-h-wrapper">
-                        <div class="section-fixed-ui">
-                            <div class="featured-post-section-badge">{{ $sectionTitle }}</div>
-                            <div class="h-indicators" role="tablist" aria-label="slides">
-                                @for ($i = 0; $i < $slideCount; $i++)
-                                    <span class="h-indicator @if ($i === 0) active @endif"
-                                        aria-label="{{ $i + 1 }}"
-                                        aria-current="@if ($i === 0) true @else false @endif"></span>
-                                @endfor
+                @if ($sectionTitle == 'آراء')
+                    <h1>Reviews</h1>
+                @else
+                    @if ($collection && $collection->count())
+                        @php $slideCount = min(5, $collection->count()); @endphp
+                        <div class="mobile-h-wrapper">
+                            <div class="section-fixed-ui">
+                                <div class="featured-post-section-badge">{{ $sectionTitle }}</div>
+                                <div class="h-indicators" role="tablist" aria-label="slides">
+                                    @for ($i = 0; $i < $slideCount; $i++)
+                                        <span class="h-indicator @if ($i === 0) active @endif"
+                                            aria-label="{{ $i + 1 }}"
+                                            aria-current="@if ($i === 0) true @else false @endif"></span>
+                                    @endfor
+                                </div>
+                            </div>
+                            <div class="h-snap" dir="rtl">
+                                @foreach ($collection->take(5) as $content)
+                                    <a href="{{ route('news.show', $content->title) }}"
+                                        class="h-snap-slide mobile-featured-post"
+                                        style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                        <div class="post-overlay-dark"></div>
+                                        <div class="featured-post-content">
+                                            <p class="featured-post-category-name">
+                                                {{ $content->category->name ?? $sectionTitle }}</p>
+                                            <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
+                                            <p class="featured-post-description">
+                                                {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
+                                            </p>
+                                        </div>
+                                    </a>
+                                @endforeach
                             </div>
                         </div>
-                        <div class="h-snap" dir="rtl">
-                            @foreach ($collection->take(5) as $content)
-                                <a href="{{ route('news.show', $content->title) }}"
-                                    class="h-snap-slide mobile-featured-post"
-                                    style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
-                                    <div class="post-overlay-dark"></div>
-                                    <div class="featured-post-content">
-                                        <p class="featured-post-category-name">
-                                            {{ $content->category->name ?? $sectionTitle }}</p>
-                                        <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
-                                        <p class="featured-post-description">
-                                            {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
-                                        </p>
-                                    </div>
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
+                    @endif
                 @endif
             @endforeach
+
         </div>
     </div>
 
@@ -566,17 +571,22 @@
                 max-width: 820px;
                 display: flex;
                 flex-direction: column;
-                gap: 0; /* use padding + borders on items for consistent spacing */
+                gap: 0;
+                /* use padding + borders on items for consistent spacing */
             }
 
             .most-reads-item {
                 display: flex;
                 align-items: center;
-                gap: 21px; /* spacing between number and title */
-                padding: 24px 0; /* consistent vertical rhythm */
+                gap: 21px;
+                /* spacing between number and title */
+                padding: 24px 0;
+                /* consistent vertical rhythm */
             }
-            .most-reads-item + .most-reads-item {
-                border-top: 1px solid rgba(255, 255, 255, 0.18); /* single divider between items */
+
+            .most-reads-item+.most-reads-item {
+                border-top: 1px solid rgba(255, 255, 255, 0.18);
+                /* single divider between items */
             }
 
             .mr-index {
