@@ -547,6 +547,11 @@
                 @endif
             @endforeach
 
+            <!-- Compact mobile footer at the end -->
+            <div class="mobile-container">
+                @include('user.mobile.footer')
+            </div>
+
         </div>
     </div>
 
