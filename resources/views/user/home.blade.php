@@ -414,6 +414,7 @@
             @php $topcontentslist = min(5, $topContents->count()); @endphp
             <div class="mobile-h-wrapper">
                 <div class="section-fixed-ui">
+                    <div class="featured-post-section-badge">أصوات جزائرية</div>
                     <div class="h-indicators" role="tablist" aria-label="slides">
                         @for ($i = 0; $i < $topcontentslist; $i++)
                             <span class="h-indicator @if ($i === 0) active @endif"
@@ -429,7 +430,7 @@
                             <div class="post-overlay-dark"></div>
                             <div class="featured-post-content">
                                 <p class="featured-post-category-name">
-                                    {{ $content->category->name ?? $sectionTitle }}</p>
+                                    {{ $content->category->name ?? 'أصوات جزائرية' }}</p>
                                 <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
                                 <p class="featured-post-description">
                                     {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
