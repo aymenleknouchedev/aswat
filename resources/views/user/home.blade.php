@@ -413,7 +413,7 @@
         <div class="mobile-snap">
 
             {{-- top contents (featured first slider) --}}
-            @if(isset($topContents) && is_countable($topContents) && $topContents->count())
+            @if (isset($topContents) && is_countable($topContents) && $topContents->count())
                 @php $topcontentslist = $topContents->count(); @endphp
                 <div class="mobile-h-wrapper">
                     <div class="section-fixed-ui">
@@ -421,21 +421,23 @@
                         <div class="h-indicators" role="tablist" aria-label="slides">
                             @for ($i = 0; $i < $topcontentslist; $i++)
                                 <span class="h-indicator @if ($i === 0) active @endif"
-                                      aria-label="{{ $i + 1 }}"
-                                      aria-current="@if ($i === 0) true @else false @endif"></span>
+                                    aria-label="{{ $i + 1 }}"
+                                    aria-current="@if ($i === 0) true @else false @endif"></span>
                             @endfor
                         </div>
                     </div>
                     <div class="h-snap" dir="rtl">
                         @foreach ($topContents->take($topcontentslist) as $tc)
                             @php $c = $tc->content ?? null; @endphp
-                            @if($c)
+                            @if ($c)
                                 <a href="{{ route('news.show', $c->title) }}" class="h-snap-slide mobile-featured-post"
-                                   style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? $c->media()->wherePivot('type','main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                    style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}');">
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content">
-                                        <p class="featured-post-category-name">{{ $c->category->name ?? 'أصوات جزائرية' }}</p>
-                                        <h1 class="featured-post-title">{{ \Illuminate\Support\Str::limit($c->mobile_title ?? $c->title, 50) }}</h1>
+                                        <p class="featured-post-category-name">{{ $c->category->name ?? 'أصوات جزائرية' }}
+                                        </p>
+                                        <h1 class="featured-post-title">
+                                            {{ \Illuminate\Support\Str::limit($c->mobile_title ?? $c->title, 50) }}</h1>
                                         <p class="featured-post-description">
                                             {{ \Illuminate\Support\Str::limit(strip_tags($c->summary ?? ($c->description ?? '')), 130) }}
                                         </p>
@@ -449,7 +451,7 @@
 
 
             {{-- most reads --}}
-            @if(isset($topViewed) && is_countable($topViewed) && $topViewed->count())
+            @if (isset($topViewed) && is_countable($topViewed) && $topViewed->count())
                 <div class="mobile-h-wrapper">
                     <div class="most-reads-screen" dir="rtl">
                         <ol class="most-reads-list" role="list">
@@ -465,7 +467,7 @@
                     </div>
                 </div>
             @endif
-            
+
 
             {{-- sections --}}
             @foreach ($sectionscontents ?? [] as $sectionTitle => $collection)
@@ -503,10 +505,7 @@
                 @endif
             @endforeach
         </div>
-
-
     </div>
-
 
     <style>
         @media (max-width: 991px) {
@@ -545,14 +544,17 @@
             .most-reads-screen {
                 width: 100%;
                 height: 100dvh;
-                background: #252525; /* grey background */
+                background: #252525;
+                /* grey background */
                 color: #000;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 90px 20px 80px; /* breathing room top/bottom like other screens */
+                padding: 90px 20px 80px;
+                /* breathing room top/bottom like other screens */
                 box-sizing: border-box;
             }
+
             .most-reads-list {
                 list-style: none;
                 margin: 0;
@@ -563,20 +565,23 @@
                 flex-direction: column;
                 gap: 14px;
             }
+
             .most-reads-item {
                 display: flex;
+                flex-direction: column; /* number on its own line, then title */
                 align-items: flex-start;
-                gap: 12px;
+                gap: 6px;
             }
+
             .mr-index {
-                min-width: 28px;
-                text-align: center;
+                display: block;
                 font-weight: 900;
-                font-size: 22px;
-                line-height: 1;
+                font-size: 44px; /* bigger number */
+                line-height: 1.1;
                 color: #9e9e9e;
                 font-family: 'asswat-bold';
             }
+
             .mr-title {
                 display: inline-block;
                 color: #fff;
@@ -586,7 +591,10 @@
                 line-height: 1.4;
                 font-family: 'asswat-bold';
             }
-            .mr-title:active { opacity: 0.8; }
+
+            .mr-title:active {
+                opacity: 0.8;
+            }
 
             /* Horizontal snap wrapper (one vertical step) */
             .mobile-h-wrapper {
