@@ -5,6 +5,38 @@
 @section('content')
 
     <style>
+        /* Simple desktop loader */
+        .web-loader {
+            position: fixed;
+            inset: 0;
+            background: #0b0b0b; /* dark background to match site */
+            display: none; /* default hidden, enabled on desktop */
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .web-loader .web-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(255, 255, 255, 0.25);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: web-spin 1s linear infinite;
+        }
+
+        .web-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        @keyframes web-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
         .art-section-hero {
             position: relative;
             background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)),
@@ -63,12 +95,19 @@
         /* Critical visibility CSS to avoid flash of wrong layout on first paint */
         .web { display: none; }
         .mobile { display: block; }
+        .web-loader { display: none; }
         @media (min-width: 992px) {
             .web { display: block !important; }
             .mobile { display: none !important; }
+            .web-loader { display: flex !important; }
         }
     </style>
 
+
+    <!-- Simple loader (desktop only) -->
+    <div id="web-loader" class="web-loader" role="status" aria-live="polite" aria-label="جارِ التحميل">
+        <div class="web-spinner"></div>
+    </div>
 
     <div class="web">
         @include('user.components.fixed-nav')
@@ -629,4 +668,17 @@
         }
     </style>
 
-    
+    <script>
+        // Hide desktop loader after full load
+        window.addEventListener('load', function () {
+            var l = document.getElementById('web-loader');
+            if (l) {
+                l.classList.add('hidden');
+                setTimeout(function(){
+                    if (l && l.parentNode) l.parentNode.removeChild(l);
+                }, 300);
+            }
+        });
+    </script>
+
+
