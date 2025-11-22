@@ -504,6 +504,7 @@
                                                     <span class="author-name">{{ $firstWriter->name }}</span>
                                                 </div>
                                             @endif
+                                            <br>
                                             <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
                                         </div>
                                     </a>
