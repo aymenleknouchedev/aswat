@@ -126,6 +126,7 @@
 
     <!-- Simple loader (desktop only) -->
     <div id="web-loader" class="web-loader" role="status" aria-live="polite" aria-label="جارِ التحميل">
+        <div class="web-spinner" aria-hidden="true"></div>
     </div>
 
     <div class="web">
@@ -411,8 +412,16 @@
         <div class="mobile-snap">
             @foreach ($sectionscontents ?? [] as $sectionTitle => $collection)
                 @if ($collection && $collection->count())
+                    @php $slideCount = min(5, $collection->count()); @endphp
                     <div class="mobile-h-wrapper">
-                        <div class="featured-post-section-badge">{{ $sectionTitle }}</div>
+                        <div class="section-fixed-ui">
+                            <div class="featured-post-section-badge">{{ $sectionTitle }}</div>
+                            <div class="h-indicators" role="tablist" aria-label="slides">
+                                @for ($i = 0; $i < $slideCount; $i++)
+                                    <span class="h-indicator @if($i===0) active @endif" aria-label="{{ $i+1 }}" aria-current="@if($i===0) true @else false @endif"></span>
+                                @endfor
+                            </div>
+                        </div>
                         <div class="h-snap" dir="rtl">
                             @foreach ($collection->take(5) as $content)
                                 <a href="{{ route('news.show', $content->title) }}"
@@ -539,6 +548,35 @@
                 border-radius: 0;
                 display: inline-block;
                 text-align: center;
+            }
+            /* Fixed UI container holding badge + vertical indicators */
+            .section-fixed-ui {
+                position: absolute;
+                top: 90px;
+                right: 16px;
+                z-index: 3;
+                display: flex;
+                align-items: stretch;
+                gap: 8px;
+            }
+            /* When badge is inside the fixed UI, make it flow-static to allow indicators sized to its height */
+            .section-fixed-ui .featured-post-section-badge {
+                position: static;
+            }
+            .h-indicators {
+                display: flex;
+                flex-direction: row; /* horizontal array */
+                align-items: stretch; /* match badge height */
+                justify-content: flex-start;
+                gap: 5px; /* spacing between vertical lines */
+            }
+            .h-indicator {
+                width: 4px; /* thin vertical line */
+                height: 100%; /* same height as badge */
+                background: rgba(255, 255, 255, 0.262);
+            }
+            .h-indicator.active {
+                background: #ffffff;
             }
 
             /* Featured Post Content */
@@ -696,7 +734,8 @@
                     index: 0,
                     userPausedUntil: 0,
                     timeoutId: null,
-                    running: false
+                    running: false,
+                    indicators: Array.from(w.querySelectorAll('.h-indicator'))
                 });
                 ['touchstart', 'wheel', 'mousedown'].forEach(evt => {
                     track.addEventListener(evt, () => {
@@ -707,6 +746,17 @@
                         passive: true
                     });
                 });
+                // Update indicators when user scrolls manually (debounced)
+                let scrollT;
+                track.addEventListener('scroll', () => {
+                    clearTimeout(scrollT);
+                    scrollT = setTimeout(() => {
+                        const st = states.get(w);
+                        if (!st) return;
+                        syncIndexToNearest(st);
+                        updateIndicators(st);
+                    }, 120);
+                }, { passive: true });
             });
 
             function schedule(st, delay) {
@@ -739,26 +789,32 @@
                 st.timeoutId = null;
             }
 
-            function advance(st) {
-                // sync index to nearest before advancing
+            function syncIndexToNearest(st) {
                 const currentLeft = st.track.scrollLeft;
-                let nearest = st.index,
-                    minDist = Infinity;
+                let nearest = st.index, minDist = Infinity;
                 st.slides.forEach((s, i) => {
                     const d = Math.abs(s.offsetLeft - currentLeft);
-                    if (d < minDist) {
-                        minDist = d;
-                        nearest = i;
-                    }
+                    if (d < minDist) { minDist = d; nearest = i; }
                 });
                 st.index = nearest;
+            }
+
+            function updateIndicators(st) {
+                if (!st.indicators || !st.indicators.length) return;
+                st.indicators.forEach((el, i) => {
+                    if (i === st.index) el.classList.add('active');
+                    else el.classList.remove('active');
+                });
+            }
+
+            function advance(st) {
+                // sync index to nearest before advancing
+                syncIndexToNearest(st);
                 const next = (st.index + 1) % st.slides.length;
                 st.index = next;
                 const target = st.slides[next];
-                if (target) st.track.scrollTo({
-                    left: target.offsetLeft,
-                    behavior: 'smooth'
-                });
+                if (target) st.track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+                updateIndicators(st);
             }
 
             // IntersectionObserver to determine visible wrapper (lower thresholds)
