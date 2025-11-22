@@ -20,7 +20,7 @@ return new class extends Migration
             // Titles
             $table->string('title', 75);
             $table->string('long_title', 210)->nullable();
-            $table->string('mobile_title', 40)->nullable();
+            $table->string('mobile_title', 50)->nullable();
             $table->string('caption', 255)->nullable();
 
             // template
