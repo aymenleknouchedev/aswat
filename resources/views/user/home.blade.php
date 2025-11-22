@@ -414,7 +414,7 @@
 
             {{-- top contents (featured first slider) --}}
             @if(isset($topContents) && is_countable($topContents) && $topContents->count())
-                @php $topcontentslist = min(5, $topContents->count()); @endphp
+                @php $topcontentslist = $topContents->count(); @endphp
                 <div class="mobile-h-wrapper">
                     <div class="section-fixed-ui">
                         <div class="featured-post-section-badge">أهم الأخبار</div>
@@ -427,7 +427,7 @@
                         </div>
                     </div>
                     <div class="h-snap" dir="rtl">
-                        @foreach ($topContents->take(7) as $tc)
+                        @foreach ($topContents->take($topcontentslist) as $tc)
                             @php $c = $tc->content ?? null; @endphp
                             @if($c)
                                 <a href="{{ route('news.show', $c->title) }}" class="h-snap-slide mobile-featured-post"
