@@ -510,85 +510,95 @@
             // Only enable on mobile
             if (window.innerWidth <= 991) {
                 let isScrolling = false;
-                let lastScrollTime = 0;
-                const scrollDelay = 600; // milliseconds between scrolls
+                let touchStartY = 0;
+                let touchStartTime = 0;
 
+                function snapToSection() {
+                    const viewportHeight = window.innerHeight;
+                    const currentScroll = window.scrollY;
+                    const currentSection = Math.round(currentScroll / viewportHeight);
+                    const targetScroll = currentSection * viewportHeight;
+
+                    window.scrollTo({
+                        top: targetScroll,
+                        behavior: 'smooth'
+                    });
+
+                    setTimeout(() => {
+                        isScrolling = false;
+                    }, 800);
+                }
+
+                // Wheel event for desktop/trackpad
                 window.addEventListener('wheel', function(e) {
-                    if (window.innerWidth > 991) return;
+                    if (window.innerWidth > 991 || isScrolling) return;
 
-                    const now = Date.now();
-                    
-                    // Check if enough time has passed since last scroll
-                    if (isScrolling || (now - lastScrollTime) < scrollDelay) {
-                        e.preventDefault();
-                        return;
-                    }
-
+                    e.preventDefault();
                     isScrolling = true;
-                    lastScrollTime = now;
 
                     const viewportHeight = window.innerHeight;
-                    const scrollAmount = viewportHeight;
                     const currentScroll = window.scrollY;
+                    let targetScroll;
 
                     if (e.deltaY > 0) {
-                        // Scroll down by one viewport height
-                        window.scrollBy({
-                            top: scrollAmount,
-                            behavior: 'smooth'
-                        });
+                        // Scroll down
+                        targetScroll = currentScroll + viewportHeight;
                     } else {
-                        // Scroll up by one viewport height
-                        window.scrollBy({
-                            top: -scrollAmount,
-                            behavior: 'smooth'
-                        });
+                        // Scroll up
+                        targetScroll = Math.max(0, currentScroll - viewportHeight);
                     }
+
+                    window.scrollTo({
+                        top: targetScroll,
+                        behavior: 'smooth'
+                    });
 
                     setTimeout(() => {
                         isScrolling = false;
-                    }, scrollDelay);
+                    }, 800);
                 }, { passive: false });
 
-                // Handle touch swipe for mobile
-                let touchStartY = 0;
-                let touchEndY = 0;
-
+                // Touch swipe for mobile
                 window.addEventListener('touchstart', function(e) {
-                    touchStartY = e.changedTouches[0].screenY;
-                }, false);
+                    if (window.innerWidth > 991) return;
+                    touchStartY = e.touches[0].clientY;
+                    touchStartTime = Date.now();
+                }, { passive: true });
 
                 window.addEventListener('touchend', function(e) {
-                    touchEndY = e.changedTouches[0].screenY;
-                    const now = Date.now();
-                    
-                    if (isScrolling || (now - lastScrollTime) < scrollDelay) {
-                        return;
-                    }
+                    if (window.innerWidth > 991 || isScrolling) return;
 
-                    isScrolling = true;
-                    lastScrollTime = now;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    const touchTime = Date.now() - touchStartTime;
+                    const swipeDistance = touchStartY - touchEndY;
+                    const minSwipeDistance = 30;
 
-                    const viewportHeight = window.innerHeight;
-                    
-                    if (touchStartY - touchEndY > 50) {
-                        // Swipe up - scroll down
-                        window.scrollBy({
-                            top: viewportHeight,
+                    // Quick swipe or significant distance
+                    if (touchTime < 500 && Math.abs(swipeDistance) > minSwipeDistance) {
+                        isScrolling = true;
+
+                        const viewportHeight = window.innerHeight;
+                        const currentScroll = window.scrollY;
+                        let targetScroll;
+
+                        if (swipeDistance > 0) {
+                            // Swipe up - scroll down
+                            targetScroll = currentScroll + viewportHeight;
+                        } else {
+                            // Swipe down - scroll up
+                            targetScroll = Math.max(0, currentScroll - viewportHeight);
+                        }
+
+                        window.scrollTo({
+                            top: targetScroll,
                             behavior: 'smooth'
                         });
-                    } else if (touchEndY - touchStartY > 50) {
-                        // Swipe down - scroll up
-                        window.scrollBy({
-                            top: -viewportHeight,
-                            behavior: 'smooth'
-                        });
-                    }
 
-                    setTimeout(() => {
-                        isScrolling = false;
-                    }, scrollDelay);
-                }, false);
+                        setTimeout(() => {
+                            isScrolling = false;
+                        }, 800);
+                    }
+                }, { passive: true });
             }
         });
     </script>
