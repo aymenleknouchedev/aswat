@@ -571,6 +571,10 @@
                 align-items: flex-start;
                 gap: 21px;
             }
+            .most-reads-item:not(:last-child) {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.18); /* grey divider between items */
+                padding-bottom: 12px;
+            }
 
             .mr-index {
                 min-width: 28px;
