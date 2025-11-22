@@ -447,6 +447,24 @@
                 </div>
             @endif
 
+
+            {{-- most reads --}}
+            @if(isset($topViewed) && is_countable($topViewed) && $topViewed->count())
+                <div class="mobile-h-wrapper">
+                    <div class="most-reads-screen" dir="rtl">
+                        <ol class="most-reads-list" role="list">
+                            @foreach ($topViewed->take(5) as $i => $content)
+                                <li class="most-reads-item">
+                                    <span class="mr-index" aria-hidden="true">{{ $i + 1 }}</span>
+                                    <a class="mr-title" href="{{ route('news.show', $content->title) }}">
+                                        {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ol>
+                    </div>
+                </div>
+            @endif
             
 
             {{-- sections --}}
@@ -522,6 +540,53 @@
                 justify-content: flex-end;
                 overflow: hidden;
             }
+
+            /* Most Reads full-screen section */
+            .most-reads-screen {
+                width: 100%;
+                height: 100dvh;
+                background: #f2f2f2; /* grey background */
+                color: #000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 90px 20px 80px; /* breathing room top/bottom like other screens */
+                box-sizing: border-box;
+            }
+            .most-reads-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                max-width: 820px;
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+            .most-reads-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .mr-index {
+                min-width: 28px;
+                text-align: center;
+                font-weight: 900;
+                font-size: 22px;
+                line-height: 1;
+                color: #9e9e9e;
+                font-family: 'asswat-bold';
+            }
+            .mr-title {
+                display: inline-block;
+                color: #000;
+                text-decoration: none;
+                font-size: 20px;
+                font-weight: 800;
+                line-height: 1.4;
+                font-family: 'asswat-bold';
+            }
+            .mr-title:active { opacity: 0.8; }
 
             /* Horizontal snap wrapper (one vertical step) */
             .mobile-h-wrapper {
