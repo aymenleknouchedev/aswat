@@ -417,7 +417,7 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+                background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.05));
                 z-index: 1;
             }
 
