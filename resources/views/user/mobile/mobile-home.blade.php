@@ -25,16 +25,14 @@
     <div class="mobile-sidebar" id="mobileSidebar">
         <div class="sidebar-content">
             <ul class="menu-list">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Categories</a></li>
-                <li><a href="#">Trending</a></li>
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="#">أخبار</a></li>
+                <li><a href="#">آراء</a></li>
+                <li><a href="#">نوافذ</a></li>
+                <li><a href="#">ملفات</a></li>
+                <li><a href="#">فحص</a></li>
+                <li><a href="#">فيديو</a></li>
+                <li><a href="#">بودكاست</a></li>
+                <li><a href="#">صور</a></li>
             </ul>
         </div>
     </div>
