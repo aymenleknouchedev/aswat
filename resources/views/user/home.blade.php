@@ -499,22 +499,19 @@
                 height: 100dvh;
                 overflow-y: scroll;
                 scroll-behavior: smooth;
-                scroll-snap-type: y mandatory;
-                scroll-padding-top: 0;
                 -webkit-overflow-scrolling: touch;
+                /* Removed scroll-snap-type for better iOS compatibility */
             }
 
             .mobile-featured-post {
                 height: 100vh;
                 width: 100%;
-                scroll-snap-align: start;
-                scroll-snap-stop: always;
                 flex-shrink: 0;
+                /* Removed scroll-snap properties for better iOS compatibility */
             }
 
             .mobile-container {
-                scroll-snap-align: start;
-                scroll-snap-stop: always;
+                /* Removed scroll-snap properties for better iOS compatibility */
             }
 
             /* Disable momentum scrolling interruption */
@@ -538,55 +535,43 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth <= 991) {
-                let lastScrollTime = 0;
-                const scrollDelay = 800;
-                let isSnapping = false;
+                let scrollTimeout;
+                let isScrolling = false;
+                const snapDelay = 500; // Reduced from 800
 
-                // Smooth snapping on scroll end - optimized for iPhone
+                // Scroll snap for mobile - works with Safari/Chrome on iOS
                 window.addEventListener('scroll', function() {
-                    if (isSnapping) return;
-                    
-                    const now = Date.now();
-                    
-                    // Skip if scrolling too frequently
-                    if (now - lastScrollTime < 50) return;
-                    
-                    lastScrollTime = now;
+                    // Clear any existing timeout
+                    if (scrollTimeout) {
+                        clearTimeout(scrollTimeout);
+                    }
 
-                    // Use requestAnimationFrame for better performance
-                    requestAnimationFrame(function() {
-                        const scrollTop = window.scrollY;
-                        const viewportHeight = window.innerHeight;
+                    // Set a timeout to run after scrolling stops
+                    scrollTimeout = setTimeout(function() {
+                        if (isScrolling) return;
+                        
+                        isScrolling = true;
+                        
+                        const scrollTop = window.scrollY || window.pageYOffset;
+                        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
                         const currentSection = Math.round(scrollTop / viewportHeight);
                         const targetScroll = currentSection * viewportHeight;
-                        const difference = Math.abs(scrollTop - targetScroll);
+                        const diff = Math.abs(scrollTop - targetScroll);
 
-                        // Only snap if difference is significant
-                        if (difference > 5) {
-                            isSnapping = true;
-                            window.scrollTo({
-                                top: targetScroll,
-                                behavior: 'smooth'
-                            });
+                        // Only snap if not already at target
+                        if (diff > 10) {
+                            // Use regular scrollTo without smooth behavior for better Safari support
+                            window.scroll(0, targetScroll);
                             
+                            // Re-enable snapping after animation
                             setTimeout(() => {
-                                isSnapping = false;
-                            }, scrollDelay);
+                                isScrolling = false;
+                            }, snapDelay);
+                        } else {
+                            isScrolling = false;
                         }
-                    });
+                    }, 150); // Wait 150ms after scroll ends before snapping
                 }, { passive: true });
-
-                // Prevent rapid wheel events (desktop only)
-                window.addEventListener('wheel', function(e) {
-                    // Check if it's actually a wheel event (not simulated)
-                    if (Math.abs(e.deltaY) < 10) return;
-                    
-                    const now = Date.now();
-                    if (now - lastScrollTime < scrollDelay) {
-                        e.preventDefault();
-                    }
-                    lastScrollTime = now;
-                }, { passive: false });
             }
         });
     </script>
