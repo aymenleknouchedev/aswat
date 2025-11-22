@@ -553,7 +553,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 90px 20px 80px;
+                padding: 131px 20px 80px;
                 /* breathing room top/bottom like other screens */
                 box-sizing: border-box;
             }
@@ -573,7 +573,7 @@
                 display: flex;
                 align-items: center;
                 gap: 21px; /* spacing between number and title */
-                padding: 18px 0; /* consistent vertical rhythm */
+                padding: 24px 0; /* consistent vertical rhythm */
             }
             .most-reads-item + .most-reads-item {
                 border-top: 1px solid rgba(255, 255, 255, 0.18); /* single divider between items */
