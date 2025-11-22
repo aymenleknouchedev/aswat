@@ -512,7 +512,8 @@
                 let isScrolling = false;
                 let touchStartY = 0;
                 let touchStartTime = 0;
-                const scrollThreshold = 50; // minimum swipe/scroll distance to trigger
+                let scrollTimeout;
+                const scrollThreshold = 50;
                 const scrollDuration = 800;
 
                 function snapToNearestSection() {
@@ -527,40 +528,47 @@
                             behavior: 'smooth'
                         });
                     }
-
-                    setTimeout(() => {
-                        isScrolling = false;
-                    }, scrollDuration);
                 }
+
+                // Prevent scroll snapping while user is scrolling
+                let userScrolling = false;
+
+                window.addEventListener('scroll', function() {
+                    userScrolling = true;
+                    clearTimeout(scrollTimeout);
+
+                    // After scroll stops for 100ms, snap to nearest section
+                    scrollTimeout = setTimeout(() => {
+                        userScrolling = false;
+                        if (!isScrolling) {
+                            snapToNearestSection();
+                        }
+                    }, 100);
+                }, { passive: true });
 
                 // Wheel event for desktop/trackpad
                 window.addEventListener('wheel', function(e) {
                     if (window.innerWidth > 991 || isScrolling) return;
 
-                    e.preventDefault();
-                    
-                    const viewportHeight = window.innerHeight;
-                    const currentScroll = window.scrollY;
-                    let targetScroll;
+                    const absDelta = Math.abs(e.deltaY);
 
-                    if (e.deltaY > scrollThreshold) {
-                        // Scroll down intentionally
+                    // Only trigger on significant scroll (> threshold)
+                    if (absDelta > scrollThreshold) {
+                        e.preventDefault();
                         isScrolling = true;
-                        targetScroll = currentScroll + viewportHeight;
-                        
-                        window.scrollTo({
-                            top: targetScroll,
-                            behavior: 'smooth'
-                        });
 
-                        setTimeout(() => {
-                            isScrolling = false;
-                        }, scrollDuration);
-                    } else if (e.deltaY < -scrollThreshold) {
-                        // Scroll up intentionally
-                        isScrolling = true;
-                        targetScroll = Math.max(0, currentScroll - viewportHeight);
-                        
+                        const viewportHeight = window.innerHeight;
+                        const currentScroll = window.scrollY;
+                        let targetScroll;
+
+                        if (e.deltaY > 0) {
+                            // Scroll down
+                            targetScroll = currentScroll + viewportHeight;
+                        } else {
+                            // Scroll up
+                            targetScroll = Math.max(0, currentScroll - viewportHeight);
+                        }
+
                         window.scrollTo({
                             top: targetScroll,
                             behavior: 'smooth'
@@ -586,9 +594,8 @@
                     const touchTime = Date.now() - touchStartTime;
                     const swipeDistance = touchStartY - touchEndY;
 
-                    // Only trigger on meaningful swipes (more than threshold, quick action)
-                    if (Math.abs(swipeDistance) > scrollThreshold && touchTime < 600) {
-                        if (isScrolling) return;
+                    // Only trigger on meaningful swipes
+                    if (Math.abs(swipeDistance) > scrollThreshold && touchTime < 600 && !isScrolling) {
                         isScrolling = true;
 
                         const viewportHeight = window.innerHeight;
@@ -611,21 +618,7 @@
                         setTimeout(() => {
                             isScrolling = false;
                         }, scrollDuration);
-                    } else if (!isScrolling && Math.abs(swipeDistance) < scrollThreshold && touchTime > 300) {
-                        // Small accidental swipe/scroll - snap to nearest section
-                        snapToNearestSection();
                     }
-                }, { passive: true });
-
-                // Snap to section on scroll end
-                let scrollTimeout;
-                window.addEventListener('scroll', function() {
-                    clearTimeout(scrollTimeout);
-                    scrollTimeout = setTimeout(() => {
-                        if (!isScrolling) {
-                            snapToNearestSection();
-                        }
-                    }, 300);
                 }, { passive: true });
             }
         });
