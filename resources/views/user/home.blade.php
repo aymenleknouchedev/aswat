@@ -543,7 +543,7 @@
                         if (!isScrolling) {
                             snapToNearestSection();
                         }
-                    }, 100);
+                    }, 1);
                 }, { passive: true });
 
                 // Wheel event for desktop/trackpad
