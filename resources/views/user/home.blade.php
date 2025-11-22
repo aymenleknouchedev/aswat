@@ -570,7 +570,7 @@
                 display: flex;
                 align-items: flex-start;
                 gap: 21px; /* spacing between number and title */
-                padding: 16px 0; /* consistent vertical rhythm */
+                padding: 18px 0; /* consistent vertical rhythm */
             }
             .most-reads-item + .most-reads-item {
                 border-top: 1px solid rgba(255, 255, 255, 0.18); /* single divider between items */
