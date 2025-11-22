@@ -610,6 +610,7 @@
                 font-weight: 900;
                 line-height: 1.4;
                 color: #fff;
+                font-family: 'asswad-bold', sans-serif;
             }
 
             .featured-post-description {
