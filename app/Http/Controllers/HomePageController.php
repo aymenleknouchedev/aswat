@@ -130,7 +130,6 @@ class HomePageController extends Controller
                 ->latest()
                 ->whereNotIn('id', $topContentIds)
                 ->whereNotIn('id', $hidetrends)
-                ->where('importance', 1)
                 ->take(5)
                 ->get();
         }
