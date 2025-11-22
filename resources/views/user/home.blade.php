@@ -563,20 +563,20 @@
                 max-width: 820px;
                 display: flex;
                 flex-direction: column;
-                gap: 14px;
+                gap: 53px;
             }
 
             .most-reads-item {
                 display: flex;
                 align-items: flex-start;
-                gap: 12px;
+                gap: 21px;
             }
 
             .mr-index {
                 min-width: 28px;
                 text-align: center;
                 font-weight: 900;
-                font-size: 22px;
+                font-size: 43px;
                 line-height: 1;
                 color: #9e9e9e;
                 font-family: 'asswat-bold';
