@@ -424,7 +424,7 @@
                 </div>
                 <div class="h-snap" dir="rtl">
                     @foreach ($topContents->take(5) as $content)
-                        <a href="" class="h-snap-slide mobile-featured-post"
+                        <a href="{{ route('news.show', $content->title) }}" class="h-snap-slide mobile-featured-post"
                             style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
                             <div class="post-overlay-dark"></div>
                             <div class="featured-post-content">
