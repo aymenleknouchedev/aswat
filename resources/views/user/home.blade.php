@@ -453,6 +453,9 @@
             {{-- most reads --}}
             @if (isset($topViewed) && is_countable($topViewed) && $topViewed->count())
                 <div class="mobile-h-wrapper">
+                    <div class="section-fixed-ui">
+                        <div class="featured-post-section-badge">الأكثر قراءة</div>
+                    </div>
                     <div class="most-reads-screen" dir="rtl">
                         <ol class="most-reads-list" role="list">
                             @foreach ($topViewed->take(5) as $i => $content)
