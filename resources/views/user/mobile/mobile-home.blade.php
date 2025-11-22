@@ -275,14 +275,9 @@
             /* Mobile Container */
             .mobile-container {
                 width: 100%;
-                min-height: 100vh;
                 background-color: #fafafa;
             }
 
-            .mobile-content {
-                padding: 16px;
-                padding-top: 56px;
-            }
         }
     </style>
 

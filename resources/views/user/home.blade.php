@@ -348,11 +348,9 @@
             <div class="featured-post-content">
                 <h1 class="featured-post-title">{{ $principalTrend->trend->title ?? 'اخبار رئيسية' }}</h1>
                 <p class="featured-post-description">{{ $principalTrend->trend->description ?? '' }}</p>
-            </div>
-
-           
+            </div>           
         </div>
-
+        
         @include('user.mobile.mobile-home')
        
     </div>
@@ -363,6 +361,7 @@
             body {
                 margin: 0;
                 padding: 0;
+                background-color: #000;
             }
 
             .web {
@@ -372,6 +371,7 @@
                 display: block !important;
                 margin: 0;
                 padding: 0;
+                background-color: #000;
             }
 
             /* Full Screen Featured Post */
