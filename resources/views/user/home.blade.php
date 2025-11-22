@@ -349,11 +349,14 @@
 
             <!-- Post Content -->
             <div class="featured-post-content">
-                <h1 class="featured-post-title">{{ $principalTrend->trend->title ?? 'اخبار رئيسية' }}</h1>
-                <p class="featured-post-description">{{ $principalTrend->trend->description ?? '' }}</p>
+                <p class="featured-post-category-name">الجزائر</p>
+                <h1 class="featured-post-title">وزير سابق يفتح ملفات تاريخية مسكوتاً عنها</h1>
+                <p class="featured-post-description">
+                    قدََّم وزير الداخلية الجزائري الأسبق، دحو ولد قابلية (2010 - 2013)، رواية جديدة عن جهاز الاستخبارات
+                    خلال حرب الاستقلال عن فرنسا
+                </p>
             </div>
         </div>
-        <!-- Full Screen Post with Background Image -->
         <div class="mobile-featured-post"
             style="background-image: url('{{ asset($principalTrend->trend->image ?? 'user/assets/images/default-post.jpg') }}');">
             <!-- Overlay -->
@@ -361,8 +364,12 @@
 
             <!-- Post Content -->
             <div class="featured-post-content">
-                <h1 class="featured-post-title">{{ $principalTrend->trend->title ?? 'اخبار رئيسية' }}</h1>
-                <p class="featured-post-description">{{ $principalTrend->trend->description ?? '' }}</p>
+                <p class="featured-post-category-name">الجزائر</p>
+                <h1 class="featured-post-title">وزير سابق يفتح ملفات تاريخية مسكوتاً عنها</h1>
+                <p class="featured-post-description">
+                    قدََّم وزير الداخلية الجزائري الأسبق، دحو ولد قابلية (2010 - 2013)، رواية جديدة عن جهاز الاستخبارات
+                    خلال حرب الاستقلال عن فرنسا
+                </p>
             </div>
         </div>
 
@@ -424,20 +431,27 @@
                 text-align: right;
             }
 
+            .featured-post-category-name {
+                margin: 0 0 10px 0;
+                font-size: 20px;
+                color: #ffffff;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
             .featured-post-title {
                 margin: 0 0 15px 0;
-                font-size: 28px;
-                font-weight: bold;
-                line-height: 1.3;
+                font-size: 32px;
+                font-weight: 900;
+                line-height: 1.4;
                 color: #fff;
             }
 
             .featured-post-description {
-                margin: 0 0 20px 0;
-                font-size: 14px;
+                margin: 0 0 80px 0;
+                font-size: 16px;
                 color: #e0e0e0;
                 line-height: 1.5;
-                max-height: 80px;
                 overflow: hidden;
                 display: -webkit-box;
                 -webkit-line-clamp: 3;
@@ -474,7 +488,8 @@
             }
 
             /* Professional CSS Scroll Snap - Instagram Reels Style */
-            html, body {
+            html,
+            body {
                 height: 100%;
                 margin: 0;
                 padding: 0;
@@ -530,14 +545,16 @@
                 // Prevent rapid wheel events
                 window.addEventListener('wheel', function(e) {
                     const now = Date.now();
-                    
+
                     if (now - lastWheelTime < wheelDelay) {
                         e.preventDefault();
                         return;
                     }
-                    
+
                     lastWheelTime = now;
-                }, { passive: false });
+                }, {
+                    passive: false
+                });
 
                 // Intercept touchmove to ensure smooth native scroll
                 let touchStartY = 0;
@@ -547,7 +564,9 @@
                 document.addEventListener('touchstart', function(e) {
                     touchStartY = e.touches[0].clientY;
                     lastTouchTime = Date.now();
-                }, { passive: true });
+                }, {
+                    passive: true
+                });
 
                 document.addEventListener('touchmove', function(e) {
                     const now = Date.now();
@@ -558,13 +577,15 @@
                     if (distance < 20 && (now - lastTouchTime) < 100) {
                         e.preventDefault();
                     }
-                }, { passive: false });
+                }, {
+                    passive: false
+                });
 
                 // Smooth snapping on scroll end
                 let scrollTimeout;
                 window.addEventListener('scroll', function() {
                     clearTimeout(scrollTimeout);
-                    
+
                     scrollTimeout = setTimeout(function() {
                         const scrollTop = window.scrollY;
                         const viewportHeight = window.innerHeight;
@@ -579,7 +600,9 @@
                             });
                         }
                     }, 150);
-                }, { passive: true });
+                }, {
+                    passive: true
+                });
             }
         });
     </script>
