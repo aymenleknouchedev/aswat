@@ -720,7 +720,7 @@
             const wrappers = Array.from(document.querySelectorAll('.mobile-h-wrapper'));
             const states = new Map();
             const INTERVAL = 4000;
-            const FIRST_DELAY = 600; // quicker first advance
+            const FIRST_DELAY = 4000; // wait full 4s before first advance
             const PAUSE_AFTER_INTERACTION = 8000; // shorter pause after manual interaction
             let activeWrapper = null;
 
