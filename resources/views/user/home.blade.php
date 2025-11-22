@@ -475,7 +475,37 @@
             {{-- sections --}}
             @foreach ($sectionscontents ?? [] as $sectionTitle => $collection)
                 @if ($sectionTitle == 'آراء')
-                    <h1>Reviews</h1>
+                    @if ($collection && $collection->count())
+                        @php $slideCount = min(5, $collection->count()); @endphp
+                        <div class="mobile-h-wrapper">
+                            <div class="section-fixed-ui">
+                                <div class="featured-post-section-badge">{{ $sectionTitle }}</div>
+                                <div class="h-indicators" role="tablist" aria-label="slides">
+                                    @for ($i = 0; $i < $slideCount; $i++)
+                                        <span class="h-indicator @if ($i === 0) active @endif"
+                                            aria-label="{{ $i + 1 }}"
+                                            aria-current="@if ($i === 0) true @else false @endif"></span>
+                                    @endfor
+                                </div>
+                            </div>
+                            <div class="h-snap" dir="rtl">
+                                @foreach ($collection->take(5) as $content)
+                                    <a href="{{ route('news.show', $content->title) }}"
+                                        class="h-snap-slide mobile-featured-post"
+                                        style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                        <div class="post-overlay-dark"></div>
+                                        <div class="featured-post-content">
+                                            <div class="featured-post-author">
+                                                <img class="author-avatar" src="{{ asset($content->writer->image ?? 'user/assets/images/default-post.jpg') }}" alt="{{ $content->writer->name ?? '' }}">
+                                                <span class="author-name">{{ $content->writer->name ?? '' }}</span>
+                                            </div>
+                                            <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
                 @else
                     @if ($collection && $collection->count())
                         @php $slideCount = min(5, $collection->count()); @endphp
