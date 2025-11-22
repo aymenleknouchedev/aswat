@@ -538,71 +538,55 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth <= 991) {
-                let lastWheelTime = 0;
-                const wheelDelay = 1000;
-                let isPreventingScroll = false;
+                let lastScrollTime = 0;
+                const scrollDelay = 800;
+                let isSnapping = false;
 
-                // Prevent rapid wheel events
-                window.addEventListener('wheel', function(e) {
-                    const now = Date.now();
-
-                    if (now - lastWheelTime < wheelDelay) {
-                        e.preventDefault();
-                        return;
-                    }
-
-                    lastWheelTime = now;
-                }, {
-                    passive: false
-                });
-
-                // Intercept touchmove to ensure smooth native scroll
-                let touchStartY = 0;
-                let lastTouchTime = 0;
-                const touchDelay = 1000;
-
-                document.addEventListener('touchstart', function(e) {
-                    touchStartY = e.touches[0].clientY;
-                    lastTouchTime = Date.now();
-                }, {
-                    passive: true
-                });
-
-                document.addEventListener('touchmove', function(e) {
-                    const now = Date.now();
-                    const touchCurrentY = e.touches[0].clientY;
-                    const distance = Math.abs(touchCurrentY - touchStartY);
-
-                    // Prevent small unintended scrolls
-                    if (distance < 20 && (now - lastTouchTime) < 100) {
-                        e.preventDefault();
-                    }
-                }, {
-                    passive: false
-                });
-
-                // Smooth snapping on scroll end
-                let scrollTimeout;
+                // Smooth snapping on scroll end - optimized for iPhone
                 window.addEventListener('scroll', function() {
-                    clearTimeout(scrollTimeout);
+                    if (isSnapping) return;
+                    
+                    const now = Date.now();
+                    
+                    // Skip if scrolling too frequently
+                    if (now - lastScrollTime < 50) return;
+                    
+                    lastScrollTime = now;
 
-                    scrollTimeout = setTimeout(function() {
+                    // Use requestAnimationFrame for better performance
+                    requestAnimationFrame(function() {
                         const scrollTop = window.scrollY;
                         const viewportHeight = window.innerHeight;
                         const currentSection = Math.round(scrollTop / viewportHeight);
                         const targetScroll = currentSection * viewportHeight;
+                        const difference = Math.abs(scrollTop - targetScroll);
 
-                        if (Math.abs(scrollTop - targetScroll) > 2) {
+                        // Only snap if difference is significant
+                        if (difference > 5) {
+                            isSnapping = true;
                             window.scrollTo({
                                 top: targetScroll,
-                                behavior: 'smooth',
-                                block: 'start'
+                                behavior: 'smooth'
                             });
+                            
+                            setTimeout(() => {
+                                isSnapping = false;
+                            }, scrollDelay);
                         }
-                    }, 150);
-                }, {
-                    passive: true
-                });
+                    });
+                }, { passive: true });
+
+                // Prevent rapid wheel events (desktop only)
+                window.addEventListener('wheel', function(e) {
+                    // Check if it's actually a wheel event (not simulated)
+                    if (Math.abs(e.deltaY) < 10) return;
+                    
+                    const now = Date.now();
+                    if (now - lastScrollTime < scrollDelay) {
+                        e.preventDefault();
+                    }
+                    lastScrollTime = now;
+                }, { passive: false });
             }
         });
     </script>
