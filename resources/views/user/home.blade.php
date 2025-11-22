@@ -59,10 +59,18 @@
             cursor: pointer;
             text-decoration: underline;
         }
+
+        /* Critical visibility CSS to avoid flash of wrong layout on first paint */
+        .web { display: none; }
+        .mobile { display: block; }
+        @media (min-width: 992px) {
+            .web { display: block !important; }
+            .mobile { display: none !important; }
+        }
     </style>
 
 
-    <div class="web">
+    <div class="web" style="display: none;">
         @include('user.components.fixed-nav')
 
         {{-- topContents --}}
@@ -338,11 +346,47 @@
 
     </div>
 
-    <div class="mobile">
+    <div class="mobile" style="display: block;">
         @include('user.mobile.mobile-home')
 
         <!-- Vertical snap container for mobile sections -->
         <div class="mobile-snap">
+            <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
+            <div class="mobile-h-wrapper">
+                <div class="h-snap" dir="rtl">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <a href="#"
+                           class="h-snap-slide mobile-featured-post"
+                           style="background-image: url('https://blog.govnet.co.uk/hs-fs/hubfs/shutterstock_2055335264.jpg?width=8088&height=4000&name=shutterstock_2055335264.jpg');"
+                           aria-disabled="true" onclick="return false;">
+                            <div class="post-overlay-dark"></div>
+                            <div class="featured-post-content">
+                                <p class="featured-post-category-name">تصنيف</p>
+                                <h1 class="featured-post-title">عنوان تجريبي {{ $i }}</h1>
+                                <p class="featured-post-description">وصف تجريبي مختصر لهذا المنشور لعرض النص أسفل الصورة.</p>
+                            </div>
+                        </a>
+                    @endfor
+                </div>
+            </div>
+            <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
+            <div class="mobile-h-wrapper">
+                <div class="h-snap" dir="rtl">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <a href="#"
+                           class="h-snap-slide mobile-featured-post"
+                           style="background-image: url('https://blog.govnet.co.uk/hs-fs/hubfs/shutterstock_2055335264.jpg?width=8088&height=4000&name=shutterstock_2055335264.jpg');"
+                           aria-disabled="true" onclick="return false;">
+                            <div class="post-overlay-dark"></div>
+                            <div class="featured-post-content">
+                                <p class="featured-post-category-name">تصنيف</p>
+                                <h1 class="featured-post-title">عنوان تجريبي {{ $i }}</h1>
+                                <p class="featured-post-description">وصف تجريبي مختصر لهذا المنشور لعرض النص أسفل الصورة.</p>
+                            </div>
+                        </a>
+                    @endfor
+                </div>
+            </div>
             <!-- Full-screen horizontal swipe (always 5 fake posts for now) -->
             <div class="mobile-h-wrapper">
                 <div class="h-snap" dir="rtl">
