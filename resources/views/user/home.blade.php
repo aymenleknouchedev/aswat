@@ -9,8 +9,10 @@
         .web-loader {
             position: fixed;
             inset: 0;
-            background: #ffffff; /* dark background to match site */
-            display: none; /* default hidden, enabled on desktop */
+            background: #ffffff;
+            /* dark background to match site */
+            display: none;
+            /* default hidden, enabled on desktop */
             align-items: center;
             justify-content: center;
             z-index: 9999;
@@ -37,6 +39,7 @@
                 transform: rotate(360deg);
             }
         }
+
         .art-section-hero {
             position: relative;
             background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)),
@@ -93,13 +96,30 @@
         }
 
         /* Critical visibility CSS to avoid flash of wrong layout on first paint */
-        .web { display: none; }
-        .mobile { display: block; }
-        .web-loader { display: none; }
+        .web {
+            display: none;
+        }
+
+        .mobile {
+            display: block;
+        }
+
+        .web-loader {
+            display: none;
+        }
+
         @media (min-width: 992px) {
-            .web { display: block !important; }
-            .mobile { display: none !important; }
-            .web-loader { display: flex !important; }
+            .web {
+                display: block !important;
+            }
+
+            .mobile {
+                display: none !important;
+            }
+
+            .web-loader {
+                display: flex !important;
+            }
         }
     </style>
 
@@ -389,19 +409,22 @@
 
         <!-- Vertical snap container for mobile sections -->
         <div class="mobile-snap">
-            @foreach (($sectionscontents ?? []) as $sectionTitle => $collection)
+            @foreach ($sectionscontents ?? [] as $sectionTitle => $collection)
                 @if ($collection && $collection->count())
                     <div class="mobile-h-wrapper">
                         <div class="h-snap" dir="rtl">
                             @foreach ($collection->take(5) as $content)
                                 <a href="{{ route('news.show', $content->title) }}"
-                                   class="h-snap-slide mobile-featured-post"
-                                   style="background-image: url('{{ $content->media()->wherePivot('type','main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                    class="h-snap-slide mobile-featured-post"
+                                    style="background-image: url('{{ $content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                    <div class="featured-post-section-badge">{{ $sectionTitle }}</div>
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content">
-                                        <p class="featured-post-category-name">{{ $sectionTitle }}</p>
+                                        <p class="featured-post-category-name">{{ $content->category->name ?? $sectionTitle }}</p>
                                         <h1 class="featured-post-title">{{ $content->title }}</h1>
-                                        <p class="featured-post-description">{{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? $content->description ?? ''), 120) }}</p>
+                                        <p class="featured-post-description">
+                                            {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 120) }}
+                                        </p>
                                     </div>
                                 </a>
                             @endforeach
@@ -468,12 +491,15 @@
                 scroll-snap-type: x mandatory;
                 -webkit-overflow-scrolling: touch;
                 overscroll-behavior-x: contain;
-                scrollbar-width: none; /* Firefox */
-                direction: rtl; /* First slide at right for RTL */
+                scrollbar-width: none;
+                /* Firefox */
+                direction: rtl;
+                /* First slide at right for RTL */
             }
 
             .h-snap::-webkit-scrollbar {
-                display: none; /* Hide scrollbar on WebKit */
+                display: none;
+                /* Hide scrollbar on WebKit */
             }
 
             .h-snap-slide {
@@ -497,14 +523,34 @@
                 z-index: 1;
             }
 
+            /* Top section badge (white background, black text, no radius) */
+            .featured-post-section-badge {
+                position: absolute;
+                top: 90px;
+                right: 16px; /* RTL alignment */
+                z-index: 2;
+                background: #fff;
+                color: #000;
+                padding: 6px 12px;
+                font-size: 15px;
+                font-weight: 800;
+                line-height: 1;
+                border-radius: 0;
+                display: inline-block;
+                text-align: center;
+            }
+
             /* Featured Post Content */
             .featured-post-content {
-                position: absolute; /* pin block to bottom area */
-                bottom: 160px; /* keep 80px empty space at the bottom of the page */
+                position: absolute;
+                /* pin block to bottom area */
+                bottom: 160px;
+                /* keep 80px empty space at the bottom of the page */
                 left: 0;
                 right: 0;
                 z-index: 2;
-                padding: 0 20px; /* horizontal padding only */
+                padding: 0 20px;
+                /* horizontal padding only */
                 color: #fff;
                 direction: rtl;
                 text-align: right;
@@ -527,7 +573,8 @@
             }
 
             .featured-post-description {
-                margin: 0; /* bottom space handled by container padding */
+                margin: 0;
+                /* bottom space handled by container padding */
                 font-size: 16px;
                 color: #e0e0e0;
                 line-height: 1.5;
@@ -581,7 +628,8 @@
                 scroll-behavior: smooth;
                 scroll-snap-type: y mandatory;
                 scroll-padding-top: 0;
-                -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+                -webkit-overflow-scrolling: touch;
+                /* iOS momentum scrolling */
             }
 
             .mobile-featured-post {
@@ -617,11 +665,11 @@
 
     <script>
         // Hide desktop loader after full load
-        window.addEventListener('load', function () {
+        window.addEventListener('load', function() {
             var l = document.getElementById('web-loader');
             if (l) {
                 l.classList.add('hidden');
-                setTimeout(function(){
+                setTimeout(function() {
                     if (l && l.parentNode) l.parentNode.removeChild(l);
                 }, 300);
             }
@@ -649,11 +697,14 @@
                     timeoutId: null,
                     running: false
                 });
-                ['touchstart','wheel','mousedown'].forEach(evt => {
+                ['touchstart', 'wheel', 'mousedown'].forEach(evt => {
                     track.addEventListener(evt, () => {
-                        const st = states.get(w); if (!st) return;
+                        const st = states.get(w);
+                        if (!st) return;
                         st.userPausedUntil = Date.now() + PAUSE_AFTER_INTERACTION;
-                    }, { passive: true });
+                    }, {
+                        passive: true
+                    });
                 });
             });
 
@@ -672,33 +723,52 @@
             }
 
             function startAuto(w) {
-                const st = states.get(w); if (!st || st.running) return;
+                const st = states.get(w);
+                if (!st || st.running) return;
                 st.running = true;
                 // immediate first schedule with short delay
                 schedule(st, FIRST_DELAY);
             }
+
             function stopAuto(w) {
-                const st = states.get(w); if (!st || !st.running) return;
+                const st = states.get(w);
+                if (!st || !st.running) return;
                 st.running = false;
-                clearTimeout(st.timeoutId); st.timeoutId = null;
+                clearTimeout(st.timeoutId);
+                st.timeoutId = null;
             }
+
             function advance(st) {
                 // sync index to nearest before advancing
                 const currentLeft = st.track.scrollLeft;
-                let nearest = st.index, minDist = Infinity;
-                st.slides.forEach((s,i) => { const d = Math.abs(s.offsetLeft - currentLeft); if (d < minDist){minDist=d; nearest=i;} });
+                let nearest = st.index,
+                    minDist = Infinity;
+                st.slides.forEach((s, i) => {
+                    const d = Math.abs(s.offsetLeft - currentLeft);
+                    if (d < minDist) {
+                        minDist = d;
+                        nearest = i;
+                    }
+                });
                 st.index = nearest;
                 const next = (st.index + 1) % st.slides.length;
                 st.index = next;
                 const target = st.slides[next];
-                if (target) st.track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+                if (target) st.track.scrollTo({
+                    left: target.offsetLeft,
+                    behavior: 'smooth'
+                });
             }
 
             // IntersectionObserver to determine visible wrapper (lower thresholds)
             const observer = new IntersectionObserver(entries => {
-                let candidate = activeWrapper; let ratio = 0;
+                let candidate = activeWrapper;
+                let ratio = 0;
                 entries.forEach(e => {
-                    if (e.isIntersecting && e.intersectionRatio > ratio) { ratio = e.intersectionRatio; candidate = e.target; }
+                    if (e.isIntersecting && e.intersectionRatio > ratio) {
+                        ratio = e.intersectionRatio;
+                        candidate = e.target;
+                    }
                 });
                 // Start when at least 35% visible
                 if (candidate && ratio >= 0.35 && candidate !== activeWrapper) {
@@ -706,11 +776,18 @@
                     activeWrapper = candidate;
                     startAuto(activeWrapper);
                 }
-            }, { threshold: [0,0.15,0.35,0.5,0.75,1] });
+            }, {
+                threshold: [0, 0.15, 0.35, 0.5, 0.75, 1]
+            });
 
             wrappers.forEach(w => observer.observe(w));
             // Fallback: if observer hasn't activated after 1s, start first wrapper
-            setTimeout(() => { if (!activeWrapper && wrappers[0]) { activeWrapper = wrappers[0]; startAuto(activeWrapper); } }, 1000);
+            setTimeout(() => {
+                if (!activeWrapper && wrappers[0]) {
+                    activeWrapper = wrappers[0];
+                    startAuto(activeWrapper);
+                }
+            }, 1000);
 
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
@@ -721,5 +798,3 @@
             });
         });
     </script>
-
-
