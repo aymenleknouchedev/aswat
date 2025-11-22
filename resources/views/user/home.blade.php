@@ -862,7 +862,7 @@
             .opinion-author {
                 font-size: 22px;
                 color: #fff;
-                font-family: 'asswat-bold';
+                font-family: 'asswat-regular';
                 margin-bottom: 10px;
             }
             .opinion-title {
