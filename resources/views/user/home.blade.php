@@ -9,7 +9,7 @@
         .web-loader {
             position: fixed;
             inset: 0;
-            background: #0b0b0b; /* dark background to match site */
+            background: #ffffff; /* dark background to match site */
             display: none; /* default hidden, enabled on desktop */
             align-items: center;
             justify-content: center;
@@ -20,7 +20,7 @@
             width: 48px;
             height: 48px;
             border: 3px solid rgba(255, 255, 255, 0.25);
-            border-top-color: #ffffff;
+            border-top-color: #bcbcbc;
             border-radius: 50%;
             animation: web-spin 1s linear infinite;
         }
