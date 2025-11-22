@@ -408,8 +408,10 @@
     <div class="mobile">
         @include('user.mobile.mobile-home')
 
+
         <!-- Vertical snap container for mobile sections -->
         <div class="mobile-snap">
+
             @foreach ($sectionscontents ?? [] as $sectionTitle => $collection)
                 @if ($collection && $collection->count())
                     @php $slideCount = min(5, $collection->count()); @endphp
@@ -428,7 +430,7 @@
                             @foreach ($collection->take(5) as $content)
                                 <a href="{{ route('news.show', $content->title) }}"
                                     class="h-snap-slide mobile-featured-post"
-                                    style="background-image: url('{{ $content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                    style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content">
                                         <p class="featured-post-category-name">
