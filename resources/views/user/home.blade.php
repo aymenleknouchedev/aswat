@@ -106,7 +106,6 @@
 
     <!-- Simple loader (desktop only) -->
     <div id="web-loader" class="web-loader" role="status" aria-live="polite" aria-label="جارِ التحميل">
-        <div class="web-spinner"></div>
     </div>
 
     <div class="web">
