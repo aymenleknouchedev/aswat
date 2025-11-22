@@ -412,12 +412,12 @@
             @foreach ($sectionscontents ?? [] as $sectionTitle => $collection)
                 @if ($collection && $collection->count())
                     <div class="mobile-h-wrapper">
+                        <div class="featured-post-section-badge">{{ $sectionTitle }}</div>
                         <div class="h-snap" dir="rtl">
                             @foreach ($collection->take(5) as $content)
                                 <a href="{{ route('news.show', $content->title) }}"
                                     class="h-snap-slide mobile-featured-post"
                                     style="background-image: url('{{ $content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
-                                    <div class="featured-post-section-badge">{{ $sectionTitle }}</div>
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content">
                                         <p class="featured-post-category-name">{{ $content->category->name ?? $sectionTitle }}</p>
@@ -477,6 +477,7 @@
                 height: 100vh;
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
+                position: relative; /* to anchor fixed badge within wrapper */
             }
 
             /* Horizontal snap track */
