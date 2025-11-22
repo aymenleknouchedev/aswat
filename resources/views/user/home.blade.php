@@ -70,7 +70,7 @@
     </style>
 
 
-    <div class="web" style="display: none;">
+    <div class="web">
         @include('user.components.fixed-nav')
 
         {{-- topContents --}}
@@ -346,7 +346,7 @@
 
     </div>
 
-    <div class="mobile" style="display: block;">
+    <div class="mobile">
         @include('user.mobile.mobile-home')
 
         <!-- Vertical snap container for mobile sections -->
