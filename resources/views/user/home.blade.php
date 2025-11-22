@@ -679,6 +679,60 @@
                 }, 300);
             }
         });
+        // Mobile auto horizontal scroll every 4s
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.innerWidth > 991) return; // mobile only
+            const sliders = document.querySelectorAll('.h-snap');
+            sliders.forEach(setupAutoScroll);
+
+            function setupAutoScroll(track) {
+                const slides = Array.from(track.querySelectorAll('.h-snap-slide'));
+                if (slides.length < 2) return; // nothing to auto-scroll
+                let index = 0;
+                let userPausedUntil = 0;
+                const INTERVAL = 4000;
+                const PAUSE_AFTER_INTERACTION = 12000; // 12s pause after user input
+
+                function goTo(i) {
+                    index = (i + slides.length) % slides.length;
+                    const target = slides[index];
+                    if (!target) return;
+                    track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+                }
+
+                function autoAdvance() {
+                    const now = Date.now();
+                    if (now < userPausedUntil) return; // user interaction pause
+                    // Determine current nearest slide (in case of manual swipe)
+                    const currentLeft = track.scrollLeft;
+                    let nearest = index;
+                    let minDist = Infinity;
+                    slides.forEach((s, i) => {
+                        const dist = Math.abs(s.offsetLeft - currentLeft);
+                        if (dist < minDist) { minDist = dist; nearest = i; }
+                    });
+                    index = nearest;
+                    goTo(index + 1);
+                }
+
+                let intervalId = setInterval(autoAdvance, INTERVAL);
+
+                // Pause on user interaction (touch / scroll / wheel)
+                ['touchstart','wheel','mousedown'].forEach(evt => {
+                    track.addEventListener(evt, () => {
+                        userPausedUntil = Date.now() + PAUSE_AFTER_INTERACTION;
+                    }, { passive: true });
+                });
+                // If visibility changes (tab hidden), pause progression
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        clearInterval(intervalId);
+                    } else {
+                        intervalId = setInterval(autoAdvance, INTERVAL);
+                    }
+                });
+            }
+        });
     </script>
 
 
