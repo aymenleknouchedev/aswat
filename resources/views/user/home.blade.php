@@ -568,16 +568,16 @@
 
             .most-reads-item {
                 display: flex;
-                flex-direction: column; /* number on its own line, then title */
                 align-items: flex-start;
-                gap: 6px;
+                gap: 12px;
             }
 
             .mr-index {
-                display: block;
+                min-width: 28px;
+                text-align: center;
                 font-weight: 900;
-                font-size: 44px; /* bigger number */
-                line-height: 1.1;
+                font-size: 22px;
+                line-height: 1;
                 color: #9e9e9e;
                 font-family: 'asswat-bold';
             }
