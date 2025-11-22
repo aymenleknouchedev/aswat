@@ -25,7 +25,27 @@
     <div class="mobile-sidebar" id="mobileSidebar">
         <div class="sidebar-content">
             <ul class="menu-list">
-                <li><a href="#">أخبار</a></li>
+                <li class="menu-item-with-submenu">
+                    <div class="menu-item-header">
+                        <a href="#">أخبار</a>
+                        <button class="submenu-toggle" aria-label="Toggle submenu">
+                            <span class="toggle-arrow">›</span>
+                        </button>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="#">الجزائر</a></li>
+                        <li><a href="#">عالم</a></li>
+                        <li><a href="#">اقتصاد</a></li>
+                        <li><a href="#">رياضة</a></li>
+                        <li><a href="#">ناس</a></li>
+                        <li><a href="#">ثقافة وفنون</a></li>
+                        <li><a href="#">تكنولوجيا</a></li>
+                        <li><a href="#">صحة</a></li>
+                        <li><a href="#">بيئة</a></li>
+                        <li><a href="#">ميديا</a></li>
+                        <li><a href="#">منوعات</a></li>
+                    </ul>
+                </li>
                 <li><a href="#">آراء</a></li>
                 <li><a href="#">نوافذ</a></li>
                 <li><a href="#">ملفات</a></li>
@@ -234,6 +254,91 @@
             .menu-list li:nth-child(9) a { animation-delay: 0.5s; }
             .menu-list li:nth-child(10) a { animation-delay: 0.55s; }
 
+            /* Submenu Styles */
+            .menu-item-with-submenu {
+                border-bottom: none;
+            }
+
+            .menu-item-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0;
+                gap: 0;
+            }
+
+            .menu-item-header a {
+                flex: 1;
+                padding: 16px 20px;
+                color: #ffffff;
+                text-decoration: none;
+                font-size: 16px;
+                font-weight: 500;
+                transition: all 0.2s ease;
+            }
+
+            .submenu-toggle {
+                background: none;
+                border: none;
+                padding: 16px 12px;
+                cursor: pointer;
+                color: #ffffff;
+                font-size: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+                -webkit-tap-highlight-color: transparent;
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            .submenu-toggle .toggle-arrow {
+                display: inline-block;
+                transition: transform 0.3s ease;
+                font-size: 22px;
+                line-height: 1;
+            }
+
+            .submenu-toggle.active .toggle-arrow {
+                transform: rotate(90deg);
+            }
+
+            .submenu {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                background-color: #1a1a1a;
+            }
+
+            .submenu.active {
+                max-height: 600px;
+            }
+
+            .submenu li {
+                border-bottom: none;
+            }
+
+            .submenu a {
+                display: block;
+                padding: 12px 20px 12px 40px;
+                color: #cccccc;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 400;
+                transition: all 0.2s ease;
+            }
+
+            .submenu a:hover,
+            .submenu a:active {
+                padding-right: 20px;
+                color: #66ccff;
+                background-color: rgba(102, 204, 255, 0.1);
+            }
+
             @keyframes slideInText {
                 from {
                     opacity: 0;
@@ -315,9 +420,36 @@
             // Close when clicking overlay
             sidebarOverlay.addEventListener('click', closeSidebar);
 
-            // Close when clicking a link
-            const menuLinks = mobileSidebar.querySelectorAll('a');
-            menuLinks.forEach(link => {
+            // Submenu toggle functionality
+            const submenuToggles = document.querySelectorAll('.submenu-toggle');
+            submenuToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const submenu = this.closest('.menu-item-with-submenu').querySelector('.submenu');
+                    const isActive = submenu.classList.contains('active');
+                    
+                    if (isActive) {
+                        submenu.classList.remove('active');
+                        this.classList.remove('active');
+                    } else {
+                        submenu.classList.add('active');
+                        this.classList.add('active');
+                    }
+                });
+            });
+
+            // Close submenu when clicking a submenu link
+            const submenuLinks = mobileSidebar.querySelectorAll('.submenu a');
+            submenuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // Don't close main sidebar when clicking submenu items
+                });
+            });
+
+            // Close when clicking main menu links (but not submenu toggle)
+            const mainMenuLinks = mobileSidebar.querySelectorAll('.menu-list > li > .menu-item-header > a, .menu-list > li > a');
+            mainMenuLinks.forEach(link => {
                 link.addEventListener('click', closeSidebar);
             });
 
