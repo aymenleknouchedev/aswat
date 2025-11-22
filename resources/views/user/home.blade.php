@@ -679,28 +679,29 @@
                 }, 300);
             }
         });
-        // Mobile auto horizontal scroll ONLY for currently visible vertical section
+        // Mobile auto horizontal scroll ONLY for currently visible vertical section (immediate start)
         document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth > 991) return; // mobile only
             const wrappers = Array.from(document.querySelectorAll('.mobile-h-wrapper'));
             const states = new Map();
             const INTERVAL = 4000;
-            const PAUSE_AFTER_INTERACTION = 12000; // pause after manual interaction
+            const FIRST_DELAY = 600; // quicker first advance
+            const PAUSE_AFTER_INTERACTION = 8000; // shorter pause after manual interaction
             let activeWrapper = null;
 
             wrappers.forEach(w => {
                 const track = w.querySelector('.h-snap');
                 if (!track) return;
                 const slides = Array.from(track.querySelectorAll('.h-snap-slide'));
-                if (slides.length < 2) return; // no need for auto scroll
+                if (slides.length < 2) return;
                 states.set(w, {
                     track,
                     slides,
                     index: 0,
                     userPausedUntil: 0,
-                    intervalId: null
+                    timeoutId: null,
+                    running: false
                 });
-                // user interaction pause
                 ['touchstart','wheel','mousedown'].forEach(evt => {
                     track.addEventListener(evt, () => {
                         const st = states.get(w); if (!st) return;
@@ -709,19 +710,34 @@
                 });
             });
 
+            function schedule(st, delay) {
+                clearTimeout(st.timeoutId);
+                st.timeoutId = setTimeout(function tick() {
+                    const now = Date.now();
+                    if (now < st.userPausedUntil) {
+                        // re-check sooner while paused
+                        schedule(st, 500);
+                        return;
+                    }
+                    advance(st);
+                    schedule(st, INTERVAL);
+                }, delay);
+            }
+
             function startAuto(w) {
-                const st = states.get(w); if (!st || st.intervalId) return;
-                st.intervalId = setInterval(() => advance(st), INTERVAL);
+                const st = states.get(w); if (!st || st.running) return;
+                st.running = true;
+                // immediate first schedule with short delay
+                schedule(st, FIRST_DELAY);
             }
             function stopAuto(w) {
-                const st = states.get(w); if (!st || !st.intervalId) return;
-                clearInterval(st.intervalId); st.intervalId = null;
+                const st = states.get(w); if (!st || !st.running) return;
+                st.running = false;
+                clearTimeout(st.timeoutId); st.timeoutId = null;
             }
             function advance(st) {
-                const now = Date.now();
-                if (now < st.userPausedUntil) return;
+                // sync index to nearest before advancing
                 const currentLeft = st.track.scrollLeft;
-                // sync index to nearest slide first
                 let nearest = st.index, minDist = Infinity;
                 st.slides.forEach((s,i) => { const d = Math.abs(s.offsetLeft - currentLeft); if (d < minDist){minDist=d; nearest=i;} });
                 st.index = nearest;
@@ -731,25 +747,23 @@
                 if (target) st.track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
             }
 
-            // IntersectionObserver to determine visible wrapper
+            // IntersectionObserver to determine visible wrapper (lower thresholds)
             const observer = new IntersectionObserver(entries => {
-                // find most visible intersecting entry
-                let candidate = null; let ratio = 0;
+                let candidate = activeWrapper; let ratio = 0;
                 entries.forEach(e => {
                     if (e.isIntersecting && e.intersectionRatio > ratio) { ratio = e.intersectionRatio; candidate = e.target; }
                 });
-                if (candidate && candidate !== activeWrapper) {
-                    // switch active
+                // Start when at least 35% visible
+                if (candidate && ratio >= 0.35 && candidate !== activeWrapper) {
                     if (activeWrapper) stopAuto(activeWrapper);
                     activeWrapper = candidate;
                     startAuto(activeWrapper);
-                } else if (!candidate && activeWrapper) {
-                    // none visible, stop current
-                    stopAuto(activeWrapper); activeWrapper = null;
                 }
-            }, { threshold: [0.2,0.4,0.6,0.8,1] });
+            }, { threshold: [0,0.15,0.35,0.5,0.75,1] });
 
             wrappers.forEach(w => observer.observe(w));
+            // Fallback: if observer hasn't activated after 1s, start first wrapper
+            setTimeout(() => { if (!activeWrapper && wrappers[0]) { activeWrapper = wrappers[0]; startAuto(activeWrapper); } }, 1000);
 
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
