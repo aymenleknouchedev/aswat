@@ -532,7 +532,7 @@
                 background: #fff;
                 color: #000;
                 padding: 6px 12px;
-                font-size: 15px;
+                font-size: 23px;
                 font-weight: 800;
                 line-height: 1;
                 border-radius: 0;
