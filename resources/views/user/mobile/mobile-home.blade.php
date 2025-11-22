@@ -6,7 +6,7 @@
             <!-- Logo Section (Always visible) -->
             <div class="navbar-logo">
                 <a href="#">
-                    <img src="{{ asset('user/assets/images/logo.svg') }}" alt="Logo" class="logo-img">
+                    <img src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
                 </a>
             </div>
 
