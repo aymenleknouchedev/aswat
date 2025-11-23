@@ -325,7 +325,6 @@
                 max-height: 0;
                 overflow: hidden;
                 transition: max-height 0.3s ease;
-                background-color: #1a1a1a;
             }
 
             .submenu.active {
