@@ -553,10 +553,12 @@
                                             @endphp
                                             <div class="opinion-center">
                                                 @if ($firstWriter)
-                                                    <img class="opinion-avatar"
-                                                        src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}"
-                                                        alt="{{ $firstWriter->name ?? '' }}">
-                                                    <span class="opinion-author">{{ $firstWriter->name }}</span>
+                                                    <a href="{{ route('writer.show', ['id' => $firstWriter->id]) }}" class="opinion-writer-link" style="text-decoration: none; color: inherit;">
+                                                        <img class="opinion-avatar"
+                                                            src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}"
+                                                            alt="{{ $firstWriter->name ?? '' }}">
+                                                        <span class="opinion-author">{{ $firstWriter->name }}</span>
+                                                    </a>
                                                 @endif
                                                 <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
                                                     <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
