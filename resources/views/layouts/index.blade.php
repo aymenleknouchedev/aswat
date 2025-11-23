@@ -23,7 +23,11 @@
     <meta property="og:site_name" content="أصوات جزائرية" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
