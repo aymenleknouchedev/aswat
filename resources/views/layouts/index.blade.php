@@ -25,6 +25,30 @@
             transform: none !important;
             box-shadow: none !important;
         }
+
+        /* Simple global loader */
+        .app-loader {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+        }
+        .app-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .app-loader .app-spinner {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            animation: app-spin 1s linear infinite;
+        }
+        @keyframes app-spin { to { transform: rotate(360deg); } }
     </style>
 
 
@@ -82,10 +106,26 @@
 
 <body id="gototop">
 
+    <!-- Global loader -->
+    <div id="app-loader" class="app-loader" role="status" aria-live="polite" aria-label="جارِ التحميل">
+    </div>
+
     @yield('content')
 
     <script src="{{ asset('user/js/fixed-nav.js') }}"></script>
     <script src="{{ asset('user/js/photos-scroll.js') }}"></script>
+    <script>
+        // Hide loader after full load
+        window.addEventListener('load', function() {
+            var l = document.getElementById('app-loader');
+            if (l) {
+                l.classList.add('hidden');
+                setTimeout(function() {
+                    if (l && l.parentNode) l.parentNode.removeChild(l);
+                }, 300);
+            }
+        });
+    </script>
 </body>
 
 </html>

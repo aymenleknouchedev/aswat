@@ -124,9 +124,7 @@
     </style>
 
 
-    <!-- Simple loader (desktop only) -->
-    <div id="web-loader" class="web-loader" role="status" aria-live="polite" aria-label="جارِ التحميل">
-    </div>
+    
 
     <div class="web">
         @include('user.components.fixed-nav')
@@ -1057,16 +1055,6 @@
     </style>
 
     <script>
-        // Hide desktop loader after full load
-        window.addEventListener('load', function() {
-            var l = document.getElementById('web-loader');
-            if (l) {
-                l.classList.add('hidden');
-                setTimeout(function() {
-                    if (l && l.parentNode) l.parentNode.removeChild(l);
-                }, 300);
-            }
-        });
         // Mobile auto horizontal scroll ONLY for currently visible vertical section (immediate start)
         document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth > 991) return; // mobile only
