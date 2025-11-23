@@ -1287,9 +1287,12 @@
 
         .audio-play-icon {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            bottom: 16px;
+            left: 16px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1301,7 +1304,7 @@
 
 
         .audio-play-icon i {
-            font-size: 30px;
+            font-size: 24px;
             color: #ffffff;
             margin-left: 2px;
         }
@@ -1314,11 +1317,10 @@
         /* Updated Creative podcast lines - Aligned with play icon - Interactive for seeking */
         .podcast-lines {
             position: absolute;
-            bottom: 20px;
-            left: 65px;
+            bottom: 18px;
+            left: 80px;
             opacity: 0;
             transition: opacity 0.5s ease;
-            pointer-events: none;
             display: flex;
             align-items: center;
             justify-content: flex-start;
