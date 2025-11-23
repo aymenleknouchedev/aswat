@@ -1696,29 +1696,6 @@
                 color: #888;
             }
 
-            .mobile-share-container {
-                display: flex;
-                gap: 10px;
-                align-items: center;
-            }
-
-            .mobile-share-btn {
-                background: #f5f5f5;
-                border: none;
-                border-radius: 50%;
-                width: 32px;
-                height: 32px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: background 0.3s;
-            }
-
-            .mobile-share-btn:hover {
-                background: #e0e0e0;
-            }
-
             .mobile-article-image {
                 width: 100%;
                 margin: 15px 0;
@@ -2461,22 +2438,47 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 $time = $date->format('H:i');
             @endphp
 
+            @php
+                $shareTitle = $news->share_title ?: $news->long_title;
+                $shareDescription = $news->share_description ?: $news->summary;
+                $shareImage = $news->share_image ?: $news->main_image;
+            @endphp
+
             <div class="mobile-article-date-share">
                 <span class="mobile-article-date">{{ $day }} {{ $month }} {{ $year }} |
                     {{ $time }}</span>
-                <div class="mobile-share-container">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
-                        target="_blank" class="mobile-share-btn" title="فيسبوك">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}" target="_blank"
-                        class="mobile-share-btn" title="تويتر">
-                        <i class="fab fa-x-twitter"></i>
-                    </a>
-                    <a href="https://wa.me/?text={{ urlencode($news->long_title . ' ' . request()->fullUrl()) }}"
-                        target="_blank" class="mobile-share-btn" title="واتس آب">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
+                
+                {{-- Share on the LEFT (matching web version exactly) --}}
+                <div class="share-container" id="shareContainerMobile">
+                    <div class="share-icons">
+                        {{-- Facebook --}}
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
+                            target="_blank" title="مشاركة على فيسبوك" rel="noopener" class="share-icon">
+                            <i class="fa-brands fa-facebook"></i>
+                        </a>
+
+                        {{-- X (Twitter) --}}
+                        <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($shareTitle . ' - ' . $shareDescription) }}"
+                            target="_blank" title="مشاركة على X" rel="noopener" class="share-icon">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+
+                        {{-- WhatsApp --}}
+                        <a href="https://wa.me/?text={{ urlencode($shareTitle . ' - ' . $shareDescription . ' ' . request()->fullUrl()) }}"
+                            target="_blank" title="مشاركة على واتساب" rel="noopener" class="share-icon">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+
+                        {{-- Copy Link --}}
+                        <a href="#" id="copyLinkBtnMobile" title="نسخ الرابط" rel="noopener" class="share-icon">
+                            <i class="fa-solid fa-link"></i>
+                        </a>
+                    </div>
+
+                    {{-- Share Button --}}
+                    <button class="share-btn" id="shareToggleMobile" type="button" title="مشاركة" aria-label="زر المشاركة">
+                        <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
+                    </button>
                 </div>
             </div>
 
@@ -2841,11 +2843,20 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
          * Initialize Share Functionality
          */
         function initializeShareFunctionality() {
-            const shareContainer = document.getElementById('shareContainer');
-            const shareToggle = document.getElementById('shareToggle');
+            // Initialize web share
+            initializeSingleShare('shareContainer', 'shareToggle');
+            // Initialize mobile share
+            initializeSingleShare('shareContainerMobile', 'shareToggleMobile');
+        }
+
+        /**
+         * Initialize a single share container
+         */
+        function initializeSingleShare(containerId, toggleId) {
+            const shareContainer = document.getElementById(containerId);
+            const shareToggle = document.getElementById(toggleId);
 
             if (!shareContainer || !shareToggle) {
-                console.warn('Share container or toggle button not found');
                 return;
             }
 
@@ -2872,10 +2883,19 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
          * Initialize Copy Link Functionality
          */
         function initializeCopyLink() {
-            const copyLinkBtn = document.getElementById('copyLinkBtn');
+            // Initialize web copy link
+            initializeSingleCopyLink('copyLinkBtn');
+            // Initialize mobile copy link
+            initializeSingleCopyLink('copyLinkBtnMobile');
+        }
+
+        /**
+         * Initialize a single copy link button
+         */
+        function initializeSingleCopyLink(btnId) {
+            const copyLinkBtn = document.getElementById(btnId);
 
             if (!copyLinkBtn) {
-                console.warn('Copy link button not found');
                 return;
             }
 
