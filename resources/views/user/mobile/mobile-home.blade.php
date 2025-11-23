@@ -231,7 +231,8 @@
                 padding: 16px 20px;
                 color: #ffffff;
                 text-decoration: none;
-                font-size: 16px;
+                font-size: 26px;
+                font-family: 'asswat-bold';
                 font-weight: 500;
                 transition: all 0.2s ease;
                 opacity: 0;
@@ -263,7 +264,7 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 0;
+                padding-left: 15px;
                 gap: 0;
             }
 
@@ -272,7 +273,8 @@
                 padding: 16px 20px;
                 color: #ffffff;
                 text-decoration: none;
-                font-size: 16px;
+                font-size: 26px;
+                font-family: 'asswat-bold';
                 font-weight: 500;
                 transition: all 0.2s ease;
             }
@@ -296,7 +298,7 @@
             .submenu-toggle .toggle-arrow {
                 display: inline-block;
                 transition: transform 0.3s ease;
-                font-size: 22px;
+                font-size: 46px;
                 line-height: 1;
             }
 
@@ -311,7 +313,6 @@
                 max-height: 0;
                 overflow: hidden;
                 transition: max-height 0.3s ease;
-                background-color: #1a1a1a;
             }
 
             .submenu.active {
@@ -325,9 +326,10 @@
             .submenu a {
                 display: block;
                 padding: 12px 20px 12px 40px;
-                color: #cccccc;
+                color: #828282;
                 text-decoration: none;
-                font-size: 14px;
+                font-size: 26px;
+                font-family: 'asswat-bold';
                 font-weight: 400;
                 transition: all 0.2s ease;
             }
@@ -335,8 +337,6 @@
             .submenu a:hover,
             .submenu a:active {
                 padding-right: 20px;
-                color: #66ccff;
-                background-color: rgba(102, 204, 255, 0.1);
             }
 
             @keyframes slideInText {
