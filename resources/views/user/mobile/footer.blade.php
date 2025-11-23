@@ -28,13 +28,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 14px;
+            gap: 24px;
             margin: 6px 0 14px;
         }
 
         .m-footer .m-icon {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             opacity: .75;
         }
 
