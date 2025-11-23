@@ -429,19 +429,21 @@
                         @foreach ($topContents->take($topcontentslist) as $tc)
                             @php $c = $tc->content ?? null; @endphp
                             @if ($c)
-                                <a href="{{ route('news.show', $c->title) }}" class="h-snap-slide mobile-featured-post"
+                                <div class="h-snap-slide mobile-featured-post"
                                     style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}');">
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content2">
                                         <p class="featured-post-category-name">{{ $c->category->name ?? 'أصوات جزائرية' }}
                                         </p>
-                                        <h1 class="featured-post-title">
-                                            {{ \Illuminate\Support\Str::limit($c->mobile_title ?? $c->title, 50) }}</h1>
-                                        <p class="featured-post-description">
-                                            {{ \Illuminate\Support\Str::limit(strip_tags($c->summary ?? ($c->description ?? '')), 130) }}
-                                        </p>
+                                        <a href="{{ route('news.show', $c->title) }}" style="text-decoration: none; color: inherit;">
+                                            <h1 class="featured-post-title">
+                                                {{ \Illuminate\Support\Str::limit($c->mobile_title ?? $c->title, 50) }}</h1>
+                                            <p class="featured-post-description">
+                                                {{ \Illuminate\Support\Str::limit(strip_tags($c->summary ?? ($c->description ?? '')), 130) }}
+                                            </p>
+                                        </a>
                                     </div>
-                                </a>
+                                </div>
                             @endif
                         @endforeach
                     </div>
@@ -467,21 +469,22 @@
                         </div>
                         <div class="h-snap" dir="rtl">
                             @foreach ($trends->take(5) as $content)
-                                <a href="{{ route('news.show', $content->title) }}"
-                                    class="h-snap-slide mobile-featured-post"
+                                <div class="h-snap-slide mobile-featured-post"
                                     style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? ($content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg')) }}');">
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content2">
                                         <p class="featured-post-category-name">
                                             {{ $content->category->name ?? $principalTrend->trend->title }}</p>
-                                        <h1 class="featured-post-title">
-                                            {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
-                                        </h1>
-                                        <p class="featured-post-description">
-                                            {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
-                                        </p>
+                                        <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
+                                            <h1 class="featured-post-title">
+                                                {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
+                                            </h1>
+                                            <p class="featured-post-description">
+                                                {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
+                                            </p>
+                                        </a>
                                     </div>
-                                </a>
+                                </div>
                             @endforeach
                         </div>
                     </div>
@@ -531,8 +534,7 @@
                             </div>
                             <div class="h-snap" dir="rtl">
                                 @foreach ($collection->take(5) as $content)
-                                    <a href="{{ route('news.show', $content->title) }}"
-                                        class="h-snap-slide mobile-featured-post"
+                                    <div class="h-snap-slide mobile-featured-post"
                                         style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
                                         <div class="post-overlay-dark"></div>
                                         <div class="featured-post-content">
@@ -546,10 +548,12 @@
                                                         alt="{{ $firstWriter->name ?? '' }}">
                                                     <span class="opinion-author">{{ $firstWriter->name }}</span>
                                                 @endif
-                                                <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
+                                                <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
+                                                    <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
+                                                </a>
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
@@ -600,19 +604,20 @@
                             </div>
                             <div class="h-snap" dir="rtl">
                                 @foreach ($collection->take(5) as $content)
-                                    <a href="{{ route('news.show', $content->title) }}"
-                                        class="h-snap-slide mobile-featured-post"
+                                    <div class="h-snap-slide mobile-featured-post"
                                         style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
                                         <div class="post-overlay-dark"></div>
                                         <div class="featured-post-content">
                                             <p class="featured-post-category-name">
                                                 {{ $content->category->name ?? $sectionTitle }}</p>
-                                            <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
-                                            <p class="featured-post-description">
-                                                {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
-                                            </p>
+                                            <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
+                                                <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
+                                                <p class="featured-post-description">
+                                                    {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
+                                                </p>
+                                            </a>
                                         </div>
-                                    </a>
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
