@@ -8,6 +8,7 @@
             height: 100vh;
             /* full screen */
             display: flex;
+            z-index: 20000;
         }
 
         .m-footer .m-wrap {

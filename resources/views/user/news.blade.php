@@ -1628,6 +1628,284 @@
                 width: 14px;
                 height: 14px;
             }
+
+            /* Mobile article styles */
+            .mobile-article-container {
+                margin-top: 68px;
+                padding: 20px;
+                direction: rtl;
+                background: #fff;
+            }
+
+            .mobile-article-category {
+                font-size: 12px;
+                color: #888;
+                margin-bottom: 10px;
+                text-align: right;
+            }
+
+            .mobile-article-category a {
+                color: #888;
+                text-decoration: none;
+            }
+
+            .mobile-article-title {
+                font-size: 22px;
+                font-family: asswat-bold;
+                color: #141414;
+                margin-bottom: 12px;
+                line-height: 1.4;
+                text-align: right;
+            }
+
+            .mobile-article-summary {
+                font-size: 15px;
+                color: #555;
+                line-height: 1.6;
+                margin-bottom: 15px;
+                text-align: right;
+                font-family: asswat-regular;
+            }
+
+            .mobile-article-meta {
+                font-size: 13px;
+                color: #888;
+                margin-bottom: 15px;
+                text-align: right;
+                line-height: 1.6;
+            }
+
+            .mobile-article-meta a {
+                color: #0066cc;
+                text-decoration: none;
+            }
+
+            .mobile-article-date-share {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+                padding-bottom: 15px;
+                border-bottom: 1px solid #eee;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .mobile-article-date {
+                font-size: 12px;
+                color: #888;
+            }
+
+            .mobile-share-container {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .mobile-share-btn {
+                background: #f5f5f5;
+                border: none;
+                border-radius: 50%;
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+
+            .mobile-share-btn:hover {
+                background: #e0e0e0;
+            }
+
+            .mobile-article-image {
+                width: 100%;
+                margin: 15px 0;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            .mobile-article-image img {
+                width: 100%;
+                height: auto;
+                display: block;
+                object-fit: cover;
+                aspect-ratio: 16/9;
+                cursor: pointer;
+            }
+
+            .mobile-article-image figcaption {
+                font-size: 12px;
+                color: #888;
+                padding: 8px;
+                background: #f9f9f9;
+                text-align: right;
+            }
+
+            .mobile-article-content {
+                font-size: 16px;
+                line-height: 1.8;
+                color: #333;
+                margin: 20px 0;
+                text-align: right;
+                font-family: asswat-regular;
+            }
+
+            .mobile-article-content p {
+                margin-bottom: 15px;
+                text-align: right;
+            }
+
+            .mobile-article-content h2,
+            .mobile-article-content h3 {
+                font-size: 18px;
+                font-family: asswat-bold;
+                color: #141414;
+                margin: 20px 0 12px;
+                text-align: right;
+            }
+
+            .mobile-article-content h3 {
+                font-size: 16px;
+            }
+
+            .mobile-article-content img {
+                width: 100%;
+                margin: 15px 0;
+                cursor: pointer;
+            }
+
+            .mobile-article-content a {
+                color: #0066cc;
+                text-decoration: none;
+            }
+
+            .mobile-article-content blockquote {
+                border-right: 4px solid #e4f0ef;
+                padding-right: 15px;
+                margin: 15px 0;
+                font-style: italic;
+                color: #666;
+                text-align: right;
+            }
+
+            .mobile-article-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin: 20px 0;
+                justify-content: flex-end;
+            }
+
+            .mobile-article-tags a {
+                display: inline-block;
+                padding: 6px 12px;
+                background: #f0f0f0;
+                color: #333;
+                text-decoration: none;
+                border-radius: 20px;
+                font-size: 12px;
+            }
+
+            .mobile-article-tags a:hover {
+                background: #e0e0e0;
+            }
+
+            .mobile-writer-card {
+                background: #f9f9f9;
+                padding: 15px;
+                border-radius: 8px;
+                margin: 20px 0;
+                text-align: right;
+                display: flex;
+                gap: 12px;
+                align-items: flex-start;
+                direction: rtl;
+            }
+
+            .mobile-writer-image {
+                width: 60px;
+                height: 60px;
+                min-width: 60px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .mobile-writer-info {
+                flex: 1;
+            }
+
+            .mobile-writer-name {
+                font-size: 14px;
+                font-family: asswat-bold;
+                color: #333;
+                margin-bottom: 4px;
+            }
+
+            .mobile-writer-bio {
+                font-size: 12px;
+                color: #888;
+                line-height: 1.4;
+            }
+
+            .mobile-related-section {
+                margin-top: 30px;
+                padding-top: 20px;
+                border-top: 1px solid #eee;
+            }
+
+            .mobile-related-title {
+                font-size: 18px;
+                font-family: asswat-bold;
+                color: #141414;
+                margin-bottom: 15px;
+                text-align: right;
+            }
+
+            .mobile-related-card {
+                display: flex;
+                gap: 12px;
+                margin-bottom: 15px;
+                text-decoration: none;
+                color: inherit;
+                direction: rtl;
+            }
+
+            .mobile-related-image {
+                width: 120px;
+                height: 90px;
+                min-width: 120px;
+                border-radius: 6px;
+                object-fit: cover;
+            }
+
+            .mobile-related-content {
+                flex: 1;
+            }
+
+            .mobile-related-category {
+                font-size: 11px;
+                color: #888;
+                margin-bottom: 4px;
+            }
+
+            .mobile-related-title-text {
+                font-size: 13px;
+                font-family: asswat-bold;
+                color: #333;
+                line-height: 1.3;
+            }
+
+            /* Greybar hide on scroll */
+            #greybar {
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+
+            #greybar.hide {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1891,8 +2169,8 @@
                 @if ($news->template == 'album' && $news->media()->wherePivot('type', 'album')->count())
                     @php
                         // Use the article's main image as the first slide (cover) in the album
-            $mainImage = $news->media()->wherePivot('type', 'main')->first();
-            $albumImages = $news->media()->wherePivot('type', 'album')->get();
+$mainImage = $news->media()->wherePivot('type', 'main')->first();
+$albumImages = $news->media()->wherePivot('type', 'album')->get();
 
                         // Prepend main image as the first slide if it exists
                         if ($mainImage) {
@@ -2090,10 +2368,252 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
     <div class="mobile">
         @include('user.mobile.mobile-home')
-        
+
+
+
+        <!-- Mobile Article Content -->
+        <div class="mobile-article-container">
+            <div id="greybar"
+                style="background-color: #252525; height: 68px; position: fixed; top: 0; left: 0; right: 0; z-index: 10;">
+            </div>
+            <!-- Category -->
+            <div class="mobile-article-category">
+                @if (isset($news->country))
+                    <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}">
+                        {{ $news->category->name ?? '' }}
+                    </a>
+                    -
+                    <a href="{{ route('category.show', ['id' => $news->country->id, 'type' => 'Country']) }}">
+                        {{ $news->country->name ?? '' }}
+                    </a>
+                @elseif (isset($news->continent))
+                    <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}">
+                        {{ $news->category->name ?? '' }}
+                    </a>
+                    -
+                    <a href="{{ route('category.show', ['id' => $news->continent->id, 'type' => 'Continent']) }}">
+                        {{ $news->continent->name ?? '' }}
+                    </a>
+                @else
+                    <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}">
+                        {{ $news->category->name ?? '' }}
+                    </a>
+                @endif
+            </div>
+
+            <!-- Title -->
+            <h1 class="mobile-article-title">{{ $news->long_title }}</h1>
+
+            <!-- Summary -->
+            <div class="mobile-article-summary">{{ $news->summary }}</div>
+
+            <!-- Meta / Writers -->
+            <div class="mobile-article-meta">
+                @php
+                    $writers = $news->writers;
+                @endphp
+
+                @if ($writers->count() > 0)
+                    @if ($news->city)
+                        <div>{{ $news->city->name }} -</div>
+                    @endif
+                    @if ($writers[0]->pivot->role)
+                        <div><span style="color: #888;">{{ $writers[0]->pivot->role }}:</span>
+                            <a href="{{ route('writer.show', $writers[0]->id) }}">
+                                {{ $writers[0]->name }}
+                            </a>
+                        </div>
+                    @else
+                        <div>
+                            <a href="{{ route('writer.show', $writers[0]->id) }}">
+                                {{ $writers[0]->name }}
+                            </a>
+                        </div>
+                    @endif
+
+                    @foreach ($writers->slice(1) as $writer)
+                        <div>
+                            <a href="{{ route('writer.show', $writer->id) }}">
+                                {{ $writer->name }}
+                            </a>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+
+            <!-- Date and Share -->
+            @php
+                $months = [
+                    '01' => 'يناير',
+                    '02' => 'فبراير',
+                    '03' => 'مارس',
+                    '04' => 'أبريل',
+                    '05' => 'مايو',
+                    '06' => 'يونيو',
+                    '07' => 'يوليو',
+                    '08' => 'أغسطس',
+                    '09' => 'سبتمبر',
+                    '10' => 'أكتوبر',
+                    '11' => 'نوفمبر',
+                    '12' => 'ديسمبر',
+                ];
+                $date = $news->created_at;
+                $day = $date->format('d');
+                $month = $months[$date->format('m')];
+                $year = $date->format('Y');
+                $time = $date->format('H:i');
+            @endphp
+
+            <div class="mobile-article-date-share">
+                <span class="mobile-article-date">{{ $day }} {{ $month }} {{ $year }} |
+                    {{ $time }}</span>
+                <div class="mobile-share-container">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
+                        target="_blank" class="mobile-share-btn" title="فيسبوك">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}" target="_blank"
+                        class="mobile-share-btn" title="تويتر">
+                        <i class="fab fa-x-twitter"></i>
+                    </a>
+                    <a href="https://wa.me/?text={{ urlencode($news->long_title . ' ' . request()->fullUrl()) }}"
+                        target="_blank" class="mobile-share-btn" title="واتس آب">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Feature Image -->
+            @if (
+                $news->template !== 'no_image' &&
+                    $news->template !== 'video' &&
+                    $news->template !== 'album' &&
+                    $news->template !== 'podcast')
+                <figure class="mobile-article-image">
+                    <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}"
+                        alt="{{ $news->caption }}" loading="lazy" style="cursor: pointer;">
+                    @if ($news->caption)
+                        <figcaption>{{ $news->caption }}</figcaption>
+                    @endif
+                </figure>
+            @endif
+
+            <!-- Album -->
+            @if ($news->template == 'album' && $news->media()->wherePivot('type', 'album')->count())
+                @php
+                    $mainImage = $news->media()->wherePivot('type', 'main')->first();
+                    $albumImages = $news->media()->wherePivot('type', 'album')->get();
+                    if ($mainImage) {
+                        $allAlbumImages = collect([$mainImage])->concat($albumImages);
+                    } else {
+                        $allAlbumImages = $albumImages;
+                    }
+                @endphp
+                @include('user.components.album-slider', [
+                    'albumImages' => $allAlbumImages,
+                    'caption' => $news->caption ?? '',
+                ])
+            @endif
+
+            <!-- Video -->
+            @if ($news->template == 'video' && $news->media()->wherePivot('type', 'video')->first())
+                @php
+                    $mainImage = $news->media()->wherePivot('type', 'main')->first();
+                    $posterImage = $mainImage ? $mainImage->path : null;
+                @endphp
+                @include('user.components.video-player', [
+                    'video' => $news->media()->wherePivot('type', 'video')->first()->path,
+                    'caption' => $news->media()->wherePivot('type', 'video')->first()->alt ?? 'فيديو',
+                    'poster' => $posterImage,
+                ])
+            @endif
+
+            <!-- Podcast/Audio -->
+            @if ($news->template == 'podcast' && $news->media()->wherePivot('type', 'podcast')->first())
+                @php
+                    $mainImage = $news->media()->wherePivot('type', 'main')->first();
+                    $coverImage = $mainImage ? $mainImage->path : null;
+                    $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
+                @endphp
+
+                <div class="audio-player-wrapper" id="audioPlayerWrapper">
+                    <div class="audio-player-image" style="position:relative;">
+                        <img src="{{ $coverImage }}" alt="{{ $news->caption ?? 'بودكاست' }}" loading="lazy">
+                        <div class="audio-play-icon" id="audioPlayIcon">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                        <div class="podcast-lines" id="podcastLines">
+                            @for ($i = 0; $i < 15; $i++)
+                                <div class="podcast-line"></div>
+                            @endfor
+                        </div>
+                        <div class="audio-time-display" id="audioTimeDisplay">
+                            <span id="currentTime">0:00</span> / <span id="totalDuration">0:00</span>
+                        </div>
+                    </div>
+                    <div class="audio-player-controls">
+                        <audio id="podcastAudio" preload="metadata">
+                            <source src="{{ $audioPath }}" type="audio/mpeg">
+                            متصفحك لا يدعم تشغيل الصوتيات.
+                        </audio>
+                    </div>
+                    @if ($news->caption)
+                        <div class="audio-caption">{{ $news->caption }}</div>
+                    @endif
+                </div>
+            @endif
+
+            <!-- Article Content -->
+            <div class="mobile-article-content">{!! $news->content !!}</div>
+
+            <!-- Tags -->
+            <div class="mobile-article-tags">
+                @foreach ($news->tags as $tag)
+                    <a href="{{ route('tag.show', $tag->id) }}">
+                        {{ $tag->name }}
+                    </a>
+                @endforeach
+            </div>
+
+            <!-- Writer Cards -->
+            @php $writers = $news->writers; @endphp
+            @if ($writers->count() > 0)
+                @foreach ($writers as $writer)
+                    <a href="{{ route('writer.show', $writer->id) }}" style="text-decoration: none; color: inherit;">
+                        <div class="mobile-writer-card">
+                            <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
+                                class="mobile-writer-image" loading="lazy">
+                            <div class="mobile-writer-info">
+                                <div class="mobile-writer-name">{{ $writer->name }}</div>
+                                <div class="mobile-writer-bio">{{ $writer->bio }}</div>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+
+            <!-- Related News -->
+            @if (isset($relatedNews) && $relatedNews->count() > 0)
+                <div class="mobile-related-section">
+                    <div class="mobile-related-title">ذات صلة</div>
+                    @foreach ($relatedNews as $item)
+                        <a href="{{ route('news.show', $item->title) }}" class="mobile-related-card">
+                            <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                alt="{{ $item->title ?? '' }}" class="mobile-related-image" loading="lazy">
+                            <div class="mobile-related-content">
+                                <div class="mobile-related-category">
+                                    <x-category-links :content="$item" />
+                                </div>
+                                <div class="mobile-related-title-text">{{ $item->title ?? '' }}</div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            @endif
+        </div>
+
         <!-- Compact mobile footer at the end -->
         <div class="mobile-container">
-            <div class="mobilecontentnew"></div>
             @include('user.mobile.footer')
         </div>
     </div>
@@ -2140,7 +2660,32 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             initializeTextDefinitionModal();
             initializeCopyLink();
             initializeAudioPlayer();
+            initializeGreybarScroll();
         });
+
+        /**
+         * Initialize Greybar Hide on Scroll
+         */
+        function initializeGreybarScroll() {
+            const greybar = document.getElementById('greybar');
+            if (!greybar) return;
+
+            let lastScrollTop = 0;
+
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                if (scrollTop > lastScrollTop) {
+                    // Scrolling down
+                    greybar.classList.add('hide');
+                } else {
+                    // Scrolling up
+                    greybar.classList.remove('hide');
+                }
+
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            });
+        }
 
         /**
          * Initialize Enhanced Audio Player
