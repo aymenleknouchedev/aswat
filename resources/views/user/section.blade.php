@@ -661,7 +661,8 @@
             /* Horizontal snap scroller (reuse styles from home) */
             .mobile-h-wrapper {
                 width: 100%;
-                height: 100vh;
+                    height: 100vh; /* fallback */
+                    height: 100svh; /* avoid growth when URL bar hides */
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
                 position: relative;
@@ -757,7 +758,8 @@
 
             .mobile-featured-post {
                 width: 100%;
-                height: 100dvh;
+                    height: 100vh; /* fallback */
+                    height: 100svh; /* lock to small viewport to prevent zoom-effect growth */
                 position: relative;
                 background-size: cover;
                 background-position: center;
