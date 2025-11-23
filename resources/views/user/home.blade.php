@@ -124,530 +124,9 @@
     </style>
 
 
-    
-
-    <div class="web">
-        @include('user.components.fixed-nav')
-
-        {{-- topContents --}}
-        @php
-            $topContentsCount = isset($topContents) && is_countable($topContents) ? count($topContents) : 0;
-        @endphp
-        @if ($topContentsCount >= 7)
-            <div class="container">
-                @include('user.components.header')
-                @include('user.components.sp60')
-            </div>
-        @endif
-
-        {{-- Principal Trend Section --}}
-        @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
-            <div class="container">
-                <section class="art-section-hero">
-                    <div class="art-section-overlay">
-                        <h2 class="art-section-title">{{ $principalTrend->trend->title ?? '' }}</h2>
-
-                        <div class="art-section-grid">
-                            @foreach ($trends as $content)
-                                <div class="art-section-card">
-                                    <a href="{{ route('news.show', $content->title) }}">
-                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
-                                            alt="{{ $content->title }}">
-                                    </a>
-                                    <a href="{{ route('news.show', $content->title) }}"
-                                        style="text-decoration: none; color: inherit;">
-                                        <h2>{{ $content->title }}</h2>
-                                    </a>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </section>
-                @include('user.components.sp60')
-            </div>
-        @endif
-
-        @php
-            $sections = [
-                'world' => ['عالم', 5],
-                'economy' => ['اقتصاد', 4],
-                'sports' => ['رياضة', 6],
-                'people' => ['ناس', 3],
-            ];
-
-            $algeriaItems = $algeria ?? [];
-        @endphp
-
-        {{-- Algeria section separately --}}
-        @if (is_countable($algeriaItems) && count($algeriaItems) >= 4)
-            @php $component = 'algeria'; @endphp {{-- define $component --}}
-            <div class="container">
-                @include('user.components.section-title', ['slot' => 'الجزائر', 'key' => $component])
-                @include('user.components.algeria')
-            </div>
-        @endif
-
-        {{-- Loop for the other sections --}}
-        @foreach ($sections as $component => [$title, $minCount])
-            @php
-                $items = ${$component} ?? [];
-            @endphp
-            @if (is_countable($items) && count($items) >= $minCount)
-                <div class="container">
-                    @include('user.components.sp60')
-                    @include('user.components.section-title', ['slot' => $title, 'key' => $component])
-                    @include("user.components.$component")
-                </div>
-            @endif
-        @endforeach
 
 
 
-
-        {{-- Arts Section --}}
-        @php
-            $artsCount = isset($arts) && is_countable($arts) ? count($arts) : 0;
-        @endphp
-        @if ($artsCount >= 8)
-            @include('user.components.sp60')
-            <div class="container">
-                <a href="{{ route('newSection', ['section' => 'culture']) }}" class="section-title">ثقافة وفنون</a>
-                @include('user.components.ligne')
-                <div class="under-title-ligne-space"></div>
-                @include('user.components.arts')
-            </div>
-        @endif
-
-        {{-- Reviews Section --}}
-        @php
-            $reviewsCount = isset($reviews) && is_countable($reviews) ? count($reviews) : 0;
-        @endphp
-        @if ($reviewsCount >= 3)
-            @include('user.components.sp60')
-            <div class="container">
-                <div class="title">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <a href="{{ route('reviews') }}" class="section-title">آراء</a>
-                        @include('user.components.ligne')
-                        <div class="under-title-ligne-space"></div>
-                        <div style="display: flex;" class="icons">
-                            <div id="reviewBackArrow" style="height: 32px; width: 32px; cursor: pointer;">
-                                <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
-                            </div>
-                            <div id="reviewNextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
-                                <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
-                            </div>
-                        </div>
-                    </div>
-                    @include('user.components.ligne')
-                    <div class="under-title-ligne-space"></div>
-                </div>
-                @include('user.components.reviews')
-            </div>
-        @endif
-
-
-        {{-- Videos Section --}}
-        @php
-            $videosCount = isset($videos) && is_countable($videos) ? count($videos) : 0;
-        @endphp
-        @if ($videosCount >= 4)
-            @include('user.components.sp60')
-            <div style="background-color: #F5F5F5;">
-                @include('user.components.sp60')
-                <div class="container">
-                    <a href="{{ route('videos') }}" class="section-title">فيديو</a>
-                    @include('user.components.ligne')
-                    <div class="under-title-ligne-space"></div>
-                </div>
-                @include('user.components.videos')
-                @include('user.components.sp60')
-            </div>
-        @endif
-
-
-        {{-- Files Section --}}
-        @php
-            $filesCount = isset($files) && is_countable($files) ? count($files) : 0;
-        @endphp
-        @if ($filesCount >= 3)
-            <div class="container">
-                @include('user.components.sp60')
-                <a href="{{ route('files') }}" class="section-title">ملفات</a>
-                @include('user.components.ligne')
-                <div class="under-title-ligne-space"></div>
-                @include('user.components.files')
-            </div>
-        @endif
-
-
-        {{-- Many Titles --}}
-        @php
-            $manySections = [
-                'technology' => ['تكنولوجيا', 3],
-                'health' => ['صحة', 3],
-                'environment' => ['بيئة', 3],
-            ];
-            $showManyTitles = true;
-            foreach ($manySections as $key => [$title, $minCount]) {
-                $items = ${$key} ?? [];
-                if (!is_countable($items) || count($items) < $minCount) {
-                    $showManyTitles = false;
-                    break;
-                }
-            }
-        @endphp
-        @if ($showManyTitles)
-            <div class="container">
-                @include('user.components.sp60')
-                @include('user.components.many-titles')
-            </div>
-        @endif
-
-
-        {{-- Media Section --}}
-        @php
-            $mediaCount = isset($media) && is_countable($media) ? count($media) : 0;
-        @endphp
-        @if ($mediaCount >= 4)
-            <div class="container">
-                @include('user.components.sp60')
-                @include('user.components.section-title', ['slot' => 'ميديا', 'component' => 'media'])
-                @include('user.components.media')
-            </div>
-        @endif
-
-
-        {{-- Check Section --}}
-        @php
-            $checkCount = isset($cheeck) && is_countable($cheeck) ? count($cheeck) : 0;
-        @endphp
-        @if ($checkCount >= 2)
-            <div class="container">
-                @include('user.components.sp60')
-                <a href="{{ route('investigation') }}" class="section-title">فحص</a>
-                @include('user.components.ligne')
-                <div class="under-title-ligne-space"></div>
-                @include('user.components.check')
-            </div>
-        @endif
-
-        {{-- Podcast Section --}}
-        @php
-            $podcastCount = isset($podcasts) && is_countable($podcasts) ? count($podcasts) : 0;
-        @endphp
-        @if ($podcastCount >= 4)
-            @include('user.components.sp60')
-            <div style="background-color: #F5F5F5;">
-                @include('user.components.sp60')
-                <div class="container">
-                    <a href="{{ route('podcasts') }}" class="section-title">بودكاست</a>
-                    @include('user.components.ligne')
-                    <div class="under-title-ligne-space"></div>
-                </div>
-                @include('user.components.podcast')
-                @include('user.components.sp60')
-            </div>
-        @endif
-
-
-        {{-- Two Titles --}}
-        @php
-            $twoTitlesCount = isset($variety) && is_countable($variety) ? count($variety) : 0;
-        @endphp
-        @if ($twoTitlesCount >= 5)
-            <div class="container">
-                @include('user.components.sp60')
-                @include('user.components.two-titles')
-            </div>
-        @endif
-
-
-
-        {{-- Photos Section --}}
-        @php
-            $photosCount = isset($photos) && is_countable($photos) ? count($photos) : 0;
-        @endphp
-        @if ($photosCount >= 3)
-            @include('user.components.sp60')
-            <div style="background-color: #F5F5F5;">
-                @include('user.components.sp60')
-                <div class="container">
-                    <div class="title">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <a href="{{ route('photos') }}" class="section-title">صور</a>
-                            @include('user.components.ligne')
-                            <div class="under-title-ligne-space"></div>
-                            <div style="display: flex;" class="icons">
-                                <div id="backArrow" style="height: 32px; width: 32px; cursor: pointer;">
-                                    <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
-                                </div>
-                                <div id="nextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
-                                    <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
-                                </div>
-                            </div>
-                        </div>
-                        @include('user.components.ligne')
-                        <div class="under-title-ligne-space"></div>
-                    </div>
-                    @include('user.components.photos')
-                </div>
-                @include('user.components.sp60')
-            </div>
-        @else
-            @include('user.components.sp60')
-        @endif
-
-        @include('user.components.footer')
-
-    </div>
-
-    <div class="mobile">
-        @include('user.mobile.mobile-home')
-
-
-        <!-- Vertical snap container for mobile sections -->
-        <div class="mobile-snap">
-
-            {{-- top contents (featured first slider) --}}
-            @if (isset($topContents) && is_countable($topContents) && $topContents->count())
-                @php $topcontentslist = $topContents->count(); @endphp
-                <div class="mobile-h-wrapper">
-                    <div class="section-fixed-ui">
-                        <div class="featured-post-section-badge">في الواجهة</div>
-                        <div class="h-indicators" role="tablist" aria-label="slides">
-                            @for ($i = 0; $i < $topcontentslist; $i++)
-                                <span class="h-indicator @if ($i === 0) active @endif"
-                                    aria-label="{{ $i + 1 }}"
-                                    aria-current="@if ($i === 0) true @else false @endif"></span>
-                            @endfor
-                        </div>
-                    </div>
-                    <div class="h-snap" dir="rtl">
-                        @foreach ($topContents->take($topcontentslist) as $tc)
-                            @php $c = $tc->content ?? null; @endphp
-                            @if ($c)
-                                <div class="h-snap-slide mobile-featured-post"
-                                    style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}');">
-                                    <div class="post-overlay-dark"></div>
-                                    <div class="featured-post-content2">
-                                        @if(isset($c->category) && $c->category)
-                                            <p class="featured-post-category-name">
-                                                <a href="{{ route('category.show', ['id' => $c->category->id, 'type' => 'Category']) }}" style="color: inherit; text-decoration: none;">
-                                                    {{ $c->category->name }}
-                                                </a>
-                                            </p>
-                                        @endif
-                                        <a href="{{ route('news.show', $c->title) }}" style="text-decoration: none; color: inherit;">
-                                            <h1 class="featured-post-title">
-                                                {{ \Illuminate\Support\Str::limit($c->mobile_title ?? $c->title, 50) }}</h1>
-                                            <p class="featured-post-description">
-                                                {{ \Illuminate\Support\Str::limit(strip_tags($c->summary ?? ($c->description ?? '')), 130) }}
-                                            </p>
-                                        </a>
-                                    </div>
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
-                </div>
-
-            @endif
-
-
-            {{-- Principal Trend Section (Mobile) --}}
-            @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
-                @php $trendsCount = isset($trends) && is_countable($trends) ? count($trends) : 0; @endphp
-                @if ($trendsCount >= 4)
-                    <div class="mobile-h-wrapper">
-                        <div class="section-fixed-ui">
-                            <div class="featured-post-section-badge">{{ $principalTrend->trend->title ?? 'اتجاه' }}</div>
-                            <div class="h-indicators" role="tablist" aria-label="slides">
-                                @for ($i = 0; $i < min(5, $trendsCount); $i++)
-                                    <span class="h-indicator @if ($i === 0) active @endif"
-                                        aria-label="{{ $i + 1 }}"
-                                        aria-current="@if ($i === 0) true @else false @endif"></span>
-                                @endfor
-                            </div>
-                        </div>
-                        <div class="h-snap" dir="rtl">
-                            @foreach ($trends->take(5) as $content)
-                                <div class="h-snap-slide mobile-featured-post"
-                                    style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? ($content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg')) }}');">
-                                    <div class="post-overlay-dark"></div>
-                                    <div class="featured-post-content2">
-                                        @if(isset($content->category) && $content->category)
-                                            <p class="featured-post-category-name">
-                                                <a href="{{ route('category.show', ['id' => $content->category->id, 'type' => 'Category']) }}" style="color: inherit; text-decoration: none;">
-                                                    {{ $content->category->name }}
-                                                </a>
-                                            </p>
-                                        @endif
-                                        <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
-                                            <h1 class="featured-post-title">
-                                                {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
-                                            </h1>
-                                            <p class="featured-post-description">
-                                                {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
-                                            </p>
-                                        </a>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-            @endif
-
-
-            {{-- most reads --}}
-            @if (isset($topViewed) && is_countable($topViewed) && $topViewed->count())
-                <div class="mobile-h-wrapper">
-                    <div class="section-fixed-ui">
-                        <div class="featured-post-section-badge">الأكثر قراءة</div>
-                    </div>
-                    <div class="most-reads-screen" dir="rtl">
-                        <ol class="most-reads-list" role="list">
-                            @foreach ($topViewed->take(5) as $i => $content)
-                                <li class="most-reads-item">
-                                    <span class="mr-index" aria-hidden="true">{{ $i + 1 }}</span>
-                                    <a class="mr-title" href="{{ route('news.show', $content->title) }}">
-                                        {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ol>
-                    </div>
-                </div>
-            @endif
-
-            {{-- sections --}}
-            @foreach ($sectionscontents ?? [] as $sectionTitle => $collection)
-                @if ($sectionTitle == 'آراء')
-                    @if ($collection && $collection->count())
-                        @php $slideCount = min(5, $collection->count()); @endphp
-                        <div class="mobile-h-wrapper">
-                            <div class="section-fixed-ui">
-                                <div class="featured-post-section-badge">
-                                    <a href="{{ route('newSection', ['section' => 'reviews']) }}"
-                                        style="color: inherit; text-decoration: none;">{{ $sectionTitle }}</a>
-                                </div>
-                                <div class="h-indicators" role="tablist" aria-label="slides">
-                                    @for ($i = 0; $i < $slideCount; $i++)
-                                        <span class="h-indicator @if ($i === 0) active @endif"
-                                            aria-label="{{ $i + 1 }}"
-                                            aria-current="@if ($i === 0) true @else false @endif"></span>
-                                    @endfor
-                                </div>
-                            </div>
-                            <div class="h-snap" dir="rtl">
-                                @foreach ($collection->take(5) as $content)
-                                    <div class="h-snap-slide mobile-featured-post"
-                                        style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
-                                        <div class="post-overlay-dark"></div>
-                                        <div class="featured-post-content">
-                                            @php
-                                                $firstWriter = $content->writers()->first();
-                                            @endphp
-                                            <div class="opinion-center">
-                                                @if ($firstWriter)
-                                                    <a href="{{ route('writer.show', ['id' => $firstWriter->id]) }}" class="opinion-writer-link" style="text-decoration: none; color: inherit;">
-                                                        <img class="opinion-avatar"
-                                                            src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}"
-                                                            alt="{{ $firstWriter->name ?? '' }}">
-                                                        <span class="opinion-author">{{ $firstWriter->name }}</span>
-                                                    </a>
-                                                @endif
-                                                <br>
-                                                <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
-                                                    <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-                @else
-                    @if ($collection && $collection->count())
-                        @php $slideCount = min(5, $collection->count()); @endphp
-                        <div class="mobile-h-wrapper">
-                            <div class="section-fixed-ui">
-                                @php
-                                    // Map Arabic section titles to English slugs for the newSection route
-                                    $slugMap = [
-                                        'الجزائر' => 'algeria',
-                                        'عالم' => 'world',
-                                        'اقتصاد' => 'economy',
-                                        'رياضة' => 'sports',
-                                        'ناس' => 'people',
-                                        'ثقافة وفنون' => 'culture',
-                                        'آراء' => 'reviews',
-                                        'فيديو' => 'videos',
-                                        'ملفات' => 'files',
-                                        'تكنولوجيا' => 'technology',
-                                        'صحة' => 'health',
-                                        'بيئة' => 'environment',
-                                        'ميديا' => 'media',
-                                        'فحص' => 'investigation',
-                                        'بودكاست' => 'podcasts',
-                                        'منوعات' => 'variety',
-                                        'صور' => 'photos',
-                                    ];
-                                    $sectionSlug = $slugMap[$sectionTitle] ?? null;
-                                @endphp
-                                <div class="featured-post-section-badge">
-                                    @if ($sectionSlug)
-                                        <a href="{{ route('newSection', ['section' => $sectionSlug]) }}"
-                                            style="color: inherit; text-decoration: none;">{{ $sectionTitle }}</a>
-                                    @else
-                                        {{ $sectionTitle }}
-                                    @endif
-                                </div>
-                                <div class="h-indicators" role="tablist" aria-label="slides">
-                                    @for ($i = 0; $i < $slideCount; $i++)
-                                        <span class="h-indicator @if ($i === 0) active @endif"
-                                            aria-label="{{ $i + 1 }}"
-                                            aria-current="@if ($i === 0) true @else false @endif"></span>
-                                    @endfor
-                                </div>
-                            </div>
-                            <div class="h-snap" dir="rtl">
-                                @foreach ($collection->take(5) as $content)
-                                    <div class="h-snap-slide mobile-featured-post"
-                                        style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
-                                        <div class="post-overlay-dark"></div>
-                                        <div class="featured-post-content">
-                                            @if(isset($content->category) && $content->category)
-                                                <p class="featured-post-category-name">
-                                                    <a href="{{ route('category.show', ['id' => $content->category->id, 'type' => 'Category']) }}" style="color: inherit; text-decoration: none;">
-                                                        {{ $content->category->name }}
-                                                    </a>
-                                                </p>
-                                            @endif
-                                            <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
-                                                <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
-                                                <p class="featured-post-description">
-                                                    {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
-                                                </p>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-                @endif
-            @endforeach
-
-            <!-- Compact mobile footer at the end -->
-            <div class="mobile-container">
-                @include('user.mobile.footer')
-            </div>
-
-        </div>
-    </div>
 
     <style>
         @media (max-width: 991px) {
@@ -1053,6 +532,540 @@
             }
         }
     </style>
+
+
+    <div class="web">
+        @include('user.components.fixed-nav')
+
+        {{-- topContents --}}
+        @php
+            $topContentsCount = isset($topContents) && is_countable($topContents) ? count($topContents) : 0;
+        @endphp
+        @if ($topContentsCount >= 7)
+            <div class="container">
+                @include('user.components.header')
+                @include('user.components.sp60')
+            </div>
+        @endif
+
+        {{-- Principal Trend Section --}}
+        @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
+            <div class="container">
+                <section class="art-section-hero">
+                    <div class="art-section-overlay">
+                        <h2 class="art-section-title">{{ $principalTrend->trend->title ?? '' }}</h2>
+
+                        <div class="art-section-grid">
+                            @foreach ($trends as $content)
+                                <div class="art-section-card">
+                                    <a href="{{ route('news.show', $content->title) }}">
+                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
+                                            alt="{{ $content->title }}">
+                                    </a>
+                                    <a href="{{ route('news.show', $content->title) }}"
+                                        style="text-decoration: none; color: inherit;">
+                                        <h2>{{ $content->title }}</h2>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </section>
+                @include('user.components.sp60')
+            </div>
+        @endif
+
+        @php
+            $sections = [
+                'world' => ['عالم', 5],
+                'economy' => ['اقتصاد', 4],
+                'sports' => ['رياضة', 6],
+                'people' => ['ناس', 3],
+            ];
+
+            $algeriaItems = $algeria ?? [];
+        @endphp
+
+        {{-- Algeria section separately --}}
+        @if (is_countable($algeriaItems) && count($algeriaItems) >= 4)
+            @php $component = 'algeria'; @endphp {{-- define $component --}}
+            <div class="container">
+                @include('user.components.section-title', ['slot' => 'الجزائر', 'key' => $component])
+                @include('user.components.algeria')
+            </div>
+        @endif
+
+        {{-- Loop for the other sections --}}
+        @foreach ($sections as $component => [$title, $minCount])
+            @php
+                $items = ${$component} ?? [];
+            @endphp
+            @if (is_countable($items) && count($items) >= $minCount)
+                <div class="container">
+                    @include('user.components.sp60')
+                    @include('user.components.section-title', ['slot' => $title, 'key' => $component])
+                    @include("user.components.$component")
+                </div>
+            @endif
+        @endforeach
+
+
+
+
+        {{-- Arts Section --}}
+        @php
+            $artsCount = isset($arts) && is_countable($arts) ? count($arts) : 0;
+        @endphp
+        @if ($artsCount >= 8)
+            @include('user.components.sp60')
+            <div class="container">
+                <a href="{{ route('newSection', ['section' => 'culture']) }}" class="section-title">ثقافة وفنون</a>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
+                @include('user.components.arts')
+            </div>
+        @endif
+
+        {{-- Reviews Section --}}
+        @php
+            $reviewsCount = isset($reviews) && is_countable($reviews) ? count($reviews) : 0;
+        @endphp
+        @if ($reviewsCount >= 3)
+            @include('user.components.sp60')
+            <div class="container">
+                <div class="title">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <a href="{{ route('reviews') }}" class="section-title">آراء</a>
+                        @include('user.components.ligne')
+                        <div class="under-title-ligne-space"></div>
+                        <div style="display: flex;" class="icons">
+                            <div id="reviewBackArrow" style="height: 32px; width: 32px; cursor: pointer;">
+                                <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
+                            </div>
+                            <div id="reviewNextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
+                                <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+                            </div>
+                        </div>
+                    </div>
+                    @include('user.components.ligne')
+                    <div class="under-title-ligne-space"></div>
+                </div>
+                @include('user.components.reviews')
+            </div>
+        @endif
+
+
+        {{-- Videos Section --}}
+        @php
+            $videosCount = isset($videos) && is_countable($videos) ? count($videos) : 0;
+        @endphp
+        @if ($videosCount >= 4)
+            @include('user.components.sp60')
+            <div style="background-color: #F5F5F5;">
+                @include('user.components.sp60')
+                <div class="container">
+                    <a href="{{ route('videos') }}" class="section-title">فيديو</a>
+                    @include('user.components.ligne')
+                    <div class="under-title-ligne-space"></div>
+                </div>
+                @include('user.components.videos')
+                @include('user.components.sp60')
+            </div>
+        @endif
+
+
+        {{-- Files Section --}}
+        @php
+            $filesCount = isset($files) && is_countable($files) ? count($files) : 0;
+        @endphp
+        @if ($filesCount >= 3)
+            <div class="container">
+                @include('user.components.sp60')
+                <a href="{{ route('files') }}" class="section-title">ملفات</a>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
+                @include('user.components.files')
+            </div>
+        @endif
+
+
+        {{-- Many Titles --}}
+        @php
+            $manySections = [
+                'technology' => ['تكنولوجيا', 3],
+                'health' => ['صحة', 3],
+                'environment' => ['بيئة', 3],
+            ];
+            $showManyTitles = true;
+            foreach ($manySections as $key => [$title, $minCount]) {
+                $items = ${$key} ?? [];
+                if (!is_countable($items) || count($items) < $minCount) {
+                    $showManyTitles = false;
+                    break;
+                }
+            }
+        @endphp
+        @if ($showManyTitles)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.many-titles')
+            </div>
+        @endif
+
+
+        {{-- Media Section --}}
+        @php
+            $mediaCount = isset($media) && is_countable($media) ? count($media) : 0;
+        @endphp
+        @if ($mediaCount >= 4)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.section-title', ['slot' => 'ميديا', 'component' => 'media'])
+                @include('user.components.media')
+            </div>
+        @endif
+
+
+        {{-- Check Section --}}
+        @php
+            $checkCount = isset($cheeck) && is_countable($cheeck) ? count($cheeck) : 0;
+        @endphp
+        @if ($checkCount >= 2)
+            <div class="container">
+                @include('user.components.sp60')
+                <a href="{{ route('investigation') }}" class="section-title">فحص</a>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
+                @include('user.components.check')
+            </div>
+        @endif
+
+        {{-- Podcast Section --}}
+        @php
+            $podcastCount = isset($podcasts) && is_countable($podcasts) ? count($podcasts) : 0;
+        @endphp
+        @if ($podcastCount >= 4)
+            @include('user.components.sp60')
+            <div style="background-color: #F5F5F5;">
+                @include('user.components.sp60')
+                <div class="container">
+                    <a href="{{ route('podcasts') }}" class="section-title">بودكاست</a>
+                    @include('user.components.ligne')
+                    <div class="under-title-ligne-space"></div>
+                </div>
+                @include('user.components.podcast')
+                @include('user.components.sp60')
+            </div>
+        @endif
+
+
+        {{-- Two Titles --}}
+        @php
+            $twoTitlesCount = isset($variety) && is_countable($variety) ? count($variety) : 0;
+        @endphp
+        @if ($twoTitlesCount >= 5)
+            <div class="container">
+                @include('user.components.sp60')
+                @include('user.components.two-titles')
+            </div>
+        @endif
+
+
+
+        {{-- Photos Section --}}
+        @php
+            $photosCount = isset($photos) && is_countable($photos) ? count($photos) : 0;
+        @endphp
+        @if ($photosCount >= 3)
+            @include('user.components.sp60')
+            <div style="background-color: #F5F5F5;">
+                @include('user.components.sp60')
+                <div class="container">
+                    <div class="title">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <a href="{{ route('photos') }}" class="section-title">صور</a>
+                            @include('user.components.ligne')
+                            <div class="under-title-ligne-space"></div>
+                            <div style="display: flex;" class="icons">
+                                <div id="backArrow" style="height: 32px; width: 32px; cursor: pointer;">
+                                    <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
+                                </div>
+                                <div id="nextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
+                                    <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+                                </div>
+                            </div>
+                        </div>
+                        @include('user.components.ligne')
+                        <div class="under-title-ligne-space"></div>
+                    </div>
+                    @include('user.components.photos')
+                </div>
+                @include('user.components.sp60')
+            </div>
+        @else
+            @include('user.components.sp60')
+        @endif
+
+        @include('user.components.footer')
+
+    </div>
+
+    <div class="mobile">
+        @include('user.mobile.mobile-home')
+
+
+        <!-- Vertical snap container for mobile sections -->
+        <div class="mobile-snap">
+
+            {{-- top contents (featured first slider) --}}
+            @if (isset($topContents) && is_countable($topContents) && $topContents->count())
+                @php $topcontentslist = $topContents->count(); @endphp
+                <div class="mobile-h-wrapper">
+                    <div class="section-fixed-ui">
+                        <div class="featured-post-section-badge">في الواجهة</div>
+                        <div class="h-indicators" role="tablist" aria-label="slides">
+                            @for ($i = 0; $i < $topcontentslist; $i++)
+                                <span class="h-indicator @if ($i === 0) active @endif"
+                                    aria-label="{{ $i + 1 }}"
+                                    aria-current="@if ($i === 0) true @else false @endif"></span>
+                            @endfor
+                        </div>
+                    </div>
+                    <div class="h-snap" dir="rtl">
+                        @foreach ($topContents->take($topcontentslist) as $tc)
+                            @php $c = $tc->content ?? null; @endphp
+                            @if ($c)
+                                <div class="h-snap-slide mobile-featured-post"
+                                    style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}');">
+                                    <div class="post-overlay-dark"></div>
+                                    <div class="featured-post-content2">
+                                        @if (isset($c->category) && $c->category)
+                                            <p class="featured-post-category-name">
+                                                <a href="{{ route('category.show', ['id' => $c->category->id, 'type' => 'Category']) }}"
+                                                    style="color: inherit; text-decoration: none;">
+                                                    {{ $c->category->name }}
+                                                </a>
+                                            </p>
+                                        @endif
+                                        <a href="{{ route('news.show', $c->title) }}"
+                                            style="text-decoration: none; color: inherit;">
+                                            <h1 class="featured-post-title">
+                                                {{ \Illuminate\Support\Str::limit($c->mobile_title ?? $c->title, 50) }}
+                                            </h1>
+                                            <p class="featured-post-description">
+                                                {{ \Illuminate\Support\Str::limit(strip_tags($c->summary ?? ($c->description ?? '')), 130) }}
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+
+            @endif
+
+
+            {{-- Principal Trend Section (Mobile) --}}
+            @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
+                @php $trendsCount = isset($trends) && is_countable($trends) ? count($trends) : 0; @endphp
+                @if ($trendsCount >= 4)
+                    <div class="mobile-h-wrapper">
+                        <div class="section-fixed-ui">
+                            <div class="featured-post-section-badge">{{ $principalTrend->trend->title ?? 'اتجاه' }}</div>
+                            <div class="h-indicators" role="tablist" aria-label="slides">
+                                @for ($i = 0; $i < min(5, $trendsCount); $i++)
+                                    <span class="h-indicator @if ($i === 0) active @endif"
+                                        aria-label="{{ $i + 1 }}"
+                                        aria-current="@if ($i === 0) true @else false @endif"></span>
+                                @endfor
+                            </div>
+                        </div>
+                        <div class="h-snap" dir="rtl">
+                            @foreach ($trends->take(5) as $content)
+                                <div class="h-snap-slide mobile-featured-post"
+                                    style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? ($content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg')) }}');">
+                                    <div class="post-overlay-dark"></div>
+                                    <div class="featured-post-content2">
+                                        @if (isset($content->category) && $content->category)
+                                            <p class="featured-post-category-name">
+                                                <a href="{{ route('category.show', ['id' => $content->category->id, 'type' => 'Category']) }}"
+                                                    style="color: inherit; text-decoration: none;">
+                                                    {{ $content->category->name }}
+                                                </a>
+                                            </p>
+                                        @endif
+                                        <a href="{{ route('news.show', $content->title) }}"
+                                            style="text-decoration: none; color: inherit;">
+                                            <h1 class="featured-post-title">
+                                                {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
+                                            </h1>
+                                            <p class="featured-post-description">
+                                                {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            @endif
+
+
+            {{-- most reads --}}
+            @if (isset($topViewed) && is_countable($topViewed) && $topViewed->count())
+                <div class="mobile-h-wrapper">
+                    <div class="section-fixed-ui">
+                        <div class="featured-post-section-badge">الأكثر قراءة</div>
+                    </div>
+                    <div class="most-reads-screen" dir="rtl">
+                        <ol class="most-reads-list" role="list">
+                            @foreach ($topViewed->take(5) as $i => $content)
+                                <li class="most-reads-item">
+                                    <span class="mr-index" aria-hidden="true">{{ $i + 1 }}</span>
+                                    <a class="mr-title" href="{{ route('news.show', $content->title) }}">
+                                        {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ol>
+                    </div>
+                </div>
+            @endif
+
+            {{-- sections --}}
+            @foreach ($sectionscontents ?? [] as $sectionTitle => $collection)
+                @if ($sectionTitle == 'آراء')
+                    @if ($collection && $collection->count())
+                        @php $slideCount = min(5, $collection->count()); @endphp
+                        <div class="mobile-h-wrapper">
+                            <div class="section-fixed-ui">
+                                <div class="featured-post-section-badge">
+                                    <a href="{{ route('newSection', ['section' => 'reviews']) }}"
+                                        style="color: inherit; text-decoration: none;">{{ $sectionTitle }}</a>
+                                </div>
+                                <div class="h-indicators" role="tablist" aria-label="slides">
+                                    @for ($i = 0; $i < $slideCount; $i++)
+                                        <span class="h-indicator @if ($i === 0) active @endif"
+                                            aria-label="{{ $i + 1 }}"
+                                            aria-current="@if ($i === 0) true @else false @endif"></span>
+                                    @endfor
+                                </div>
+                            </div>
+                            <div class="h-snap" dir="rtl">
+                                @foreach ($collection->take(5) as $content)
+                                    <div class="h-snap-slide mobile-featured-post"
+                                        style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                        <div class="post-overlay-dark"></div>
+                                        <div class="featured-post-content">
+                                            @php
+                                                $firstWriter = $content->writers()->first();
+                                            @endphp
+                                            <div class="opinion-center">
+                                                @if ($firstWriter)
+                                                    <a href="{{ route('writer.show', ['id' => $firstWriter->id]) }}"
+                                                        class="opinion-writer-link"
+                                                        style="text-decoration: none; color: inherit;">
+                                                        <img class="opinion-avatar"
+                                                            src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}"
+                                                            alt="{{ $firstWriter->name ?? '' }}">
+                                                        <span class="opinion-author">{{ $firstWriter->name }}</span>
+                                                    </a>
+                                                @endif
+                                                <br>
+                                                <a href="{{ route('news.show', $content->title) }}"
+                                                    style="text-decoration: none; color: inherit;">
+                                                    <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @else
+                    @if ($collection && $collection->count())
+                        @php $slideCount = min(5, $collection->count()); @endphp
+                        <div class="mobile-h-wrapper">
+                            <div class="section-fixed-ui">
+                                @php
+                                    // Map Arabic section titles to English slugs for the newSection route
+                                    $slugMap = [
+                                        'الجزائر' => 'algeria',
+                                        'عالم' => 'world',
+                                        'اقتصاد' => 'economy',
+                                        'رياضة' => 'sports',
+                                        'ناس' => 'people',
+                                        'ثقافة وفنون' => 'culture',
+                                        'آراء' => 'reviews',
+                                        'فيديو' => 'videos',
+                                        'ملفات' => 'files',
+                                        'تكنولوجيا' => 'technology',
+                                        'صحة' => 'health',
+                                        'بيئة' => 'environment',
+                                        'ميديا' => 'media',
+                                        'فحص' => 'investigation',
+                                        'بودكاست' => 'podcasts',
+                                        'منوعات' => 'variety',
+                                        'صور' => 'photos',
+                                    ];
+                                    $sectionSlug = $slugMap[$sectionTitle] ?? null;
+                                @endphp
+                                <div class="featured-post-section-badge">
+                                    @if ($sectionSlug)
+                                        <a href="{{ route('newSection', ['section' => $sectionSlug]) }}"
+                                            style="color: inherit; text-decoration: none;">{{ $sectionTitle }}</a>
+                                    @else
+                                        {{ $sectionTitle }}
+                                    @endif
+                                </div>
+                                <div class="h-indicators" role="tablist" aria-label="slides">
+                                    @for ($i = 0; $i < $slideCount; $i++)
+                                        <span class="h-indicator @if ($i === 0) active @endif"
+                                            aria-label="{{ $i + 1 }}"
+                                            aria-current="@if ($i === 0) true @else false @endif"></span>
+                                    @endfor
+                                </div>
+                            </div>
+                            <div class="h-snap" dir="rtl">
+                                @foreach ($collection->take(5) as $content)
+                                    <div class="h-snap-slide mobile-featured-post"
+                                        style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                        <div class="post-overlay-dark"></div>
+                                        <div class="featured-post-content">
+                                            @if (isset($content->category) && $content->category)
+                                                <p class="featured-post-category-name">
+                                                    <a href="{{ route('category.show', ['id' => $content->category->id, 'type' => 'Category']) }}"
+                                                        style="color: inherit; text-decoration: none;">
+                                                        {{ $content->category->name }}
+                                                    </a>
+                                                </p>
+                                            @endif
+                                            <a href="{{ route('news.show', $content->title) }}"
+                                                style="text-decoration: none; color: inherit;">
+                                                <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
+                                                <p class="featured-post-description">
+                                                    {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @endif
+            @endforeach
+
+            <!-- Compact mobile footer at the end -->
+            <div class="mobile-container">
+                @include('user.mobile.footer')
+            </div>
+
+        </div>
+    </div>
 
     <script>
         // Mobile auto horizontal scroll ONLY for currently visible vertical section (immediate start)
