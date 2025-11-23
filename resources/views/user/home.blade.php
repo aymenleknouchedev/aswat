@@ -560,6 +560,7 @@
                                                         <span class="opinion-author">{{ $firstWriter->name }}</span>
                                                     </a>
                                                 @endif
+                                                <br>
                                                 <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
                                                     <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
                                                 </a>
@@ -948,7 +949,6 @@
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
-                margin: 0 0 20px 0;
             }
 
             .opinion-avatar {
