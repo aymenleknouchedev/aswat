@@ -139,15 +139,8 @@
             /* Image right, text left for Arabic */
         }
 
-        /* Fix image width in moreContents list */
-        .newCategory-all-card-image {
-            width: 300px;
-            flex: 0 0 300px;
-            max-width: 300px;
-        }
-
         .newCategory-all-card-image img {
-            width: 100%;
+            width: 300px;
             aspect-ratio: 16/9;
             object-fit: cover;
             display: block;
@@ -849,11 +842,10 @@
             }
 
             .ms-thumb img {
-                width: 120px;
+                width: 30vw;
                 aspect-ratio: 16/9;
                 object-fit: cover;
                 display: block;
-                border-radius: 2px;
             }
 
             .ms-text {
