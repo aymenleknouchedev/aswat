@@ -5,7 +5,7 @@
         <div class="navbar-content">
             <!-- Logo Section (Always visible) -->
             <div class="navbar-logo">
-                <a href="#">
+                <a href="{{ route('index') }}">
                     <img src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
                 </a>
             </div>
