@@ -342,10 +342,7 @@
             /* Horizontal snap scroller (reuse styles from home) */
             .mobile-h-wrapper {
                 width: 100%;
-                height: 100vh;
-                /* fallback */
-                height: 100svh;
-                /* avoid growth when URL bar hides */
+                height: 80svh;
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
                 position: relative;
@@ -443,10 +440,7 @@
 
             .mobile-featured-post {
                 width: 100%;
-                height: 100vh;
-                /* fallback */
-                height: 100svh;
-                /* lock to small viewport to prevent zoom-effect growth */
+                height: 80svh;
                 position: relative;
                 background-size: cover;
                 background-position: center;
@@ -459,7 +453,7 @@
 
             .featured-post-content2 {
                 position: absolute;
-                bottom: 90px;
+                bottom: 60px;
                 left: 0;
                 right: 0;
                 z-index: 2;
@@ -861,6 +855,10 @@
             @if (!empty($moreMobItems))
                 <div class="mobile-container">
                     <div class="mobile-simple-list" dir="rtl">
+                        <h2 class="mobile-simple-header">المزيد من {{ $arabicName ?? 'أخبار' }}</h2>
+                        <div style="padding: 0px 16px">
+                            @include('user.components.ligne')
+                        </div>
                         <ul class="mobile-simple-ul" role="list">
                             @foreach ($moreMobItems as $mc)
                                 <li class="mobile-simple-item">

@@ -24,69 +24,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 
-    <style>
-        /* Disable touch effects globally */
-        * {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Allow text selection */
-        input, textarea, button, a {
-            user-select: auto;
-            -webkit-user-select: auto;
-        }
-
-        /* Remove tap highlight on touch devices */
-        @media (hover: none) and (pointer: coarse) {
-            * {
-            -webkit-tap-highlight-color: transparent !important;
-            }
-        }
-
-        /* Loader for desktop view (min-width: 992px) */
-        .loader-desktop {
-            display: none;
-        }
-
-        @media (min-width: 992px) {
-            .loader-desktop {
-                display: flex;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: #ffffff;
-                justify-content: center;
-                align-items: center;
-                z-index: 9999;
-                animation: fadeOut 0.5s ease-in-out 2s forwards;
-            }
-
-            .loader-spinner {
-                width: 50px;
-                height: 50px;
-                border: 5px solid #f3f3f3;
-                border-top: 5px solid #3498db;
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-            }
-
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-
-            @keyframes fadeOut {
-                0% { opacity: 1; }
-                100% { opacity: 0; visibility: hidden; }
-            }
-        }
-    </style>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -131,11 +68,6 @@
 </head>
 
 <body id="gototop">
-
-    <!-- Loader for desktop (min-width: 992px) -->
-    <div class="loader-desktop">
-        {{-- <div class="loader-spinner"></div> --}}
-    </div>
 
     @yield('content')
 

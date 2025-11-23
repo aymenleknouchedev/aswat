@@ -1635,8 +1635,6 @@
                 padding: 20px;
                 direction: rtl;
                 background: #fff;
-                height: 80vh;
-                overflow-y: scroll;
             }
 
             .mobile-article-category {
