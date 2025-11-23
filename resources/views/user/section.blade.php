@@ -842,7 +842,7 @@
             }
 
             .ms-thumb img {
-                width: 30vw;
+                width: 120px;
                 aspect-ratio: 16/9;
                 object-fit: cover;
                 display: block;
@@ -851,6 +851,10 @@
             .ms-text {
                 display: flex;
                 flex-direction: column;
+                /* occupy remaining space next to the 120px thumbnail + 12px gap */
+                flex: 1 1 0;
+                min-width: 0; /* allow text to shrink without overflow */
+                width: calc(100% - 132px);
             }
 
             .ms-cat {
