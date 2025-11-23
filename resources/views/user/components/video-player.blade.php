@@ -64,9 +64,9 @@
 </style>
 
 <script>
-function loadYouTubeVideo(videoId) {
-    const cover = document.getElementById('videoCover' + videoId);
-    const player = document.getElementById('videoPlayer' + videoId);
+function loadYouTubeVideo(uniqueId) {
+    const cover = document.getElementById('videoCover' + uniqueId);
+    const player = document.getElementById('videoPlayer' + uniqueId);
 
     if (cover && player) {
         cover.style.display = 'none';
@@ -74,9 +74,9 @@ function loadYouTubeVideo(videoId) {
     }
 }
 
-function loadVimeoVideo(videoId) {
-    const cover = document.getElementById('videoCover' + videoId);
-    const player = document.getElementById('videoPlayer' + videoId);
+function loadVimeoVideo(uniqueId) {
+    const cover = document.getElementById('videoCover' + uniqueId);
+    const player = document.getElementById('videoPlayer' + uniqueId);
 
     if (cover && player) {
         cover.style.display = 'none';
@@ -84,9 +84,9 @@ function loadVimeoVideo(videoId) {
     }
 }
 
-function loadLocalVideo(videoId) {
-    const cover = document.getElementById('videoCover' + videoId);
-    const player = document.getElementById('videoPlayer' + videoId);
+function loadLocalVideo(uniqueId) {
+    const cover = document.getElementById('videoCover' + uniqueId);
+    const player = document.getElementById('videoPlayer' + uniqueId);
 
     if (cover && player) {
         cover.style.display = 'none';
@@ -119,6 +119,9 @@ function loadLocalVideo(videoId) {
 
     // Check if poster is provided for YouTube/Vimeo
     $hasPoster = isset($poster) && !empty($poster);
+    
+    // Generate unique ID based on context (web or mobile)
+    $uniqueSuffix = isset($context) && $context === 'mobile' ? '_mobile' : '_web';
 @endphp
 
 <div class="custom-video-wrapper">
@@ -127,8 +130,9 @@ function loadLocalVideo(videoId) {
             {{-- Show poster as clickable cover for YouTube videos --}}
             @php
                 $posterUrl = str_starts_with($poster, '/storage/') ? asset($poster) : $poster;
+                $uniqueVideoId = $youtubeId . $uniqueSuffix;
             @endphp
-            <div class="video-cover" id="videoCover{{ $youtubeId }}" onclick="loadYouTubeVideo('{{ $youtubeId }}')">
+            <div class="video-cover" id="videoCover{{ $uniqueVideoId }}" onclick="loadYouTubeVideo('{{ $uniqueVideoId }}')">
                 <img src="{{ $posterUrl }}" alt="Video thumbnail" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16/9;">
                 <div class="play-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -136,7 +140,7 @@ function loadLocalVideo(videoId) {
                     </svg>
                 </div>
             </div>
-            <div id="videoPlayer{{ $youtubeId }}" style="display: none;">
+            <div id="videoPlayer{{ $uniqueVideoId }}" style="display: none;">
                 <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}?autoplay=1" title="YouTube video player"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen loading="lazy">
@@ -153,8 +157,9 @@ function loadLocalVideo(videoId) {
             {{-- Show poster as clickable cover for Vimeo videos --}}
             @php
                 $posterUrl = str_starts_with($poster, '/storage/') ? asset($poster) : $poster;
+                $uniqueVideoId = $vimeoId . $uniqueSuffix;
             @endphp
-            <div class="video-cover" id="videoCover{{ $vimeoId }}" onclick="loadVimeoVideo('{{ $vimeoId }}')">
+            <div class="video-cover" id="videoCover{{ $uniqueVideoId }}" onclick="loadVimeoVideo('{{ $uniqueVideoId }}')">
                 <img src="{{ $posterUrl }}" alt="Video thumbnail" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16/9;">
                 <div class="play-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -162,7 +167,7 @@ function loadLocalVideo(videoId) {
                     </svg>
                 </div>
             </div>
-            <div id="videoPlayer{{ $vimeoId }}" style="display: none;">
+            <div id="videoPlayer{{ $uniqueVideoId }}" style="display: none;">
                 <iframe src="https://player.vimeo.com/video/{{ $vimeoId }}?autoplay=1" title="Vimeo video player"
                     allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy">
                 </iframe>
@@ -197,7 +202,7 @@ function loadLocalVideo(videoId) {
             }
 
             // Generate unique ID for local video
-            $localVideoId = 'local_' . md5($videoUrl);
+            $localVideoId = 'local_' . md5($videoUrl) . $uniqueSuffix;
         @endphp
 
         @if ($hasPoster)

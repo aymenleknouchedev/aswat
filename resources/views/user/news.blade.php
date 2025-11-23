@@ -2192,6 +2192,7 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                         'video' => $news->media()->wherePivot('type', 'video')->first()->path,
                         'caption' => $news->media()->wherePivot('type', 'video')->first()->alt ?? 'فيديو',
                         'poster' => $posterImage,
+                        'context' => 'web',
                     ])
                 @endif
 
@@ -2521,6 +2522,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     'video' => $news->media()->wherePivot('type', 'video')->first()->path,
                     'caption' => $news->media()->wherePivot('type', 'video')->first()->alt ?? 'فيديو',
                     'poster' => $posterImage,
+                    'context' => 'mobile',
                 ])
             @endif
 
