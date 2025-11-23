@@ -2532,23 +2532,23 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 @endphp
 
-                <div class="audio-player-wrapper" id="audioPlayerWrapper">
+                <div class="audio-player-wrapper" id="audioPlayerWrapperMobile">
                     <div class="audio-player-image" style="position:relative;">
                         <img src="{{ $coverImage }}" alt="{{ $news->caption ?? 'بودكاست' }}" loading="lazy">
-                        <div class="audio-play-icon" id="audioPlayIcon">
+                        <div class="audio-play-icon" id="audioPlayIconMobile">
                             <i class="fa-solid fa-play"></i>
                         </div>
-                        <div class="podcast-lines" id="podcastLines">
+                        <div class="podcast-lines" id="podcastLinesMobile">
                             @for ($i = 0; $i < 15; $i++)
                                 <div class="podcast-line"></div>
                             @endfor
                         </div>
-                        <div class="audio-time-display" id="audioTimeDisplay">
-                            <span id="currentTime">0:00</span> / <span id="totalDuration">0:00</span>
+                        <div class="audio-time-display" id="audioTimeDisplayMobile">
+                            <span id="currentTimeMobile">0:00</span> / <span id="totalDurationMobile">0:00</span>
                         </div>
                     </div>
                     <div class="audio-player-controls">
-                        <audio id="podcastAudio" preload="metadata">
+                        <audio id="podcastAudioMobile" preload="metadata">
                             <source src="{{ $audioPath }}" type="audio/mpeg">
                             متصفحك لا يدعم تشغيل الصوتيات.
                         </audio>
@@ -2656,6 +2656,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             initializeTextDefinitionModal();
             initializeCopyLink();
             initializeAudioPlayer();
+            initializeMobileAudioPlayer();
             initializeGreybarScroll();
         });
 
@@ -2823,8 +2824,69 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         }
 
         /**
-         * Initialize Share Functionality
+         * Initialize Mobile Audio Player
          */
+        function initializeMobileAudioPlayer() {
+            const audioPlayerWrapper = document.getElementById('audioPlayerWrapperMobile');
+            const audioElement = document.getElementById('podcastAudioMobile');
+            const playIcon = document.getElementById('audioPlayIconMobile');
+            const currentTimeDisplay = document.getElementById('currentTimeMobile');
+            const totalDurationDisplay = document.getElementById('totalDurationMobile');
+
+            if (!audioPlayerWrapper || !audioElement) return;
+
+            // Format time helper
+            function formatTime(seconds) {
+                if (!seconds || isNaN(seconds)) return '0:00';
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            // Update time display
+            function updateProgress() {
+                if (currentTimeDisplay) {
+                    currentTimeDisplay.textContent = formatTime(audioElement.currentTime);
+                }
+                if (totalDurationDisplay && audioElement.duration) {
+                    totalDurationDisplay.textContent = formatTime(audioElement.duration);
+                }
+            }
+
+            // Toggle play/pause
+            function togglePlayPause() {
+                if (audioElement.paused) {
+                    audioElement.play();
+                    audioPlayerWrapper.classList.add('playing');
+                    playIcon.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                } else {
+                    audioElement.pause();
+                    audioPlayerWrapper.classList.remove('playing');
+                    playIcon.innerHTML = '<i class="fa-solid fa-play"></i>';
+                }
+            }
+
+            // Event listeners
+            playIcon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                togglePlayPause();
+            });
+
+            audioPlayerWrapper.querySelector('.audio-player-image').addEventListener('click', function() {
+                togglePlayPause();
+            });
+
+            audioElement.addEventListener('timeupdate', updateProgress);
+
+            audioElement.addEventListener('loadedmetadata', function() {
+                updateProgress();
+            });
+
+            audioElement.addEventListener('ended', function() {
+                audioPlayerWrapper.classList.remove('playing');
+                playIcon.innerHTML = '<i class="fa-solid fa-play"></i>';
+            });
+        }
         function initializeShareFunctionality() {
             const shareContainer = document.getElementById('shareContainer');
             const shareToggle = document.getElementById('shareToggle');
