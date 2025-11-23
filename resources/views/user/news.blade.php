@@ -2670,20 +2670,19 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             const greybar = document.getElementById('greybar');
             if (!greybar) return;
 
-            let lastScrollTop = 0;
-
             window.addEventListener('scroll', function() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const footer = document.querySelector('footer');
+                if (!footer) return;
 
-                if (scrollTop > lastScrollTop) {
-                    // Scrolling down
+                const greybarRect = greybar.getBoundingClientRect();
+                const footerRect = footer.getBoundingClientRect();
+
+                // Hide greybar only when it's about to overlap with footer
+                if (footerRect.top < greybarRect.bottom) {
                     greybar.classList.add('hide');
                 } else {
-                    // Scrolling up
                     greybar.classList.remove('hide');
                 }
-
-                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
             });
         }
 
