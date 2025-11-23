@@ -1722,7 +1722,6 @@
             .mobile-article-image {
                 width: 100%;
                 margin: 15px 0;
-                border-radius: 8px;
                 overflow: hidden;
             }
 
@@ -1804,7 +1803,6 @@
                 background: #f0f0f0;
                 color: #333;
                 text-decoration: none;
-                border-radius: 20px;
                 font-size: 12px;
             }
 
@@ -1815,7 +1813,6 @@
             .mobile-writer-card {
                 background: #f9f9f9;
                 padding: 15px;
-                border-radius: 8px;
                 margin: 20px 0;
                 text-align: right;
                 display: flex;
@@ -1876,7 +1873,6 @@
                 width: 120px;
                 height: 90px;
                 min-width: 120px;
-                border-radius: 6px;
                 object-fit: cover;
             }
 
