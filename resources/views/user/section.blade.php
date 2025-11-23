@@ -319,7 +319,6 @@
             cursor: pointer;
             text-decoration: underline;
         }
-
     </style>
 
     <div class="web">
@@ -519,7 +518,203 @@
     </div>
 
     <div class="mobile">
+        @include('user.mobile.mobile-home')
+
+        <!-- Mobile horizontal scroller for this section -->
+        <div class="mobile-snap">
+            @php
+                $mobCount = (isset($contents) && is_countable($contents)) ? count($contents) : 0;
+                $slideCount = $mobCount > 0 ? min(5, $mobCount) : 0;
+            @endphp
+            @if ($slideCount > 0)
+                <div class="mobile-h-wrapper">
+                    <div class="section-fixed-ui">
+                        <div class="featured-post-section-badge">{{ $arabicName ?? 'القسم' }}</div>
+                        <div class="h-indicators" role="tablist" aria-label="slides">
+                            @for ($i = 0; $i < $slideCount; $i++)
+                                <span class="h-indicator @if ($i === 0) active @endif"
+                                    aria-label="{{ $i + 1 }}"
+                                    aria-current="@if ($i === 0) true @else false @endif"></span>
+                            @endfor
+                        </div>
+                    </div>
+                    <div class="h-snap" dir="rtl">
+                        @php
+                            $mobItems = [];
+                            if (isset($contents)) {
+                                if ($contents instanceof \Illuminate\Support\Collection) {
+                                    $mobItems = $contents->take($slideCount);
+                                } elseif (is_array($contents)) {
+                                    $mobItems = array_slice($contents, 0, $slideCount);
+                                }
+                            }
+                        @endphp
+                        @foreach ($mobItems as $c)
+                            <div class="h-snap-slide mobile-featured-post"
+                                style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}');">
+                                <div class="post-overlay-dark"></div>
+                                <div class="featured-post-content2">
+                                    @if(isset($c->category) && $c->category)
+                                        <p class="featured-post-category-name">
+                                            <a href="{{ route('category.show', ['id' => $c->category->id, 'type' => 'Category']) }}" style="color: inherit; text-decoration: none;">
+                                                {{ $c->category->name }}
+                                            </a>
+                                        </p>
+                                    @endif
+                                    <a href="{{ route('news.show', $c->title) }}" style="text-decoration: none; color: inherit;">
+                                        <h1 class="featured-post-title">
+                                            {{ \Illuminate\Support\Str::limit($c->mobile_title ?? $c->title, 50) }}
+                                        </h1>
+                                        <p class="featured-post-description">
+                                            {{ \Illuminate\Support\Str::limit(strip_tags($c->summary ?? ($c->description ?? '')), 130) }}
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            <!-- Compact mobile footer at the end -->
+            <div class="mobile-container">
+                @include('user.mobile.footer')
+            </div>
+        </div>
     </div>
+
+    <style>
+        @media (max-width: 992px) {
+            .web { display: none !important; }
+            .mobile { display: block !important; }
+
+            /* Horizontal snap scroller (reuse styles from home) */
+            .mobile-h-wrapper {
+                width: 100%;
+                height: 100vh;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                position: relative;
+            }
+            .h-snap {
+                height: 100%;
+                width: 100%;
+                display: grid;
+                grid-auto-flow: column;
+                grid-auto-columns: 100vw;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior-x: contain;
+                scrollbar-width: none;
+                direction: rtl;
+            }
+            .h-snap::-webkit-scrollbar { display: none; }
+            .h-snap-slide {
+                width: 100vw;
+                height: 100%;
+                scroll-snap-align: start;
+                position: relative;
+                display: block;
+                text-decoration: none;
+                color: inherit;
+            }
+            .post-overlay-dark {
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.6), rgba(0,0,0,0.0), rgba(0,0,0,0.0));
+                z-index: 1;
+            }
+            .featured-post-section-badge {
+                position: absolute;
+                top: 90px;
+                right: 16px;
+                z-index: 2;
+                background: #fff;
+                color: #000;
+                padding: 6px 12px;
+                font-size: 23px;
+                font-weight: 800;
+                line-height: 1;
+                border-radius: 0;
+                display: inline-block;
+                text-align: center;
+            }
+            .section-fixed-ui {
+                position: absolute;
+                top: 90px;
+                right: 16px;
+                z-index: 3;
+                display: flex;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .section-fixed-ui .featured-post-section-badge { position: static; }
+            .h-indicators { display: flex; flex-direction: row; align-items: stretch; justify-content: flex-start; gap: 5px; }
+            .h-indicator { width: 4px; height: 100%; background: rgba(255,255,255,0.262); border-radius: 2px; }
+            .h-indicator.active { background: #ffffff; }
+            .mobile-featured-post {
+                width: 100%; height: 100dvh; position: relative; background-size: cover; background-position: center; background-repeat: no-repeat;
+                display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
+            }
+            .featured-post-content2 {
+                position: absolute; bottom: 90px; left: 0; right: 0; z-index: 2; padding: 0 20px; color: #fff; direction: rtl; text-align: right;
+            }
+            .featured-post-category-name { margin: 0 0 14px 0; font-size: 22px; color: #ffffff; letter-spacing: 1px; }
+            .featured-post-title { margin: 0 0 15px 0; font-size: 32px; font-weight: 900; line-height: 1.4; color: #fff; font-family: 'asswat-bold'; }
+            .featured-post-description { margin: 0; font-size: 16px; color: #ffffff; line-height: 1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; font-family: 'asswat-regular'; }
+        }
+    </style>
+
+    <script>
+        // Make mobile scroller dots reflect the current slide and be clickable
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.innerWidth > 991) return; // mobile only
+            const wrappers = Array.from(document.querySelectorAll('.mobile .mobile-h-wrapper'));
+            wrappers.forEach(w => {
+                const track = w.querySelector('.h-snap');
+                const slides = track ? Array.from(track.querySelectorAll('.h-snap-slide')) : [];
+                const indicators = Array.from(w.querySelectorAll('.h-indicator'));
+                if (!track || slides.length === 0 || indicators.length === 0) return;
+
+                function nearestIndex() {
+                    const left = track.scrollLeft;
+                    let best = 0, bestDist = Infinity;
+                    slides.forEach((s, i) => {
+                        const d = Math.abs(s.offsetLeft - left);
+                        if (d < bestDist) { bestDist = d; best = i; }
+                    });
+                    return best;
+                }
+
+                function updateIndicators(idx) {
+                    indicators.forEach((el, i) => {
+                        if (i === idx) el.classList.add('active'); else el.classList.remove('active');
+                    });
+                }
+
+                // Sync on load
+                updateIndicators(0);
+
+                // Debounced scroll listener to update active dot
+                let t;
+                track.addEventListener('scroll', () => {
+                    clearTimeout(t);
+                    t = setTimeout(() => updateIndicators(nearestIndex()), 120);
+                }, { passive: true });
+
+                // Make dots clickable to jump to slide
+                indicators.forEach((dot, i) => {
+                    dot.style.cursor = 'pointer';
+                    dot.addEventListener('click', () => {
+                        const target = slides[i];
+                        if (target) track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+                    });
+                });
+            });
+        });
+    </script>
 
 @endsection
 
@@ -550,7 +745,7 @@
             try {
                 const url = `/api/section/${section}?page=${page}`;
                 console.log(`Fetching URL: ${url}`);
-                
+
                 let response = await fetch(url, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
