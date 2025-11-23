@@ -467,13 +467,16 @@
                         </div>
                         <div class="h-snap" dir="rtl">
                             @foreach ($trends->take(5) as $content)
-                                <a href="{{ route('news.show', $content->title) }}" class="h-snap-slide mobile-featured-post"
+                                <a href="{{ route('news.show', $content->title) }}"
+                                    class="h-snap-slide mobile-featured-post"
                                     style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? ($content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg')) }}');">
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content2">
-                                        <p class="featured-post-category-name">{{ $content->category->name ?? $principalTrend->trend->title }}</p>
+                                        <p class="featured-post-category-name">
+                                            {{ $content->category->name ?? $principalTrend->trend->title }}</p>
                                         <h1 class="featured-post-title">
-                                            {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}</h1>
+                                            {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
+                                        </h1>
                                         <p class="featured-post-description">
                                             {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
                                         </p>
@@ -514,7 +517,10 @@
                         @php $slideCount = min(5, $collection->count()); @endphp
                         <div class="mobile-h-wrapper">
                             <div class="section-fixed-ui">
-                                <div class="featured-post-section-badge">{{ $sectionTitle }}</div>
+                                <div class="featured-post-section-badge">
+                                    <a href="{{ route('newSection', ['section' => 'reviews']) }}"
+                                        style="color: inherit; text-decoration: none;">{{ $sectionTitle }}</a>
+                                </div>
                                 <div class="h-indicators" role="tablist" aria-label="slides">
                                     @for ($i = 0; $i < $slideCount; $i++)
                                         <span class="h-indicator @if ($i === 0) active @endif"
@@ -535,7 +541,9 @@
                                             @endphp
                                             <div class="opinion-center">
                                                 @if ($firstWriter)
-                                                    <img class="opinion-avatar" src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}" alt="{{ $firstWriter->name ?? '' }}">
+                                                    <img class="opinion-avatar"
+                                                        src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}"
+                                                        alt="{{ $firstWriter->name ?? '' }}">
                                                     <span class="opinion-author">{{ $firstWriter->name }}</span>
                                                 @endif
                                                 <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
@@ -551,7 +559,37 @@
                         @php $slideCount = min(5, $collection->count()); @endphp
                         <div class="mobile-h-wrapper">
                             <div class="section-fixed-ui">
-                                <div class="featured-post-section-badge">{{ $sectionTitle }}</div>
+                                @php
+                                    // Map Arabic section titles to English slugs for the newSection route
+                                    $slugMap = [
+                                        'الجزائر' => 'algeria',
+                                        'عالم' => 'world',
+                                        'اقتصاد' => 'economy',
+                                        'رياضة' => 'sports',
+                                        'ناس' => 'people',
+                                        'ثقافة وفنون' => 'culture',
+                                        'آراء' => 'reviews',
+                                        'فيديو' => 'videos',
+                                        'ملفات' => 'files',
+                                        'تكنولوجيا' => 'technology',
+                                        'صحة' => 'health',
+                                        'بيئة' => 'environment',
+                                        'ميديا' => 'media',
+                                        'فحص' => 'investigation',
+                                        'بودكاست' => 'podcasts',
+                                        'منوعات' => 'variety',
+                                        'صور' => 'photos',
+                                    ];
+                                    $sectionSlug = $slugMap[$sectionTitle] ?? null;
+                                @endphp
+                                <div class="featured-post-section-badge">
+                                    @if ($sectionSlug)
+                                        <a href="{{ route('newSection', ['section' => $sectionSlug]) }}"
+                                            style="color: inherit; text-decoration: none;">{{ $sectionTitle }}</a>
+                                    @else
+                                        {{ $sectionTitle }}
+                                    @endif
+                                </div>
                                 <div class="h-indicators" role="tablist" aria-label="slides">
                                     @for ($i = 0; $i < $slideCount; $i++)
                                         <span class="h-indicator @if ($i === 0) active @endif"
@@ -815,6 +853,7 @@
                 direction: rtl;
                 text-align: right;
             }
+
             /* Featured Post Content */
             .featured-post-content2 {
                 position: absolute;
@@ -891,20 +930,23 @@
                 text-align: center;
                 margin: 0 0 20px 0;
             }
+
             .opinion-avatar {
                 width: 110px;
                 height: 110px;
                 border-radius: 50%;
                 object-fit: cover;
-                border: 1px solid rgba(255,255,255,0.85);
+                border: 1px solid rgba(255, 255, 255, 0.85);
                 margin-bottom: 12px;
             }
+
             .opinion-author {
                 font-size: 22px;
                 color: #fff;
                 font-family: 'asswat-regular';
                 margin-bottom: 10px;
             }
+
             .opinion-title {
                 margin: 0;
                 font-size: 30px;
