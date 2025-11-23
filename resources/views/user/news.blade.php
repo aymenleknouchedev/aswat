@@ -1635,17 +1635,20 @@
                 padding: 20px;
                 direction: rtl;
                 background: #fff;
+                height: 80vh;
+                overflow-y: scroll;
             }
 
             .mobile-article-category {
-                font-size: 12px;
-                color: #888;
-                margin-bottom: 10px;
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 12px;
                 text-align: right;
+                font-weight: 500;
             }
 
             .mobile-article-category a {
-                color: #888;
+                color: #666;
                 text-decoration: none;
             }
 
@@ -1721,8 +1724,10 @@
 
             .mobile-article-image {
                 width: 100%;
-                margin: 15px 0;
+                margin: 20px 0;
                 overflow: hidden;
+                display: flex;
+                flex-direction: column;
             }
 
             .mobile-article-image img {
@@ -1735,11 +1740,12 @@
             }
 
             .mobile-article-image figcaption {
-                font-size: 12px;
-                color: #888;
-                padding: 8px;
-                background: #f9f9f9;
+                font-size: 13px;
+                color: #666;
+                padding: 10px;
+                background: #f5f5f5;
                 text-align: right;
+                line-height: 1.4;
             }
 
             .mobile-article-content {
@@ -1811,20 +1817,21 @@
             }
 
             .mobile-writer-card {
-                background: #f9f9f9;
-                padding: 15px;
-                margin: 20px 0;
+                background: #f5f5f5;
+                padding: 16px;
+                margin: 25px 0;
                 text-align: right;
                 display: flex;
-                gap: 12px;
+                gap: 15px;
                 align-items: flex-start;
                 direction: rtl;
+                border-radius: 6px;
             }
 
             .mobile-writer-image {
-                width: 60px;
-                height: 60px;
-                min-width: 60px;
+                width: 70px;
+                height: 70px;
+                min-width: 70px;
                 border-radius: 50%;
                 object-fit: cover;
             }
@@ -1834,45 +1841,47 @@
             }
 
             .mobile-writer-name {
-                font-size: 14px;
+                font-size: 15px;
                 font-family: asswat-bold;
-                color: #333;
-                margin-bottom: 4px;
+                color: #141414;
+                margin-bottom: 5px;
             }
 
             .mobile-writer-bio {
-                font-size: 12px;
-                color: #888;
-                line-height: 1.4;
+                font-size: 13px;
+                color: #666;
+                line-height: 1.5;
             }
 
             .mobile-related-section {
-                margin-top: 30px;
+                margin-top: 35px;
                 padding-top: 20px;
                 border-top: 1px solid #eee;
             }
 
             .mobile-related-title {
-                font-size: 18px;
+                font-size: 20px;
                 font-family: asswat-bold;
                 color: #141414;
-                margin-bottom: 15px;
+                margin-bottom: 16px;
                 text-align: right;
             }
 
             .mobile-related-card {
                 display: flex;
-                gap: 12px;
-                margin-bottom: 15px;
+                gap: 14px;
+                margin-bottom: 18px;
                 text-decoration: none;
                 color: inherit;
                 direction: rtl;
+                padding: 12px 0;
+                border-bottom: 1px solid #f0f0f0;
             }
 
             .mobile-related-image {
-                width: 120px;
-                height: 90px;
-                min-width: 120px;
+                width: 130px;
+                height: 100px;
+                min-width: 130px;
                 object-fit: cover;
             }
 
@@ -1881,16 +1890,17 @@
             }
 
             .mobile-related-category {
-                font-size: 11px;
+                font-size: 12px;
                 color: #888;
-                margin-bottom: 4px;
+                margin-bottom: 6px;
             }
 
             .mobile-related-title-text {
-                font-size: 13px;
+                font-size: 14px;
                 font-family: asswat-bold;
-                color: #333;
-                line-height: 1.3;
+                color: #141414;
+                line-height: 1.4;
+            }
             }
 
             /* Greybar hide on scroll */
