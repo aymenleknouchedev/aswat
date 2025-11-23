@@ -1301,7 +1301,7 @@
 
 
         .audio-play-icon i {
-            font-size: 30px;
+            font-size: 23px;
             color: #ffffff;
             margin-left: 2px;
         }
@@ -1907,7 +1907,7 @@
         @media (max-width: 480px) {
             .podcast-lines {
                 left: 50px;
-                width: 50%;
+                width: 10%;
                 height: 25px;
                 gap: 2px;
             }
