@@ -842,7 +842,7 @@
             }
 
             .ms-thumb img {
-                width: 120px;
+                width: 135px;
                 aspect-ratio: 16/9;
                 object-fit: cover;
                 display: block;
@@ -854,7 +854,7 @@
                 /* occupy remaining space next to the 120px thumbnail + 12px gap */
                 flex: 1 1 0;
                 min-width: 0; /* allow text to shrink without overflow */
-                width: calc(100% - 132px);
+                width: calc(100% - 147px);
             }
 
             .ms-cat {
