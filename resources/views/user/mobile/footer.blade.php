@@ -20,9 +20,8 @@
         }
 
         .m-footer .m-logo {
-            height: 36px;
+            height: 55px;
             display: block;
-            margin: 0 auto 14px;
         }
 
         .m-footer .m-icons {
@@ -57,7 +56,7 @@
         .m-footer .m-links li {
             text-align: center;
             color: #eaeaea;
-            font-size: 16px;
+            font-size: 17px;
         }
 
         /* Contact us block (mobile) */
@@ -125,7 +124,7 @@
         }
 
         .m-footer .m-copy {
-            margin: 0 0 6px;
+            margin: 0 0 12px;
             color: #cfcfcf;
             font-size: 12px;
         }
@@ -169,15 +168,8 @@
             <span class="m-icon">@include('user.icons.linkedin')</span>
         </div>
 
-
-
-        <div class="m-divider" aria-hidden="true"></div>
-
-
-
         <div class="m-contact">
-            <p class="m-contact-title">اشترك الآن</p>
-            <form class="m-contact-form" method="post" action="#" onsubmit="return false;">
+                <form class="m-contact-form" method="post" action="#" onsubmit="return false;">
                 <input type="email" name="email" placeholder="البريد الإلكتروني">
                 <button type="submit">إرسال</button>
             </form>
