@@ -612,7 +612,7 @@
                         <ul class="mobile-simple-ul" role="list">
                             @foreach ($moreMobItems as $mc)
                                 <li class="mobile-simple-item">
-                                    <a class="mobile-simple-link" href="{{ route('news.show', $mc->title) }}"
+                                    <a class="mobile-simple-link" href="{{ route('news.show', $mc->mobile_title) }}"
                                         aria-label="{{ $mc->title }}">
                                         <div class="ms-thumb">
                                             <img src="{{ $mc->media()->wherePivot('type', 'main')->first()->path ?? asset($mc->image ?? 'user/assets/images/default-post.jpg') }}"
