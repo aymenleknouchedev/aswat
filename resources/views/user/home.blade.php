@@ -433,8 +433,13 @@
                                     style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}');">
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content2">
-                                        <p class="featured-post-category-name">{{ $c->category->name ?? 'أصوات جزائرية' }}
-                                        </p>
+                                        @if(isset($c->category) && $c->category)
+                                            <p class="featured-post-category-name">
+                                                <a href="{{ route('category.show', ['id' => $c->category->id, 'type' => 'Category']) }}" style="color: inherit; text-decoration: none;">
+                                                    {{ $c->category->name }}
+                                                </a>
+                                            </p>
+                                        @endif
                                         <a href="{{ route('news.show', $c->title) }}" style="text-decoration: none; color: inherit;">
                                             <h1 class="featured-post-title">
                                                 {{ \Illuminate\Support\Str::limit($c->mobile_title ?? $c->title, 50) }}</h1>
@@ -473,8 +478,13 @@
                                     style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? ($content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg')) }}');">
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content2">
-                                        <p class="featured-post-category-name">
-                                            {{ $content->category->name ?? $principalTrend->trend->title }}</p>
+                                        @if(isset($content->category) && $content->category)
+                                            <p class="featured-post-category-name">
+                                                <a href="{{ route('category.show', ['id' => $content->category->id, 'type' => 'Category']) }}" style="color: inherit; text-decoration: none;">
+                                                    {{ $content->category->name }}
+                                                </a>
+                                            </p>
+                                        @endif
                                         <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
                                             <h1 class="featured-post-title">
                                                 {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
@@ -608,8 +618,13 @@
                                         style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
                                         <div class="post-overlay-dark"></div>
                                         <div class="featured-post-content">
-                                            <p class="featured-post-category-name">
-                                                {{ $content->category->name ?? $sectionTitle }}</p>
+                                            @if(isset($content->category) && $content->category)
+                                                <p class="featured-post-category-name">
+                                                    <a href="{{ route('category.show', ['id' => $content->category->id, 'type' => 'Category']) }}" style="color: inherit; text-decoration: none;">
+                                                        {{ $content->category->name }}
+                                                    </a>
+                                                </p>
+                                            @endif
                                             <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
                                                 <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
                                                 <p class="featured-post-description">
