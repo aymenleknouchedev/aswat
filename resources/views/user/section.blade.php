@@ -528,8 +528,8 @@
     <div class="mobile">
         @include('user.mobile.mobile-home')
 
-        <!-- Mobile horizontal scroller for this section -->
-        <div class="mobile-snap">
+    <!-- Mobile horizontal scroller for this section (no vertical snap) -->
+    <div class="mobile-flow">
             @php
                 $mobCount = isset($contents) && is_countable($contents) ? count($contents) : 0;
                 $slideCount = $mobCount > 0 ? min(5, $mobCount) : 0;
@@ -988,7 +988,7 @@
                                   <div class="mobile-simple-header">${document.querySelector('.featured-post-section-badge')?.textContent || 'المزيد'}</div>
                                   <ul class="mobile-simple-ul" role="list"></ul>
                                 </div>`;
-                            const insertPoint = document.querySelector('.mobile .mobile-snap');
+                            const insertPoint = document.querySelector('.mobile .mobile-flow');
                             if (insertPoint && insertPoint.parentNode) insertPoint.parentNode.insertBefore(
                                 container, insertPoint.nextSibling);
                             list = container.querySelector('.mobile-simple-ul');
