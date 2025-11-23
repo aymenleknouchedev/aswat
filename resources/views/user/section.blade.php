@@ -612,7 +612,7 @@
                         <ul class="mobile-simple-ul" role="list">
                             @foreach ($moreMobItems as $mc)
                                 <li class="mobile-simple-item">
-                                    <a class="mobile-simple-link" href="{{ route('news.show', $mc->mobile_title) }}"
+                                    <a class="mobile-simple-link" href="{{ route('news.show', $mc->title) }}"
                                         aria-label="{{ $mc->title }}">
                                         <div class="ms-thumb">
                                             <img src="{{ $mc->media()->wherePivot('type', 'main')->first()->path ?? asset($mc->image ?? 'user/assets/images/default-post.jpg') }}"
@@ -622,7 +622,7 @@
                                             @if (isset($mc->category) && $mc->category)
                                                 <p class="ms-cat">{{ $mc->category->name }}</p>
                                             @endif
-                                            <p class="ms-title">{{ \Illuminate\Support\Str::limit($mc->title, 90) }}</p>
+                                            <p class="ms-title">{{ \Illuminate\Support\Str::limit($mc->mobile_title, 90) }}</p>
                                         </div>
                                     </a>
                                 </li>
