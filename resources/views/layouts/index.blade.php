@@ -39,10 +39,16 @@
             -webkit-user-select: auto;
         }
 
-        /* Remove tap highlight on touch devices */
+        /* Remove all hover effects on touch devices */
         @media (hover: none) and (pointer: coarse) {
-            * {
-            -webkit-tap-highlight-color: transparent !important;
+            *:hover {
+                background-color: transparent !important;
+                color: inherit !important;
+            }
+
+            *:active {
+                background-color: transparent !important;
+                color: inherit !important;
             }
         }
 
