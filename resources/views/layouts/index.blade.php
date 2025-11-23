@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="app-loading">
 
 <head>
     <meta charset="UTF-8">
@@ -51,6 +51,10 @@
             animation: app-spin 1s linear infinite;
         }
         @keyframes app-spin { to { transform: rotate(360deg); } }
+
+        /* Ensure only loader is visible until app is ready */
+        html.app-loading body { overflow: hidden; }
+        html.app-loading body > :not(#app-loader) { visibility: hidden !important; }
     </style>
 
 
@@ -109,8 +113,8 @@
 <body id="gototop">
 
     <!-- Global loader -->
-    <div id="app-loader" class="app-loader" role="status" aria-live="polite" aria-label="جارِ التحميل">
-        <div class="app-spinner" aria-hidden="true"></div>
+    <div id="app-loader" class="app-loader" role="status" aria-live="polite" aria-label="جارِ التحميل" style="position:fixed;inset:0;background:#ffffff;display:flex;align-items:center;justify-content:center;z-index:99999;">
+        <div class="app-spinner" aria-hidden="true" style="width:48px;height:48px;border:3px solid rgba(0,0,0,0.12);border-top-color:#333;border-radius:50%;"></div>
     </div>
 
     @yield('content')
@@ -128,6 +132,8 @@
                 if (!loader) return;
                 loader.classList.add('hidden');
                 loader.setAttribute('aria-hidden', 'true');
+                // Reveal app content
+                document.documentElement.classList.remove('app-loading');
             }
 
             function showLoader() {
@@ -135,20 +141,15 @@
                 if (!loader) return;
                 loader.classList.remove('hidden');
                 loader.removeAttribute('aria-hidden');
+                document.documentElement.classList.add('app-loading');
             }
 
             // Expose simple API (for AJAX navigations if needed)
             window.AppLoader = { hide: hideLoader, show: showLoader };
 
-            // Multiple, robust hide triggers
-            // 1) As soon as DOM is interactive
-            document.addEventListener('DOMContentLoaded', function() {
-                // Defer one tick to allow first paint
-                setTimeout(hideLoader, 0);
-            });
-            // 2) After all assets load (ideal)
+            // Hide when all assets are loaded (ideal)
             window.addEventListener('load', hideLoader);
-            // 3) Safety fallback in case 'load' is blocked by a slow/failed asset
+            // Safety fallback in case 'load' is blocked by a slow/failed asset
             setTimeout(hideLoader, 4000);
         })();
     </script>
