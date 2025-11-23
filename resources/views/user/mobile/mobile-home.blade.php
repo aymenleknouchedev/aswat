@@ -29,7 +29,7 @@
                     <div class="menu-item-header">
                         <a href="#">أخبار</a>
                         <button class="submenu-toggle" aria-label="Toggle submenu">
-                            <span class="toggle-arrow">›</span>
+                            <i class="fa-solid fa-chevron-left toggle-arrow" aria-hidden="true"></i>
                         </button>
                     </div>
                     <ul class="submenu">
@@ -230,13 +230,15 @@
                 margin: 0;
                 padding: 12px 0 0 0;
             }
-            /* Grey separators between main links with uniform spacing */
-            .menu-list > li {
+            /* Grey separators between main links with side padding (not full width) */
+            .menu-list > li { border-bottom: none; }
+            .menu-list > li > .menu-item-header,
+            .menu-list > li > a {
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+                margin: 0 16px; /* inset the rule on both sides */
             }
-            .menu-list > li:last-child {
-                border-bottom: none;
-            }
+            .menu-list > li:last-child > .menu-item-header,
+            .menu-list > li:last-child > a { border-bottom: none; }
 
             .menu-list a {
                 display: block;
@@ -276,7 +278,6 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding-left: 15px;
                 gap: 0;
             }
 
@@ -294,23 +295,22 @@
             .submenu-toggle {
                 background: none;
                 border: none;
-                padding: 16px 12px;
+                padding: 0; /* match close button box size */
                 cursor: pointer;
                 color: #ffffff;
-                font-size: 24px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 transition: all 0.3s ease;
                 -webkit-tap-highlight-color: transparent;
-                min-width: 44px;
-                min-height: 44px;
+                width: 44px;  /* same as close button hit area */
+                height: 44px; /* same as close button hit area */
             }
 
             .submenu-toggle .toggle-arrow {
                 display: inline-block;
                 transition: transform 0.3s ease;
-                font-size: 46px;
+                font-size: 20px; /* match close icon size */
                 line-height: 1;
             }
 
@@ -331,8 +331,13 @@
                 max-height: 600px;
             }
 
-            .submenu li { border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-            .submenu li:last-child { border-bottom: none; }
+            /* Submenu separators inset */
+            .submenu li { border-bottom: none; }
+            .submenu li > a {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                margin: 0 28px;
+            }
+            .submenu li:last-child > a { border-bottom: none; }
 
             .submenu a {
                 display: block;
