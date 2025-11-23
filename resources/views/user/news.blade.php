@@ -48,6 +48,27 @@
 
     {{-- ================= CSS ================= --}}
     <style>
+        /* Critical visibility CSS to avoid flash of wrong layout on first paint */
+        .web {
+            display: none;
+        }
+
+        .mobile {
+            display: block;
+        }
+
+
+
+        @media (min-width: 992px) {
+            .web {
+                display: block !important;
+            }
+
+            .mobile {
+                display: none !important;
+            }
+        }
+
         /* Layout */
         .web {
             width: 100%;
@@ -1320,21 +1341,65 @@
         }
 
         /* Fade effect for lines - darker to lighter from left to right */
-        .podcast-line:nth-child(1) { opacity: 1; }
-        .podcast-line:nth-child(2) { opacity: 0.95; }
-        .podcast-line:nth-child(3) { opacity: 0.9; }
-        .podcast-line:nth-child(4) { opacity: 0.85; }
-        .podcast-line:nth-child(5) { opacity: 0.8; }
-        .podcast-line:nth-child(6) { opacity: 0.75; }
-        .podcast-line:nth-child(7) { opacity: 0.7; }
-        .podcast-line:nth-child(8) { opacity: 0.65; }
-        .podcast-line:nth-child(9) { opacity: 0.6; }
-        .podcast-line:nth-child(10) { opacity: 0.55; }
-        .podcast-line:nth-child(11) { opacity: 0.5; }
-        .podcast-line:nth-child(12) { opacity: 0.45; }
-        .podcast-line:nth-child(13) { opacity: 0.4; }
-        .podcast-line:nth-child(14) { opacity: 0.35; }
-        .podcast-line:nth-child(15) { opacity: 0.3; }
+        .podcast-line:nth-child(1) {
+            opacity: 1;
+        }
+
+        .podcast-line:nth-child(2) {
+            opacity: 0.95;
+        }
+
+        .podcast-line:nth-child(3) {
+            opacity: 0.9;
+        }
+
+        .podcast-line:nth-child(4) {
+            opacity: 0.85;
+        }
+
+        .podcast-line:nth-child(5) {
+            opacity: 0.8;
+        }
+
+        .podcast-line:nth-child(6) {
+            opacity: 0.75;
+        }
+
+        .podcast-line:nth-child(7) {
+            opacity: 0.7;
+        }
+
+        .podcast-line:nth-child(8) {
+            opacity: 0.65;
+        }
+
+        .podcast-line:nth-child(9) {
+            opacity: 0.6;
+        }
+
+        .podcast-line:nth-child(10) {
+            opacity: 0.55;
+        }
+
+        .podcast-line:nth-child(11) {
+            opacity: 0.5;
+        }
+
+        .podcast-line:nth-child(12) {
+            opacity: 0.45;
+        }
+
+        .podcast-line:nth-child(13) {
+            opacity: 0.4;
+        }
+
+        .podcast-line:nth-child(14) {
+            opacity: 0.35;
+        }
+
+        .podcast-line:nth-child(15) {
+            opacity: 0.3;
+        }
 
         /* Different heights and animation delays for each line */
         .podcast-line:nth-child(1) {
@@ -1413,9 +1478,12 @@
         }
 
         @keyframes wave {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scaleY(1);
             }
+
             50% {
                 transform: scaleY(0.6);
             }
@@ -1484,21 +1552,65 @@
                 width: 2px;
             }
 
-            .podcast-line:nth-child(1) { height: 16px; }
-            .podcast-line:nth-child(2) { height: 22px; }
-            .podcast-line:nth-child(3) { height: 12px; }
-            .podcast-line:nth-child(4) { height: 18px; }
-            .podcast-line:nth-child(5) { height: 14px; }
-            .podcast-line:nth-child(6) { height: 20px; }
-            .podcast-line:nth-child(7) { height: 24px; }
-            .podcast-line:nth-child(8) { height: 16px; }
-            .podcast-line:nth-child(9) { height: 10px; }
-            .podcast-line:nth-child(10) { height: 14px; }
-            .podcast-line:nth-child(11) { height: 11px; }
-            .podcast-line:nth-child(12) { height: 18px; }
-            .podcast-line:nth-child(13) { height: 13px; }
-            .podcast-line:nth-child(14) { height: 8px; }
-            .podcast-line:nth-child(15) { height: 6px; }
+            .podcast-line:nth-child(1) {
+                height: 16px;
+            }
+
+            .podcast-line:nth-child(2) {
+                height: 22px;
+            }
+
+            .podcast-line:nth-child(3) {
+                height: 12px;
+            }
+
+            .podcast-line:nth-child(4) {
+                height: 18px;
+            }
+
+            .podcast-line:nth-child(5) {
+                height: 14px;
+            }
+
+            .podcast-line:nth-child(6) {
+                height: 20px;
+            }
+
+            .podcast-line:nth-child(7) {
+                height: 24px;
+            }
+
+            .podcast-line:nth-child(8) {
+                height: 16px;
+            }
+
+            .podcast-line:nth-child(9) {
+                height: 10px;
+            }
+
+            .podcast-line:nth-child(10) {
+                height: 14px;
+            }
+
+            .podcast-line:nth-child(11) {
+                height: 11px;
+            }
+
+            .podcast-line:nth-child(12) {
+                height: 18px;
+            }
+
+            .podcast-line:nth-child(13) {
+                height: 13px;
+            }
+
+            .podcast-line:nth-child(14) {
+                height: 8px;
+            }
+
+            .podcast-line:nth-child(15) {
+                height: 6px;
+            }
 
             .audio-time-display {
                 font-size: 12px;
@@ -1530,21 +1642,65 @@
                 width: 2px;
             }
 
-            .podcast-line:nth-child(1) { height: 14px; }
-            .podcast-line:nth-child(2) { height: 18px; }
-            .podcast-line:nth-child(3) { height: 10px; }
-            .podcast-line:nth-child(4) { height: 15px; }
-            .podcast-line:nth-child(5) { height: 12px; }
-            .podcast-line:nth-child(6) { height: 17px; }
-            .podcast-line:nth-child(7) { height: 20px; }
-            .podcast-line:nth-child(8) { height: 14px; }
-            .podcast-line:nth-child(9) { height: 8px; }
-            .podcast-line:nth-child(10) { height: 12px; }
-            .podcast-line:nth-child(11) { height: 9px; }
-            .podcast-line:nth-child(12) { height: 15px; }
-            .podcast-line:nth-child(13) { height: 11px; }
-            .podcast-line:nth-child(14) { height: 7px; }
-            .podcast-line:nth-child(15) { height: 5px; }
+            .podcast-line:nth-child(1) {
+                height: 14px;
+            }
+
+            .podcast-line:nth-child(2) {
+                height: 18px;
+            }
+
+            .podcast-line:nth-child(3) {
+                height: 10px;
+            }
+
+            .podcast-line:nth-child(4) {
+                height: 15px;
+            }
+
+            .podcast-line:nth-child(5) {
+                height: 12px;
+            }
+
+            .podcast-line:nth-child(6) {
+                height: 17px;
+            }
+
+            .podcast-line:nth-child(7) {
+                height: 20px;
+            }
+
+            .podcast-line:nth-child(8) {
+                height: 14px;
+            }
+
+            .podcast-line:nth-child(9) {
+                height: 8px;
+            }
+
+            .podcast-line:nth-child(10) {
+                height: 12px;
+            }
+
+            .podcast-line:nth-child(11) {
+                height: 9px;
+            }
+
+            .podcast-line:nth-child(12) {
+                height: 15px;
+            }
+
+            .podcast-line:nth-child(13) {
+                height: 11px;
+            }
+
+            .podcast-line:nth-child(14) {
+                height: 7px;
+            }
+
+            .podcast-line:nth-child(15) {
+                height: 5px;
+            }
 
             .audio-time-display {
                 font-size: 11px;
@@ -1735,8 +1891,8 @@
                 @if ($news->template == 'album' && $news->media()->wherePivot('type', 'album')->count())
                     @php
                         // Use the article's main image as the first slide (cover) in the album
-$mainImage = $news->media()->wherePivot('type', 'main')->first();
-$albumImages = $news->media()->wherePivot('type', 'album')->get();
+            $mainImage = $news->media()->wherePivot('type', 'main')->first();
+            $albumImages = $news->media()->wherePivot('type', 'album')->get();
 
                         // Prepend main image as the first slide if it exists
                         if ($mainImage) {
@@ -1930,6 +2086,16 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
         @include('user.components.sp60')
         @include('user.components.footer')
+    </div>
+
+    <div class="mobile">
+        @include('user.mobile.mobile-home')
+        
+        <!-- Compact mobile footer at the end -->
+        <div class="mobile-container">
+            <div class="mobilecontentnew"></div>
+            @include('user.mobile.footer')
+        </div>
     </div>
 
     {{-- ================= FULLSCREEN IMAGE MODAL ================= --}}

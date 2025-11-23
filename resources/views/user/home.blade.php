@@ -5,40 +5,8 @@
 @section('content')
 
     <style>
-        /* Simple desktop loader */
-        .web-loader {
-            position: fixed;
-            inset: 0;
-            background: #ffffff;
-            /* dark background to match site */
-            display: none;
-            /* default hidden, enabled on desktop */
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
-        .web-loader .web-spinner {
-            width: 48px;
-            height: 48px;
-            border: 3px solid rgba(255, 255, 255, 0.25);
-            border-top-color: #bcbcbc;
-            border-radius: 50%;
-            animation: web-spin 1s linear infinite;
-        }
-
-        .web-loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
-        }
-
-        @keyframes web-spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+     
+        
 
         .art-section-hero {
             position: relative;
@@ -104,9 +72,7 @@
             display: block;
         }
 
-        .web-loader {
-            display: none;
-        }
+        
 
         @media (min-width: 992px) {
             .web {
@@ -115,10 +81,6 @@
 
             .mobile {
                 display: none !important;
-            }
-
-            .web-loader {
-                display: flex !important;
             }
         }
     </style>
@@ -532,7 +494,6 @@
             }
         }
     </style>
-
 
     <div class="web">
         @include('user.components.fixed-nav')
@@ -1066,6 +1027,8 @@
 
         </div>
     </div>
+
+    
 
     <script>
         // Mobile auto horizontal scroll ONLY for currently visible vertical section (immediate start)

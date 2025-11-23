@@ -329,6 +329,258 @@
         }
     </style>
 
+    <style>
+        @media (max-width: 992px) {
+            .web {
+                display: none !important;
+            }
+
+            .mobile {
+                display: block !important;
+            }
+
+            /* Horizontal snap scroller (reuse styles from home) */
+            .mobile-h-wrapper {
+                width: 100%;
+                height: 100vh;
+                /* fallback */
+                height: 100svh;
+                /* avoid growth when URL bar hides */
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                position: relative;
+            }
+
+            .h-snap {
+                height: 100%;
+                width: 100%;
+                display: grid;
+                grid-auto-flow: column;
+                grid-auto-columns: 100vw;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior-x: contain;
+                scrollbar-width: none;
+                direction: rtl;
+            }
+
+            .h-snap::-webkit-scrollbar {
+                display: none;
+            }
+
+            .h-snap-slide {
+                width: 100vw;
+                height: 100%;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                /* ensure one-slide-at-a-time */
+                position: relative;
+                display: block;
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .post-overlay-dark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.0));
+                z-index: 1;
+            }
+
+            .featured-post-section-badge {
+                position: absolute;
+                top: 90px;
+                right: 16px;
+                z-index: 2;
+                background: #fff;
+                color: #000;
+                padding: 6px 12px;
+                font-size: 23px;
+                font-weight: 800;
+                line-height: 1;
+                border-radius: 0;
+                display: inline-block;
+                text-align: center;
+            }
+
+            .section-fixed-ui {
+                position: absolute;
+                top: 90px;
+                right: 16px;
+                z-index: 3;
+                display: flex;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .section-fixed-ui .featured-post-section-badge {
+                position: static;
+            }
+
+            .h-indicators {
+                display: flex;
+                flex-direction: row;
+                align-items: stretch;
+                justify-content: flex-start;
+                gap: 5px;
+            }
+
+            .h-indicator {
+                width: 4px;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.262);
+                border-radius: 2px;
+            }
+
+            .h-indicator.active {
+                background: #ffffff;
+            }
+
+            .mobile-featured-post {
+                width: 100%;
+                height: 100vh;
+                /* fallback */
+                height: 100svh;
+                /* lock to small viewport to prevent zoom-effect growth */
+                position: relative;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                overflow: hidden;
+            }
+
+            .featured-post-content2 {
+                position: absolute;
+                bottom: 90px;
+                left: 0;
+                right: 0;
+                z-index: 2;
+                padding: 0 20px;
+                color: #fff;
+                direction: rtl;
+                text-align: right;
+            }
+
+            .featured-post-category-name {
+                margin: 0 0 14px 0;
+                font-size: 22px;
+                color: #ffffff;
+                letter-spacing: 1px;
+            }
+
+            .featured-post-title {
+                margin: 0 0 15px 0;
+                font-size: 32px;
+                font-weight: 900;
+                line-height: 1.4;
+                color: #fff;
+                font-family: 'asswat-bold';
+            }
+
+            .featured-post-description {
+                margin: 0;
+                font-size: 16px;
+                color: #ffffff;
+                line-height: 1.5;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                font-family: 'asswat-regular';
+            }
+
+            /* Simple list under scroller */
+            .mobile-simple-list {
+                padding: 12px 0 8px;
+            }
+
+            .mobile-simple-header {
+                padding: 12px 16px 8px;
+                font-size: 20px;
+                font-weight: 800;
+            }
+
+            .mobile-simple-ul {
+                list-style: none;
+                margin: 0;
+                padding: 0 16px 12px;
+            }
+
+            .mobile-simple-item+.mobile-simple-item {
+                border-top: 1px solid rgba(0, 0, 0, 0.12);
+            }
+
+            .mobile-simple-link {
+                display: flex;
+                gap: 12px;
+                align-items: center;
+                padding: 12px 0;
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .ms-thumb img {
+                width: 135px;
+                aspect-ratio: 16/9;
+                object-fit: cover;
+                display: block;
+            }
+
+            .ms-text {
+                display: flex;
+                flex-direction: column;
+                /* occupy remaining space next to the 120px thumbnail + 12px gap */
+                flex: 1 1 0;
+                min-width: 0;
+                /* allow text to shrink without overflow */
+                width: calc(100% - 147px);
+            }
+
+            .ms-cat {
+                margin: 0 0 6px 0;
+                font-size: 14px;
+                color: #74747C;
+            }
+
+            .ms-title {
+                margin: 0;
+                font-size: 18px;
+                font-weight: 800;
+                line-height: 1.35;
+                color: #000;
+                font-family: 'asswat-bold';
+            }
+
+            /* Mobile "Read more" button */
+            #mobile-load-more-container {
+                padding: 8px 0 28px;
+            }
+
+            #mobile-load-more-container .mobile-load-more-btn {
+                display: block;
+                width: calc(100% - 32px);
+                margin: 0 16px;
+                padding: 14px 16px;
+                background: #e7e7e7;
+                color: #252525;
+                font-size: 18px;
+                font-family: 'asswat-bold';
+                letter-spacing: .2px;
+                text-align: center;
+            }
+
+
+        }
+    </style>
+
     <div class="web">
         @include('user.components.fixed-nav')
 
@@ -528,8 +780,8 @@
     <div class="mobile">
         @include('user.mobile.mobile-home')
 
-    <!-- Mobile horizontal scroller for this section (no vertical snap) -->
-    <div class="mobile-flow">
+        <!-- Mobile horizontal scroller for this section (no vertical snap) -->
+        <div class="mobile-flow">
             @php
                 $mobCount = isset($contents) && is_countable($contents) ? count($contents) : 0;
                 $slideCount = $mobCount > 0 ? min(5, $mobCount) : 0;
@@ -622,7 +874,8 @@
                                             @if (isset($mc->category) && $mc->category)
                                                 <p class="ms-cat">{{ $mc->category->name }}</p>
                                             @endif
-                                            <p class="ms-title">{{ \Illuminate\Support\Str::limit($mc->mobile_title, 90) }}</p>
+                                            <p class="ms-title">
+                                                {{ \Illuminate\Support\Str::limit($mc->mobile_title, 90) }}</p>
                                         </div>
                                     </a>
                                 </li>
@@ -648,251 +901,7 @@
         </div>
     </div>
 
-    <style>
-        @media (max-width: 992px) {
-            .web {
-                display: none !important;
-            }
 
-            .mobile {
-                display: block !important;
-            }
-
-            /* Horizontal snap scroller (reuse styles from home) */
-            .mobile-h-wrapper {
-                width: 100%;
-                    height: 100vh; /* fallback */
-                    height: 100svh; /* avoid growth when URL bar hides */
-                scroll-snap-align: start;
-                scroll-snap-stop: always;
-                position: relative;
-            }
-
-            .h-snap {
-                height: 100%;
-                width: 100%;
-                display: grid;
-                grid-auto-flow: column;
-                grid-auto-columns: 100vw;
-                overflow-x: auto;
-                overflow-y: hidden;
-                scroll-snap-type: x mandatory;
-                -webkit-overflow-scrolling: touch;
-                overscroll-behavior-x: contain;
-                scrollbar-width: none;
-                direction: rtl;
-            }
-
-            .h-snap::-webkit-scrollbar {
-                display: none;
-            }
-
-            .h-snap-slide {
-                width: 100vw;
-                height: 100%;
-                scroll-snap-align: start;
-                scroll-snap-stop: always; /* ensure one-slide-at-a-time */
-                position: relative;
-                display: block;
-                text-decoration: none;
-                color: inherit;
-            }
-
-            .post-overlay-dark {
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.0));
-                z-index: 1;
-            }
-
-            .featured-post-section-badge {
-                position: absolute;
-                top: 90px;
-                right: 16px;
-                z-index: 2;
-                background: #fff;
-                color: #000;
-                padding: 6px 12px;
-                font-size: 23px;
-                font-weight: 800;
-                line-height: 1;
-                border-radius: 0;
-                display: inline-block;
-                text-align: center;
-            }
-
-            .section-fixed-ui {
-                position: absolute;
-                top: 90px;
-                right: 16px;
-                z-index: 3;
-                display: flex;
-                align-items: stretch;
-                gap: 8px;
-            }
-
-            .section-fixed-ui .featured-post-section-badge {
-                position: static;
-            }
-
-            .h-indicators {
-                display: flex;
-                flex-direction: row;
-                align-items: stretch;
-                justify-content: flex-start;
-                gap: 5px;
-            }
-
-            .h-indicator {
-                width: 4px;
-                height: 100%;
-                background: rgba(255, 255, 255, 0.262);
-                border-radius: 2px;
-            }
-
-            .h-indicator.active {
-                background: #ffffff;
-            }
-
-            .mobile-featured-post {
-                width: 100%;
-                    height: 100vh; /* fallback */
-                    height: 100svh; /* lock to small viewport to prevent zoom-effect growth */
-                position: relative;
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
-                overflow: hidden;
-            }
-
-            .featured-post-content2 {
-                position: absolute;
-                bottom: 90px;
-                left: 0;
-                right: 0;
-                z-index: 2;
-                padding: 0 20px;
-                color: #fff;
-                direction: rtl;
-                text-align: right;
-            }
-
-            .featured-post-category-name {
-                margin: 0 0 14px 0;
-                font-size: 22px;
-                color: #ffffff;
-                letter-spacing: 1px;
-            }
-
-            .featured-post-title {
-                margin: 0 0 15px 0;
-                font-size: 32px;
-                font-weight: 900;
-                line-height: 1.4;
-                color: #fff;
-                font-family: 'asswat-bold';
-            }
-
-            .featured-post-description {
-                margin: 0;
-                font-size: 16px;
-                color: #ffffff;
-                line-height: 1.5;
-                overflow: hidden;
-                display: -webkit-box;
-                -webkit-line-clamp: 3;
-                -webkit-box-orient: vertical;
-                font-family: 'asswat-regular';
-            }
-
-            /* Simple list under scroller */
-            .mobile-simple-list {
-                padding: 12px 0 8px;
-            }
-
-            .mobile-simple-header {
-                padding: 12px 16px 8px;
-                font-size: 20px;
-                font-weight: 800;
-            }
-
-            .mobile-simple-ul {
-                list-style: none;
-                margin: 0;
-                padding: 0 16px 12px;
-            }
-
-            .mobile-simple-item+.mobile-simple-item {
-                border-top: 1px solid rgba(0, 0, 0, 0.12);
-            }
-
-            .mobile-simple-link {
-                display: flex;
-                gap: 12px;
-                align-items: center;
-                padding: 12px 0;
-                text-decoration: none;
-                color: inherit;
-            }
-
-            .ms-thumb img {
-                width: 135px;
-                aspect-ratio: 16/9;
-                object-fit: cover;
-                display: block;
-            }
-
-            .ms-text {
-                display: flex;
-                flex-direction: column;
-                /* occupy remaining space next to the 120px thumbnail + 12px gap */
-                flex: 1 1 0;
-                min-width: 0; /* allow text to shrink without overflow */
-                width: calc(100% - 147px);
-            }
-
-            .ms-cat {
-                margin: 0 0 6px 0;
-                font-size: 14px;
-                color: #74747C;
-            }
-
-            .ms-title {
-                margin: 0;
-                font-size: 18px;
-                font-weight: 800;
-                line-height: 1.35;
-                color: #000;
-                font-family: 'asswat-bold';
-            }
-
-            /* Mobile "Read more" button */
-            #mobile-load-more-container {
-                padding: 8px 0 28px;
-            }
-
-            #mobile-load-more-container .mobile-load-more-btn {
-                display: block;
-                width: calc(100% - 32px);
-                margin: 0 16px;
-                padding: 14px 16px;
-                background: #e7e7e7;
-                color: #252525;
-                font-size: 18px;
-                font-family: 'asswat-bold';
-                letter-spacing: .2px;
-                text-align: center;
-            }
-
-    
-        }
-    </style>
 
     <script>
         // Make mobile scroller dots reflect the current slide and be clickable
