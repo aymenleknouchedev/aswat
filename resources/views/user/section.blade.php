@@ -5,6 +5,14 @@
 @section('content')
 
     <style>
+        .web {
+            display: block !important;
+        }
+
+        .mobile {
+            display: none !important;
+        }
+
         .newCategory {
             display: grid;
             grid-template-columns: 8fr 4fr;
@@ -523,7 +531,7 @@
         <!-- Mobile horizontal scroller for this section -->
         <div class="mobile-snap">
             @php
-                $mobCount = (isset($contents) && is_countable($contents)) ? count($contents) : 0;
+                $mobCount = isset($contents) && is_countable($contents) ? count($contents) : 0;
                 $slideCount = $mobCount > 0 ? min(5, $mobCount) : 0;
             @endphp
             @if ($slideCount > 0)
@@ -554,14 +562,16 @@
                                 style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}');">
                                 <div class="post-overlay-dark"></div>
                                 <div class="featured-post-content2">
-                                    @if(isset($c->category) && $c->category)
+                                    @if (isset($c->category) && $c->category)
                                         <p class="featured-post-category-name">
-                                            <a href="{{ route('category.show', ['id' => $c->category->id, 'type' => 'Category']) }}" style="color: inherit; text-decoration: none;">
+                                            <a href="{{ route('category.show', ['id' => $c->category->id, 'type' => 'Category']) }}"
+                                                style="color: inherit; text-decoration: none;">
                                                 {{ $c->category->name }}
                                             </a>
                                         </p>
                                     @endif
-                                    <a href="{{ route('news.show', $c->title) }}" style="text-decoration: none; color: inherit;">
+                                    <a href="{{ route('news.show', $c->title) }}"
+                                        style="text-decoration: none; color: inherit;">
                                         <h1 class="featured-post-title">
                                             {{ \Illuminate\Support\Str::limit($c->mobile_title ?? $c->title, 50) }}
                                         </h1>
@@ -576,17 +586,77 @@
                 </div>
             @endif
 
+            <!-- Simple moreContents list -->
+            @php
+                $moreMobItems = [];
+                if (isset($moreContents)) {
+                    // Support paginator, collection, or array
+                    if (
+                        $moreContents instanceof \Illuminate\Pagination\LengthAwarePaginator ||
+                        $moreContents instanceof \Illuminate\Contracts\Pagination\Paginator
+                    ) {
+                        $col = $moreContents->getCollection();
+                    } else {
+                        $col = $moreContents;
+                    }
+                    if ($col instanceof \Illuminate\Support\Collection) {
+                        $moreMobItems = $col->take(8);
+                    } elseif (is_array($col)) {
+                        $moreMobItems = array_slice($col, 0, 8);
+                    }
+                }
+            @endphp
+            @if (!empty($moreMobItems))
+                <div class="mobile-container">
+                    <div class="mobile-simple-list" dir="rtl">
+                        <ul class="mobile-simple-ul" role="list">
+                            @foreach ($moreMobItems as $mc)
+                                <li class="mobile-simple-item">
+                                    <a class="mobile-simple-link" href="{{ route('news.show', $mc->title) }}"
+                                        aria-label="{{ $mc->title }}">
+                                        <div class="ms-thumb">
+                                            <img src="{{ $mc->media()->wherePivot('type', 'main')->first()->path ?? asset($mc->image ?? 'user/assets/images/default-post.jpg') }}"
+                                                alt="{{ $mc->title }}">
+                                        </div>
+                                        <div class="ms-text">
+                                            @if (isset($mc->category) && $mc->category)
+                                                <p class="ms-cat">{{ $mc->category->name }}</p>
+                                            @endif
+                                            <p class="ms-title">{{ \Illuminate\Support\Str::limit($mc->title, 90) }}</p>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @endif
+
+            <!-- Mobile Read More button -->
+            <div class="text-center mt-3" id="mobile-load-more-container">
+                <button class="mobile-load-more-btn btn btn-primary" data-page="1" data-section="{{ $section ?? '' }}">
+                    المزيد
+                </button>
+            </div>
+
             <!-- Compact mobile footer at the end -->
             <div class="mobile-container">
                 @include('user.mobile.footer')
             </div>
+
+
         </div>
     </div>
 
     <style>
         @media (max-width: 992px) {
-            .web { display: none !important; }
-            .mobile { display: block !important; }
+            .web {
+                display: none !important;
+            }
+
+            .mobile {
+                display: block !important;
+            }
 
             /* Horizontal snap scroller (reuse styles from home) */
             .mobile-h-wrapper {
@@ -596,6 +666,7 @@
                 scroll-snap-stop: always;
                 position: relative;
             }
+
             .h-snap {
                 height: 100%;
                 width: 100%;
@@ -610,7 +681,11 @@
                 scrollbar-width: none;
                 direction: rtl;
             }
-            .h-snap::-webkit-scrollbar { display: none; }
+
+            .h-snap::-webkit-scrollbar {
+                display: none;
+            }
+
             .h-snap-slide {
                 width: 100vw;
                 height: 100%;
@@ -620,12 +695,17 @@
                 text-decoration: none;
                 color: inherit;
             }
+
             .post-overlay-dark {
                 position: absolute;
-                top: 0; left: 0; right: 0; bottom: 0;
-                background: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.6), rgba(0,0,0,0.0), rgba(0,0,0,0.0));
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.0));
                 z-index: 1;
             }
+
             .featured-post-section-badge {
                 position: absolute;
                 top: 90px;
@@ -641,6 +721,7 @@
                 display: inline-block;
                 text-align: center;
             }
+
             .section-fixed-ui {
                 position: absolute;
                 top: 90px;
@@ -650,26 +731,166 @@
                 align-items: stretch;
                 gap: 8px;
             }
-            .section-fixed-ui .featured-post-section-badge { position: static; }
-            .h-indicators { display: flex; flex-direction: row; align-items: stretch; justify-content: flex-start; gap: 5px; }
-            .h-indicator { width: 4px; height: 100%; background: rgba(255,255,255,0.262); border-radius: 2px; }
-            .h-indicator.active { background: #ffffff; }
+
+            .section-fixed-ui .featured-post-section-badge {
+                position: static;
+            }
+
+            .h-indicators {
+                display: flex;
+                flex-direction: row;
+                align-items: stretch;
+                justify-content: flex-start;
+                gap: 5px;
+            }
+
+            .h-indicator {
+                width: 4px;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.262);
+                border-radius: 2px;
+            }
+
+            .h-indicator.active {
+                background: #ffffff;
+            }
+
             .mobile-featured-post {
-                width: 100%; height: 100dvh; position: relative; background-size: cover; background-position: center; background-repeat: no-repeat;
-                display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
+                width: 100%;
+                height: 100dvh;
+                position: relative;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                overflow: hidden;
             }
+
             .featured-post-content2 {
-                position: absolute; bottom: 90px; left: 0; right: 0; z-index: 2; padding: 0 20px; color: #fff; direction: rtl; text-align: right;
+                position: absolute;
+                bottom: 90px;
+                left: 0;
+                right: 0;
+                z-index: 2;
+                padding: 0 20px;
+                color: #fff;
+                direction: rtl;
+                text-align: right;
             }
-            .featured-post-category-name { margin: 0 0 14px 0; font-size: 22px; color: #ffffff; letter-spacing: 1px; }
-            .featured-post-title { margin: 0 0 15px 0; font-size: 32px; font-weight: 900; line-height: 1.4; color: #fff; font-family: 'asswat-bold'; }
-            .featured-post-description { margin: 0; font-size: 16px; color: #ffffff; line-height: 1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; font-family: 'asswat-regular'; }
+
+            .featured-post-category-name {
+                margin: 0 0 14px 0;
+                font-size: 22px;
+                color: #ffffff;
+                letter-spacing: 1px;
+            }
+
+            .featured-post-title {
+                margin: 0 0 15px 0;
+                font-size: 32px;
+                font-weight: 900;
+                line-height: 1.4;
+                color: #fff;
+                font-family: 'asswat-bold';
+            }
+
+            .featured-post-description {
+                margin: 0;
+                font-size: 16px;
+                color: #ffffff;
+                line-height: 1.5;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                font-family: 'asswat-regular';
+            }
+
+            /* Simple list under scroller */
+            .mobile-simple-list {
+                padding: 12px 0 8px;
+            }
+
+            .mobile-simple-header {
+                padding: 12px 16px 8px;
+                font-size: 20px;
+                font-weight: 800;
+            }
+
+            .mobile-simple-ul {
+                list-style: none;
+                margin: 0;
+                padding: 0 16px 12px;
+            }
+
+            .mobile-simple-item+.mobile-simple-item {
+                border-top: 1px solid rgba(0, 0, 0, 0.12);
+            }
+
+            .mobile-simple-link {
+                display: flex;
+                gap: 12px;
+                align-items: center;
+                padding: 12px 0;
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .ms-thumb img {
+                width: 120px;
+                aspect-ratio: 16/9;
+                object-fit: cover;
+                display: block;
+                border-radius: 2px;
+            }
+
+            .ms-text {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .ms-cat {
+                margin: 0 0 6px 0;
+                font-size: 14px;
+                color: #74747C;
+            }
+
+            .ms-title {
+                margin: 0;
+                font-size: 18px;
+                font-weight: 800;
+                line-height: 1.35;
+                color: #000;
+                font-family: 'asswat-bold';
+            }
+
+            /* Mobile "Read more" button */
+            #mobile-load-more-container {
+                padding: 8px 0 28px;
+            }
+
+            #mobile-load-more-container .mobile-load-more-btn {
+                display: block;
+                width: calc(100% - 32px);
+                margin: 0 16px;
+                padding: 14px 16px;
+                background: #e7e7e7;
+                color: #252525;
+                font-size: 18px;
+                font-family: 'asswat-bold';
+                letter-spacing: .2px;
+                text-align: center;
+            }
+
+    
         }
     </style>
 
     <script>
         // Make mobile scroller dots reflect the current slide and be clickable
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth > 991) return; // mobile only
             const wrappers = Array.from(document.querySelectorAll('.mobile .mobile-h-wrapper'));
             wrappers.forEach(w => {
@@ -680,17 +901,22 @@
 
                 function nearestIndex() {
                     const left = track.scrollLeft;
-                    let best = 0, bestDist = Infinity;
+                    let best = 0,
+                        bestDist = Infinity;
                     slides.forEach((s, i) => {
                         const d = Math.abs(s.offsetLeft - left);
-                        if (d < bestDist) { bestDist = d; best = i; }
+                        if (d < bestDist) {
+                            bestDist = d;
+                            best = i;
+                        }
                     });
                     return best;
                 }
 
                 function updateIndicators(idx) {
                     indicators.forEach((el, i) => {
-                        if (i === idx) el.classList.add('active'); else el.classList.remove('active');
+                        if (i === idx) el.classList.add('active');
+                        else el.classList.remove('active');
                     });
                 }
 
@@ -702,18 +928,108 @@
                 track.addEventListener('scroll', () => {
                     clearTimeout(t);
                     t = setTimeout(() => updateIndicators(nearestIndex()), 120);
-                }, { passive: true });
+                }, {
+                    passive: true
+                });
 
                 // Make dots clickable to jump to slide
                 indicators.forEach((dot, i) => {
                     dot.style.cursor = 'pointer';
                     dot.addEventListener('click', () => {
                         const target = slides[i];
-                        if (target) track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+                        if (target) track.scrollTo({
+                            left: target.offsetLeft,
+                            behavior: 'smooth'
+                        });
                     });
                 });
             });
         });
+
+        // Mobile Read More: fetch and append items to the simple list
+        (function() {
+            let mobileLoading = false;
+            document.addEventListener('click', async function(e) {
+                if (!e.target.classList.contains('mobile-load-more-btn')) return;
+                if (mobileLoading) return;
+                const btn = e.target;
+                const section = btn.getAttribute('data-section');
+                let page = parseInt(btn.getAttribute('data-page') || '1', 10) + 1;
+                if (!section) {
+                    console.error('Section is not defined');
+                    return;
+                }
+                mobileLoading = true;
+                btn.disabled = true;
+                btn.textContent = 'جاري التحميل...';
+                try {
+                    const url = `/api/section/${section}?page=${page}`;
+                    const resp = await fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                    const html = await resp.text();
+                    const tmp = document.createElement('div');
+                    tmp.innerHTML = html;
+                    const cards = Array.from(tmp.querySelectorAll('.newCategory-all-card'));
+                    if (!cards.length) {
+                        // No more data, remove container
+                        btn.closest('#mobile-load-more-container')?.remove();
+                    } else {
+                        // Ensure list exists
+                        let list = document.querySelector('.mobile .mobile-simple-ul');
+                        if (!list) {
+                            const container = document.createElement('div');
+                            container.className = 'mobile-container';
+                            container.innerHTML = `
+                                <div class="mobile-simple-list" dir="rtl">
+                                  <div class="mobile-simple-header">${document.querySelector('.featured-post-section-badge')?.textContent || 'المزيد'}</div>
+                                  <ul class="mobile-simple-ul" role="list"></ul>
+                                </div>`;
+                            const insertPoint = document.querySelector('.mobile .mobile-snap');
+                            if (insertPoint && insertPoint.parentNode) insertPoint.parentNode.insertBefore(
+                                container, insertPoint.nextSibling);
+                            list = container.querySelector('.mobile-simple-ul');
+                        }
+                        const frag = document.createDocumentFragment();
+                        cards.forEach(card => {
+                            const a = card.querySelector('.newCategory-all-card-text a[href]') ||
+                                card.querySelector('a[href]');
+                            const img = card.querySelector('img');
+                            const cat = card.querySelector('.newCategory-all-card-text h3');
+                            const li = document.createElement('li');
+                            li.className = 'mobile-simple-item';
+                            const href = a ? a.getAttribute('href') : '#';
+                            const title = a ? (a.textContent || '').trim() : '';
+                            const src = img ? img.getAttribute('src') : '';
+                            const catText = cat ? (cat.textContent || '').trim() : '';
+                            li.innerHTML = `
+                                <a class="mobile-simple-link" href="${href}" aria-label="${title}">
+                                  <div class="ms-thumb">
+                                    <img src="${src}" alt="${title}">
+                                  </div>
+                                  <div class="ms-text">
+                                    ${catText ? `<p class="ms-cat">${catText}</p>` : ''}
+                                    <p class="ms-title">${title}</p>
+                                  </div>
+                                </a>`;
+                            frag.appendChild(li);
+                        });
+                        list.appendChild(frag);
+                        btn.setAttribute('data-page', String(page));
+                        btn.disabled = false;
+                        btn.textContent = 'المزيد';
+                    }
+                } catch (err) {
+                    console.error('Mobile load more failed', err);
+                    btn.disabled = false;
+                    btn.textContent = 'المزيد';
+                }
+                mobileLoading = false;
+            });
+        })();
     </script>
 
 @endsection
