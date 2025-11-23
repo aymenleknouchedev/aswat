@@ -54,6 +54,15 @@
                 <li><a href="#">بودكاست</a></li>
                 <li><a href="#">صور</a></li>
             </ul>
+
+            <div class="sidebar-social" aria-label="تابعنا">
+                <span class="s-icon">@include('user.icons.facebook')</span>
+                <span class="s-icon">@include('user.icons.twitter')</span>
+                <span class="s-icon">@include('user.icons.youtube')</span>
+                <span class="s-icon">@include('user.icons.instagram')</span>
+                <span class="s-icon">@include('user.icons.telegram')</span>
+                <span class="s-icon">@include('user.icons.linkedin')</span>
+            </div>
         </div>
     </div>
 
@@ -219,10 +228,13 @@
             .menu-list {
                 list-style: none;
                 margin: 0;
-                padding: 12px 0;
+                padding: 12px 0 0 0;
             }
-
-            .menu-list li {
+            /* Grey separators between main links with uniform spacing */
+            .menu-list > li {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            }
+            .menu-list > li:last-child {
                 border-bottom: none;
             }
 
@@ -313,15 +325,15 @@
                 max-height: 0;
                 overflow: hidden;
                 transition: max-height 0.3s ease;
+                background-color: #1a1a1a;
             }
 
             .submenu.active {
                 max-height: 600px;
             }
 
-            .submenu li {
-                border-bottom: none;
-            }
+            .submenu li { border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+            .submenu li:last-child { border-bottom: none; }
 
             .submenu a {
                 display: block;
@@ -380,6 +392,18 @@
                 width: 100%;
                 background-color: #fafafa;
             }
+
+            /* Sidebar social icons */
+            .sidebar-social {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 18px;
+                padding: 16px 0 20px;
+                margin-top: 30px;
+            }
+            .sidebar-social .s-icon { width: 22px; height: 22px; opacity: 0.85; }
+            .sidebar-social .s-icon:active { opacity: 1; }
 
         }
     </style>
