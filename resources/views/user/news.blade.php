@@ -1287,12 +1287,9 @@
 
         .audio-play-icon {
             position: absolute;
-            bottom: 16px;
-            left: 16px;
-            width: 50px;
-            height: 50px;
+            bottom: 20px;
+            left: 20px;
             border-radius: 50%;
-            background: rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1304,7 +1301,7 @@
 
 
         .audio-play-icon i {
-            font-size: 24px;
+            font-size: 30px;
             color: #ffffff;
             margin-left: 2px;
         }
@@ -1317,10 +1314,11 @@
         /* Updated Creative podcast lines - Aligned with play icon - Interactive for seeking */
         .podcast-lines {
             position: absolute;
-            bottom: 18px;
-            left: 80px;
+            bottom: 20px;
+            left: 65px;
             opacity: 0;
             transition: opacity 0.5s ease;
+            pointer-events: none;
             display: flex;
             align-items: center;
             justify-content: flex-start;
@@ -1545,7 +1543,7 @@
         @media (max-width: 768px) {
             .podcast-lines {
                 left: 55px;
-                width: 50%;
+                width: 10%;
                 height: 30px;
                 gap: 3px;
             }
@@ -2658,7 +2656,6 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             initializeTextDefinitionModal();
             initializeCopyLink();
             initializeAudioPlayer();
-            initializeMobileAudioPlayer();
             initializeGreybarScroll();
         });
 
@@ -2689,14 +2686,27 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
          * Initialize Enhanced Audio Player
          */
         function initializeAudioPlayer() {
-            const audioPlayerWrapper = document.getElementById('audioPlayerWrapper');
-            const audioElement = document.getElementById('podcastAudio');
-            const playIcon = document.getElementById('audioPlayIcon');
-            const audioProgressBarInteractive = document.getElementById('audioProgressBarInteractive');
-            const audioProgressFillInteractive = document.getElementById('audioProgressFillInteractive');
-            const audioProgressHandle = document.getElementById('audioProgressHandle');
-            const currentTimeDisplay = document.getElementById('currentTime');
-            const totalDurationDisplay = document.getElementById('totalDuration');
+            // Initialize both web and mobile audio players
+            initializeSingleAudioPlayer('audioPlayerWrapper', 'podcastAudio', 'audioPlayIcon', 
+                'audioProgressBarInteractive', 'audioProgressFillInteractive', 'audioProgressHandle',
+                'currentTime', 'totalDuration');
+            
+            initializeSingleAudioPlayer('audioPlayerWrapperMobile', 'podcastAudioMobile', 'audioPlayIconMobile', 
+                null, null, null, 'currentTimeMobile', 'totalDurationMobile');
+        }
+
+        /**
+         * Initialize a single audio player instance
+         */
+        function initializeSingleAudioPlayer(wrapperId, audioId, playIconId, progressBarId, progressFillId, handleId, currentTimeId, totalDurationId) {
+            const audioPlayerWrapper = document.getElementById(wrapperId);
+            const audioElement = document.getElementById(audioId);
+            const playIcon = document.getElementById(playIconId);
+            const audioProgressBarInteractive = progressBarId ? document.getElementById(progressBarId) : null;
+            const audioProgressFillInteractive = progressFillId ? document.getElementById(progressFillId) : null;
+            const audioProgressHandle = handleId ? document.getElementById(handleId) : null;
+            const currentTimeDisplay = document.getElementById(currentTimeId);
+            const totalDurationDisplay = document.getElementById(totalDurationId);
 
             if (!audioPlayerWrapper || !audioElement) return;
 
@@ -2826,69 +2836,8 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         }
 
         /**
-         * Initialize Mobile Audio Player
+         * Initialize Share Functionality
          */
-        function initializeMobileAudioPlayer() {
-            const audioPlayerWrapper = document.getElementById('audioPlayerWrapperMobile');
-            const audioElement = document.getElementById('podcastAudioMobile');
-            const playIcon = document.getElementById('audioPlayIconMobile');
-            const currentTimeDisplay = document.getElementById('currentTimeMobile');
-            const totalDurationDisplay = document.getElementById('totalDurationMobile');
-
-            if (!audioPlayerWrapper || !audioElement) return;
-
-            // Format time helper
-            function formatTime(seconds) {
-                if (!seconds || isNaN(seconds)) return '0:00';
-                const mins = Math.floor(seconds / 60);
-                const secs = Math.floor(seconds % 60);
-                return `${mins}:${secs.toString().padStart(2, '0')}`;
-            }
-
-            // Update time display
-            function updateProgress() {
-                if (currentTimeDisplay) {
-                    currentTimeDisplay.textContent = formatTime(audioElement.currentTime);
-                }
-                if (totalDurationDisplay && audioElement.duration) {
-                    totalDurationDisplay.textContent = formatTime(audioElement.duration);
-                }
-            }
-
-            // Toggle play/pause
-            function togglePlayPause() {
-                if (audioElement.paused) {
-                    audioElement.play();
-                    audioPlayerWrapper.classList.add('playing');
-                    playIcon.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                } else {
-                    audioElement.pause();
-                    audioPlayerWrapper.classList.remove('playing');
-                    playIcon.innerHTML = '<i class="fa-solid fa-play"></i>';
-                }
-            }
-
-            // Event listeners
-            playIcon.addEventListener('click', function(e) {
-                e.stopPropagation();
-                togglePlayPause();
-            });
-
-            audioPlayerWrapper.querySelector('.audio-player-image').addEventListener('click', function() {
-                togglePlayPause();
-            });
-
-            audioElement.addEventListener('timeupdate', updateProgress);
-
-            audioElement.addEventListener('loadedmetadata', function() {
-                updateProgress();
-            });
-
-            audioElement.addEventListener('ended', function() {
-                audioPlayerWrapper.classList.remove('playing');
-                playIcon.innerHTML = '<i class="fa-solid fa-play"></i>';
-            });
-        }
         function initializeShareFunctionality() {
             const shareContainer = document.getElementById('shareContainer');
             const shareToggle = document.getElementById('shareToggle');
