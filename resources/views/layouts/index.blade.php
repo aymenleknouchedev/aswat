@@ -25,6 +25,33 @@
 
 
     <style>
+        /* Disable touch effects globally */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Allow text selection */
+        input, textarea, button, a {
+            user-select: auto;
+            -webkit-user-select: auto;
+        }
+
+        /* Remove all hover effects on touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            *:hover {
+                background-color: transparent !important;
+                color: inherit !important;
+            }
+
+            *:active {
+                background-color: transparent !important;
+                color: inherit !important;
+            }
+        }
+
         /* Loader for desktop view (min-width: 992px) */
         .loader-desktop {
             display: none;
