@@ -727,9 +727,7 @@
                 font-family: 'asswat-bold';
             }
 
-            .mr-title:active {
-                opacity: 0.8;
-            }
+            /* Removed click effect */
 
             /* Horizontal snap wrapper (one vertical step) */
             .mobile-h-wrapper {

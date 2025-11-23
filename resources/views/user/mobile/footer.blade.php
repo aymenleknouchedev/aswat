@@ -38,9 +38,7 @@
             opacity: .75;
         }
 
-        .m-footer .m-icon:active {
-            opacity: 1;
-        }
+        /* Removed click effect */
 
         .m-footer .m-links {
             list-style: none;
@@ -107,10 +105,7 @@
             white-space: nowrap;
         }
 
-        .m-footer .m-contact button:active {
-            background: #fff;
-            color: #000;
-        }
+        /* Removed click effect */
 
         .m-footer .m-divider {
             height: 1px;

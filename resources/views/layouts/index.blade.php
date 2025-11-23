@@ -14,6 +14,19 @@
     <link rel="stylesheet" href="{{ asset('user/css/icons.css') }}">
     <link rel="stylesheet" href="{{ asset('user/css/section-title.css') }}">
 
+    <style>
+        /* Disable tap/click visual effects globally */
+        a, button, [role="button"] {
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Neutralize :active click effects app-wide without impacting focus accessibility */
+        *:active {
+            opacity: 1 !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+
 
     <meta property="og:title" content="{{ $shareTitle ?? '' }}" />
     <meta property="og:description" content="{{ $shareDescription ?? '' }}" />

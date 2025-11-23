@@ -139,9 +139,7 @@
                 outline: none;
             }
 
-            .menu-toggle:active {
-                background-color: transparent;
-            }
+            /* Removed click effect */
 
             /* Hamburger Icon */
             .hamburger-icon {
@@ -350,8 +348,7 @@
                 transition: all 0.2s ease;
             }
 
-            .submenu a:hover,
-            .submenu a:active {
+            .submenu a:hover {
                 padding-right: 20px;
             }
 
@@ -366,10 +363,7 @@
                 }
             }
 
-            .menu-list a:active {
-                background-color: #333;
-                color: #66ccff;
-            }
+            /* Removed click effect */
 
             /* Sidebar Overlay */
             .sidebar-overlay {
@@ -407,7 +401,6 @@
                 margin-top: 30px;
             }
             .sidebar-social .s-icon { width: 22px; height: 22px; opacity: 0.85; }
-            .sidebar-social .s-icon:active { opacity: 1; }
 
         }
     </style>
