@@ -126,7 +126,6 @@
 
     <!-- Simple loader (desktop only) -->
     <div id="web-loader" class="web-loader" role="status" aria-live="polite" aria-label="جارِ التحميل">
-        <div class="web-spinner" aria-hidden="true"></div>
     </div>
 
     <div class="web">
@@ -448,6 +447,42 @@
                     </div>
                 </div>
 
+            @endif
+
+
+            {{-- Principal Trend Section (Mobile) --}}
+            @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
+                @php $trendsCount = isset($trends) && is_countable($trends) ? count($trends) : 0; @endphp
+                @if ($trendsCount >= 4)
+                    <div class="mobile-h-wrapper">
+                        <div class="section-fixed-ui">
+                            <div class="featured-post-section-badge">{{ $principalTrend->trend->title ?? 'اتجاه' }}</div>
+                            <div class="h-indicators" role="tablist" aria-label="slides">
+                                @for ($i = 0; $i < min(5, $trendsCount); $i++)
+                                    <span class="h-indicator @if ($i === 0) active @endif"
+                                        aria-label="{{ $i + 1 }}"
+                                        aria-current="@if ($i === 0) true @else false @endif"></span>
+                                @endfor
+                            </div>
+                        </div>
+                        <div class="h-snap" dir="rtl">
+                            @foreach ($trends->take(5) as $content)
+                                <a href="{{ route('news.show', $content->title) }}" class="h-snap-slide mobile-featured-post"
+                                    style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? ($content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg')) }}');">
+                                    <div class="post-overlay-dark"></div>
+                                    <div class="featured-post-content2">
+                                        <p class="featured-post-category-name">{{ $content->category->name ?? $principalTrend->trend->title }}</p>
+                                        <h1 class="featured-post-title">
+                                            {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}</h1>
+                                        <p class="featured-post-description">
+                                            {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
+                                        </p>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             @endif
 
 
