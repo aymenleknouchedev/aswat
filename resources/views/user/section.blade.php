@@ -691,6 +691,7 @@
                 width: 100vw;
                 height: 100%;
                 scroll-snap-align: start;
+                scroll-snap-stop: always; /* ensure one-slide-at-a-time */
                 position: relative;
                 display: block;
                 text-decoration: none;
