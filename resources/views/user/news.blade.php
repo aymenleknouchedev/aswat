@@ -1721,12 +1721,27 @@
             }
 
             .mobile-article-content {
-                font-size: 16px;
-                line-height: 1.8;
-                color: #333;
-                margin: 20px 0;
-                text-align: right;
+                font-size: 16px !important;
                 font-family: asswat-regular;
+                color: #000000;
+                line-height: 1.9;
+                text-align: right;
+                margin-bottom: 30px;
+            }
+
+            .mobile-article-content p span {
+                font-size: 28px !important;
+                font-family: asswat-regular;
+                color: #333;
+                line-height: 1.9;
+                text-align: right;
+                margin: 5px 0px;
+            }
+
+            .mobile-article-content * {
+                font-family: asswat-regular !important;
+                direction: rtl !important;
+                box-sizing: border-box;
             }
 
             .mobile-article-content p {
@@ -1735,36 +1750,147 @@
             }
 
             .mobile-article-content h2,
-            .mobile-article-content h3 {
-                font-size: 18px;
-                font-family: asswat-bold;
-                color: #141414;
-                margin: 20px 0 12px;
-                text-align: right;
+            .mobile-article-content h4 {
+                font-family: asswat-medium !important;
+                color: #111 !important;
+                text-align: right !important;
+                margin-top: 35px !important;
+                margin-bottom: 18px !important;
+                font-size: 32px !important;
             }
 
             .mobile-article-content h3 {
-                font-size: 16px;
+                color: #333 !important;
+                margin: 0 !important;
             }
 
+            /* Image spacing and captions */
             .mobile-article-content img {
-                width: 100%;
-                margin: 15px 0;
+                display: block;
+                max-width: 100% !important;
+                height: auto !important;
                 cursor: pointer;
             }
 
-            .mobile-article-content a {
-                color: #0066cc;
-                text-decoration: none;
+            /* Content figure styling */
+            .mobile-article-content figure {
+                width: 100%;
+                margin: 25px 0;
             }
 
-            .mobile-article-content blockquote {
-                border-right: 4px solid #e4f0ef;
-                padding-right: 15px;
-                margin: 15px 0;
-                font-style: italic;
-                color: #666;
+            .mobile-article-content figure img {
+                width: 100%;
+                height: auto;
+                display: block;
+                object-fit: cover;
+            }
+
+            .mobile-article-content figcaption {
+                background: #F5F5F5;
+                color: #555;
+                font-size: 15px;
+                padding: 10px;
                 text-align: right;
+                font-family: asswat-regular;
+                direction: rtl;
+            }
+
+            .mobile-article-content a {
+                color: #000000;
+                text-decoration: none;
+                position: relative;
+                border-bottom: 2px solid #e4f0ef;
+                border-radius: 0;
+                padding-bottom: 1px;
+                display: inline;
+                transition: color 0.3s ease;
+            }
+
+            .mobile-article-content a::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: -2px;
+                height: 0;
+                background-color: #e4f0ef;
+                z-index: -1;
+                transition: height 0.3s ease;
+                border-radius: 0;
+            }
+
+            .mobile-article-content a:hover::before {
+                height: calc(100% + 2px);
+            }
+
+            /* Blockquote */
+            .mobile-article-content blockquote {
+                width: 100%;
+                padding: 40px 20px;
+                margin: 30px 0;
+                text-align: center;
+                position: relative;
+                font-family: asswat-medium;
+            }
+
+            .mobile-article-content blockquote p span {
+                font-size: 28px;
+                color: #222;
+                line-height: 1.6;
+                font-family: asswat-bold !important;
+                text-align: center !important;
+            }
+
+            .mobile-article-content blockquote p {
+                font-size: 28px;
+                color: #222;
+                line-height: 1.6;
+                font-family: asswat-bold !important;
+                text-align: center !important;
+            }
+
+            .mobile-article-content blockquote::before {
+                content: "";
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                width: 32px;
+                height: 32px;
+                background: url('/user/assets/icons/up.png') no-repeat center;
+                background-size: contain;
+            }
+
+            .mobile-article-content blockquote::after {
+                content: "";
+                position: absolute;
+                bottom: 0px;
+                left: 0px;
+                width: 32px;
+                height: 32px;
+                background: url('/user/assets/icons/down.png') no-repeat center;
+                background-size: contain;
+            }
+
+            /* Clickable text styling */
+            .mobile-article-content p .clickable-term {
+                color: #000000;
+                text-decoration: none;
+                cursor: pointer;
+                border-radius: 50%;
+                background-color: #e4f0ef;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", Arial, sans-serif !important;
+                font-size: 9px !important;
+                font-weight: 700;
+                vertical-align: super;
+                display: inline-grid;
+                place-items: center;
+                line-height: 1;
+                min-width: 16px;
+                min-height: 16px;
+                aspect-ratio: 1;
+                padding: 3px;
+                box-sizing: border-box;
+                transition: transform 0.2s ease, background-color 0.2s ease;
             }
 
             .mobile-article-tags {
