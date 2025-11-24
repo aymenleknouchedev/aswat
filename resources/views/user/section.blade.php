@@ -571,6 +571,119 @@
                 text-align: center;
             }
 
+            /* Mobile Window Carousel */
+            .mobile-window-section {
+                padding: 24px 0;
+                background: linear-gradient(180deg, #f8f8f8 0%, #ffffff 100%);
+                overflow: hidden;
+            }
+
+            .mobile-window-header {
+                padding: 0 16px 16px;
+            }
+
+            .mobile-window-title {
+                font-size: 24px;
+                font-weight: 900;
+                font-family: 'asswat-bold';
+                color: #000;
+                margin: 0;
+                text-align: right;
+                direction: rtl;
+            }
+
+            .mobile-window-carousel {
+                display: flex;
+                gap: 16px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                padding: 8px 16px 16px;
+                direction: rtl;
+            }
+
+            .mobile-window-carousel::-webkit-scrollbar {
+                display: none;
+            }
+
+            .mobile-window-card {
+                flex: 0 0 280px;
+                scroll-snap-align: start;
+                position: relative;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                background: #fff;
+            }
+
+            .mobile-window-card:active {
+                transform: scale(0.98);
+            }
+
+            .mobile-window-link {
+                display: block;
+                text-decoration: none;
+                color: inherit;
+                height: 100%;
+            }
+
+            .mobile-window-image-wrapper {
+                position: relative;
+                width: 100%;
+                height: 200px;
+                overflow: hidden;
+            }
+
+            .mobile-window-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+                transition: transform 0.4s ease;
+            }
+
+            .mobile-window-card:active .mobile-window-image {
+                transform: scale(1.05);
+            }
+
+            .mobile-window-overlay {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 60%;
+                background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+                pointer-events: none;
+            }
+
+            .mobile-window-content {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 16px;
+                z-index: 2;
+            }
+
+            .mobile-window-card-title {
+                font-size: 16px;
+                font-weight: 800;
+                font-family: 'asswat-bold';
+                color: #fff;
+                margin: 0;
+                line-height: 1.4;
+                text-align: right;
+                direction: rtl;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+
 
         }
     </style>
@@ -826,6 +939,35 @@
                                         </p>
                                     </a>
                                 </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            <!-- Mobile Window Carousel -->
+            @if (isset($window) &&
+                    isset($windowmanagement) &&
+                    $windowmanagement->status === 1 &&
+                    isset($window->contents) &&
+                    count($window->contents) > 0)
+                <div class="mobile-window-section">
+                    <div class="mobile-window-header">
+                        <h2 class="mobile-window-title">المزيد من {{ $window->name ?? 'النافذة' }}</h2>
+                    </div>
+                    <div class="mobile-window-carousel" dir="rtl">
+                        @foreach ($window->contents as $content)
+                            <div class="mobile-window-card">
+                                <a href="{{ route('news.show', $content->title ?? '') }}" class="mobile-window-link">
+                                    <div class="mobile-window-image-wrapper">
+                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
+                                            alt="{{ $content->title ?? 'عنوان الخبر' }}" class="mobile-window-image">
+                                        <div class="mobile-window-overlay"></div>
+                                    </div>
+                                    <div class="mobile-window-content">
+                                        <h3 class="mobile-window-card-title">{{ $content->title ?? 'عنوان الخبر' }}</h3>
+                                    </div>
+                                </a>
                             </div>
                         @endforeach
                     </div>
