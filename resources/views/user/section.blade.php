@@ -348,6 +348,15 @@
                 position: relative;
             }
 
+            /* Full-screen wrapper for list sections */
+            .mobile-fullscreen-wrapper {
+                width: 100%;
+                height: 100vh;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                position: relative;
+            }
+
             .h-snap {
                 height: 100%;
                 width: 100%;
@@ -573,34 +582,21 @@
 
             /* Mobile Window Carousel */
             .mobile-window-section {
-                padding: 24px 0;
-                background: linear-gradient(180deg, #f8f8f8 0%, #ffffff 100%);
-                overflow: hidden;
+                padding: 12px 0 8px;
             }
 
             .mobile-window-header {
-                padding: 0 16px 16px;
-            }
-
-            .mobile-window-title {
-                font-size: 24px;
-                font-weight: 900;
-                font-family: 'asswat-bold';
-                color: #000;
-                margin: 0;
-                text-align: right;
-                direction: rtl;
+                padding-bottom: 8px;
             }
 
             .mobile-window-carousel {
                 display: flex;
-                gap: 16px;
+                gap: 12px;
+                padding: 0px 16px;
                 overflow-x: auto;
                 overflow-y: hidden;
-                scroll-snap-type: x mandatory;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
-                padding: 8px 16px 16px;
                 direction: rtl;
             }
 
@@ -612,9 +608,8 @@
                 flex: 0 0 280px;
                 scroll-snap-align: start;
                 position: relative;
-                border-radius: 12px;
                 overflow: hidden;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
                 background: #fff;
             }
@@ -682,6 +677,116 @@
                 -webkit-box-orient: vertical;
                 overflow: hidden;
                 text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+
+            /* Most Reads full-screen section */
+            .most-reads-screen {
+                width: 100%;
+                height: 100dvh;
+                background: #252525;
+                color: #000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 131px 20px 80px;
+                box-sizing: border-box;
+            }
+
+            .most-reads-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                max-width: 820px;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .most-reads-item {
+                display: flex;
+                align-items: center;
+                gap: 21px;
+                padding: 24px 0;
+            }
+
+            .most-reads-item+.most-reads-item {
+                border-top: 1px solid rgba(255, 255, 255, 0.18);
+            }
+
+            .mr-index {
+                min-width: 28px;
+                text-align: center;
+                font-weight: 900;
+                font-size: 43px;
+                line-height: 1;
+                color: #9e9e9e;
+                font-family: 'asswat-bold';
+            }
+
+            .mr-title {
+                display: inline-block;
+                color: #fff;
+                text-decoration: none;
+                font-size: 20px;
+                font-weight: 800;
+                line-height: 1.4;
+                font-family: 'asswat-bold';
+            }
+
+            /* Suggestions full-screen section (white background) */
+            .suggestions-screen {
+                width: 100%;
+                height: 100dvh;
+                background: #ffffff;
+                color: #000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 131px 20px 80px;
+                box-sizing: border-box;
+            }
+
+            .suggestions-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                max-width: 820px;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .suggestions-item {
+                display: flex;
+                align-items: center;
+                gap: 21px;
+                padding: 24px 0;
+            }
+
+            .suggestions-item+.suggestions-item {
+                border-top: 1px solid rgba(0, 0, 0, 0.12);
+            }
+
+            .sg-index {
+                min-width: 28px;
+                text-align: center;
+                font-weight: 900;
+                font-size: 43px;
+                line-height: 1;
+                color: #e7e7e7;
+                font-family: 'asswat-bold';
+            }
+
+            .sg-title {
+                display: inline-block;
+                color: #000;
+                text-decoration: none;
+                font-size: 20px;
+                font-weight: 800;
+                line-height: 1.4;
+                font-family: 'asswat-bold';
             }
 
 
@@ -951,25 +1056,30 @@
                     $windowmanagement->status === 1 &&
                     isset($window->contents) &&
                     count($window->contents) > 0)
-                <div class="mobile-window-section">
-                    <div class="mobile-window-header">
-                        <h2 class="mobile-window-title">المزيد من {{ $window->name ?? 'النافذة' }}</h2>
-                    </div>
-                    <div class="mobile-window-carousel" dir="rtl">
-                        @foreach ($window->contents as $content)
-                            <div class="mobile-window-card">
-                                <a href="{{ route('news.show', $content->title ?? '') }}" class="mobile-window-link">
-                                    <div class="mobile-window-image-wrapper">
-                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
-                                            alt="{{ $content->title ?? 'عنوان الخبر' }}" class="mobile-window-image">
-                                        <div class="mobile-window-overlay"></div>
-                                    </div>
-                                    <div class="mobile-window-content">
-                                        <h3 class="mobile-window-card-title">{{ $content->title ?? 'عنوان الخبر' }}</h3>
-                                    </div>
-                                </a>
+                <div class="mobile-container">
+                    <div class="mobile-window-section">
+                        <div class="mobile-window-header">
+                            <h2 class="mobile-simple-header">{{ $window->name ?? 'النافذة' }}</h2>
+                            <div style="padding: 0px 16px">
+                                @include('user.components.ligne')
                             </div>
-                        @endforeach
+                        </div>
+                        <div class="mobile-window-carousel" dir="rtl">
+                            @foreach ($window->contents as $content)
+                                <div class="mobile-window-card">
+                                    <a href="{{ route('news.show', $content->title ?? '') }}" class="mobile-window-link">
+                                        <div class="mobile-window-image-wrapper">
+                                            <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
+                                                alt="{{ $content->title ?? 'عنوان الخبر' }}" class="mobile-window-image">
+                                            <div class="mobile-window-overlay"></div>
+                                        </div>
+                                        <div class="mobile-window-content">
+                                            <h3 class="mobile-window-card-title">{{ $content->title ?? 'عنوان الخبر' }}</h3>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             @endif
@@ -1031,6 +1141,51 @@
                     المزيد
                 </button>
             </div>
+
+
+            <!-- Most Reads Screen -->
+            @if (isset($topViewed) && $topViewed->count() > 0)
+                <div class="mobile-fullscreen-wrapper">
+                    <div class="section-fixed-ui">
+                        <div class="featured-post-section-badge">مقروء أكثر</div>
+                    </div>
+                    <div class="most-reads-screen" dir="rtl">
+                        <ol class="most-reads-list" role="list">
+                            @foreach ($topViewed->take(5) as $i => $content)
+                                <li class="most-reads-item">
+                                    <span class="mr-index" aria-hidden="true">{{ $i + 1 }}</span>
+                                    <a class="mr-title" href="{{ route('news.show', $content->title) }}">
+                                        {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ol>
+                    </div>
+                </div>
+            @endif
+
+
+            
+            <!-- Suggestions Screen -->
+            @if (isset($suggestions) && count($suggestions) > 0)
+                <div class="mobile-fullscreen-wrapper">
+                    <div class="section-fixed-ui">
+                        <div class="featured-post-section-badge" style="background: #000; color: #fff;">مقترحات</div>
+                    </div>
+                    <div class="suggestions-screen" dir="rtl">
+                        <ol class="suggestions-list" role="list">
+                            @foreach ($suggestions->take(5) as $i => $content)
+                                <li class="suggestions-item">
+                                    <span class="sg-index" aria-hidden="true">{{ $i + 1 }}</span>
+                                    <a class="sg-title" href="{{ route('news.show', $content->title) }}">
+                                        {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ol>
+                    </div>
+                </div>
+            @endif
 
             <!-- Compact mobile footer at the end -->
             <div class="mobile-container">
