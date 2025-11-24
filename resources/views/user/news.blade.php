@@ -1668,15 +1668,16 @@
             }
 
             .mobile-article-meta {
-                font-size: 13px;
-                color: #888;
+                font-size: 15px;
+                color: #141414;
+                font-family: asswat-light;
                 margin-bottom: 15px;
                 text-align: right;
                 line-height: 1.6;
             }
 
             .mobile-article-meta a {
-                color: #0066cc;
+                color: #141414;
                 text-decoration: none;
             }
 
@@ -2389,28 +2390,29 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
                 @if ($writers->count() > 0)
                     @if ($news->city)
-                        <div>{{ $news->city->name }} -</div>
+                        {{ $news->city->name }} -
                     @endif
-                    @if ($writers[0]->pivot->role)
-                        <div><span style="color: #888;">{{ $writers[0]->pivot->role }}:</span>
-                            <a href="{{ route('writer.show', $writers[0]->id) }}">
-                                {{ $writers[0]->name }}
-                            </a>
-                        </div>
-                    @else
-                        <div>
-                            <a href="{{ route('writer.show', $writers[0]->id) }}">
-                                {{ $writers[0]->name }}
-                            </a>
-                        </div>
-                    @endif
+                    {{-- First writer with city --}}
+                    <span>
+                        @if ($writers[0]->pivot->role)
+                            <span style="color: #888;">{{ $writers[0]->pivot->role }}:</span>
+                        @endif
+                    </span>
+                    <a href="{{ route('writer.show', $writers[0]->id) }}">
+                        {{ $writers[0]->name }}
+                    </a>
 
+                    {{-- Other writers, each on a new line --}}
                     @foreach ($writers->slice(1) as $writer)
-                        <div>
-                            <a href="{{ route('writer.show', $writer->id) }}">
+                        <br>
+                        <a href="{{ route('writer.show', $writer->id) }}">
+                            <span>
+                                @if ($writer->pivot->role)
+                                    <span style="color: #888;">{{ $writer->pivot->role }}:</span>
+                                @endif
                                 {{ $writer->name }}
-                            </a>
-                        </div>
+                            </span>
+                        </a>
                     @endforeach
                 @endif
             </div>
