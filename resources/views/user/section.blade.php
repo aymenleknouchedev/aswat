@@ -1066,7 +1066,7 @@
                                                 @if (isset($contents[$i]->category) && $contents[$i]->category)
                                                     <p class="ms-cat">{{ $contents[$i]->category->name }}</p>
                                                 @endif
-                                                <p class="ms-title">{{ $contents[$i]->title }}</p>
+                                                <p class="ms-title">{{ $contents[$i]->mobile_title }}</p>
                                             </div>
                                         </a>
                                     </li>
