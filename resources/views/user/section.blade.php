@@ -906,7 +906,7 @@
 
             @if (isset($window) &&
                     isset($windowmanagement) &&
-                    $windowmanagement->status === 1 &&
+                    $windowmanagement->status == 1 &&
                     isset($window->contents) &&
                     count($window->contents) > 0)
                 <section class="art-section-hero">
@@ -1080,7 +1080,7 @@
             <!-- Mobile Window Carousel -->
             @if (isset($window) &&
                     isset($windowmanagement) &&
-                    $windowmanagement->status === 1 &&
+                    $windowmanagement->status == 1 &&
                     isset($window->contents) &&
                     count($window->contents) > 0)
                 <div class="mobile-container">
