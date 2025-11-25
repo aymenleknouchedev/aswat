@@ -562,6 +562,31 @@
                 font-family: 'asswat-bold';
             }
 
+            /* Separate styling for "المزيد من" posts */
+            .mobile-more-link {
+                display: flex;
+                flex-direction: column;
+                padding: 12px 0;
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .mobile-more-link .ms-thumb {
+                width: 100%;
+            }
+
+            .mobile-more-link .ms-thumb img {
+                width: 100%;
+                aspect-ratio: 16/9;
+                object-fit: cover;
+                display: block;
+            }
+
+            .mobile-more-link .ms-text {
+                width: 100%;
+                padding: 8px 0 0 0;
+            }
+
             /* Mobile "Read more" button */
             #mobile-load-more-container {
                 padding: 8px 0 28px;
@@ -582,11 +607,24 @@
 
             /* Mobile Window Carousel */
             .mobile-window-section {
-                padding: 12px 0 8px;
+                padding: 12px 0 34px;
+                background-color: #252525;
             }
 
             .mobile-window-header {
                 padding-bottom: 8px;
+            }
+
+            .mobile-window-section .mobile-simple-header {
+                color: #fff;
+            }
+
+            .mobile-most-reads-section {
+                background-color: #fff !important;
+            }
+
+            .mobile-most-reads-section .mobile-simple-header {
+                color: #000;
             }
 
             .mobile-window-carousel {
@@ -682,13 +720,12 @@
             /* Most Reads full-screen section */
             .most-reads-screen {
                 width: 100%;
-                height: 100dvh;
-                background: #252525;
+                min-height: 100dvh;
+                background: #ffffff;
                 color: #000;
                 display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 131px 20px 80px;
+                flex-direction: column;
+                padding: 131px 20px 0;
                 box-sizing: border-box;
             }
 
@@ -701,6 +738,8 @@
                 display: flex;
                 flex-direction: column;
                 gap: 0;
+                flex: 1;
+                align-self: center;
             }
 
             .most-reads-item {
@@ -711,65 +750,10 @@
             }
 
             .most-reads-item+.most-reads-item {
-                border-top: 1px solid rgba(255, 255, 255, 0.18);
-            }
-
-            .mr-index {
-                min-width: 28px;
-                text-align: center;
-                font-weight: 900;
-                font-size: 43px;
-                line-height: 1;
-                color: #9e9e9e;
-                font-family: 'asswat-bold';
-            }
-
-            .mr-title {
-                display: inline-block;
-                color: #fff;
-                text-decoration: none;
-                font-size: 20px;
-                font-weight: 800;
-                line-height: 1.4;
-                font-family: 'asswat-bold';
-            }
-
-            /* Suggestions full-screen section (white background) */
-            .suggestions-screen {
-                width: 100%;
-                height: 100dvh;
-                background: #ffffff;
-                color: #000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 131px 20px 80px;
-                box-sizing: border-box;
-            }
-
-            .suggestions-list {
-                list-style: none;
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                max-width: 820px;
-                display: flex;
-                flex-direction: column;
-                gap: 0;
-            }
-
-            .suggestions-item {
-                display: flex;
-                align-items: center;
-                gap: 21px;
-                padding: 24px 0;
-            }
-
-            .suggestions-item+.suggestions-item {
                 border-top: 1px solid rgba(0, 0, 0, 0.12);
             }
 
-            .sg-index {
+            .mr-index {
                 min-width: 28px;
                 text-align: center;
                 font-weight: 900;
@@ -779,7 +763,7 @@
                 font-family: 'asswat-bold';
             }
 
-            .sg-title {
+            .mr-title {
                 display: inline-block;
                 color: #000;
                 text-decoration: none;
@@ -787,6 +771,48 @@
                 font-weight: 800;
                 line-height: 1.4;
                 font-family: 'asswat-bold';
+            }
+
+            /* Mobile Section Featured Post */
+            .mobile-section-featured {
+                padding: 16px 16px 0;
+            }
+
+            .mobile-section-featured-image img {
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                object-fit: cover;
+                display: block;
+            }
+
+            .mobile-section-featured-content {
+                padding: 12px 0;
+            }
+
+            .mobile-section-featured-cat {
+                font-size: 14px;
+                color: #74747C;
+                margin: 0 0 8px 0;
+                font-family: 'asswat-light';
+            }
+
+            .mobile-section-featured-title {
+                font-size: 22px;
+                font-weight: 800;
+                line-height: 1.4;
+                margin: 0;
+                color: #000;
+                font-family: 'asswat-bold';
+            }
+
+            /* Greybar hide on scroll */
+            #greybar {
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+
+            #greybar.hide {
+                transform: translateY(-100%);
+                opacity: 0;
             }
 
 
@@ -990,62 +1016,63 @@
     </div>
 
     <div class="mobile">
+
         @include('user.mobile.mobile-home')
 
-        <!-- Mobile horizontal scroller for this section (no vertical snap) -->
+        <!-- Grey navigation bar -->
+        <div id="greybar"
+            style="background-color: #252525; height: 68px; position: fixed; top: 0; left: 0; right: 0; z-index: 10;">
+        </div>
+
+        <!-- Mobile simple section posts -->
         <div class="mobile-flow">
-            @php
-                $mobCount = isset($contents) && is_countable($contents) ? count($contents) : 0;
-                $slideCount = $mobCount > 0 ? min(5, $mobCount) : 0;
-            @endphp
-            @if ($slideCount > 0)
-                <div class="mobile-h-wrapper">
-                    <div class="section-fixed-ui">
-                        <div class="featured-post-section-badge">{{ $arabicName ?? 'القسم' }}</div>
-                        <div class="h-indicators" role="tablist" aria-label="slides">
-                            @for ($i = 0; $i < $slideCount; $i++)
-                                <span class="h-indicator @if ($i === 0) active @endif"
-                                    aria-label="{{ $i + 1 }}"
-                                    aria-current="@if ($i === 0) true @else false @endif"></span>
-                            @endfor
-                        </div>
-                    </div>
-                    <div class="h-snap" dir="rtl">
+            <!-- Featured Post with 19/6 aspect ratio -->
+            @if (isset($contents) && count($contents) > 0)
+                <div class="mobile-container" style="margin-top: 68px;">
+                    <div class="mobile-section-featured" dir="rtl">
                         @php
-                            $mobItems = [];
-                            if (isset($contents)) {
-                                if ($contents instanceof \Illuminate\Support\Collection) {
-                                    $mobItems = $contents->take($slideCount);
-                                } elseif (is_array($contents)) {
-                                    $mobItems = array_slice($contents, 0, $slideCount);
-                                }
-                            }
+                            $featuredPost = $contents[0];
                         @endphp
-                        @foreach ($mobItems as $c)
-                            <div class="h-snap-slide mobile-featured-post"
-                                style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}');">
-                                <div class="post-overlay-dark"></div>
-                                <div class="featured-post-content2">
-                                    @if (isset($c->category) && $c->category)
-                                        <p class="featured-post-category-name">
-                                            <a href="{{ route('category.show', ['id' => $c->category->id, 'type' => 'Category']) }}"
-                                                style="color: inherit; text-decoration: none;">
-                                                {{ $c->category->name }}
-                                            </a>
-                                        </p>
-                                    @endif
-                                    <a href="{{ route('news.show', $c->title) }}"
-                                        style="text-decoration: none; color: inherit;">
-                                        <h1 class="featured-post-title">
-                                            {{ \Illuminate\Support\Str::limit($c->mobile_title ?? $c->title, 50) }}
-                                        </h1>
-                                        <p class="featured-post-description">
-                                            {{ \Illuminate\Support\Str::limit(strip_tags($c->summary ?? ($c->description ?? '')), 130) }}
-                                        </p>
-                                    </a>
-                                </div>
+                        <a href="{{ route('news.show', $featuredPost->title ?? '') }}"
+                            style="text-decoration: none; color: inherit;">
+                            <div class="mobile-section-featured-image">
+                                <img src="{{ $featuredPost->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                    alt="{{ $featuredPost->title ?? 'عنوان الخبر' }}">
                             </div>
-                        @endforeach
+                            <div class="mobile-section-featured-content">
+                                @if (isset($featuredPost->category) && $featuredPost->category)
+                                    <p class="mobile-section-featured-cat">{{ $featuredPost->category->name }}</p>
+                                @endif
+                                <h1 class="mobile-section-featured-title">{{ $featuredPost->title ?? 'عنوان الخبر' }}</h1>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3 Small Posts -->
+                <div class="mobile-container">
+                    <div class="mobile-simple-list" dir="rtl">
+                        <ul class="mobile-simple-ul" role="list" style="padding-top: 0;">
+                            @for ($i = 1; $i <= 3; $i++)
+                                @if (isset($contents[$i]))
+                                    <li class="mobile-simple-item">
+                                        <a class="mobile-simple-link" href="{{ route('news.show', $contents[$i]->title) }}"
+                                            aria-label="{{ $contents[$i]->title }}">
+                                            <div class="ms-thumb">
+                                                <img src="{{ $contents[$i]->media()->wherePivot('type', 'main')->first()->path ?? asset($contents[$i]->image ?? 'user/assets/images/default-post.jpg') }}"
+                                                    alt="{{ $contents[$i]->title }}">
+                                            </div>
+                                            <div class="ms-text">
+                                                @if (isset($contents[$i]->category) && $contents[$i]->category)
+                                                    <p class="ms-cat">{{ $contents[$i]->category->name }}</p>
+                                                @endif
+                                                <p class="ms-title">{{ $contents[$i]->title }}</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                @endif
+                            @endfor
+                        </ul>
                     </div>
                 </div>
             @endif
@@ -1060,9 +1087,6 @@
                     <div class="mobile-window-section">
                         <div class="mobile-window-header">
                             <h2 class="mobile-simple-header">{{ $window->name ?? 'النافذة' }}</h2>
-                            <div style="padding: 0px 16px">
-                                @include('user.components.ligne')
-                            </div>
                         </div>
                         <div class="mobile-window-carousel" dir="rtl">
                             @foreach ($window->contents as $content)
@@ -1074,7 +1098,8 @@
                                             <div class="mobile-window-overlay"></div>
                                         </div>
                                         <div class="mobile-window-content">
-                                            <h3 class="mobile-window-card-title">{{ $content->title ?? 'عنوان الخبر' }}</h3>
+                                            <h3 class="mobile-window-card-title">{{ $content->title ?? 'عنوان الخبر' }}
+                                            </h3>
                                         </div>
                                     </a>
                                 </div>
@@ -1114,7 +1139,7 @@
                         <ul class="mobile-simple-ul" role="list">
                             @foreach ($moreMobItems as $mc)
                                 <li class="mobile-simple-item">
-                                    <a class="mobile-simple-link" href="{{ route('news.show', $mc->title) }}"
+                                    <a class="mobile-more-link" href="{{ route('news.show', $mc->title) }}"
                                         aria-label="{{ $mc->title }}">
                                         <div class="ms-thumb">
                                             <img src="{{ $mc->media()->wherePivot('type', 'main')->first()->path ?? asset($mc->image ?? 'user/assets/images/default-post.jpg') }}"
@@ -1143,54 +1168,38 @@
             </div>
 
 
-            <!-- Most Reads Screen -->
+            <!-- Most Reads Section (Window Style) -->
             @if (isset($topViewed) && $topViewed->count() > 0)
-                <div class="mobile-fullscreen-wrapper">
-                    <div class="section-fixed-ui">
-                        <div class="featured-post-section-badge">مقروء أكثر</div>
-                    </div>
-                    <div class="most-reads-screen" dir="rtl">
-                        <ol class="most-reads-list" role="list">
-                            @foreach ($topViewed->take(5) as $i => $content)
-                                <li class="most-reads-item">
-                                    <span class="mr-index" aria-hidden="true">{{ $i + 1 }}</span>
-                                    <a class="mr-title" href="{{ route('news.show', $content->title) }}">
-                                        {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
+                <div class="mobile-container" style="margin-bottom: 40px;">
+                    <div class="mobile-window-section mobile-most-reads-section">
+                        <div class="mobile-window-header">
+                            <h2 class="mobile-simple-header">مقروء أكثر</h2>
+                            <div style="padding: 0px 16px">
+                                @include('user.components.ligne')
+                            </div>
+                        </div>
+                        <div class="mobile-window-carousel" dir="rtl">
+                            @foreach ($topViewed as $content)
+                                <div class="mobile-window-card">
+                                    <a href="{{ route('news.show', $content->title ?? '') }}" class="mobile-window-link">
+                                        <div class="mobile-window-image-wrapper">
+                                            <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
+                                                alt="{{ $content->title ?? 'عنوان الخبر' }}" class="mobile-window-image">
+                                            <div class="mobile-window-overlay"></div>
+                                        </div>
+                                        <div class="mobile-window-content">
+                                            <h3 class="mobile-window-card-title">{{ $content->title ?? 'عنوان الخبر' }}</h3>
+                                        </div>
                                     </a>
-                                </li>
+                                </div>
                             @endforeach
-                        </ol>
+                        </div>
                     </div>
                 </div>
             @endif
 
-
-            
-            <!-- Suggestions Screen -->
-            @if (isset($suggestions) && count($suggestions) > 0)
-                <div class="mobile-fullscreen-wrapper">
-                    <div class="section-fixed-ui">
-                        <div class="featured-post-section-badge" style="background: #000; color: #fff;">مقترحات</div>
-                    </div>
-                    <div class="suggestions-screen" dir="rtl">
-                        <ol class="suggestions-list" role="list">
-                            @foreach ($suggestions->take(5) as $i => $content)
-                                <li class="suggestions-item">
-                                    <span class="sg-index" aria-hidden="true">{{ $i + 1 }}</span>
-                                    <a class="sg-title" href="{{ route('news.show', $content->title) }}">
-                                        {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ol>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Compact mobile footer at the end -->
-            <div class="mobile-container">
-                @include('user.mobile.footer')
-            </div>
+            <!-- Mobile Footer -->
+            @include('user.mobile.footer')
 
 
         </div>
@@ -1199,61 +1208,30 @@
 
 
     <script>
-        // Make mobile scroller dots reflect the current slide and be clickable
-        document.addEventListener('DOMContentLoaded', function() {
-            if (window.innerWidth > 991) return; // mobile only
-            const wrappers = Array.from(document.querySelectorAll('.mobile .mobile-h-wrapper'));
-            wrappers.forEach(w => {
-                const track = w.querySelector('.h-snap');
-                const slides = track ? Array.from(track.querySelectorAll('.h-snap-slide')) : [];
-                const indicators = Array.from(w.querySelectorAll('.h-indicator'));
-                if (!track || slides.length === 0 || indicators.length === 0) return;
+        // Initialize Greybar Hide on Scroll
+        function initializeGreybarScroll() {
+            const greybar = document.getElementById('greybar');
+            if (!greybar) return;
 
-                function nearestIndex() {
-                    const left = track.scrollLeft;
-                    let best = 0,
-                        bestDist = Infinity;
-                    slides.forEach((s, i) => {
-                        const d = Math.abs(s.offsetLeft - left);
-                        if (d < bestDist) {
-                            bestDist = d;
-                            best = i;
-                        }
-                    });
-                    return best;
+            const footer = document.querySelector('footer');
+
+            window.addEventListener('scroll', function() {
+                const footerRect = footer.getBoundingClientRect();
+                const greybarRect = greybar.getBoundingClientRect();
+
+                // Hide greybar only when it's about to overlap with footer
+                if (footerRect.top < greybarRect.bottom) {
+                    greybar.classList.add('hide');
+                } else {
+                    greybar.classList.remove('hide');
                 }
-
-                function updateIndicators(idx) {
-                    indicators.forEach((el, i) => {
-                        if (i === idx) el.classList.add('active');
-                        else el.classList.remove('active');
-                    });
-                }
-
-                // Sync on load
-                updateIndicators(0);
-
-                // Debounced scroll listener to update active dot
-                let t;
-                track.addEventListener('scroll', () => {
-                    clearTimeout(t);
-                    t = setTimeout(() => updateIndicators(nearestIndex()), 120);
-                }, {
-                    passive: true
-                });
-
-                // Make dots clickable to jump to slide
-                indicators.forEach((dot, i) => {
-                    dot.style.cursor = 'pointer';
-                    dot.addEventListener('click', () => {
-                        const target = slides[i];
-                        if (target) track.scrollTo({
-                            left: target.offsetLeft,
-                            behavior: 'smooth'
-                        });
-                    });
-                });
             });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.innerWidth <= 992) {
+                initializeGreybarScroll();
+            }
         });
 
         // Mobile Read More: fetch and append items to the simple list
@@ -1316,7 +1294,7 @@
                             const src = img ? img.getAttribute('src') : '';
                             const catText = cat ? (cat.textContent || '').trim() : '';
                             li.innerHTML = `
-                                <a class="mobile-simple-link" href="${href}" aria-label="${title}">
+                                <a class="mobile-more-link" href="${href}" aria-label="${title}">
                                   <div class="ms-thumb">
                                     <img src="${src}" alt="${title}">
                                   </div>

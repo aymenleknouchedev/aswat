@@ -5,6 +5,14 @@
 @section('content')
 
     <style>
+        .web {
+            display: block !important;
+        }
+
+        .mobile {
+            display: none !important;
+        }
+
         .newCategory-all-section {
             display: grid;
             grid-template-columns: 10fr 2fr;
@@ -47,8 +55,8 @@
         }
 
 
-       
-         .newCategory-all-card-text h3 {
+
+        .newCategory-all-card-text h3 {
             font-family: asswat-regular !important;
             font-weight: normal !important;
             font-size: 16px !important;
@@ -64,14 +72,14 @@
             margin: 0 0 4px 0 !important;
         }
 
-         .newCategory-all-card-text p {
+        .newCategory-all-card-text p {
             font-size: 16px !important;
             line-height: 1.5 !important;
             color: #555 !important;
             margin: 0 !important;
         }
 
-       
+
 
         /* Load more button */
         .category-load-more-btn {
@@ -111,6 +119,18 @@
 
             .newCategory-all-card-date {
                 margin-bottom: 10px;
+            }
+        }
+    </style>
+
+    <style>
+        @media (max-width: 992px) {
+            .web {
+                display: none !important;
+            }
+
+            .mobile {
+                display: block !important;
             }
         }
     </style>
@@ -191,7 +211,10 @@
         @include('user.components.footer')
     </div>
 
-    <div class="mobile"></div>
+    <div class="mobile">
+        @include('user.mobile.mobile-home')
+
+    </div>
 @endsection
 
 <script>
