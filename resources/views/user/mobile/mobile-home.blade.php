@@ -27,32 +27,32 @@
             <ul class="menu-list">
                 <li class="menu-item-with-submenu">
                     <div class="menu-item-header">
-                        <a href="#">أخبار</a>
+                        <a href="{{ route('latestNews') }}">أخبار</a>
                         <button class="submenu-toggle" aria-label="Toggle submenu">
                             <i class="fa-solid fa-chevron-left toggle-arrow" aria-hidden="true"></i>
                         </button>
                     </div>
                     <ul class="submenu">
-                        <li><a href="#">الجزائر</a></li>
-                        <li><a href="#">عالم</a></li>
-                        <li><a href="#">اقتصاد</a></li>
-                        <li><a href="#">رياضة</a></li>
-                        <li><a href="#">ناس</a></li>
-                        <li><a href="#">ثقافة وفنون</a></li>
-                        <li><a href="#">تكنولوجيا</a></li>
-                        <li><a href="#">صحة</a></li>
-                        <li><a href="#">بيئة</a></li>
-                        <li><a href="#">ميديا</a></li>
-                        <li><a href="#">منوعات</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'world']) }}">عالم</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'people']) }}">ناس</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة وفنون</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'media']) }}">ميديا</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a></li>
                     </ul>
                 </li>
-                <li><a href="#">آراء</a></li>
-                <li><a href="#">نوافذ</a></li>
-                <li><a href="#">ملفات</a></li>
-                <li><a href="#">فحص</a></li>
-                <li><a href="#">فيديو</a></li>
-                <li><a href="#">بودكاست</a></li>
-                <li><a href="#">صور</a></li>
+                <li><a href="{{ route('reviews') }}">آراء</a></li>
+                <li><a href="{{ route('windows') }}">نوافذ</a></li>
+                <li><a href="{{ route('files') }}">ملفات</a></li>
+                <li><a href="{{ route('investigation') }}">فحص</a></li>
+                <li><a href="{{ route('videos') }}">فيديو</a></li>
+                <li><a href="{{ route('podcasts') }}">بودكاست</a></li>
+                <li><a href="{{ route('photos') }}">صور</a></li>
             </ul>
 
             <div class="sidebar-social" aria-label="تابعنا">

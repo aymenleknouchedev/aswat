@@ -775,7 +775,7 @@
 
             /* Mobile Section Featured Post */
             .mobile-section-featured {
-                padding: 16px 16px 0;
+                padding: 0px 16px 0;
             }
 
             .mobile-section-featured-image img {
@@ -1029,6 +1029,12 @@
             <!-- Featured Post with 19/6 aspect ratio -->
             @if (isset($contents) && count($contents) > 0)
                 <div class="mobile-container" style="margin-top: 68px;">
+                    <div class="mobile-simple-list" dir="rtl">
+                        <h2 class="mobile-simple-header">{{ $arabicName ?? 'القسم' }}</h2>
+                        <div style="padding: 0px 16px">
+                            @include('user.components.ligne')
+                        </div>
+                    </div>
                     <div class="mobile-section-featured" dir="rtl">
                         @php
                             $featuredPost = $contents[0];
