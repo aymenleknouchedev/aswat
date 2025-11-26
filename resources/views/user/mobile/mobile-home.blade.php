@@ -11,15 +11,35 @@
             </div>
 
             <!-- Menu Icon / Close Button -->
-            <button class="menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
-                <span class="hamburger-icon">
-                    <span class="line line-1"></span>
-                    <span class="line line-2"></span>
-                    <span class="line line-3"></span>
-                </span>
-            </button>
+            <div class="navbar-icons">
+                <button class="search-toggle" id="mobileSearchToggle" aria-label="Toggle Search">
+                    <i class="fa-solid fa-magnifying-glass" style="color: white; font-size: 20px;"></i>
+                </button>
+                <button class="menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
+                    <span class="hamburger-icon">
+                        <span class="line line-1"></span>
+                        <span class="line line-2"></span>
+                        <span class="line line-3"></span>
+                    </span>
+                </button>
+            </div>
         </div>
     </nav>
+
+    <!-- Mobile Search Bar -->
+    <div class="mobile-search-bar" id="mobileSearchBar">
+        <div class="search-bar-header">
+            <button type="button" class="search-close" id="mobileSearchClose" aria-label="Close Search">
+                <i class="fa-solid fa-times" style="color: #333; font-size: 24px;"></i>
+            </button>
+        </div>
+        <form action="{{ route('search') }}" method="GET" class="search-form">
+            <input type="text" name="query" placeholder="ابحث..." required class="search-input">
+            <button type="submit" aria-label="Search" class="search-submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
+    </div>
 
     <!-- Sidebar Menu (Separate fixed overlay) -->
     <div class="mobile-sidebar" id="mobileSidebar">
@@ -103,6 +123,104 @@
                 justify-content: space-between;
                 align-items: center;
                 padding: 12px 16px;
+            }
+
+            .navbar-icons {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .search-toggle {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 44px;
+                min-height: 44px;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .mobile-search-bar {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: #1a1a1a;
+                z-index: 2000;
+                padding: 16px;
+                overflow-y: auto;
+            }
+
+            .mobile-search-bar.active {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .search-bar-header {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 20px;
+            }
+
+            .search-close {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            .search-close i {
+                color: #fff !important;
+            }
+
+            .search-form {
+                display: flex;
+                align-items: center;
+                border: 1px solid #333;
+                overflow: hidden;
+                direction: rtl;
+                margin-bottom: 20px;
+                background: #2a2a2a;
+            }
+
+            .search-input {
+                border: none;
+                padding: 16px;
+                flex-grow: 1;
+                text-align: right;
+                font-family: 'asswat-regular';
+                font-size: 16px;
+                background: #2a2a2a;
+                color: #fff;
+            }
+
+            .search-input::placeholder {
+                color: #999;
+            }
+
+            .search-input:focus {
+                outline: none;
+            }
+
+            .search-submit {
+                background: none;
+                border: none;
+                padding: 16px;
+                cursor: pointer;
+                color: #999;
+                display: flex;
+                align-items: center;
             }
 
             /* Logo Styles */
@@ -411,6 +529,24 @@
             const mobileNavbar = document.getElementById('mobileNavbar');
             const mobileSidebar = document.getElementById('mobileSidebar');
             const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const searchToggle = document.getElementById('mobileSearchToggle');
+            const searchBar = document.getElementById('mobileSearchBar');
+
+            // Toggle search bar
+            if (searchToggle && searchBar) {
+                searchToggle.addEventListener('click', function() {
+                    searchBar.classList.add('active');
+                    searchBar.querySelector('.search-input').focus();
+                });
+            }
+
+            // Close search bar
+            const searchClose = document.getElementById('mobileSearchClose');
+            if (searchClose && searchBar) {
+                searchClose.addEventListener('click', function() {
+                    searchBar.classList.remove('active');
+                });
+            }
 
             // Toggle menu open/close
             menuToggle.addEventListener('click', function() {

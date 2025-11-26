@@ -5,6 +5,18 @@
 @section('content')
 
     <style>
+        .web {
+            display: block !important;
+        }
+
+        .mobile {
+            display: none !important;
+        }
+
+        .section-title {
+            font-size: 32px;
+        }
+
         .newCategory-all-section {
             display: grid;
             grid-template-columns: 10fr 2fr;
@@ -73,14 +85,73 @@
             margin: 0 !important;
         }
 
-       
+        /* Mobile simple header */
+        .mobile-simple-header {
+            padding: 12px 16px 8px;
+            font-size: 20px;
+            font-weight: 800;
+            font-family: 'asswat-bold';
+        }
 
+        .mobile-simple-ul {
+            list-style: none;
+            margin: 0;
+            padding: 0 16px 12px;
+        }
 
+        .mobile-simple-item+.mobile-simple-item {
+            border-top: 1px solid rgba(0, 0, 0, 0.12);
+        }
+
+        .mobile-more-link {
+            display: flex;
+            flex-direction: column;
+            padding: 12px 0;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .mobile-more-link .ms-thumb {
+            width: 100%;
+        }
+
+        .mobile-more-link .ms-thumb img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+        }
+
+        .mobile-more-link .ms-text {
+            display: flex;
+            flex-direction: column;
+            padding-top: 8px;
+        }
+
+        .ms-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.35;
+            color: #000;
+            font-family: 'asswat-bold';
+        }
+
+        /* Greybar hide on scroll */
+        #greybar {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        #greybar.hide {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
 
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .newCategory-all-section {
                 grid-template-columns: 1fr;
+                gap: 40px;
             }
 
             .newCategory-all-card {
@@ -88,8 +159,24 @@
                 align-items: flex-start;
             }
 
+            .newCategory-all-card-image img {
+                width: 100%;
+            }
+
             .newCategory-all-card-date {
                 margin-bottom: 10px;
+            }
+        }
+    </style>
+
+    <style>
+        @media (max-width: 992px) {
+            .web {
+                display: none !important;
+            }
+
+            .mobile {
+                display: block !important;
             }
         }
     </style>
@@ -168,5 +255,77 @@
         @include('user.components.footer')
     </div>
 
-    <div class="mobile"></div>
+    <div class="mobile">
+        @include('user.mobile.mobile-home')
+
+        <!-- Grey navigation bar -->
+        <div id="greybar"
+            style="background-color: #252525; height: 68px; position: fixed; top: 0; left: 0; right: 0; z-index: 10;">
+        </div>
+
+        <!-- Mobile Search Results Content -->
+        <div class="mobile-flow">
+            <div class="mobile-container" style="margin-top: 68px;">
+                <div class="mobile-simple-list" dir="rtl">
+                    <h2 class="mobile-simple-header">نتائج البحث</h2>
+                    <div style="padding: 0px 16px">
+                        <p style="font-size: 14px; color: #666; margin: 0 0 12px 0;">البحث عن: <strong>{{ $query }}</strong></p>
+                    </div>
+                    <ul class="mobile-simple-ul" role="list" id="mobile-search-container">
+                        @forelse ($results as $item)
+                            <li class="mobile-simple-item">
+                                <a class="mobile-more-link" href="{{ route('news.show', $item->title) }}"
+                                    aria-label="{{ $item->title }}">
+                                    <div class="ms-thumb">
+                                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
+                                            alt="{{ $item->title }}">
+                                    </div>
+                                    <div class="ms-text">
+                                        <p class="ms-title">
+                                            {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                        @empty
+                            <li style="padding: 12px 0; text-align: center; color: #999;">لا توجد نتائج مطابقة.</li>
+                        @endforelse
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Mobile Footer -->
+            @include('user.mobile.footer')
+
+        </div>
+
+    </div>
 @endsection
+
+<script>
+    // Initialize Greybar Hide on Scroll
+    function initializeGreybarScroll() {
+        const greybar = document.getElementById('greybar');
+        if (!greybar) return;
+
+        const footer = document.querySelector('footer');
+
+        window.addEventListener('scroll', function() {
+            const footerRect = footer.getBoundingClientRect();
+            const greybarRect = greybar.getBoundingClientRect();
+
+            // Hide greybar only when it's about to overlap with footer
+            if (footerRect.top < greybarRect.bottom) {
+                greybar.classList.add('hide');
+            } else {
+                greybar.classList.remove('hide');
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.innerWidth <= 992) {
+            initializeGreybarScroll();
+        }
+    });
+</script>
