@@ -210,7 +210,7 @@
                 }
             });
         }, {
-            threshold: 0.9
+            threshold: [0, 0.15, 0.5, 1]
         });
 
         obs.observe(footer);
