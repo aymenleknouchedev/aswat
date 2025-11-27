@@ -200,40 +200,31 @@
         <!-- Mobile Windows Content -->
         <div class="mobile-flow">
             <div class="mobile-container" style="margin-top: 68px;">
-                <div class="mobile-simple-list" dir="rtl">
-                    <h2 class="mobile-simple-header">نوافذ</h2>
-                    <div style="padding: 0px 16px">
-                        @include('user.components.ligne')
-                    </div>
-                    <ul class="mobile-simple-ul" role="list" id="mobile-windows-container">
-                        @forelse ($windows as $item)
-                            <li class="mobile-simple-item">
-                                <a class="mobile-more-link" href="{{ route('news.show', $item->title) }}"
-                                    aria-label="{{ $item->title }}">
-                                    <div class="ms-thumb">
-                                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                                            alt="{{ $item->title }}">
+                @foreach ($windows as $window)
+                    @if ($window->contents && $window->contents->count() > 0)
+                        <div class="mobile-window-section">
+                            <div class="mobile-window-header">
+                                <h2 class="mobile-simple-header">{{ $window->name ?? 'النافذة' }}</h2>
+                            </div>
+                            <div class="mobile-window-carousel" dir="rtl">
+                                @foreach ($window->contents->sortByDesc('created_at')->take(4) as $content)
+                                    <div class="mobile-window-card">
+                                        <a href="{{ route('news.show', $content->title ?? '') }}" class="mobile-window-link">
+                                            <div class="mobile-window-image-wrapper">
+                                                <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
+                                                    alt="{{ $content->title ?? 'عنوان الخبر' }}" class="mobile-window-image">
+                                                <div class="mobile-window-overlay"></div>
+                                            </div>
+                                            <div class="mobile-window-content">
+                                                <h3 class="mobile-window-card-title">{{ $content->title ?? 'عنوان الخبر' }}</h3>
+                                            </div>
+                                        </a>
                                     </div>
-                                    <div class="ms-text">
-                                        <p style="font-size: 14px; color: #7c7c74; margin: 0 0 4px 0; font-family: asswat-regular;">
-                                            نافذة
-                                        </p>
-                                        <p class="ms-title">
-                                            {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}
-                                        </p>
-                                    </div>
-                                </a>
-                            </li>
-                        @empty
-                            <li style="padding: 12px 0; text-align: center; color: #999;">لا توجد نوافذ حالياً.</li>
-                        @endforelse
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Mobile Load More button -->
-            <div class="text-center" id="mobile-load-more-container">
-                <button class="mobile-load-more-btn" data-page="1">المزيد</button>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
             </div>
 
             <!-- Mobile Footer -->
@@ -323,6 +314,110 @@
             transform: translateY(-100%);
             opacity: 0;
         }
+
+        /* Mobile Window Carousel Styles */
+        .mobile-window-section {
+            padding: 12px 0 34px;
+            background-color: #ffffff;
+        }
+
+        .mobile-window-header {
+            padding-bottom: 8px;
+        }
+
+        .mobile-window-section .mobile-simple-header {
+            color: #000;
+        }
+
+        .mobile-window-carousel {
+            display: flex;
+            gap: 12px;
+            padding: 0px 16px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            direction: rtl;
+        }
+
+        .mobile-window-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .mobile-window-card {
+            flex: 0 0 280px;
+            scroll-snap-align: start;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: #fff;
+        }
+
+        .mobile-window-card:active {
+            transform: scale(0.98);
+        }
+
+        .mobile-window-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            height: 100%;
+        }
+
+        .mobile-window-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .mobile-window-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .mobile-window-card:active .mobile-window-image {
+            transform: scale(1.05);
+        }
+
+        .mobile-window-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            pointer-events: none;
+        }
+
+        .mobile-window-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+            z-index: 2;
+        }
+
+        .mobile-window-card-title {
+            font-size: 16px;
+            font-weight: 800;
+            font-family: 'asswat-bold';
+            color: #fff;
+            margin: 0;
+            line-height: 1.4;
+            text-align: right;
+            direction: rtl;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
     </style>
 
 @endsection
@@ -384,87 +479,6 @@
                     btn.closest("#load-more-container").remove();
                 } else {
                     document.querySelector("#window-container").insertAdjacentHTML("beforeend", data);
-                    btn.setAttribute("data-page", page);
-                    btn.disabled = false;
-                    btn.textContent = "المزيد";
-                }
-            } catch (error) {
-                alert("خطأ في تحميل المزيد");
-                btn.disabled = false;
-                btn.textContent = "المزيد";
-            }
-
-            loading = false;
-        }
-
-        // Mobile load more
-        if (e.target.classList.contains("mobile-load-more-btn")) {
-            if (loading) return;
-
-            let btn = e.target;
-            let page = parseInt(btn.getAttribute("data-page")) + 1;
-
-            loading = true;
-            btn.disabled = true;
-            btn.textContent = "جاري التحميل...";
-
-            try {
-                let response = await fetch(`/section/windows?page=${page}`, {
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest"
-                    }
-                });
-
-                if (!response.ok) throw new Error("خطأ في السيرفر");
-
-                let data = await response.text();
-                const trimmed = data.trim();
-
-                if (trimmed.length === 0) {
-                    const cont = btn.closest("#mobile-load-more-container");
-                    if (cont) cont.remove();
-                } else {
-                    const mobileContainer = document.getElementById("mobile-windows-container");
-                    if (mobileContainer) {
-                        if (trimmed.includes('mobile-simple-item')) {
-                            mobileContainer.insertAdjacentHTML("beforeend", trimmed);
-                        } else {
-                            const wrapper = document.createElement('div');
-                            wrapper.innerHTML = trimmed;
-                            const cards = wrapper.querySelectorAll('[class*="window-card"]');
-
-                            if (cards.length === 0) {
-                                mobileContainer.insertAdjacentHTML("beforeend", trimmed);
-                            } else {
-                                let html = '';
-                                cards.forEach(card => {
-                                    const linkEl = card.querySelector('a[href]');
-                                    const href = linkEl ? linkEl.getAttribute('href') : '#';
-                                    const imgEl = card.querySelector('img');
-                                    const imgSrc = imgEl ? imgEl.getAttribute('src') : '';
-                                    const titleEl = card.querySelector('h2');
-                                    let title = titleEl ? (titleEl.textContent || '').trim() : '';
-                                    if (title.length > 90) title = title.slice(0, 87) + '...';
-
-                                    html += `
-                                        <li class="mobile-simple-item">
-                                            <a class="mobile-more-link" href="${href}" aria-label="${title}">
-                                                <div class="ms-thumb">
-                                                    <img src="${imgSrc}" alt="${title}">
-                                                </div>
-                                                <div class="ms-text">
-                                                    <p class="ms-title">${title}</p>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    `;
-                                });
-
-                                if (html) mobileContainer.insertAdjacentHTML('beforeend', html);
-                            }
-                        }
-                    }
-
                     btn.setAttribute("data-page", page);
                     btn.disabled = false;
                     btn.textContent = "المزيد";

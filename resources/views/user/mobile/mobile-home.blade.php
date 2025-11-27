@@ -616,5 +616,38 @@
                     closeSidebar();
                 }
             });
+
+            // Hide navbar when footer is completely visible
+            function handleFooterVisibility() {
+                const footer = document.querySelector('.m-footer');
+                if (!footer) return;
+
+                // Get the position of navbar and footer
+                const mobileNavbar = document.getElementById('mobileNavbar');
+                const footerRect = footer.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+
+                // If footer top is above viewport (footer is visible from top), hide navbar
+                if (footerRect.top < viewportHeight) {
+                    // Footer is at least partially visible
+                    if (footerRect.height > 0 && footerRect.top <= 0) {
+                        // Footer is covering the screen, hide navbar
+                        mobileNavbar.style.opacity = '0';
+                        mobileNavbar.style.pointerEvents = 'none';
+                    } else {
+                        // Footer is partially visible but not covering navbar
+                        mobileNavbar.style.opacity = '1';
+                        mobileNavbar.style.pointerEvents = 'auto';
+                    }
+                } else {
+                    // Footer is below viewport, show navbar
+                    mobileNavbar.style.opacity = '1';
+                    mobileNavbar.style.pointerEvents = 'auto';
+                }
+            }
+
+            window.addEventListener('scroll', handleFooterVisibility);
+            window.addEventListener('resize', handleFooterVisibility);
+            handleFooterVisibility(); // Initial check
         });
     </script>
