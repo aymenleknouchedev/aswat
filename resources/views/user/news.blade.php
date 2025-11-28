@@ -710,7 +710,6 @@
             background: white;
             width: 100%;
             max-height: 80vh;
-
             box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
@@ -1029,7 +1028,6 @@
                 width: 100%;
                 max-height: 90vh;
                 bottom: 0;
-                border-radius: 12px 12px 0 0;
             }
 
             .text-modal-body {
