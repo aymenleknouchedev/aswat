@@ -1668,7 +1668,7 @@
             }
 
             .mobile-article-category {
-                font-size: 12px;
+                font-size: 16px;
                 color: #888;
                 margin-bottom: 10px;
                 text-align: right;
@@ -1680,7 +1680,7 @@
             }
 
             .mobile-article-title {
-                font-size: 22px;
+                font-size: 28px;
                 font-family: asswat-bold;
                 color: #141414;
                 margin-bottom: 12px;
