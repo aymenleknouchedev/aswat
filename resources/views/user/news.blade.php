@@ -1207,7 +1207,6 @@
             .read-more-block {
                 flex-direction: row;
                 gap: 12px;
-                padding: 12px;
                 background: #f9f9f9;
                 border-radius: 0;
                 overflow: visible;
@@ -2137,7 +2136,7 @@
             }
 
             .related-news-scroll-card-content {
-                padding: 12px;
+                padding: 12px 0px;
                 color: #333;
                 text-align: right;
                 display: flex;
