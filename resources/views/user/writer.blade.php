@@ -476,8 +476,15 @@
                                             alt="{{ $item->title }}">
                                     </div>
                                     <div class="ms-text">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #999; margin: 0 0 4px 0;">
+                                            <p style="margin: 0;">{{ $item->category->name ?? 'بدون فئة' }}</p>
+                                            <p style="margin: 0;">{{ $item->created_at->format('d/m/Y') }}</p>
+                                        </div>
                                         <p class="ms-title">
                                             {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}
+                                        </p>
+                                        <p style="font-size: 14px; color: #999; margin: 4px 0 0 0; line-height: 1.4;">
+                                            {{ \Illuminate\Support\Str::limit($item->summary ?? $item->description ?? '', 120) }}
                                         </p>
                                     </div>
                                 </a>
