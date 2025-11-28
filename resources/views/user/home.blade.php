@@ -404,7 +404,7 @@
             }
 
             .opinion-title {
-                margin: 0;
+                margin-top: 10px;
                 font-size: 30px;
                 font-weight: 900;
                 line-height: 1.35;
