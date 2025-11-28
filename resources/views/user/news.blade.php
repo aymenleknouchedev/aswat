@@ -2118,7 +2118,7 @@
             }
 
             .related-news-scroll-card {
-                flex: 0 0 70vw;
+                flex: 0 0 80vw;
                 height: auto;
                 scroll-snap-align: start;
                 overflow: hidden;
