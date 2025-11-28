@@ -1256,7 +1256,6 @@
                 font-size: 14px;
                 line-height: 1.3;
                 margin: 0 !important;
-                font-family: asswat-medium !important;
             }
 
             .read-more-summary {
@@ -1791,6 +1790,7 @@
             .mobile-article-content h3 {
                 color: #333 !important;
                 margin: 0 !important;
+                font-family: 'asswat-medium' !important;
             }
 
             /* Image spacing and captions */
