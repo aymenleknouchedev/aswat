@@ -1206,7 +1206,7 @@
         @media (max-width: 600px) {
             .read-more-block {
                 flex-direction: row;
-                gap: 12px;
+                gap: 8px;
                 background: #f9f9f9;
                 border-radius: 0;
                 overflow: visible;
