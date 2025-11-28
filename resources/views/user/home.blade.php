@@ -393,14 +393,13 @@
                 border-radius: 50%;
                 object-fit: cover;
                 border: 1px solid rgba(255, 255, 255, 0.85);
-                margin-left: 20px;
             }
 
             .opinion-author {
                 font-size: 22px;
                 color: #fff;
                 font-family: 'asswat-regular';
-                margin-bottom: 10px;
+                margin: 10px 0px;
             }
 
             .opinion-title {
