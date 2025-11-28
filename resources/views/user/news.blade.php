@@ -1205,37 +1205,67 @@
 
         @media (max-width: 600px) {
             .read-more-block {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 12px;
-                padding: 12px 8px;
+                padding: 12px;
+                background: #f9f9f9;
+                border-radius: 0;
+                overflow: visible;
+                border: none;
+                box-shadow: none;
+                transition: none;
+                align-items: center;
             }
 
-            .read-more-image {
-                width: 100%;
-                height: 200px;
-            }
-
-            .read-more-label {
-                font-size: 12px;
-                padding: 2px 10px 2px 6px;
+            .read-more-block:active {
+                box-shadow: none;
+                transform: none;
             }
 
             .read-more-label-text {
-                font-size: 12px;
-                padding: 3px 10px;
-                margin-left: 8px;
+                font-size: 13px;
+                padding: 0;
+                margin: 0;
+                display: block;
+                order: -1;
+                min-width: 60px;
+                text-align: center;
+            }
+
+            .read-more-image {
+                width: 120px;
+                height: 70px;
+                order: 0;
+                flex-shrink: 0;
+            }
+
+            .read-more-content {
+                padding: 0;
+                gap: 4px;
+                flex: 1;
+            }
+
+            .read-more-label {
+                display: none;
             }
 
             .read-more-category {
                 font-size: 11px;
+                color: #999;
+                margin: 0 !important;
             }
 
             .read-more-title {
-                font-size: 15px;
+                font-size: 14px;
+                line-height: 1.3;
+                margin: 0 !important;
             }
 
             .read-more-summary {
                 font-size: 13px;
+                color: #666;
+                line-height: 1.3;
+                display: none;
             }
         }
 
@@ -1898,7 +1928,7 @@
                 flex-wrap: wrap;
                 gap: 8px;
                 margin: 20px 0;
-                justify-content: flex-end;
+                justify-content: flex-start;
             }
 
             .mobile-article-tags a {
@@ -1918,10 +1948,11 @@
                 background: #f9f9f9;
                 padding: 15px;
                 margin: 20px 0;
-                text-align: right;
+                text-align: center;
                 display: flex;
+                flex-direction: column;
                 gap: 12px;
-                align-items: flex-start;
+                align-items: center;
                 direction: rtl;
             }
 
@@ -1935,66 +1966,103 @@
 
             .mobile-writer-info {
                 flex: 1;
+                display: flex;
+                gap: 0;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
             }
 
             .mobile-writer-name {
                 font-size: 14px;
                 font-family: asswat-bold;
                 color: #333;
-                margin-bottom: 4px;
+                margin-bottom: 0;
+                margin-right: 6px;
             }
 
             .mobile-writer-bio {
-                font-size: 12px;
+                font-size: 13px;
                 color: #888;
                 line-height: 1.4;
+                margin: 0;
             }
 
             .mobile-related-section {
                 margin-top: 30px;
-                padding-top: 20px;
-                border-top: 1px solid #eee;
+                padding: 12px 0 34px;
+                background-color: #ffffff;
+                border-top: none;
             }
 
             .mobile-related-title {
                 font-size: 18px;
                 font-family: asswat-bold;
-                color: #141414;
+                color: #000;
                 margin-bottom: 15px;
                 text-align: right;
+                padding: 0 16px;
+            }
+
+            .mobile-related-carousel {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                padding: 0px 16px;
+                overflow-x: visible;
+                overflow-y: visible;
+                scrollbar-width: none;
+                direction: rtl;
+            }
+
+            .mobile-related-carousel::-webkit-scrollbar {
+                display: none;
             }
 
             .mobile-related-card {
                 display: flex;
-                gap: 12px;
-                margin-bottom: 15px;
+                flex-direction: column;
+                flex: 0 0 auto;
+                width: 100%;
                 text-decoration: none;
                 color: inherit;
                 direction: rtl;
+                position: relative;
+                overflow: hidden;
+                background: transparent;
+                border-radius: 0;
             }
 
             .mobile-related-image {
-                width: 120px;
-                height: 90px;
-                min-width: 120px;
+                width: 100%;
+                height: 180px;
                 object-fit: cover;
+                display: block;
+                margin-bottom: 0;
             }
 
             .mobile-related-content {
                 flex: 1;
+                padding: 12px 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
             }
 
             .mobile-related-category {
                 font-size: 11px;
                 color: #888;
-                margin-bottom: 4px;
+                margin-bottom: 6px;
+                text-align: right;
             }
 
             .mobile-related-title-text {
-                font-size: 13px;
+                font-size: 14px;
                 font-family: asswat-bold;
-                color: #333;
-                line-height: 1.3;
+                color: #000;
+                line-height: 1.5;
+                text-align: right;
+                word-wrap: break-word;
             }
 
             /* Greybar hide on scroll */
@@ -2724,18 +2792,20 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             @if (isset($relatedNews) && $relatedNews->count() > 0)
                 <div class="mobile-related-section">
                     <div class="mobile-related-title">ذات صلة</div>
-                    @foreach ($relatedNews as $item)
-                        <a href="{{ route('news.show', $item->title) }}" class="mobile-related-card">
-                            <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                alt="{{ $item->title ?? '' }}" class="mobile-related-image" loading="lazy">
-                            <div class="mobile-related-content">
-                                <div class="mobile-related-category">
-                                    <x-category-links :content="$item" />
+                    <div class="mobile-related-carousel">
+                        @foreach ($relatedNews as $item)
+                            <a href="{{ route('news.show', $item->title) }}" class="mobile-related-card">
+                                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $item->title ?? '' }}" class="mobile-related-image" loading="lazy">
+                                <div class="mobile-related-content">
+                                    <div class="mobile-related-category">
+                                        <x-category-links :content="$item" />
+                                    </div>
+                                    <div class="mobile-related-title-text">{{ $item->title ?? '' }}</div>
                                 </div>
-                                <div class="mobile-related-title-text">{{ $item->title ?? '' }}</div>
-                            </div>
-                        </a>
-                    @endforeach
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             @endif
         </div>
