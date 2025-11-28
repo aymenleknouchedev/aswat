@@ -382,7 +382,7 @@
             /* Centered opinion layout (آراء) */
             .opinion-center {
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
                 text-align: center;
             }
