@@ -1189,7 +1189,7 @@
 
         .read-more-title {
             font-size: 18px;
-            font-family: asswat-bold;
+            font-family: asswat-medium !important;
             color: #000000;
             margin-top: 0px !important;
             margin-bottom: 0px !important;
@@ -1256,6 +1256,7 @@
                 font-size: 14px;
                 line-height: 1.3;
                 margin: 0 !important;
+                font-family: asswat-medium !important;
             }
 
             .read-more-summary {
@@ -1767,7 +1768,7 @@
             }
 
             .mobile-article-content * {
-                font-family: asswat-medium !important;
+                font-family: asswat-regular !important;
                 direction: rtl !important;
                 box-sizing: border-box;
             }
