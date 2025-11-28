@@ -1786,7 +1786,7 @@
                 text-align: right !important;
                 margin-top: 35px !important;
                 margin-bottom: 18px !important;
-                font-size: 32px !important;
+                font-size: 24px !important;
             }
 
             .mobile-article-content h3 {
