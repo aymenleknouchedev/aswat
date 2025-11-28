@@ -1020,15 +1020,15 @@
                                                             src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}"
                                                             alt="{{ $firstWriter->name ?? '' }}">
                                                     </a>
-                                                   <div>
-                                                     <a href="{{ route('writer.show', ['id' => $firstWriter->id]) }}">
-                                                        <span class="opinion-author">{{ $firstWriter->name }}</span>
-                                                    </a>
-                                                    <a href="{{ route('news.show', $content->title) }}"
-                                                        style="text-decoration: none; color: inherit;">
-                                                        <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
-                                                    </a>
-                                                   </div>
+                                                    <div>
+                                                        <a href="{{ route('writer.show', ['id' => $firstWriter->id]) }}">
+                                                            <span class="opinion-author">{{ $firstWriter->name }}</span>
+                                                        </a>
+                                                        <a href="{{ route('news.show', $content->title) }}"
+                                                            style="text-decoration: none; color: inherit;">
+                                                            <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
+                                                        </a>
+                                                    </div>
                                                 @endif
 
                                             </div>

@@ -2780,8 +2780,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                             <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
                                 class="mobile-writer-image" loading="lazy">
                             <div class="mobile-writer-info">
-                                <div class="mobile-writer-name">{{ $writer->name }}</div>
-                                <div class="mobile-writer-bio">{{ $writer->bio }}</div>
+                                <div class="mobile-writer-bio"><span class="mobile-writer-name">{{ $writer->name }}</span>{{ $writer->bio }}</div>
                             </div>
                         </div>
                     </a>
