@@ -540,7 +540,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: 6px;
-                min-height: 40px;
+                min-height: 100px;
             }
 
             .trend-scroll-category {
