@@ -484,7 +484,7 @@
                                             {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}
                                         </p>
 
-                                        <p style="font-size: 14px; color: #999; margin: 4px 0 8px 0; line-height: 1.4;">
+                                        <p style="font-size: 16px; color: #666; margin: 4px 0 8px 0; line-height: 1.4;">
                                             {{ \Illuminate\Support\Str::limit($item->summary ?? $item->description ?? '', 250) }}
                                         </p>
 
