@@ -1957,9 +1957,9 @@
             }
 
             .mobile-writer-image {
-                width: 60px;
-                height: 60px;
-                min-width: 60px;
+                width: 80px;
+                height: 80px;
+                min-width: 80px;
                 border-radius: 50%;
                 object-fit: cover;
             }
