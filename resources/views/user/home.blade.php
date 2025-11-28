@@ -523,7 +523,7 @@
                 overflow: hidden;
                 display: flex;
                 flex-direction: column;
-                margin-top: 40px;
+                margin-top: 60px;
             }
 
             .trend-scroll-card img {
