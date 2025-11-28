@@ -1689,7 +1689,7 @@
             }
 
             .mobile-article-summary {
-                font-size: 15px;
+                font-size: 16px;
                 color: #555;
                 line-height: 1.6;
                 margin-bottom: 15px;
@@ -1699,7 +1699,7 @@
             }
 
             .mobile-article-meta {
-                font-size: 15px;
+                font-size: 16px;
                 color: #141414;
                 font-family: asswat-light;
                 margin-bottom: 15px;
@@ -1724,7 +1724,7 @@
             }
 
             .mobile-article-date {
-                font-size: 12px;
+                font-size: 14px;
                 color: #888;
             }
 
