@@ -231,7 +231,7 @@
 
         .ms-title {
             margin: 0;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
             line-height: 1.35;
             color: #000;
