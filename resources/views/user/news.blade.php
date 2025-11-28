@@ -1767,7 +1767,7 @@
             }
 
             .mobile-article-content * {
-                font-family: asswat-regular !important;
+                font-family: asswat-medium !important;
                 direction: rtl !important;
                 box-sizing: border-box;
             }
