@@ -2883,6 +2883,9 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
             @if (isset($relatedNews) && $relatedNews->count() > 0)
                 <div class="mobile-related-news-wrapper">
                     <div class="mobile-related-news-badge">ذات صلة</div>
+                    @include('user.components.ligne')
+                    <div style="height: 8px"></div>
+                    <br>
                     <div class="related-news-track" dir="rtl">
                         @foreach ($relatedNews->take(5) as $item)
                             <article class="related-news-scroll-card">
