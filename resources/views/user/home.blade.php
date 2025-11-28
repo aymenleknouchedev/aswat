@@ -5,9 +5,6 @@
 @section('content')
 
     <style>
-     
-        
-
         .art-section-hero {
             position: relative;
             background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)),
@@ -72,7 +69,7 @@
             display: block;
         }
 
-        
+
 
         @media (min-width: 992px) {
             .web {
@@ -385,7 +382,7 @@
             /* Centered opinion layout (آراء) */
             .opinion-center {
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
                 align-items: center;
                 text-align: center;
             }
@@ -396,7 +393,7 @@
                 border-radius: 50%;
                 object-fit: cover;
                 border: 1px solid rgba(255, 255, 255, 0.85);
-                margin-bottom: 12px;
+                margin-left: 20px;
             }
 
             .opinion-author {
@@ -485,7 +482,8 @@
 
             /* --- Mobile Trend Section: Grey background with scrolling cards --- */
             .mobile-trend-wrapper {
-                background: #252525; /* grey background */
+                background: #252525;
+                /* grey background */
                 height: 100dvh;
                 display: flex;
                 flex-direction: column;
@@ -517,7 +515,8 @@
             }
 
             .trend-scroll-card {
-                flex: 0 0 70vw; /* fixed card width */
+                flex: 0 0 70vw;
+                /* fixed card width */
                 height: auto;
                 scroll-snap-align: start;
                 overflow: hidden;
@@ -528,7 +527,8 @@
 
             .trend-scroll-card img {
                 width: 100%;
-                aspect-ratio: 9 / 16; /* portrait 9:16 */
+                aspect-ratio: 9 / 16;
+                /* portrait 9:16 */
                 object-fit: cover;
                 display: block;
             }
@@ -929,11 +929,13 @@
                         <div class="trend-cards-track" dir="rtl">
                             @foreach ($trends->take(5) as $content)
                                 <article class="trend-scroll-card">
-                                    <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
+                                    <a href="{{ route('news.show', $content->title) }}"
+                                        style="text-decoration: none; color: inherit;">
                                         @php
-                                            $img = $content->media()->wherePivot('type', 'mobile')->first()?->path
-                                                ?? ($content->media()->wherePivot('type', 'main')->first()?->path
-                                                ?? asset($content->image ?? 'user/assets/images/default-post.jpg'));
+                                            $img =
+                                                $content->media()->wherePivot('type', 'mobile')->first()?->path ??
+                                                ($content->media()->wherePivot('type', 'main')->first()?->path ??
+                                                    asset($content->image ?? 'user/assets/images/default-post.jpg'));
                                         @endphp
                                         <img src="{{ $img }}" alt="{{ $content->title }}">
                                     </a>
@@ -946,8 +948,11 @@
                                                 </a>
                                             </p>
                                         @endif
-                                        <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
-                                            <h3 class="trend-scroll-title">{{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}</h3>
+                                        <a href="{{ route('news.show', $content->title) }}"
+                                            style="text-decoration: none; color: inherit;">
+                                            <h3 class="trend-scroll-title">
+                                                {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
+                                            </h3>
                                         </a>
                                     </div>
                                 </article>
@@ -1015,14 +1020,18 @@
                                                         <img class="opinion-avatar"
                                                             src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}"
                                                             alt="{{ $firstWriter->name ?? '' }}">
+                                                    </a>
+                                                   <div>
+                                                     <a href="{{ route('writer.show', ['id' => $firstWriter->id]) }}">
                                                         <span class="opinion-author">{{ $firstWriter->name }}</span>
                                                     </a>
+                                                    <a href="{{ route('news.show', $content->title) }}"
+                                                        style="text-decoration: none; color: inherit;">
+                                                        <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
+                                                    </a>
+                                                   </div>
                                                 @endif
-                                                <br>
-                                                <a href="{{ route('news.show', $content->title) }}"
-                                                    style="text-decoration: none; color: inherit;">
-                                                    <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
-                                                </a>
+
                                             </div>
                                         </div>
                                     </div>
@@ -1112,7 +1121,7 @@
         </div>
     </div>
 
-    
+
 
     <script>
         // Mobile auto horizontal scroll ONLY for currently visible vertical section (immediate start)
