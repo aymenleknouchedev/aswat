@@ -466,10 +466,6 @@
 
                 <!-- Articles List -->
                 <div class="mobile-simple-list" dir="rtl">
-                    <h2 class="mobile-simple-header">مقالات</h2>
-                    <div style="padding: 0px 16px">
-                        @include('user.components.ligne')
-                    </div>
                     <ul class="mobile-simple-ul" role="list" id="mobile-writer-container">
                         @forelse ($articles as $item)
                             <li class="mobile-simple-item">
