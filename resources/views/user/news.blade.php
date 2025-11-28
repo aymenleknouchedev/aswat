@@ -1974,7 +1974,7 @@
             }
 
             .mobile-writer-name {
-                font-size: 14px;
+                font-size: 16px;
                 font-family: asswat-bold;
                 color: #333;
                 margin-bottom: 0;
@@ -1982,7 +1982,7 @@
             }
 
             .mobile-writer-bio {
-                font-size: 13px;
+                font-size: 16px;
                 color: #888;
                 line-height: 1.4;
                 margin: 0;
