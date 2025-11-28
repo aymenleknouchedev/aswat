@@ -207,7 +207,7 @@
         .mobile-more-link {
             display: flex;
             flex-direction: column;
-            padding: 12px 0;
+            padding: 24px 0 12px 0;
             text-decoration: none;
             color: inherit;
         }
