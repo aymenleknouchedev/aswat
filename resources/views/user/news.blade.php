@@ -2123,7 +2123,6 @@
                 flex: 0 0 70vw;
                 height: auto;
                 scroll-snap-align: start;
-                background: #f9f9f9;
                 overflow: hidden;
                 display: flex;
                 flex-direction: column;
