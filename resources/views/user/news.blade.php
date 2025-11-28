@@ -1937,7 +1937,7 @@
                 background: #f0f0f0;
                 color: #333;
                 text-decoration: none;
-                font-size: 12px;
+                font-size: 14px;
             }
 
             .mobile-article-tags a:hover {
