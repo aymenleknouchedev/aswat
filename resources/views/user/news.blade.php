@@ -2152,7 +2152,7 @@
             }
 
             .related-news-scroll-title {
-                font-size: 16px;
+                font-size: 18px;
                 font-weight: 800;
                 line-height: 1.3;
                 color: #000;
@@ -2907,8 +2907,7 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                                         </p>
                                     @endif
                                     <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
-                                        <h3 class="related-news-scroll-title">{{ \Illuminate\Support\Str::limit($item->long_title ?? $item->title, 60) }}</h3>
-                                        <p class="related-news-scroll-desc">{{ \Illuminate\Support\Str::limit(strip_tags($item->summary ?? ''), 100) }}</p>
+                                        <h3 class="related-news-scroll-title">{{ \Illuminate\Support\Str::limit($item->mobile_title, 51) }}</h3>
                                     </a>
                                 </div>
                             </article>
