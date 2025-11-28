@@ -1112,7 +1112,7 @@
         .read-more-block {
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 14px;
             padding: 14px 0;
             direction: rtl;
             margin-top: 20px;
