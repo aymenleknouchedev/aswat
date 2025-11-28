@@ -482,6 +482,89 @@
                 -webkit-user-select: none;
                 user-select: none;
             }
+
+            /* --- Mobile Trend Section: Grey background with scrolling cards --- */
+            .mobile-trend-wrapper {
+                background: #252525; /* grey background */
+                height: 100dvh;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+            }
+
+            .mobile-trend-wrapper .section-fixed-ui {
+                top: 88px;
+                right: 16px;
+                z-index: 10;
+            }
+
+            .trend-cards-track {
+                width: 100%;
+                height: 100%;
+                overflow-x: auto;
+                overflow-y: hidden;
+                display: flex;
+                align-items: center;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                direction: rtl;
+                gap: 16px;
+                padding: 0px 16px;
+            }
+
+            .trend-cards-track::-webkit-scrollbar {
+                display: none;
+            }
+
+            .trend-scroll-card {
+                flex: 0 0 70vw; /* fixed card width */
+                height: auto;
+                scroll-snap-align: start;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                margin-top: 40px;
+            }
+
+            .trend-scroll-card img {
+                width: 100%;
+                aspect-ratio: 9 / 16; /* portrait 9:16 */
+                object-fit: cover;
+                display: block;
+            }
+
+            .trend-scroll-card-content {
+                padding: 12px;
+                color: #fff;
+                text-align: right;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .trend-scroll-category {
+                font-size: 12px;
+                color: #bdbdbd;
+            }
+
+            .trend-scroll-title {
+                font-size: 16px;
+                font-weight: 800;
+                line-height: 1.3;
+                color: #fff;
+                font-family: 'asswat-bold';
+            }
+
+            .trend-scroll-desc {
+                font-size: 13px;
+                color: #d0d0d0;
+                line-height: 1.5;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                font-family: 'asswat-regular';
+            }
         }
 
         @media (min-width: 992px) {
@@ -831,7 +914,7 @@
             @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
                 @php $trendsCount = isset($trends) && is_countable($trends) ? count($trends) : 0; @endphp
                 @if ($trendsCount >= 4)
-                    <div class="mobile-h-wrapper">
+                    <div class="mobile-h-wrapper mobile-trend-wrapper">
                         <div class="section-fixed-ui">
                             <div class="featured-post-section-badge">{{ $principalTrend->trend->title ?? 'اتجاه' }}</div>
                             <div class="h-indicators" role="tablist" aria-label="slides">
@@ -842,31 +925,32 @@
                                 @endfor
                             </div>
                         </div>
-                        <div class="h-snap" dir="rtl">
+                        <div class="trend-cards-track" dir="rtl">
                             @foreach ($trends->take(5) as $content)
-                                <div class="h-snap-slide mobile-featured-post"
-                                    style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? ($content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg')) }}');">
-                                    <div class="post-overlay-dark"></div>
-                                    <div class="featured-post-content2">
+                                <article class="trend-scroll-card">
+                                    <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
+                                        @php
+                                            $img = $content->media()->wherePivot('type', 'mobile')->first()?->path
+                                                ?? ($content->media()->wherePivot('type', 'main')->first()?->path
+                                                ?? asset($content->image ?? 'user/assets/images/default-post.jpg'));
+                                        @endphp
+                                        <img src="{{ $img }}" alt="{{ $content->title }}">
+                                    </a>
+                                    <div class="trend-scroll-card-content">
                                         @if (isset($content->category) && $content->category)
-                                            <p class="featured-post-category-name">
+                                            <p class="trend-scroll-category">
                                                 <a href="{{ route('category.show', ['id' => $content->category->id, 'type' => 'Category']) }}"
                                                     style="color: inherit; text-decoration: none;">
                                                     {{ $content->category->name }}
                                                 </a>
                                             </p>
                                         @endif
-                                        <a href="{{ route('news.show', $content->title) }}"
-                                            style="text-decoration: none; color: inherit;">
-                                            <h1 class="featured-post-title">
-                                                {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
-                                            </h1>
-                                            <p class="featured-post-description">
-                                                {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 130) }}
-                                            </p>
+                                        <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
+                                            <h3 class="trend-scroll-title">{{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}</h3>
+                                            <p class="trend-scroll-desc">{{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 100) }}</p>
                                         </a>
                                     </div>
-                                </div>
+                                </article>
                             @endforeach
                         </div>
                     </div>
