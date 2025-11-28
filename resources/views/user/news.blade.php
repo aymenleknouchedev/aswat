@@ -1743,7 +1743,7 @@
             }
 
             .mobile-article-image figcaption {
-                font-size: 12px;
+                font-size: 14px;
                 color: #888;
                 padding: 8px;
                 background: #f9f9f9;
