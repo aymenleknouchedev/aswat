@@ -293,7 +293,7 @@
 
         .mobile-writer-header p {
             font-family: asswat-regular;
-            font-size: 13px;
+            font-size: 16px;
             color: #666;
             line-height: 1.4;
             margin: 0 0 12px 0;
@@ -439,7 +439,7 @@
                         <img src="{{ $writer->image }}" alt="{{ $writer->name }}">
                     @endif
                     <h1>{{ $writer->name }}</h1>
-                    <p>{{ \Illuminate\Support\Str::limit($writer->bio ?? '', 150) }}</p>
+                    <p>{{ \Illuminate\Support\Str::limit($writer->bio ?? '', 250) }}</p>
                     <div class="mobile-writer-socials">
                         @if ($writer && $writer->x)
                             <a href="{{ $writer->x }}" target="_blank" title="تويتر">
