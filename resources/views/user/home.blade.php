@@ -947,7 +947,6 @@
                                         @endif
                                         <a href="{{ route('news.show', $content->title) }}" style="text-decoration: none; color: inherit;">
                                             <h3 class="trend-scroll-title">{{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}</h3>
-                                            <p class="trend-scroll-desc">{{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ($content->description ?? '')), 100) }}</p>
                                         </a>
                                     </div>
                                 </article>
