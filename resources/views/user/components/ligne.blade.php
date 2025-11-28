@@ -1,1 +1,1 @@
-<div style="border-bottom: 1px solid #CACACA;"></div>
+<div style="border-bottom: 1px solid #eee;"></div>
