@@ -1680,7 +1680,7 @@
 
             .mobile-article-title {
                 font-size: 28px;
-                font-family: asswat-bold;
+                font-family: asswat-medium;
                 color: #141414;
                 margin-bottom: 12px;
                 line-height: 1.4;
