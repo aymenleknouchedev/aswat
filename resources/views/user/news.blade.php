@@ -2008,7 +2008,6 @@
                 display: flex;
                 flex-direction: column;
                 gap: 12px;
-                padding: 0px 16px;
                 overflow-x: visible;
                 overflow-y: visible;
                 scrollbar-width: none;
@@ -2073,6 +2072,102 @@
             #greybar.hide {
                 transform: translateY(-100%);
                 opacity: 0;
+            }
+        }
+
+        /* ===== RELATED NEWS CAROUSEL (Mobile) ===== */
+        @media (max-width: 768px) {
+            .mobile-related-news-wrapper {
+                background: #fff;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                padding: 16px 0;
+            }
+
+            .mobile-related-news-badge {
+                position: relative;
+                top: auto;
+                right: auto;
+                background: transparent;
+                color: #000;
+                padding: 0px 0px 16px 16px;
+                font-size: 18px;
+                font-weight: 800;
+                line-height: 1;
+                border-radius: 0;
+                display: block;
+                text-align: right;
+                z-index: 10;
+            }
+
+            .related-news-track {
+                width: 100%;
+                height: auto;
+                overflow-x: auto;
+                overflow-y: hidden;
+                display: flex;
+                align-items: flex-start;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                direction: rtl;
+                gap: 16px;
+            }
+
+            .related-news-track::-webkit-scrollbar {
+                display: none;
+            }
+
+            .related-news-scroll-card {
+                flex: 0 0 70vw;
+                height: auto;
+                scroll-snap-align: start;
+                background: #f9f9f9;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .related-news-scroll-card img {
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                object-fit: cover;
+                display: block;
+            }
+
+            .related-news-scroll-card-content {
+                padding: 12px;
+                color: #333;
+                text-align: right;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                min-height: 80px;
+            }
+
+            .related-news-scroll-category {
+                font-size: 12px;
+                color: #666;
+            }
+
+            .related-news-scroll-title {
+                font-size: 16px;
+                font-weight: 800;
+                line-height: 1.3;
+                color: #000;
+                font-family: 'asswat-bold';
+            }
+
+            .related-news-scroll-desc {
+                font-size: 13px;
+                color: #555;
+                line-height: 1.5;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                font-family: 'asswat-regular';
             }
         }
 
@@ -2787,26 +2882,41 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 @endforeach
             @endif
 
-            <!-- Related News -->
+            <!-- Related News Section (Carousel) -->
             @if (isset($relatedNews) && $relatedNews->count() > 0)
-                <div class="mobile-related-section">
-                    <div class="mobile-related-title">ذات صلة</div>
-                    <div class="mobile-related-carousel">
-                        @foreach ($relatedNews as $item)
-                            <a href="{{ route('news.show', $item->title) }}" class="mobile-related-card">
-                                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                    alt="{{ $item->title ?? '' }}" class="mobile-related-image" loading="lazy">
-                                <div class="mobile-related-content">
-                                    <div class="mobile-related-category">
-                                        <x-category-links :content="$item" />
-                                    </div>
-                                    <div class="mobile-related-title-text">{{ $item->title ?? '' }}</div>
+                <div class="mobile-related-news-wrapper">
+                    <div class="mobile-related-news-badge">ذات صلة</div>
+                    <div class="related-news-track" dir="rtl">
+                        @foreach ($relatedNews->take(5) as $item)
+                            <article class="related-news-scroll-card">
+                                <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                                    @php
+                                        $img = $item->media()->wherePivot('type', 'detail')->first()?->path
+                                            ?? ($item->media()->wherePivot('type', 'main')->first()?->path
+                                            ?? asset($item->image ?? 'user/assets/images/default-post.jpg'));
+                                    @endphp
+                                    <img src="{{ $img }}" alt="{{ $item->title }}">
+                                </a>
+                                <div class="related-news-scroll-card-content">
+                                    @if (isset($item->category) && $item->category)
+                                        <p class="related-news-scroll-category">
+                                            <a href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}"
+                                                style="color: inherit; text-decoration: none;">
+                                                {{ $item->category->name }}
+                                            </a>
+                                        </p>
+                                    @endif
+                                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                                        <h3 class="related-news-scroll-title">{{ \Illuminate\Support\Str::limit($item->long_title ?? $item->title, 60) }}</h3>
+                                        <p class="related-news-scroll-desc">{{ \Illuminate\Support\Str::limit(strip_tags($item->summary ?? ''), 100) }}</p>
+                                    </a>
                                 </div>
-                            </a>
+                            </article>
                         @endforeach
                     </div>
                 </div>
             @endif
+
         </div>
 
         <!-- Compact mobile footer at the end -->
