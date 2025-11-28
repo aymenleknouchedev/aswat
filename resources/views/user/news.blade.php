@@ -2144,7 +2144,7 @@
             }
 
             .related-news-scroll-category {
-                font-size: 12px;
+                font-size: 16px;
                 color: #666;
             }
 
