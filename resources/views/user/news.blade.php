@@ -1751,7 +1751,7 @@
             }
 
             .mobile-article-content {
-                font-size: 16px !important;
+                font-size: 18px !important;
                 font-family: asswat-regular;
                 color: #000000;
                 line-height: 1.9;
@@ -2467,9 +2467,9 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                 @if ($news->template == 'podcast' && $news->media()->wherePivot('type', 'podcast')->first())
                     @php
                         // Use the article's main image as the audio cover
-$mainImage = $news->media()->wherePivot('type', 'main')->first();
-$coverImage = $mainImage ? $mainImage->path : null;
-$audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
+                    $mainImage = $news->media()->wherePivot('type', 'main')->first();
+                    $coverImage = $mainImage ? $mainImage->path : null;
+                    $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     @endphp
 
                     {{-- Enhanced Audio Player --}}
