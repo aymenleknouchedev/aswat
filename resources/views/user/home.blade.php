@@ -410,7 +410,6 @@
                 line-height: 1.35;
                 color: #fff;
                 font-family: 'asswat-bold';
-                max-width: 90%;
             }
 
             /* Featured Post Meta */
