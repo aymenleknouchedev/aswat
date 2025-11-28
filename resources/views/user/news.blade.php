@@ -1694,7 +1694,8 @@
                 line-height: 1.6;
                 margin-bottom: 15px;
                 text-align: right;
-                font-family: asswat-medium;
+                font-family: asswat-regular;
+                font-weight: bold;
             }
 
             .mobile-article-meta {
