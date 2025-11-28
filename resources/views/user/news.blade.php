@@ -2091,13 +2091,13 @@
                 background: transparent;
                 color: #000;
                 padding: 0px 0px 16px 16px;
-                font-size: 18px;
-                font-weight: 800;
+                font-size: 20px;
                 line-height: 1;
                 border-radius: 0;
                 display: block;
                 text-align: right;
                 z-index: 10;
+                font-family: 'asswat-medium';
             }
 
             .related-news-track {
