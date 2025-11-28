@@ -1113,7 +1113,7 @@
             display: flex;
             align-items: center;
             gap: 18px;
-            padding: 14px 18px 14px 14px;
+            padding: 14px 0;
             direction: rtl;
             margin-top: 20px;
             margin-bottom: 20px;
