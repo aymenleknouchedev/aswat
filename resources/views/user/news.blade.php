@@ -2464,9 +2464,9 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                 @if ($news->template == 'podcast' && $news->media()->wherePivot('type', 'podcast')->first())
                     @php
                         // Use the article's main image as the audio cover
-                    $mainImage = $news->media()->wherePivot('type', 'main')->first();
-                    $coverImage = $mainImage ? $mainImage->path : null;
-                    $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
+$mainImage = $news->media()->wherePivot('type', 'main')->first();
+$coverImage = $mainImage ? $mainImage->path : null;
+$audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     @endphp
 
                     {{-- Enhanced Audio Player --}}
@@ -2735,7 +2735,7 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
             <div class="mobile-article-date-share">
                 <span class="mobile-article-date">{{ $day }} {{ $month }} {{ $year }} |
                     {{ $time }}</span>
-                
+
                 {{-- Share on the LEFT (matching web version exactly) --}}
                 <div class="share-container" id="shareContainerMobile">
                     <div class="share-icons">
@@ -2764,7 +2764,8 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                     </div>
 
                     {{-- Share Button --}}
-                    <button class="share-btn" id="shareToggleMobile" type="button" title="مشاركة" aria-label="زر المشاركة">
+                    <button class="share-btn" id="shareToggleMobile" type="button" title="مشاركة"
+                        aria-label="زر المشاركة">
                         <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
                     </button>
                 </div>
@@ -2872,7 +2873,8 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                             <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
                                 class="mobile-writer-image" loading="lazy">
                             <div class="mobile-writer-info">
-                                <div class="mobile-writer-bio"><span class="mobile-writer-name">{{ $writer->name }} </span>{{ $writer->bio }}</div>
+                                <div class="mobile-writer-bio"><span class="mobile-writer-name">{{ $writer->name }}
+                                    </span>{{ $writer->bio }}</div>
                             </div>
                         </div>
                     </a>
@@ -2884,16 +2886,17 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                 <div class="mobile-related-news-wrapper">
                     <div class="mobile-related-news-badge">ذات صلة</div>
                     @include('user.components.ligne')
-                    <div style="height: 8px"></div>
-                    <br>
+                    <div style="height: 8px; color:#eee"></div>
                     <div class="related-news-track" dir="rtl">
                         @foreach ($relatedNews->take(5) as $item)
                             <article class="related-news-scroll-card">
-                                <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                                <a href="{{ route('news.show', $item->title) }}"
+                                    style="text-decoration: none; color: inherit;">
                                     @php
-                                        $img = $item->media()->wherePivot('type', 'detail')->first()?->path
-                                            ?? ($item->media()->wherePivot('type', 'main')->first()?->path
-                                            ?? asset($item->image ?? 'user/assets/images/default-post.jpg'));
+                                        $img =
+                                            $item->media()->wherePivot('type', 'detail')->first()?->path ??
+                                            ($item->media()->wherePivot('type', 'main')->first()?->path ??
+                                                asset($item->image ?? 'user/assets/images/default-post.jpg'));
                                     @endphp
                                     <img src="{{ $img }}" alt="{{ $item->title }}">
                                 </a>
@@ -2906,8 +2909,10 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                                             </a>
                                         </p>
                                     @endif
-                                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
-                                        <h3 class="related-news-scroll-title">{{ \Illuminate\Support\Str::limit($item->mobile_title, 51) }}</h3>
+                                    <a href="{{ route('news.show', $item->title) }}"
+                                        style="text-decoration: none; color: inherit;">
+                                        <h3 class="related-news-scroll-title">
+                                            {{ \Illuminate\Support\Str::limit($item->mobile_title, 51) }}</h3>
                                     </a>
                                 </div>
                             </article>
@@ -2997,18 +3002,19 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
          */
         function initializeAudioPlayer() {
             // Initialize both web and mobile audio players
-            initializeSingleAudioPlayer('audioPlayerWrapper', 'podcastAudio', 'audioPlayIcon', 
+            initializeSingleAudioPlayer('audioPlayerWrapper', 'podcastAudio', 'audioPlayIcon',
                 'audioProgressBarInteractive', 'audioProgressFillInteractive', 'audioProgressHandle',
                 'currentTime', 'totalDuration');
-            
-            initializeSingleAudioPlayer('audioPlayerWrapperMobile', 'podcastAudioMobile', 'audioPlayIconMobile', 
+
+            initializeSingleAudioPlayer('audioPlayerWrapperMobile', 'podcastAudioMobile', 'audioPlayIconMobile',
                 null, null, null, 'currentTimeMobile', 'totalDurationMobile');
         }
 
         /**
          * Initialize a single audio player instance
          */
-        function initializeSingleAudioPlayer(wrapperId, audioId, playIconId, progressBarId, progressFillId, handleId, currentTimeId, totalDurationId) {
+        function initializeSingleAudioPlayer(wrapperId, audioId, playIconId, progressBarId, progressFillId, handleId,
+            currentTimeId, totalDurationId) {
             const audioPlayerWrapper = document.getElementById(wrapperId);
             const audioElement = document.getElementById(audioId);
             const playIcon = document.getElementById(playIconId);
