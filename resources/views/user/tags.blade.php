@@ -293,21 +293,7 @@
                     </div>
                     <ul class="mobile-simple-ul" role="list" id="mobile-tags-container">
                         @foreach ($articles as $item)
-                            <li class="mobile-simple-item">
-                                <a class="mobile-more-link" href="{{ route('news.show', $item->title) }}"
-                                    aria-label="{{ $item->title }}">
-                                    <div class="ms-thumb">
-                                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                                            alt="{{ $item->title }}">
-                                    </div>
-                                    <div class="ms-text">
-                                        
-                                        <p class="ms-title">
-                                            {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}
-                                        </p>
-                                    </div>
-                                </a>
-                            </li>
+                            @include('user.mobile.item')
                         @endforeach
                     </ul>
                 </div>
@@ -441,7 +427,9 @@
                                         const href = linkEl ? linkEl.getAttribute('href') : '#';
                                         const imgEl = card.querySelector('img');
                                         const imgSrc = imgEl ? imgEl.getAttribute('src') : '';
-                                        const titleEl = card.querySelector('.newCategory-all-card-text h2') || card.querySelector('h2') || linkEl;
+                                        const titleEl = card.querySelector(
+                                            '.newCategory-all-card-text h2') || card.querySelector(
+                                            'h2') || linkEl;
                                         let title = titleEl ? (titleEl.textContent || '').trim() : '';
                                         if (title.length > 90) title = title.slice(0, 87) + '...';
 

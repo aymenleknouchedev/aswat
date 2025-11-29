@@ -273,20 +273,7 @@
                     </div>
                     <ul class="mobile-simple-ul" role="list" id="mobile-search-container">
                         @forelse ($results as $item)
-                            <li class="mobile-simple-item">
-                                <a class="mobile-more-link" href="{{ route('news.show', $item->title) }}"
-                                    aria-label="{{ $item->title }}">
-                                    <div class="ms-thumb">
-                                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                                            alt="{{ $item->title }}">
-                                    </div>
-                                    <div class="ms-text">
-                                        <p class="ms-title">
-                                            {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}
-                                        </p>
-                                    </div>
-                                </a>
-                            </li>
+                            @include('user.mobile.item')
                         @empty
                             <li style="padding: 12px 0; text-align: center; color: #999;">لا توجد نتائج مطابقة.</li>
                         @endforelse

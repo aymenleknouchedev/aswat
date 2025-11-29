@@ -1143,23 +1143,8 @@
                             @include('user.components.ligne')
                         </div>
                         <ul class="mobile-simple-ul" role="list">
-                            @foreach ($moreMobItems as $mc)
-                                <li class="mobile-simple-item">
-                                    <a class="mobile-more-link" href="{{ route('news.show', $mc->title) }}"
-                                        aria-label="{{ $mc->title }}">
-                                        <div class="ms-thumb">
-                                            <img src="{{ $mc->media()->wherePivot('type', 'main')->first()->path ?? asset($mc->image ?? 'user/assets/images/default-post.jpg') }}"
-                                                alt="{{ $mc->title }}">
-                                        </div>
-                                        <div class="ms-text">
-                                            @if (isset($mc->category) && $mc->category)
-                                                <p class="ms-cat">{{ $mc->category->name }}</p>
-                                            @endif
-                                            <p class="ms-title">
-                                                {{ \Illuminate\Support\Str::limit($mc->mobile_title, 90) }}</p>
-                                        </div>
-                                    </a>
-                                </li>
+                            @foreach ($moreMobItems as $item)
+                                @include('user.mobile.item')
                             @endforeach
                         </ul>
                     </div>
@@ -1194,7 +1179,8 @@
                                             <div class="mobile-window-overlay"></div>
                                         </div>
                                         <div class="mobile-window-content">
-                                            <h3 class="mobile-window-card-title">{{ $content->title ?? 'عنوان الخبر' }}</h3>
+                                            <h3 class="mobile-window-card-title">{{ $content->title ?? 'عنوان الخبر' }}
+                                            </h3>
                                         </div>
                                     </a>
                                 </div>

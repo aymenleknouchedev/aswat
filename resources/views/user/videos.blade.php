@@ -33,197 +33,196 @@
     <div class="web">
         @include('user.components.fixed-nav')
 
-    {{-- Container --}}
-    <div class="container">
+        {{-- Container --}}
+        <div class="container">
 
-        {{-- Title --}}
-        <div class="title">
-            <p class="section-title">فيديو</p>
-            @include('user.components.ligne')
-            <div class="under-title-ligne-space"></div>
-        </div>
+            {{-- Title --}}
+            <div class="title">
+                <p class="section-title">فيديو</p>
+                @include('user.components.ligne')
+                <div class="under-title-ligne-space"></div>
+            </div>
 
-        {{-- Feature videos --}}
-        <style>
-            .section-title {
-                font-size: 32px;
-            }
+            {{-- Feature videos --}}
+            <style>
+                .section-title {
+                    font-size: 32px;
+                }
 
-            .custom-videos-feature {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 40px;
-                margin-bottom: 60px;
-            }
+                .custom-videos-feature {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 40px;
+                    margin-bottom: 60px;
+                }
 
-            .custom-videos-feature .custom-image-wrapper {
-                position: relative;
-                width: 100%;
-                height: 100%;
-            }
+                .custom-videos-feature .custom-image-wrapper {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                }
 
-            .custom-videos-feature img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: block;
-            }
+                .custom-videos-feature img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                }
 
-            .custom-videos-feature .custom-corner-icon {
-                position: absolute;
-                bottom: 15px;
-                left: 20px;
-                width: 45px;
-                height: 45px;
-                color: white;
-            }
+                .custom-videos-feature .custom-corner-icon {
+                    position: absolute;
+                    bottom: 15px;
+                    left: 20px;
+                    width: 45px;
+                    height: 45px;
+                    color: white;
+                }
 
-            .custom-videos-feature .custom-corner-icon img {
-                width: 100%;
-                height: 100%;
-            }
+                .custom-videos-feature .custom-corner-icon img {
+                    width: 100%;
+                    height: 100%;
+                }
 
-            .custom-videos-feature .custom-content {
-                margin-top: 20px;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                padding: 20px;
-            }
+                .custom-videos-feature .custom-content {
+                    margin-top: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    padding: 20px;
+                }
 
-            .custom-videos-feature .custom-content h3 {
-                margin: 0;
-                color: #999;
-                font-size: 12px;
-                font-family: asswat-light;
-                font-weight: lighter;
-                cursor: pointer;
-            }
+                .custom-videos-feature .custom-content h3 {
+                    margin: 0;
+                    color: #999;
+                    font-size: 12px;
+                    font-family: asswat-light;
+                    font-weight: lighter;
+                    cursor: pointer;
+                }
 
-            .custom-videos-feature .custom-content h2 {
-                margin: 10px 0 10px;
-                font-size: 24px;
-                line-height: 1.3;
-                font-family: asswat-bold;
-                cursor: pointer;
-                transition: .2s;
-            }
+                .custom-videos-feature .custom-content h2 {
+                    margin: 10px 0 10px;
+                    font-size: 24px;
+                    line-height: 1.3;
+                    font-family: asswat-bold;
+                    cursor: pointer;
+                    transition: .2s;
+                }
 
-            .custom-videos-feature .custom-content p {
-                margin: 0;
-                font-size: 17px;
-                line-height: 1.6;
-                color: #555;
-            }
+                .custom-videos-feature .custom-content p {
+                    margin: 0;
+                    font-size: 17px;
+                    line-height: 1.6;
+                    color: #555;
+                }
 
-            .custom-videos-feature .custom-content h2:hover {
-                text-decoration: underline;
-            }
-        </style>
+                .custom-videos-feature .custom-content h2:hover {
+                    text-decoration: underline;
+                }
+            </style>
 
-        @if ($featured)
-            <div class="custom-videos-feature">
-                <a href="{{ route('news.show', $featured->title) }}">
-                    <div class="custom-image-wrapper">
-                        <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
-                            alt="{{ $featured->title }}"
-                            style="width: 100%; aspect-ratio: 16 / 9; object-fit: cover;">
-                        <div class="custom-corner-icon">
-                            @include('user.icons.play')
+            @if ($featured)
+                <div class="custom-videos-feature">
+                    <a href="{{ route('news.show', $featured->title) }}">
+                        <div class="custom-image-wrapper">
+                            <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
+                                alt="{{ $featured->title }}" style="width: 100%; aspect-ratio: 16 / 9; object-fit: cover;">
+                            <div class="custom-corner-icon">
+                                @include('user.icons.play')
+                            </div>
                         </div>
-                    </div>
-                </a>
-                <div class="custom-content">
-                    <h3><x-category-links :content="$featured" /></h3>
-                    <a href="{{ route('news.show', $featured->title) }}" style="text-decoration: none; color: inherit;">
-                        <h2>{{ $featured->title }}</h2>
                     </a>
-                    <p>{{ $featured->summary }}</p>
+                    <div class="custom-content">
+                        <h3><x-category-links :content="$featured" /></h3>
+                        <a href="{{ route('news.show', $featured->title) }}" style="text-decoration: none; color: inherit;">
+                            <h2>{{ $featured->title }}</h2>
+                        </a>
+                        <p>{{ $featured->summary }}</p>
+                    </div>
                 </div>
+            @endif
+
+            {{-- videos Grid --}}
+            <style>
+                .videos-section-wrapper {
+                    display: grid;
+                    grid-template-columns: 10fr 2fr;
+                    /* 8/12 محتوى + 4/12 فارغ */
+                    gap: 20px;
+                }
+
+                .videos-section-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 20px;
+                }
+
+                .videos-section-item img {
+                    width: 100%;
+                    aspect-ratio: 16 / 9;
+                    object-fit: cover;
+                    display: block;
+                }
+
+                .videos-section-item h2 {
+                    font-size: 18px;
+                    margin: 0 0 8px 0;
+                    font-family: asswat-bold;
+                    line-height: 1.4;
+                    cursor: pointer;
+                    transition: .2s;
+                }
+
+                .videos-section-item h3 {
+                    font-size: 12px;
+                    margin: 8px 0 4px;
+                    color: #74747C;
+                    font-family: asswat-light;
+                    font-weight: lighter;
+                    cursor: pointer;
+                }
+
+                .videos-section-item h2:hover {
+                    text-decoration: underline;
+                }
+
+                .videos-load-more-btn {
+                    display: block;
+                    width: 100%;
+                    text-align: center;
+                    padding: 12px 0;
+                    margin: 60px auto;
+                    background: #f5f5f5;
+                    color: #000;
+                    font-family: asswat-medium;
+                    font-size: 16px;
+                    border: none;
+                    cursor: pointer;
+                    transition: .3s ease;
+                }
+
+                .videos-load-more-btn:hover {
+                    background: #ddd;
+                }
+            </style>
+
+            {{-- videos Grid --}}
+            <div class="videos-section-wrapper">
+                <div>
+                    <div class="videos-section-grid" id="videos-container">
+                        @include('user.partials.video-items', ['otherVideos' => $otherVideos])
+                    </div>
+
+                    <div class="text-center mt-3" id="load-more-container">
+                        <button class="videos-load-more-btn" data-page="1">المزيد</button>
+                    </div>
+                </div>
+                <div class="videos-section-empty"></div>
             </div>
-        @endif
 
-        {{-- videos Grid --}}
-        <style>
-            .videos-section-wrapper {
-                display: grid;
-                grid-template-columns: 10fr 2fr;
-                /* 8/12 محتوى + 4/12 فارغ */
-                gap: 20px;
-            }
-
-            .videos-section-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 20px;
-            }
-
-            .videos-section-item img {
-                width: 100%;
-                aspect-ratio: 16 / 9;
-                object-fit: cover;
-                display: block;
-            }
-
-            .videos-section-item h2 {
-                font-size: 18px;
-                margin: 0 0 8px 0;
-                font-family: asswat-bold;
-                line-height: 1.4;
-                cursor: pointer;
-                transition: .2s;
-            }
-
-            .videos-section-item h3 {
-                font-size: 12px;
-                margin: 8px 0 4px;
-                color: #74747C;
-                font-family: asswat-light;
-                font-weight: lighter;
-                cursor: pointer;
-            }
-
-            .videos-section-item h2:hover {
-                text-decoration: underline;
-            }
-
-            .videos-load-more-btn {
-                display: block;
-                width: 100%;
-                text-align: center;
-                padding: 12px 0;
-                margin: 60px auto;
-                background: #f5f5f5;
-                color: #000;
-                font-family: asswat-medium;
-                font-size: 16px;
-                border: none;
-                cursor: pointer;
-                transition: .3s ease;
-            }
-
-            .videos-load-more-btn:hover {
-                background: #ddd;
-            }
-        </style>
-
-        {{-- videos Grid --}}
-        <div class="videos-section-wrapper">
-            <div>
-                <div class="videos-section-grid" id="videos-container">
-                    @include('user.partials.video-items', ['otherVideos' => $otherVideos])
-                </div>
-
-                <div class="text-center mt-3" id="load-more-container">
-                    <button class="videos-load-more-btn" data-page="1">المزيد</button>
-                </div>
-            </div>
-            <div class="videos-section-empty"></div>
         </div>
 
-    </div>
-
-    @include('user.components.footer')
+        @include('user.components.footer')
 
     </div>
 
@@ -245,23 +244,7 @@
                     </div>
                     <ul class="mobile-simple-ul" role="list" id="mobile-videos-container">
                         @forelse ($otherVideos as $item)
-                            <li class="mobile-simple-item">
-                                <a class="mobile-more-link" href="{{ route('news.show', $item->title) }}"
-                                    aria-label="{{ $item->title }}">
-                                    <div class="ms-thumb">
-                                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                                            alt="{{ $item->title }}">
-                                    </div>
-                                    <div class="ms-text">
-                                        <p style="font-size: 14px; color: #7c7c74; margin: 0 0 4px 0; font-family: asswat-regular;">
-                                            <x-category-links :content="$item" />
-                                        </p>
-                                        <p class="ms-title">
-                                            {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}
-                                        </p>
-                                    </div>
-                                </a>
-                            </li>
+                            @include('user.mobile.item')
                         @empty
                             <li style="padding: 12px 0; text-align: center; color: #999;">لا توجد فيديوهات حالياً.</li>
                         @endforelse
