@@ -87,6 +87,62 @@
     </style>
 
     <style>
+        .art-section-hero {
+            position: relative;
+            margin-top: 60px;
+            background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)),
+                url('{{ asset('user/assets/images/placeholder.jpg') }}') center/cover no-repeat;
+            color: #fff;
+            direction: rtl;
+            overflow: hidden;
+        }
+
+        .art-section-overlay {
+            position: relative;
+            /* makes sure content is on top of gradient */
+            padding: 150px 20px 20px 20px;
+            z-index: 1;
+        }
+
+        .art-section-title {
+            text-align: right;
+            font-size: 24px;
+            margin-bottom: 24px;
+            cursor: pointer;
+        }
+
+        .art-section-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .art-section-card {
+            z-index: 1;
+            /* cards are above gradient background */
+        }
+
+        .art-section-card img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+            border: 1px solid white;
+        }
+
+        .art-section-card h2 {
+            margin-top: 5px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .art-section-card h2:hover {
+            margin-top: 5px;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
         .window-section {
             display: block;
         }
@@ -147,15 +203,14 @@
             </div>
 
             <div class="window-section">
-                <!-- Left: نافذة المستخدم -->
-                <div class="window-list" id="window-container">
-                    @include('user.partials.window-items', ['windows' => $windows])
-                </div>
-
-                <!-- Right: الأكثر قراءة -->
-                <div class="window-side">
-                    {{-- يمكنك إضافة ويدجت "الأكثر قراءة" هنا --}}
-                </div>
+                <section class="art-section-hero">
+                    <div class="art-section-overlay">
+                        <h2 class="art-section-title">نوافذ</h2>
+                        <div class="art-section-grid" id="window-container">
+                            @include('user.partials.window-items', ['windows' => $windows])
+                        </div>
+                    </div>
+                </section>
             </div>
 
             <div class="text-center mt-3" id="load-more-container">
