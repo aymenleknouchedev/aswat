@@ -87,62 +87,6 @@
     </style>
 
     <style>
-        .art-section-hero {
-            position: relative;
-            margin-top: 60px;
-            background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)),
-                url('{{ asset('user/assets/images/placeholder.jpg') }}') center/cover no-repeat;
-            color: #fff;
-            direction: rtl;
-            overflow: hidden;
-        }
-
-        .art-section-overlay {
-            position: relative;
-            /* makes sure content is on top of gradient */
-            padding: 150px 20px 20px 20px;
-            z-index: 1;
-        }
-
-        .art-section-title {
-            text-align: right;
-            font-size: 24px;
-            margin-bottom: 24px;
-            cursor: pointer;
-        }
-
-        .art-section-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        .art-section-card {
-            z-index: 1;
-            /* cards are above gradient background */
-        }
-
-        .art-section-card img {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            display: block;
-            border: 1px solid white;
-        }
-
-        .art-section-card h2 {
-            margin-top: 5px;
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        .art-section-card h2:hover {
-            margin-top: 5px;
-            font-size: 15px;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-
         .window-section {
             display: block;
         }
@@ -203,14 +147,15 @@
             </div>
 
             <div class="window-section">
-                <section class="art-section-hero">
-                    <div class="art-section-overlay">
-                        <h2 class="art-section-title">نوافذ</h2>
-                        <div class="art-section-grid" id="window-container">
-                            @include('user.partials.window-items', ['windows' => $windows])
-                        </div>
-                    </div>
-                </section>
+                <!-- Left: نافذة المستخدم -->
+                <div class="window-list" id="window-container">
+                    @include('user.partials.window-items', ['windows' => $windows])
+                </div>
+
+                <!-- Right: الأكثر قراءة -->
+                <div class="window-side">
+                    {{-- يمكنك إضافة ويدجت "الأكثر قراءة" هنا --}}
+                </div>
             </div>
 
             <div class="text-center mt-3" id="load-more-container">
@@ -265,13 +210,22 @@
                                 @foreach ($window->contents->sortByDesc('created_at')->take(4) as $content)
                                     <div class="mobile-window-card">
                                         <a href="{{ route('news.show', $content->title ?? '') }}" class="mobile-window-link">
-                                            <div class="mobile-window-image-wrapper">
+                                            <div class="ms-thumb">
                                                 <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
-                                                    alt="{{ $content->title ?? 'عنوان الخبر' }}" class="mobile-window-image">
-                                                <div class="mobile-window-overlay"></div>
+                                                    alt="{{ $content->title ?? 'عنوان الخبر' }}">
                                             </div>
-                                            <div class="mobile-window-content">
-                                                <h3 class="mobile-window-card-title">{{ $content->title ?? 'عنوان الخبر' }}</h3>
+                                            <div class="ms-text">
+                                                @if (isset($content->category) && $content->category)
+                                                    <p style="margin: 0; font-size: 14px; color: #999;">
+                                                        {{ $content->category->name }}
+                                                    </p>
+                                                @endif
+                                                <p class="ms-title">
+                                                    {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 90) }}
+                                                </p>
+                                                <p style="font-size: 16px; color: #666; margin: 4px 0 8px 0; line-height: 1.4;">
+                                                    {{ \Illuminate\Support\Str::limit($content->summary ?? '', 150) }}
+                                                </p>
                                             </div>
                                         </a>
                                     </div>
@@ -381,7 +335,7 @@
         }
 
         .mobile-window-section .mobile-simple-header {
-            color: #000;
+            color: #000000;
         }
 
         .mobile-window-carousel {
@@ -400,78 +354,44 @@
         }
 
         .mobile-window-card {
-            flex: 0 0 280px;
+            flex: 0 0 85vw;
             scroll-snap-align: start;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background: #fff;
-        }
-
-        .mobile-window-card:active {
-            transform: scale(0.98);
+            background: transparent;
+            box-shadow: none;
         }
 
         .mobile-window-link {
-            display: block;
+            display: flex;
+            flex-direction: column;
             text-decoration: none;
             color: inherit;
-            height: 100%;
         }
 
-        .mobile-window-image-wrapper {
-            position: relative;
+        .mobile-window-section .ms-thumb {
             width: 100%;
-            height: 200px;
-            overflow: hidden;
         }
 
-        .mobile-window-image {
+        .mobile-window-section .ms-thumb img {
             width: 100%;
-            height: 100%;
+            aspect-ratio: 16/9;
             object-fit: cover;
             display: block;
-            transition: transform 0.4s ease;
         }
 
-        .mobile-window-card:active .mobile-window-image {
-            transform: scale(1.05);
-        }
-
-        .mobile-window-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 60%;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-            pointer-events: none;
-        }
-
-        .mobile-window-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 16px;
-            z-index: 2;
-        }
-
-        .mobile-window-card-title {
-            font-size: 16px;
-            font-weight: 800;
-            font-family: 'asswat-bold';
-            color: #fff;
-            margin: 0;
-            line-height: 1.4;
+        .mobile-window-section .ms-text {
+            display: flex;
+            flex-direction: column;
+            padding: 8px 0 0 0;
             text-align: right;
-            direction: rtl;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobile-window-section .ms-title {
+            margin: 4px 0;
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 1.35;
+            color: #000;
+            font-family: 'asswat-bold';
         }
     </style>
 
