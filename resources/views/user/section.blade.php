@@ -544,7 +544,7 @@
                 flex: 1 1 0;
                 min-width: 0;
                 /* allow text to shrink without overflow */
-                width: calc(100% - 147px);
+                width: calc(100% - 20px);
                 
             }
 
