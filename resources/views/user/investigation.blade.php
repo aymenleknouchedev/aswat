@@ -389,7 +389,7 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`/section/investigation?page=${page}`, {
+                let response = await fetch(`{{ route('investigation') }}?page=${page}`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
@@ -429,11 +429,11 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`/section/investigation?page=${page}`, {
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest"
-                    }
-                });
+            let response = await fetch(`{{ route('investigation') }}?page=${page}`, {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
 
                 if (!response.ok) throw new Error("خطأ في السيرفر");
 

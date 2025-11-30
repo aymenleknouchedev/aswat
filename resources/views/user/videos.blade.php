@@ -392,7 +392,7 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`/section/videos?page=${page}`, {
+                let response = await fetch(`{{ route('podcasts') }}?page=${page}`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
@@ -431,7 +431,7 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`/section/videos?page=${page}`, {
+                let response = await fetch(`{{ route('podcasts') }}?page=${page}`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
