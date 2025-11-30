@@ -307,31 +307,7 @@
                     </div>
                     <ul class="mobile-simple-ul" role="list" id="mobile-reviews-container">
                         @forelse ($otherReviews as $item)
-                            <li class="mobile-simple-item">
-                                <a class="mobile-more-link" href="{{ route('news.show', $item->title) }}"
-                                    aria-label="{{ $item->title }}">
-                                    <div class="ms-thumb">
-                                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                                            alt="{{ $item->title }}">
-                                    </div>
-                                    <div class="ms-text">
-                                        <p
-                                            style="font-size: 14px; color: #7c7c74; margin: 0 0 4px 0; font-family: asswat-regular;">
-                                            @if ($item->writer && $item->writer->name)
-                                                <a href="{{ route('writer.show', $item->writer->id) }}"
-                                                    style="color: #7c7c74; text-decoration: none;">
-                                                    {{ $item->writer->name }}
-                                                </a>
-                                            @else
-                                                بدون كاتب
-                                            @endif
-                                        </p>
-                                        <p class="ms-title">
-                                            {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}
-                                        </p>
-                                    </div>
-                                </a>
-                            </li>
+                            @include('user.mobile.item')
                         @empty
                             <li style="padding: 12px 0; text-align: center; color: #999;">لا توجد آراء حالياً.</li>
                         @endforelse
