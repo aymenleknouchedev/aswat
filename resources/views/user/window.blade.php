@@ -237,7 +237,7 @@
     <style>
         .mobile-simple-header {
             padding: 12px 16px 8px;
-            font-size: 20px;
+            font-size: 28px;
             font-weight: 800;
             font-family: 'asswat-bold';
         }
