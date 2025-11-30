@@ -545,6 +545,7 @@
                 min-width: 0;
                 /* allow text to shrink without overflow */
                 width: calc(100% - 147px);
+                
             }
 
             .ms-cat {
@@ -594,21 +595,28 @@
 
             #mobile-load-more-container .mobile-load-more-btn {
                 display: block;
-                width: calc(100% - 32px);
-                margin: 0 16px;
-                padding: 14px 16px;
-                background: #e7e7e7;
-                color: #252525;
-                font-size: 18px;
-                font-family: 'asswat-bold';
-                letter-spacing: .2px;
+                width: 90%;
+                max-width: 400px;
+                margin: 20px auto;
+                padding: 12px 24px;
+                background: #f5f5f5;
+                color: #000;
+                font-family: asswat-medium;
+                font-size: 16px;
+                border: none;
+                cursor: pointer;
+                transition: .3s ease;
                 text-align: center;
             }
 
-            /* Mobile Window Carousel */
+            #mobile-load-more-container .mobile-load-more-btn:hover {
+                background: #ddd;
+            }
+
+                        /* Mobile Window Carousel */
             .mobile-window-section {
                 padding: 12px 0 34px;
-                background-color: #252525;
+                background-color: #e7e7e7;
             }
 
             .mobile-window-header {
@@ -616,15 +624,7 @@
             }
 
             .mobile-window-section .mobile-simple-header {
-                color: #fff;
-            }
-
-            .mobile-most-reads-section {
-                background-color: #fff !important;
-            }
-
-            .mobile-most-reads-section .mobile-simple-header {
-                color: #000;
+                color: #000000;
             }
 
             .mobile-window-carousel {
@@ -643,78 +643,90 @@
             }
 
             .mobile-window-card {
-                flex: 0 0 280px;
+                flex: 0 0 85vw;
                 scroll-snap-align: start;
-                position: relative;
-                overflow: hidden;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-                background: #fff;
-            }
-
-            .mobile-window-card:active {
-                transform: scale(0.98);
+                background: transparent;
+                box-shadow: none;
             }
 
             .mobile-window-link {
-                display: block;
+                display: flex;
+                flex-direction: column;
                 text-decoration: none;
                 color: inherit;
-                height: 100%;
             }
 
-            .mobile-window-image-wrapper {
-                position: relative;
+            .mobile-window-section .ms-thumb {
                 width: 100%;
-                height: 200px;
-                overflow: hidden;
             }
 
-            .mobile-window-image {
+            .mobile-window-section .ms-thumb img {
                 width: 100%;
-                height: 100%;
+                aspect-ratio: 16/9;
                 object-fit: cover;
                 display: block;
-                transition: transform 0.4s ease;
             }
 
-            .mobile-window-card:active .mobile-window-image {
-                transform: scale(1.05);
-            }
-
-            .mobile-window-overlay {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                height: 60%;
-                background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-                pointer-events: none;
-            }
-
-            .mobile-window-content {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                padding: 16px;
-                z-index: 2;
-            }
-
-            .mobile-window-card-title {
-                font-size: 16px;
-                font-weight: 800;
-                font-family: 'asswat-bold';
-                color: #fff;
-                margin: 0;
-                line-height: 1.4;
+            .mobile-window-section .ms-text {
+                display: flex;
+                flex-direction: column;
+                padding: 8px 0 0 0;
                 text-align: right;
-                direction: rtl;
-                display: -webkit-box;
-                -webkit-line-clamp: 3;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+
+            .mobile-window-section .ms-title {
+                margin: 4px 0;
+                font-size: 20px;
+                font-weight: 800;
+                line-height: 1.35;
+                color: #000;
+                font-family: 'asswat-bold';
+            }
+
+            .mobile-most-reads-section {
+                background-color: #fff !important;
+            }
+
+            .mobile-most-reads-section .mobile-simple-header {
+                color: #000;
+            }
+
+            .mobile-most-reads-section .mobile-window-card {
+                flex: 0 0 85vw;
+                background: transparent;
+                box-shadow: none;
+            }
+
+            .mobile-most-reads-section .mobile-window-link {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .mobile-most-reads-section .ms-thumb {
+                width: 100%;
+            }
+
+            .mobile-most-reads-section .ms-thumb img {
+                width: 100%;
+                aspect-ratio: 16/9;
+                object-fit: cover;
+                display: block;
+            }
+
+            .mobile-most-reads-section .ms-text {
+                display: flex;
+                flex-direction: column;
+                padding: 8px 0 0 0;
+                text-align: right;
+            }
+
+            .mobile-most-reads-section .ms-title {
+                margin: 4px 0;
+                font-size: 20px;
+                font-weight: 800;
+                line-height: 1.35;
+                color: #000;
+                font-family: 'asswat-bold';
             }
 
             /* Most Reads full-screen section */
@@ -1098,14 +1110,22 @@
                             @foreach ($window->contents as $content)
                                 <div class="mobile-window-card">
                                     <a href="{{ route('news.show', $content->title ?? '') }}" class="mobile-window-link">
-                                        <div class="mobile-window-image-wrapper">
+                                        <div class="ms-thumb">
                                             <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
-                                                alt="{{ $content->title ?? 'عنوان الخبر' }}" class="mobile-window-image">
-                                            <div class="mobile-window-overlay"></div>
+                                                alt="{{ $content->title ?? 'عنوان الخبر' }}">
                                         </div>
-                                        <div class="mobile-window-content">
-                                            <h3 class="mobile-window-card-title">{{ $content->title ?? 'عنوان الخبر' }}
-                                            </h3>
+                                        <div class="ms-text">
+                                            @if (isset($content->category) && $content->category)
+                                                <p style="margin: 0; font-size: 14px; color: #999;">
+                                                    {{ $content->category->name }}
+                                                </p>
+                                            @endif
+                                            <p class="ms-title">
+                                                {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 90) }}
+                                            </p>
+                                            <p style="font-size: 16px; color: #666; margin: 4px 0 8px 0; line-height: 1.4;">
+                                                {{ \Illuminate\Support\Str::limit($content->summary ?? '', 150) }}
+                                            </p>
                                         </div>
                                     </a>
                                 </div>
@@ -1138,10 +1158,10 @@
             @if (!empty($moreMobItems))
                 <div class="mobile-container">
                     <div class="mobile-simple-list" dir="rtl">
-                        <h2 class="mobile-simple-header">المزيد من {{ $arabicName ?? 'أخبار' }}</h2>
+                        {{-- <h2 class="mobile-simple-header">المزيد من {{ $arabicName ?? 'أخبار' }}</h2>
                         <div style="padding: 0px 16px">
                             @include('user.components.ligne')
-                        </div>
+                        </div> --}}
                         <ul class="mobile-simple-ul" role="list">
                             @foreach ($moreMobItems as $item)
                                 @include('user.mobile.item')
@@ -1164,7 +1184,7 @@
                 <div class="mobile-container" style="margin-bottom: 40px;">
                     <div class="mobile-window-section mobile-most-reads-section">
                         <div class="mobile-window-header">
-                            <h2 class="mobile-simple-header">مقروء أكثر</h2>
+                            <h2 class="mobile-simple-header">الأكثر قراءة</h2>
                             <div style="padding: 0px 16px">
                                 @include('user.components.ligne')
                             </div>
@@ -1173,14 +1193,22 @@
                             @foreach ($topViewed as $content)
                                 <div class="mobile-window-card">
                                     <a href="{{ route('news.show', $content->title ?? '') }}" class="mobile-window-link">
-                                        <div class="mobile-window-image-wrapper">
+                                        <div class="ms-thumb">
                                             <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
-                                                alt="{{ $content->title ?? 'عنوان الخبر' }}" class="mobile-window-image">
-                                            <div class="mobile-window-overlay"></div>
+                                                alt="{{ $content->title ?? 'عنوان الخبر' }}">
                                         </div>
-                                        <div class="mobile-window-content">
-                                            <h3 class="mobile-window-card-title">{{ $content->title ?? 'عنوان الخبر' }}
-                                            </h3>
+                                        <div class="ms-text">
+                                            @if (isset($content->category) && $content->category)
+                                                <p style="margin: 0; font-size: 14px; color: #999;">
+                                                    {{ $content->category->name }}
+                                                </p>
+                                            @endif
+                                            <p class="ms-title">
+                                                {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 90) }}
+                                            </p>
+                                            <p style="font-size: 16px; color: #666; margin: 4px 0 8px 0; line-height: 1.4;">
+                                                {{ \Illuminate\Support\Str::limit($content->summary ?? '', 150) }}
+                                            </p>
                                         </div>
                                     </a>
                                 </div>

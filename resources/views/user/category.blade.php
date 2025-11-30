@@ -154,17 +154,6 @@
             padding-top: 8px;
         }
 
-
-
-        .ms-title {
-            margin: 0;
-            font-size: 18px;
-            font-weight: 800;
-            line-height: 1.35;
-            color: #000;
-            font-family: 'asswat-bold';
-        }
-
         .mobile-load-more-btn {
             display: block;
             width: 90%;
@@ -319,8 +308,10 @@
             </div>
 
             <!-- Mobile Load More button -->
-            <div class="text-center" id="mobile-load-more-container">
-                <button class="mobile-load-more-btn" data-page="1">المزيد</button>
+            <div class="text-center mt-3" id="mobile-load-more-container">
+                <button class="mobile-load-more-btn btn btn-primary" data-page="1" data-current-id="{{ $current_id }}" data-type="{{ $type }}">
+                    المزيد
+                </button>
             </div>
 
             <!-- Mobile Footer -->
@@ -403,86 +394,87 @@
             loading = false;
         }
 
-        // Mobile load more
+        // Mobile load more - using section page method
         if (e.target.classList.contains("mobile-load-more-btn")) {
             if (loading) return;
+            const btn = e.target;
+            let page = parseInt(btn.getAttribute("data-page") || "1", 10) + 1;
+            const currentId = btn.getAttribute("data-current-id");
+            const type = btn.getAttribute("data-type");
 
-            let btn = e.target;
-            let page = parseInt(btn.getAttribute("data-page")) + 1;
+            if (!currentId || !type) {
+                console.error("Current ID or Type is not defined");
+                return;
+            }
 
             loading = true;
             btn.disabled = true;
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`/category/${categoryId}/${categoryType}?page=${page}`, {
+                const url = `/category/${currentId}/${type}?page=${page}`;
+                const resp = await fetch(url, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
                 });
 
-                if (!response.ok) throw new Error("خطأ في السيرفر");
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const html = await resp.text();
+                const tmp = document.createElement("div");
+                tmp.innerHTML = html;
+                const cards = Array.from(tmp.querySelectorAll(".newCategory-all-card"));
 
-                let data = await response.text();
-                const trimmed = data.trim();
-
-                if (trimmed.length === 0) {
-                    const cont = btn.closest("#mobile-load-more-container");
-                    if (cont) cont.remove();
+                if (!cards.length) {
+                    // No more data, remove container
+                    btn.closest("#mobile-load-more-container")?.remove();
                 } else {
-                    // Ensure appended items match the initial mobile card structure
-                    const mobileContainer = document.getElementById("mobile-category-container");
-                    if (mobileContainer) {
-                        // If backend already returns mobile items, append directly
-                        if (trimmed.includes('mobile-simple-item')) {
-                            mobileContainer.insertAdjacentHTML("beforeend", trimmed);
-                        } else {
-                            // Transform desktop cards (newCategory-all-card) into mobile items
-                            const wrapper = document.createElement('div');
-                            wrapper.innerHTML = trimmed;
-                            const cards = wrapper.querySelectorAll('.newCategory-all-card');
-
-                            if (cards.length === 0) {
-                                // Fallback: append raw if unknown format
-                                mobileContainer.insertAdjacentHTML("beforeend", trimmed);
-                            } else {
-                                let html = '';
-                                cards.forEach(card => {
-                                    const linkEl = card.querySelector('a[href]');
-                                    const href = linkEl ? linkEl.getAttribute('href') : '#';
-                                    const imgEl = card.querySelector('img');
-                                    const imgSrc = imgEl ? imgEl.getAttribute('src') : '';
-                                    const titleEl = card.querySelector(
-                                        '.newCategory-all-card-text h2') || card.querySelector(
-                                        'h2') || linkEl;
-                                    let title = titleEl ? (titleEl.textContent || '').trim() : '';
-                                    if (title.length > 90) title = title.slice(0, 87) + '...';
-
-                                    html += `
-                                        <li class="mobile-simple-item">
-                                            <a class="mobile-more-link" href="${href}" aria-label="${title}">
-                                                <div class="ms-thumb">
-                                                    <img src="${imgSrc}" alt="${title}">
-                                                </div>
-                                                <div class="ms-text">
-                                                    <p class="ms-title">${title}</p>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    `;
-                                });
-
-                                if (html) mobileContainer.insertAdjacentHTML('beforeend', html);
-                            }
-                        }
+                    // Get the existing list
+                    let list = document.querySelector(".mobile .mobile-simple-ul");
+                    if (!list) {
+                        console.error("Mobile simple list not found");
+                        return;
                     }
 
-                    btn.setAttribute("data-page", page);
+                    const frag = document.createDocumentFragment();
+                    cards.forEach(card => {
+                        const a = card.querySelector(".newCategory-all-card-text a[href]") ||
+                            card.querySelector("a[href]");
+                        const img = card.querySelector("img");
+                        const cat = card.querySelector(".newCategory-all-card-text h3");
+                        const summaryEl = card.querySelector(".newCategory-all-card-text h3:nth-of-type(2)");
+                        const dateEl = card.querySelector(".newCategory-all-card-date h4");
+                        
+                        const li = document.createElement("li");
+                        li.className = "mobile-simple-item";
+                        const href = a ? a.getAttribute("href") : "#";
+                        const title = a ? (a.textContent || "").trim() : "";
+                        const src = img ? img.getAttribute("src") : "";
+                        const catText = cat ? (cat.textContent || "").trim() : "";
+                        let summary = summaryEl ? (summaryEl.textContent || "").trim() : "";
+                        if (summary.length > 250) summary = summary.slice(0, 247) + "...";
+                        const dateText = dateEl ? (dateEl.textContent || "").trim() : "";
+
+                        li.innerHTML = `
+                            <a class="mobile-more-link" href="${href}" aria-label="${title}">
+                              <div class="ms-thumb">
+                                <img src="${src}" alt="${title}">
+                              </div>
+                              <div class="ms-text">
+                                <p class="ms-title">${title}</p>
+                                ${summary ? `<p style="font-size: 16px; color: #666; margin: 4px 0 8px 0; line-height: 1.4;">${summary}</p>` : ""}
+                                ${dateText ? `<div style="display: flex; justify-content: flex-start; font-size: 14px; color: #999; margin: 0;"><p style="margin: 0;">${dateText}</p></div>` : ""}
+                              </div>
+                            </a>`;
+                        frag.appendChild(li);
+                    });
+                    list.appendChild(frag);
+                    btn.setAttribute("data-page", String(page));
                     btn.disabled = false;
                     btn.textContent = "المزيد";
                 }
-            } catch (error) {
-                alert("خطأ في تحميل المزيد");
+            } catch (err) {
+                console.error("Mobile load more failed", err);
                 btn.disabled = false;
                 btn.textContent = "المزيد";
             }

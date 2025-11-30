@@ -1,12 +1,16 @@
 <style>
-    .mobile-simple-item+.mobile-simple-item {
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
+    .mobile-simple-item {
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .mobile-simple-item:last-child {
+        border-bottom: none;
     }
 
     .mobile-more-link {
         display: flex;
         flex-direction: column;
-        padding: 24px 0 12px 0;
+        padding: 24px 0 24px 0;
         text-decoration: none;
         color: inherit;
     }
@@ -44,10 +48,6 @@
                 alt="{{ $item->title }}">
         </div>
         <div class="ms-text">
-            <p style="margin: 0; font-size: 14px; color: #999;">
-                {{ $item->category->name ?? 'بدون فئة' }}
-            </p>
-
             <p class="ms-title">
                 {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}
             </p>

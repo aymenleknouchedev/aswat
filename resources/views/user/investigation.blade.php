@@ -258,9 +258,7 @@
 
             <!-- Mobile Footer -->
             @include('user.mobile.footer')
-
         </div>
-
     </div>
 
     <style>
