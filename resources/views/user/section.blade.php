@@ -867,7 +867,7 @@
                     <div class="art-section-overlay">
                         <h2 class="art-section-title">{{ $window->name ?? 'النافذة' }}</h2>
                         <div class="art-section-grid">
-                            @foreach ($window->contents as $content)
+                            @foreach ($window->contents->take(4) as $content)
                                 <div class="art-section-card">
                                     <a href="{{ route('news.show', $content->title ?? '') }}">
                                         <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
