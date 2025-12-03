@@ -351,7 +351,7 @@
             .menu-list > li > .menu-item-header,
             .menu-list > li > a {
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-                margin: 0 16px; /* inset the rule on both sides */
+                margin: 0 0px; /* inset the rule on both sides */
             }
             .menu-list > li:last-child > .menu-item-header,
             .menu-list > li:last-child > a { border-bottom: none; }
@@ -451,7 +451,6 @@
             .submenu li { border-bottom: none; }
             .submenu li > a {
                 border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-                margin: 0 28px;
             }
             .submenu li:last-child > a { border-bottom: none; }
 
