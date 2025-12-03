@@ -74,7 +74,6 @@
 <body id="gototop">
 
     @yield('content')
-
     <script src="{{ asset('user/js/fixed-nav.js') }}"></script>
     <script src="{{ asset('user/js/photos-scroll.js') }}"></script>
 </body>

@@ -4,6 +4,45 @@
 
 @section('content')
 
+    <!-- Page Loader -->
+    <style>
+        .page-loader {
+            position: fixed;
+            inset: 0;
+            background: #ffffff; /* dark to match site */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 300ms ease;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-spinner {
+            width: 56px;
+            height: 56px;
+            border: 4px solid rgba(255, 255, 255, 0.25);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <div id="pageLoader" class="page-loader" aria-live="polite" aria-busy="true" role="status">
+        <div class="loader-spinner" aria-hidden="true"></div>
+        <span class="sr-only" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;">جاري التحميل…</span>
+    </div>
+
     <style>
         .art-section-hero {
             position: relative;
@@ -894,7 +933,7 @@
             {{-- Principal Trend Section (Mobile) --}}
             @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
                 @php $trendsCount = isset($trends) && is_countable($trends) ? count($trends) : 0; @endphp
-                @if ($trendsCount >= 4)
+                @if ($trendsCount >= 1)
                     <div class="mobile-h-wrapper">
                         <div class="section-fixed-ui">
                             <div class="featured-post-section-badge">{{ $principalTrend->trend->title ?? 'اتجاه' }}</div>
@@ -1272,6 +1311,22 @@
 
         // Back to Top Button Functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Hide loader when page is fully loaded (images included) or after a max timeout
+            const loader = document.getElementById('pageLoader');
+            const hideLoader = () => {
+                if (!loader) return;
+                loader.classList.add('hidden');
+                setTimeout(() => loader.remove(), 400);
+            };
+            // Prefer window load for full content readiness
+            if (document.readyState === 'complete') {
+                hideLoader();
+            } else {
+                window.addEventListener('load', hideLoader, { once: true });
+                // Fallback: in case load doesn't fire (e.g., cached resources), hide after 3.5s
+                setTimeout(hideLoader, 3500);
+            }
+
             if (window.innerWidth > 991) return; // mobile only
 
             const backToTopBtn = document.getElementById('backToTopBtn');
