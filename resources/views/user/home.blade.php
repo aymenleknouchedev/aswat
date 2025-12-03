@@ -266,6 +266,21 @@
                 gap: 8px;
             }
 
+            /* Icon positioned separately on the side */
+            .section-image-icon {
+                position: static;
+                background: #fff;
+                color: #000;
+                width: 40px;
+                height: 40px;
+                min-height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                margin-left: auto;
+            }
+
             /* When badge is inside the fixed UI, make it flow-static to allow indicators sized to its height */
             .section-fixed-ui .featured-post-section-badge {
                 position: static;
@@ -487,6 +502,54 @@
             }
 
             .mobile {
+                display: none !important;
+            }
+        }
+
+        /* Back to Top Button Styles */
+        @media (max-width: 991px) {
+            .back-to-top-btn {
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                z-index: 1000;
+                width: 40px;
+                height: 40px;
+                background-color: rgb(255, 255, 255);
+                border: none;
+                border-radius: 50%;
+                cursor: pointer;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+            }
+
+            .back-to-top-btn.show {
+                display: flex;
+            }
+
+            .back-to-top-btn:active {
+                transform: scale(0.95);
+                background-color: rgb(255, 255, 255);
+            }
+
+            .back-to-top-btn svg {
+                width: 28px;
+                height: 28px;
+                fill: #000000;
+            }
+
+            @supports (padding: max(0px)) {
+                .back-to-top-btn {
+                    bottom: calc(40px + max(0px, env(safe-area-inset-bottom)));
+                    left: calc(15px + max(0px, env(safe-area-inset-left)));
+                }
+            }
+        }
+
+        @media (min-width: 992px) {
+            .back-to-top-btn {
                 display: none !important;
             }
         }
@@ -771,6 +834,10 @@
     <div class="mobile">
         @include('user.mobile.mobile-home')
 
+        <!-- Back to Top Button -->
+        <button id="backToTopBtn" class="back-to-top-btn" aria-label="العودة إلى الأعلى" title="العودة إلى الأعلى">
+            <i class="fas fa-chevron-up"></i>
+        </button>
 
         <!-- Vertical snap container for mobile sections -->
         <div class="mobile-snap">
@@ -975,6 +1042,7 @@
                                     ];
                                     $sectionSlug = $slugMap[$sectionTitle] ?? null;
                                 @endphp
+
                                 <div class="featured-post-section-badge">
                                     @if ($sectionSlug)
                                         <a href="{{ route('newSection', ['section' => $sectionSlug]) }}"
@@ -996,6 +1064,25 @@
                                     <div class="h-snap-slide mobile-featured-post"
                                         style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
                                         <div class="post-overlay-dark"></div>
+
+                                        @if ($content->template === 'normal_image' && $sectionSlug === 'photos')
+                                            <div
+                                                style="position: absolute; top: 90px; left: 9px; z-index: 2; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 25px;">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                        @endif
+                                        @if ($content->template === 'video' && $sectionSlug === 'videos')
+                                            <div
+                                                style="position: absolute; top: 90px; left: 9px; z-index: 2; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 25px;">
+                                                <i class="fas fa-video"></i>
+                                            </div>
+                                        @endif
+                                        @if ($content->template === 'podcast' && $sectionSlug === 'podcasts')
+                                            <div
+                                                style="position: absolute; top: 90px; left: 9px; z-index: 2; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 25px;">
+                                                <i class="fas  fa-headphones"></i>
+                                            </div>
+                                        @endif
                                         <div class="featured-post-content">
                                             @if (isset($content->category) && $content->category)
                                                 <p class="featured-post-category-name">
@@ -1179,6 +1266,46 @@
                     if (activeWrapper) stopAuto(activeWrapper);
                 } else {
                     if (activeWrapper) startAuto(activeWrapper);
+                }
+            });
+        });
+
+        // Back to Top Button Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.innerWidth > 991) return; // mobile only
+
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            const mobileSnap = document.querySelector('.mobile-snap');
+
+            if (!backToTopBtn || !mobileSnap) return;
+
+            // Show/hide button based on scroll position
+            const handleScroll = () => {
+                if (mobileSnap.scrollTop > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            };
+
+            // Scroll to top functionality
+            const scrollToTop = () => {
+                mobileSnap.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            };
+
+            // Event listeners
+            mobileSnap.addEventListener('scroll', handleScroll, {
+                passive: true
+            });
+            backToTopBtn.addEventListener('click', scrollToTop);
+
+            // Handle window resize (from desktop to mobile or vice versa)
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 991) {
+                    backToTopBtn.classList.remove('show');
                 }
             });
         });

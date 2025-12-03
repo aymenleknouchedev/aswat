@@ -78,6 +78,12 @@
                             <em class="icon ni ni-calendar"></em>
                             <span>تاريخ الإضافة: {{ optional($media->created_at)->format('Y-m-d H:i') }}</span>
                         </div>
+                        @if($media->user)
+                            <div class="media-user text-muted" style="font-size: 0.8rem; display:flex; align-items:center; gap:.35rem;">
+                                <em class="icon ni ni-user"></em>
+                                <span>أضيف بواسطة: {{ $media->user->name }}</span>
+                            </div>
+                        @endif
                     </div>
 
                     <!-- Media Actions -->

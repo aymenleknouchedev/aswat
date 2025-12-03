@@ -76,6 +76,11 @@
                     width: 45px;
                     height: 45px;
                     color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 24px;
+                    border-radius: 4px;
                 }
 
                 .custom-videos-feature .custom-corner-icon img {
@@ -128,7 +133,7 @@
                             <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
                                 alt="{{ $featured->title }}" style="width: 100%; aspect-ratio: 16 / 9; object-fit: cover;">
                             <div class="custom-corner-icon">
-                                @include('user.icons.play')
+                                <i class="fas fa-play"></i>
                             </div>
                         </div>
                     </a>
@@ -157,11 +162,36 @@
                     gap: 20px;
                 }
 
+                .videos-section-item {
+                    position: relative;
+                }
+
+                .videos-section-item-image-wrapper {
+                    position: relative;
+                    width: 100%;
+                    overflow: hidden;
+                }
+
                 .videos-section-item img {
                     width: 100%;
                     aspect-ratio: 16 / 9;
                     object-fit: cover;
                     display: block;
+                }
+
+                .videos-section-item-play-icon {
+                    position: absolute;
+                    bottom: 10px;
+                    left: 10px;
+                    width: 40px;
+                    height: 40px;
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 18px;
+                    border-radius: 4px;
+                    z-index: 2;
                 }
 
                 .videos-section-item h2 {
@@ -392,7 +422,7 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`{{ route('podcasts') }}?page=${page}`, {
+                let response = await fetch(`{{ route('videos') }}?page=${page}`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
@@ -431,7 +461,7 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`{{ route('podcasts') }}?page=${page}`, {
+                let response = await fetch(`{{ route('videos') }}?page=${page}&view=mobile`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
@@ -448,43 +478,8 @@
                 } else {
                     const mobileContainer = document.getElementById("mobile-videos-container");
                     if (mobileContainer) {
-                        if (trimmed.includes('mobile-simple-item')) {
-                            mobileContainer.insertAdjacentHTML("beforeend", trimmed);
-                        } else {
-                            const wrapper = document.createElement('div');
-                            wrapper.innerHTML = trimmed;
-                            const cards = wrapper.querySelectorAll('[class*="videos-section-item"]');
-
-                            if (cards.length === 0) {
-                                mobileContainer.insertAdjacentHTML("beforeend", trimmed);
-                            } else {
-                                let html = '';
-                                cards.forEach(card => {
-                                    const linkEl = card.querySelector('a[href]');
-                                    const href = linkEl ? linkEl.getAttribute('href') : '#';
-                                    const imgEl = card.querySelector('img');
-                                    const imgSrc = imgEl ? imgEl.getAttribute('src') : '';
-                                    const titleEl = card.querySelector('h2');
-                                    let title = titleEl ? (titleEl.textContent || '').trim() : '';
-                                    if (title.length > 90) title = title.slice(0, 87) + '...';
-
-                                    html += `
-                                        <li class="mobile-simple-item">
-                                            <a class="mobile-more-link" href="${href}" aria-label="${title}">
-                                                <div class="ms-thumb">
-                                                    <img src="${imgSrc}" alt="${title}">
-                                                </div>
-                                                <div class="ms-text">
-                                                    <p class="ms-title">${title}</p>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    `;
-                                });
-
-                                if (html) mobileContainer.insertAdjacentHTML('beforeend', html);
-                            }
-                        }
+                        // Server already returns fully rendered mobile-simple-item elements
+                        mobileContainer.insertAdjacentHTML("beforeend", trimmed);
                     }
 
                     btn.setAttribute("data-page", page);

@@ -47,6 +47,9 @@ return new class extends Migration
             // SEO
             $table->string('seo_keyword')->nullable();
 
+            // Shortlink
+            $table->string('shortlink', 6)->unique()->nullable();
+
             // Media type
             $table->enum('template', ['normal_image', 'video', 'podcast', 'album', 'no_image'])->default('normal_image');
             // Status

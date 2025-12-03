@@ -1110,16 +1110,17 @@
         .read-more-block {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 14px 6px;
+            gap: 12px;
+            padding: 16px 12px;
             direction: rtl;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            margin-top: 28px;
+            margin-bottom: 28px;
             background: #F5F5F5;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
             position: relative;
+            border-radius: 6px;
         }
 
         /* Placeholder state (before content loads) */
@@ -1175,8 +1176,9 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             justify-content: center;
+            padding: 0 8px;
         }
 
         .read-more-category {
@@ -1191,8 +1193,8 @@
             font-size: 18px;
             font-family: asswat-medium !important;
             color: #000000;
-            margin-top: 0px !important;
-            margin-bottom: 0px !important;
+            margin-top: 2px !important;
+            margin-bottom: 2px !important;
             line-height: 1.3;
             text-align: right;
         }
@@ -2374,8 +2376,21 @@
 
                 <div style="margin-top: 10px" class="custom-date-share">
                     {{-- Date on the RIGHT --}}
-                    <p class="date-text">{{ $day }} {{ $month }} {{ $year }} |
-                        {{ $time }}</p>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <p class="date-text">{{ $day }} {{ $month }} {{ $year }} |
+                            {{ $time }}</p>
+                        
+                        @php
+                            $totalViews = $news->contentDailyViews->sum('views') ?? 0;
+                        @endphp
+                        
+                        @if ($totalViews > 50)
+                            <div class="views-count" style="display: flex; align-items: center; gap: 5px; color: #888; font-size: 14px;">
+                                <i class="fas fa-eye"></i>
+                                <span>{{ number_format($totalViews) }}</span>
+                            </div>
+                        @endif
+                    </div>
 
                     {{-- Share on the LEFT --}}
                     <div class="share-container" id="shareContainer">

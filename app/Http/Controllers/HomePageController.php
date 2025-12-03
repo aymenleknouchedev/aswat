@@ -280,6 +280,15 @@ class HomePageController extends Controller
             ->get();
 
         if ($request->ajax()) {
+            if ($request->query('view') === 'mobile') {
+                $html = '';
+                foreach ($otherFiles as $item) {
+                    $html .= view('user.mobile.item', compact('item'))->render();
+                }
+
+                return $html;
+            }
+
             return view('user.partials.file-items', compact('otherFiles'))->render();
         }
 
@@ -313,6 +322,15 @@ class HomePageController extends Controller
             ->get();
 
         if ($request->ajax()) {
+            if ($request->query('view') === 'mobile') {
+                $html = '';
+                foreach ($otherInvestigations as $item) {
+                    $html .= view('user.mobile.item', compact('item'))->render();
+                }
+
+                return $html;
+            }
+
             return view('user.partials.investigation-items', compact('otherInvestigations'))->render();
         }
 
@@ -346,6 +364,15 @@ class HomePageController extends Controller
             ->get();
 
         if ($request->ajax()) {
+            if ($request->query('view') === 'mobile') {
+                $html = '';
+                foreach ($otherVideos as $item) {
+                    $html .= view('user.mobile.item', compact('item'))->render();
+                }
+
+                return $html;
+            }
+
             return view('user.partials.video-items', compact('otherVideos'))->render();
         }
 
@@ -381,6 +408,15 @@ class HomePageController extends Controller
             ->get();
 
         if ($request->ajax()) {
+            if ($request->query('view') === 'mobile') {
+                $html = '';
+                foreach ($otherPodcasts as $item) {
+                    $html .= view('user.mobile.item', compact('item'))->render();
+                }
+
+                return $html;
+            }
+
             return view('user.partials.podcast-items', compact('otherPodcasts'))->render();
         }
 
@@ -416,6 +452,18 @@ class HomePageController extends Controller
             ->get();
 
         if ($request->ajax()) {
+            // When explicitly requested from mobile, render mobile items
+            if ($request->query('view') === 'mobile') {
+                // Render each item with the existing mobile partial to preserve summary and date formatting
+                $html = '';
+                foreach ($otherPhotos as $item) {
+                    $html .= view('user.mobile.item', compact('item'))->render();
+                }
+
+                return $html;
+            }
+
+            // Default desktop behaviour
             return view('user.partials.photo-items', compact('otherPhotos'))->render();
         }
 

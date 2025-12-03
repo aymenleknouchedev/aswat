@@ -130,6 +130,11 @@
                         <i class="fa-solid fa-plus"></i> <!-- Add icon -->
                     </a>
 
+                    <a href="{{ route('dashboard.breakingnew.create') }}" class="admin-action-breaking"
+                        title="إضافة عاجل">
+                        <i class="fa-solid fa-plus"></i> <!-- Add breaking news icon -->
+                    </a>
+
                     <a href="{{ route('dashboard.logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                         title="تسجيل الخروج">
@@ -185,6 +190,15 @@
 
             .admin-actions a:hover {
                 color: #333;
+            }
+
+            .admin-action-breaking i {
+                color: #dc3545;
+                font-size: 16px;
+            }
+
+            .admin-action-breaking:hover i {
+                color: #c82333;
             }
 
             body {

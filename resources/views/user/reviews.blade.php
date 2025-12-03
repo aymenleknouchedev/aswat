@@ -307,7 +307,7 @@
                     </div>
                     <ul class="mobile-simple-ul" role="list" id="mobile-reviews-container">
                         @forelse ($otherReviews as $item)
-                            @include('user.mobile.item')
+                            @include('user.mobile.writer-item')
                         @empty
                             <li style="padding: 12px 0; text-align: center; color: #999;">لا توجد آراء حالياً.</li>
                         @endforelse
@@ -371,7 +371,7 @@
         }
 
         .ms-title {
-            margin: 0;
+            margin: 4px 0px;
             font-size: 18px;
             font-weight: 800;
             line-height: 1.35;

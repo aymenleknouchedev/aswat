@@ -76,6 +76,11 @@
                     width: 45px;
                     height: 45px;
                     color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 24px;
+                    border-radius: 4px;
                 }
 
                 .custom-photos-feature .custom-corner-icon img {
@@ -129,7 +134,7 @@
                                 alt="{{ $featured->title }}"
                                 style="aspect-ratio: 16 / 9; object-fit: cover; width: 100%; display: block;">
                             <div class="custom-corner-icon">
-                                @include('user.icons.image')
+                                <i class="fas fa-images"></i>
                             </div>
                         </div>
                     </a>
@@ -158,11 +163,36 @@
                     gap: 20px;
                 }
 
+                .photos-section-item {
+                    position: relative;
+                }
+
+                .photos-section-item-image-wrapper {
+                    position: relative;
+                    width: 100%;
+                    overflow: hidden;
+                }
+
                 .photos-section-item img {
                     width: 100%;
                     aspect-ratio: 16 / 9;
                     object-fit: cover;
                     display: block;
+                }
+
+                .photos-section-item-play-icon {
+                    position: absolute;
+                    bottom: 10px;
+                    left: 10px;
+                    width: 40px;
+                    height: 40px;
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 18px;
+                    border-radius: 4px;
+                    z-index: 2;
                 }
 
                 .photos-section-item h2 {
@@ -392,7 +422,8 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`{{ route('photos') }}?page=${page}`, {
+                // Ask backend explicitly for mobile view so it returns mobile-simple-item partials
+                let response = await fetch(`{{ route('photos') }}?page=${page}&view=mobile`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
@@ -448,43 +479,8 @@
                 } else {
                     const mobileContainer = document.getElementById("mobile-photos-container");
                     if (mobileContainer) {
-                        if (trimmed.includes('mobile-simple-item')) {
-                            mobileContainer.insertAdjacentHTML("beforeend", trimmed);
-                        } else {
-                            const wrapper = document.createElement('div');
-                            wrapper.innerHTML = trimmed;
-                            const cards = wrapper.querySelectorAll('[class*="photos-section-item"]');
-
-                            if (cards.length === 0) {
-                                mobileContainer.insertAdjacentHTML("beforeend", trimmed);
-                            } else {
-                                let html = '';
-                                cards.forEach(card => {
-                                    const linkEl = card.querySelector('a[href]');
-                                    const href = linkEl ? linkEl.getAttribute('href') : '#';
-                                    const imgEl = card.querySelector('img');
-                                    const imgSrc = imgEl ? imgEl.getAttribute('src') : '';
-                                    const titleEl = card.querySelector('h2');
-                                    let title = titleEl ? (titleEl.textContent || '').trim() : '';
-                                    if (title.length > 90) title = title.slice(0, 87) + '...';
-
-                                    html += `
-                                        <li class="mobile-simple-item">
-                                            <a class="mobile-more-link" href="${href}" aria-label="${title}">
-                                                <div class="ms-thumb">
-                                                    <img src="${imgSrc}" alt="${title}">
-                                                </div>
-                                                <div class="ms-text">
-                                                    <p class="ms-title">${title}</p>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    `;
-                                });
-
-                                if (html) mobileContainer.insertAdjacentHTML('beforeend', html);
-                            }
-                        }
+                        // Backend already returns fully rendered <li class="mobile-simple-item"> items
+                        mobileContainer.insertAdjacentHTML("beforeend", trimmed);
                     }
 
                     btn.setAttribute("data-page", page);

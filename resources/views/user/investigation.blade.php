@@ -389,7 +389,7 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`{{ route('investigation') }}?page=${page}`, {
+                let response = await fetch(`{{ route('investigation') }}?page=${page}&view=mobile`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
@@ -446,44 +446,8 @@
                 } else {
                     const mobileContainer = document.getElementById("mobile-investigation-container");
                     if (mobileContainer) {
-                        if (trimmed.includes('mobile-simple-item')) {
-                            mobileContainer.insertAdjacentHTML("beforeend", trimmed);
-                        } else {
-                            const wrapper = document.createElement('div');
-                            wrapper.innerHTML = trimmed;
-                            const cards = wrapper.querySelectorAll(
-                            '[class*="investigations-section-item"]');
-
-                            if (cards.length === 0) {
-                                mobileContainer.insertAdjacentHTML("beforeend", trimmed);
-                            } else {
-                                let html = '';
-                                cards.forEach(card => {
-                                    const linkEl = card.querySelector('a[href]');
-                                    const href = linkEl ? linkEl.getAttribute('href') : '#';
-                                    const imgEl = card.querySelector('img');
-                                    const imgSrc = imgEl ? imgEl.getAttribute('src') : '';
-                                    const titleEl = card.querySelector('h2');
-                                    let title = titleEl ? (titleEl.textContent || '').trim() : '';
-                                    if (title.length > 90) title = title.slice(0, 87) + '...';
-
-                                    html += `
-                                        <li class="mobile-simple-item">
-                                            <a class="mobile-more-link" href="${href}" aria-label="${title}">
-                                                <div class="ms-thumb">
-                                                    <img src="${imgSrc}" alt="${title}">
-                                                </div>
-                                                <div class="ms-text">
-                                                    <p class="ms-title">${title}</p>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    `;
-                                });
-
-                                if (html) mobileContainer.insertAdjacentHTML('beforeend', html);
-                            }
-                        }
+                        // Server already returns fully rendered mobile-simple-item elements
+                        mobileContainer.insertAdjacentHTML("beforeend", trimmed);
                     }
 
                     btn.setAttribute("data-page", page);

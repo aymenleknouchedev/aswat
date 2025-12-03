@@ -43,6 +43,7 @@ class Content extends Model
         'share_title',
         'share_image',
         'created_at_by_admin',
+        'shortlink',
 
         // Normal Image
         'normal_main_image',
@@ -163,6 +164,11 @@ class Content extends Model
     public function contentActions()
     {
         return $this->hasMany(ContentAction::class);
+    }
+
+    public function contentDailyViews()
+    {
+        return $this->hasMany(ContentDailyView::class);
     }
 
     public function writers()

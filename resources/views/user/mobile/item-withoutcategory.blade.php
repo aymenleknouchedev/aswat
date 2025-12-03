@@ -48,31 +48,6 @@
                 alt="{{ $item->title }}">
         </div>
 
-        <div
-            style="display: flex; margin-right: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
-            @if (isset($item->country))
-                <a href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
-                    {{ $item->category->name ?? '' }}
-                </a>
-                <span style="margin-right: 4px;">-</span>
-                <a href="{{ route('category.show', ['id' => $item->country->id, 'type' => 'Country']) }}">
-                    {{ $item->country->name ?? '' }}
-                </a>
-            @elseif (isset($item->continent))
-                <a href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
-                    {{ $item->category->name ?? '' }}
-                </a>
-                <span style="margin-right: 4px;">-</span>
-                <a href="{{ route('category.show', ['id' => $item->continent->id, 'type' => 'Continent']) }}">
-                    {{ $item->continent->name ?? '' }}
-                </a>
-            @else
-                <a href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
-                    {{ $item->category->name ?? '' }}
-                </a>
-            @endif
-        </div>
-
         <div class="ms-text">
             <p class="ms-title">
                 {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}

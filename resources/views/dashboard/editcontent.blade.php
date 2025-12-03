@@ -2868,14 +2868,28 @@
 
                 // Handle response
                 if (response.ok) {
-                    // Success
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'تم الحفظ بنجاح',
-                        text: data.message || 'تم حفظ المحتوى بنجاح',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
+                    // Success - Show small alert at top
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                    alertDiv.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        left: auto;
+                        z-index: 9999;
+                        max-width: 400px;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    `;
+                    alertDiv.innerHTML = `
+                        <strong>تم بنجاح!</strong> ${data.message || 'تم حفظ المحتوى بنجاح'}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    document.body.appendChild(alertDiv);
+
+                    // Auto-remove after 4 seconds
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 4000);
 
                     console.log('Success response:', data);
 
@@ -2888,7 +2902,6 @@
                     if (data.title) {
                         const previewButton = document.getElementById('previewButton');
                         if (previewButton) {
-                            // Construct the new preview URL with the updated title
                             const newPreviewUrl = '{{ route("news.show", ":title") }}'.replace(':title', encodeURIComponent(data.title));
                             previewButton.href = newPreviewUrl;
                             console.log('Preview button updated with new title:', data.title);
@@ -2901,7 +2914,8 @@
                             // window.location.href = data.redirect;
                         }, 2500);
                     }
-                } else {
+                }
+                else {
                     // Error handling
                     let errorMessage = 'حدث خطأ أثناء حفظ المحتوى';
 

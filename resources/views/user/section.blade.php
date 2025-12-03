@@ -613,122 +613,6 @@
                 background: #ddd;
             }
 
-                        /* Mobile Window Carousel */
-            .mobile-window-section {
-                padding: 12px 0 34px;
-                background-color: #e7e7e7;
-            }
-
-            .mobile-window-header {
-                padding-bottom: 8px;
-            }
-
-            .mobile-window-section .mobile-simple-header {
-                color: #000000;
-            }
-
-            .mobile-window-carousel {
-                display: flex;
-                gap: 12px;
-                padding: 0px 16px;
-                overflow-x: auto;
-                overflow-y: hidden;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-                direction: rtl;
-            }
-
-            .mobile-window-carousel::-webkit-scrollbar {
-                display: none;
-            }
-
-            .mobile-window-card {
-                flex: 0 0 85vw;
-                scroll-snap-align: start;
-                background: transparent;
-                box-shadow: none;
-            }
-
-            .mobile-window-link {
-                display: flex;
-                flex-direction: column;
-                text-decoration: none;
-                color: inherit;
-            }
-
-            .mobile-window-section .ms-thumb {
-                width: 100%;
-            }
-
-            .mobile-window-section .ms-thumb img {
-                width: 100%;
-                aspect-ratio: 16/9;
-                object-fit: cover;
-                display: block;
-            }
-
-            .mobile-window-section .ms-text {
-                display: flex;
-                flex-direction: column;
-                padding: 8px 0 0 0;
-                text-align: right;
-            }
-
-            .mobile-window-section .ms-title {
-                margin: 4px 0;
-                font-size: 20px;
-                font-weight: 800;
-                line-height: 1.35;
-                color: #000;
-                font-family: 'asswat-bold';
-            }
-
-            .mobile-most-reads-section {
-                background-color: #fff !important;
-            }
-
-            .mobile-most-reads-section .mobile-simple-header {
-                color: #000;
-            }
-
-            .mobile-most-reads-section .mobile-window-card {
-                flex: 0 0 85vw;
-                background: transparent;
-                box-shadow: none;
-            }
-
-            .mobile-most-reads-section .mobile-window-link {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .mobile-most-reads-section .ms-thumb {
-                width: 100%;
-            }
-
-            .mobile-most-reads-section .ms-thumb img {
-                width: 100%;
-                aspect-ratio: 16/9;
-                object-fit: cover;
-                display: block;
-            }
-
-            .mobile-most-reads-section .ms-text {
-                display: flex;
-                flex-direction: column;
-                padding: 8px 0 0 0;
-                text-align: right;
-            }
-
-            .mobile-most-reads-section .ms-title {
-                margin: 4px 0;
-                font-size: 20px;
-                font-weight: 800;
-                line-height: 1.35;
-                color: #000;
-                font-family: 'asswat-bold';
-            }
-
             /* Most Reads full-screen section */
             .most-reads-screen {
                 width: 100%;
@@ -777,12 +661,70 @@
 
             .mr-title {
                 display: inline-block;
+                color: #fff;
+                text-decoration: none;
+                font-size: 20px;
+                font-weight: 800;
+                line-height: 1.4;
+                font-family: 'asswat-bold';
+            }
+
+            /* Readmore Section with Grey Background */
+            .readmore-section {
+                width: 100%;
+                background: #f5f5f5;
+                color: #000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 40px 20px;
+                box-sizing: border-box;
+            }
+
+            .readmore-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                max-width: 820px;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .readmore-item {
+                display: flex;
+                align-items: center;
+                gap: 21px;
+                padding: 24px 0;
+            }
+
+            .readmore-item+.readmore-item {
+                border-top: 1px solid rgba(0, 0, 0, 0.12);
+            }
+
+            .readmore-index {
+                min-width: 28px;
+                text-align: center;
+                font-weight: 900;
+                font-size: 43px;
+                line-height: 1;
+                color: #e7e7e7;
+                font-family: 'asswat-bold';
+            }
+
+            .readmore-title {
+                display: inline-block;
                 color: #000;
                 text-decoration: none;
                 font-size: 20px;
                 font-weight: 800;
                 line-height: 1.4;
                 font-family: 'asswat-bold';
+            }
+
+            .readmore-title:hover {
+                text-decoration: underline;
             }
 
             /* Mobile Section Featured Post */
@@ -1095,46 +1037,6 @@
                 </div>
             @endif
 
-            <!-- Mobile Window Carousel -->
-            @if (isset($window) &&
-                    isset($windowmanagement) &&
-                    $windowmanagement->status == 1 &&
-                    isset($window->contents) &&
-                    count($window->contents) > 0)
-                <div class="mobile-container">
-                    <div class="mobile-window-section">
-                        <div class="mobile-window-header">
-                            <h2 class="mobile-simple-header">{{ $window->name ?? 'النافذة' }}</h2>
-                        </div>
-                        <div class="mobile-window-carousel" dir="rtl">
-                            @foreach ($window->contents as $content)
-                                <div class="mobile-window-card">
-                                    <a href="{{ route('news.show', $content->title ?? '') }}" class="mobile-window-link">
-                                        <div class="ms-thumb">
-                                            <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
-                                                alt="{{ $content->title ?? 'عنوان الخبر' }}">
-                                        </div>
-                                        <div class="ms-text">
-                                            @if (isset($content->category) && $content->category)
-                                                <p style="margin: 0; font-size: 14px; color: #999;">
-                                                    {{ $content->category->name }}
-                                                </p>
-                                            @endif
-                                            <p class="ms-title">
-                                                {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 90) }}
-                                            </p>
-                                            <p style="font-size: 16px; color: #666; margin: 4px 0 8px 0; line-height: 1.4;">
-                                                {{ \Illuminate\Support\Str::limit($content->summary ?? '', 150) }}
-                                            </p>
-                                        </div>
-                                    </a>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            @endif
-
             <!-- Simple moreContents list -->
             @php
                 $moreMobItems = [];
@@ -1179,41 +1081,21 @@
             </div>
 
 
-            <!-- Most Reads Section (Window Style) -->
-            @if (isset($topViewed) && $topViewed->count() > 0)
-                <div class="mobile-container" style="margin-bottom: 40px;">
-                    <div class="mobile-window-section mobile-most-reads-section">
-                        <div class="mobile-window-header">
-                            <h2 class="mobile-simple-header">الأكثر قراءة</h2>
-                            <div style="padding: 0px 16px">
-                                @include('user.components.ligne')
-                            </div>
-                        </div>
-                        <div class="mobile-window-carousel" dir="rtl">
-                            @foreach ($topViewed as $content)
-                                <div class="mobile-window-card">
-                                    <a href="{{ route('news.show', $content->title ?? '') }}" class="mobile-window-link">
-                                        <div class="ms-thumb">
-                                            <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
-                                                alt="{{ $content->title ?? 'عنوان الخبر' }}">
-                                        </div>
-                                        <div class="ms-text">
-                                            @if (isset($content->category) && $content->category)
-                                                <p style="margin: 0; font-size: 14px; color: #999;">
-                                                    {{ $content->category->name }}
-                                                </p>
-                                            @endif
-                                            <p class="ms-title">
-                                                {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 90) }}
-                                            </p>
-                                            <p style="font-size: 16px; color: #666; margin: 4px 0 8px 0; line-height: 1.4;">
-                                                {{ \Illuminate\Support\Str::limit($content->summary ?? '', 150) }}
-                                            </p>
-                                        </div>
+            <!-- Readmore Section -->
+            @if (isset($topViewed) && is_countable($topViewed) && $topViewed->count())
+                <div class="readmore-section" dir="rtl">
+                    <div style="width: 100%; max-width: 820px;">
+                        <h2 style="font-size: 24px; font-weight: 800; margin: 0 0 30px 0; font-family: 'asswat-bold';">الأكثر قراءة</h2>
+                        <ol class="readmore-list" role="list">
+                            @foreach ($topViewed->take(5) as $i => $content)
+                                <li class="readmore-item">
+                                    <span class="readmore-index" aria-hidden="true">{{ $i + 1 }}</span>
+                                    <a class="readmore-title" href="{{ route('news.show', $content->title) }}">
+                                        {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
                                     </a>
-                                </div>
+                                </li>
                             @endforeach
-                        </div>
+                        </ol>
                     </div>
                 </div>
             @endif

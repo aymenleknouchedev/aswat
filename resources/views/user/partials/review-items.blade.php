@@ -13,13 +13,22 @@
 
                 <span>{{ $review->summary }}</span>
 
-                @if ($review->writer && $review->writer->name)
-                    <a href="{{ route('writer.show', $review->writer->id) }}">
-                        <p>{{ $review->writer->name }}</p>
-                    </a>
-                @else
-                    <p>بدون كاتب</p>
-                @endif
+                <div style="display: flex; margin-right: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
+                    @php
+                        $writer = $review->writers()->first();
+                    @endphp
+                    @if($writer)
+                        <a href="{{ route('writer.show', $writer->id) }}">
+                            {{ $writer->name ?? '' }}
+                        </a>
+                        @if($writer->location)
+                            <span style="margin-right: 4px;">-</span>
+                            <span>{{ $writer->location }}</span>
+                        @endif
+                    @else
+                        <p>بدون كاتب</p>
+                    @endif
+                </div>
             </div>
     </div>
 

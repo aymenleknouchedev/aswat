@@ -34,6 +34,19 @@ class ContentController extends BaseController
         $this->middleware(['auth', 'check:content_access']);
     }
 
+    /**
+     * Generate a unique shortlink using 6 random hex characters
+     */
+    private function generateShortlink(): string
+    {
+        do {
+            // Generate 6 random hex characters (0-9, a-f)
+            $shortlink = bin2hex(random_bytes(3)); // 3 bytes = 6 hex chars
+        } while (Content::where('shortlink', $shortlink)->exists());
+        
+        return $shortlink;
+    }
+
     public function index(Request $request)
     {
         $pagination = config('pagination.per15', 15);
@@ -55,7 +68,12 @@ class ContentController extends BaseController
             $query->where('section_id', $request->section);
         }
 
-        // 📅 Date range filter
+        // � Status filter
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // �📅 Date range filter
         if ($request->filled('date_range')) {
             $dates = explode(" to ", $request->date_range);
 
@@ -330,6 +348,7 @@ class ContentController extends BaseController
             'is_latest'  => $request->boolean('is_latest'),
             'importance' => $request->input('importance'),
             'user_id'    => Auth::id(),
+            'shortlink'  => $this->generateShortlink(),
         ]);
 
         if ($request->filled('review_description')) {
@@ -1223,6 +1242,77 @@ class ContentController extends BaseController
         } catch (\Exception $e) {
             return redirect()->route('dashboard.contents.index')
                 ->with('error', 'Failed to delete content: ' . $e->getMessage());
+        }
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        try {
+            $ids = $request->input('ids', []);
+
+            if (!is_array($ids) || empty($ids)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'لم يتم تحديد أي عناصر للحذف'
+                ], 400);
+            }
+
+            // Ensure all IDs are integers
+            $ids = array_map('intval', $ids);
+
+            // Get all contents to delete
+            $contents = Content::whereIn('id', $ids)->get();
+
+            if ($contents->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'لم يتم العثور على أي محتوى للحذف'
+                ], 404);
+            }
+
+            // Start transaction
+            \Illuminate\Support\Facades\DB::beginTransaction();
+
+            try {
+                foreach ($contents as $content) {
+                    // Detach related media and tags
+                    $content->media()->detach();
+                    $content->tags()->detach();
+                    $content->writers()->detach();
+
+                    // Delete related content lists
+                    $content->contentLists()->delete();
+
+                    // Delete related reviews
+                    $content->reviews()->delete();
+
+                    // Log the action
+                    ContentAction::create([
+                        'user_id' => Auth::id(),
+                        'content_id' => $content->id,
+                        'action' => 'deleted',
+                    ]);
+
+                    // Delete the content
+                    $content->delete();
+                }
+
+                \Illuminate\Support\Facades\DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'تم حذف ' . count($contents) . ' محتوى بنجاح',
+                    'count' => count($contents)
+                ], 200);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\DB::rollBack();
+                throw $e;
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء حذف المحتوى: ' . $e->getMessage()
+            ], 500);
         }
     }
 

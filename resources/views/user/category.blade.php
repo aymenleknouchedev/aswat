@@ -301,7 +301,7 @@
                     </div>
                     <ul class="mobile-simple-ul" role="list" id="mobile-category-container">
                         @foreach ($articles as $item)
-                            @include('user.mobile.item')
+                            @include('user.mobile.item-withoutcategory', ['item' => $item])
                         @endforeach
                     </ul>
                 </div>

@@ -122,13 +122,13 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 12px 16px;
+                padding: 12px 16px 12px 4px;
             }
 
             .navbar-icons {
                 display: flex;
                 align-items: center;
-                gap: 8px;
+                gap: 0px;
             }
 
             .search-toggle {
@@ -506,7 +506,6 @@
             /* Mobile Container */
             .mobile-container {
                 width: 100%;
-                background-color: #fafafa;
             }
 
             /* Sidebar social icons */

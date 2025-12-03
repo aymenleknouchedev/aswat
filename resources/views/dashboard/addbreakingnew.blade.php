@@ -84,8 +84,10 @@
                                     <tr class="tb-odr-item">
                                         <th class="tb-odr-info text-center translatable" style="width: 5%;" data-en="#"
                                             data-ar="#">#</th>
-                                        <th class="tb-odr-info text-center translatable" style="width: 20%;"
+                                        <th class="tb-odr-info translatable" style="width: 20%;"
                                             data-en="Breaking News Text" data-ar="نص الخبر العاجل">نص الخبر العاجل</th>
+                                        <th class="tb-odr-info text-center translatable" style="width: 15%;"
+                                            data-en="Date" data-ar="التاريخ">التاريخ</th>
                                         <th class="tb-odr-action text-center translatable" style="width: 15%;"
                                             data-en="Actions" data-ar="الإجراءات">الإجراءات</th>
                                     </tr>
@@ -94,9 +96,12 @@
                                     @foreach ($breakingNews as $index => $news)
                                         <tr class="tb-odr-item">
                                             <td class="tb-odr-info text-center">{{ $index + 1 }}</td>
-                                            <td class="tb-odr-info text-center">
+                                            <td class="tb-odr-info">
                                                 <span class="tb-odr-total"><span
                                                         class="amount">{{ $news->text }}</span></span>
+                                            </td>
+                                            <td class="tb-odr-info text-center">
+                                                <small>{{ $news->created_at ? $news->created_at->format('Y-m-d H:i') : '-' }}</small>
                                             </td>
                                             <td class="tb-odr-action text-center">
                                                 <a href="{{ route('dashboard.breakingnew.edit', $news->id) }}"

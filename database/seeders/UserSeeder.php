@@ -81,6 +81,7 @@ class UserSeeder extends Seeder
             'view_actions_access',
             'coming_soon_access',
             'email_access',
+            'publish_content'
         ];
 
 

@@ -1,7 +1,10 @@
 @foreach ($otherPhotos as $photo)
     <div class="photos-section-item">
-        <a href="{{ route('news.show', $photo->title) }}">
+        <a href="{{ route('news.show', $photo->title) }}" class="photos-section-item-image-wrapper">
             <img src="{{ $photo->media()->wherePivot('type', 'main')->first()->path }}" alt="{{ $photo->title }}">
+            <div class="photos-section-item-play-icon">
+                <i class="fas fa-images"></i>
+            </div>
         </a>
         <h3> <x-category-links :content="$photo" /></h3>
         <a href="{{ route('news.show', $photo->title) }}" style="text-decoration: none; color: inherit;">
