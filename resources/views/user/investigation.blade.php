@@ -377,8 +377,8 @@
     let loading = false;
 
     document.addEventListener("click", async function(e) {
-        // Desktop load more
-        if (e.target.classList.contains("investigations-load-more-btn")) {
+    // Desktop load more
+    if (e.target.classList.contains("investigations-load-more-btn")) {
             if (loading) return;
 
             let btn = e.target;
@@ -389,7 +389,8 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`{{ route('investigation') }}?page=${page}&view=mobile`, {
+                // Desktop should use the default investigation partials (no view=mobile)
+                let response = await fetch(`{{ route('investigation') }}?page=${page}`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
@@ -417,7 +418,7 @@
             loading = false;
         }
 
-        // Mobile load more
+    // Mobile load more
         if (e.target.classList.contains("mobile-load-more-btn")) {
             if (loading) return;
 
@@ -429,11 +430,12 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-            let response = await fetch(`{{ route('investigation') }}?page=${page}`, {
-                headers: {
-                    "X-Requested-With": "XMLHttpRequest"
-                }
-            });
+                // Mobile explicitly asks for mobile view so backend returns mobile-simple-item
+                let response = await fetch(`{{ route('investigation') }}?page=${page}&view=mobile`, {
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                });
 
                 if (!response.ok) throw new Error("خطأ في السيرفر");
 

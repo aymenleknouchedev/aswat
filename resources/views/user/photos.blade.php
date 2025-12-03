@@ -410,8 +410,8 @@
     let loading = false;
 
     document.addEventListener("click", async function(e) {
-        // Desktop load more
-        if (e.target.classList.contains("photos-load-more-btn")) {
+    // Desktop load more
+    if (e.target.classList.contains("photos-load-more-btn")) {
             if (loading) return;
 
             let btn = e.target;
@@ -422,8 +422,8 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                // Ask backend explicitly for mobile view so it returns mobile-simple-item partials
-                let response = await fetch(`{{ route('photos') }}?page=${page}&view=mobile`, {
+                // Desktop should use the default photo partials (no view=mobile)
+                let response = await fetch(`{{ route('photos') }}?page=${page}`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
@@ -462,7 +462,8 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                let response = await fetch(`{{ route('photos') }}?page=${page}`, {
+                // Mobile explicitly asks for mobile view so backend returns mobile-simple-item
+                let response = await fetch(`{{ route('photos') }}?page=${page}&view=mobile`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     }
