@@ -1,12 +1,4 @@
 <style>
-    .mobile-simple-item {
-        border-bottom: 1px solid #e0e0e0;
-    }
-
-    .mobile-simple-item:last-child {
-        border-bottom: none;
-    }
-
     .mobile-more-link {
         display: flex;
         flex-direction: column;
