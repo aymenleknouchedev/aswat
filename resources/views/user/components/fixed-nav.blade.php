@@ -100,7 +100,7 @@
 
 
 
-    {{-- @if (Auth::check())
+    @if (Auth::check())
         <div class="admin-top-bar">
             <div class="site-container admin-bar-content">
                 <span>
@@ -211,4 +211,4 @@
                 margin-top: 36px;
             }
         </style>
-    @endif --}}
+    @endif

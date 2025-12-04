@@ -2262,6 +2262,41 @@
         }
     </style>
 
+     {{-- ================= FULLSCREEN IMAGE MODAL ================= --}}
+    <div id="fullscreenImageModal" class="fullscreen-image-modal">
+        <div class="fullscreen-image-container">
+            <button class="fullscreen-image-close" id="fullscreenImageClose" type="button"
+                aria-label="إغلاق">×</button>
+            <button class="fullscreen-image-prev" id="fullscreenImagePrev" type="button"
+                aria-label="الصورة السابقة">‹</button>
+            <button class="fullscreen-image-next" id="fullscreenImageNext" type="button"
+                aria-label="الصورة التالية">›</button>
+            <img id="fullscreenImageContent" src="" alt="صورة بحجم كامل">
+            <div class="fullscreen-image-caption" id="fullscreenImageCaption"></div>
+            <div class="fullscreen-image-counter" id="fullscreenImageCounter"></div>
+        </div>
+    </div>
+
+      {{-- ================= TEXT DEFINITION MODAL ================= --}}
+    <div id="textDefinitionModal" class="text-definition-modal" style="display: none;" role="dialog"
+        aria-labelledby="textModalTitle">
+        <div class="text-modal-backdrop"></div>
+        <div class="text-modal-container">
+            <div class="text-modal-header">
+                <button class="text-modal-close" id="textModalCloseBtn" type="button" aria-label="إغلاق">×</button>
+            </div>
+            <div class="text-modal-body">
+                <div id="textModalImageContainer" style="display: none;">
+                    <img id="textModalImage" src="" alt="صورة التعريف">
+                </div>
+                <div>
+                    <h3 id="textModalTitle" class="text-modal-title"></h3>
+                    <p id="textModalContent"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- ================= WEB ================= --}}
     <div class="web">
         @include('user.components.fixed-nav')
@@ -2445,8 +2480,8 @@
                 @if ($news->template == 'album' && $news->media()->wherePivot('type', 'album')->count())
                     @php
                         // Use the article's main image as the first slide (cover) in the album
-$mainImage = $news->media()->wherePivot('type', 'main')->first();
-$albumImages = $news->media()->wherePivot('type', 'album')->get();
+                        $mainImage = $news->media()->wherePivot('type', 'main')->first();
+                        $albumImages = $news->media()->wherePivot('type', 'album')->get();
 
                         // Prepend main image as the first slide if it exists
                         if ($mainImage) {
@@ -2465,7 +2500,7 @@ $albumImages = $news->media()->wherePivot('type', 'album')->get();
                 @if ($news->template == 'video' && $news->media()->wherePivot('type', 'video')->first())
                     @php
                         // Use the article's main image as the video poster/thumbnail
-$mainImage = $news->media()->wherePivot('type', 'main')->first();
+                    $mainImage = $news->media()->wherePivot('type', 'main')->first();
                         $posterImage = $mainImage ? $mainImage->path : null;
                     @endphp
                     @include('user.components.video-player', [
@@ -2645,9 +2680,6 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
 
     <div class="mobile">
         @include('user.mobile.mobile-home')
-
-
-
         <!-- Mobile Article Content -->
         <div class="mobile-article-container">
             <div id="greybar"
@@ -2939,40 +2971,9 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
         </div>
     </div>
 
-    {{-- ================= FULLSCREEN IMAGE MODAL ================= --}}
-    <div id="fullscreenImageModal" class="fullscreen-image-modal">
-        <div class="fullscreen-image-container">
-            <button class="fullscreen-image-close" id="fullscreenImageClose" type="button"
-                aria-label="إغلاق">×</button>
-            <button class="fullscreen-image-prev" id="fullscreenImagePrev" type="button"
-                aria-label="الصورة السابقة">‹</button>
-            <button class="fullscreen-image-next" id="fullscreenImageNext" type="button"
-                aria-label="الصورة التالية">›</button>
-            <img id="fullscreenImageContent" src="" alt="صورة بحجم كامل">
-            <div class="fullscreen-image-caption" id="fullscreenImageCaption"></div>
-            <div class="fullscreen-image-counter" id="fullscreenImageCounter"></div>
-        </div>
-    </div>
+   
 
-    {{-- ================= TEXT DEFINITION MODAL ================= --}}
-    <div id="textDefinitionModal" class="text-definition-modal" style="display: none;" role="dialog"
-        aria-labelledby="textModalTitle">
-        <div class="text-modal-backdrop"></div>
-        <div class="text-modal-container">
-            <div class="text-modal-header">
-                <button class="text-modal-close" id="textModalCloseBtn" type="button" aria-label="إغلاق">×</button>
-            </div>
-            <div class="text-modal-body">
-                <div id="textModalImageContainer" style="display: none;">
-                    <img id="textModalImage" src="" alt="صورة التعريف">
-                </div>
-                <div>
-                    <h3 id="textModalTitle" class="text-modal-title"></h3>
-                    <p id="textModalContent"></p>
-                </div>
-            </div>
-        </div>
-    </div>
+  
 
     {{-- ================= COMPREHENSIVE JAVASCRIPT ================= --}}
     <script>
@@ -3566,8 +3567,7 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
         initializeGallery();
     </script>
 
-    {{-- ================= MOBILE ================= --}}
-    <div class="mobile"></div>
+
 
     {{-- ================= DYNAMIC READMORE LOADER ================= --}}
     @include('components.readmore-loader')
