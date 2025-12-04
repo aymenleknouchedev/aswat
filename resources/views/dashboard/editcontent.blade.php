@@ -1312,7 +1312,7 @@
                             <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="تحديث" data-en="Update"
                                 id="updateButton" data-action="update">تحديث</button>
 
-                            <a href="{{ route('news.show', $content->title) }}" target="_blank"
+                            <a href="{{ route('news.show', $content->shortlink) }}" target="_blank"
                                 class="btn btn-secondary btn-lg" id="previewButton" style="margin-left: 10px;">
                                 معاينة
                             </a>
@@ -2898,15 +2898,6 @@
                         window.refreshReadMoreCards();
                     }
 
-                    // Update preview button with new title
-                    if (data.title) {
-                        const previewButton = document.getElementById('previewButton');
-                        if (previewButton) {
-                            const newPreviewUrl = '{{ route("news.show", ":title") }}'.replace(':title', encodeURIComponent(data.title));
-                            previewButton.href = newPreviewUrl;
-                            console.log('Preview button updated with new title:', data.title);
-                        }
-                    }
 
                     // Optional: Redirect after success if provided
                     if (data.redirect) {

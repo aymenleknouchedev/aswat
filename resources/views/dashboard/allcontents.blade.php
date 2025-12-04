@@ -186,7 +186,7 @@
 
                                                     <td class="text-start">
                                                         <div class="fw-bold mb-1">
-                                                            <a href="{{ route('news.show', $content->title) }} "
+                                                            <a href="{{ route('news.show', $content->shortlink) }} "
                                                                 target="_blank" class="text-dark text-decoration-none">
                                                                 {{ Str::limit($content->mobile_title, 60) }}
                                                             </a>
@@ -401,7 +401,7 @@
                                                                 <ul class="dropdown-menu dropdown-menu-end"
                                                                     aria-labelledby="moreActionsMenu{{ $content->id }}">
                                                                     <li>
-                                                                        <a href="{{ route('news.show', $content->title) }}"
+                                                                        <a href="{{ route('news.show', $content->shortlink) }}"
                                                                             class="dropdown-item" target="_blank"
                                                                             title="عرض">
                                                                             <em class="icon ni ni-eye me-2"></em> عرض
@@ -418,14 +418,7 @@
                                                                             @endif
                                                                         </a>
                                                                     </li>
-                                                                    <li>
-                                                                        <button type="button" class="dropdown-item copy-shortlink-btn"
-                                                                            data-shortlink="{{ $content->shortlink }}"
-                                                                            data-full-link="{{ config('app.url') }}/s/{{ $content->shortlink }}"
-                                                                            title="نسخ الرابط">
-                                                                            <em class="icon ni ni-copy me-2"></em> نسخ الرابط
-                                                                        </button>
-                                                                    </li>
+                                                                    
                                                                     <li>
                                                                         <hr class="dropdown-divider">
                                                                     </li>
@@ -630,36 +623,7 @@
                 });
             });
 
-            // Add copy shortlink functionality
-            const copyShortlinkButtons = document.querySelectorAll('.copy-shortlink-btn');
-            copyShortlinkButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const fullLink = this.getAttribute('data-full-link');
-                    
-                    if (!fullLink) {
-                        alert('الرابط الكامل غير متوفر');
-                        return;
-                    }
-
-                    // Copy to clipboard
-                    navigator.clipboard.writeText(fullLink).then(() => {
-                        // Show success feedback
-                        const originalHTML = this.innerHTML;
-                        this.innerHTML = '<em class="icon ni ni-check me-2"></em> تم النسخ!';
-                        this.classList.add('bg-success', 'text-white');
-                        
-                        // Reset after 2 seconds
-                        setTimeout(() => {
-                            this.innerHTML = originalHTML;
-                            this.classList.remove('bg-success', 'text-white');
-                        }, 2000);
-                    }).catch(err => {
-                        console.error('خطأ في نسخ الرابط:', err);
-                        alert('فشل نسخ الرابط');
-                    });
-                });
-            });
+            // Copy shortlink functionality removed as requested
         });
     </script>
 @endpush
