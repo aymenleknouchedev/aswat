@@ -42,19 +42,24 @@
     }
 </style>
 <li class="mobile-simple-item">
-    <a class="mobile-more-link" href="{{ route('news.show', $item->title) }}" aria-label="{{ $item->title }}">
+    <a class="mobile-more-link" href="{{ route('news.show', $item->shortlink) }}" aria-label="{{ $item->shortlink }}">
         <div class="ms-thumb">
             <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
                 alt="{{ $item->title }}">
         </div>
 
+        @php($writer = $item->writers()->first())
         <div style="display: flex; margin-right: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
-            <a href="{{ route('writer.show', $item->writers()->first()->id) }}">
-            {{ $item->writers()->first()->name ?? '' }}
-            </a>
-            @if($item->writers()->first()->location)
-            <span style="margin-right: 4px;">-</span>
-            <span>{{ $item->writers()->first()->location }}</span>
+            @if($writer)
+                <a href="{{ route('writer.show', $writer->id) }}">
+                    {{ $writer->name }}
+                </a>
+                @if(!empty($writer->location))
+                    <span style="margin-right: 4px;">-</span>
+                    <span>{{ $writer->location }}</span>
+                @endif
+            @else
+                <span>{{ '' }}</span>
             @endif
         </div>
 

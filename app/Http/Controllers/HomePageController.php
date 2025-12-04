@@ -641,7 +641,7 @@ class HomePageController extends Controller
 
     public function showNews($title)
     {
-        $news = Content::where('title', $title)->latest()->firstOrFail();
+        $news = Content::where('shortlink', $title)->latest()->firstOrFail();
 
         // Get latest news from same category
         $lastNews = $this->contentService->getLatestFromCategory($news, $news->category_id);

@@ -1,5 +1,5 @@
 <div class="photos-feature">
-    <a href="{{ route('news.show', $photos[0]->title) }}">
+    <a href="{{ route('news.show', $photos[0]->shortlink) }}">
         <div class="image-wrapper">
             <img id="photoImage" src="{{ $photos[0]->media()->wherePivot('type', 'main')->first()->path }}"
                 alt="Feature Algeria">
@@ -13,7 +13,7 @@
         <h3 id="photoCategory">
             <x-category-links :content="$photos[0]" />
         </h3>
-        <a href="{{ route('news.show', $photos[0]->title) }}" style="text-decoration: none; color: inherit;">
+        <a href="{{ route('news.show', $photos[0]->shortlink) }}" style="text-decoration: none; color: inherit;">
             <h2 id="photoTitle">{{ $photos[0]->title }}</h2>
         </a>
         <p id="photoDescription">{{ $photos[0]->summary }}</p>

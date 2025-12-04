@@ -788,14 +788,14 @@
                     <!-- Right: big feature -->
                     <div class="newCategory-feature">
                         @if (isset($contents[0]))
-                            <a href="{{ route('news.show', $contents[0]->title ?? '') }}">
+                            <a href="{{ route('news.show', $contents[0]->shortlink ?? '') }}">
                                 <img src="{{ $contents[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
                                     alt="{{ $contents[0]->title ?? 'عنوان الخبر' }}">
                             </a>
                             <h3>
                                 <x-category-links :content="$contents[0]" />
                             </h3>
-                            <a href="{{ route('news.show', $contents[0]->title ?? '') }}"
+                            <a href="{{ route('news.show', $contents[0]->shortlink ?? '') }}"
                                 style="text-decoration: none; color: inherit;">
                                 <h2>{{ $contents[0]->title ?? 'عنوان الخبر' }}</h2>
                             </a>
@@ -812,14 +812,14 @@
                     <div class="newCategory-list">
                         @if (isset($contents[1]))
                             <div class="newCategory-feature-m">
-                                <a href="{{ route('news.show', $contents[1]->title ?? '') }}">
+                                <a href="{{ route('news.show', $contents[1]->shortlink ?? '') }}">
                                     <img src="{{ $contents[1]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
                                         alt="{{ $contents[1]->title ?? 'عنوان الخبر' }}">
                                 </a>
                                 <h3>
                                     <x-category-links :content="$contents[1]" />
                                 </h3>
-                                <a href="{{ route('news.show', $contents[1]->title ?? '') }}"
+                                <a href="{{ route('news.show', $contents[1]->shortlink ?? '') }}"
                                     style="text-decoration: none; color: inherit;">
                                     <h2>{{ $contents[1]->title ?? 'عنوان الخبر' }}</h2>
                                 </a>
@@ -832,7 +832,7 @@
                                 @if (isset($contents[$i]))
                                     <div class="news-card-horizontal">
                                         <div class="news-card-image">
-                                            <a href="{{ route('news.show', $contents[$i]->title ?? '') }}">
+                                            <a href="{{ route('news.show', $contents[$i]->shortlink ?? '') }}">
                                                 <img src="{{ $contents[$i]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
                                                     alt="{{ $contents[$i]->title ?? 'عنوان الخبر' }}">
                                             </a>
@@ -841,7 +841,7 @@
                                             <h3>
                                                 <x-category-links :content="$contents[$i]" />
                                             </h3>
-                                            <a href="{{ route('news.show', $contents[$i]->title ?? '') }}"
+                                            <a href="{{ route('news.show', $contents[$i]->shortlink ?? '') }}"
                                                 style="text-decoration: none; color: inherit;">
                                                 <p>{{ $contents[$i]->title ?? 'عنوان الخبر' }}</p>
                                             </a>
@@ -869,11 +869,11 @@
                         <div class="art-section-grid">
                             @foreach ($window->contents->take(4) as $content)
                                 <div class="art-section-card">
-                                    <a href="{{ route('news.show', $content->title ?? '') }}">
+                                    <a href="{{ route('news.show', $content->shortlink ?? '') }}">
                                         <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
                                             alt="{{ $content->title ?? 'عنوان الخبر' }}">
                                     </a>
-                                    <a href="{{ route('news.show', $content->title ?? '') }}"
+                                    <a href="{{ route('news.show', $content->shortlink ?? '') }}"
                                         style="text-decoration: none; color: inherit;">
                                         <h2>{{ $content->title ?? 'عنوان الخبر' }}</h2>
                                     </a>
@@ -917,7 +917,7 @@
                                 @foreach ($topViewed as $index => $item)
                                     <div class="newCategoryReadMore-list">
                                         <span class="number">{{ $index + 1 }}</span>
-                                        <a href="{{ route('news.show', $item->title ?? '') }}"
+                                        <a href="{{ route('news.show', $item->shortlink ?? '') }}"
                                             style="text-decoration: none; color: inherit;">
                                             <p>{{ $item->title ?? 'عنوان الخبر' }}</p>
                                         </a>
@@ -941,14 +941,14 @@
                             <div class="sp20" style="margin-top: 16px;"></div>
                             <div class="news-card-horizontal">
                                 <div class="news-card-image">
-                                    <a href="{{ route('news.show', $content->title ?? '') }}">
+                                    <a href="{{ route('news.show', $content->shortlink ?? '') }}">
                                         <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
                                             alt="{{ $content->title ?? 'تحلية مياه البحر' }}">
                                     </a>
                                 </div>
                                 <div class="news-card-text">
                                     <h3><x-category-links :content="$content" fallback="اقتصاد جزائري" /></h3>
-                                    <a href="{{ route('news.show', $content->title ?? '') }}"
+                                    <a href="{{ route('news.show', $content->shortlink ?? '') }}"
                                         style="text-decoration: none; color: inherit;">
                                         <p>{{ $content->title ?? 'عنوان الخبر' }}</p>
                                     </a>
@@ -993,7 +993,7 @@
                         @php
                             $featuredPost = $contents[0];
                         @endphp
-                        <a href="{{ route('news.show', $featuredPost->title ?? '') }}"
+                        <a href="{{ route('news.show', $featuredPost->shortlink ?? '') }}"
                             style="text-decoration: none; color: inherit;">
                             <div class="mobile-section-featured-image">
                                 <img src="{{ $featuredPost->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
@@ -1016,7 +1016,7 @@
                             @for ($i = 1; $i <= 3; $i++)
                                 @if (isset($contents[$i]))
                                     <li class="mobile-simple-item">
-                                        <a class="mobile-simple-link" href="{{ route('news.show', $contents[$i]->title) }}"
+                                        <a class="mobile-simple-link" href="{{ route('news.show', $contents[$i]->shortlink) }}"
                                             aria-label="{{ $contents[$i]->title }}">
                                             <div class="ms-thumb">
                                                 <img src="{{ $contents[$i]->media()->wherePivot('type', 'main')->first()->path ?? asset($contents[$i]->image ?? 'user/assets/images/default-post.jpg') }}"
@@ -1090,7 +1090,7 @@
                             @foreach ($topViewed->take(5) as $i => $content)
                                 <li class="readmore-item">
                                     <span class="readmore-index" aria-hidden="true">{{ $i + 1 }}</span>
-                                    <a class="readmore-title" href="{{ route('news.show', $content->title) }}">
+                                    <a class="readmore-title" href="{{ route('news.show', $content->shortlink) }}">
                                         {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
                                     </a>
                                 </li>

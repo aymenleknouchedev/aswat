@@ -93,7 +93,7 @@
                         <x-category-links :content="$item" />
 
                     </span>
-                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                    <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                         <p>{{ $item->title ?? '' }}</p>
                     </a>
                 </div>

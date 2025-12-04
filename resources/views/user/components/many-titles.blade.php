@@ -141,7 +141,7 @@
                 @if (isset($technology[0]))
                     <div class="many-titles-feature-m">
                         <div class="top">
-                            <a href="{{ route('news.show', $technology[0]->title) }}">
+                            <a href="{{ route('news.show', $technology[0]->shortlink) }}">
                                 <img src="{{ $technology[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                     alt="{{ $technology[0]->title ?? '' }}">
                             </a>
@@ -149,7 +149,7 @@
                                 <x-category-links :content="$technology[0]" />
 
                             </h3>
-                            <a href="{{ route('news.show', $technology[0]->title) }}"
+                            <a href="{{ route('news.show', $technology[0]->shortlink) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <h2>{{ $technology[0]->title ?? '' }}</h2>
                             </a>
@@ -162,7 +162,7 @@
                 @foreach ($technology->slice(1, 2) as $item)
                     <div class="many-titles-card">
                         <div class="many-titles-card-image">
-                            <a href="{{ route('news.show', $item->title) }}">
+                            <a href="{{ route('news.show', $item->shortlink) }}">
                                 <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                     alt="{{ $item->title ?? '' }}">
                             </a>
@@ -172,7 +172,7 @@
                                 <x-category-links :content="$item" />
 
                             </span>
-                            <a href="{{ route('news.show', $item->title) }}"
+                            <a href="{{ route('news.show', $item->shortlink) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <p>{{ $item->title ?? '' }}</p>
                             </a>
@@ -196,7 +196,7 @@
                 @if (isset($health[0]))
                     <div class="many-titles-feature-m">
                         <div class="top">
-                            <a href="{{ route('news.show', $health[0]->title) }}">
+                            <a href="{{ route('news.show', $health[0]->shortlink) }}">
                                 <img src="{{ $health[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                     alt="{{ $health[0]->title ?? '' }}">
                             </a>
@@ -204,7 +204,7 @@
                                 <x-category-links :content="$health[0]" />
 
                             </h3>
-                            <a href="{{ route('news.show', $health[0]->title) }}"
+                            <a href="{{ route('news.show', $health[0]->shortlink) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <h2>{{ $health[0]->title ?? '' }}</h2>
                             </a>
@@ -217,7 +217,7 @@
                 @foreach ($health->slice(1, 2) as $item)
                     <div class="many-titles-card">
                         <div class="many-titles-card-image">
-                            <a href="{{ route('news.show', $item->title) }}">
+                            <a href="{{ route('news.show', $item->shortlink) }}">
                                 <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                     alt="{{ $item->title ?? '' }}">
                             </a>
@@ -227,7 +227,7 @@
                                 <x-category-links :content="$item" />
 
                             </span>
-                            <a href="{{ route('news.show', $item->title) }}"
+                            <a href="{{ route('news.show', $item->shortlink) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <p>{{ $item->title ?? '' }}</p>
                             </a>
@@ -250,7 +250,7 @@
                 @if (isset($environment[0]))
                     <div class="many-titles-feature-m">
                         <div class="top">
-                            <a href="{{ route('news.show', $environment[0]->title) }}">
+                            <a href="{{ route('news.show', $environment[0]->shortlink) }}">
                                 <img src="{{ $environment[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                     alt="{{ $environment[0]->title ?? '' }}">
                             </a>
@@ -258,7 +258,7 @@
                                 <x-category-links :content="$environment[0]" />
 
                             </h3>
-                            <a href="{{ route('news.show', $environment[0]->title) }}"
+                            <a href="{{ route('news.show', $environment[0]->shortlink) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <h2>{{ $environment[0]->title ?? '' }}</h2>
                             </a>
@@ -271,7 +271,7 @@
                 @foreach ($environment->slice(1, 2) as $item)
                     <div class="many-titles-card">
                         <div class="many-titles-card-image">
-                            <a href="{{ route('news.show', $item->title) }}">
+                            <a href="{{ route('news.show', $item->shortlink) }}">
                                 <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                     alt="{{ $item->title ?? '' }}">
                             </a>
@@ -281,7 +281,7 @@
                                 <x-category-links :content="$item" />
 
                             </span>
-                            <a href="{{ route('news.show', $item->title) }}"
+                            <a href="{{ route('news.show', $item->shortlink) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <p>{{ $item->title ?? '' }}</p>
                             </a>
@@ -291,6 +291,5 @@
                 @endforeach
             </div>
         </div>
-
     </div>
 </section>

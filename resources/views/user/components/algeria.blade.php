@@ -207,13 +207,13 @@
     <div class="algeria-grid-container">
         @if (isset($algeria) && count($algeria) >= 4)
             <div class="algeria-feature">
-                <a href="{{ route('news.show', $algeria[0]->title) }}">
+                <a href="{{ route('news.show', $algeria[0]->shortlink) }}">
                     <img src="{{ $algeria[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature algeria">
                 </a>
                 <h3>
                     <x-category-links :content="$algeria[0]" />
                 </h3>
-                <a href="{{ route('news.show', $algeria[0]->title) }}" style="text-decoration: none; color: inherit;">
+                <a href="{{ route('news.show', $algeria[0]->shortlink) }}" style="text-decoration: none; color: inherit;">
                     <h2>{{ $algeria[0]->title }}</h2>
                 </a>
                 <p>{{ $algeria[0]->summary }}</p>
@@ -221,7 +221,7 @@
 
             <div class="algeria-list">
                 <div class="algeria-feature-m">
-                    <a href="{{ route('news.show', $algeria[1]->title) }}">
+                    <a href="{{ route('news.show', $algeria[1]->shortlink) }}">
                         <img src="{{ $algeria[1]->media()->wherePivot('type', 'main')->first()->path }}"
                             alt="Feature algeria small">
                     </a>
@@ -229,7 +229,7 @@
                         <x-category-links :content="$algeria[1]" />
 
                     </h3>
-                    <a href="{{ route('news.show', $algeria[1]->title) }}"
+                    <a href="{{ route('news.show', $algeria[1]->shortlink) }}"
                         style="text-decoration: none; color: inherit;">
                         <h2>{{ $algeria[1]->title }}</h2>
                     </a>
@@ -239,7 +239,7 @@
                 <div class="algeria-list-div">
                     <div class="news-card-horizontal">
                         <div class="news-card-image">
-                            <a href="{{ route('news.show', $algeria[2]->title) }}">
+                            <a href="{{ route('news.show', $algeria[2]->shortlink) }}">
                                 <img src="{{ $algeria[2]->media()->wherePivot('type', 'main')->first()->path }}"
                                     alt="{{ $algeria[2]->title }}">
                             </a>
@@ -249,7 +249,7 @@
                                 <x-category-links :content="$algeria[2]" />
 
                             </h3>
-                            <a href="{{ route('news.show', $algeria[2]->title) }}"
+                            <a href="{{ route('news.show', $algeria[2]->shortlink) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <p>{{ $algeria[2]->title }}</p>
                             </a>
@@ -258,7 +258,7 @@
 
                     <div class="news-card-horizontal">
                         <div class="news-card-image">
-                            <a href="{{ route('news.show', $algeria[3]->title) }}">
+                            <a href="{{ route('news.show', $algeria[3]->shortlink) }}">
                                 <img src="{{ $algeria[3]->media()->wherePivot('type', 'main')->first()->path }}"
                                     alt="{{ $algeria[3]->title }}">
                             </a>
@@ -268,7 +268,7 @@
                                 <x-category-links :content="$algeria[3]" />
 
                             </h3>
-                            <a href="{{ route('news.show', $algeria[3]->title) }}"
+                            <a href="{{ route('news.show', $algeria[3]->shortlink) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <p>{{ $algeria[3]->title }}</p>
                             </a>
@@ -285,7 +285,7 @@
             @foreach ($algeriaLatestImportant as $item)
                 <div class="extra-item">
                     <h3>{{ $item->category->name ?? '' }}</h3>
-                    <a href="{{ route('news.show', $item->title) }}" styl e="text-decoration: none; color: inherit;">
+                    <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                         <p>{{ $item->title }}</p>
                     </a>
                 </div>

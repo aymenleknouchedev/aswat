@@ -13,6 +13,7 @@ use App\Models\Location;
 use Illuminate\Support\Facades\DB;
 use App\Models\PrincipalTrend;
 use App\Models\Trend;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -403,6 +404,17 @@ class UserSeeder extends Seeder
         }
         $pivotTypes = ['main', 'mobile', 'detail'];
 
+        // Prepare all tags once to avoid repeated queries
+        $allTagIds = Tag::pluck('id')->all();
+
+        // Helper to generate a unique 6-char shortlink
+        $generateShortlink = function () {
+            do {
+                $code = Str::upper(Str::random(6));
+            } while (\App\Models\Content::where('shortlink', $code)->exists());
+            return $code;
+        };
+
         foreach ($sectionsModels as $sectionName => $section) {
             for ($i = 1; $i <= 20; $i++) {
                 $contentModel = \App\Models\Content::firstOrCreate(
@@ -413,6 +425,7 @@ class UserSeeder extends Seeder
                         'title' => "جيش الاحتلال يتقدّم في محاور جديدة بمدينة غزة على وقع قصف مستمرّ",
                         'long_title' => "عنوان طويل لخبر {$i} في قسم {$sectionName}",
                         'mobile_title' => "خبر {$i} - {$sectionName}",
+                        'caption' => "تعليق الصورة لخبر {$i} في قسم {$sectionName}",
                         'display_method' => 'simple',
                         'section_id' => $section->id,
                         'category_id' => $categoryId,
@@ -427,8 +440,29 @@ class UserSeeder extends Seeder
                         'share_title' => "شارك خبر {$i} في قسم {$sectionName}",
                         'share_description' => "وصف مشاركة خبر {$i} في قسم {$sectionName}.",
                         'share_image' => 'default_share_image.png',
+                        'shortlink' => $generateShortlink(),
                     ]
                 );
+                // Ensure shortlink and caption are set for existing records too
+                $dirty = false;
+                if (empty($contentModel->shortlink)) {
+                    $contentModel->shortlink = $generateShortlink();
+                    $dirty = true;
+                }
+                if (empty($contentModel->caption)) {
+                    $contentModel->caption = "تعليق الصورة لخبر {$i} في قسم {$sectionName}";
+                    $dirty = true;
+                }
+                if ($dirty) {
+                    $contentModel->save();
+                }
+
+                // Attach random tags (2-5) to content
+                if (!empty($allTagIds)) {
+                    $count = rand(2, min(5, count($allTagIds)));
+                    $selected = collect($allTagIds)->shuffle()->take($count)->values()->all();
+                    $contentModel->tags()->syncWithoutDetaching($selected);
+                }
                 foreach ($mediaIds as $idx => $mediaId) {
                     $type = $pivotTypes[$idx] ?? 'detail';
                     DB::table('media_content')->updateOrInsert(

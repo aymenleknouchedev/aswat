@@ -89,7 +89,7 @@
     <div class="world-grid-container">
         <!-- Right column: big feature -->
         <div class="world-feature">
-            <a href="{{ route('news.show', $world[0]->title) }}">
+            <a href="{{ route('news.show', $world[0]->shortlink) }}">
                 <img src="{{ $world[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="{{ $world[0]->title ?? '' }}">
             </a>
@@ -98,7 +98,7 @@
                 <x-category-links :content="$world[0]" />
 
             </h3>
-            <a href="{{ route('news.show', $world[0]->title) }}" style="text-decoration: none; color: inherit;">
+            <a href="{{ route('news.show', $world[0]->shortlink) }}" style="text-decoration: none; color: inherit;">
                 <h2>{{ $world[0]->title ?? '' }}</h2>
             </a>
             <p>{{ $world[0]->summary ?? '' }}</p>
@@ -109,7 +109,7 @@
             @if (isset($world[1]))
                 @php $item = $world[1]; @endphp
                 <div class="world-feature-m">
-                    <a href="{{ route('news.show', $item->title) }}">
+                    <a href="{{ route('news.show', $item->shortlink) }}">
                         <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $item->title ?? '' }}">
                     </a>
@@ -117,7 +117,7 @@
                         <x-category-links :content="$item" />
 
                     </h3>
-                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                    <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                         <h2>{{ $item->title ?? '' }}</h2>
                     </a>
                 </div>
@@ -126,7 +126,7 @@
             @if (isset($world[2]))
                 @php $item = $world[2]; @endphp
                 <div class="world-feature-m">
-                    <a href="{{ route('news.show', $item->title) }}">
+                    <a href="{{ route('news.show', $item->shortlink) }}">
                         <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $item->title ?? '' }}">
                     </a>
@@ -134,7 +134,7 @@
                         <x-category-links :content="$item" />
 
                     </h3>
-                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                    <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                         <h2>{{ $item->title ?? '' }}</h2>
                     </a>
                 </div>
@@ -146,14 +146,14 @@
             @if (isset($world[3]))
                 @php $item = $world[3]; @endphp
                 <div class="world-feature-m">
-                    <a href="{{ route('news.show', $item->title) }}">
+                    <a href="{{ route('news.show', $item->shortlink) }}">
                         <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $item->title ?? '' }}">
                     </a>
                     <h3>
                         <x-category-links :content="$item" />
                     </h3>
-                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                    <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                         <h2>{{ $item->title ?? '' }}</h2>
                     </a>
                 </div>
@@ -162,14 +162,14 @@
             @if (isset($world[4]))
                 @php $item = $world[4]; @endphp
                 <div class="world-feature-m">
-                    <a href="{{ route('news.show', $item->title) }}">
+                    <a href="{{ route('news.show', $item->shortlink) }}">
                         <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $item->title ?? '' }}">
                     </a>
                     <h3>
                         <x-category-links :content="$item" />
                     </h3>
-                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                    <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                         <h2>{{ $item->title ?? '' }}</h2>
                     </a>
                 </div>

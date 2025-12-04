@@ -73,7 +73,7 @@
     <div class="videos-grid-container container">
         @foreach ($videos as $item)
             <div class="videos-card">
-                <a href="{{ route('news.show', $item->title) }}">
+                <a href="{{ route('news.show', $item->shortlink) }}">
                     <div class="image-wrapper">
                         <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $item->title ?? '' }}">
@@ -85,7 +85,7 @@
                 <h3>
                     <x-category-links :content="$item" />
                 </h3>
-                <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                     <h2>{{ $item->title ?? '' }}</h2>
                 </a>
             </div>

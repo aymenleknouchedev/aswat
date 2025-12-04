@@ -31,6 +31,6 @@ Route::middleware(['coming.soon'])->group(function () {
     Route::get('/writer/{id}', [HomePageController::class, 'writer'])->name('writer.show');
     Route::get('/category/{id}/{type}', [HomePageController::class, 'category'])->name('category.show');
     Route::get('/{section}', [HomePageController::class, 'newSection'])->name('newSection');
-    Route::get('/news/{news}', [HomePageController::class, 'showNews'])->name('news.show');
+    Route::get('/article/{news}', [HomePageController::class, 'showNews'])->name('news.show');
     Route::get('/tag/{tag}', [HomePageController::class, 'showTag'])->name('tag.show');
 });

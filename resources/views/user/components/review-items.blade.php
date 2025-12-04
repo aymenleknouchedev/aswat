@@ -3,7 +3,7 @@
     <div class="custom-cards-wrapper">
         {{-- أول دفعة من المقالات --}}
         @foreach ($otherReviews as $review)
-            <a href="{{ route('news.show', $review->id) }}" style="text-decoration: none; color: inherit;">
+            <a href="{{ route('news.show', $review->shortlink) }}" style="text-decoration: none; color: inherit;">
                 <div class="custom-card">
                     <div class="custom-image">
                         <img src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}" alt="خبر">

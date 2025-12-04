@@ -2579,7 +2579,7 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                     @foreach ($lastWeekNews as $index => $item)
                         <div class="newCategoryReadMoreNews-list">
                             <span class="number">{{ $index + 1 }}</span>
-                            <a href="{{ route('news.show', $item->title) }}"
+                            <a href="{{ route('news.show', $item->shortlink) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <p>{{ $item->title }}</p>
                             </a>
@@ -2596,13 +2596,13 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                     <div class="sp20" style="margin-top: 16px;"></div>
                     <div class="news-card-horizontal-news">
                         <div class="news-card-image-news">
-                            <a href="{{ route('news.show', $content->title) }}">
+                            <a href="{{ route('news.show', $content->shortlink) }}">
                                 <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
                                     alt="{{ $content->title ?? 'News' }}" loading="lazy">
                             </a>
                         </div>
                         <div class="news-card-text-news">
-                            <a href="{{ route('news.show', $content->title) }}"
+                            <a href="{{ route('news.show', $content->shortlink) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <p>{{ $content->title ?? '' }}</p>
                             </a>
@@ -2622,7 +2622,7 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
             <div class="economy-grid-container-news">
                 @foreach ($relatedNews as $item)
                     <div class="economy-card-news">
-                        <a href="{{ route('news.show', $item->title) }}">
+                        <a href="{{ route('news.show', $item->shortlink) }}">
                             <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                 alt="{{ $item->title ?? '' }}" loading="lazy">
                         </a>
@@ -2631,7 +2631,7 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                             <x-category-links :content="$item" />
                         </h3>
 
-                        <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                        <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                             <h2>{{ $item->title ?? '' }}</h2>
                         </a>
                     </div>
@@ -2904,7 +2904,7 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                     <div class="related-news-track" dir="rtl">
                         @foreach ($relatedNews->take(5) as $item)
                             <article class="related-news-scroll-card">
-                                <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                                <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                                     @php
                                         $img = $item->media()->wherePivot('type', 'detail')->first()?->path
                                             ?? ($item->media()->wherePivot('type', 'main')->first()?->path
@@ -2921,7 +2921,7 @@ $mainImage = $news->media()->wherePivot('type', 'main')->first();
                                             </a>
                                         </p>
                                     @endif
-                                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                                    <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                                         <h3 class="related-news-scroll-title">{{ \Illuminate\Support\Str::limit($item->mobile_title, 51) }}</h3>
                                     </a>
                                 </div>

@@ -42,7 +42,7 @@
     }
 </style>
 <li class="mobile-simple-item">
-    <a class="mobile-more-link" href="{{ route('news.show', $item->title) }}" aria-label="{{ $item->title }}">
+    <a class="mobile-more-link" href="{{ route('news.show', $item->shortlink) }}" aria-label="{{ $item->title }}">
         <div class="ms-thumb">
             <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
                 alt="{{ $item->title }}">

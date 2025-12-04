@@ -226,7 +226,7 @@
             {{-- Feature Section --}}
             @if (isset($reviews) && count($reviews) > 0 && isset($reviews[0]))
                 <div class="custom-photos-feature">
-                    <a href="{{ route('news.show', $reviews[0]->title ?? '') }}">
+                    <a href="{{ route('news.show', $reviews[0]->shortlink ?? '') }}">
                         <div class="custom-image-wrapper">
                             <img src="{{ $reviews[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
                                 alt="{{ $reviews[0]->title ?? 'رأي مميز' }}">
@@ -245,7 +245,7 @@
                                 بدون كاتب
                             @endif
                         </h3>
-                        <a href="{{ route('news.show', $reviews[0]->title ?? '') }}"
+                        <a href="{{ route('news.show', $reviews[0]->shortlink ?? '') }}"
                             style="text-decoration: none; color: inherit;">
                             <h2>{{ $reviews[0]->title ?? 'عنوان الرأي' }}</h2>
                         </a>

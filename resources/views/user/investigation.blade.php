@@ -123,7 +123,7 @@
 
             @if ($featured)
                 <div class="custom-investigations-feature">
-                    <a href="{{ route('news.show', $featured->title) }}">
+                    <a href="{{ route('news.show', $featured->shortlink) }}">
                         <div class="custom-image-wrapper">
                             <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
                                 alt="{{ $featured->title }}">
@@ -131,7 +131,7 @@
                     </a>
                     <div class="custom-content">
                         <h3><x-category-links :content="$featured" /></h3>
-                        <a href="{{ route('news.show', $featured->title) }}" style="text-decoration: none; color: inherit;">
+                        <a href="{{ route('news.show', $featured->shortlink) }}" style="text-decoration: none; color: inherit;">
                             <h2>{{ $featured->title }}</h2>
                         </a>
                         <p>{{ $featured->summary }}</p>

@@ -35,4 +35,22 @@ return [
         ],
     ],
 
+    // OpenWeather configuration
+    'openweather' => [
+        'key' => env('WEATHER_API_KEY'),
+        // Default city; can be overridden or localized later
+        'city' => env('WEATHER_CITY', 'Algiers,DZ'),
+        // Cache TTL seconds
+        'ttl' => env('WEATHER_TTL', 600),
+        // Units: metric | imperial
+        'units' => env('WEATHER_UNITS', 'metric'),
+        // Language (ar for Arabic)
+        'lang' => env('WEATHER_LANG', 'ar'),
+        // Fallback coordinates for keyless provider (Open-Meteo)
+        'lat' => env('WEATHER_LAT', 36.7538),
+        'lon' => env('WEATHER_LON', 3.0588),
+        // Timezone for daily min/max calculation window
+        'tz'  => env('WEATHER_TZ', 'Africa/Algiers'),
+    ],
+
 ];

@@ -77,6 +77,7 @@ class Content extends Model
         // Additional Fields
         'is_latest',
         'importance',
+        'shortlink'
     ];
 
     public function topContent()

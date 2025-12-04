@@ -9,7 +9,8 @@
         .page-loader {
             position: fixed;
             inset: 0;
-            background: #ffffff; /* dark to match site */
+            background: #ffffff;
+            /* dark to match site */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -40,7 +41,9 @@
 
     <div id="pageLoader" class="page-loader" aria-live="polite" aria-busy="true" role="status">
         <div class="loader-spinner" aria-hidden="true"></div>
-        <span class="sr-only" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;">جاري التحميل…</span>
+        <span class="sr-only"
+            style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;">جاري
+            التحميل…</span>
     </div>
 
     <style>
@@ -120,11 +123,6 @@
             }
         }
     </style>
-
-
-
-
-
 
     <style>
         @media (max-width: 991px) {
@@ -614,15 +612,14 @@
                 <section class="art-section-hero">
                     <div class="art-section-overlay">
                         <h2 class="art-section-title">{{ $principalTrend->trend->title ?? '' }}</h2>
-
                         <div class="art-section-grid">
                             @foreach ($trends as $content)
                                 <div class="art-section-card">
-                                    <a href="{{ route('news.show', $content->title) }}">
+                                    <a href="{{ route('news.show', $content->shortlink) }}">
                                         <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
                                             alt="{{ $content->title }}">
                                     </a>
-                                    <a href="{{ route('news.show', $content->title) }}"
+                                    <a href="{{ route('news.show', $content->shortlink) }}"
                                         style="text-decoration: none; color: inherit;">
                                         <h2>{{ $content->title }}</h2>
                                     </a>
@@ -911,7 +908,7 @@
                                                 </a>
                                             </p>
                                         @endif
-                                        <a href="{{ route('news.show', $c->title) }}"
+                                        <a href="{{ route('news.show', $c->shortlink) }}"
                                             style="text-decoration: none; color: inherit;">
                                             <h1 class="featured-post-title">
                                                 {{ \Illuminate\Support\Str::limit($c->mobile_title ?? $c->title, 50) }}
@@ -959,7 +956,7 @@
                                                 </a>
                                             </p>
                                         @endif
-                                        <a href="{{ route('news.show', $content->title) }}"
+                                        <a href="{{ route('news.show', $content->shortlink) }}"
                                             style="text-decoration: none; color: inherit;">
                                             <h1 class="featured-post-title">
                                                 {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
@@ -988,7 +985,7 @@
                             @foreach ($topViewed->take(5) as $i => $content)
                                 <li class="most-reads-item">
                                     <span class="mr-index" aria-hidden="true">{{ $i + 1 }}</span>
-                                    <a class="mr-title" href="{{ route('news.show', $content->title) }}">
+                                    <a class="mr-title" href="{{ route('news.show', $content->shortlink) }}">
                                         {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 50) }}
                                     </a>
                                 </li>
@@ -1039,7 +1036,7 @@
                                                         <a href="{{ route('writer.show', ['id' => $firstWriter->id]) }}">
                                                             <span class="opinion-author">{{ $firstWriter->name }}</span>
                                                         </a>
-                                                        <a href="{{ route('news.show', $content->title) }}"
+                                                        <a href="{{ route('news.show', $content->shortlink) }}"
                                                             style="text-decoration: none; color: inherit;">
                                                             <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
                                                         </a>
@@ -1131,7 +1128,7 @@
                                                     </a>
                                                 </p>
                                             @endif
-                                            <a href="{{ route('news.show', $content->title) }}"
+                                            <a href="{{ route('news.show', $content->shortlink) }}"
                                                 style="text-decoration: none; color: inherit;">
                                                 <h1 class="featured-post-title">{{ $content->mobile_title }}</h1>
                                                 <p class="featured-post-description">
@@ -1322,7 +1319,9 @@
             if (document.readyState === 'complete') {
                 hideLoader();
             } else {
-                window.addEventListener('load', hideLoader, { once: true });
+                window.addEventListener('load', hideLoader, {
+                    once: true
+                });
                 // Fallback: in case load doesn't fire (e.g., cached resources), hide after 3.5s
                 setTimeout(hideLoader, 3500);
             }

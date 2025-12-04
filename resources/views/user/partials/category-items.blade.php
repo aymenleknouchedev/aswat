@@ -18,7 +18,7 @@
 
         <!-- Image -->
         <div class="newCategory-all-card-image">
-            <a href="{{ route('news.show', $item->title) }}">
+            <a href="{{ route('news.show', $item->shortlink) }}">
                 <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
                      alt="{{ $item->title }}">
             </a>
@@ -27,7 +27,7 @@
         <!-- Text -->
         <div class="newCategory-all-card-text">
             <h3>{{ $item->category->name ?? '' }}</h3>
-            <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+            <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                 <h2>{{ $item->title }}</h2>
             </a>
             <h3>{{ $item->summary }}</h3>

@@ -99,7 +99,7 @@
                                 <img src="{{ $firstWriter->image }}" alt="{{ $firstWriter->name }}">
                             </a>
                         @else
-                            <a href="{{ route('news.show', $review->title) }}">
+                            <a href="{{ route('news.show', $review->shortlink) }}">
                                 <img src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
                                     alt="خبر">
                             </a>
@@ -113,7 +113,7 @@
                         @else
                             <span></span>
                         @endif
-                        <a href="{{ route('news.show', $review->title) }}" style="text-decoration: none; color: inherit;">
+                        <a href="{{ route('news.show', $review->shortlink) }}" style="text-decoration: none; color: inherit;">
                             <p>{{ $review->title ?? '' }}</p>
                         </a>
                     </div>

@@ -7,11 +7,11 @@
                   <div class="art-section-grid">
                       @foreach (($item->contents ?? [])->sortByDesc('created_at')->take(4) as $content)
                           <div class="art-section-card">
-                              <a href="{{ route('news.show', $content->title) }}">
+                              <a href="{{ route('news.show', $content->shortlink) }}">
                                   <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
                                       alt="{{ $content->title }}">
                               </a>
-                              <a href="{{ route('news.show', $content->title) }}"
+                              <a href="{{ route('news.show', $content->shortlink) }}"
                                   style="text-decoration: none; color: inherit;">
                                   <h2>{{ $content->title }}</h2>
                               </a>

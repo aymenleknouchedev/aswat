@@ -57,15 +57,15 @@
                     <p class="site-latest-text" id="site-latest-text"></p>
                 </div>
                 <div class="site-weather-widget">
-                    <div class="site-weather-location">الجزائر</div>
+                    <div class="site-weather-location">{{ $weather['city'] ?? 'الجزائر' }}</div>
                     <div class="site-weather-item">
                         <img src="{{ asset('user/assets/icons/day-mode.png') }}" alt="نهار">
-                        <span>25°</span>
+                        <span>{{ isset($weather['day']) ? $weather['day'] . '°' : '26°' }}</span>
                     </div>
                     <div class="site-weather-divider"></div>
                     <div class="site-weather-item">
                         <img src="{{ asset('user/assets/icons/night-mode.png') }}" alt="ليل">
-                        <span>15°</span>
+                        <span>{{ isset($weather['night']) ? $weather['night'] . '°' : '15°' }}</span>
                     </div>
                 </div>
             </div>
@@ -100,7 +100,7 @@
 
 
 
-    @if (Auth::check())
+    {{-- @if (Auth::check())
         <div class="admin-top-bar">
             <div class="site-container admin-bar-content">
                 <span>
@@ -211,4 +211,4 @@
                 margin-top: 36px;
             }
         </style>
-    @endif
+    @endif --}}

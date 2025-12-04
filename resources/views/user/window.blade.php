@@ -209,7 +209,7 @@
                             <div class="mobile-window-carousel" dir="rtl">
                                 @foreach ($window->contents->sortByDesc('created_at')->take(4) as $content)
                                     <div class="mobile-window-card">
-                                        <a href="{{ route('news.show', $content->title ?? '') }}" class="mobile-window-link">
+                                        <a href="{{ route('news.show', $content->shortlink ?? '') }}" class="mobile-window-link">
                                             <div class="ms-thumb">
                                                 <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
                                                     alt="{{ $content->title ?? 'عنوان الخبر' }}">

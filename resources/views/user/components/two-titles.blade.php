@@ -184,7 +184,7 @@
             @foreach ($topViewed as $index => $item)
                 <div class="two-titles-list-ite">
                     <span class="number">{{ $index + 1 }}</span>
-                    <a href="{{ route('news.show', $item->title) }}" style="text-decoration: none; color: inherit;">
+                    <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                         <p>{{ $item->title }}</p>
                     </a>
                 </div>
@@ -201,14 +201,14 @@
         <div class="two-titles-right-card">
             <div class="second-grid">
                 <div class="sport-feature">
-                    <a href="{{ route('news.show', $variety[0]->title) }}">
+                    <a href="{{ route('news.show', $variety[0]->shortlink) }}">
                         <img src="{{ $variety[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $variety[0]->title ?? '' }}">
                     </a>
                     <h3>
                         <x-category-links :content="$variety[0]" />
                     </h3>
-                    <a href="{{ route('news.show', $variety[0]->title) }}"
+                    <a href="{{ route('news.show', $variety[0]->shortlink) }}"
                         style="text-decoration: none; color: inherit;">
                         <h2>{{ $variety[0]->title ?? '' }}</h2>
                     </a>
@@ -219,7 +219,7 @@
                     @foreach ($variety->slice(1, 4) as $variet)
                         <div class="two-titles-files-card">
                             <div class="two-titles-files-card-image">
-                                <a href="{{ route('news.show', $variet->title) }}">
+                                <a href="{{ route('news.show', $variet->shortlink) }}">
                                     <img src="{{ $variet->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                         alt="{{ $variet->title ?? '' }}">
                                 </a>
@@ -228,7 +228,7 @@
                                 <span>
                                     <x-category-links :content="$variet" />
                                 </span>
-                                <a href="{{ route('news.show', $variet->title) }}"
+                                <a href="{{ route('news.show', $variet->shortlink) }}"
                                     style="text-decoration: none; color: inherit;">
                                     <p>{{ $variet->title ?? '' }}</p>
                                 </a>

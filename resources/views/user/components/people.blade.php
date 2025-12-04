@@ -131,7 +131,7 @@
     <div class="people-grid-container">
         <!-- Right: big feature -->
         <div class="people-feature">
-            <a href="{{ route('news.show', $people[0]->title) }}">
+            <a href="{{ route('news.show', $people[0]->shortlink) }}">
                 <img src="{{ $people[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="{{ $people[0]->title ?? '' }}">
             </a>
@@ -140,7 +140,7 @@
                     <x-category-links :content="$people[0]" />
 
                 </h3>
-                <a href="{{ route('news.show', $people[0]->title) }}" style="text-decoration: none; color: inherit;">
+                <a href="{{ route('news.show', $people[0]->shortlink) }}" style="text-decoration: none; color: inherit;">
                     <h2>{{ $people[0]->title ?? '' }}</h2>
                 </a>
                 <p>{{ $people[0]->summary ?? '' }}</p>
@@ -151,7 +151,7 @@
         <div class="people-list">
             @foreach ($people->slice(1, 2) as $person)
                 <div class="people-feature-m">
-                    <a href="{{ route('news.show', $person->title) }}">
+                    <a href="{{ route('news.show', $person->shortlink) }}">
                         <img src="{{ $person->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $person->title ?? '' }}">
                     </a>
@@ -159,7 +159,7 @@
                         <x-category-links :content="$person" />
 
                     </h3>
-                    <a href="{{ route('news.show', $person->title) }}" style="text-decoration: none; color: inherit;">
+                    <a href="{{ route('news.show', $person->shortlink) }}" style="text-decoration: none; color: inherit;">
                         <h2>{{ $person->title ?? '' }}</h2>
                     </a>
                 </div>
