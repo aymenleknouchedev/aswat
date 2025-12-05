@@ -18,19 +18,29 @@ class UserSeeder extends Seeder
     {
         // 1. Create permissions
         $permissions = [
-            'view_dashboard',
-            'manage_users',
-            'manage_roles',
-            'manage_permissions',
-            'manage_content',
-            'manage_categories',
-            'manage_sections',
-            'manage_locations',
-            'manage_tags',
-            'manage_comments',
-            'manage_media',
-            'manage_settings',
+            'dashboard_access',
+            'content_access',
+            'publish_content',
+            'media_access',
+            'content_management_access',
+            'sections_access',
+            'categories_access',
+            'trends_access',
+            'windows_access',
+            'tags_access',
+            'locations_access',
+            'users_access',
+            'roles_access',
+            'writers_access',
+            'pages_access',
+            'settings_access',
+            'view_actions_access',
+            'coming_soon_access',
+            'email_access',
+            'publish_content',
         ];
+
+
 
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
