@@ -39,7 +39,6 @@ class UserSeeder extends Seeder
         // 2. Create admin role and attach all permissions
         $adminRole = Role::firstOrCreate(
             ['name' => 'admin'],
-            ['description' => 'Administrator with full access']
         );
 
         $allPermissions = Permission::all();
