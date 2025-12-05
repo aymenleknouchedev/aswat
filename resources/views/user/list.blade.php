@@ -14,6 +14,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -24,11 +25,17 @@
             overflow-x: hidden;
         }
 
+        body.has-admin-bar {
+            padding-top: 0px;
+        }
+
         .container {
-            max-width: 1200px;
+            max-width: 1208px;
             margin: 0 auto;
             padding: 0 20px;
         }
+
+
 
         /* ==================== HEADER STYLES ==================== */
         /* Hero header (scrolls away with hero) */
@@ -43,7 +50,6 @@
             z-index: 10;
             top: 0;
             left: 0;
-            transition: all 0.3s ease;
             box-shadow: none;
         }
 
@@ -63,7 +69,6 @@
             /* solid white */
             padding: 14px 0;
             z-index: 1000;
-            transition: transform 0.4s cubic-bezier(.4, .0, .2, 1), opacity 0.3s ease;
             transform: translateY(-110%);
             /* hidden slightly above */
             opacity: 0;
@@ -97,7 +102,6 @@
             max-height: 40px;
             width: auto;
             display: block;
-            transition: all 0.3s ease;
         }
 
         .logo-default {
@@ -139,7 +143,6 @@
             font-weight: 500;
             letter-spacing: 0.5px;
             position: relative;
-            transition: color 0.25s ease, font-weight 0.25s ease;
         }
 
         nav a:hover {
@@ -178,7 +181,6 @@
             gap: 8px;
             color: #2c3e50;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-            transition: background .25s ease, box-shadow .25s ease;
         }
 
         .scroll-navbar .menu-toggle:hover {
@@ -203,7 +205,6 @@
             opacity: 0;
             transform: translateY(-8px);
             pointer-events: none;
-            transition: all .25s ease;
             z-index: 1200;
         }
 
@@ -303,7 +304,6 @@
             font-size: 16px;
             color: #2c3e50;
             font-family: 'asswat-regular', sans-serif;
-            transition: color 0.25s ease, font-weight 0.25s ease;
             width: 100%;
             box-sizing: border-box;
         }
@@ -325,7 +325,6 @@
         }
 
         .scroll-navbar .site-nav-link>a.has-sub .sub-arrow {
-            transition: transform .25s ease;
             font-size: 11px;
         }
 
@@ -433,13 +432,12 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
+            background: rgba(0, 0, 0, 0.3);
             z-index: 2;
         }
 
         .hero-image img {
             width: 100%;
-            height: 100%;
             object-fit: cover;
             display: block;
         }
@@ -510,7 +508,7 @@
         }
 
         .intro {
-            max-width: 850px;
+            max-width: 650px;
             margin: 0 auto 60px;
             font-size: 17px;
             line-height: 1.9;
@@ -522,6 +520,7 @@
         /* ==================== FILM LIST STYLES ==================== */
         .film-list {
             counter-reset: film-counter;
+            max-width: 800px;
         }
 
         .film-item {
@@ -533,6 +532,17 @@
             border-radius: 0;
             background: #fff;
             border: 0;
+            box-shadow: none;
+        }
+
+        .film-poster-link {
+            display: block;
+            text-decoration: none;
+        }
+
+        .film-title-link {
+            text-decoration: none;
+            color: inherit;
         }
 
         /* Left side: Photo and button */
@@ -544,33 +554,18 @@
         }
 
         .film-poster {
-            width: 220px;
+            width: 170px;
             border-radius: 0;
             overflow: hidden;
+            aspect-ratio: 3 / 4;
         }
 
         .film-poster img {
             width: 100%;
-            height: auto;
+            height: 100%;
             display: block;
+            object-fit: cover;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        }
-
-        .film-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #fff;
-            color: #252525;
-            text-decoration: none;
-            border-radius: 0;
-            font-size: 14px;
-            font-weight: 600;
-            text-align: center;
-            border: 1px solid #e0e0e0;
-        }
-
-        .film-button.hidden {
-            display: none;
         }
 
         /* Right side: Content */
@@ -619,6 +614,65 @@
             text-align: justify;
             color: #555;
             font-weight: 300;
+            max-height: 120px;
+            overflow: hidden;
+            position: relative;
+            transition: max-height 0.4s ease;
+        }
+
+        .film-description.no-collapse {
+            max-height: none;
+            overflow: visible;
+        }
+
+        .film-description.expanded {
+            max-height: 2000px;
+        }
+
+        .film-description::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, white);
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .film-description.expanded::after {
+            opacity: 0;
+        }
+
+        .film-description.no-collapse::after {
+            display: none;
+        }
+
+        .read-more-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #f5f5f5;
+            color: #2c3e50;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'asswat-regular', sans-serif;
+        }
+
+        .read-more-btn i {
+            transition: transform 0.3s ease;
+        }
+
+        .read-more-btn.expanded i {
+            transform: rotate(180deg);
+        }
+
+        .read-more-btn.hidden {
+            display: none;
         }
 
         .film-metadata {
@@ -670,10 +724,6 @@
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
         }
 
-        .film-item.highlight {
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-        }
-
         /* ==================== FOOTER STYLES ==================== */
         footer {
             background: linear-gradient(135deg, #2c3e50 0%, #1a2332 100%);
@@ -709,51 +759,131 @@
         }
 
         /* ==================== RESPONSIVE STYLES ==================== */
+        
+        /* Hide mobile content on web/desktop */
+        @media (min-width: 769px) {
+            .mobile-navbar,
+            .mobile-sidebar,
+            .sidebar-overlay {
+                display: none !important;
+            }
+        }
+
         @media (max-width: 768px) {
+            body {
+                padding-top: 56px;
+            }
+
+            body.has-admin-bar {
+                padding-top: 0px;
+            }
+
+            .admin-top-bar {
+                display: none !important;
+            }
+
             .split-hero {
                 flex-direction: column;
                 height: auto;
                 margin-top: 0;
             }
 
+            header {
+                display: none !important;
+            }
+
+            .scroll-navbar {
+                display: none !important;
+            }
+
             .hero-image {
-                height: 350px;
+                height: 50vh;
+                min-height: 300px;
             }
 
             .hero-content {
-                padding: 40px;
+                padding: 30px 20px;
             }
 
             .hero-content h1 {
-                font-size: 32px;
+                font-size: 24px;
+                margin-bottom: 15px;
             }
 
             .hero-content p {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+
+            .actor-info {
+                margin-top: 20px;
+                padding-top: 20px;
+            }
+
+            .actor-name {
                 font-size: 16px;
+            }
+
+            .content {
+                padding: 40px 0;
+            }
+
+            .intro {
+                font-size: 15px;
+                padding: 0 15px;
+                margin-bottom: 40px;
+            }
+
+            .film-list {
+                max-width: 100%;
+                padding: 0 15px;
             }
 
             .film-item {
                 flex-direction: column;
-                padding: 30px;
-                margin-bottom: 60px;
+                padding: 20px;
+                margin-bottom: 30px;
+                gap: 20px;
+                box-shadow: none;
+            }
+
+            .film-left {
+                width: 100%;
+                align-items: center;
             }
 
             .film-poster {
                 width: 100%;
+                max-width: 280px;
+            }
+
+            .film-right {
+                width: 100%;
             }
 
             .film-number {
-                right: -20px;
-                top: -15px;
-                font-size: 80px;
+                font-size: 36px;
+                text-align: center;
             }
 
-            nav ul {
-                gap: 15px;
+            .film-writer {
+                text-align: center;
+                font-size: 13px;
             }
 
-            nav a {
-                font-size: 12px;
+            .film-title {
+                font-size: 22px;
+                text-align: center;
+            }
+
+            .film-description {
+                font-size: 14px;
+                line-height: 1.7;
+            }
+
+            .read-more-btn {
+                margin: 15px auto 0;
+                display: block;
             }
 
             .back-to-top {
@@ -762,18 +892,6 @@
                 width: 45px;
                 height: 45px;
                 font-size: 18px;
-            }
-
-            .content {
-                padding: 60px 0;
-            }
-
-            .header-content {
-                gap: 15px;
-            }
-
-            nav ul {
-                display: none;
             }
         }
 
@@ -833,10 +951,382 @@
         .film-item:nth-child(10) {
             animation-delay: 1s;
         }
+
+        /* ==================== MOBILE NAVIGATION STYLES ==================== */
+        @media (max-width: 768px) {
+            .mobile-navbar {
+                display: block !important;
+                background-color: #252525;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1500;
+                width: 100%;
+            }
+
+            .navbar-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 16px;
+            }
+
+            .navbar-logo a {
+                display: flex;
+                align-items: center;
+            }
+
+            .logo-img {
+                height: 40px;
+                width: auto;
+            }
+
+            .navbar-icons {
+                display: flex;
+                align-items: center;
+            }
+
+            .menu-toggle {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 8px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            .hamburger-icon {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                transition: opacity 0.3s ease;
+            }
+
+            .line {
+                width: 20px;
+                height: 2px;
+                background-color: #ffffff;
+                transition: all 0.3s ease;
+                border-radius: 2px;
+            }
+
+            .menu-toggle::after {
+                content: '✕';
+                position: absolute;
+                font-size: 24px;
+                color: #ffffff;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .menu-toggle.active .hamburger-icon {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .menu-toggle.active::after {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .mobile-sidebar {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background-color: #252525;
+                transition: left 0.5s ease;
+                z-index: 1400;
+                padding-top: 56px;
+                overflow-y: auto;
+            }
+
+            .mobile-sidebar.active {
+                left: 0;
+            }
+
+            .sidebar-content {
+                width: 100%;
+            }
+
+            .menu-list {
+                list-style: none;
+                margin: 0;
+                padding: 12px 0;
+            }
+
+            .menu-list > li > .menu-item-header,
+            .menu-list > li > a {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            }
+
+            .menu-list > li:last-child > .menu-item-header,
+            .menu-list > li:last-child > a {
+                border-bottom: none;
+            }
+
+            .menu-list a {
+                display: block;
+                padding: 16px 20px;
+                color: #ffffff;
+                text-decoration: none;
+                font-size: 20px;
+                font-family: 'asswat-bold', 'asswat-regular';
+                transition: all 0.2s ease;
+            }
+
+            .menu-item-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .menu-item-header a {
+                flex: 1;
+                padding: 16px 20px;
+                border-bottom: none;
+            }
+
+            .submenu-toggle {
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+                color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 44px;
+                height: 44px;
+            }
+
+            .submenu-toggle .toggle-arrow {
+                transition: transform 0.3s ease;
+                font-size: 16px;
+            }
+
+            .submenu-toggle.active .toggle-arrow {
+                transform: rotate(90deg);
+            }
+
+            .submenu {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                background: rgba(0, 0, 0, 0.2);
+            }
+
+            .submenu.active {
+                max-height: 600px;
+            }
+
+            .submenu a {
+                font-size: 16px;
+                padding: 12px 20px 12px 40px;
+                font-family: 'asswat-regular';
+            }
+
+            .sidebar-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+                z-index: 1300;
+            }
+
+            .sidebar-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
     </style>
 </head>
 
-<body>
+<body class="{{ Auth::check() ? 'has-admin-bar' : '' }}">
+
+    <!-- Mobile Navigation (visible only on mobile) -->
+    <nav class="mobile-navbar" id="mobileNavbar" style="display: none;">
+        <div class="navbar-content">
+            <div class="navbar-logo">
+                <a href="{{ route('index') }}">
+                    <img src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
+                </a>
+            </div>
+            <div class="navbar-icons">
+                <button class="menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
+                    <span class="hamburger-icon">
+                        <span class="line line-1"></span>
+                        <span class="line line-2"></span>
+                        <span class="line line-3"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-content">
+            <ul class="menu-list">
+                <li class="menu-item-with-submenu">
+                    <div class="menu-item-header">
+                        <a href="{{ route('latestNews') }}">أخبار</a>
+                        <button class="submenu-toggle" aria-label="Toggle submenu">
+                            <i class="fa-solid fa-chevron-left toggle-arrow" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <ul class="submenu" id="newsSubmenu">
+                        <li><a href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'world']) }}">عالم</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'people']) }}">ناس</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة وفنون</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'media']) }}">ميديا</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{ route('reviews') }}">آراء</a></li>
+                <li><a href="{{ route('windows') }}">نوافذ</a></li>
+                <li><a href="{{ route('files') }}">ملفات</a></li>
+                <li><a href="{{ route('investigation') }}">فحص</a></li>
+                <li><a href="{{ route('videos') }}">فيديو</a></li>
+                <li><a href="{{ route('podcasts') }}">بودكاست</a></li>
+                <li><a href="{{ route('photos') }}">صور</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    @if (Auth::check())
+        <div class="admin-top-bar">
+            <div class="container admin-bar-content">
+                <span>
+                    <i class="fas fa-user"></i>
+                    {{ Auth::user()->name }}
+                </span>
+
+                <div class="admin-actions">
+                    <a target="_blank" href="{{ route('dashboard.index') }}" title="لوحة التحكم">
+                        <i class="fas fa-gauge"></i>
+                    </a>
+                    @if (isset($news))
+                        <a href="{{ route('dashboard.content.edit', $news->id) }}" class="btn btn-sm btn-warning"
+                            title="تعديل">
+                            <i class="fas fa-pencil"></i>
+                        </a>
+                    @endif
+
+                    <a href="{{ route('dashboard.content.create') }}" class="btn btn-sm btn-warning"
+                        title="إضافة خبر">
+                        <i class="fa-solid fa-plus"></i>
+                    </a>
+
+                    <a href="{{ route('dashboard.breakingnew.create') }}" class="admin-action-breaking"
+                        title="إضافة عاجل">
+                        <i class="fa-solid fa-plus"></i>
+                    </a>
+
+                    <a href="{{ route('dashboard.logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                        title="تسجيل الخروج">
+                        <i class="fas fa-arrow-right-from-bracket"></i>
+                    </a>
+                    <form id="logout-form" action="{{ route('dashboard.logout') }}" method="POST"
+                        style="display:none;">
+                        @csrf
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .admin-top-bar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 36px;
+                background: #F5F5F5;
+                color: #333;
+                font-size: 14px;
+                z-index: 2001;
+                display: flex;
+                align-items: center;
+            }
+
+            .admin-bar-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 30px;
+            }
+
+            .admin-bar-content span {
+                font-family: asswat-bold, asswat-regular;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .admin-actions {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .admin-actions a {
+                color: #333;
+                text-decoration: none;
+                transition: color 0.2s;
+                font-family: asswat-bold, asswat-regular;
+                font-size: 16px;
+            }
+
+            .admin-actions a:hover {
+                color: #555;
+            }
+
+            .admin-action-breaking i {
+                color: #dc3545;
+                font-size: 16px;
+            }
+
+            .admin-action-breaking:hover i {
+                color: #c82333;
+            }
+
+        
+
+            .split-hero {
+                margin-top: 36px;
+            }
+
+            header {
+                top: 36px;
+            }
+        </style>
+    @endif
 
     <section class="split-hero">
         <header id="main-header">
@@ -909,16 +1399,15 @@
             </div>
         </header>
         <div class="hero-image">
-            <img src="https://www.burgkino.at/sites/default/files/images/2025/one-battle-after-another-15963_19.jpg"
-                alt="هاريس ديكنسون" />
+            <img src="{{ $news->media()->wherePivot('type', 'mobile')->first()->path }}"
+                alt="{{ $news->title }}">
         </div>
         <div class="hero-content">
-            <h1>أفضل 10 أفلام لهاريس ديكنسون</h1>
-            <p>يختار ممثل فيلم "مثلث الحزن" عشرة أفلام من مجموعة كريتيريون ساهمت في تشكيل فهمه للسينما.</p>
+            <h1>{{ $news->long_title }}</h1>
+            <p>{{ $news->summary }}</p>
 
             <div class="actor-info">
-                <div class="actor-name">هاريس ديكنسون</div>
-                <div class="actor-films">مثلث الحسن، فئران الشاطئ، القبضة الحديدية</div>
+                <div class="actor-name">{{ $news->writers->first()?->name ?? 'كاتب غير معروف' }}</div>
             </div>
         </div>
     </section>
@@ -926,9 +1415,7 @@
     <section class="content">
         <div class="container">
             <div class="intro">
-                <p>هاريس ديكنسون، الممثل البريطاني المعروف بأدواره في أفلام "مثلث الحزن" و"فئران الشاطئ" و"القبضة
-                    الحديدية"، يشاركنا مجموعته الشخصية من أفلام كريتيريون التي أثرت في مهنته وحسه السينمائي. في هذه
-                    القائمة، يستعرض ديكنسون الأفلام التي شكلت نظرته للفن السابع وألهمت مسيرته المهنية.</p>
+                <p>{!! $news->content !!}</p>
             </div>
 
             <!-- Secondary navbar (appears only when scrolling UP past hero) -->
@@ -1008,227 +1495,128 @@
             </nav>
 
             <div class="film-list">
-                <!-- Film 1 -->
-                <div class="film-item">
-                    <div class="film-left">
-                        <div class="film-poster">
-                            <img src="https://www.burgkino.at/sites/default/files/images/2025/one-battle-after-another-15963_19.jpg"
-                                alt="ملصق الفيلم">
+                @foreach ($news->contentLists()->with('writer')->orderBy('index')->get() as $item)
+                    <div class="film-item">
+                        <div class="film-left">
+                            @if($item->url)
+                                <a href="{{ $item->url }}" class="film-poster-link">
+                            @endif
+                                <div class="film-poster">
+                                    <img src="{{ asset($item->image) }}" alt="{{ $item->title }}">
+                                </div>
+                            @if($item->url)
+                                </a>
+                            @endif
                         </div>
-                        <a href="#" class="film-button">اقرأ المزيد</a>
-                    </div>
-                    <div class="film-right">
-                        <div class="film-number"></div>
-                        <p class="film-writer hidden">إخراج إنغمار برغمان</p>
-                        <h2 class="film-title">الختم السابع</h2>
-                        <p class="film-description">يعود فارس من الحروب الصليبية ليجد وطنه مدمرًا بالطاعون. يتحدى الموت
-                            في مباراة شطرنج من أجل حياته، وينطلق في رحلة عبر مشاهد طاعونية. تستكشف تحفة برغمان أسئلة
-                            عميقة حول الإيمان والموت ووجود الله.</p>
-                    </div>
-                </div>
-
-                <!-- Film 2 -->
-                <div class="film-item">
-                    <div class="film-left">
-                        <div class="film-poster">
-                            <img src="https://www.burgkino.at/sites/default/files/images/2025/one-battle-after-another-15963_19.jpg"
-                                alt="ملصق الفيلم">
+                        <div class="film-right">
+                            <div class="film-number"></div>
+                            @if($item->writer()->first())
+                                <p class="film-writer">{{ $item->writer()->first()->name }}</p>
+                            @else
+                                <p class="film-writer hidden">كاتب غير معروف</p>
+                            @endif
+                            @if($item->url)
+                                <a href="{{ $item->url }}" class="film-title-link">
+                                    <h2 class="film-title">{{ $item->title }}</h2>
+                                </a>
+                            @else
+                                <h2 class="film-title">{{ $item->title }}</h2>
+                            @endif
+                            <div class="film-description">{!! $item->description !!}</div>
+                            <button class="read-more-btn" onclick="toggleDescription(event, this)">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
                         </div>
-                        <a href="#" class="film-button">اقرأ المزيد</a>
                     </div>
-                    <div class="film-right">
-                        <div class="film-number"></div>
-                        <p class="film-writer hidden">إخراج فيم فيندرز</p>
-                        <h2 class="film-title">باريس، تكساس</h2>
-                        <p class="film-description">يخرج رجل من الصحراء بعد غياب أربع سنوات ويحاول إعادة الاتصال بابنه
-                            الصغير وزوجته التي تركها خلفه. يستكشف فيلم فيندرز الطريق المؤثر موضوعات الاغتراب والذاكرة
-                            والمشهد الأمريكي بتصوير سينمائي مذهل وأداء مفعم بالمشاعر لهاري دين ستانتون.</p>
-                    </div>
-                </div>
-
-                <!-- Film 3 -->
-                <div class="film-item">
-                    <div class="film-left">
-                        <div class="film-poster">
-                            <img src="https://www.burgkino.at/sites/default/files/images/2025/one-battle-after-another-15963_19.jpg"
-                                alt="ملصق الفيلم">
-                        </div>
-                        <a href="#" class="film-button">اقرأ المزيد</a>
-                    </div>
-                    <div class="film-right">
-                        <div class="film-number"></div>
-                        <p class="film-writer hidden">إخراج جون كاسافيتيس</p>
-                        <h2 class="film-title">امرأة تحت التأثير</h2>
-                        <p class="film-description">تؤدي سلوكيات المرأة غير التقليدية إلى إيداعها في مؤسسة عقلية، تاركة
-                            زوجها لرعاية أطفالهما. تقدم جينا رولاندز أداءً استثنائيًا في فيلم كاسافيتيس الذي يفحص بصراحة
-                            الزواج والصحة العقلية والتوقعات المجتمعية.</p>
-                    </div>
-                </div>
-
-                <!-- Film 4 -->
-                <div class="film-item">
-                    <div class="film-left">
-                        <div class="film-poster">
-                            <img src="https://www.burgkino.at/sites/default/files/images/2025/one-battle-after-another-15963_19.jpg"
-                                alt="ملصق الفيلم">
-                        </div>
-                        <a href="#" class="film-button">اقرأ المزيد</a>
-                    </div>
-                    <div class="film-right">
-                        <div class="film-number"></div>
-                        <p class="film-writer hidden">إخراج ستانلي كوبريك</p>
-                        <h2 class="film-title">باري ليندون</h2>
-                        <p class="film-description">يستخدم محتال أيرلندي دهاءه وذكاءه للصعود في الطبقات الاجتماعية
-                            للمجتمع الإنجليزي في القرن الثامن عشر. ملحمة كوبريك المرئية المذهلة، التي تم تصويرها بالكامل
-                            بإضاءة طبيعية وعدسات مناسبة للعصر، هي فحص دقيق للطبقة والمصير والسعي وراء المكانة.</p>
-                    </div>
-                </div>
-
-                <!-- Film 5 -->
-                <div class="film-item">
-                    <div class="film-left">
-                        <div class="film-poster">
-                            <img src="https://www.burgkino.at/sites/default/files/images/2025/one-battle-after-another-15963_19.jpg"
-                                alt="ملصق الفيلم">
-                        </div>
-                        <a href="#" class="film-button">اقرأ المزيد</a>
-                    </div>
-                    <div class="film-right">
-                        <div class="film-number"></div>
-                        <p class="film-writer hidden">إخراج فرانسوا تروفو</p>
-                        <h2 class="film-title">الـ400 ضربة</h2>
-                        <p class="film-description">صبي صغير في باريس، مهمل من قبل والديه، يلجأ إلى حياة الجريمة
-                            الصغيرة. أصبح فيلم تروفو شبه السيرة الذاتية الأول علامة بارزة في الموجة الفرنسية الجديدة،
-                            حيث يلتقط براءة وخيبة أمل الشباب بحساسية ملحوظة.</p>
-                    </div>
-                </div>
-
-                <!-- Film 6 -->
-                <div class="film-item">
-                    <div class="film-left">
-                        <div class="film-poster">
-                            <img src="https://www.burgkino.at/sites/default/files/images/2025/one-battle-after-another-15963_19.jpg"
-                                alt="ملصق الفيلم">
-                        </div>
-                        <a href="#" class="film-button">اقرأ المزيد</a>
-                    </div>
-                    <div class="film-right">
-                        <div class="film-number"></div>
-                        <p class="film-writer hidden">إخراج سبايك لي</p>
-                        <h2 class="film-title">افعل الصواب</h2>
-                        <p class="film-description">في أشد أيام السنة حرارة في حي في بروكلين، تصل التوترات العرقية إلى
-                            نقطة الغليان. تظل تحفة لي النابضة بالحياة والمثيرة للتفكير ذات صلة اليوم كما كانت عند
-                            إصدارها، مستكشفة قضايا معقدة حول العرق والمجتمع والعدالة الاجتماعية.</p>
-                    </div>
-                </div>
-
-                <!-- Film 7 -->
-                <div class="film-item">
-                    <div class="film-left">
-                        <div class="film-poster">
-                            <img src="https://www.burgkino.at/sites/default/files/images/2025/one-battle-after-another-15963_19.jpg"
-                                alt="ملصق الفيلم">
-                        </div>
-                        <a href="#" class="film-button">اقرأ المزيد</a>
-                    </div>
-                    <div class="film-right">
-                        <div class="film-number"></div>
-                        <p class="film-writer hidden">إخراج إنغمار برغمان</p>
-                        <h2 class="film-title">بيرسونا</h2>
-                        <p class="film-description">يتم تكليف ممرضة برعاية ممثلة توقفت فجأة عن الكلام، وتتراجع المرأتان
-                            إلى كوخ في جزيرة نائية حيث تبدأ هوياتهما في الاندماج. الدراما النفسية لبرغمان هي استكشاف
-                            رائد للهوية والأداء وطبيعة الذات.</p>
-                    </div>
-                </div>
-
-                <!-- Film 8 -->
-                <div class="film-item">
-                    <div class="film-left">
-                        <div class="film-poster">
-                            <img src="https://www.burgkino.at/sites/default/files/images/2025/one-battle-after-another-15963_19.jpg"
-                                alt="ملصق الفيلم">
-                        </div>
-                        <a href="#" class="film-button">اقرأ المزيد</a>
-                    </div>
-                    <div class="film-right">
-                        <div class="film-number"></div>
-                        <p class="film-writer hidden">إخراج بيتر بوجدانوفيتش</p>
-                        <h2 class="film-title">آخر عرض سينمائي</h2>
-                        <p class="film-description">في بلدة تكساس صغيرة تحتضر في الخمسينيات، يبلغ طالبان في المدرسة
-                            الثانوية سن الرشد وسط أوضاع متغيرة. يلتقط فيلم بوجدانوفيتش الحزين المصور بالأبيض والأسود
-                            الجميل نهاية حقبة بأداء ملحوظ وإحساس عميق بالحنين.</p>
-                    </div>
-                </div>
-
-                <!-- Film 9 -->
-                <div class="film-item">
-                    <div class="film-left">
-                        <div class="film-poster">
-                            <img src="https://www.burgkino.at/sites/default/files/images/2025/one-battle-after-another-15963_19.jpg"
-                                alt="ملصق الفيلم">
-                        </div>
-                        <a href="#" class="film-button">اقرأ المزيد</a>
-                    </div>
-                    <div class="film-right">
-                        <div class="film-number"></div>
-                        <p class="film-writer hidden">إخراج مايكل باول وإيميريك Pressburger</p>
-                        <h2 class="film-title">الحذاء الأحمر</h2>
-                        <p class="film-description">راقصة باليه شابة تمزقها بين حبها لملحن وتفانيها لفنها. تحفة باول
-                            وPressburger بتقنية التكنيكولور هي واحدة من أجمل الأفلام على الإطلاق، اندماج مبهر للرقص
-                            والموسيقى والسينما يستكشف التضحيات التي تتطلبها الشغف الفني.</p>
-                    </div>
-                </div>
-
-                <!-- Film 10 -->
-                <div class="film-item">
-                    <div class="film-left">
-                        <div class="film-poster">
-                            <img src="https://www.burgkino.at/sites/default/files/images/2025/one-battle-after-another-15963_19.jpg"
-                                alt="ملصق الفيلم">
-                        </div>
-                        <a href="#" class="film-button">اقرأ المزيد</a>
-                    </div>
-                    <div class="film-right">
-                        <div class="film-number"></div>
-                        <p class="film-writer hidden">إخراج جيلو بونتيكورفو</p>
-                        <h2 class="film-title">معركة الجزائر</h2>
-                        <p class="film-description">إعادة بناء للأحداث خلال حرب الاستقلال الجزائرية، مع التركيز على
-                            تنظيم حركة حرب العصابات والأساليب التي استخدمتها القوات الاستعمارية الفرنسية لكسرها. لا يزال
-                            فيلم بونتيكورفو ذو الأسلوب الوثائقي قويًا ومؤثرًا في فحص الثورة والإرهاب والمقاومة
-                            الاستعمارية.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
 
-    @include('user.components.footer')
+    <!-- Web Footer (desktop/tablet) -->
+    <div class="web-footer">
+        @include('user.components.footer')
+    </div>
+
+    <!-- Mobile Footer (mobile only) -->
+    <div class="mobile-footer">
+        @include('user.mobile.footer')
+    </div>
 
     <!-- Back to top button -->
     <div class="back-to-top" id="backToTop">↑</div>
 
+    <style>
+        /* Show web footer on desktop/tablet, hide mobile footer */
+        .web-footer {
+            display: block;
+        }
+        
+        .mobile-footer {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            /* Hide web footer on mobile, show mobile footer */
+            .web-footer {
+                display: none;
+            }
+            
+            .mobile-footer {
+                display: block;
+            }
+        }
+    </style>
+
     <script>
+        // Toggle description expand/collapse
+        function toggleDescription(event, button) {
+            event.preventDefault();
+            event.stopPropagation();
+            const description = button.previousElementSibling;
+            description.classList.toggle('expanded');
+            button.classList.toggle('expanded');
+        }
+
         // Initialize on DOM ready
         document.addEventListener('DOMContentLoaded', function() {
-            initFilmInteractions();
             initHeaderScroll();
             initBackToTop();
             initHeroSubnav();
             initScrollSubnav();
+            checkDescriptionHeight();
+            initMobileMenu();
         });
 
-        // Film items hover effects
-        function initFilmInteractions() {
-            const filmItems = document.querySelectorAll('.film-item');
+        // Check if description needs collapse button
+        function checkDescriptionHeight() {
+            const descriptions = document.querySelectorAll('.film-description');
+            const lineHeight = 1.8; // from CSS line-height
+            const fontSize = 15; // from CSS font-size
+            const approximateLineHeight = fontSize * lineHeight;
+            const maxHeight = approximateLineHeight * 4; // 4 lines
 
-            filmItems.forEach((item, index) => {
-                item.setAttribute('data-film-index', index + 1);
-
-                // Click to highlight
-                item.addEventListener('click', function() {
-                    filmItems.forEach(el => el.classList.remove('highlight'));
-                    this.classList.add('highlight');
-                });
+            descriptions.forEach(description => {
+                const button = description.nextElementSibling;
+                
+                // Create a temporary clone to measure actual height
+                const clone = description.cloneNode(true);
+                clone.style.maxHeight = 'none';
+                clone.style.position = 'absolute';
+                clone.style.visibility = 'hidden';
+                description.parentNode.appendChild(clone);
+                const actualHeight = clone.scrollHeight;
+                clone.remove();
+                
+                if (actualHeight > maxHeight) {
+                    // Content is more than 4 lines, show button and apply collapse
+                    button.classList.remove('hidden');
+                    description.classList.remove('no-collapse');
+                } else {
+                    // Content is 4 lines or less, hide button and remove collapse
+                    button.classList.add('hidden');
+                    description.classList.add('no-collapse');
+                }
             });
         }
 
@@ -1376,6 +1764,48 @@
             }
         `;
         document.head.appendChild(style);
+
+        // Mobile menu functionality
+        let mobileMenuInitialized = false;
+
+        function initMobileMenu() {
+            if (mobileMenuInitialized) return;
+            
+            const menuToggle = document.getElementById('mobileMenuToggle');
+            const sidebar = document.getElementById('mobileSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const submenuToggle = document.querySelector('.submenu-toggle');
+            const submenu = document.getElementById('newsSubmenu');
+
+            if (!menuToggle || !sidebar || !overlay) {
+                console.log('Mobile menu elements not found');
+                return;
+            }
+
+            // Toggle sidebar
+            function toggleSidebar() {
+                menuToggle.classList.toggle('active');
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+            }
+
+            menuToggle.addEventListener('click', toggleSidebar);
+            overlay.addEventListener('click', toggleSidebar);
+
+            // Toggle submenu
+            if (submenuToggle && submenu) {
+                submenuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                    submenu.classList.toggle('active');
+                });
+            }
+
+            mobileMenuInitialized = true;
+            console.log('Mobile menu initialized');
+        }
     </script>
 </body>
 

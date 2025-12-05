@@ -134,7 +134,7 @@ class HomePageController extends Controller
                 ->get();
         }
 
-        return view('user.home', compact('sectionscontents','topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant', 'principalTrend', 'trends'));
+        return view('user.home', compact('sectionscontents', 'topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant', 'principalTrend', 'trends'));
     }
 
 
@@ -655,6 +655,10 @@ class HomePageController extends Controller
         // Record the view
         $this->contentService->recordView($news);
 
+        if ($news->contentLists()->exists()) {
+            return view('user.list', compact('news') );
+        }
+
         return view('user.news', compact('news', 'lastNews', 'lastWeekNews', 'relatedNews'));
     }
 
@@ -764,8 +768,5 @@ class HomePageController extends Controller
         return view('user.tags', compact('theme', 'articles', 'type', 'current_id'));
     }
 
-    public function list()
-    {
-        return view('user.list');
-    }
+    
 }
