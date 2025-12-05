@@ -33,12 +33,16 @@
 
     .footer .links li {
         margin-bottom: 8px;
+    }
+
+    .footer .links li a {
         cursor: pointer;
         transition: 0.2s ease;
         color: white;
+        text-decoration: none;
     }
 
-    .footer .links li:hover {
+    .footer .links li a:hover {
         color: rgb(169, 169, 169);
     }
 
@@ -61,11 +65,16 @@
 
     .footer .contact-us .right-side ul li {
         margin-left: 20px;
-        cursor: pointer;
-        transition: .1s ease;
     }
 
-    .footer .contact-us .right-side ul li:hover {
+    .footer .contact-us .right-side ul li a {
+        cursor: pointer;
+        transition: .1s ease;
+        color: white;
+        text-decoration: none;
+    }
+
+    .footer .contact-us .right-side ul li a:hover {
         color: rgb(169, 169, 169);
     }
 
@@ -160,34 +169,34 @@
             <div class="links">
                 <div class="col">
                     <ul>
-                        <li>أخبار</li>
-                        <li>آراء</li>
-                        <li>ملفات</li>
-                        <li>فحص</li>
+                        <li><a href="{{ route('latestNews') }}">أخبار</a></li>
+                        <li><a href="{{ route('reviews') }}">آراء</a></li>
+                        <li><a href="{{ route('files') }}">ملفات</a></li>
+                        <li><a href="{{ route('investigation') }}">فحص</a></li>
                     </ul>
                     <ul>
-                        <li>صوت وصورة</li>
-                        <li>بودكاست</li>
-                        <li>صور</li>
+                        <li><a href="{{ route('videos') }}">صوت وصورة</a></li>
+                        <li><a href="{{ route('podcasts') }}">بودكاست</a></li>
+                        <li><a href="{{ route('photos') }}">صور</a></li>
                     </ul>
                 </div>
                 <div class="col">
                     <ul>
-                        <li>الجزائر</li>
-                        <li>عالم</li>
-                        <li>اقتصاد</li>
-                        <li>رياضة</li>
+                        <li><a href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'world']) }}">عالم</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a></li>
                     </ul>
                     <ul>
-                        <li>ناس</li>
-                        <li>ثقافة وفنون</li>
-                        <li>تكنولوجيا</li>
-                        <li>صحة</li>
+                        <li><a href="{{ route('newSection', ['section' => 'people']) }}">ناس</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة وفنون</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>
                     </ul>
                     <ul>
-                        <li>بيئة</li>
-                        <li>ميديا</li>
-                        <li>منوعات</li>
+                        <li><a href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'media']) }}">ميديا</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a></li>
                     </ul>
                 </div>
             </div>
@@ -204,33 +213,33 @@
             </div>
             <div class="left-side">
                 <div class="icons">
-                    <div class="footer-icon">
+                    <a href="https://www.facebook.com" target="_blank" class="footer-icon" aria-label="Facebook">
                         @include('user.icons.facebook')
-                    </div>
-                    <div class="footer-icon">
+                    </a>
+                    <a href="https://www.twitter.com" target="_blank" class="footer-icon" aria-label="Twitter">
                         @include('user.icons.twitter')
-                    </div>
-                    <div class="footer-icon">
+                    </a>
+                    <a href="https://www.youtube.com" target="_blank" class="footer-icon" aria-label="YouTube">
                         @include('user.icons.youtube')
-                    </div>
-                    <div class="footer-icon">
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank" class="footer-icon" aria-label="Instagram">
                         @include('user.icons.instagram')
-                    </div>
-                    <div class="footer-icon">
+                    </a>
+                    <a href="https://t.me" target="_blank" class="footer-icon" aria-label="Telegram">
                         @include('user.icons.telegram')
-                    </div>
-                    <div class="footer-icon">
+                    </a>
+                    <a href="https://www.linkedin.com" target="_blank" class="footer-icon" aria-label="LinkedIn">
                         @include('user.icons.linkedin')
-                    </div>
-                    <div class="footer-icon">
+                    </a>
+                    <a href="https://www.spotify.com" target="_blank" class="footer-icon" aria-label="Spotify">
                         @include('user.icons.spotify')
-                    </div>
-                    <div class="footer-icon">
+                    </a>
+                    <a href="#" target="_blank" class="footer-icon" aria-label="Podcast">
                         @include('user.icons.podcast')
-                    </div>
-                    <div class="footer-icon">
+                    </a>
+                    <a href="https://linktr.ee" target="_blank" class="footer-icon" aria-label="Linktree">
                         @include('user.icons.linktree')
-                    </div>
+                    </a>
                 </div>
                 <div class="form">
                     <input placeholder="البريد الإلكتروني" type="text">
