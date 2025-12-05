@@ -147,8 +147,6 @@
                                             @include('dashboard.partials.results-count', compact('medias'))
                                         </div>
 
-
-
                                         <!-- Media Grid -->
                                         <div class="row g-gs" id="mediaGrid">
                                             @include(
