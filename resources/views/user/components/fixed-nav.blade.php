@@ -202,7 +202,7 @@
             }
 
             body {
-                padding-top: 36px;
+                padding-top: 36px !important;
             }
 
             #site-main-nav,

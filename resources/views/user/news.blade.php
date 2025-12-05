@@ -15,14 +15,10 @@
             document.addEventListener('click', function(e) {
                 const card = e.target.closest('.read-more-block');
                 if (card) {
-                    const titleElement = card.querySelector('.read-more-title');
-                    if (titleElement) {
-                        const title = titleElement.textContent.trim();
-                        if (title) {
-                            e.preventDefault();
-                            const filteredTitle = title.replace(/«|»/g, '"');
-                            window.location.href = '/news/' + title;
-                        }
+                    const shortlink = card.dataset.shortlink;
+                    if (shortlink) {
+                        e.preventDefault();
+                        window.location.href = '/article/' + shortlink;
                     }
                 }
             });
@@ -32,13 +28,10 @@
                 if (e.key === 'Enter' || e.key === ' ') {
                     const card = e.target.closest('.read-more-block');
                     if (card) {
-                        const titleElement = card.querySelector('.read-more-title');
-                        if (titleElement) {
-                            const title = titleElement.textContent.trim();
-                            if (title) {
-                                e.preventDefault();
-                                window.location.href = '/news/' + title;
-                            }
+                        const shortlink = card.dataset.shortlink;
+                        if (shortlink) {
+                            e.preventDefault();
+                            window.location.href = '/article/' + shortlink;
                         }
                     }
                 }
@@ -280,6 +273,55 @@
             text-align: right;
             font-family: asswat-regular;
             direction: rtl;
+        }
+
+        /* Video styling within content */
+        .custom-article-content video {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 100% !important;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #000;
+            margin: 25px 0;
+            display: block;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-article-content iframe[src*="youtube"],
+        .custom-article-content iframe[src*="vimeo"],
+        .custom-article-content iframe[src*="dailymotion"] {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 16/9;
+            border-radius: 8px;
+            margin: 25px 0;
+            display: block;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        /* Audio styling within content */
+        .custom-article-content audio {
+            width: 100% !important;
+            height: 50px !important;
+            margin: 25px 0;
+            display: block;
+            border-radius: 25px;
+            background: #f5f5f5;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .custom-article-content audio::-webkit-media-controls-panel {
+            background: linear-gradient(to right, #f5f5f5, #ffffff);
+            border-radius: 25px;
+        }
+
+        .custom-article-content audio::-webkit-media-controls-play-button,
+        .custom-article-content audio::-webkit-media-controls-pause-button {
+            background-color: #000;
+            border-radius: 50%;
         }
 
         .video-container {
@@ -1717,7 +1759,6 @@
                 align-items: center;
                 margin-bottom: 15px;
                 padding-bottom: 15px;
-                border-bottom: 1px solid #eee;
                 flex-wrap: wrap;
                 gap: 10px;
             }
@@ -1824,6 +1865,55 @@
                 text-align: right;
                 font-family: asswat-regular;
                 direction: rtl;
+            }
+
+            /* Video styling within mobile content */
+            .mobile-article-content video {
+                width: 100% !important;
+                height: auto !important;
+                max-width: 100% !important;
+                aspect-ratio: 16/9;
+                object-fit: cover;
+                border-radius: 8px;
+                background: #000;
+                margin: 20px 0;
+                display: block;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .mobile-article-content iframe[src*="youtube"],
+            .mobile-article-content iframe[src*="vimeo"],
+            .mobile-article-content iframe[src*="dailymotion"] {
+                width: 100% !important;
+                height: auto !important;
+                aspect-ratio: 16/9;
+                border-radius: 8px;
+                margin: 20px 0;
+                display: block;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                border: none;
+            }
+
+            /* Audio styling within mobile content */
+            .mobile-article-content audio {
+                width: 100% !important;
+                height: 50px !important;
+                margin: 20px 0;
+                display: block;
+                border-radius: 25px;
+                background: #f5f5f5;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            .mobile-article-content audio::-webkit-media-controls-panel {
+                background: linear-gradient(to right, #f5f5f5, #ffffff);
+                border-radius: 25px;
+            }
+
+            .mobile-article-content audio::-webkit-media-controls-play-button,
+            .mobile-article-content audio::-webkit-media-controls-pause-button {
+                background-color: #000;
+                border-radius: 50%;
             }
 
             .mobile-article-content a {
@@ -2262,11 +2352,10 @@
         }
     </style>
 
-     {{-- ================= FULLSCREEN IMAGE MODAL ================= --}}
+    {{-- ================= FULLSCREEN IMAGE MODAL ================= --}}
     <div id="fullscreenImageModal" class="fullscreen-image-modal">
         <div class="fullscreen-image-container">
-            <button class="fullscreen-image-close" id="fullscreenImageClose" type="button"
-                aria-label="إغلاق">×</button>
+            <button class="fullscreen-image-close" id="fullscreenImageClose" type="button" aria-label="إغلاق">×</button>
             <button class="fullscreen-image-prev" id="fullscreenImagePrev" type="button"
                 aria-label="الصورة السابقة">‹</button>
             <button class="fullscreen-image-next" id="fullscreenImageNext" type="button"
@@ -2277,7 +2366,7 @@
         </div>
     </div>
 
-      {{-- ================= TEXT DEFINITION MODAL ================= --}}
+    {{-- ================= TEXT DEFINITION MODAL ================= --}}
     <div id="textDefinitionModal" class="text-definition-modal" style="display: none;" role="dialog"
         aria-labelledby="textModalTitle">
         <div class="text-modal-backdrop"></div>
@@ -2414,13 +2503,14 @@
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <p class="date-text">{{ $day }} {{ $month }} {{ $year }} |
                             {{ $time }}</p>
-                        
+
                         @php
                             $totalViews = $news->contentDailyViews->sum('views') ?? 0;
                         @endphp
-                        
+
                         @if ($totalViews > 50)
-                            <div class="views-count" style="display: flex; align-items: center; gap: 5px; color: #888; font-size: 14px;">
+                            <div class="views-count"
+                                style="display: flex; align-items: center; gap: 5px; color: #888; font-size: 14px;">
                                 <i class="fas fa-eye"></i>
                                 <span>{{ number_format($totalViews) }}</span>
                             </div>
@@ -2455,7 +2545,8 @@
                         </div>
 
                         {{-- Share Button --}}
-                        <button class="share-btn" id="shareToggle" type="button" title="مشاركة" aria-label="زر المشاركة">
+                        <button class="share-btn" id="shareToggle" type="button" title="مشاركة"
+                            aria-label="زر المشاركة">
                             <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
                         </button>
                     </div>
@@ -2470,18 +2561,24 @@
                     <figure class="custom-article-image-wrapper">
                         <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}"
                             alt="{{ $news->caption }}" loading="lazy"
-                            style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;" class="feature-image-clickable"
+                            style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;"
+                            class="feature-image-clickable"
                             data-full-image="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}">
                         <figcaption>{{ $news->caption ?? '' }}</figcaption>
                     </figure>
+                @endif
+
+                @if ($news->template == 'no_image')
+                    @include('user.components.ligne')
+                    <br>
                 @endif
 
                 {{-- Album --}}
                 @if ($news->template == 'album' && $news->media()->wherePivot('type', 'album')->count())
                     @php
                         // Use the article's main image as the first slide (cover) in the album
-                        $mainImage = $news->media()->wherePivot('type', 'main')->first();
-                        $albumImages = $news->media()->wherePivot('type', 'album')->get();
+$mainImage = $news->media()->wherePivot('type', 'main')->first();
+$albumImages = $news->media()->wherePivot('type', 'album')->get();
 
                         // Prepend main image as the first slide if it exists
                         if ($mainImage) {
@@ -2500,7 +2597,7 @@
                 @if ($news->template == 'video' && $news->media()->wherePivot('type', 'video')->first())
                     @php
                         // Use the article's main image as the video poster/thumbnail
-                    $mainImage = $news->media()->wherePivot('type', 'main')->first();
+$mainImage = $news->media()->wherePivot('type', 'main')->first();
                         $posterImage = $mainImage ? $mainImage->path : null;
                     @endphp
                     @include('user.components.video-player', [
@@ -2515,9 +2612,9 @@
                 @if ($news->template == 'podcast' && $news->media()->wherePivot('type', 'podcast')->first())
                     @php
                         // Use the article's main image as the audio cover
-                    $mainImage = $news->media()->wherePivot('type', 'main')->first();
-                    $coverImage = $mainImage ? $mainImage->path : null;
-                    $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
+$mainImage = $news->media()->wherePivot('type', 'main')->first();
+$coverImage = $mainImage ? $mainImage->path : null;
+$audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     @endphp
 
                     {{-- Enhanced Audio Player --}}
@@ -2586,18 +2683,20 @@
                     {{-- Writer Card --}}
                     @if ($writers->count() > 0)
                         @foreach ($writers as $writer)
-                            <a href="{{ route('writer.show', $writer->id) }}"
-                                style="text-decoration: none; color: inherit;">
-                                <div class="writer-card">
-                                    <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
-                                        loading="lazy"
-                                        style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
-                                    <div class="writer-info">
-                                        <span class="bio"><span class="name">{{ $writer->name }}</span>
-                                            {{ $writer->bio }}</span>
+                            @if ($writer->bio != '')
+                                <a href="{{ route('writer.show', $writer->id) }}"
+                                    style="text-decoration: none; color: inherit;">
+                                    <div class="writer-card">
+                                        <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
+                                            loading="lazy"
+                                            style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
+                                        <div class="writer-info">
+                                            <span class="bio"><span class="name">{{ $writer->name }}</span>
+                                                {{ $writer->bio }}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
+                                </a>
+                            @endif
                             <br>
                         @endforeach
                     @endif
@@ -2666,7 +2765,8 @@
                             <x-category-links :content="$item" />
                         </h3>
 
-                        <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
+                        <a href="{{ route('news.show', $item->shortlink) }}"
+                            style="text-decoration: none; color: inherit;">
                             <h2>{{ $item->title ?? '' }}</h2>
                         </a>
                     </div>
@@ -2783,7 +2883,7 @@
             <div class="mobile-article-date-share">
                 <span class="mobile-article-date">{{ $day }} {{ $month }} {{ $year }} |
                     {{ $time }}</span>
-                
+
                 {{-- Share on the LEFT (matching web version exactly) --}}
                 <div class="share-container" id="shareContainerMobile">
                     <div class="share-icons">
@@ -2812,18 +2912,15 @@
                     </div>
 
                     {{-- Share Button --}}
-                    <button class="share-btn" id="shareToggleMobile" type="button" title="مشاركة" aria-label="زر المشاركة">
+                    <button class="share-btn" id="shareToggleMobile" type="button" title="مشاركة"
+                        aria-label="زر المشاركة">
                         <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
                     </button>
                 </div>
             </div>
 
             <!-- Feature Image -->
-            @if (
-                $news->template !== 'no_image' &&
-                    $news->template !== 'video' &&
-                    $news->template !== 'album' &&
-                    $news->template !== 'podcast')
+            @if ($news->template == 'normal_image')
                 <figure class="mobile-article-image">
                     <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}"
                         alt="{{ $news->caption }}" loading="lazy" style="cursor: pointer;">
@@ -2831,6 +2928,11 @@
                         <figcaption>{{ $news->caption }}</figcaption>
                     @endif
                 </figure>
+            @endif
+
+            @if ($news->template == 'no_image')
+                @include('user.components.ligne')
+                <br>
             @endif
 
             <!-- Album -->
@@ -2915,17 +3017,22 @@
             @php $writers = $news->writers; @endphp
             @if ($writers->count() > 0)
                 @foreach ($writers as $writer)
-                    <a href="{{ route('writer.show', $writer->id) }}" style="text-decoration: none; color: inherit;">
-                        <div class="mobile-writer-card">
-                            <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
-                                class="mobile-writer-image" loading="lazy">
-                            <div class="mobile-writer-info">
-                                <div class="mobile-writer-bio"><span class="mobile-writer-name">{{ $writer->name }} </span>{{ $writer->bio }}</div>
+                    @if ($writer->bio != '')
+                        <a href="{{ route('writer.show', $writer->id) }}" style="text-decoration: none; color: inherit;">
+                            <div class="mobile-writer-card">
+                                <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
+                                    class="mobile-writer-image" loading="lazy">
+                                <div class="mobile-writer-info">
+                                    <div class="mobile-writer-bio"><span class="mobile-writer-name">{{ $writer->name }}
+                                        </span>{{ $writer->bio }}</div>
+                                </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                        <div style="height: 15px;"></div>
+                    @endif
                 @endforeach
             @endif
+
 
             <!-- Related News Section (Carousel) -->
             @if (isset($relatedNews) && $relatedNews->count() > 0)
@@ -2936,11 +3043,13 @@
                     <div class="related-news-track" dir="rtl">
                         @foreach ($relatedNews->take(5) as $item)
                             <article class="related-news-scroll-card">
-                                <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
+                                <a href="{{ route('news.show', $item->shortlink) }}"
+                                    style="text-decoration: none; color: inherit;">
                                     @php
-                                        $img = $item->media()->wherePivot('type', 'detail')->first()?->path
-                                            ?? ($item->media()->wherePivot('type', 'main')->first()?->path
-                                            ?? asset($item->image ?? 'user/assets/images/default-post.jpg'));
+                                        $img =
+                                            $item->media()->wherePivot('type', 'detail')->first()?->path ??
+                                            ($item->media()->wherePivot('type', 'main')->first()?->path ??
+                                                asset($item->image ?? 'user/assets/images/default-post.jpg'));
                                     @endphp
                                     <img src="{{ $img }}" alt="{{ $item->title }}">
                                 </a>
@@ -2953,8 +3062,10 @@
                                             </a>
                                         </p>
                                     @endif
-                                    <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
-                                        <h3 class="related-news-scroll-title">{{ \Illuminate\Support\Str::limit($item->mobile_title, 51) }}</h3>
+                                    <a href="{{ route('news.show', $item->shortlink) }}"
+                                        style="text-decoration: none; color: inherit;">
+                                        <h3 class="related-news-scroll-title">
+                                            {{ \Illuminate\Support\Str::limit($item->mobile_title, 51) }}</h3>
                                     </a>
                                 </div>
                             </article>
@@ -2971,9 +3082,9 @@
         </div>
     </div>
 
-   
 
-  
+
+
 
     {{-- ================= COMPREHENSIVE JAVASCRIPT ================= --}}
     <script>
@@ -3013,18 +3124,19 @@
          */
         function initializeAudioPlayer() {
             // Initialize both web and mobile audio players
-            initializeSingleAudioPlayer('audioPlayerWrapper', 'podcastAudio', 'audioPlayIcon', 
+            initializeSingleAudioPlayer('audioPlayerWrapper', 'podcastAudio', 'audioPlayIcon',
                 'audioProgressBarInteractive', 'audioProgressFillInteractive', 'audioProgressHandle',
                 'currentTime', 'totalDuration');
-            
-            initializeSingleAudioPlayer('audioPlayerWrapperMobile', 'podcastAudioMobile', 'audioPlayIconMobile', 
+
+            initializeSingleAudioPlayer('audioPlayerWrapperMobile', 'podcastAudioMobile', 'audioPlayIconMobile',
                 null, null, null, 'currentTimeMobile', 'totalDurationMobile');
         }
 
         /**
          * Initialize a single audio player instance
          */
-        function initializeSingleAudioPlayer(wrapperId, audioId, playIconId, progressBarId, progressFillId, handleId, currentTimeId, totalDurationId) {
+        function initializeSingleAudioPlayer(wrapperId, audioId, playIconId, progressBarId, progressFillId, handleId,
+            currentTimeId, totalDurationId) {
             const audioPlayerWrapper = document.getElementById(wrapperId);
             const audioElement = document.getElementById(audioId);
             const playIcon = document.getElementById(playIconId);

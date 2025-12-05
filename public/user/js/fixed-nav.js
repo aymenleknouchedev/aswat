@@ -223,7 +223,7 @@ element2.addEventListener('click', () => {
     // Use the tracked current news to ensure correct redirection
     if (currentDisplayedNews) {
         const encodedTitle = encodeURIComponent(currentDisplayedNews);
-        window.location.href = `/news/${encodedTitle}`;
+        window.location.href = `/article/${encodedTitle}`;
     }
 });
 
