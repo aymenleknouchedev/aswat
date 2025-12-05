@@ -26,6 +26,24 @@ class ContentMedia extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function writer()
+    {
+        return $this->belongsTo(Writer::class);
+    }
+
+    public function trend()
+    {
+        return $this->belongsTo(Trend::class);
+    }
+
+    public function window()
+    {
+        return $this->belongsTo(Window::class);
+    }
+
+
+    
+
     /**
      * Get badge color for media type
      */

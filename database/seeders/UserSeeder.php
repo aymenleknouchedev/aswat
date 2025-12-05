@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         // 1. Create permissions
-        $permissions = [
+          $permissions = [
             'dashboard_access',
             'content_access',
             'publish_content',
