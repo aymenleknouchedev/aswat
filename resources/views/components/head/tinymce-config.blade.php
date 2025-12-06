@@ -534,6 +534,34 @@
         max-height: 100%;
     }
 
+    /* Placeholder for link-only videos (e.g., YouTube/Vimeo) */
+    .vvc-thumb-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        color: #fff;
+        background: linear-gradient(135deg, rgba(30,30,30,.85), rgba(60,60,60,.65));
+        text-align: center;
+        padding: .5rem;
+    }
+    .vvc-thumb-placeholder .vvc-thumb-icon {
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,.15);
+        border: 1px solid rgba(255,255,255,.25);
+    }
+    .vvc-thumb-placeholder .vvc-thumb-text {
+        font-size: .85rem;
+        color: #eaeaea;
+        line-height: 1.2;
+    }
+
     /* Badge (image/video indicator) */
     .vvc-badge {
         position: absolute;
@@ -1051,9 +1079,24 @@
                                 `<img class="tiny-sm" src="${escapeHtml(normalized.url)}" alt="${escapeHtml(normalized.alt||normalized.title)}" title="${escapeHtml(normalized.title)}"/>`
                             );
                         } else {
-                            tinymce.activeEditor.execCommand('mceInsertContent', false,
-                                `<video class="tiny-sm" src="${escapeHtml(normalized.url)}" controls preload="metadata"></video>`
-                            );
+                            const u = normalized.url;
+                            const youtubeMatch = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/i);
+                            const vimeoMatch = u.match(/vimeo\.com\/(\d+)/i);
+                            if (youtubeMatch) {
+                                const vid = youtubeMatch[1];
+                                tinymce.activeEditor.execCommand('mceInsertContent', false,
+                                    `<iframe class="tiny-sm" src="https://www.youtube.com/embed/${escapeHtml(vid)}" frameborder="0" allowfullscreen></iframe>`
+                                );
+                            } else if (vimeoMatch) {
+                                const vid = vimeoMatch[1];
+                                tinymce.activeEditor.execCommand('mceInsertContent', false,
+                                    `<iframe class="tiny-sm" src="https://player.vimeo.com/video/${escapeHtml(vid)}" frameborder="0" allowfullscreen></iframe>`
+                                );
+                            } else {
+                                tinymce.activeEditor.execCommand('mceInsertContent', false,
+                                    `<video class="tiny-sm" src="${escapeHtml(normalized.url)}" controls preload="metadata"></video>`
+                                );
+                            }
                         }
                         this.closeModal();
                     } catch (e) {
@@ -1273,6 +1316,25 @@
                         video.muted = true;
                         video.preload = 'metadata';
                         thumb.appendChild(video);
+                    } else {
+                        // Link-only video (e.g., YouTube/Vimeo) — show a styled placeholder
+                        const ph = document.createElement('div');
+                        ph.className = 'vvc-thumb-placeholder';
+                        const icon = document.createElement('div');
+                        icon.className = 'vvc-thumb-icon';
+                        icon.innerHTML = `<svg aria-hidden="true"><use href="#vvc-icon-video"></use></svg>`;
+                        const text = document.createElement('div');
+                        text.className = 'vvc-thumb-text';
+                        // Short label with domain or generic text
+                        try {
+                            const u = new URL(media.url || media.path, window.location.origin);
+                            text.textContent = u.hostname ? `فيديو من ${u.hostname}` : 'رابط فيديو';
+                        } catch {
+                            text.textContent = 'رابط فيديو';
+                        }
+                        ph.appendChild(icon);
+                        ph.appendChild(text);
+                        thumb.appendChild(ph);
                     }
                 }
                 item.appendChild(thumb);
@@ -2400,9 +2462,24 @@
                             `<figure class="image"><img class="tiny-sm" src="${escapeHtml(picked.url)}" alt="${escapeHtml(picked.alt||picked.title)}" title="${escapeHtml(picked.title)}"/><figcaption>${escapeHtml(picked.title)}</figcaption></figure>`
                         );
                     } else {
-                        editor.execCommand('mceInsertContent', false,
-                            `<video class="tiny-sm" src="${escapeHtml(picked.url)}" controls preload="metadata"></video>`
-                        );
+                        const u = picked.url;
+                        const youtubeMatch = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/i);
+                        const vimeoMatch = u.match(/vimeo\.com\/(\d+)/i);
+                        if (youtubeMatch) {
+                            const vid = youtubeMatch[1];
+                            editor.execCommand('mceInsertContent', false,
+                                `<iframe class="tiny-sm" src="https://www.youtube.com/embed/${escapeHtml(vid)}" frameborder="0" allowfullscreen></iframe>`
+                            );
+                        } else if (vimeoMatch) {
+                            const vid = vimeoMatch[1];
+                            editor.execCommand('mceInsertContent', false,
+                                `<iframe class="tiny-sm" src="https://player.vimeo.com/video/${escapeHtml(vid)}" frameborder="0" allowfullscreen></iframe>`
+                            );
+                        } else {
+                            editor.execCommand('mceInsertContent', false,
+                                `<video class="tiny-sm" src="${escapeHtml(picked.url)}" controls preload="metadata"></video>`
+                            );
+                        }
                     }
                 }
             });
