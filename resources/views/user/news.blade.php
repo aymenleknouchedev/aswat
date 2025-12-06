@@ -277,37 +277,17 @@
 
         /* Video styling within content */
         .custom-article-content video {
-            width: 100% !important;
-            height: auto !important;
-            max-width: 100% !important;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            border-radius: 8px;
-            background: #000;
-            margin: 25px 0;
-            display: block;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            height: auto;
         }
 
-        /* YouTube and video embed styling */
         .custom-article-content iframe[src*="youtube"],
         .custom-article-content iframe[src*="vimeo"],
         .custom-article-content iframe[src*="dailymotion"] {
-            width: 100% !important;
-            height: auto !important;
+            width: 100%;
+            height: auto;
             aspect-ratio: 16/9;
-            border-radius: 8px;
-            margin: 25px 0;
-            display: block;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border: none;
-            min-height: 315px;
-        }
-        
-        /* Ensure wrapped iframes also work properly */
-        .custom-article-content .video-container iframe {
-            min-height: auto;
-            margin: 0;
         }
 
         /* Audio styling within content */
@@ -335,12 +315,9 @@
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            margin: 25px 0;
         }
 
         .video-container iframe {
@@ -1878,41 +1855,17 @@
 
             /* Video styling within mobile content */
             .mobile-article-content video {
-                width: 100% !important;
-                height: auto !important;
-                max-width: 100% !important;
-                aspect-ratio: 16/9;
-                object-fit: cover;
-                border-radius: 8px;
-                background: #000;
-                margin: 20px 0;
-                display: block;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                height: auto;
             }
 
-            /* YouTube and video embed styling for mobile */
             .mobile-article-content iframe[src*="youtube"],
             .mobile-article-content iframe[src*="vimeo"],
             .mobile-article-content iframe[src*="dailymotion"] {
-                width: 100% !important;
-                height: auto !important;
+                width: 100%;
+                height: auto;
                 aspect-ratio: 16/9;
-                border-radius: 8px;
-                margin: 20px 0;
-                display: block;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 border: none;
-                min-height: 200px;
-            }
-            
-            /* Ensure wrapped iframes also work properly on mobile */
-            .mobile-article-content .video-container {
-                margin: 20px 0;
-            }
-            
-            .mobile-article-content .video-container iframe {
-                min-height: auto;
-                margin: 0;
             }
 
             /* Audio styling within mobile content */
@@ -3115,7 +3068,6 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             initializeCopyLink();
             initializeAudioPlayer();
             initializeGreybarScroll();
-            initializeYouTubeVideos();
         });
 
         /**
@@ -3699,311 +3651,6 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         // Initialize both feature image and gallery when page loads
         initializeFeatureImage();
         initializeGallery();
-
-        /**
-         * Initialize YouTube and Vimeo Videos
-         * Ensures all videos are properly embedded and responsive
-         */
-        function initializeYouTubeVideos() {
-            // Find all iframes in both web and mobile content
-            const contentContainers = document.querySelectorAll('.custom-article-content, .mobile-article-content');
-            
-            contentContainers.forEach(container => {
-                const iframes = container.querySelectorAll('iframe');
-                
-                iframes.forEach(iframe => {
-                    const src = iframe.getAttribute('src') || '';
-                    
-                    // Check if it's a YouTube video
-                    if (src.includes('youtube.com') || src.includes('youtu.be')) {
-                        processYouTubeIframe(iframe);
-                    }
-                    // Check if it's a Vimeo video
-                    else if (src.includes('vimeo.com')) {
-                        processVimeoIframe(iframe);
-                    }
-                });
-                
-                // Also check for plain YouTube links that should be embedded
-                const links = container.querySelectorAll('a[href*="youtube.com"], a[href*="youtu.be"], a[href*="vimeo.com"]');
-                links.forEach(link => {
-                    const href = link.getAttribute('href');
-                    if (href && isYouTubeVideoLink(href)) {
-                        convertLinkToEmbed(link, 'youtube');
-                    } else if (href && isVimeoVideoLink(href)) {
-                        convertLinkToEmbed(link, 'vimeo');
-                    }
-                });
-            });
-        }
-
-        /**
-         * Process YouTube iframe to ensure proper embedding
-         */
-        function processYouTubeIframe(iframe) {
-            let src = iframe.getAttribute('src') || '';
-            
-            // Convert watch URLs to embed URLs
-            if (src.includes('youtube.com/watch')) {
-                const videoId = extractYouTubeVideoId(src);
-                if (videoId) {
-                    src = `https://www.youtube.com/embed/${videoId}`;
-                }
-            } else if (src.includes('youtu.be/')) {
-                const videoId = extractYouTubeVideoId(src);
-                if (videoId) {
-                    src = `https://www.youtube.com/embed/${videoId}`;
-                }
-            }
-            
-            // Add proper parameters for better playback
-            const url = new URL(src.startsWith('//') ? 'https:' + src : src);
-            
-            // Add parameters if not already present
-            if (!url.searchParams.has('rel')) {
-                url.searchParams.set('rel', '0'); // Don't show related videos
-            }
-            if (!url.searchParams.has('modestbranding')) {
-                url.searchParams.set('modestbranding', '1'); // Modest YouTube branding
-            }
-            
-            iframe.setAttribute('src', url.toString());
-            
-            // Ensure proper attributes
-            iframe.setAttribute('frameborder', '0');
-            iframe.setAttribute('allowfullscreen', '');
-            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-            
-            // Wrap in responsive container if not already wrapped
-            if (!iframe.parentElement.classList.contains('video-container')) {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'video-container';
-                iframe.parentNode.insertBefore(wrapper, iframe);
-                wrapper.appendChild(iframe);
-            }
-        }
-
-        /**
-         * Process Vimeo iframe to ensure proper embedding
-         */
-        function processVimeoIframe(iframe) {
-            let src = iframe.getAttribute('src') || '';
-            
-            // Convert regular Vimeo URLs to player URLs
-            if (src.includes('vimeo.com') && !src.includes('player.vimeo.com')) {
-                const videoId = extractVimeoVideoId(src);
-                if (videoId) {
-                    src = `https://player.vimeo.com/video/${videoId}`;
-                }
-            }
-            
-            // Add proper parameters for better playback
-            const url = new URL(src.startsWith('//') ? 'https:' + src : src);
-            
-            // Add parameters if not already present
-            if (!url.searchParams.has('title')) {
-                url.searchParams.set('title', '0'); // Hide title
-            }
-            if (!url.searchParams.has('byline')) {
-                url.searchParams.set('byline', '0'); // Hide byline
-            }
-            if (!url.searchParams.has('portrait')) {
-                url.searchParams.set('portrait', '0'); // Hide portrait
-            }
-            
-            iframe.setAttribute('src', url.toString());
-            
-            // Ensure proper attributes
-            iframe.setAttribute('frameborder', '0');
-            iframe.setAttribute('allowfullscreen', '');
-            iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
-            
-            // Wrap in responsive container if not already wrapped
-            if (!iframe.parentElement.classList.contains('video-container')) {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'video-container';
-                iframe.parentNode.insertBefore(wrapper, iframe);
-                wrapper.appendChild(iframe);
-            }
-        }
-
-        /**
-         * Check if a link is a YouTube video link
-         */
-        function isYouTubeVideoLink(url) {
-            try {
-                const urlObj = new URL(url);
-                const hostname = urlObj.hostname.toLowerCase();
-                
-                // Check for youtube.com/watch
-                if ((hostname.includes('youtube.com') || hostname.includes('www.youtube.com')) && 
-                    urlObj.pathname.includes('/watch') && urlObj.searchParams.has('v')) {
-                    return true;
-                }
-                
-                // Check for youtu.be short links
-                if (hostname.includes('youtu.be') && urlObj.pathname.length > 1) {
-                    return true;
-                }
-                
-                return false;
-            } catch (e) {
-                return false;
-            }
-        }
-
-        /**
-         * Check if a link is a Vimeo video link
-         */
-        function isVimeoVideoLink(url) {
-            try {
-                const urlObj = new URL(url);
-                const hostname = urlObj.hostname.toLowerCase();
-                
-                // Check for vimeo.com with video ID
-                if (hostname.includes('vimeo.com') && urlObj.pathname.length > 1) {
-                    // Extract potential video ID
-                    const pathParts = urlObj.pathname.split('/').filter(part => part.length > 0);
-                    // Vimeo video IDs are numeric
-                    if (pathParts.length > 0 && /^\d+$/.test(pathParts[0])) {
-                        return true;
-                    }
-                }
-                
-                return false;
-            } catch (e) {
-                return false;
-            }
-        }
-
-        /**
-         * Convert a YouTube or Vimeo link to an embedded video
-         */
-        function convertLinkToEmbed(link, platform) {
-            const href = link.getAttribute('href');
-            let videoId, embedUrl;
-            
-            if (platform === 'youtube') {
-                videoId = extractYouTubeVideoId(href);
-                if (!videoId) return;
-                embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
-            } else if (platform === 'vimeo') {
-                videoId = extractVimeoVideoId(href);
-                if (!videoId) return;
-                embedUrl = `https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0`;
-            } else {
-                return;
-            }
-            
-            // Create iframe
-            const iframe = document.createElement('iframe');
-            iframe.setAttribute('src', embedUrl);
-            iframe.setAttribute('frameborder', '0');
-            iframe.setAttribute('allowfullscreen', '');
-            
-            if (platform === 'youtube') {
-                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-            } else if (platform === 'vimeo') {
-                iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
-            }
-            
-            // Create wrapper
-            const wrapper = document.createElement('div');
-            wrapper.className = 'video-container';
-            wrapper.appendChild(iframe);
-            
-            // Replace link with embed
-            link.parentNode.replaceChild(wrapper, link);
-        }
-
-        /**
-         * Extract YouTube video ID from various URL formats
-         */
-        function extractYouTubeVideoId(url) {
-            try {
-                const urlObj = new URL(url);
-                const hostname = urlObj.hostname.toLowerCase();
-                
-                // Standard youtube.com/watch?v=VIDEO_ID
-                if (hostname.includes('youtube.com') && urlObj.searchParams.has('v')) {
-                    return urlObj.searchParams.get('v');
-                }
-                
-                // Short youtu.be/VIDEO_ID format
-                if (hostname.includes('youtu.be')) {
-                    return urlObj.pathname.slice(1).split('?')[0];
-                }
-                
-                // Embed format youtube.com/embed/VIDEO_ID
-                if (hostname.includes('youtube.com') && urlObj.pathname.includes('/embed/')) {
-                    return urlObj.pathname.split('/embed/')[1].split('?')[0];
-                }
-                
-                // Direct video ID pattern match as fallback
-                const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-                const match = url.match(regExp);
-                
-                if (match && match[2].length === 11) {
-                    return match[2];
-                }
-                
-                return null;
-            } catch (e) {
-                console.error('Error extracting YouTube video ID:', e);
-                return null;
-            }
-        }
-
-        /**
-         * Extract Vimeo video ID from various URL formats
-         */
-        function extractVimeoVideoId(url) {
-            try {
-                const urlObj = new URL(url);
-                const hostname = urlObj.hostname.toLowerCase();
-                
-                if (!hostname.includes('vimeo.com')) {
-                    return null;
-                }
-                
-                // Remove leading/trailing slashes and split
-                const pathParts = urlObj.pathname.split('/').filter(part => part.length > 0);
-                
-                // Standard vimeo.com/VIDEO_ID format
-                if (pathParts.length > 0 && /^\d+$/.test(pathParts[0])) {
-                    return pathParts[0];
-                }
-                
-                // Player format player.vimeo.com/video/VIDEO_ID
-                if (urlObj.pathname.includes('/video/')) {
-                    const videoIdMatch = urlObj.pathname.match(/\/video\/(\d+)/);
-                    if (videoIdMatch && videoIdMatch[1]) {
-                        return videoIdMatch[1];
-                    }
-                }
-                
-                // Channels or groups format vimeo.com/channels/*/VIDEO_ID
-                if (pathParts.length > 0) {
-                    const lastPart = pathParts[pathParts.length - 1];
-                    if (/^\d+$/.test(lastPart)) {
-                        return lastPart;
-                    }
-                }
-                
-                // Pattern match as fallback
-                const regExp = /vimeo.*\/(\d+)/i;
-                const match = url.match(regExp);
-                
-                if (match && match[1]) {
-                    return match[1];
-                }
-                
-                return null;
-            } catch (e) {
-                console.error('Error extracting Vimeo video ID:', e);
-                return null;
-            }
-        }
     </script>
 
 
