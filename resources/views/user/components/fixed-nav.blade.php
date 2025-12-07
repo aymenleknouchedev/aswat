@@ -72,6 +72,15 @@
         </div>
     </nav>
 
+    <!-- === Mobile Breaking News === -->
+    <div id="mobile-breaking-news" class="mobile-breaking-news">
+        <div class="mobile-breaking-content">
+            <span class="mobile-breaking-label">عاجل</span>
+            <p class="mobile-breaking-text" id="mobile-breaking-text"></p>
+        </div>
+        <button class="mobile-close-breaking" aria-label="إغلاق">✖</button>
+    </div>
+
     <!-- === Subnav === -->
     <nav id="site-subnav">
         <div class="site-container">
