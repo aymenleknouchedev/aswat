@@ -215,5 +215,12 @@
             #site-breaking-news {
                 margin-top: 36px;
             }
+
+            @media (min-width: 992px) {
+            body {
+                padding-top: 0px !important;
+            }
+           
+        }
         </style>
     @endif
