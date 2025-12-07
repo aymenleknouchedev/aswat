@@ -1046,10 +1046,6 @@
             transition: opacity 0.3s;
         }
 
-        .custom-article-content img:hover {
-            opacity: 0.9;
-        }
-
         @media (max-width: 768px) {
             .text-modal-container {
                 width: 100%;
