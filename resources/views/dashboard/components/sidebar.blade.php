@@ -390,7 +390,7 @@
                     @endcanDo
 
                     <!-- Coming soon -->
-                    @canDo('coming_soon_access')
+                    @canDo('cv_access')
                     <li class="nk-menu-item">
                         <a href="{{ route('dashboard.join-team') }}" class="nk-menu-link">
                             <span class="nk-menu-icon">
