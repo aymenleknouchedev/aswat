@@ -1006,14 +1006,13 @@
             left: 20px;
         }
 
-        .fullscreen-image-prev:hover,
-        .fullscreen-image-next:hover {
-            transform: translateY(-50%) scale(1.2);
-        }
+        
 
         .fullscreen-image-prev:disabled,
         .fullscreen-image-next:disabled {
-            display: none;
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
         }
 
         .fullscreen-image-counter {
