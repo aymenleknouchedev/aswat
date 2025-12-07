@@ -1364,3 +1364,278 @@
             });
         });
     </script>
+
+    <!-- Breaking News Fixed Modal Component -->
+    <style>
+        .breaking-news-modal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100dvw;
+            height: 50dvh;
+            background: linear-gradient(135deg, #C1121F 0%, #8B0A17 100%);
+            color: #fff;
+            z-index: 9500;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), height 0.4s ease;
+        }
+
+        .breaking-news-modal.show {
+            transform: translateY(0);
+            height: 50dvh;
+        }
+
+        .breaking-news-modal.collapsed {
+            transform: translateY(calc(100% - 80px));
+            height: 80px;
+            cursor: pointer;
+        }
+
+        .breaking-news-modal.hide {
+            transform: translateY(calc(100% - 80px));
+            height: 80px;
+        }
+
+        .breaking-news-modal.collapsed .breaking-news-content {
+            display: none;
+        }
+
+        .breaking-news-modal.hide .breaking-news-content {
+            display: none;
+        }
+
+        .breaking-news-modal.collapsed .breaking-news-header {
+            cursor: pointer;
+        }
+
+        .breaking-news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .breaking-news-title {
+            font-size: 30px;
+            font-weight: bold;
+            font-family: asswat-bold;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
+        }
+
+        .breaking-news-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .breaking-news-close:hover {
+            transform: scale(1.2) rotate(90deg);
+        }
+
+        .breaking-news-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            font-family: asswat-regular;
+            font-size: 28px;
+            line-height: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .breaking-news-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            box-sizing: border-box;
+            opacity: 0;
+            animation: fadeInOut 5s ease-in-out forwards;
+            text-align: center;
+        }
+
+        .breaking-news-item-text {
+            margin: 0;
+            color: #fff;
+            font-size: 32px;
+            font-weight: 500;
+            font-family: asswat-bold;
+            line-height: 1.8;
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Scrollbar styling */
+        .breaking-news-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .breaking-news-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .breaking-news-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        .breaking-news-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .breaking-news-title {
+                font-size: 28px;
+            }
+
+            .breaking-news-content {
+                font-size: 14px;
+                padding: 15px;
+            }
+
+            .breaking-news-header {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+
+    <!-- Breaking News Modal Element -->
+    <div id="breakingNewsModal" class="breaking-news-modal">
+        <div class="breaking-news-header">
+            <h2 class="breaking-news-title">عاجل</h2>
+            <button class="breaking-news-close" id="breakingNewsClose" aria-label="إغلاق">✕</button>
+        </div>
+        <div class="breaking-news-content" id="breakingNewsContent">
+            <p style="text-align: center; opacity: 0.8;">جاري تحميل الأخبار العاجلة...</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const breakingNewsModal = document.getElementById('breakingNewsModal');
+            const breakingNewsContent = document.getElementById('breakingNewsContent');
+            const breakingNewsClose = document.getElementById('breakingNewsClose');
+
+            function displayBreakingNews(newsArray) {
+                let html = '';
+                newsArray.forEach((newsItem, index) => {
+                    const delay = index * 5; // Each item shows for 5 seconds
+                    html += `
+                        <div class="breaking-news-item" style="animation-delay: ${delay}s;">
+                            <p class="breaking-news-item-text">
+                                ${newsItem}
+                            </p>
+                        </div>
+                    `;
+                });
+                breakingNewsContent.innerHTML = html;
+
+                // Hide modal after all items finish
+                const totalDuration = newsArray.length * 5000; // 5 seconds per item
+                setTimeout(() => {
+                    if (breakingNewsModal.classList.contains('show')) {
+                        breakingNewsModal.classList.remove('show');
+                        breakingNewsModal.classList.add('collapsed');
+                    }
+                }, totalDuration);
+            }
+
+            function startBreakingNewsLoop(newsArray) {
+                displayBreakingNews(newsArray);
+            }
+
+            // Close button handler
+            breakingNewsClose.addEventListener('click', function(e) {
+                e.stopPropagation();
+                breakingNewsModal.classList.remove('show', 'collapsed');
+                breakingNewsModal.classList.add('hide');
+                // Keep header visible, don't hide the modal completely
+            });
+
+            // Reopen on header click when collapsed or hidden
+            let currentNewsArray = [];
+            breakingNewsModal.addEventListener('click', function(e) {
+                if ((breakingNewsModal.classList.contains('collapsed') || breakingNewsModal.classList.contains('hide')) && !breakingNewsModal.classList.contains('show')) {
+                    // Don't reopen if clicking the close button
+                    if (e.target !== breakingNewsClose) {
+                        breakingNewsModal.classList.remove('collapsed', 'hide');
+                        breakingNewsModal.classList.add('show');
+                        // Restart the loop with fresh animations
+                        startBreakingNewsLoop(currentNewsArray);
+                    }
+                }
+            });
+
+            // Fetch breaking news
+            function loadBreakingNews() {
+                fetch('/api/breaking-news')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.data && data.data.length > 0) {
+                            currentNewsArray = data.data; // Store for relooping
+                            startBreakingNewsLoop(data.data);
+                            breakingNewsModal.classList.add('show');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading breaking news:', error);
+                    });
+            }
+
+            // Load breaking news on page load
+            loadBreakingNews();
+        });
+    </script>
+
+@endsection

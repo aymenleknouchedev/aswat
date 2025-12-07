@@ -72,15 +72,6 @@
         </div>
     </nav>
 
-    <!-- === Mobile Breaking News === -->
-    <div id="mobile-breaking-news" class="mobile-breaking-news">
-        <div class="mobile-breaking-content">
-            <span class="mobile-breaking-label">عاجل</span>
-            <p class="mobile-breaking-text" id="mobile-breaking-text"></p>
-        </div>
-        <button class="mobile-close-breaking" aria-label="إغلاق">✖</button>
-    </div>
-
     <!-- === Subnav === -->
     <nav id="site-subnav">
         <div class="site-container">
@@ -233,48 +224,3 @@
         }
         </style>
     @endif
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize breaking news functionality
-            initializeBreakingNews();
-        });
-
-        function initializeBreakingNews() {
-            // Get breaking news element
-            const mobileBreakingNews = document.getElementById('mobile-breaking-news');
-            const mobileBreakingText = document.getElementById('mobile-breaking-text');
-            const mobileCloseBtn = document.querySelector('.mobile-close-breaking');
-            const desktopBreakingNews = document.getElementById('site-breaking-news');
-            const desktopBreakingText = document.getElementById('site-breaking-text');
-
-            // Fetch breaking news from API
-            fetch('/api/breaking-news')
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data.data && data.data.length > 0) {
-                        // Get the first breaking news item
-                        const breakingText = data.data[0];
-                        
-                        // Update desktop breaking news
-                        desktopBreakingText.textContent = breakingText;
-                        desktopBreakingNews.style.display = 'flex';
-
-                        // Update mobile breaking news
-                        mobileBreakingText.textContent = breakingText;
-                        mobileBreakingNews.classList.add('show');
-                    }
-                })
-                .catch(error => {
-                    console.log('No breaking news available', error);
-                });
-
-            // Close button functionality
-            if (mobileCloseBtn) {
-                mobileCloseBtn.addEventListener('click', function() {
-                    mobileBreakingNews.classList.remove('show');
-                    desktopBreakingNews.style.display = 'none';
-                });
-            }
-        }
-    </script>
