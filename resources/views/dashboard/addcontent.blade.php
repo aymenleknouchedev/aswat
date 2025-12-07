@@ -1634,6 +1634,13 @@
         function showMultimyDropdown(input) {
             const container = input.closest('.tags-search-container');
             const mydropdown = container.querySelector('.mydropdown');
+            const items = mydropdown.querySelectorAll('li');
+            
+            // Show only first 15 items
+            items.forEach((li, index) => {
+                li.style.display = index < 15 ? '' : 'none';
+            });
+            
             mydropdown.style.display = 'block';
         }
 
@@ -1641,22 +1648,52 @@
             const container = input.closest('.tags-search-container');
             const mydropdown = container.querySelector('.mydropdown');
             const filter = input.value.toLowerCase();
-            const items = mydropdown.querySelectorAll('li');
-            let visible = false;
+            const optionsList = mydropdown.querySelector('ul');
 
-            items.forEach(li => {
-                const text = (li.dataset.name || li.textContent).toLowerCase();
-                // Show all items that match the filter, including already selected ones
-                if (text.includes(filter)) {
-                    li.style.display = '';
-                    visible = true;
-                } else {
-                    li.style.display = 'none';
-                }
-            });
+            if (filter.length === 0) {
+                // Show only initial 15 items when search is empty
+                const items = mydropdown.querySelectorAll('li');
+                items.forEach((li, index) => {
+                    li.style.display = index < 15 ? '' : 'none';
+                });
+                mydropdown.style.display = 'block';
+                return;
+            }
 
-            // Always show dropdown when there's a search filter, or when there are visible items
-            mydropdown.style.display = visible || filter.length > 0 ? 'block' : 'none';
+            // Fetch matching tags from API
+            fetch(`{{ route('api.search.tags') }}?search=${encodeURIComponent(filter)}`)
+                .then(response => response.json())
+                .then(tags => {
+                    // Get selected tags IDs
+                    const selectedContainer = document.getElementById('tags_id-selected-container');
+                    const selectedIds = Array.from(selectedContainer.querySelectorAll('.tag-item')).map(el => el.dataset.id);
+
+                    // Clear and rebuild the list
+                    optionsList.innerHTML = '';
+                    
+                    if (tags.length === 0) {
+                        optionsList.innerHTML = '<li style="padding: 10px 15px; text-align: center; color: var(--bs-secondary-color);">لا توجد نتائج</li>';
+                    } else {
+                        tags.forEach(tag => {
+                            const li = document.createElement('li');
+                            li.setAttribute('data-id', tag.id);
+                            li.setAttribute('data-name', tag.name);
+                            li.textContent = tag.name;
+                            if (selectedIds.includes(String(tag.id))) {
+                                li.classList.add('selected');
+                            }
+                            li.addEventListener('click', function() {
+                                selectMultiItem(this, this.dataset.name, this.dataset.id, 'tags_id');
+                            });
+                            optionsList.appendChild(li);
+                        });
+                    }
+                    mydropdown.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error fetching tags:', error);
+                    mydropdown.style.display = 'none';
+                });
         }
 
         function selectMultiItem(li, value, id, fieldName) {
