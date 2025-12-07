@@ -1010,7 +1010,7 @@
 
         .fullscreen-image-prev:disabled,
         .fullscreen-image-next:disabled {
-            opacity: 0.3;
+            opacity: 0.1;
             cursor: not-allowed;
             pointer-events: none;
         }
