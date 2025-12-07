@@ -216,7 +216,7 @@
                 margin-top: 36px;
             }
 
-            @media (min-width: 992px) {
+            @media (max-width: 992px) {
             body {
                 padding-top: 0px !important;
             }
