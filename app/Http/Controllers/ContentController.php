@@ -115,11 +115,11 @@ class ContentController extends BaseController
         $countries = Location::where('type', 'country')->get();
 
 
-        $categories = Category::take(15)->latest()->get();
-        $tags = Tag::take(15)->latest()->get();
-        $trends = Trend::take(15)->latest()->get();
-        $windows = Window::take(15)->latest()->get();
-        $writers = Writer::take(15)->latest()->get();
+        $categories = Category::all();
+        $tags = Tag::all();
+        $trends = Trend::all();
+        $windows = Window::all();
+        $writers = Writer::all();
 
         $existing_images = [];
         $existing_videos = [];
