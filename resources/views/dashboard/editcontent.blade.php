@@ -1730,6 +1730,7 @@
 
             items.forEach(li => {
                 const text = (li.dataset.name || li.textContent).toLowerCase();
+                // Show all items that match the filter, including already selected ones
                 if (text.includes(filter)) {
                     li.style.display = '';
                     visible = true;
@@ -1738,7 +1739,8 @@
                 }
             });
 
-            indropdown.style.display = visible ? 'block' : 'none';
+            // Always show dropdown when there's a search filter, or when there are visible items
+            indropdown.style.display = visible || filter.length > 0 ? 'block' : 'none';
         }
 
         function selectMultiItem(li, value, id, fieldName) {
