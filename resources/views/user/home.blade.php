@@ -871,9 +871,9 @@
         @include('user.mobile.mobile-home')
 
         <!-- Back to Top Button -->
-        <button id="backToTopBtn" class="back-to-top-btn" aria-label="العودة إلى الأعلى" title="العودة إلى الأعلى">
+        {{-- <button id="backToTopBtn" class="back-to-top-btn" aria-label="العودة إلى الأعلى" title="العودة إلى الأعلى">
             <i class="fas fa-chevron-up"></i>
-        </button>
+        </button> --}}
 
         <!-- Vertical snap container for mobile sections -->
         <div class="mobile-snap">
