@@ -65,12 +65,12 @@ class ContentFormValidator {
             this.addError('long_title', 'العنوان الطويل لا يمكن أن يتجاوز 210 أحرف');
         }
 
-        // Mobile Title (required, max 40)
+        // Mobile Title (required, max 50)
         const mobileTitle = document.getElementById('mobile_title');
         if (!mobileTitle?.value || mobileTitle.value.trim() === '') {
             this.addError('mobile_title', 'عنوان الموبايل مطلوب');
-        } else if (mobileTitle.value.length > 40) {
-            this.addError('mobile_title', 'عنوان الموبايل لا يمكن أن يتجاوز 40 حرف');
+        } else if (mobileTitle.value.length > 50) {
+            this.addError('mobile_title', 'عنوان الموبايل لا يمكن أن يتجاوز 50 حرف');
         }
 
         // Section (required)
@@ -424,7 +424,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const counterFields = [
         { id: 'title', max: 68 },
         { id: 'long_title', max: 210 },
-        { id: 'mobile_title', max: 40 },
+        { id: 'mobile_title', max: 50 },
         { id: 'summary', max: 130 },
         { id: 'caption', max: 255 }
     ];
