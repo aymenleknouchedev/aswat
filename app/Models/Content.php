@@ -19,6 +19,7 @@ class Content extends Model
     protected $fillable = [
         'caption',
         'user_id',
+        'updated_by_user_id',
         'title',
         'long_title',
         'mobile_title',
@@ -44,6 +45,8 @@ class Content extends Model
         'share_image',
         'created_at_by_admin',
         'shortlink',
+        'published_at',
+        'published_date',
 
         // Normal Image
         'normal_main_image',
@@ -88,6 +91,12 @@ class Content extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function updatedByUser()
+    {
+        return $this->belongsTo(User::class, 'updated_by_user_id');
+    }
+
     public function section()
     {
         return $this->belongsTo(Section::class);

@@ -2446,20 +2446,37 @@
                 {{-- Date and Share Section --}}
                 @php
                     $months = [
-                        '01' => 'يناير',
-                        '02' => 'فبراير',
+                        '01' => 'جانفي',
+                        '02' => 'فيفري',
                         '03' => 'مارس',
-                        '04' => 'أبريل',
-                        '05' => 'مايو',
-                        '06' => 'يونيو',
-                        '07' => 'يوليو',
-                        '08' => 'أغسطس',
+                        '04' => 'أفريل',
+                        '05' => 'ماي',
+                        '06' => 'جوان',
+                        '07' => 'جويلية',
+                        '08' => 'أوت',
                         '09' => 'سبتمبر',
                         '10' => 'أكتوبر',
                         '11' => 'نوفمبر',
                         '12' => 'ديسمبر',
                     ];
-                    $date = $news->created_at;
+                    
+                    // Use published_date if available (first publication), otherwise published_at, then created_at
+                    $dateToUse = null;
+                    if ($news->published_date) {
+                        $dateToUse = $news->published_date;
+                    } elseif ($news->published_at) {
+                        $dateToUse = $news->published_at;
+                    } else {
+                        $dateToUse = $news->created_at;
+                    }
+                    
+                    // Convert to Carbon instance if it's a string
+                    if (is_string($dateToUse)) {
+                        $date = \Carbon\Carbon::parse($dateToUse);
+                    } else {
+                        $date = $dateToUse;
+                    }
+                    
                     $day = $date->format('d');
                     $month = $months[$date->format('m')];
                     $year = $date->format('Y');

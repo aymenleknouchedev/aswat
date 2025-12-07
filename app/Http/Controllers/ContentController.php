@@ -340,6 +340,11 @@ class ContentController extends BaseController
                 ->withInput();
         }
 
+        // Remove date fields from validated data - we handle them separately
+        unset($validated['published_at']);
+        unset($validated['published_date']);
+        unset($validated['status']);
+
         // =========================================
         // 3) Création du contenu
         // =========================================
@@ -349,6 +354,9 @@ class ContentController extends BaseController
             'importance' => $request->input('importance'),
             'user_id'    => Auth::id(),
             'shortlink'  => $this->generateShortlink(),
+            'published_at' => null,
+            'published_date' => null,
+            'status' => 'draft',
         ]);
 
         if ($request->filled('review_description')) {
@@ -487,14 +495,16 @@ class ContentController extends BaseController
         if ($isPreview === true) {
             $content->status = 'draft';
             $content->published_at = null;
+            $content->published_date = null;
             $content->save();
             return redirect()
                 ->route('dashboard.content.edit', ['id' => $content->id])
                 ->with('success');
         } elseif ($request->input('status') === 'draft') {
-            // Draft: no publication, clear published_at
+            // Draft: no publication, clear published_at and published_date
             $content->status = 'draft';
             $content->published_at = null;
+            $content->published_date = null;
             $content->save();
         } elseif ($request->input('status') === 'published') {
             // Check if scheduled publish time is provided
@@ -505,6 +515,7 @@ class ContentController extends BaseController
                     // Future time: schedule for later
                     $content->status       = 'scheduled';
                     $content->published_at = $scheduledTime;
+                    $content->published_date = null; // Not published yet
                     $content->save();
 
                     $delayInSeconds = now('Africa/Algiers')->diffInSeconds($scheduledTime, false);
@@ -515,12 +526,15 @@ class ContentController extends BaseController
                     // Past time: publish immediately with that timestamp
                     $content->status       = 'published';
                     $content->published_at = $scheduledTime;
+                    $content->published_date = $scheduledTime; // Set published date to the scheduled time
                     $content->save();
                 }
             } else {
                 // No scheduled time: publish immediately with current time
+                $now = now('Africa/Algiers');
                 $content->status       = 'published';
-                $content->published_at = now('Africa/Algiers');
+                $content->published_at = $now;
+                $content->published_date = $now; // Creation and publish date are the same when published directly
                 $content->save();
             }
         }
@@ -975,17 +989,82 @@ class ContentController extends BaseController
                 ->withInput();
         }
 
+        // Remove date fields from validated data - we handle them separately
+        unset($validated['published_at']);
+        unset($validated['published_date']);
+        unset($validated['status']);
+
         // ========= 3) Transaction pour cohérence (update + lists + media + tags) =========
         \Illuminate\Support\Facades\DB::beginTransaction();
 
         try {
+            // Track if this is the first publish
+            $wasNotPublished = $content->status !== 'published' && $content->status !== 'scheduled';
+            
+            // Store old published_at to check if date was manually changed
+            $oldPublishedAt = $content->published_at;
+
             // Mise à jour du contenu (inclut les champs Social Media)
             $content->update([
                 ...$validated,
                 'is_latest'  => $request->boolean('is_latest'),
                 'importance' => $request->input('importance'),
+                'updated_by_user_id' => \Illuminate\Support\Facades\Auth::id(),
                 // user_id not updated on edit
             ]);
+
+            // ========= Publication/Status handling =========
+            if ($request->input('status') === 'draft') {
+                // Convert to draft: preserve published_date, only clear published_at
+                $content->status = 'draft';
+                $content->published_at = null;
+                // Keep published_date - don't clear it on unpublish
+                $content->save();
+            } elseif ($request->input('status') === 'published') {
+                // Handle publish status
+                if ($request->filled('published_at')) {
+                    $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
+                    
+                    if ($scheduledTime->gt(now('Africa/Algiers'))) {
+                        // Future time: schedule for later
+                        $content->status = 'scheduled';
+                        $content->published_at = $scheduledTime;
+                        
+                        // Only set published_date if this is the first publish
+                        if ($wasNotPublished) {
+                            $content->published_date = $scheduledTime;
+                        }
+                        $content->save();
+
+                        $delayInSeconds = now('Africa/Algiers')->diffInSeconds($scheduledTime, false);
+                        if ($delayInSeconds < 0) $delayInSeconds = 0;
+
+                        \App\Jobs\PublishContent::dispatch($content->id)->delay(now()->addSeconds($delayInSeconds));
+                    } else {
+                        // Past or current time: publish immediately
+                        $content->status = 'published';
+                        $content->published_at = $scheduledTime;
+                        
+                        // Only set published_date if this is the first publish
+                        if ($wasNotPublished) {
+                            $content->published_date = $scheduledTime;
+                        }
+                        $content->save();
+                    }
+                } else {
+                    // No date specified - use current time for published_at, but keep old published_date
+                    $now = now('Africa/Algiers');
+                    $content->status = 'published';
+                    $content->published_at = $now;
+                    
+                    // Only set published_date if it doesn't already exist (first publish)
+                    if (!$content->published_date) {
+                        $content->published_date = $now;
+                    }
+                    // If republishing after draft, published_date stays unchanged
+                    $content->save();
+                }
+            }
 
             // ========= 4) Gestion de la revue =========
             if ($request->filled('review_description')) {

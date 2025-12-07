@@ -26,7 +26,7 @@ class PublishContent implements ShouldQueue
      * 
      * This job publishes scheduled content.
      * It preserves the originally scheduled published_at time
-     * instead of overwriting it with the current time.
+     * and sets published_date when automatically publishing.
      */
     public function handle(): void
     {
@@ -39,6 +39,8 @@ class PublishContent implements ShouldQueue
         
         // Update status to published, preserving the scheduled time
         $content->status = 'published';
+        // Set published_date to the scheduled time (first publication)
+        $content->published_date = $content->published_at;
         // Note: Do NOT overwrite published_at - keep the originally scheduled time
         $content->save();
     }
