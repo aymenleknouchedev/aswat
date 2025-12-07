@@ -2098,13 +2098,16 @@
                 // INSERT MODE: Create new element
                 if (window.tinymce && tinymce.activeEditor) {
                     tinymce.activeEditor.focus();
+                    const escapedKey = escapeHtml(key).replace(/"/g, '&quot;');
+                    const escapedDesc = escapeHtml(description).replace(/"/g, '&quot;');
+                    const escapedContent = escapeHtml(content);
                     let attr =
-                        `class="clickable-term" data-term="${escapeHtml(key)}" data-description="${escapeHtml(description)}"`;
+                        `class="clickable-term" data-term="${escapedKey}" data-description="${escapedDesc}"`;
                     if (textModalState.selectedImagePath) {
-                        attr += ` data-image="${escapeHtml(textModalState.selectedImagePath)}"`;
+                        attr += ` data-image="${escapeHtml(textModalState.selectedImagePath).replace(/"/g, '&quot;')}"`;
                     }
                     tinymce.activeEditor.execCommand('mceInsertContent', false,
-                        `<span ${attr}>${escapeHtml(content)}</span>`);
+                        `<span ${attr}>${escapedContent}</span>`);
                 } else {
                     alert('⚠️ محرر TinyMCE غير متاح');
                     return;

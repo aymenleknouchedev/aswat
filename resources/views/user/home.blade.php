@@ -1600,17 +1600,16 @@
             breakingNewsClose.addEventListener('click', function(e) {
                 e.stopPropagation();
                 breakingNewsModal.classList.remove('show', 'collapsed');
-                breakingNewsModal.classList.add('hide');
-                // Keep header visible, don't hide the modal completely
+                breakingNewsModal.style.display = 'none';
             });
 
-            // Reopen on header click when collapsed or hidden
+            // Reopen on header click when collapsed
             let currentNewsArray = [];
             breakingNewsModal.addEventListener('click', function(e) {
-                if ((breakingNewsModal.classList.contains('collapsed') || breakingNewsModal.classList.contains('hide')) && !breakingNewsModal.classList.contains('show')) {
+                if (breakingNewsModal.classList.contains('collapsed') && !breakingNewsModal.classList.contains('show')) {
                     // Don't reopen if clicking the close button
                     if (e.target !== breakingNewsClose) {
-                        breakingNewsModal.classList.remove('collapsed', 'hide');
+                        breakingNewsModal.classList.remove('collapsed');
                         breakingNewsModal.classList.add('show');
                         // Restart the loop with fresh animations
                         startBreakingNewsLoop(currentNewsArray);
