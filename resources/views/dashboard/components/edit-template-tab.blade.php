@@ -1457,15 +1457,9 @@
             const altVal = (urlAltInput.value || "").trim();
             const typeVal = getSelectedUrlType(); // auto | image | video | voice | file
             
-            // URL is required only for file type, not for list (auto)
+            // الرابط مطلوب فقط في وضع الملف (file)
             if (!urlVal && typeVal === "file") {
-                alert("⚠️ يرجى إدخال الرابط للملف أولاً.");
-                return;
-            }
-            
-            // For list type, URL is optional
-            if (!urlVal && typeVal !== "auto") {
-                alert("⚠️ يرجى إدخال الرابط أولاً.");
+                alert("⚠️ الرابط مطلوب عند اختيار وضع الملف.");
                 return;
             }
             
@@ -1478,7 +1472,7 @@
                 btnImportToGallery.textContent = "جارٍ الاستيراد...";
                 btnImportSelectAndClose.textContent = "جارٍ الاستيراد...";
                 
-                // Only include URL in payload if it's provided
+                // بناء الـ payload - الرابط اختياري إلا في وضع الملف
                 const payload = {
                     name: nameVal || undefined,
                     alt: altVal || undefined,
@@ -1496,6 +1490,9 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(payload)
+                        alt: altVal || undefined,
+                        media_type: payloadType
+                    })
                 });
                 const bodyText = await res.text();
                 if (!res.ok) {

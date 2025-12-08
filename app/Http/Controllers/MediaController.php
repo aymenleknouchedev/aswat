@@ -286,26 +286,30 @@ class MediaController extends BaseController
     public function storeMediaUrl(Request $request)
     {
         // 1) تحقّق مرن
+        // URL is required only for file type, optional for list (auto)
+        $mediaType = $request->input('media_type', 'auto');
+        $urlRules = $mediaType === 'file' ? ['required', 'url', 'max:2048'] : ['nullable', 'url', 'max:2048'];
+        
         $validated = $request->validate([
-            'url'        => ['required', 'url', 'max:2048'],
+            'url'        => $urlRules,
             'name'       => ['nullable', 'string', 'max:255'],
             'alt'        => ['nullable', 'string', 'max:255'],
             'media_type' => ['nullable', Rule::in(['auto', 'image', 'video', 'voice', 'file'])],
         ], [
-            'url.required' => 'الرجاء إدخال رابط الوسائط.',
+            'url.required' => 'الرابط مطلوب في وضع الملف.',
             'url.url'      => 'الرابط غير صالح.',
             'url.max'      => 'طول الرابط لا يجب أن يتجاوز 2048 حرفاً.',
         ]);
 
         // 2) اشتقاق النوع إن كان auto أو غير مُرسل
-        $url = $validated['url'];
+        $url = $validated['url'] ?? null;
         $type = $validated['media_type'] ?? 'auto';
-        if ($type === 'auto') {
+        if ($type === 'auto' && $url) {
             $type = $this->guessMediaTypeFromUrl($url); // image | video | voice | file
         }
 
         // 3) تطبيع الحقول الاختيارية
-        $name = $validated['name'] ?? $this->defaultNameFromUrl($url);
+        $name = $validated['name'] ?? ($url ? $this->defaultNameFromUrl($url) : 'وسيط');
         $alt  = $validated['alt']  ?? $name;
 
         try {
