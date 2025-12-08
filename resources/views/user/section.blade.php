@@ -545,7 +545,7 @@
                 min-width: 0;
                 /* allow text to shrink without overflow */
                 width: calc(100% - 20px);
-                
+
             }
 
             .ms-cat {
@@ -1016,7 +1016,8 @@
                             @for ($i = 1; $i <= 3; $i++)
                                 @if (isset($contents[$i]))
                                     <li class="mobile-simple-item">
-                                        <a class="mobile-simple-link" href="{{ route('news.show', $contents[$i]->shortlink) }}"
+                                        <a class="mobile-simple-link"
+                                            href="{{ route('news.show', $contents[$i]->shortlink) }}"
                                             aria-label="{{ $contents[$i]->title }}">
                                             <div class="ms-thumb">
                                                 <img src="{{ $contents[$i]->media()->wherePivot('type', 'main')->first()->path ?? asset($contents[$i]->image ?? 'user/assets/images/default-post.jpg') }}"
@@ -1085,7 +1086,8 @@
             @if (isset($topViewed) && is_countable($topViewed) && $topViewed->count())
                 <div class="readmore-section" dir="rtl">
                     <div style="width: 100%; max-width: 820px;">
-                        <h2 style="font-size: 24px; font-weight: 800; margin: 0 0 30px 0; font-family: 'asswat-bold';">الأكثر قراءة</h2>
+                        <h2 style="font-size: 24px; font-weight: 800; margin: 0 0 30px 0; font-family: 'asswat-bold';">
+                            الأكثر قراءة</h2>
                         <ol class="readmore-list" role="list">
                             @foreach ($topViewed->take(5) as $i => $content)
                                 <li class="readmore-item">
@@ -1289,3 +1291,6 @@
         }
     });
 </script>
+
+<!-- Breaking News Modal Component -->
+@include('user.components.breaking-news')

@@ -22,6 +22,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="أصوات جزائرية" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="{{ asset('user/css/breaking-news.css') }}">
 
     <style>
         * {
@@ -76,6 +77,7 @@
     @yield('content')
     <script src="{{ asset('user/js/fixed-nav.js') }}"></script>
     <script src="{{ asset('user/js/photos-scroll.js') }}"></script>
+    <script src="{{ asset('user/js/breaking-news.js') }}"></script>
 </body>
 
 </html>
