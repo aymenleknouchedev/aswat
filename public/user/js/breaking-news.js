@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isDisplaying: false,
         displayTimeoutId: null,
         pollTimeoutId: null,
+        isUserClosed: localStorage.getItem('breakingNewsUserClosed') === 'true', // Remember if user closed it
     };
 
     /**
@@ -97,6 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
         breakingNewsModal.classList.add('hide');
         breakingNewsModal.style.display = 'none';
         state.isModalActive = false;
+        state.isUserClosed = true;
+        // Remember that user closed it (persists after refresh)
+        localStorage.setItem('breakingNewsUserClosed', 'true');
     }, true);
 
     // Reopen on header click when collapsed
@@ -137,14 +141,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     state.currentNewsArray = data.data;
                     state.lastUpdatedAt = data.updated_at || 0;
 
-                    // If new items detected, show them immediately
+                    // If new items detected, show them immediately (even if user closed it)
                     if (newItems.length > 0) {
                         console.log(`New breaking news detected: ${newItems.length} item(s)`);
+                        // Reset user closed flag when there's new news
+                        state.isUserClosed = false;
+                        localStorage.removeItem('breakingNewsUserClosed');
                         newItems.forEach(newItem => {
                             showNewBreakingNews(newItem);
                         });
-                    } else if (state.currentNewsArray.length > 0 && !state.isDisplaying) {
-                        // Initial load: show all breaking news
+                    } else if (state.currentNewsArray.length > 0 && !state.isDisplaying && !state.isUserClosed) {
+                        // Initial load: show all breaking news (only if not user-closed)
                         if (!breakingNewsModal.classList.contains('show')) {
                             startBreakingNewsLoop(state.currentNewsArray);
                             breakingNewsModal.classList.add('show');
