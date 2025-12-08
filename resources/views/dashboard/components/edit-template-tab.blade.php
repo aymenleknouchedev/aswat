@@ -1456,13 +1456,10 @@
             const nameVal = (urlNameInput.value || "").trim();
             const altVal = (urlAltInput.value || "").trim();
             const typeVal = getSelectedUrlType(); // auto | image | video | voice | file
-            
-            // الرابط مطلوب فقط في وضع الملف (file)
-            if (!urlVal && typeVal === "file") {
-                alert("⚠️ الرابط مطلوب عند اختيار وضع الملف.");
+            if (!urlVal) {
+                alert("⚠️ يرجى إدخال الرابط أولاً.");
                 return;
             }
-            
             const payloadType = typeVal === "auto" ? undefined : mapFilterForServer(typeVal);
 
             let created = null;
@@ -1471,17 +1468,6 @@
                 btnImportSelectAndClose.disabled = true;
                 btnImportToGallery.textContent = "جارٍ الاستيراد...";
                 btnImportSelectAndClose.textContent = "جارٍ الاستيراد...";
-                
-                // بناء الـ payload - الرابط اختياري إلا في وضع الملف
-                const payload = {
-                    name: nameVal || undefined,
-                    alt: altVal || undefined,
-                    media_type: payloadType
-                };
-                if (urlVal) {
-                    payload.url = urlVal;
-                }
-                
                 const res = await fetch(IMPORT_URL, {
                     method: "POST",
                     headers: {
@@ -1489,7 +1475,9 @@
                         "Accept": "application/json",
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({
+                        url: urlVal,
+                        name: nameVal || undefined,
                         alt: altVal || undefined,
                         media_type: payloadType
                     })

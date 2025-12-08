@@ -287,8 +287,8 @@ class ContentController extends BaseController
             $rules['items.*.image']       = 'required|url|max:2048';
             $rules['items.*.index']       = 'required|integer|min:1';
             $rules['items.*.url']         = $request->input('display_method') === 'list'
-                ? 'nullable|url|max:2048'
-                : 'required|url|max:2048';
+                ? 'nullable|url'
+                : 'required|url';
         }
 
         // Règles par template
@@ -944,8 +944,8 @@ class ContentController extends BaseController
             $rules['items.*.writer']      = 'nullable|string|max:255';
             $rules['items.*.index']       = 'required|integer';
             $rules['items.*.url']         = $request->input('display_method') === 'list'
-                ? 'required|url|max:2048'
-                : 'nullable|url|max:2048';
+                ? 'nullable|url'
+                : 'required|url';
         }
 
         // Règles par template
