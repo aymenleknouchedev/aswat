@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
         displayTimeoutId: null,
         pollTimeoutId: null,
         isUserClosed: localStorage.getItem('breakingNewsUserClosed') === 'true', // Remember if user closed it
-        isFirstLoad: true, // Track if this is the first page load
     };
 
     /**
@@ -151,8 +150,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         newItems.forEach(newItem => {
                             showNewBreakingNews(newItem);
                         });
-                    } else if (state.isFirstLoad && state.currentNewsArray.length > 0 && !state.isDisplaying && !state.isUserClosed) {
-                        // Initial load: show all breaking news (only on first load and if not user-closed)
+                    } else if (state.currentNewsArray.length > 0 && !state.isDisplaying && !state.isUserClosed) {
+                        // Initial load: show all breaking news (only if not user-closed)
                         if (!breakingNewsModal.classList.contains('show')) {
                             startBreakingNewsLoop(state.currentNewsArray);
                             breakingNewsModal.classList.add('show');
@@ -165,8 +164,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error loading breaking news:', error);
             })
             .finally(() => {
-                // Mark first load as complete after first API call
-                state.isFirstLoad = false;
                 // Schedule next poll
                 scheduleNextPoll();
             });
