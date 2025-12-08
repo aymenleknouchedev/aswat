@@ -81,10 +81,15 @@ document.addEventListener('DOMContentLoaded', function() {
      * @param {String} newsItem - New news item to display
      */
     function showNewBreakingNews(newsItem) {
+        // Clear any ongoing display timeout to prevent race conditions
+        clearTimeout(state.displayTimeoutId);
+        state.isDisplaying = false;
+        
         // Show the modal if it's hidden or collapsed
         if (!breakingNewsModal.classList.contains('show')) {
             breakingNewsModal.classList.remove('collapsed', 'hide');
             breakingNewsModal.classList.add('show');
+            breakingNewsModal.style.display = 'flex'; // Ensure modal is visible
         }
 
         // Display the new news item immediately
@@ -150,11 +155,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         newItems.forEach(newItem => {
                             showNewBreakingNews(newItem);
                         });
-                    } else if (state.currentNewsArray.length > 0 && !state.isDisplaying && !state.isUserClosed) {
-                        // Initial load: show all breaking news (only if not user-closed)
+                    } else if (state.currentNewsArray.length > 0 && !state.isDisplaying && !state.isUserClosed && state.lastUpdatedAt === 0) {
+                        // Initial load: show all breaking news on first load only (if not user-closed)
                         if (!breakingNewsModal.classList.contains('show')) {
                             startBreakingNewsLoop(state.currentNewsArray);
                             breakingNewsModal.classList.add('show');
+                            breakingNewsModal.style.display = 'flex';
                             state.isModalActive = true;
                         }
                     }
