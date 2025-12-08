@@ -1456,10 +1456,13 @@
             const nameVal = (urlNameInput.value || "").trim();
             const altVal = (urlAltInput.value || "").trim();
             const typeVal = getSelectedUrlType(); // auto | image | video | voice | file
-            if (!urlVal) {
-                alert("⚠️ يرجى إدخال الرابط أولاً.");
+            
+            // Link is required only for file type, not for list (auto)
+            if (!urlVal && typeVal === "file") {
+                alert("⚠️ يرجى إدخال الرابط للملف أولاً.");
                 return;
             }
+            
             const payloadType = typeVal === "auto" ? undefined : mapFilterForServer(typeVal);
 
             let created = null;
