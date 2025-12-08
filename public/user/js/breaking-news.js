@@ -14,26 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // Monitor DOM changes and reinitialize if component is replaced
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (mutation.type === 'childList') {
-                // Check if breaking news modal was re-added to DOM
-                const newModal = document.getElementById('breakingNewsModal');
-                if (newModal && newModal !== breakingNewsModal) {
-                    // Component was replaced, restart everything
-                    console.log('Breaking news component re-rendered, restarting...');
-                    location.reload();
-                }
-            }
-        });
-    });
-
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-    });
-
     // Configuration
     const CONFIG = {
         POLL_INTERVAL: 5000,           // Poll every 5 seconds for new breaking news
@@ -208,22 +188,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /**
-     * Handle page navigation (for SPA or link navigation)
+     * Stop polling when page is hidden
      */
-    window.addEventListener('popstate', function() {
-        // Reset state when navigating
-        clearTimeout(state.pollTimeoutId);
-        clearTimeout(state.displayTimeoutId);
-        state.currentNewsArray = [];
-        state.isDisplaying = false;
-        state.isModalActive = false;
-        breakingNewsModal.classList.remove('show', 'collapsed');
-        breakingNewsModal.classList.add('hide');
-        // Restart polling
-        loadBreakingNews();
-    });
-
-    // Handle page visibility change with full reload
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
             clearTimeout(state.pollTimeoutId);
@@ -235,27 +201,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load breaking news on page load and start polling
     loadBreakingNews();
-
-    /**
-     * Reinitialize on page navigation (handle link clicks)
-     * This ensures breaking news resets when navigating to different pages
-     */
-    document.addEventListener('click', function(e) {
-        const link = e.target.closest('a[href]');
-        if (link && !link.target && !link.hasAttribute('data-no-reload')) {
-            const href = link.getAttribute('href');
-            // Only reload for same-origin links
-            if (href && !href.startsWith('http') && !href.startsWith('//')) {
-                // Small delay to allow navigation
-                setTimeout(() => {
-                    if (document.location.href !== href) {
-                        // Page is navigating, clear state
-                        clearTimeout(state.pollTimeoutId);
-                        clearTimeout(state.displayTimeoutId);
-                        observer.disconnect();
-                    }
-                }, 100);
-            }
-        }
-    }, true);
 });
