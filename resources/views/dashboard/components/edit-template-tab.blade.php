@@ -1457,9 +1457,15 @@
             const altVal = (urlAltInput.value || "").trim();
             const typeVal = getSelectedUrlType(); // auto | image | video | voice | file
             
-            // Link is required only for file type, not for list (auto)
+            // URL is required only for file type, not for list (auto)
             if (!urlVal && typeVal === "file") {
                 alert("⚠️ يرجى إدخال الرابط للملف أولاً.");
+                return;
+            }
+            
+            // For list type, URL is optional
+            if (!urlVal && typeVal !== "auto") {
+                alert("⚠️ يرجى إدخال الرابط أولاً.");
                 return;
             }
             
@@ -1471,6 +1477,17 @@
                 btnImportSelectAndClose.disabled = true;
                 btnImportToGallery.textContent = "جارٍ الاستيراد...";
                 btnImportSelectAndClose.textContent = "جارٍ الاستيراد...";
+                
+                // Only include URL in payload if it's provided
+                const payload = {
+                    name: nameVal || undefined,
+                    alt: altVal || undefined,
+                    media_type: payloadType
+                };
+                if (urlVal) {
+                    payload.url = urlVal;
+                }
+                
                 const res = await fetch(IMPORT_URL, {
                     method: "POST",
                     headers: {
@@ -1478,12 +1495,7 @@
                         "Accept": "application/json",
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({
-                        url: urlVal,
-                        name: nameVal || undefined,
-                        alt: altVal || undefined,
-                        media_type: payloadType
-                    })
+                    body: JSON.stringify(payload)
                 });
                 const bodyText = await res.text();
                 if (!res.ok) {
