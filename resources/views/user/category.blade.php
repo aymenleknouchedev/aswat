@@ -309,7 +309,8 @@
 
             <!-- Mobile Load More button -->
             <div class="text-center mt-3" id="mobile-load-more-container">
-                <button class="mobile-load-more-btn btn btn-primary" data-page="1" data-current-id="{{ $current_id }}" data-type="{{ $type }}">
+                <button class="mobile-load-more-btn btn btn-primary" data-page="1" data-current-id="{{ $current_id }}"
+                    data-type="{{ $type }}">
                     المزيد
                 </button>
             </div>
@@ -442,9 +443,10 @@
                             card.querySelector("a[href]");
                         const img = card.querySelector("img");
                         const cat = card.querySelector(".newCategory-all-card-text h3");
-                        const summaryEl = card.querySelector(".newCategory-all-card-text h3:nth-of-type(2)");
+                        const summaryEl = card.querySelector(
+                            ".newCategory-all-card-text h3:nth-of-type(2)");
                         const dateEl = card.querySelector(".newCategory-all-card-date h4");
-                        
+
                         const li = document.createElement("li");
                         li.className = "mobile-simple-item";
                         const href = a ? a.getAttribute("href") : "#";
@@ -483,3 +485,7 @@
         }
     });
 </script>
+
+
+<!-- Breaking News Modal Component -->
+@include('user.components.breaking-news')

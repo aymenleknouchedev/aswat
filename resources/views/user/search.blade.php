@@ -60,10 +60,10 @@
 
 
 
-      
 
-         .newCategory-all-card-text h3 {
-           font-family: asswat-regular !important;
+
+        .newCategory-all-card-text h3 {
+            font-family: asswat-regular !important;
             font-weight: normal !important;
             font-size: 16px !important;
             color: #7c7c74 !important;
@@ -71,14 +71,14 @@
         }
 
         .newCategory-all-card-text h2 {
-           font-family: asswat-bold !important;
+            font-family: asswat-bold !important;
             font-weight: normal !important;
             font-size: 20px !important;
             color: #333 !important;
             margin: 0 0 4px 0 !important;
         }
 
-          .newCategory-all-card-text p {
+        .newCategory-all-card-text p {
             font-size: 16px !important;
             color: #555 !important;
             line-height: 1.5 !important;
@@ -269,7 +269,8 @@
                 <div class="mobile-simple-list" dir="rtl">
                     <h2 class="mobile-simple-header">نتائج البحث</h2>
                     <div style="padding: 0px 16px">
-                        <p style="font-size: 14px; color: #666; margin: 0 0 12px 0;">البحث عن: <strong>{{ $query }}</strong></p>
+                        <p style="font-size: 14px; color: #666; margin: 0 0 12px 0;">البحث عن:
+                            <strong>{{ $query }}</strong></p>
                     </div>
                     <ul class="mobile-simple-ul" role="list" id="mobile-search-container">
                         @forelse ($results as $item)
@@ -316,3 +317,6 @@
         }
     });
 </script>
+
+<!-- Breaking News Modal Component -->
+@include('user.components.breaking-news')

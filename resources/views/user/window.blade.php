@@ -209,7 +209,8 @@
                             <div class="mobile-window-carousel" dir="rtl">
                                 @foreach ($window->contents->sortByDesc('created_at')->take(4) as $content)
                                     <div class="mobile-window-card">
-                                        <a href="{{ route('news.show', $content->shortlink ?? '') }}" class="mobile-window-link">
+                                        <a href="{{ route('news.show', $content->shortlink ?? '') }}"
+                                            class="mobile-window-link">
                                             <div class="ms-thumb">
                                                 <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
                                                     alt="{{ $content->title ?? 'عنوان الخبر' }}">
@@ -223,7 +224,8 @@
                                                 <p class="ms-title">
                                                     {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 90) }}
                                                 </p>
-                                                <p style="font-size: 16px; color: #666; margin: 4px 0 8px 0; line-height: 1.4;">
+                                                <p
+                                                    style="font-size: 16px; color: #666; margin: 4px 0 8px 0; line-height: 1.4;">
                                                     {{ \Illuminate\Support\Str::limit($content->summary ?? '', 150) }}
                                                 </p>
                                             </div>
@@ -468,3 +470,7 @@
         }
     });
 </script>
+
+
+<!-- Breaking News Modal Component -->
+@include('user.components.breaking-news')

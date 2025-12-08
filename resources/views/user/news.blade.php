@@ -1006,7 +1006,7 @@
             left: 20px;
         }
 
-        
+
 
         .fullscreen-image-prev:disabled,
         .fullscreen-image-next:disabled {
@@ -2454,7 +2454,7 @@
                         '11' => 'نوفمبر',
                         '12' => 'ديسمبر',
                     ];
-                    
+
                     // Use published_date if available (first publication), otherwise published_at, then created_at
                     $dateToUse = null;
                     if ($news->published_date) {
@@ -2464,18 +2464,18 @@
                     } else {
                         $dateToUse = $news->created_at;
                     }
-                    
+
                     // Convert to Carbon instance if it's a string
-                    if (is_string($dateToUse)) {
-                        $date = \Carbon\Carbon::parse($dateToUse);
-                    } else {
-                        $date = $dateToUse;
-                    }
-                    
-                    $day = $date->format('d');
-                    $month = $months[$date->format('m')];
-                    $year = $date->format('Y');
-                    $time = $date->format('H:i');
+if (is_string($dateToUse)) {
+    $date = \Carbon\Carbon::parse($dateToUse);
+} else {
+    $date = $dateToUse;
+}
+
+$day = $date->format('d');
+$month = $months[$date->format('m')];
+$year = $date->format('Y');
+$time = $date->format('H:i');
                 @endphp
 
                 @php
@@ -3671,3 +3671,6 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
     @include('components.readmore-loader')
 
 @endsection
+
+<!-- Breaking News Modal Component -->
+@include('user.components.breaking-news')

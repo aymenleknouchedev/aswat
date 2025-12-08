@@ -140,7 +140,8 @@
                     </a>
                     <div class="custom-content">
                         <h3><x-category-links :content="$featured" /></h3>
-                        <a href="{{ route('news.show', $featured->shortlink) }}" style="text-decoration: none; color: inherit;">
+                        <a href="{{ route('news.show', $featured->shortlink) }}"
+                            style="text-decoration: none; color: inherit;">
                             <h2>{{ $featured->title }}</h2>
                         </a>
                         <p>{{ $featured->summary }}</p>
@@ -410,8 +411,8 @@
     let loading = false;
 
     document.addEventListener("click", async function(e) {
-    // Desktop load more
-    if (e.target.classList.contains("photos-load-more-btn")) {
+        // Desktop load more
+        if (e.target.classList.contains("photos-load-more-btn")) {
             if (loading) return;
 
             let btn = e.target;
@@ -498,3 +499,5 @@
         }
     });
 </script>
+<!-- Breaking News Modal Component -->
+@include('user.components.breaking-news')
