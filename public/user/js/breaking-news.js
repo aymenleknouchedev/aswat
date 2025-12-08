@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
         breakingNewsContent.innerHTML = html;
 
         // Hide modal after all items finish
-        const totalDuration = newsArray.length * 5000; // 5 seconds per item
+        const totalDuration = newsArray.length * 7000; // 5 seconds per item
         setTimeout(() => {
             if (breakingNewsModal.classList.contains('show')) {
                 breakingNewsModal.classList.remove('show');
