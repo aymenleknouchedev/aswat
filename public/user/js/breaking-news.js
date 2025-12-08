@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!breakingNewsModal.classList.contains('show')) {
             breakingNewsModal.classList.remove('collapsed', 'hide');
             breakingNewsModal.classList.add('show');
-            breakingNewsModal.style.display = 'flex'; // Ensure modal is visible
         }
 
         // Display the new news item immediately
@@ -147,7 +146,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.log(`New breaking news detected: ${newItems.length} item(s)`);
                         // Reset user closed flag when there's new news
                         state.isUserClosed = false;
-                        state.isDisplaying = false; // Reset display flag to ensure modal opens
                         localStorage.removeItem('breakingNewsUserClosed');
                         newItems.forEach(newItem => {
                             showNewBreakingNews(newItem);
