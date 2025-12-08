@@ -94,22 +94,28 @@ document.addEventListener('DOMContentLoaded', function() {
     breakingNewsClose.addEventListener('click', function(e) {
         e.stopPropagation();
         breakingNewsModal.classList.remove('show', 'collapsed');
+        breakingNewsModal.classList.add('hide');
         breakingNewsModal.style.display = 'none';
         state.isModalActive = false;
-    });
+    }, true);
 
     // Reopen on header click when collapsed
     breakingNewsModal.addEventListener('click', function(e) {
-        if (breakingNewsModal.classList.contains('collapsed') && !breakingNewsModal.classList.contains('show')) {
-            // Don't reopen if clicking the close button
-            if (e.target !== breakingNewsClose) {
-                breakingNewsModal.classList.remove('collapsed');
-                breakingNewsModal.classList.add('show');
-                state.isModalActive = true;
-                // Restart the loop with fresh animations
-                if (state.currentNewsArray.length > 0) {
-                    startBreakingNewsLoop(state.currentNewsArray);
-                }
+        const isCollapsed = breakingNewsModal.classList.contains('collapsed');
+        const isShown = breakingNewsModal.classList.contains('show');
+        const isClickOnHeader = e.target === breakingNewsModal || 
+                               e.target.closest('.breaking-news-header') === breakingNewsModal.querySelector('.breaking-news-header');
+        
+        if ((isCollapsed || !isShown) && isClickOnHeader && e.target !== breakingNewsClose) {
+            e.stopPropagation();
+            breakingNewsModal.classList.remove('collapsed', 'hide');
+            breakingNewsModal.classList.add('show');
+            breakingNewsModal.style.display = 'flex';
+            state.isModalActive = true;
+            
+            // Restart the loop with fresh animations
+            if (state.currentNewsArray.length > 0) {
+                startBreakingNewsLoop(state.currentNewsArray);
             }
         }
     });
