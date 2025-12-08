@@ -5,6 +5,5 @@
         <button class="breaking-news-close" id="breakingNewsClose" aria-label="إغلاق">✕</button>
     </div>
     <div class="breaking-news-content" id="breakingNewsContent">
-        <p style="text-align: center; opacity: 0.8;">جاري تحميل الأخبار العاجلة...</p>
     </div>
 </div>

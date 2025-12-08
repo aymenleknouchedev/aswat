@@ -180,14 +180,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * Cleanup on page unload
-     */
-    window.addEventListener('beforeunload', function() {
-        clearTimeout(state.pollTimeoutId);
-        clearTimeout(state.displayTimeoutId);
-    });
-
-    /**
      * Stop polling when page is hidden
      */
     document.addEventListener('visibilitychange', function() {
@@ -197,6 +189,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // Resume polling when page becomes visible
             loadBreakingNews();
         }
+    });
+
+    /**
+     * Cleanup on page unload
+     */
+    window.addEventListener('beforeunload', function() {
+        clearTimeout(state.pollTimeoutId);
+        clearTimeout(state.displayTimeoutId);
     });
 
     // Load breaking news on page load and start polling
