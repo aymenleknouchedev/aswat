@@ -3672,5 +3672,4 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
 @endsection
 
-<!-- Breaking News Modal Component -->
-@include('user.components.breaking-news')
+

@@ -1365,8 +1365,7 @@
         });
     </script>
 
-    <!-- Breaking News Modal Component -->
-    @include('user.components.breaking-news')
+
 
 
 @endsection

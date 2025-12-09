@@ -70,6 +70,11 @@
 
 
     <title>@yield('title')</title>
+
+    <div class="mobile">
+        <!-- Breaking News Modal Component -->
+        @include('user.components.breaking-news')
+    </div>
 </head>
 
 <body id="gototop">
