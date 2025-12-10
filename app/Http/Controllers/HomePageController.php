@@ -198,7 +198,13 @@ class HomePageController extends Controller
         $latestContents = Content::where('is_latest', 1)
             ->latest()
             ->take(5)
-            ->pluck('title');
+            ->get(['title', 'shortlink'])
+            ->map(function($content) {
+                return [
+                    'title' => $content->title,
+                    'shortlink' => $content->shortlink
+                ];
+            });
 
         return response()->json($latestContents);
     }

@@ -193,7 +193,7 @@ if (siteBreakingNews) {
 
 // === Latest news typing ===
 const element2 = document.getElementById('site-latest-text');
-const texts2 = [];
+const newsData = []; // Store objects with title and shortlink
 let textIndex2 = 0;
 let charIndex2 = 0;
 const speed2 = 20;
@@ -203,16 +203,16 @@ let currentDisplayedNews = null; // Track the currently displayed news for click
 element2.style.cursor = 'pointer';
 
 function typeWriter2() {
-    if (charIndex2 < texts2[textIndex2].length) {
-        element2.textContent += texts2[textIndex2].charAt(charIndex2++);
+    if (charIndex2 < newsData[textIndex2].title.length) {
+        element2.textContent += newsData[textIndex2].title.charAt(charIndex2++);
         setTimeout(typeWriter2, speed2);
     } else {
         // Wait 3 seconds, then clear and move to next text
         setTimeout(() => {
             element2.textContent = '';
             charIndex2 = 0;
-            textIndex2 = (textIndex2 + 1) % texts2.length;
-            currentDisplayedNews = texts2[textIndex2]; // Update tracking before typing starts
+            textIndex2 = (textIndex2 + 1) % newsData.length;
+            currentDisplayedNews = newsData[textIndex2]; // Update tracking before typing starts
             typeWriter2();
         }, 3000);
     }
@@ -221,9 +221,8 @@ function typeWriter2() {
 // Add click event to latest news text
 element2.addEventListener('click', () => {
     // Use the tracked current news to ensure correct redirection
-    if (currentDisplayedNews) {
-        const encodedTitle = encodeURIComponent(currentDisplayedNews);
-        window.location.href = `/article/${encodedTitle}`;
+    if (currentDisplayedNews && currentDisplayedNews.shortlink) {
+        window.location.href = `/article/${currentDisplayedNews.shortlink}`;
     }
 });
 
@@ -231,8 +230,8 @@ fetch('/api/latest-news')
     .then(response => response.json())
     .then(data2 => {
         if (Array.isArray(data2) && data2.length > 0) {
-            texts2.push(...data2);
-            currentDisplayedNews = texts2[0]; // Initialize with first news item
+            newsData.push(...data2);
+            currentDisplayedNews = newsData[0]; // Initialize with first news item
             typeWriter2(); // ✅ Start typing after data loads
         }
     })
