@@ -147,9 +147,6 @@
     }
 </style>
 
-
-
-
 <section class="news-feature-grid" id="news-feature-grid">
     @if(isset($topContents) && count($topContents) >= 7)
     <div class="news-grid-container">
