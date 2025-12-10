@@ -1302,6 +1302,7 @@ class ContentController extends BaseController
 
             // Detach from top contents
             $content->topContents()->detach();
+            
 
             // Delete related content lists
             $content->contentLists()->delete();
