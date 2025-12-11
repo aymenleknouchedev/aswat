@@ -1064,6 +1064,40 @@ class ContentController extends BaseController
                     // If republishing after draft, published_date stays unchanged
                     $content->save();
                 }
+            } else {
+                // No status change requested (Update button) - but check if published_at was modified
+                if ($request->filled('published_at')) {
+                    $scheduledTime = \Carbon\Carbon::parse($request->published_at, 'Africa/Algiers');
+                    
+                    // Only update if content is already published or scheduled
+                    if (in_array($content->status, ['published', 'scheduled'])) {
+                        if ($scheduledTime->gt(now('Africa/Algiers'))) {
+                            // Future time: schedule for later
+                            $content->status = 'scheduled';
+                            $content->published_at = $scheduledTime;
+                            
+                            // Don't change published_date on reschedule
+                            $content->save();
+
+                            $delayInSeconds = now('Africa/Algiers')->diffInSeconds($scheduledTime, false);
+                            if ($delayInSeconds < 0) $delayInSeconds = 0;
+
+                            \App\Jobs\PublishContent::dispatch($content->id)->delay(now()->addSeconds($delayInSeconds));
+                        } else {
+                            // Past or current time: update to this time
+                            $content->status = 'published';
+                            $content->published_at = $scheduledTime;
+                            // Don't change published_date
+                            $content->save();
+                        }
+                    }
+                } elseif ($request->has('published_at') && $request->published_at === null) {
+                    // User cleared the published_at field - only clear it if content is scheduled
+                    if ($content->status === 'scheduled') {
+                        $content->published_at = null;
+                        $content->save();
+                    }
+                }
             }
 
             // ========= 4) Gestion de la revue =========

@@ -381,7 +381,8 @@
         .custom-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
+            row-gap: 22px;
             margin-bottom: 40px;
         }
 
@@ -3428,7 +3429,10 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             // Function to show modal with text definition (including image)
             function showTextModal(term, definition) {
                 modalTitle.textContent = term;
-                modalContent.innerHTML = definition.description;
+                
+                // Apply quote replacement to the description
+                const descriptionWithQuotes = definition.description.replace(/"([^"]*)"/g, '«$1»');
+                modalContent.innerHTML = descriptionWithQuotes;
 
                 if (definition.image) {
                     modalImageContainer.style.display = 'block';
@@ -3545,7 +3549,9 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
             // Show or hide caption based on whether caption exists
             if (caption && caption.trim() !== '') {
-                fullscreenImageCaption.textContent = caption;
+                // Apply quote replacement to caption
+                const captionWithQuotes = caption.replace(/"([^"]*)"/g, '«$1»');
+                fullscreenImageCaption.textContent = captionWithQuotes;
                 fullscreenImageCaption.style.display = 'block';
             } else {
                 fullscreenImageCaption.style.display = 'none';
@@ -3576,7 +3582,9 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
             const currentImage = galleryImages[currentImageIndex];
             fullscreenImageContent.src = currentImage.src;
-            fullscreenImageCaption.textContent = currentImage.caption;
+            // Apply quote replacement to caption
+            const captionWithQuotes = currentImage.caption.replace(/"([^"]*)"/g, '«$1»');
+            fullscreenImageCaption.textContent = captionWithQuotes;
             fullscreenImageCaption.style.display = 'block'; // Always show caption in gallery mode
 
             // Update counter (1-based index for display)

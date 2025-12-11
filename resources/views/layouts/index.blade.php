@@ -30,41 +30,61 @@
         }
     </style>
     <script>
+        // Replace "..." with «...» inside visible text only
+        function replaceQuotes(str) {
+            return str.replace(/"([^"]*)"/g, '«$1»');
+        }
+
+        // Traverse text nodes inside visible elements
+        function traverseAndReplaceText(node) {
+            // Skip script, style, code, pre, textarea, etc.
+            if (
+                node.nodeName === 'SCRIPT' ||
+                node.nodeName === 'STYLE' ||
+                node.nodeName === 'CODE' ||
+                node.nodeName === 'PRE' ||
+                node.nodeName === 'TEXTAREA'
+            ) {
+                return;
+            }
+
+            // Replace text content
+            if (node.nodeType === Node.TEXT_NODE) {
+                const text = node.textContent.trim();
+                // Replace only if it's visible text (not empty)
+                if (text.length > 0) {
+                    node.textContent = replaceQuotes(node.textContent);
+                }
+            } else {
+                node.childNodes.forEach(traverseAndReplaceText);
+            }
+        }
+
+        // Run on initial page load
         document.addEventListener('DOMContentLoaded', function() {
-
-            // Replace "..." with «...» inside visible text only
-            function replaceQuotes(str) {
-                return str.replace(/"([^"]*)"/g, '«$1»');
-            }
-
-            // Traverse text nodes inside visible elements
-            function traverseAndReplaceText(node) {
-                // Skip script, style, code, pre, textarea, etc.
-                if (
-                    node.nodeName === 'SCRIPT' ||
-                    node.nodeName === 'STYLE' ||
-                    node.nodeName === 'CODE' ||
-                    node.nodeName === 'PRE' ||
-                    node.nodeName === 'TEXTAREA'
-                ) {
-                    return;
-                }
-
-                // Replace text content
-                if (node.nodeType === Node.TEXT_NODE) {
-                    const text = node.textContent.trim();
-                    // Replace only if it's visible text (not empty)
-                    if (text.length > 0) {
-                        node.textContent = replaceQuotes(node.textContent);
-                    }
-                } else {
-                    node.childNodes.forEach(traverseAndReplaceText);
-                }
-            }
-
-            // Run only on the visible body content (not head)
             traverseAndReplaceText(document.body);
         });
+
+        // Observe DOM changes for dynamically added content (like modals)
+        if (typeof MutationObserver !== 'undefined') {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === Node.ELEMENT_NODE) {
+                            traverseAndReplaceText(node);
+                        }
+                    });
+                });
+            });
+
+            // Start observing when DOM is ready
+            document.addEventListener('DOMContentLoaded', function() {
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+            });
+        }
     </script>
 
 

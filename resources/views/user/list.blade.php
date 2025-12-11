@@ -1299,8 +1299,12 @@
                 color: #333;
                 text-decoration: none;
                 transition: color 0.2s;
-                font-family: asswat-bold, asswat-regular;
                 font-size: 16px;
+            }
+
+            .admin-actions a i {
+                font-family: "Font Awesome 6 Free";
+                font-weight: 900;
             }
 
             .admin-actions a:hover {

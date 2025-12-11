@@ -1355,29 +1355,27 @@
                             <div class="card-body">
 
 
-                                @if ($content->status === 'published' || $content->status === 'scheduled')
-                                @else
-                                    {{-- SCHEDULE PUBLISH --}}
-                                    <div class="mb-3">
-                                        <label class="form-label d-block mb-2" for="publish_at">
-                                            <span data-ar="جدولة النشر" data-en="Schedule Publish">جدولة النشر</span>
-                                        </label>
-                                        <input type="datetime-local" id="publish_at" name="published_at"
-                                            class="form-control"
-                                            value="{{ old('published_at', $content->published_at ? \Carbon\Carbon::parse($content->published_at)->format('Y-m-d\TH:i') : '') }}"
-                                            onclick="this.showPicker && this.showPicker()"
-                                            onfocus="this.showPicker && this.showPicker()">
-                                        <small class="text-muted d-block mt-2" data-ar="اختياري: اترك فارغاً للنشر الفوري"
-                                            data-en="Optional: Leave empty for immediate publish">
-                                            اختياري: اترك فارغاً للنشر الفوري
-                                        </small>
-                                        <small class="text-muted d-block"
-                                            data-ar="المنطقة الزمنية: شمال أفريقيا/الجزائر (GMT+1)"
-                                            data-en="Timezone: Africa/Algiers (GMT+1)">
-                                            المنطقة الزمنية: شمال أفريقيا/الجزائر (GMT+1)
-                                        </small>
-                                    </div>
-                                @endif
+
+                                {{-- SCHEDULE PUBLISH --}}
+                                <div class="mb-3">
+                                    <label class="form-label d-block mb-2" for="publish_at">
+                                        <span data-ar="جدولة النشر" data-en="Schedule Publish">جدولة النشر</span>
+                                    </label>
+                                    <input type="datetime-local" id="publish_at" name="published_at"
+                                        class="form-control"
+                                        value="{{ old('published_at', $content->published_at ? \Carbon\Carbon::parse($content->published_at)->format('Y-m-d\TH:i') : \Carbon\Carbon::parse($content->published_date)->format('Y-m-d\TH:i')) }}"
+                                        onclick="this.showPicker && this.showPicker()"
+                                        onfocus="this.showPicker && this.showPicker()">
+                                    <small class="text-muted d-block mt-2" data-ar="اختياري: اترك فارغاً للنشر الفوري"
+                                        data-en="Optional: Leave empty for immediate publish">
+                                        اختياري: اترك فارغاً للنشر الفوري
+                                    </small>
+                                    <small class="text-muted d-block"
+                                        data-ar="المنطقة الزمنية: شمال أفريقيا/الجزائر (GMT+1)"
+                                        data-en="Timezone: Africa/Algiers (GMT+1)">
+                                        المنطقة الزمنية: شمال أفريقيا/الجزائر (GMT+1)
+                                    </small>
+                                </div>
 
 
                                 {{-- LATEST NEWS CHECKBOX --}}
@@ -1719,12 +1717,12 @@
             const container = input.closest('.tags-search-container');
             const indropdown = container.querySelector('.indropdown');
             const items = indropdown.querySelectorAll('li');
-            
+
             // Show only first 15 items
             items.forEach((li, index) => {
                 li.style.display = index < 15 ? '' : 'none';
             });
-            
+
             indropdown.style.display = 'block';
         }
 
@@ -1750,13 +1748,15 @@
                 .then(tags => {
                     // Get selected tags IDs
                     const selectedContainer = document.getElementById('tags_id-selected-container');
-                    const selectedIds = Array.from(selectedContainer.querySelectorAll('.tag-item')).map(el => el.dataset.id);
+                    const selectedIds = Array.from(selectedContainer.querySelectorAll('.tag-item')).map(el => el.dataset
+                        .id);
 
                     // Clear and rebuild the list
                     optionsList.innerHTML = '';
-                    
+
                     if (tags.length === 0) {
-                        optionsList.innerHTML = '<li style="padding: 10px 15px; text-align: center; color: var(--bs-secondary-color);">لا توجد نتائج</li>';
+                        optionsList.innerHTML =
+                            '<li style="padding: 10px 15px; text-align: center; color: var(--bs-secondary-color);">لا توجد نتائج</li>';
                     } else {
                         tags.forEach(tag => {
                             const li = document.createElement('li');
@@ -2944,8 +2944,7 @@
                             // window.location.href = data.redirect;
                         }, 2500);
                     }
-                }
-                else {
+                } else {
                     // Error handling
                     let errorMessage = 'حدث خطأ أثناء حفظ المحتوى';
 
