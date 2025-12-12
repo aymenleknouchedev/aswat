@@ -82,7 +82,7 @@ class ReadMore extends Model
             },
             'category'
         ])
-        ->select(['id', 'title', 'summary', 'created_at', 'category_id'])
+        ->select(['id', 'title', 'summary', 'created_at', 'category_id', 'shortlink'])
         ->where('status', 'published')
         ->find($contentId);
 
@@ -104,6 +104,7 @@ class ReadMore extends Model
             'image_url' => $imagePath,
             'summary' => \Illuminate\Support\Str::limit($content->summary ?? '', 150),
             'link' => url('/news/' . urlencode($content->title)),
+            'shortlink' => $content->shortlink ?? null,
             'created_at' => $content->created_at->format('Y-m-d H:i:s'),
         ];
     }
@@ -119,7 +120,7 @@ class ReadMore extends Model
             },
             'category'
         ])
-        ->select(['id', 'title', 'summary', 'created_at', 'category_id'])
+        ->select(['id', 'title', 'summary', 'created_at', 'category_id', 'shortlink'])
         ->where('status', 'published')
         ->whereIn('id', $contentIds)
         ->get();
@@ -139,6 +140,7 @@ class ReadMore extends Model
                 'image_url' => $imagePath,
                 'summary' => \Illuminate\Support\Str::limit($content->summary ?? '', 150),
                 'link' => url('/news/' . urlencode($content->title)),
+                'shortlink' => $content->shortlink ?? null,
                 'created_at' => $content->created_at->format('Y-m-d H:i:s'),
             ];
         })->keyBy('id');

@@ -2406,6 +2406,11 @@
 
             // Render a ReadMore card with fetched data inside TinyMCE
             function renderReadMoreCardInEditor(placeholderBlock, contentData) {
+                // Set the shortlink data attribute for click handler
+                if (contentData.shortlink) {
+                    placeholderBlock.setAttribute('data-shortlink', contentData.shortlink);
+                }
+
                 // Build the HTML for the ReadMore card content
                 let html = '<span class="read-more-label-text">اقرأ أيضاً</span>';
 

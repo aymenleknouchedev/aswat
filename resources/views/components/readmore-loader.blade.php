@@ -77,6 +77,11 @@
                 placeholder.remove();
             }
 
+            // Set the shortlink data attribute for click handler
+            if (contentData.shortlink) {
+                placeholderBlock.setAttribute('data-shortlink', contentData.shortlink);
+            }
+
             // Build the HTML for the ReadMore card content
             let html = '<span class="read-more-label-text">اقرأ أيضاً</span>';
 
