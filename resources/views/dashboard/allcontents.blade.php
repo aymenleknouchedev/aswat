@@ -371,9 +371,9 @@
                                                     </td>
 
                                                     <td>
-                                                        @if ($content->user)
+                                                        @if ($content->updatedByUser)
                                                             <span
-                                                                title="{{ $content->user->name }}">{{ Str::limit($content->user->name, 12) }}</span>
+                                                                title="{{ $content->updatedByUser->name }}">{{ Str::limit($content->updatedByUser->name, 12) }}</span>
                                                         @else
                                                             <span class="text-muted">-</span>
                                                         @endif
