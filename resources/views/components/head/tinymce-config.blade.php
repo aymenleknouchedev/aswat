@@ -2198,9 +2198,10 @@
         body{font-family:Arial,Helvetica,sans-serif !important;font-size:18pt !important;line-height:1.6 !important;}
         img.tiny-sm,video.tiny-sm{width:280px;height:auto;max-width:100%;}
 
-        /* Facebook post placeholder inside editor */
-        .fb-post{
-            border:1px solid #d0d7e2;
+        /* Facebook embed block placeholder inside editor */
+        .fb-embed-block{
+            display:block;
+            border:2px dashed #1877f2;
             background:#f5f7fb;
             padding:0.75rem 1rem;
             margin:1rem 0;
@@ -2208,14 +2209,22 @@
             text-align:center;
             font-size:0.9rem;
             color:#41516b;
+            cursor:pointer;
         }
-        .fb-post .fb-xfbml-parse-ignore a{
-            color:#1877f2;
-            text-decoration:none;
+        .fb-embed-block .fb-embed-title{
+            font-weight:700;
+            margin-bottom:0.25rem;
+        }
+        .fb-embed-block .fb-embed-url{
+            font-size:0.8rem;
+            direction:ltr;
+            unicode-bidi:bidi-override;
             word-break:break-all;
+            color:#1877f2;
         }
-        .fb-post .fb-xfbml-parse-ignore a:hover{
-            text-decoration:underline;
+        /* Hide actual fb-post markup inside editor; only show placeholder */
+        .fb-embed-block .fb-post{
+            display:none;
         }
         .clickable-term{color:#0066cc;text-decoration:underline;cursor:pointer;padding:2px 4px;border-radius:3px;transition:background-color 0.2s;background-color:transparent;}
         .clickable-term:hover{background-color:#e6f2ff;text-decoration:none;}
@@ -2542,10 +2551,14 @@
 
                     const safeUrl = escapeHtml(trimmedUrl);
                     const fbPostHtml = `
-                        <div class="fb-post" data-href="${safeUrl}" data-show-text="true">
-                            <blockquote class="fb-xfbml-parse-ignore" cite="${safeUrl}">
-                                <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>
-                            </blockquote>
+                        <div class="fb-embed-block mceNonEditable" contenteditable="false" data-fb-url="${safeUrl}">
+                            <div class="fb-embed-title">منشور فيسبوك</div>
+                            <div class="fb-embed-url">${safeUrl}</div>
+                            <div class="fb-post" data-href="${safeUrl}" data-show-text="true">
+                                <blockquote class="fb-xfbml-parse-ignore" cite="${safeUrl}">
+                                    <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>
+                                </blockquote>
+                            </div>
                         </div>
                     `;
 

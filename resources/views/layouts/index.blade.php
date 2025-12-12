@@ -28,6 +28,12 @@
         * {
             -webkit-tap-highlight-color: transparent;
         }
+
+        /* Hide TinyMCE Facebook placeholder text/URL on the public site */
+        .fb-embed-block .fb-embed-title,
+        .fb-embed-block .fb-embed-url {
+            display: none;
+        }
     </style>
     <script>
         // Replace "..." with «...» inside visible text only
