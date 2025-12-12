@@ -241,10 +241,12 @@
                             <audio id="previewAudio" controls style="width: 100%; max-width: 600px; margin: 0 auto; display: block;"></audio>
                         </div>
                         
-                        <!-- Document Preview -->
-                        <div id="previewDocumentContainer" style="display: none; text-align: center;">
-                            <em class="icon ni ni-file-text" style="font-size: 5rem; color: #666; margin-bottom: 2rem; display: block;"></em>
-                            <p id="previewDocumentName" style="color: #999; font-size: 1.2rem;"></p>
+                        <!-- Document / PDF Preview -->
+                        <div id="previewDocumentContainer" style="display: none; text-align: center; width: 100%; height: 100%; padding: 2rem; box-sizing: border-box;">
+                            <em id="previewDocumentIcon" class="icon ni ni-file-text" style="font-size: 5rem; color: #666; margin-bottom: 2rem; display: block;"></em>
+                            <p id="previewDocumentName" style="color: #999; font-size: 1.2rem; margin-bottom: 1.5rem;"></p>
+                            <!-- Inline PDF viewer when available -->
+                            <iframe id="previewPdf" src="" style="display: none; width: 100%; max-width: 1000px; height: 80vh; border: none; background: #fff; margin: 0 auto;"></iframe>
                         </div>
                         
                         <!-- YouTube Preview -->
@@ -831,6 +833,11 @@
                     document.getElementById('previewAudioContainer').style.display = 'none';
                     document.getElementById('previewDocumentContainer').style.display = 'none';
                     document.getElementById('previewYoutube').style.display = 'none';
+                    const pdfFrame = document.getElementById('previewPdf');
+                    if (pdfFrame) {
+                        pdfFrame.style.display = 'none';
+                        pdfFrame.src = '';
+                    }
 
                     // Update info
                     document.getElementById('previewName').textContent = mediaName || '-';
@@ -885,8 +892,32 @@
                         audio.src = mediaPath;
                         document.getElementById('previewAudioContainer').style.display = 'block';
                     } else {
-                        document.getElementById('previewDocumentName').textContent = mediaName || 'ملف';
-                        document.getElementById('previewDocumentContainer').style.display = 'block';
+                        const docContainer = document.getElementById('previewDocumentContainer');
+                        const docNameEl = document.getElementById('previewDocumentName');
+                        const docIconEl = document.getElementById('previewDocumentIcon');
+                        const pdfFrameEl = document.getElementById('previewPdf');
+
+                        if (docNameEl) docNameEl.textContent = mediaName || 'ملف';
+
+                        // Detect PDF by extension (ignore query string)
+                        let isPdf = false;
+                        if (typeof mediaPath === 'string') {
+                            const cleanPath = mediaPath.split('?')[0].toLowerCase();
+                            isPdf = cleanPath.endsWith('.pdf');
+                        }
+
+                        if (isPdf && pdfFrameEl) {
+                            // Show inline PDF viewer
+                            if (docIconEl) docIconEl.style.display = 'none';
+                            pdfFrameEl.src = mediaPath;
+                            pdfFrameEl.style.display = 'block';
+                        } else {
+                            // Fallback: just show icon + name
+                            if (docIconEl) docIconEl.style.display = 'block';
+                            if (pdfFrameEl) pdfFrameEl.style.display = 'none';
+                        }
+
+                        if (docContainer) docContainer.style.display = 'block';
                     }
 
                     // Show modal
@@ -956,6 +987,44 @@
                     });
                 });
             });
+
+            // Copy link buttons (for documents/PDFs)
+            document.querySelectorAll('.copy-link-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const path = this.getAttribute('data-path');
+                    if (!path) return;
+
+                    const copyText = path;
+
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(copyText)
+                            .then(() => {
+                                showAlert('success', 'تم نسخ رابط الملف', 'File link copied');
+                            })
+                            .catch(() => {
+                                fallbackCopyText(copyText);
+                            });
+                    } else {
+                        fallbackCopyText(copyText);
+                    }
+                });
+            });
+
+            function fallbackCopyText(text) {
+                const tempInput = document.createElement('input');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand('copy');
+                    showAlert('success', 'تم نسخ رابط الملف', 'File link copied');
+                } catch (err) {
+                    console.error('Copy failed', err);
+                    showAlert('error', 'تعذر نسخ الرابط', 'Unable to copy link');
+                }
+                document.body.removeChild(tempInput);
+            }
         }
 
         // Handle edit form submission - FIXED VERSION

@@ -30,6 +30,11 @@
     </div>
 @else
     @foreach ($medias as $media)
+        @php
+            $urlPath = parse_url($media->path, PHP_URL_PATH) ?? '';
+            $extension = strtolower(pathinfo($urlPath, PATHINFO_EXTENSION));
+            $isPdf = $extension === 'pdf';
+        @endphp
         <div class="col-xl-3 col-lg-4 col-md-6 col-12">
             <div class="card media-card media-card--tall">
                 <div class="card-inner">
@@ -62,11 +67,23 @@
                             </div>
                         @else
                             <div class="media-preview-16-9 document-preview"
-                                style="width: 100%; height: 180px; display: flex; align-items: center; justify-content: center;">
-                                <div class="document-content">
-                                    <em class="icon ni ni-file-text"></em>
-                                    <div class="document-title">{{ $media->name }}</div>
+                                style="position: relative; width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; @if($isPdf) background: linear-gradient(135deg, #ff9a9e 0%, #ff6a88 50%, #ff99ac 100%); @else background: #f3f4f6; @endif">
+                                <div class="document-content" style="text-align: center; color: {{ $isPdf ? '#fff' : '#111827' }};">
+                                    @if($isPdf)
+                                        <i class="fa fa-solid fa-file" style="font-size: 3rem; margin-bottom: 0.5rem;"></i>
+                                        <div style="font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase;">PDF</div>
+                                    @else
+                                        <em class="icon ni ni-file-text" style="font-size: 3rem; margin-bottom: 0.5rem;"></em>
+                                    @endif
                                 </div>
+
+                                @if(in_array($media->media_type, ['file', 'document']))
+                                    <button type="button" class="btn btn-icon btn-xs btn-outline-light copy-link-btn"
+                                        data-path="{{ $media->path }}" title="نسخ رابط الملف"
+                                        style="position: absolute; top: 6px; left: 6px; z-index: 2;">
+                                        <em class="icon ni ni-link"></em>
+                                    </button>
+                                @endif
                             </div>
                         @endif
                     </div>
