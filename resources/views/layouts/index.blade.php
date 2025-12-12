@@ -38,8 +38,28 @@
         /* Add vertical spacing around Facebook embeds */
         .fb-embed-block {
             margin: 1.5rem 0;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        
+        .fb-embed-block:hover {
+            opacity: 0.8;
         }
     </style>
+    <script>
+        // Make Facebook embeds clickable to redirect to Facebook
+        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('click', function(e) {
+                const fbBlock = e.target.closest('.fb-embed-block');
+                if (fbBlock) {
+                    const fbUrl = fbBlock.getAttribute('data-fb-url');
+                    if (fbUrl) {
+                        window.open(fbUrl, '_blank');
+                    }
+                }
+            });
+        });
+    </script>
     <script>
         // Replace "..." with «...» inside visible text only
         function replaceQuotes(str) {

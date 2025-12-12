@@ -2551,10 +2551,10 @@
 
                     const safeUrl = escapeHtml(trimmedUrl);
                     const fbPostHtml = `
-                        <div class="fb-embed-block mceNonEditable" contenteditable="false" data-fb-url="${safeUrl}">
+                        <div class="fb-embed-block mceNonEditable" contenteditable="false" data-fb-url="${safeUrl}" onclick="window.open('${safeUrl}', '_blank')" style="cursor: pointer;">
                             <div class="fb-embed-title">منشور فيسبوك</div>
                             <div class="fb-embed-url">${safeUrl}</div>
-                            <div class="fb-post" data-href="${safeUrl}" data-show-text="true">
+                            <div class="fb-post" data-href="${safeUrl}" data-show-text="false">
                                 <blockquote class="fb-xfbml-parse-ignore" cite="${safeUrl}">
                                     <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>
                                 </blockquote>
