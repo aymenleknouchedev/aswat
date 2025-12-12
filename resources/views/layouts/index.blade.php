@@ -34,6 +34,11 @@
         .fb-embed-block .fb-embed-url {
             display: none;
         }
+
+        /* Add vertical spacing around Facebook embeds */
+        .fb-embed-block {
+            margin: 1.5rem 0;
+        }
     </style>
     <script>
         // Replace "..." with «...» inside visible text only
