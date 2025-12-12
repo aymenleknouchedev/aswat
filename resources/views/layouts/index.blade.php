@@ -39,11 +39,14 @@
         .fb-embed-block {
             margin: 1.5rem 0;
             cursor: pointer;
-            transition: opacity 0.2s;
+            position: relative;
         }
-        
-        .fb-embed-block:hover {
-            opacity: 0.8;
+
+        /* Disable all interactions with Facebook iframe */
+        .fb-embed-block iframe,
+        .fb-embed-block .fb-post,
+        .fb-embed-block .fb-post * {
+            pointer-events: none !important;
         }
     </style>
     <script>
