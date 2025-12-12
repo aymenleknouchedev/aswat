@@ -2197,6 +2197,26 @@
         content_style: `
         body{font-family:Arial,Helvetica,sans-serif !important;font-size:18pt !important;line-height:1.6 !important;}
         img.tiny-sm,video.tiny-sm{width:280px;height:auto;max-width:100%;}
+
+        /* Facebook post placeholder inside editor */
+        .fb-post{
+            border:1px solid #d0d7e2;
+            background:#f5f7fb;
+            padding:0.75rem 1rem;
+            margin:1rem 0;
+            border-radius:6px;
+            text-align:center;
+            font-size:0.9rem;
+            color:#41516b;
+        }
+        .fb-post .fb-xfbml-parse-ignore a{
+            color:#1877f2;
+            text-decoration:none;
+            word-break:break-all;
+        }
+        .fb-post .fb-xfbml-parse-ignore a:hover{
+            text-decoration:underline;
+        }
         .clickable-term{color:#0066cc;text-decoration:underline;cursor:pointer;padding:2px 4px;border-radius:3px;transition:background-color 0.2s;background-color:transparent;}
         .clickable-term:hover{background-color:#e6f2ff;text-decoration:none;}
 
@@ -2509,6 +2529,30 @@
                 }
             });
 
+            // ---- FACEBOOK POST EMBED BUTTON ----
+            editor.ui.registry.addButton('vvcFacebookPost', {
+                text: 'فيسبوك',
+                tooltip: 'إدراج منشور فيسبوك',
+                onAction: () => {
+                    const url = window.prompt('أدخل رابط منشور فيسبوك');
+                    if (!url) return;
+
+                    const trimmedUrl = url.trim();
+                    if (!trimmedUrl) return;
+
+                    const safeUrl = escapeHtml(trimmedUrl);
+                    const fbPostHtml = `
+                        <div class="fb-post" data-href="${safeUrl}" data-show-text="true">
+                            <blockquote class="fb-xfbml-parse-ignore" cite="${safeUrl}">
+                                <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>
+                            </blockquote>
+                        </div>
+                    `;
+
+                    editor.insertContent(fbPostHtml);
+                }
+            });
+
             // ---- CONTEXT MENU (Right-click) ----
             editor.ui.registry.addContextMenu('copy_cut_paste', {
                 predicate: (node) => true,
@@ -2566,7 +2610,7 @@
         toolbar: [
             'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
             '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
-            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcPaste',
+            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcPaste',
             '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
         ].join(' '),
         fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',
@@ -2605,7 +2649,7 @@
         autosave_restore_when_empty: false,
         autosave_retention: '2m',
         // Extended valid elements for custom HTML
-        extended_valid_elements: 'script[src|async|charset],blockquote[class|lang|dir],iframe[src|width|height|frameborder|allowfullscreen]',
+        extended_valid_elements: 'script[src|async|charset],blockquote[class|lang|dir],iframe[src|width|height|frameborder|allowfullscreen|allow|scrolling|style]',
         valid_children: '+body[script],+div[script]',
         valid_elements: '*[*]'
     });
