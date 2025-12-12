@@ -7,13 +7,10 @@
         <div class="nk-app-root">
             <div class="nk-main">
                 @include('dashboard.components.sidebar')
-
                 <div class="nk-wrap">
                     @include('dashboard.components.header')
-
                     <div class="nk-content container">
                         <div class="container-fluid bg-white p-4 rounded-3 shadow-sm">
-
                             <!-- Header -->
                             <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
                                 <h5 class="fw-bold mb-2 mb-sm-0">جميع المحتوى</h5>
@@ -21,7 +18,6 @@
                                     <em class="icon ni ni-plus"></em> <span>إضافة محتوى</span>
                                 </a>
                             </div>
-
                             <!-- ================== BULK DELETE SECTION ================== -->
                             <div id="bulkDeleteSection"
                                 class="alert alert-warning d-none mb-4 d-flex justify-content-between align-items-center"
@@ -41,11 +37,9 @@
                                     </button>
                                 </div>
                             </div>
-
                             <!-- ================== FILTERS ================== -->
                             <form action="{{ route('dashboard.contents.index') }}" method="GET" class="mb-3">
                                 <div class="row g-2 align-items-center justify-content-center">
-
                                     <div class="col-12 col-md-6 col-lg-3">
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text bg-light text-muted">
@@ -55,7 +49,6 @@
                                                 value="{{ request('search') }}" placeholder="بحث...">
                                         </div>
                                     </div>
-
                                     <div class="col-6 col-md-3 col-lg-2">
                                         <select name="section" id="sectionFilter" class="form-select form-select-sm">
                                             <option value="">الأقسام</option>
@@ -67,7 +60,6 @@
                                             @endforeach
                                         </select>
                                     </div>
-
                                     <div class="col-6 col-md-3 col-lg-2">
                                         <select name="status" id="statusFilter" class="form-select form-select-sm">
                                             <option value="">الحالات</option>
@@ -84,7 +76,6 @@
                                             </option>
                                         </select>
                                     </div>
-
                                     <div class="col-12 col-md-6 col-lg-2">
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text bg-light text-muted">
@@ -95,9 +86,9 @@
                                                 placeholder="التاريخ">
                                         </div>
                                     </div>
-
                                     <!-- Buttons -->
-                                    <div class="col-12 col-md-6 col-lg-3 d-flex gap-2 align-items-center justify-content-center">
+                                    <div
+                                        class="col-12 col-md-6 col-lg-3 d-flex gap-2 align-items-center justify-content-center">
                                         <button class="btn btn-sm btn-primary flex-grow-1" type="submit">
                                             <em class="icon ni ni-filter me-1"></em> تصفية
                                         </button>
@@ -106,10 +97,8 @@
                                             <em class="icon ni ni-undo"></em>
                                         </a>
                                     </div>
-
                                 </div>
                             </form>
-
                             <!-- ================== ALERTS ================== -->
                             @if (session('success'))
                                 <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
@@ -344,7 +333,6 @@
                                                             -
                                                         @endif
                                                     </td>
-
                                                     <td>
                                                         @php
                                                             $updatedRaw = $content->updated_at;
@@ -369,7 +357,6 @@
                                                         <small
                                                             class="text-muted">{{ $updatedDate ? $updatedDate->format('H:i:s') : '' }}</small>
                                                     </td>
-
                                                     <td>
                                                         @if ($content->updatedByUser)
                                                             <span
@@ -418,7 +405,7 @@
                                                                             @endif
                                                                         </a>
                                                                     </li>
-                                                                    
+
                                                                     <li>
                                                                         <hr class="dropdown-divider">
                                                                     </li>
@@ -485,6 +472,7 @@
         }
 
         @media (max-width: 768px) {
+
             .form-control-sm,
             .form-select-sm {
                 font-size: 0.8rem;

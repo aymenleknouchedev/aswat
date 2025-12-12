@@ -1774,7 +1774,7 @@
             }
 
             .mobile-article-content {
-                font-size: 18px !important;
+                font-size: 16px !important;
                 font-family: asswat-regular;
                 color: #000000;
                 line-height: 1.9;
