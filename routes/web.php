@@ -28,6 +28,24 @@ Route::get('/storage-link', function () {
     return response('The [public/storage] directory has been re-linked.', 200);
 });
 
+// Debug weather detection
+Route::get('/debug/weather', function () {
+    if (!config('app.debug')) {
+        return response('Debug mode is disabled.', 403);
+    }
+    
+    $weatherService = app(\App\Services\WeatherService::class);
+    
+    // Test with Cairo, Egypt IP
+    $weather = $weatherService->testWithIP('197.0.32.1');
+    
+    return response()->json([
+        'weather' => $weather,
+        'message' => 'Weather data with geolocation detection (Testing with Egypt IP)',
+        'tested_ip' => '197.0.32.1'
+    ]);
+});
+
 Route::get('/seed', function () {
     Artisan::call('db:seed', [
         '--force' => true

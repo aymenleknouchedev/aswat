@@ -35,9 +35,10 @@ return [
         ],
     ],
 
-    // OpenWeather configuration
+    // Weather configuration - Using Open-Meteo (free, unlimited)
     'openweather' => [
-        'key' => env('WEATHER_API_KEY'),
+        // API key optional - if empty, uses Open-Meteo free API
+        'key' => env('WEATHER_API_KEY', ''),
         // Default city; can be overridden or localized later
         'city' => env('WEATHER_CITY', 'Algiers,DZ'),
         // Cache TTL seconds
@@ -46,7 +47,7 @@ return [
         'units' => env('WEATHER_UNITS', 'metric'),
         // Language (ar for Arabic)
         'lang' => env('WEATHER_LANG', 'ar'),
-        // Fallback coordinates for keyless provider (Open-Meteo)
+        // Fallback coordinates for Open-Meteo (free provider)
         'lat' => env('WEATHER_LAT', 36.7538),
         'lon' => env('WEATHER_LON', 3.0588),
         // Timezone for daily min/max calculation window
