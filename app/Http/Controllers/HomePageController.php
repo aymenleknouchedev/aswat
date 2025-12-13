@@ -33,8 +33,11 @@ class HomePageController extends Controller
         $results = collect();
 
         if ($query) {
-            $results = Content::where('title', 'like', '%' . $query . '%')
-                ->orWhere('summary', 'like', '%' . $query . '%')
+            $results = Content::where('status', 'published')
+                ->where(function($q) use ($query) {
+                    $q->where('title', 'like', '%' . $query . '%')
+                      ->orWhere('summary', 'like', '%' . $query . '%');
+                })
                 ->latest()
                 ->take(20)
                 ->get();
@@ -87,17 +90,20 @@ class HomePageController extends Controller
                 ->whereNotIn('id', $hidetrends)
                 ->where('importance', 1)
                 ->latest()
+                ->where('status', 'published')
                 ->take($count)
                 ->get();
         }
 
         $algeriaLatestImportant = Content::where('section_id', $sections['الجزائر'] ?? null)
             ->where('importance', 2)
+            ->where('status', 'published')
             ->latest()
             ->take(4)
             ->get();
 
         $topViewed = Content::where('section_id', $sections['منوعات'] ?? null)
+            ->where('status', 'published')
             ->orderByDesc('read_count')
             ->take(5)
             ->get();
@@ -127,6 +133,7 @@ class HomePageController extends Controller
         foreach ($sectionstitles as $name) {
             $sectionId = Section::where('name', $name)->value('id');
             $sectionscontents[$name] = Content::where('section_id', $sectionId)
+                ->where('status', 'published')
                 ->latest()
                 ->whereNotIn('id', $topContentIds)
                 ->whereNotIn('id', $hidetrends)
@@ -142,6 +149,7 @@ class HomePageController extends Controller
     public function latestNews()
     {
         $latestContents = Content::where('is_latest', 1)
+            ->where('status', 'published')
             ->latest()
             ->take(20)
             ->get();
@@ -152,6 +160,7 @@ class HomePageController extends Controller
     public function photosApi()
     {
         $photos = Content::where('section_id', Section::where('name', 'صور')->value('id'))
+            ->where('status', 'published')
             ->latest()
             ->take(3)
             ->get();
@@ -196,6 +205,7 @@ class HomePageController extends Controller
     public function latestNewsApi()
     {
         $latestContents = Content::where('is_latest', 1)
+            ->where('status', 'published')
             ->latest()
             ->take(5)
             ->get(['title', 'shortlink'])
@@ -219,6 +229,7 @@ class HomePageController extends Controller
 
         // المقالة الأولى فقط للـ reviews
         $reviews = Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->latest()
             ->first();
 
@@ -228,6 +239,7 @@ class HomePageController extends Controller
         $skip = ($page - 1) * $perPage;
 
         $otherReviews = Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->latest()
             ->skip(1 + $skip) // نتجاوز المقالة الأولى
             ->take($perPage)
@@ -271,6 +283,7 @@ class HomePageController extends Controller
 
         // المقالة الأولى كـ Featured
         $featured = Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->latest()
             ->first();
 
@@ -280,6 +293,7 @@ class HomePageController extends Controller
         $skip = ($page - 1) * $perPage;
 
         $otherFiles = Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->latest()
             ->skip(1 + $skip) // نتجاوز الـ featured
             ->take($perPage)
@@ -313,6 +327,7 @@ class HomePageController extends Controller
 
         // المقالة الأولى كـ Featured
         $featured = Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->latest()
             ->first();
 
@@ -322,6 +337,7 @@ class HomePageController extends Controller
         $skip = ($page - 1) * $perPage;
 
         $otherInvestigations = Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->latest()
             ->skip(1 + $skip) // نتجاوز الـ featured
             ->take($perPage)
@@ -355,6 +371,7 @@ class HomePageController extends Controller
 
         // المقالة الأولى كـ Featured
         $featured = Content::where('section_id', $otherVideos)
+            ->where('status', 'published')
             ->latest()
             ->first();
 
@@ -364,6 +381,7 @@ class HomePageController extends Controller
         $skip = ($page - 1) * $perPage;
 
         $otherVideos = Content::where('section_id', $otherVideos)
+            ->where('status', 'published')
             ->latest()
             ->skip(1 + $skip) // نتجاوز الـ featured
             ->take($perPage)
@@ -399,6 +417,7 @@ class HomePageController extends Controller
 
         // المقالة الأولى كـ Featured
         $featured = Content::where('section_id', $otherPodcasts)
+            ->where('status', 'published')
             ->latest()
             ->first();
 
@@ -408,6 +427,7 @@ class HomePageController extends Controller
         $skip = ($page - 1) * $perPage;
 
         $otherPodcasts = Content::where('section_id', $otherPodcasts)
+            ->where('status', 'published')
             ->latest()
             ->skip(1 + $skip) // نتجاوز الـ featured
             ->take($perPage)
@@ -443,6 +463,7 @@ class HomePageController extends Controller
 
         // المقالة الأولى كـ Featured
         $featured = Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->latest()
             ->first();
 
@@ -452,6 +473,7 @@ class HomePageController extends Controller
         $skip = ($page - 1) * $perPage;
 
         $otherPhotos = Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->latest()
             ->skip(1 + $skip) // نتجاوز الـ featured
             ->take($perPage)
@@ -542,6 +564,7 @@ class HomePageController extends Controller
 
         // === أول 4 مقالات ثابتة ===
         $contents = \App\Models\Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->latest()
             ->take($count)
             ->get();
@@ -552,6 +575,7 @@ class HomePageController extends Controller
         $skip = $count + (($page - 1) * $perPage);
 
         $moreContents = \App\Models\Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->latest()
             ->skip($skip)
             ->take($perPage)
@@ -559,11 +583,13 @@ class HomePageController extends Controller
 
         // Top viewed + suggestions
         $topViewed = Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->orderByDesc('read_count')
             ->take(5)
             ->get();
 
         $suggestions = Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->where('created_at', '>=', now()->subMonth())
             ->inRandomOrder()
             ->take(5)
@@ -618,6 +644,7 @@ class HomePageController extends Controller
         $skip = $count + (($page - 1) * $perPage);
 
         $moreContents = Content::where('section_id', $sectionId)
+            ->where('status', 'published')
             ->latest()
             ->skip($skip)
             ->take($perPage)
@@ -696,6 +723,7 @@ class HomePageController extends Controller
 
         // ✅ جلب المقالات حسب النوع
         $articles = Content::where($column, $id)
+            ->where('status', 'published')
             ->latest()
             ->skip($skip)
             ->take($perPage)
@@ -709,7 +737,7 @@ class HomePageController extends Controller
         }
 
         // ✅ إذا الطلب عادي → نعرض الصفحة الكاملة
-        $articles = Content::where($column, $id)->latest()->take($perPage)->get();
+        $articles = Content::where($column, $id)->where('status', 'published')->latest()->take($perPage)->get();
 
         return view('user.category', [
             'theme' => $theme,
@@ -727,6 +755,7 @@ class HomePageController extends Controller
 
         // Get articles where this writer is associated through the many-to-many relationship
         $articles = $writer->contents()
+            ->where('status', 'published')
             ->latest()
             ->paginate($perPage);
 
@@ -754,6 +783,7 @@ class HomePageController extends Controller
         $articles = Content::whereHas('tags', function ($query) use ($tag) {
             $query->where('tags.id', $tag);
         })
+            ->where('status', 'published')
             ->latest()
             ->skip($skip)
             ->take($perPage)
@@ -767,6 +797,7 @@ class HomePageController extends Controller
         $articles = Content::whereHas('tags', function ($query) use ($tag) {
             $query->where('tags.id', $tag);
         })
+            ->where('status', 'published')
             ->latest()
             ->take($perPage)
             ->get();
