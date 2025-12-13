@@ -1310,10 +1310,11 @@
 
                         <div class="mt-4 d-flex">
                             <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="تحديث" data-en="Update"
-                                id="updateButton" data-action="update">تحديث</button>
+                                id="updateButton" data-action="update" onclick="markForRefresh()">تحديث</button>
 
                             <a href="{{ route('news.show', $content->shortlink) }}" target="_blank"
-                                class="btn btn-secondary btn-lg" id="previewButton" style="margin-left: 10px;">
+                                class="btn btn-secondary btn-lg" id="previewButton" style="margin-left: 10px;" 
+                                onclick="openPreview(event)">
                                 معاينة
                             </a>
                             @canDo('publish_content')
@@ -1333,6 +1334,51 @@
                     </div>
 
                     <script>
+                        // ========== PREVIEW WINDOW MANAGEMENT ==========
+                        let previewWindow = null;
+                        let shouldRefreshPreview = false;
+
+                        // Open or focus preview window
+                        function openPreview(event) {
+                            event.preventDefault();
+                            const previewUrl = '{{ route('news.show', $content->shortlink) }}';
+                            
+                            if (previewWindow && !previewWindow.closed) {
+                                previewWindow.focus();
+                            } else {
+                                previewWindow = window.open(previewUrl, 'PreviewWindow');
+                            }
+                        }
+
+                        // Mark that preview should refresh after form submission
+                        function markForRefresh() {
+                            shouldRefreshPreview = true;
+                        }
+
+                        // Listen for successful form submission
+                        document.getElementById('contentForm').addEventListener('submit', function(e) {
+                            if (shouldRefreshPreview) {
+                                // Store in sessionStorage so we can refresh after page reload
+                                sessionStorage.setItem('refreshPreview', 'true');
+                            }
+                        });
+
+                        // Check if we need to refresh preview after page load
+                        window.addEventListener('DOMContentLoaded', function() {
+                            if (sessionStorage.getItem('refreshPreview') === 'true') {
+                                sessionStorage.removeItem('refreshPreview');
+                                
+                                // Try to refresh the preview window if it's still open
+                                if (previewWindow && !previewWindow.closed) {
+                                    try {
+                                        previewWindow.location.reload();
+                                    } catch (e) {
+                                        console.log('Could not refresh preview window:', e);
+                                    }
+                                }
+                            }
+                        });
+
                         // ========== SET STATUS FUNCTION ==========
                         function setStatus(button, statusValue) {
                             // Create or update hidden input for status
@@ -1345,6 +1391,9 @@
                                 document.getElementById('contentForm').appendChild(statusInput);
                             }
                             statusInput.value = statusValue;
+                            
+                            // Also mark for refresh when publishing
+                            shouldRefreshPreview = true;
                         }
                     </script>
 
