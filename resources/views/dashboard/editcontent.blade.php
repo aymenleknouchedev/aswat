@@ -1345,6 +1345,12 @@
                             
                             if (previewWindow && !previewWindow.closed) {
                                 previewWindow.focus();
+                                // Reload the page when clicking preview again
+                                try {
+                                    previewWindow.location.reload();
+                                } catch (e) {
+                                    console.log('Could not refresh preview window:', e);
+                                }
                             } else {
                                 previewWindow = window.open(previewUrl, 'PreviewWindow');
                             }
@@ -1360,6 +1366,7 @@
                             if (shouldRefreshPreview) {
                                 // Store in sessionStorage so we can refresh after page reload
                                 sessionStorage.setItem('refreshPreview', 'true');
+                                sessionStorage.setItem('previewWindowName', 'PreviewWindow');
                             }
                         });
 
@@ -1367,15 +1374,24 @@
                         window.addEventListener('DOMContentLoaded', function() {
                             if (sessionStorage.getItem('refreshPreview') === 'true') {
                                 sessionStorage.removeItem('refreshPreview');
+                                const windowName = sessionStorage.getItem('previewWindowName');
+                                sessionStorage.removeItem('previewWindowName');
                                 
-                                // Try to refresh the preview window if it's still open
-                                if (previewWindow && !previewWindow.closed) {
+                                // Try to access the preview window by name and refresh it
+                                setTimeout(function() {
                                     try {
-                                        previewWindow.location.reload();
+                                        const previewUrl = '{{ route('news.show', $content->shortlink) }}';
+                                        // Try to get reference to the window and reload it
+                                        const targetWindow = window.open('', windowName);
+                                        if (targetWindow && !targetWindow.closed) {
+                                            targetWindow.location.href = previewUrl;
+                                            targetWindow.focus();
+                                            previewWindow = targetWindow;
+                                        }
                                     } catch (e) {
                                         console.log('Could not refresh preview window:', e);
                                     }
-                                }
+                                }, 500);
                             }
                         });
 
