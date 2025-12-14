@@ -46,7 +46,7 @@
                 <a href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
                     {{ $item->category->name ?? '' }}
                 </a>
-                <span style="margin-right: 4px;">--</span>
+                <span style="margin-right: 4px;">---</span>
                 <a href="{{ route('category.show', ['id' => $item->country->id, 'type' => 'Country']) }}">
                     {{ $item->country->name ?? '' }}
                 </a>
@@ -54,7 +54,7 @@
                 <a href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
                     {{ $item->category->name ?? '' }}
                 </a>
-                <span style="margin-right: 4px;">--</span>
+                <span style="margin-right: 4px;">---</span>
                 <a href="{{ route('category.show', ['id' => $item->continent->id, 'type' => 'Continent']) }}">
                     {{ $item->continent->name ?? '' }}
                 </a>
