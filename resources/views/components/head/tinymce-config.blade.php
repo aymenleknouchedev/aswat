@@ -856,7 +856,7 @@
 <!-- ============================================
      SECTION 7: TINYMCE LIBRARY
      ============================================ -->
-<script src="https://cdn.tiny.cloud/1/t43swq41gp9wvaaut93frfn7yf52am1hz9g3z2bxf44c7nx3/tinymce/8/tinymce.min.js"
+<script src="https://cdn.tiny.cloud/1/vw6sltzauw9x6b3cl3eby8nj99q4eoavzv581jnnmabxbhq2/tinymce/8/tinymce.min.js"
     referrerpolicy="origin" crossorigin="anonymous"></script>
 
 <!-- ============================================
