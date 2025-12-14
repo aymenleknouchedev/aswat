@@ -23,6 +23,7 @@ class ContentService
         // 🟢 1. Find by seo_keyword
         if (!empty($content->seo_keyword)) {
             $relatedNews = Content::where('id', '!=', $content->id)
+                ->where('status', 'published')
                 ->where('seo_keyword', $content->seo_keyword)
                 ->take($limit)
                 ->get();
@@ -33,6 +34,7 @@ class ContentService
             $tagIds = $content->tags->pluck('id');
 
             $tagBased = Content::where('id', '!=', $content->id)
+                ->where('status', 'published')
                 ->whereHas('tags', function ($query) use ($tagIds) {
                     $query->whereIn('tags.id', $tagIds);
                 })
@@ -54,6 +56,7 @@ class ContentService
                 ->values();
 
             $relatedByText = Content::where('id', '!=', $content->id)
+                ->where('status', 'published')
                 ->where(function ($query) use ($keywords) {
                     foreach ($keywords as $word) {
                         $query->orWhere('title', 'like', "%{$word}%")
@@ -71,6 +74,7 @@ class ContentService
         // ⚪️ 4. Fallback: random from same section
         if ($relatedNews->count() < $limit) {
             $fallback = Content::where('id', '!=', $content->id)
+                ->where('status', 'published')
                 ->where('section_id', $content->section_id)
                 ->inRandomOrder()
                 ->take($limit - $relatedNews->count())
@@ -97,6 +101,7 @@ class ContentService
 
         // First: Get news from last week from same section
         $lastWeekNews = Content::where('title', '!=', $excludeContent->title)
+            ->where('status', 'published')
             ->where('section_id', $sectionId)
             ->where('created_at', '>=', $lastWeek)
             ->orderByDesc('read_count')
@@ -108,6 +113,7 @@ class ContentService
             $remaining = $limit - $lastWeekNews->count();
 
             $olderNews = Content::where('title', '!=', $excludeContent->title)
+                ->where('status', 'published')
                 ->where('section_id', $sectionId)
                 ->where('created_at', '<', $lastWeek)
                 ->orderByDesc('read_count')
@@ -131,6 +137,7 @@ class ContentService
     public function getLatestFromCategory(Content $excludeContent, int $categoryId, int $limit = 5): Collection
     {
         return Content::where('title', '!=', $excludeContent->title)
+            ->where('status', 'published')
             ->where('category_id', $categoryId)
             ->latest()
             ->take($limit)
