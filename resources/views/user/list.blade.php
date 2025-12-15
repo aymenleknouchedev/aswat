@@ -510,11 +510,181 @@
         .intro {
             max-width: 650px;
             margin: 0 auto 60px;
-            font-size: 17px;
+            font-size: 16px;
             line-height: 1.9;
-            text-align: justify;
+            color: #000;
+            font-weight: 400;
+            text-align: right;
+        }
+
+        .custom-article-content {
+            font-size: 16px !important;
+            font-family: 'asswat-regular';
+            color: #000000;
+            line-height: 1.9;
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .custom-article-content a {
+            color: #000000;
+            text-decoration: none;
+            position: relative;
+            border-bottom: 2px solid #e4f0ef;
+            border-radius: 0;
+            padding-bottom: 1px;
+            display: inline;
+            transition: color 0.3s ease;
+        }
+
+        .custom-article-content a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -2px;
+            height: 0;
+            background-color: #e4f0ef;
+            z-index: -1;
+            transition: height 0.3s ease;
+            border-radius: 0;
+        }
+
+        .custom-article-content a:hover::before {
+            height: calc(100% + 2px);
+        }
+
+        .custom-article-content * {
+            font-family: 'asswat-regular' !important;
+            direction: rtl !important;
+            box-sizing: border-box;
+        }
+
+        .custom-article-content p span {
+            font-size: 28px !important;
+            font-family: 'asswat-regular';
+            color: #333;
+            line-height: 1.9;
+            text-align: right;
+            margin: 5px 0;
+        }
+
+        .custom-article-content h2,
+        .custom-article-content h4 {
+            font-family: 'asswat-medium' !important;
+            color: #111 !important;
+            text-align: right !important;
+            margin-top: 35px !important;
+            margin-bottom: 18px !important;
+            font-size: 32px !important;
+        }
+
+        .custom-article-content h3 {
+            color: #333 !important;
+            margin: 0 !important;
+        }
+
+        .custom-article-content img {
+            display: block;
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+        .custom-article-content figure {
+            width: 100%;
+            margin: 25px 0;
+        }
+
+        .custom-article-content figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .custom-article-content figcaption {
+            background: #F5F5F5;
             color: #555;
-            font-weight: 300;
+            font-size: 15px;
+            padding: 10px;
+            text-align: right;
+            font-family: 'asswat-regular';
+            direction: rtl;
+        }
+
+        .custom-article-content video {
+            width: 100%;
+            height: auto;
+        }
+
+        .custom-article-content iframe[src*="youtube"],
+        .custom-article-content iframe[src*="vimeo"],
+        .custom-article-content iframe[src*="dailymotion"] {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            border: none;
+        }
+
+        .custom-article-content audio {
+            width: 100% !important;
+            height: 50px !important;
+            margin: 25px 0;
+            display: block;
+            border-radius: 25px;
+            background: #f5f5f5;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .custom-article-content audio::-webkit-media-controls-panel {
+            background: linear-gradient(to right, #f5f5f5, #ffffff);
+            border-radius: 25px;
+        }
+
+        .custom-article-content audio::-webkit-media-controls-play-button,
+        .custom-article-content audio::-webkit-media-controls-pause-button {
+            background-color: #000;
+            border-radius: 50%;
+        }
+
+        .custom-article-content blockquote {
+            width: 100%;
+            padding: 40px 20px;
+            margin: 30px 0;
+            text-align: center;
+            position: relative;
+            font-family: 'asswat-medium';
+        }
+
+        .custom-article-content blockquote p,
+        .custom-article-content blockquote p span {
+            font-size: 28px;
+            color: #222;
+            line-height: 1.6;
+            font-family: 'asswat-bold' !important;
+            text-align: center !important;
+        }
+
+        .custom-article-content blockquote::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 32px;
+            height: 32px;
+            background: url('/user/assets/icons/up.png') no-repeat center;
+            background-size: contain;
+        }
+
+        .custom-article-content blockquote::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 32px;
+            height: 32px;
+            background: url('/user/assets/icons/down.png') no-repeat center;
+            background-size: contain;
         }
 
         /* ==================== FILM LIST STYLES ==================== */
@@ -609,7 +779,7 @@
         }
 
         .film-description {
-            font-size: 15px;
+            font-size: 16px;
             line-height: 1.8;
             text-align: justify;
             color: #555;
@@ -1418,8 +1588,8 @@
 
     <section class="content">
         <div class="container">
-            <div class="intro">
-                <p>{!! $news->content !!}</p>
+            <div class="intro custom-article-content">
+                {!! $news->content !!}
             </div>
 
             <!-- Secondary navbar (appears only when scrolling UP past hero) -->
@@ -1584,6 +1754,10 @@
 
         // Initialize on DOM ready
         document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.intro.custom-article-content a').forEach(function(link) {
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener');
+            });
             initHeaderScroll();
             initBackToTop();
             initHeroSubnav();

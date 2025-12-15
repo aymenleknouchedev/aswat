@@ -5,7 +5,6 @@
 
 @section('content')
 
-
     <style>
         /* ===== VALIDATION STYLES ===== */
         .hidden-input:invalid~.selected-item {
