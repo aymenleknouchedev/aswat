@@ -8,6 +8,16 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Use project fonts instead of Google Poppins -->
     <link rel="stylesheet" href="{{ asset('user/css/fonts.css') }}">
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.intro a').forEach(function(el) {
+                el.setAttribute('target', '_blank');
+                el.setAttribute('rel', 'noopener');
+            });
+        });
+    </script>
+
     <style>
         /* ==================== BASE STYLES ==================== */
         * {
@@ -510,10 +520,194 @@
         .intro {
             max-width: 650px;
             margin: 0 auto 60px;
-            font-size: 16px;
+            font-size: 16px !important;
+            font-family: asswat-regular;
+            color: #000000;
             line-height: 1.9;
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .intro * {
+            font-family: asswat-regular !important;
+            direction: rtl !important;
+            box-sizing: border-box;
+        }
+
+        .intro p {
+            margin-bottom: 15px;
+        }
+
+        .intro h2,
+        .intro h4 {
+            font-family: asswat-medium !important;
+            color: #111 !important;
+            text-align: right !important;
+            margin-top: 35px !important;
+            margin-bottom: 18px !important;
+            font-size: 32px !important;
+        }
+
+        .intro h3 {
+            color: #333 !important;
+            margin: 0 !important;
+        }
+
+        .intro img {
+            display: block;
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+        .intro a {
+            color: #000000;
+            text-decoration: none;
+            position: relative;
+            border-bottom: 2px solid #e4f0ef;
+            border-radius: 0;
+            padding-bottom: 1px;
+            display: inline;
+            transition: color 0.3s ease;
+        }
+
+        .intro a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -2px;
+            height: 0;
+            background-color: #e4f0ef;
+            z-index: -1;
+            transition: height 0.3s ease;
+            border-radius: 0;
+        }
+
+        .intro a:hover {
+            color: #000000;
+        }
+
+        .intro a:hover::before {
+            height: calc(100% + 2px);
+        }
+
+        .intro figure {
+            width: 100%;
+            margin: 25px 0;
+        }
+
+        .intro figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .intro figcaption {
+            background: #F5F5F5;
             color: #555;
-            font-weight: 300;
+            font-size: 15px;
+            padding: 10px;
+            text-align: right;
+            font-family: asswat-regular;
+            direction: rtl;
+        }
+
+        .intro video {
+            width: 100%;
+            height: auto;
+        }
+
+        .intro iframe[src*="youtube"],
+        .intro iframe[src*="vimeo"],
+        .intro iframe[src*="dailymotion"] {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            border: none;
+        }
+
+        .intro audio {
+            width: 100% !important;
+            height: 50px !important;
+            margin: 25px 0;
+            display: block;
+            border-radius: 25px;
+            background: #f5f5f5;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .intro blockquote {
+            width: 100%;
+            padding: 40px 20px;
+            margin: 30px 0;
+            text-align: center;
+            position: relative;
+            font-family: asswat-medium;
+        }
+
+        .intro blockquote p {
+            font-size: 28px;
+            color: #222;
+            line-height: 1.6;
+            font-family: asswat-bold !important;
+            text-align: center !important;
+        }
+
+        .intro blockquote p span {
+            font-size: 28px;
+            color: #222;
+            line-height: 1.6;
+            font-family: asswat-bold !important;
+            text-align: center !important;
+        }
+
+        .intro blockquote::before {
+            content: "";
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 32px;
+            height: 32px;
+            background: url('/user/assets/icons/up.png') no-repeat center;
+            background-size: contain;
+        }
+
+        .intro blockquote::after {
+            content: "";
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 32px;
+            height: 32px;
+            background: url('/user/assets/icons/down.png') no-repeat center;
+            background-size: contain;
+        }
+
+        /* Clickable text styling */
+        .intro p .clickable-term {
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 50%;
+            background-color: #e4f0ef;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", Arial, sans-serif !important;
+            font-size: 9px !important;
+            font-weight: 700;
+            vertical-align: super;
+            display: inline-grid;
+            place-items: center;
+            line-height: 1;
+            min-width: 16px;
+            min-height: 16px;
+            aspect-ratio: 1;
+            padding: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .intro p .clickable-term:hover {
+            background-color: #d0e8e5;
+            transform: scale(1.1);
         }
 
         /* ==================== FILM LIST STYLES ==================== */
@@ -608,11 +802,13 @@
         }
 
         .film-description {
-            font-size: 16px;
-            line-height: 1.8;
-            text-align: justify;
-            color: #555;
+            font-size: 16px !important;
+            line-height: 1.9 !important;
+            text-align: right !important;
+            color: #000000 !important;
             font-weight: 300;
+            font-family: asswat-regular !important;
+            direction: rtl !important;
             max-height: 120px;
             overflow: hidden;
             position: relative;
@@ -646,6 +842,63 @@
 
         .film-description.no-collapse::after {
             display: none;
+        }
+
+        .film-description a {
+            color: #000000;
+            text-decoration: none;
+            position: relative;
+            border-bottom: 2px solid #e4f0ef;
+            border-radius: 0;
+            padding-bottom: 1px;
+            display: inline;
+            transition: color 0.3s ease;
+        }
+
+        .film-description a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -2px;
+            height: 0;
+            background-color: #e4f0ef;
+            z-index: -1;
+            transition: height 0.3s ease;
+            border-radius: 0;
+        }
+
+        .film-description a:hover {
+            color: #000000;
+        }
+
+        .film-description a:hover::before {
+            height: calc(100% + 2px);
+        }
+
+        .film-description p .clickable-term {
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 50%;
+            background-color: #e4f0ef;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", Arial, sans-serif !important;
+            font-size: 9px !important;
+            font-weight: 700;
+            vertical-align: super;
+            display: inline-grid;
+            place-items: center;
+            line-height: 1;
+            min-width: 16px;
+            min-height: 16px;
+            aspect-ratio: 1;
+            padding: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .film-description p .clickable-term:hover {
+            background-color: #d0e8e5;
+            transform: scale(1.1);
         }
 
         .read-more-btn {
@@ -828,9 +1081,13 @@
             }
 
             .intro {
-                font-size: 15px;
+                font-size: 15px !important;
                 padding: 0 15px;
                 margin-bottom: 40px;
+                font-family: asswat-regular;
+                color: #000000;
+                line-height: 1.9;
+                text-align: right;
             }
 
             .film-list {
@@ -880,6 +1137,10 @@
                 line-height: 1.7;
             }
 
+            .film-description a::before {
+                height: 1px;
+            }
+
             .read-more-btn {
                 margin: 15px auto 0;
                 display: block;
@@ -891,6 +1152,223 @@
                 width: 45px;
                 height: 45px;
                 font-size: 18px;
+            }
+        }
+
+        /* ==================== TEXT DEFINITION MODAL STYLES ==================== */
+        .text-definition-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            animation: modalBackdropFadeIn 0.3s ease;
+        }
+
+        @keyframes modalBackdropFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .text-modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            animation: backdropFadeIn 0.3s ease;
+        }
+
+        @keyframes backdropFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .text-modal-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            width: 100%;
+            max-height: 80vh;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            animation: modalSlideUp 0.4s ease-out;
+            overflow: hidden;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalSlideDown {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(100%);
+            }
+        }
+
+        .text-modal-container.closing {
+            animation: modalSlideDown 0.3s ease-out forwards;
+        }
+
+        .text-definition-modal.closing .text-modal-backdrop {
+            animation: backdropFadeOut 0.3s ease forwards;
+        }
+
+        @keyframes backdropFadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .text-modal-header {
+            padding: 0;
+            border-bottom: none;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            background: white;
+            border-radius: 0;
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 10;
+        }
+
+        .text-modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #000;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        .text-modal-close:hover {
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        .text-modal-body {
+            padding: 2rem;
+            overflow-y: auto;
+            flex: 1;
+            animation: bodyFadeIn 0.4s;
+            display: flex;
+            flex-direction: row;
+            gap: 2rem;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @keyframes bodyFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .text-modal-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #222;
+            font-family: asswat-bold;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 8px;
+            width: 100%;
+        }
+
+        .text-modal-body p {
+            margin: 0;
+            color: #444;
+            font-family: asswat-regular;
+            font-size: 16px;
+            line-height: 1.8;
+            text-align: right;
+            direction: rtl;
+        }
+
+        #textModalImageContainer {
+            margin-bottom: 0;
+            flex-shrink: 0;
+            flex-grow: 0;
+            order: 0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        #textModalImage {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 150px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        #textModalImage:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .text-modal-body {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            #textModalImageContainer {
+                width: 100%;
+                order: -1;
+            }
+
+            .text-modal-title {
+                margin-top: 2rem;
             }
         }
 
@@ -1808,6 +2286,174 @@
 
             mobileMenuInitialized = true;
             console.log('Mobile menu initialized');
+        }
+    </script>
+
+    {{-- ================= TEXT DEFINITION MODAL ================= --}}
+    <div id="textDefinitionModal" class="text-definition-modal" style="display: none;" role="dialog"
+        aria-labelledby="textModalTitle">
+        <div class="text-modal-backdrop"></div>
+        <div class="text-modal-container">
+            <div class="text-modal-header">
+                <button class="text-modal-close" id="textModalCloseBtn" type="button" aria-label="إغلاق">×</button>
+            </div>
+            <div class="text-modal-body">
+                <div id="textModalImageContainer" style="display: none;">
+                    <img id="textModalImage" src="" alt="صورة التعريف">
+                </div>
+                <div>
+                    <h3 id="textModalTitle" class="text-modal-title"></h3>
+                    <p id="textModalContent"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Initialize Text Definition Modal
+         */
+        function initializeTextDefinitionModal() {
+            const textDefinitions = {};
+
+            // Find all clickable terms in the content
+            document.querySelectorAll('.clickable-term').forEach(function(element) {
+                const term = element.getAttribute('data-term');
+                const imagePath = element.getAttribute('data-image');
+                const description = element.getAttribute('data-description');
+
+                if (term && description) {
+                    textDefinitions[term] = {
+                        content: element.textContent,
+                        description: description,
+                        image: imagePath || null
+                    };
+                }
+            });
+
+            // Get modal elements
+            const modal = document.getElementById('textDefinitionModal');
+            const modalContent = document.getElementById('textModalContent');
+            const modalTitle = document.getElementById('textModalTitle');
+            const modalImage = document.getElementById('textModalImage');
+            const modalImageContainer = document.getElementById('textModalImageContainer');
+            const modalBackdrop = modal.querySelector('.text-modal-backdrop');
+            const modalClose = document.getElementById('textModalCloseBtn');
+
+            if (!modal || !modalContent || !modalTitle) {
+                console.warn('Modal elements not found');
+                return;
+            }
+
+            // Handle clicks on clickable text
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('clickable-term')) {
+                    e.preventDefault();
+                    const term = e.target.getAttribute('data-term');
+
+                    // Try different variations of the term key
+                    let definition = textDefinitions[term] ||
+                        textDefinitions[term.toLowerCase()] ||
+                        textDefinitions[term.toLowerCase().replace(/\s+/g, '-')] ||
+                        textDefinitions[term.toLowerCase().replace(/\s+/g, '_')];
+
+                    if (definition) {
+                        showTextModal(term, definition);
+                    } else {
+                        // Fallback: show modal with term not found
+                        showTextModal(term, {
+                            description: 'لم يتم العثور على تعريف مفصل لهذا المصطلح.',
+                            image: null
+                        });
+                    }
+                }
+            });
+
+            // Function to show modal with text definition (including image)
+            function showTextModal(term, definition) {
+                modalTitle.textContent = term;
+                
+                // Apply quote replacement to the description
+                const descriptionWithQuotes = definition.description.replace(/"([^"]*)"/g, '«$1»');
+                modalContent.innerHTML = descriptionWithQuotes;
+
+                if (definition.image) {
+                    modalImageContainer.style.display = 'block';
+                    modalImage.src = definition.image;
+                    modalImage.alt = definition.content || 'صورة التعريف';
+                } else {
+                    modalImageContainer.style.display = 'none';
+                    modalImage.onclick = null;
+                }
+
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Function to close modal
+            function closeTextModal() {
+                const modalContainer = modal.querySelector('.text-modal-container');
+
+                // Add closing animation classes
+                modal.classList.add('closing');
+                modalContainer.classList.add('closing');
+
+                // Wait for animation to complete before hiding
+                setTimeout(function() {
+                    modal.style.display = 'none';
+                    modal.classList.remove('closing');
+                    modalContainer.classList.remove('closing');
+                    document.body.style.overflow = '';
+                }, 300); // Match animation duration
+            }
+
+            // Event listeners for closing modal
+            modalBackdrop.addEventListener('click', closeTextModal);
+            modalClose.addEventListener('click', closeTextModal);
+
+            // Close on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.style.display === 'block') {
+                    closeTextModal();
+                }
+            });
+
+            // Prevent modal container click from closing modal
+            modal.querySelector('.text-modal-container').addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+
+        // Initialize when document is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTextDefinitionModal();
+            replaceQuotesInPage();
+        });
+
+        /**
+         * Replace all straight quotes "" with guillemets «» throughout the page
+         */
+        function replaceQuotesInPage() {
+            // Function to recursively replace quotes in text nodes
+            function replaceInNode(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    // Replace all occurrences of "text" with «text»
+                    node.textContent = node.textContent.replace(/"([^"]*)"/g, '«$1»');
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    // Skip script and style tags
+                    if (node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
+                        for (let child of node.childNodes) {
+                            replaceInNode(child);
+                        }
+                    }
+                }
+            }
+
+            // Process the intro section and other content areas
+            const introSection = document.querySelector('.intro');
+            if (introSection) {
+                replaceInNode(introSection);
+            }
         }
     </script>
 </body>
