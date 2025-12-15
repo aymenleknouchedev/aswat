@@ -17,6 +17,153 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        function initializeTextDefinitionModal() {
+            const textDefinitions = {};
+
+            document.querySelectorAll('.clickable-term').forEach(function(element) {
+                const term = element.getAttribute('data-term');
+                const description = element.getAttribute('data-description');
+                const imagePath = element.getAttribute('data-image');
+
+                if (!term || !description) {
+                    return;
+                }
+
+                const trimmedTerm = term.trim();
+                if (trimmedTerm === '') {
+                    return;
+                }
+
+                const definition = {
+                    content: element.textContent,
+                    description: description,
+                    image: imagePath || null
+                };
+
+                const keys = [
+                    trimmedTerm,
+                    trimmedTerm.toLowerCase(),
+                    trimmedTerm.toLowerCase().replace(/\s+/g, '-'),
+                    trimmedTerm.toLowerCase().replace(/\s+/g, '_')
+                ];
+
+                keys.forEach(function(key) {
+                    if (!textDefinitions[key]) {
+                        textDefinitions[key] = definition;
+                    }
+                });
+            });
+
+            const modal = document.getElementById('textDefinitionModal');
+            const modalTitle = document.getElementById('textModalTitle');
+            const modalContent = document.getElementById('textModalContent');
+            const modalImageContainer = document.getElementById('textModalImageContainer');
+            const modalImage = document.getElementById('textModalImage');
+            const modalBackdrop = modal ? modal.querySelector('.text-modal-backdrop') : null;
+            const modalContainer = modal ? modal.querySelector('.text-modal-container') : null;
+            const modalClose = document.getElementById('textModalCloseBtn');
+
+            if (!modal || !modalTitle || !modalContent || !modalContainer) {
+                return;
+            }
+
+            function showTextModal(term, definition) {
+                modalTitle.textContent = term;
+
+                const rawDescription = definition.description || '';
+                const descriptionWithQuotes = rawDescription.replace(/"([^"\\]*(?:\\.[^"\\]*)*)"/g, '«$1»');
+                modalContent.innerHTML = descriptionWithQuotes;
+
+                if (definition.image && modalImageContainer && modalImage) {
+                    modalImageContainer.style.display = 'flex';
+                    modalImage.src = definition.image;
+                    modalImage.alt = definition.content || 'صورة التعريف';
+                    modalImage.onclick = function() {
+                        if (typeof openSingleImage === 'function') {
+                            openSingleImage(this.src, '');
+                        } else {
+                            window.open(this.src, '_blank', 'noopener');
+                        }
+                    };
+                } else if (modalImageContainer) {
+                    modalImageContainer.style.display = 'none';
+                    if (modalImage) {
+                        modalImage.removeAttribute('src');
+                        modalImage.removeAttribute('alt');
+                        modalImage.onclick = null;
+                    }
+                }
+
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeTextModal() {
+                modal.classList.add('closing');
+                modalContainer.classList.add('closing');
+
+                setTimeout(function() {
+                    modal.style.display = 'none';
+                    modal.classList.remove('closing');
+                    modalContainer.classList.remove('closing');
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+
+            document.addEventListener('click', function(e) {
+                const target = e.target;
+                if (target.classList && target.classList.contains('clickable-term')) {
+                    e.preventDefault();
+                    const originalTerm = (target.getAttribute('data-term') || target.textContent || '').trim();
+                    if (originalTerm === '') {
+                        return;
+                    }
+
+                    const lookupKeys = [
+                        originalTerm,
+                        originalTerm.toLowerCase(),
+                        originalTerm.toLowerCase().replace(/\s+/g, '-'),
+                        originalTerm.toLowerCase().replace(/\s+/g, '_')
+                    ];
+
+                    const definition = lookupKeys.reduce(function(found, key) {
+                        return found || textDefinitions[key];
+                    }, null);
+
+                    if (definition) {
+                        showTextModal(originalTerm, definition);
+                    } else {
+                        showTextModal(originalTerm, {
+                            description: 'لم يتم العثور على تعريف مفصل لهذا المصطلح.',
+                            image: null
+                        });
+                    }
+                }
+            });
+
+            if (modalBackdrop) {
+                modalBackdrop.addEventListener('click', closeTextModal);
+            }
+
+            if (modalClose) {
+                modalClose.addEventListener('click', closeTextModal);
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.style.display === 'block') {
+                    closeTextModal();
+                }
+            });
+
+            if (modalContainer) {
+                modalContainer.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        }
+
+        // Hero header subnav logic
+
         body {
             font-family: 'asswat-regular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
@@ -561,7 +708,7 @@
         }
 
         .custom-article-content p {
-            margin: 0 0 1em;
+            margin: 0 0 1.5em;
             color: inherit;
         }
 
@@ -572,6 +719,257 @@
             line-height: 1.9;
             text-align: right;
             margin: 5px 0;
+        }
+
+        .custom-article-content p .clickable-term {
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 50%;
+            background-color: #e4f0ef;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", Arial, sans-serif !important;
+            font-size: 9px !important;
+            font-weight: 700;
+            vertical-align: super;
+            display: inline-grid;
+            place-items: center;
+            line-height: 1;
+            min-width: 16px;
+            min-height: 16px;
+            aspect-ratio: 1;
+            padding: 3px;
+            box-sizing: border-box;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .text-definition-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            animation: modalBackdropFadeIn 0.3s ease;
+        }
+
+        @keyframes modalBackdropFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .text-modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            animation: backdropFadeIn 0.3s ease;
+        }
+
+        @keyframes backdropFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .text-modal-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            width: 100%;
+            max-height: 80vh;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            animation: modalSlideUp 0.4s ease-out;
+            overflow: hidden;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalSlideDown {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(100%);
+            }
+        }
+
+        .text-modal-container.closing {
+            animation: modalSlideDown 0.3s ease-out forwards;
+        }
+
+        .text-definition-modal.closing .text-modal-backdrop {
+            animation: backdropFadeOut 0.3s ease forwards;
+        }
+
+        @keyframes backdropFadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .text-modal-header {
+            padding: 0;
+            border-bottom: none;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            background: #ffffff;
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 10;
+        }
+
+        .text-modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #000000;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        .text-modal-close:hover {
+            transform: scale(1.1);
+        }
+
+        .text-modal-body {
+            padding: 2rem;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            gap: 2rem;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: bodyFadeIn 0.4s;
+        }
+
+        @keyframes bodyFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .text-modal-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #222;
+            font-family: asswat-bold;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 8px;
+            width: 100%;
+        }
+
+        .text-modal-body p {
+            margin: 0;
+            color: #444;
+            font-family: asswat-regular;
+            font-size: 16px;
+            line-height: 1.8;
+            text-align: right;
+            direction: rtl;
+        }
+
+        #textModalImageContainer {
+            flex-shrink: 0;
+            flex-grow: 0;
+            order: 0;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        #textModalImage {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 150px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        #textModalImage:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .text-modal-container {
+                width: 100%;
+                max-height: 90vh;
+                bottom: 0;
+            }
+
+            .text-modal-body {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem;
+                max-width: 100%;
+            }
+
+            #textModalImageContainer {
+                order: -1;
+                justify-content: center;
+            }
+
+            #textModalImage {
+                max-height: 300px;
+            }
+
+            .text-modal-title {
+                font-size: 22px;
+                margin-bottom: 12px;
+            }
+
+            .text-modal-body p {
+                font-size: 16px;
+            }
         }
 
         .custom-article-content h2,
@@ -1334,6 +1732,25 @@
 
 <body class="{{ Auth::check() ? 'has-admin-bar' : '' }}">
 
+    <div id="textDefinitionModal" class="text-definition-modal" style="display: none;" role="dialog"
+        aria-labelledby="textModalTitle">
+        <div class="text-modal-backdrop"></div>
+        <div class="text-modal-container">
+            <div class="text-modal-header">
+                <button class="text-modal-close" id="textModalCloseBtn" type="button" aria-label="إغلاق">×</button>
+            </div>
+            <div class="text-modal-body">
+                <div id="textModalImageContainer" style="display: none;">
+                    <img id="textModalImage" src="" alt="صورة التعريف">
+                </div>
+                <div>
+                    <h3 id="textModalTitle" class="text-modal-title"></h3>
+                    <p id="textModalContent"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Mobile Navigation (visible only on mobile) -->
     <nav class="mobile-navbar" id="mobileNavbar" style="display: none;">
         <div class="navbar-content">
@@ -1763,6 +2180,7 @@
                 link.setAttribute('target', '_blank');
                 link.setAttribute('rel', 'noopener');
             });
+            initializeTextDefinitionModal();
             initHeaderScroll();
             initBackToTop();
             initHeroSubnav();
