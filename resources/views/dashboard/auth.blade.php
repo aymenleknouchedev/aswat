@@ -121,7 +121,7 @@
                 <div class="nk-content">
                     <div class="nk-block nk-block-middle nk-auth-body wide-xs">
                         <div class="brand-logo pb-4 text-center">
-                            <a href="#" class="logo-link">
+                            <a href="/" class="logo-link">
                                 <img class="logo-img logo-img-lg" src="../dashlite/images/logo.jpg" alt="الشعار">
                             </a>
                         </div>
@@ -139,10 +139,10 @@
                                 <form id="loginForm" action="{{ route('dashboard.login') }}" method="POST">
                                     @csrf
                                     <div class="form-group">
-                                        <label class="form-label" for="login">البريد الإلكتروني</label>
+                                        <label class="form-label" for="login">اسم الدخول</label>
                                         <div class="form-control-wrap">
                                             <input name="login" class="form-control form-control-lg"
-                                                id="login" placeholder="أدخل بريدك الإلكتروني" required
+                                                id="login" placeholder="اسم الدخول أو البريد الإلكتروني" required
                                                 value="{{ old('login') }}">
                                         </div>
                                         @error('login')
