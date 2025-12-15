@@ -561,7 +561,7 @@
         }
 
         .custom-article-content p {
-            margin: 0 0 1.5em;
+            margin: 0 0 1em;
             color: inherit;
         }
 
