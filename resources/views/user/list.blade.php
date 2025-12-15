@@ -560,6 +560,11 @@
             box-sizing: border-box;
         }
 
+        .custom-article-content p {
+            margin: 0 0 1.5em;
+            color: inherit;
+        }
+
         .custom-article-content p span {
             font-size: 28px !important;
             font-family: 'asswat-regular';
