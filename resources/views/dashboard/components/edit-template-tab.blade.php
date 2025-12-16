@@ -1667,7 +1667,7 @@
 
                         <!-- Writer Selection Field - FIXED -->
                         <div class="mb-2">
-                            <label class="form-label">الكاتب <span class="text-danger">*</span></label>
+                            <label class="form-label">الكاتب</label>
                             <select id="itemWriter" class="form-control">
                                 <option value="">اختر كاتب</option>
                                 @foreach ($writers as $writer)
@@ -2264,7 +2264,6 @@
             if (!title) return alert('العنوان مطلوب');
             if (!descriptionText) return alert('الوصف مطلوب');
             if (!imageUrl) return alert('الصورة مطلوبة');
-            if (!writerName) return alert('الكاتب مطلوب'); // Validate writer
             if (mode === 'file' && !linkUrl) return alert('الرابط مطلوب في وضع ملف');
 
             const payload = {
