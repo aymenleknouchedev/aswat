@@ -21,6 +21,7 @@ class TopContentController extends Controller
 
             // Load recent contents with section data — don't exclude any (since we now just disable them in UI)
             $recentContents = Content::with('section')
+                ->where('status', 'published')
                 ->orderBy('created_at', 'desc')
                 ->take(200)
                 ->get();
@@ -37,7 +38,8 @@ class TopContentController extends Controller
     public function searchContents(Request $request)
     {
         try {
-            $query = Content::with('section');
+            $query = Content::with('section')
+                ->where('status', 'published');
 
             // Filter by search term (title or ID)
             if ($request->filled('search')) {
