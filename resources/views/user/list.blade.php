@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أفضل 10 أفلام لهاريس ديكنسون | مجموعة كريتيريون</title>
+    @section('title', 'أصوات جزائرية | ' . $news->mobile_title)
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Use project fonts instead of Google Poppins -->
     <link rel="stylesheet" href="{{ asset('user/css/fonts.css') }}">
@@ -927,9 +927,9 @@
             padding: 0 12px;
         }
 
-       
 
-       
+
+
 
         .film-metadata {
             display: flex;
@@ -2027,7 +2027,9 @@
                     <div class="film-item">
                         <div class="film-left">
                             <div class="film-poster">
-                                <img src="{{ asset($item->image) }}" alt="{{ $item->title }}" class="preview-image" data-preview-src="{{ asset($item->image) }}" data-preview-title="{{ $item->title }}" style="cursor: pointer;">
+                                <img src="{{ asset($item->image) }}" alt="{{ $item->title }}"
+                                    class="preview-image" data-preview-src="{{ asset($item->image) }}"
+                                    data-preview-title="{{ $item->title }}" style="cursor: pointer;">
                             </div>
                         </div>
                         <div class="film-right">
@@ -2299,10 +2301,10 @@
             expandButtons.forEach(button => {
                 const description = button.previousElementSibling;
                 const buttonText = button.querySelector('.expand-description-btn-text');
-                
+
                 // Check if description text is overflowing (more than 9 lines)
                 const isOverflowing = description.scrollHeight > description.offsetHeight;
-                
+
                 if (!isOverflowing) {
                     button.style.display = 'none';
                 }
@@ -2505,7 +2507,7 @@
                     e.preventDefault();
                     const src = this.getAttribute('data-preview-src');
                     const title = this.getAttribute('data-preview-title');
-                    
+
                     previewImg.src = src;
                     previewTitle.textContent = title;
                     modal.style.display = 'flex';
@@ -2579,6 +2581,7 @@
                 opacity: 0;
                 transform: scale(0.95);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
