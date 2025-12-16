@@ -191,7 +191,12 @@ class HomePageController extends Controller
                 ->latest()
                 ->get();
 
-            return $breakingContent->pluck('text');
+            return $breakingContent->pluck('text')->map(function($text) {
+                // Replace straight quotes with guillemets (« and »)
+                return preg_replace_callback('/"([^"]*)"/', function($matches) {
+                    return '«' . $matches[1] . '»';
+                }, $text);
+            });
         });
 
         // ✅ Always return consistent JSON structure
