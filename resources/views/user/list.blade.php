@@ -1895,7 +1895,7 @@
             </div>
         </header>
         <div class="hero-image">
-            <img src="{{ $news->media()->wherePivot('type', 'content')->first()->path }}" alt="{{ $news->title }}">
+            <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="{{ $news->title }}">
             @if ($news->caption)
                 <figcaption class="hero-caption">{{ $news->caption }}</figcaption>
             @endif
