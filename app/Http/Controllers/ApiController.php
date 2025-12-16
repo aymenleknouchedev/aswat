@@ -30,6 +30,7 @@ class ApiController extends Controller
             $existingContentIds = TopContent::pluck('content_id')->toArray();
 
             $contents = Content::query()
+                ->where('status', 'published')
                 ->whereNotIn('id', $existingContentIds);
 
             if (!empty($sq)) {
