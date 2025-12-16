@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $news->mobile_title }}أصوات جزائرية | </title>
+    <title>أصوات جزائرية | {{ $news->mobile_title }}</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Use project fonts instead of Google Poppins -->
     <link rel="stylesheet" href="{{ asset('user/css/fonts.css') }}">
