@@ -210,8 +210,14 @@ class HomePageController extends Controller
             ->take(5)
             ->get(['title', 'shortlink'])
             ->map(function($content) {
+                $title = $content->title;
+                // Replace straight quotes with guillemets (« and »)
+                $title = preg_replace_callback('/"([^"]*)"/', function($matches) {
+                    return '«' . $matches[1] . '»';
+                }, $title);
+                
                 return [
-                    'title' => $content->title,
+                    'title' => $title,
                     'shortlink' => $content->shortlink
                 ];
             });
