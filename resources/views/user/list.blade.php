@@ -927,14 +927,9 @@
             padding: 0 12px;
         }
 
-        .expand-description-btn:hover {
-            color: #333333;
-        }
+       
 
-        .expand-description-btn:hover::before,
-        .expand-description-btn:hover::after {
-            background-color: #999;
-        }
+       
 
         .film-metadata {
             display: flex;
