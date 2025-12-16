@@ -8,7 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Use project fonts instead of Google Poppins -->
     <link rel="stylesheet" href="{{ asset('user/css/fonts.css') }}">
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll('.intro a').forEach(function(el) {
@@ -452,6 +452,23 @@
             display: block;
         }
 
+        .hero-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.175);
+            color: #fff;
+            font-size: 14px;
+            padding: 12px 20px;
+            margin: 0;
+            text-align: right;
+            direction: rtl;
+            font-family: asswat-regular;
+            z-index: 3;
+            line-height: 1.5;
+        }
+
         .hero-content {
             flex: 1;
             background: #252525;
@@ -468,7 +485,6 @@
 
         .hero-content h1 {
             font-size: 48px;
-            margin-bottom: 20px;
             font-weight: 600;
             font-family: 'asswat-bold', 'asswat-regular', sans-serif;
             line-height: 1.2;
@@ -476,12 +492,12 @@
             z-index: 1;
             letter-spacing: -1px;
             max-width: 100%;
-            padding: 0 20px;
+            padding: 40px 60px;
         }
 
         .hero-content p {
             font-size: 18px;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgb(130, 130, 130);
             margin-bottom: 35px;
             max-width: 90%;
             padding: 0 20px;
@@ -491,9 +507,6 @@
         }
 
         .actor-info {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 2px solid rgba(255, 255, 255, 0.2);
             position: relative;
             z-index: 1;
             padding-left: 20px;
@@ -501,7 +514,7 @@
         }
 
         .actor-name {
-            font-size: 20px;
+            font-size: 16px;
             margin-bottom: 8px;
             font-weight: 600;
         }
@@ -518,7 +531,7 @@
         }
 
         .intro {
-            max-width: 650px;
+            max-width: 587px;
             margin: 0 auto 60px;
             font-size: 16px !important;
             font-family: asswat-regular;
@@ -713,7 +726,7 @@
         /* ==================== FILM LIST STYLES ==================== */
         .film-list {
             counter-reset: film-counter;
-            max-width: 800px;
+            max-width: 950px;
         }
 
         .film-item {
@@ -747,7 +760,7 @@
         }
 
         .film-poster {
-            width: 170px;
+            width: 215px;
             border-radius: 0;
             overflow: hidden;
             aspect-ratio: 3 / 4;
@@ -769,11 +782,11 @@
         }
 
         .film-number {
-            font-size: 48px;
-            font-weight: 900;
+            font-size: 55px;
             color: rgb(205, 205, 203);
             margin-bottom: 10px;
             line-height: 1;
+            font-family: 'asswat-bold'
         }
 
         .film-number::before {
@@ -794,11 +807,11 @@
         }
 
         .film-title {
-            font-size: 28px;
+            font-size: 32px;
             margin-bottom: 15px;
             font-weight: 700;
-            font-family: 'asswat-bold', 'asswat-regular', sans-serif;
-            color: #2c3e50;
+            font-family: 'asswat-medium', sans-serif;
+            color: #000000;
         }
 
         .film-description {
@@ -809,39 +822,15 @@
             font-weight: 300;
             font-family: asswat-regular !important;
             direction: rtl !important;
-            max-height: 120px;
-            overflow: hidden;
             position: relative;
-            transition: max-height 0.4s ease;
-        }
-
-        .film-description.no-collapse {
-            max-height: none;
-            overflow: visible;
+            max-height: calc(1.9em * 9);
+            overflow: hidden;
+            transition: max-height 0.3s ease;
         }
 
         .film-description.expanded {
-            max-height: 2000px;
-        }
-
-        .film-description::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40px;
-            background: linear-gradient(to bottom, transparent, white);
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .film-description.expanded::after {
-            opacity: 0;
-        }
-
-        .film-description.no-collapse::after {
-            display: none;
+            max-height: none;
+            overflow: visible;
         }
 
         .film-description a {
@@ -901,30 +890,50 @@
             transform: scale(1.1);
         }
 
-        .read-more-btn {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 8px 12px;
-            background: #f5f5f5;
-            color: #2c3e50;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: 600;
+        .film-description-wrapper {
+            position: relative;
+        }
+
+        .expand-description-btn {
+            background: none;
+            border: none;
             cursor: pointer;
-            font-family: 'asswat-regular', sans-serif;
+            padding: 15px 0;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #000000;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-family: asswat-regular;
+            width: 100%;
+            justify-content: center;
+            position: relative;
         }
 
-        .read-more-btn i {
-            transition: transform 0.3s ease;
+        .expand-description-btn::before,
+        .expand-description-btn::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #e0e0e0;
         }
 
-        .read-more-btn.expanded i {
-            transform: rotate(180deg);
+        .expand-description-btn-text {
+            white-space: nowrap;
+            padding: 0 12px;
         }
 
-        .read-more-btn.hidden {
-            display: none;
+        .expand-description-btn:hover {
+            color: #333333;
+        }
+
+        .expand-description-btn:hover::before,
+        .expand-description-btn:hover::after {
+            background-color: #999;
         }
 
         .film-metadata {
@@ -1011,9 +1020,10 @@
         }
 
         /* ==================== RESPONSIVE STYLES ==================== */
-        
+
         /* Hide mobile content on web/desktop */
         @media (min-width: 769px) {
+
             .mobile-navbar,
             .mobile-sidebar,
             .sidebar-overlay {
@@ -1051,6 +1061,11 @@
             .hero-image {
                 height: 50vh;
                 min-height: 300px;
+            }
+
+            .hero-caption {
+                font-size: 12px;
+                padding: 10px 15px;
             }
 
             .hero-content {
@@ -1135,15 +1150,20 @@
             .film-description {
                 font-size: 14px;
                 line-height: 1.7;
+                max-height: calc(1.7em * 9);
+            }
+
+            .expand-description-btn {
+                margin-top: 8px;
+                font-size: 14px;
+            }
+
+            .expand-description-btn::after {
+                font-size: 12px;
             }
 
             .film-description a::before {
                 height: 1px;
-            }
-
-            .read-more-btn {
-                margin: 15px auto 0;
-                display: block;
             }
 
             .back-to-top {
@@ -1539,13 +1559,13 @@
                 padding: 12px 0;
             }
 
-            .menu-list > li > .menu-item-header,
-            .menu-list > li > a {
+            .menu-list>li>.menu-item-header,
+            .menu-list>li>a {
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             }
 
-            .menu-list > li:last-child > .menu-item-header,
-            .menu-list > li:last-child > a {
+            .menu-list>li:last-child>.menu-item-header,
+            .menu-list>li:last-child>a {
                 border-bottom: none;
             }
 
@@ -1714,8 +1734,7 @@
                         </a>
                     @endif
 
-                    <a href="{{ route('dashboard.content.create') }}" class="btn btn-sm btn-warning"
-                        title="إضافة خبر">
+                    <a href="{{ route('dashboard.content.create') }}" class="btn btn-sm btn-warning" title="إضافة خبر">
                         <i class="fa-solid fa-plus"></i>
                     </a>
 
@@ -1797,7 +1816,7 @@
                 color: #c82333;
             }
 
-        
+
 
             .split-hero {
                 margin-top: 36px;
@@ -1816,8 +1835,8 @@
                     <a href="/" class="logo">
                         <img class="logo-default" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo"
                             style="height: 40px;">
-                        <img class="logo-scrolled" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo"
-                            style="height: 40px; display: none;">
+                        <img class="logo-scrolled" src="{{ asset('user/assets/images/white_logo.svg') }}"
+                            alt="Logo" style="height: 40px; display: none;">
                     </a>
                     <nav>
                         <ul class="site-nav-links">
@@ -1827,7 +1846,8 @@
                                         class="fa-solid fa-chevron-down sub-arrow"></i></a>
                                 <ul class="subnav-list">
                                     <li class="site-subnav-link"><a
-                                            href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a></li>
+                                            href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a>
+                                    </li>
                                     <li class="site-subnav-link"><a
                                             href="{{ route('newSection', ['section' => 'world']) }}">عالم</a></li>
                                     <li class="site-subnav-link"><a
@@ -1880,15 +1900,47 @@
             </div>
         </header>
         <div class="hero-image">
-            <img src="{{ $news->media()->wherePivot('type', 'mobile')->first()->path }}"
-                alt="{{ $news->title }}">
+            <img src="{{ $news->media()->wherePivot('type', 'mobile')->first()->path }}" alt="{{ $news->title }}">
+            @if ($news->caption)
+                <figcaption class="hero-caption">{{ $news->caption }}</figcaption>
+            @endif
         </div>
         <div class="hero-content">
+            {{-- Category --}}
+            <div class="custom-category">
+                @if (isset($news->country))
+                    <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
+                        style="color: #888; text-decoration: none;">
+                        {{ $news->category->name ?? '' }}
+                    </a>
+                    -
+                    <a href="{{ route('category.show', ['id' => $news->country->id, 'type' => 'Country']) }}"
+                        style="color: #888; text-decoration: none;">
+                        {{ $news->country->name ?? '' }}
+                    </a>
+                @elseif (isset($news->continent))
+                    <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
+                        style="color: #888; text-decoration: none;">
+                        {{ $news->category->name ?? '' }}
+                    </a>
+                    -
+                    <a href="{{ route('category.show', ['id' => $news->continent->id, 'type' => 'Continent']) }}"
+                        style="color: #888; text-decoration: none;">
+                        {{ $news->continent->name ?? '' }}
+                    </a>
+                @else
+                    <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
+                        style="color: #888; text-decoration: none;">
+                        {{ $news->category->name ?? '' }}
+                    </a>
+                @endif
+            </div>
             <h1>{{ $news->long_title }}</h1>
             <p>{{ $news->summary }}</p>
 
             <div class="actor-info">
-                <div class="actor-name">{{ $news->writers->first()?->name ?? 'كاتب غير معروف' }}</div>
+                <div class="actor-name">{{ $news->writers->first()?->name ?? '' }} - {{ $news->city->name ?? '' }}
+                </div>
             </div>
         </div>
     </section>
@@ -1913,8 +1965,8 @@
                             <ul class="site-nav-links">
                                 <li class="site-nav-link {{ request()->routeIs('latestNews') ? 'active' : '' }}"
                                     id="scroll-show-subnav">
-                                    <a href="{{ route('latestNews') }}" class="has-sub" aria-expanded="false">أخبار <i
-                                            class="fa-solid fa-chevron-down sub-arrow"></i></a>
+                                    <a href="{{ route('latestNews') }}" class="has-sub" aria-expanded="false">أخبار
+                                        <i class="fa-solid fa-chevron-down sub-arrow"></i></a>
                                     <ul class="subnav-list">
                                         <li class="site-subnav-link"><a
                                                 href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a>
@@ -1979,34 +2031,30 @@
                 @foreach ($news->contentLists()->with('writer')->orderBy('index')->get() as $item)
                     <div class="film-item">
                         <div class="film-left">
-                            @if($item->url)
-                                <a href="{{ $item->url }}" class="film-poster-link">
-                            @endif
-                                <div class="film-poster">
-                                    <img src="{{ asset($item->image) }}" alt="{{ $item->title }}">
-                                </div>
-                            @if($item->url)
-                                </a>
-                            @endif
+                            <div class="film-poster">
+                                <img src="{{ asset($item->image) }}" alt="{{ $item->title }}" class="preview-image" data-preview-src="{{ asset($item->image) }}" data-preview-title="{{ $item->title }}" style="cursor: pointer;">
+                            </div>
                         </div>
                         <div class="film-right">
                             <div class="film-number"></div>
-                            @if($item->writer()->first())
+                            @if ($item->writer()->first())
                                 <p class="film-writer">{{ $item->writer()->first()->name }}</p>
                             @else
                                 <p class="film-writer hidden">كاتب غير معروف</p>
                             @endif
-                            @if($item->url)
+                            @if ($item->url)
                                 <a href="{{ $item->url }}" class="film-title-link">
                                     <h2 class="film-title">{{ $item->title }}</h2>
                                 </a>
                             @else
                                 <h2 class="film-title">{{ $item->title }}</h2>
                             @endif
-                            <div class="film-description">{!! $item->description !!}</div>
-                            <button class="read-more-btn" onclick="toggleDescription(event, this)">
-                                <i class="fa-solid fa-chevron-down"></i>
-                            </button>
+                            <div class="film-description-wrapper">
+                                <div class="film-description">{!! $item->description !!}</div>
+                                <button class="expand-description-btn" aria-label="عرض المزيد">
+                                    <span class="expand-description-btn-text">عرض المزيد</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 @endforeach
@@ -2032,17 +2080,18 @@
         .web-footer {
             display: block;
         }
-        
+
         .mobile-footer {
             display: none;
         }
 
         @media (max-width: 768px) {
+
             /* Hide web footer on mobile, show mobile footer */
             .web-footer {
                 display: none;
             }
-            
+
             .mobile-footer {
                 display: block;
             }
@@ -2050,56 +2099,16 @@
     </style>
 
     <script>
-        // Toggle description expand/collapse
-        function toggleDescription(event, button) {
-            event.preventDefault();
-            event.stopPropagation();
-            const description = button.previousElementSibling;
-            description.classList.toggle('expanded');
-            button.classList.toggle('expanded');
-        }
-
         // Initialize on DOM ready
         document.addEventListener('DOMContentLoaded', function() {
             initHeaderScroll();
             initBackToTop();
             initHeroSubnav();
             initScrollSubnav();
-            checkDescriptionHeight();
             initMobileMenu();
+            initDescriptionToggle();
+            initImagePreview();
         });
-
-        // Check if description needs collapse button
-        function checkDescriptionHeight() {
-            const descriptions = document.querySelectorAll('.film-description');
-            const lineHeight = 1.8; // from CSS line-height
-            const fontSize = 15; // from CSS font-size
-            const approximateLineHeight = fontSize * lineHeight;
-            const maxHeight = approximateLineHeight * 4; // 4 lines
-
-            descriptions.forEach(description => {
-                const button = description.nextElementSibling;
-                
-                // Create a temporary clone to measure actual height
-                const clone = description.cloneNode(true);
-                clone.style.maxHeight = 'none';
-                clone.style.position = 'absolute';
-                clone.style.visibility = 'hidden';
-                description.parentNode.appendChild(clone);
-                const actualHeight = clone.scrollHeight;
-                clone.remove();
-                
-                if (actualHeight > maxHeight) {
-                    // Content is more than 4 lines, show button and apply collapse
-                    button.classList.remove('hidden');
-                    description.classList.remove('no-collapse');
-                } else {
-                    // Content is 4 lines or less, hide button and remove collapse
-                    button.classList.add('hidden');
-                    description.classList.add('no-collapse');
-                }
-            });
-        }
 
         // Hero header subnav logic
         function initHeroSubnav() {
@@ -2251,7 +2260,7 @@
 
         function initMobileMenu() {
             if (mobileMenuInitialized) return;
-            
+
             const menuToggle = document.getElementById('mobileMenuToggle');
             const sidebar = document.getElementById('mobileSidebar');
             const overlay = document.getElementById('sidebarOverlay');
@@ -2286,6 +2295,40 @@
 
             mobileMenuInitialized = true;
             console.log('Mobile menu initialized');
+        }
+
+        // Description expand/collapse functionality
+        function initDescriptionToggle() {
+            const expandButtons = document.querySelectorAll('.expand-description-btn');
+
+            expandButtons.forEach(button => {
+                const description = button.previousElementSibling;
+                const buttonText = button.querySelector('.expand-description-btn-text');
+                
+                // Check if description text is overflowing (more than 9 lines)
+                const isOverflowing = description.scrollHeight > description.offsetHeight;
+                
+                if (!isOverflowing) {
+                    button.style.display = 'none';
+                }
+
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const isExpanded = description.classList.contains('expanded');
+
+                    if (isExpanded) {
+                        description.classList.remove('expanded');
+                        this.classList.remove('expanded');
+                        this.classList.add('collapsed');
+                        buttonText.textContent = 'عرض المزيد';
+                    } else {
+                        description.classList.add('expanded');
+                        this.classList.add('expanded');
+                        this.classList.remove('collapsed');
+                        buttonText.textContent = 'إخفاء';
+                    }
+                });
+            });
         }
     </script>
 
@@ -2372,7 +2415,7 @@
             // Function to show modal with text definition (including image)
             function showTextModal(term, definition) {
                 modalTitle.textContent = term;
-                
+
                 // Apply quote replacement to the description
                 const descriptionWithQuotes = definition.description.replace(/"([^"]*)"/g, '«$1»');
                 modalContent.innerHTML = descriptionWithQuotes;
@@ -2449,13 +2492,158 @@
                 }
             }
 
-            // Process the intro section and other content areas
-            const introSection = document.querySelector('.intro');
-            if (introSection) {
-                replaceInNode(introSection);
+            // Process the entire body to replace all quotes
+            replaceInNode(document.body);
+        }
+
+        // Image preview functionality
+        function initImagePreview() {
+            const previewImages = document.querySelectorAll('.preview-image');
+            const modal = document.getElementById('imagePreviewModal');
+            const previewImg = document.getElementById('previewImg');
+            const previewTitle = document.getElementById('previewTitle');
+            const closeBtn = document.getElementById('closeImagePreview');
+            const backdrop = document.getElementById('previewBackdrop');
+
+            previewImages.forEach(img => {
+                img.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const src = this.getAttribute('data-preview-src');
+                    const title = this.getAttribute('data-preview-title');
+                    
+                    previewImg.src = src;
+                    previewTitle.textContent = title;
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            function closePreview() {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
             }
+
+            closeBtn.addEventListener('click', closePreview);
+            backdrop.addEventListener('click', closePreview);
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    closePreview();
+                }
+            });
         }
     </script>
+
+    <!-- Image Preview Modal -->
+    <div id="imagePreviewModal" class="image-preview-modal" style="display: none;">
+        <div id="previewBackdrop" class="preview-backdrop"></div>
+        <div class="preview-container">
+            <button id="closeImagePreview" class="preview-close-btn" aria-label="إغلاق">×</button>
+            <img id="previewImg" src="" alt="معاينة الصورة" class="preview-image-large">
+            <div class="preview-title" id="previewTitle"></div>
+        </div>
+    </div>
+
+    <style>
+        .image-preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .preview-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+        }
+
+        .preview-container {
+            position: relative;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            max-width: 90vw;
+            max-height: 90vh;
+            animation: previewFadeIn 0.3s ease;
+        }
+
+        @keyframes previewFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .preview-image-large {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: fill;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .preview-close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 32px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10001;
+        }
+
+        .preview-close-btn:hover {
+            color: #ccc;
+            transform: scale(1.1);
+        }
+
+        .preview-title {
+            color: #fff;
+            font-size: 16px;
+            font-family: asswat-regular;
+            text-align: center;
+            max-width: 90vw;
+            direction: rtl;
+        }
+
+        @media (max-width: 768px) {
+            .preview-close-btn {
+                top: 10px;
+            }
+
+            .preview-image-large {
+                max-height: 60vh;
+            }
+
+            .preview-title {
+                font-size: 14px;
+                padding: 0 20px;
+            }
+        }
+    </style>
 </body>
 
 </html>
