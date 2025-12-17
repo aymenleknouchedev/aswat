@@ -188,7 +188,8 @@
         </script>
     --}}
 
-    {{-- TinyMCE config is now duplicated locally in each template (edit-template-tab and template-tab) --}}
+    {{-- ================= TINYMCE CONFIGURATION ================= --}}
+    @include('components.head.tinymce-config')
 
     {{-- ================= DYNAMIC READMORE LOADER ================= --}}
     @include('components.readmore-loader')
