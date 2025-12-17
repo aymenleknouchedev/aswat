@@ -2017,17 +2017,12 @@
                 editBtn.addEventListener('click', () => {
                     editIndexInput.value = String(i);
                     titleEl.value = it.title || '';
-                    
-                    // Set description with TinyMCE or fallback
-                    const setDescription = () => {
-                        if (window.tinymce && tinymce.get('myeditorinstance')) {
-                            tinymce.get('myeditorinstance').setContent(it.description || '');
-                        } else {
-                            const txt = document.getElementById('myeditorinstance');
-                            if (txt) txt.value = it.description || '';
-                        }
-                    };
-                    
+                    if (window.tinymce && tinymce.get('myeditorinstance')) {
+                        tinymce.get('myeditorinstance').setContent(it.description || '');
+                    } else {
+                        const txt = document.getElementById('myeditorinstance');
+                        if (txt) txt.value = it.description || '';
+                    }
                     linkEl.value = it.url || '';
                     writerEl.value = it.writer || ''; // NEW: Load writer value
                     inpId.value = it.media_id || '';
@@ -2042,9 +2037,6 @@
                         modalEl.style.display = 'block';
                         modalEl.setAttribute('aria-hidden', 'false');
                     }
-                    
-                    // Set description after modal is shown to ensure TinyMCE is ready
-                    setTimeout(setDescription, 150);
                 });
 
                 const delBtn = document.createElement('button');
