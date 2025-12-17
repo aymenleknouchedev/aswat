@@ -1260,7 +1260,7 @@
                             {{-- ===== TEMPLATE TAB ===== --}}
                             <div class="tab-pane fade" id="template" role="tabpanel" aria-labelledby="template-tab">
                                 <div class="template-tab-content">
-                                    @include('dashboard.components.edit-template-tab', ['contentItems' => $contentItems ?? []])
+                                    @include('dashboard.components.edit-template-tab')
                                 </div>
                             </div>
 
