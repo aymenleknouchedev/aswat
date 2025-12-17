@@ -1933,6 +1933,15 @@
 
                     renderPreview();
 
+                    // Log the description being loaded
+                    console.log('Loading item for edit:', {
+                        index: i,
+                        title: it.title,
+                        description: it.description,
+                        image: it.image,
+                        writer: it.writer_name
+                    });
+
                     if (window.bootstrap && bootstrap.Modal) {
                         bootstrap.Modal.getOrCreateInstance(modalEl).show();
                     } else {
@@ -1940,15 +1949,24 @@
                         modalEl.setAttribute('aria-hidden', 'false');
                     }
 
-                    // Set TinyMCE content after modal is shown
+                    // Set TinyMCE content after modal is shown - increased timeout and added debugging
                     setTimeout(() => {
+                        console.log('Setting TinyMCE content for:', it.description);
                         if (window.tinymce && tinymce.get('myeditorinstance')) {
+                            console.log('✓ TinyMCE instance found');
                             tinymce.get('myeditorinstance').setContent(it.description || '');
+                            console.log('✓ Content set in TinyMCE');
                         } else {
+                            console.log('⚠ TinyMCE instance not found, using textarea');
                             const txt = document.getElementById('myeditorinstance');
-                            if (txt) txt.value = it.description || '';
+                            if (txt) {
+                                txt.value = it.description || '';
+                                console.log('✓ Content set in textarea');
+                            } else {
+                                console.error('✗ Could not find textarea with id myeditorinstance');
+                            }
                         }
-                    }, 100);
+                    }, 250);
                 });
 
                 const delBtn = document.createElement('button');
@@ -2153,6 +2171,11 @@
                 items: @json($contentItems ?? [])
             };
 
+            console.log('Template data from server:', templateData);
+            console.log('Display method:', templateData.display_method);
+            console.log('Items count:', templateData.items ? templateData.items.length : 0);
+            console.log('Raw contentItems:', @json($contentItems ?? []));
+
             // Set display method
             currentModeName = templateData.display_method;
             const displayMethodRadio = document.querySelector(
@@ -2176,7 +2199,9 @@
                 }));
 
                 // Debug: Log loaded items to verify writer data
-                console.log('Loaded items with writer data:', items);
+                console.log('✓ Loaded items with writer data:', items);
+            } else {
+                console.log('⚠ No items to load or templateData.items is empty');
             }
 
             toggleSection();
