@@ -87,26 +87,7 @@
 <script src="https://cdn.tiny.cloud/1/vw6sltzauw9x6b3cl3eby8nj99q4eoavzv581jnnmabxbhq2/tinymce/6/tinymce.min.js"
     referrerpolicy="origin"></script>
 <script>
-    // Utility function to escape HTML
-    function escapeHtml(text) {
-        const map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-        };
-        return text.replace(/[&<>"']/g, m => map[m]);
-    }
-
-    // Fallback pickMediaForTiny if not defined (from tinymce-config.blade.php)
-    if (!window.pickMediaForTiny) {
-        window.pickMediaForTiny = function(opts = { type: 'media' }) {
-            return new Promise((resolve) => {
-                resolve(null); // Return null if media modal not available
-            });
-        };
-    }
+    // Initialize modal managers for item-tinymce
     document.addEventListener('DOMContentLoaded', function() {
         // Modal element references
         const textModal = document.getElementById('vvcTextModal');
