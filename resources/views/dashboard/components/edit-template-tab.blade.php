@@ -2086,6 +2086,14 @@
                 writerEl.value = '';
             }
             prev.textContent = '';
+            
+            // Show modal for adding new item
+            if (window.bootstrap && bootstrap.Modal) {
+                bootstrap.Modal.getOrCreateInstance(modalEl).show();
+            } else {
+                modalEl.style.display = 'block';
+                modalEl.setAttribute('aria-hidden', 'false');
+            }
         });
 
         // Save item - FIXED writer handling
