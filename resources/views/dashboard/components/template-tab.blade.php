@@ -1800,7 +1800,7 @@
         const editIndexInput = document.getElementById('editIndex');
         const saveBtn = document.getElementById('saveItemBtn');
         const titleEl = document.getElementById('itemTitle');
-        const descEl = document.getElementById('itemDescription');
+        const descEl = document.getElementById('myeditorinstance');
         const linkEl = document.getElementById('itemLinkUrl');
         const writerEl = document.getElementById('itemWriter'); // NEW WRITER FIELD
         const linkNote = document.getElementById('itemLinkNote');
@@ -2017,10 +2017,10 @@
                 editBtn.addEventListener('click', () => {
                     editIndexInput.value = String(i);
                     titleEl.value = it.title || '';
-                    if (window.tinymce && tinymce.get('itemDescription')) {
-                        tinymce.get('itemDescription').setContent(it.description || '');
+                    if (window.tinymce && tinymce.get('myeditorinstance')) {
+                        tinymce.get('myeditorinstance').setContent(it.description || '');
                     } else {
-                        const txt = document.getElementById('itemDescription');
+                        const txt = document.getElementById('myeditorinstance');
                         if (txt) txt.value = it.description || '';
                     }
                     linkEl.value = it.url || '';
@@ -2149,7 +2149,7 @@
             titleEl.value = '';
             linkEl.value = '';
             writerEl.value = ''; // NEW: Clear writer field
-            if (window.tinymce && tinymce.get('itemDescription')) tinymce.get('itemDescription').setContent(
+            if (window.tinymce && tinymce.get('myeditorinstance')) tinymce.get('myeditorinstance').setContent(
                 '');
             inpId.value = '';
             inpUrl.value = '';
@@ -2162,8 +2162,8 @@
         saveBtn?.addEventListener('click', () => {
             const mode = currentModeName;
             const title = (titleEl.value || '').trim();
-            const descriptionText = getTinyText('itemDescription');
-            const descriptionHTML = getTinyHtml('itemDescription');
+            const descriptionText = getTinyText('myeditorinstance');
+            const descriptionHTML = getTinyHtml('myeditorinstance');
             const imageUrl = (inpUrl.value || '').trim();
             const linkUrl = (linkEl.value || '').trim();
             const writer = (writerEl.value || '').trim(); // NEW: Get writer value
