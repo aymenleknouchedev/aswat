@@ -8,15 +8,27 @@
         // Function to process all Twitter and Instagram embeds
         function processEmbeds() {
             // Process Twitter/X embeds
-            if (window.twttr && window.twttr.widgets) {
+            if (window.twttr && window.twttr.widgets && window.twttr.widgets.load) {
                 console.log('Processing Twitter embeds...');
-                window.twttr.widgets.load();
+                try {
+                    window.twttr.widgets.load();
+                } catch (e) {
+                    console.error('Error processing Twitter embeds:', e);
+                }
+            } else {
+                console.log('Twitter widgets not ready yet');
             }
 
             // Process Instagram embeds
-            if (window.instgrm && window.instgrm.Embed) {
+            if (window.instgrm && window.instgrm.Embed && window.instgrm.Embed.process) {
                 console.log('Processing Instagram embeds...');
-                window.instgrm.Embed.process();
+                try {
+                    window.instgrm.Embed.process();
+                } catch (e) {
+                    console.error('Error processing Instagram embeds:', e);
+                }
+            } else {
+                console.log('Instagram embed not ready yet');
             }
         }
 
@@ -52,14 +64,25 @@
                 }
             });
 
-            // Wait a moment for embed scripts to be fully loaded
-            setTimeout(processEmbeds, 500);
+            // Initial embed processing
+            processEmbeds();
             
-            // Also process embeds after a longer delay to ensure scripts are ready
-            setTimeout(processEmbeds, 2000);
+            // Keep trying to process embeds as scripts load
+            setTimeout(processEmbeds, 300);
+            setTimeout(processEmbeds, 800);
+            setTimeout(processEmbeds, 1500);
+            setTimeout(processEmbeds, 3000);
         });
 
-        // Also expose the function globally in case it needs to be called manually
+        // Setup Twitter embed ready listener
+        if (window.twttr) {
+            window.twttr.ready(function(twttr) {
+                console.log('Twitter ready - loading embeds');
+                twttr.widgets.load();
+            });
+        }
+
+        // Expose globally for manual triggering if needed
         window.processEmbeds = processEmbeds;
     </script>
 
