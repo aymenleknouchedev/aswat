@@ -2233,34 +2233,6 @@
         .fb-embed-block .fb-post{
             display:none;
         }
-        /* X (Twitter) embed block placeholder inside editor */
-        .x-embed-block{
-            display:block;
-            border:2px dashed #1da1f2;
-            background:#f5f8fa;
-            padding:0.75rem 1rem;
-            margin:1rem 0;
-            border-radius:6px;
-            text-align:center;
-            font-size:0.9rem;
-            color:#41516b;
-            cursor:pointer;
-        }
-        .x-embed-block .x-embed-title{
-            font-weight:700;
-            margin-bottom:0.25rem;
-        }
-        .x-embed-block .x-embed-url{
-            font-size:0.8rem;
-            direction:ltr;
-            unicode-bidi:bidi-override;
-            word-break:break-all;
-            color:#1da1f2;
-        }
-        /* Hide actual tweet markup inside editor; only show placeholder */
-        .x-embed-block .twitter-tweet{
-            display:none;
-        }
         .clickable-term{color:#0066cc;text-decoration:underline;cursor:pointer;padding:2px 4px;border-radius:3px;transition:background-color 0.2s;background-color:transparent;}
         .clickable-term:hover{background-color:#e6f2ff;text-decoration:none;}
 
@@ -2617,36 +2589,6 @@
                 }
             });
 
-            // ---- X (TWITTER) EMBED BUTTON ----
-            editor.ui.registry.addButton('vvcTwitterEmbed', {
-                text: 'X/تويتر',
-                tooltip: 'إدراج تغريدة من X/تويتر',
-                onAction: () => {
-                    const url = window.prompt('أدخل رابط التغريدة من X/تويتر');
-                    if (!url) return;
-
-                    const trimmedUrl = url.trim();
-                    if (!trimmedUrl) return;
-
-                    const safeUrl = escapeHtml(trimmedUrl);
-                    const twitterHtml = `
-                        <div class="x-embed-block mceNonEditable" contenteditable="false" data-x-url="${safeUrl}" onclick="window.open('${safeUrl}', '_blank')" style="cursor: pointer;">
-                            <div class="x-embed-title">تغريدة من X</div>
-                            <div class="x-embed-url">${safeUrl}</div>
-                            <blockquote class="twitter-tweet">
-                                <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>
-                            </blockquote>
-                        </div>
-                    `;
-
-                    editor.insertContent(twitterHtml);
-                    // Trigger Twitter widget loader for enhanced rendering
-                    if (window.twttr && window.twttr.widgets) {
-                        window.twttr.widgets.load();
-                    }
-                }
-            });
-
             // ---- CONTEXT MENU (Right-click) ----
             editor.ui.registry.addContextMenu('copy_cut_paste', {
                 predicate: (node) => true,
@@ -2705,7 +2647,7 @@
         toolbar: [
             'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
             '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
-            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcTwitterEmbed vvcPaste',
+            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcPaste',
             '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
         ].join(' '),
         fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',
