@@ -42,7 +42,8 @@
                 aria-controls="vvc-tab-upload" id="vvc-tabbtn-upload" tabindex="-1" data-vvc-tab="upload">الرفع من
                 الجهاز</button>
             <button type="button" class="vvc-tab-btn" role="tab" aria-selected="false"
-                aria-controls="vvc-tab-import" id="vvc-tabbtn-import" tabindex="-1" data-vvc-tab="import">استيراد عبر رابط</button>
+                aria-controls="vvc-tab-import" id="vvc-tabbtn-import" tabindex="-1" data-vvc-tab="import">استيراد عبر
+                رابط</button>
         </div>
 
         <!-- GALLERY TAB: Browse existing media -->
@@ -109,7 +110,8 @@
         </section>
 
         <!-- IMPORT TAB: Import from URL -->
-        <section id="vvc-tab-import" class="vvc-tab-panel" role="tabpanel" aria-labelledby="vvc-tabbtn-import" hidden>
+        <section id="vvc-tab-import" class="vvc-tab-panel" role="tabpanel" aria-labelledby="vvc-tabbtn-import"
+            hidden>
             <div class="vvc-tab-body">
                 <div class="vvc-uploader">
                     <!-- Import input fields: URL, name, alt text -->
@@ -543,19 +545,21 @@
         justify-content: center;
         gap: .5rem;
         color: #fff;
-        background: linear-gradient(135deg, rgba(30,30,30,.85), rgba(60,60,60,.65));
+        background: linear-gradient(135deg, rgba(30, 30, 30, .85), rgba(60, 60, 60, .65));
         text-align: center;
         padding: .5rem;
     }
+
     .vvc-thumb-placeholder .vvc-thumb-icon {
         width: 36px;
         height: 36px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: rgba(255,255,255,.15);
-        border: 1px solid rgba(255,255,255,.25);
+        background: rgba(255, 255, 255, .15);
+        border: 1px solid rgba(255, 255, 255, .25);
     }
+
     .vvc-thumb-placeholder .vvc-thumb-text {
         font-size: .85rem;
         color: #eaeaea;
@@ -875,48 +879,48 @@
         // PRE-LOADED DATA FROM SERVER
         // ============================================
         @php
-        try {
-            $currentContentId = isset($content) ? $content->id : null;
-            $readMoreContent = \App\Models\Content::whereIn('status', ['published', 'draft'])
-                ->when($currentContentId, function($query, $contentId) {
-                    return $query->where('id', '!=', $contentId);
-                })
-                ->select(['id', 'title', 'summary', 'created_at', 'category_id', 'section_id'])
-                ->with([
-                    'media' => function($q) {
-                        $q->wherePivot('type', 'main');
-                    },
-                    'category',
-                    'section'
-                ])
-                ->orderBy('created_at', 'desc')
-                ->limit(50)
-                ->get()
-                ->map(function($item) {
-                    $mainImage = $item->media()->wherePivot('type', 'main')->first();
-                    $imagePath = $mainImage ? $mainImage->path : null;
-                    if ($imagePath && !str_starts_with($imagePath, 'http')) {
-                        $imagePath = url($imagePath);
-                    }
-                    return [
-                        'id' => $item->id,
-                        'title' => $item->title ?? 'Untitled',
-                        'category' => $item->category->name ?? null,
-                        'section_id' => $item->section_id ?? null,
-                        'section' => $item->section->name ?? null,
-                        'image_url' => $imagePath,
-                        'summary' => \Illuminate\Support\Str::limit($item->summary ?? '', 150),
-                        'link' => url('/content/' . $item->id),
-                        'created_at' => $item->created_at->format('Y-m-d H:i:s'),
-                    ];
-                });
+            try {
+                $currentContentId = isset($content) ? $content->id : null;
+                $readMoreContent = \App\Models\Content::whereIn('status', ['published', 'draft'])
+                    ->when($currentContentId, function ($query, $contentId) {
+                        return $query->where('id', '!=', $contentId);
+                    })
+                    ->select(['id', 'title', 'summary', 'created_at', 'category_id', 'section_id'])
+                    ->with([
+                        'media' => function ($q) {
+                            $q->wherePivot('type', 'main');
+                        },
+                        'category',
+                        'section',
+                    ])
+                    ->orderBy('created_at', 'desc')
+                    ->limit(50)
+                    ->get()
+                    ->map(function ($item) {
+                        $mainImage = $item->media()->wherePivot('type', 'main')->first();
+                        $imagePath = $mainImage ? $mainImage->path : null;
+                        if ($imagePath && !str_starts_with($imagePath, 'http')) {
+                            $imagePath = url($imagePath);
+                        }
+                        return [
+                            'id' => $item->id,
+                            'title' => $item->title ?? 'Untitled',
+                            'category' => $item->category->name ?? null,
+                            'section_id' => $item->section_id ?? null,
+                            'section' => $item->section->name ?? null,
+                            'image_url' => $imagePath,
+                            'summary' => \Illuminate\Support\Str::limit($item->summary ?? '', 150),
+                            'link' => url('/content/' . $item->id),
+                            'created_at' => $item->created_at->format('Y-m-d H:i:s'),
+                        ];
+                    });
 
-            // Load sections for the filter dropdown
-            $sections = \App\Models\Section::orderBy('name')->get(['id', 'name']);
-        } catch (\Exception $e) {
-            $readMoreContent = collect([]);
-            $sections = collect([]);
-        }
+                // Load sections for the filter dropdown
+                $sections = \App\Models\Section::orderBy('name')->get(['id', 'name']);
+            } catch (\Exception $e) {
+                $readMoreContent = collect([]);
+                $sections = collect([]);
+            }
         @endphp
         const READ_MORE_DATA = @json($readMoreContent);
         const SECTIONS_DATA = @json($sections);
@@ -1659,7 +1663,7 @@
             selectedImage: null,
             selectedImagePath: null,
             editingElement: null, // Element being edited (null for new insertion)
-            isEditMode: false      // Track if we're in edit mode
+            isEditMode: false // Track if we're in edit mode
         };
 
         // ============================================
@@ -1996,7 +2000,8 @@
 
             // Insert only a placeholder div with data-content-id attribute
             // The frontend will dynamically load and render the actual content
-            let html = `<div class="read-more-block mceNonEditable" data-content-id="${escapeHtml(contentId)}" contenteditable="false">`;
+            let html =
+                `<div class="read-more-block mceNonEditable" data-content-id="${escapeHtml(contentId)}" contenteditable="false">`;
             html += '<span class="read-more-placeholder">جاري تحميل المحتوى...</span>';
             html += '</div><p>&nbsp;</p>';
 
@@ -2080,7 +2085,8 @@
                 textModalState.editingElement.setAttribute('data-description', description);
 
                 if (textModalState.selectedImagePath) {
-                    textModalState.editingElement.setAttribute('data-image', textModalState.selectedImagePath);
+                    textModalState.editingElement.setAttribute('data-image', textModalState
+                        .selectedImagePath);
                 } else {
                     textModalState.editingElement.removeAttribute('data-image');
                 }
@@ -2104,7 +2110,8 @@
                     let attr =
                         `class="clickable-term" data-term="${escapedKey}" data-description="${escapedDesc}"`;
                     if (textModalState.selectedImagePath) {
-                        attr += ` data-image="${escapeHtml(textModalState.selectedImagePath).replace(/"/g, '&quot;')}"`;
+                        attr +=
+                            ` data-image="${escapeHtml(textModalState.selectedImagePath).replace(/"/g, '&quot;')}"`;
                     }
                     tinymce.activeEditor.execCommand('mceInsertContent', false,
                         `<span ${attr}>${escapedContent}</span>`);
@@ -2226,6 +2233,34 @@
         .fb-embed-block .fb-post{
             display:none;
         }
+        /* X (Twitter) embed block placeholder inside editor */
+        .x-embed-block{
+            display:block;
+            border:2px dashed #1da1f2;
+            background:#f5f8fa;
+            padding:0.75rem 1rem;
+            margin:1rem 0;
+            border-radius:6px;
+            text-align:center;
+            font-size:0.9rem;
+            color:#41516b;
+            cursor:pointer;
+        }
+        .x-embed-block .x-embed-title{
+            font-weight:700;
+            margin-bottom:0.25rem;
+        }
+        .x-embed-block .x-embed-url{
+            font-size:0.8rem;
+            direction:ltr;
+            unicode-bidi:bidi-override;
+            word-break:break-all;
+            color:#1da1f2;
+        }
+        /* Hide actual tweet markup inside editor; only show placeholder */
+        .x-embed-block .twitter-tweet{
+            display:none;
+        }
         .clickable-term{color:#0066cc;text-decoration:underline;cursor:pointer;padding:2px 4px;border-radius:3px;transition:background-color 0.2s;background-color:transparent;}
         .clickable-term:hover{background-color:#e6f2ff;text-decoration:none;}
 
@@ -2340,7 +2375,8 @@
                 const editorBody = editor.getBody();
                 if (!editorBody) return;
 
-                const readMoreBlocks = editorBody.querySelectorAll('.read-more-block[data-content-id]:not([data-loaded])');
+                const readMoreBlocks = editorBody.querySelectorAll(
+                    '.read-more-block[data-content-id]:not([data-loaded])');
 
                 if (readMoreBlocks.length === 0) return;
 
@@ -2351,57 +2387,64 @@
 
                 // Batch fetch all ReadMore contents
                 fetch('/api/readmore-batch', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ ids: contentIds })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        console.error('ReadMore API error:', response.status, response.statusText);
-                        throw new Error(`Network response was not ok: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(result => {
-                    console.log('ReadMore API response:', result);
-                    if (result.success && result.data) {
-                        // Replace each placeholder with actual content
-                        readMoreBlocks.forEach(block => {
-                            const contentId = block.dataset.contentId;
-                            const contentData = result.data.find(item => item.id == contentId);
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            ids: contentIds
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error('ReadMore API error:', response.status, response.statusText);
+                            throw new Error(`Network response was not ok: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(result => {
+                        console.log('ReadMore API response:', result);
+                        if (result.success && result.data) {
+                            // Replace each placeholder with actual content
+                            readMoreBlocks.forEach(block => {
+                                const contentId = block.dataset.contentId;
+                                const contentData = result.data.find(item => item.id ==
+                                    contentId);
 
-                            if (contentData) {
-                                console.log(`Rendering ReadMore card for ID: ${contentId}`, contentData);
-                                renderReadMoreCardInEditor(block, contentData);
-                                block.setAttribute('data-loaded', 'true');
-                            } else {
-                                // Content not found
-                                const placeholder = block.querySelector('.read-more-placeholder');
-                                if (placeholder) {
-                                    placeholder.textContent = 'محتوى غير موجود';
-                                    placeholder.style.color = '#dc3545';
+                                if (contentData) {
+                                    console.log(`Rendering ReadMore card for ID: ${contentId}`,
+                                        contentData);
+                                    renderReadMoreCardInEditor(block, contentData);
+                                    block.setAttribute('data-loaded', 'true');
+                                } else {
+                                    // Content not found
+                                    const placeholder = block.querySelector(
+                                        '.read-more-placeholder');
+                                    if (placeholder) {
+                                        placeholder.textContent = 'محتوى غير موجود';
+                                        placeholder.style.color = '#dc3545';
+                                    }
+                                    console.warn(
+                                        `ReadMore content not found for ID: ${contentId}`);
                                 }
-                                console.warn(`ReadMore content not found for ID: ${contentId}`);
+                            });
+                        } else {
+                            console.error('Failed to load ReadMore content:', result.message ||
+                                'Unknown error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching ReadMore content:', error);
+                        readMoreBlocks.forEach(block => {
+                            const placeholder = block.querySelector('.read-more-placeholder');
+                            if (placeholder) {
+                                placeholder.textContent = 'خطأ في تحميل المحتوى';
+                                placeholder.style.color = '#dc3545';
                             }
                         });
-                    } else {
-                        console.error('Failed to load ReadMore content:', result.message || 'Unknown error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching ReadMore content:', error);
-                    readMoreBlocks.forEach(block => {
-                        const placeholder = block.querySelector('.read-more-placeholder');
-                        if (placeholder) {
-                            placeholder.textContent = 'خطأ في تحميل المحتوى';
-                            placeholder.style.color = '#dc3545';
-                        }
                     });
-                });
             }
 
             // Render a ReadMore card with fetched data inside TinyMCE
@@ -2415,7 +2458,8 @@
                 let html = '<span class="read-more-label-text">اقرأ أيضاً</span>';
 
                 if (contentData.image_url) {
-                    html += `<img src="${escapeHtml(contentData.image_url)}" alt="${escapeHtml(contentData.title)}" class="read-more-image">`;
+                    html +=
+                        `<img src="${escapeHtml(contentData.image_url)}" alt="${escapeHtml(contentData.title)}" class="read-more-image">`;
                 }
 
                 html += '<div class="read-more-content">';
@@ -2459,7 +2503,8 @@
                 // Check if the clicked element is a clickable term
                 if (target.classList && target.classList.contains('clickable-term')) {
                     // Check if this is a double-click (same target within delay)
-                    if (lastClickTarget === target && (currentTime - lastClickTime) < DOUBLE_CLICK_DELAY) {
+                    if (lastClickTarget === target && (currentTime - lastClickTime) <
+                        DOUBLE_CLICK_DELAY) {
                         e.preventDefault();
                         e.stopPropagation();
 
@@ -2500,7 +2545,8 @@
                         );
                     } else {
                         const u = picked.url;
-                        const youtubeMatch = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/i);
+                        const youtubeMatch = u.match(
+                            /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/i);
                         const vimeoMatch = u.match(/vimeo\.com\/(\d+)/i);
                         if (youtubeMatch) {
                             const vid = youtubeMatch[1];
@@ -2571,6 +2617,36 @@
                 }
             });
 
+            // ---- X (TWITTER) EMBED BUTTON ----
+            editor.ui.registry.addButton('vvcTwitterEmbed', {
+                text: 'X/تويتر',
+                tooltip: 'إدراج تغريدة من X/تويتر',
+                onAction: () => {
+                    const url = window.prompt('أدخل رابط التغريدة من X/تويتر');
+                    if (!url) return;
+
+                    const trimmedUrl = url.trim();
+                    if (!trimmedUrl) return;
+
+                    const safeUrl = escapeHtml(trimmedUrl);
+                    const twitterHtml = `
+                        <div class="x-embed-block mceNonEditable" contenteditable="false" data-x-url="${safeUrl}" onclick="window.open('${safeUrl}', '_blank')" style="cursor: pointer;">
+                            <div class="x-embed-title">تغريدة من X</div>
+                            <div class="x-embed-url">${safeUrl}</div>
+                            <blockquote class="twitter-tweet">
+                                <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>
+                            </blockquote>
+                        </div>
+                    `;
+
+                    editor.insertContent(twitterHtml);
+                    // Trigger Twitter widget loader for enhanced rendering
+                    if (window.twttr && window.twttr.widgets) {
+                        window.twttr.widgets.load();
+                    }
+                }
+            });
+
             // ---- CONTEXT MENU (Right-click) ----
             editor.ui.registry.addContextMenu('copy_cut_paste', {
                 predicate: (node) => true,
@@ -2583,7 +2659,8 @@
                 icon: 'edit-block',
                 onAction: function() {
                     const selectedNode = editor.selection.getNode();
-                    if (selectedNode && selectedNode.classList && selectedNode.classList.contains('clickable-term')) {
+                    if (selectedNode && selectedNode.classList && selectedNode.classList
+                        .contains('clickable-term')) {
                         window.vvcTextModalManager.openModal(selectedNode);
                     }
                 }
@@ -2628,7 +2705,7 @@
         toolbar: [
             'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
             '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
-            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcPaste',
+            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcTwitterEmbed vvcPaste',
             '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
         ].join(' '),
         fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',

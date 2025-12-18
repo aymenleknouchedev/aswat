@@ -212,7 +212,7 @@
                                     @php
                                         \Carbon\Carbon::setLocale('ar'); // تفعيل اللغة العربية
 
-                                        $created = \Carbon\Carbon::parse($item->created_at);
+                                        $created = \Carbon\Carbon::parse($item->published_at);
                                         $now = \Carbon\Carbon::now();
                                         $diffHours = $created->diffInHours($now);
                                     @endphp
