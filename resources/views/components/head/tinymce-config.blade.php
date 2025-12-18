@@ -2618,19 +2618,50 @@
                     const trimmedUrl = url.trim();
                     if (!trimmedUrl) return;
 
-                    const safeUrl = escapeHtml(trimmedUrl);
-                    
-                    // Twitter requires this exact structure to work
-                    const twitterPostHtml = `<blockquote class="twitter-tweet"><p lang="ar" dir="ltr"><a href="${safeUrl}"></a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"><\/script>`;
+                    // Show loading indicator
+                    editor.notificationManager.open({
+                        text: 'جاري تحميل منشور تويتر...',
+                        type: 'info'
+                    });
 
-                    editor.insertContent(twitterPostHtml);
-                    
-                    // Reprocess after a short delay
-                    setTimeout(() => {
-                        if (window.twttr && window.twttr.widgets) {
-                            window.twttr.widgets.load();
-                        }
-                    }, 100);
+                    // Use Twitter's oEmbed API to get proper embed HTML
+                    fetch(`https://publish.twitter.com/oembed?url=${encodeURIComponent(trimmedUrl)}&hide_thread=true`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.html) {
+                                // Insert the proper Twitter embed HTML
+                                editor.insertContent(`<div style="display: flex; justify-content: center; margin: 20px 0;">${data.html}</div>`);
+                                
+                                // Reprocess after insertion
+                                setTimeout(() => {
+                                    if (window.twttr && window.twttr.widgets) {
+                                        window.twttr.widgets.load();
+                                    }
+                                }, 200);
+                                
+                                editor.notificationManager.close();
+                            } else {
+                                throw new Error('لم يتم الحصول على بيانات الفيديو');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Twitter embed error:', error);
+                            // Fallback: simple blockquote
+                            const safeUrl = escapeHtml(trimmedUrl);
+                            const fallbackHtml = `<div style="display: flex; justify-content: center; margin: 20px 0;"><blockquote class="twitter-tweet" data-dnt="true"><a href="${safeUrl}"></a></blockquote></div>`;
+                            editor.insertContent(fallbackHtml);
+                            
+                            setTimeout(() => {
+                                if (window.twttr && window.twttr.widgets) {
+                                    window.twttr.widgets.load();
+                                }
+                            }, 200);
+                            
+                            editor.notificationManager.open({
+                                text: 'تم إدراج المنشور (قد يحتاج إلى إعادة تحميل الصفحة للعرض)',
+                                type: 'warning'
+                            });
+                        });
                 }
             });
 

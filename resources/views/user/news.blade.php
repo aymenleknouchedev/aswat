@@ -9,22 +9,14 @@
         function processEmbeds() {
             console.log('Processing embeds...');
             
-            // Process Twitter/X embeds - use the proper Twitter API
+            // Process Twitter/X embeds
             if (window.twttr && window.twttr.widgets) {
-                console.log('Found Twitter widget, loading...');
+                console.log('Found Twitter widget, loading all embeds...');
                 try {
-                    // This will find all blockquote.twitter-tweet and render them
-                    window.twttr.widgets.load(document.querySelector('.custom-article-content'));
+                    window.twttr.widgets.load();
                 } catch (e) {
                     console.error('Error loading Twitter widgets:', e);
-                    try {
-                        window.twttr.widgets.load();
-                    } catch (e2) {
-                        console.error('Fallback Twitter load also failed:', e2);
-                    }
                 }
-            } else {
-                console.log('Twitter widgets not available');
             }
 
             // Process Instagram embeds
@@ -35,8 +27,6 @@
                 } catch (e) {
                     console.error('Error processing Instagram:', e);
                 }
-            } else {
-                console.log('Instagram not available');
             }
         }
 
@@ -74,19 +64,9 @@
 
             // Process embeds at different intervals as scripts load
             processEmbeds();
-            setTimeout(processEmbeds, 300);
-            setTimeout(processEmbeds, 800);
+            setTimeout(processEmbeds, 500);
             setTimeout(processEmbeds, 1500);
-            setTimeout(processEmbeds, 3000);
         });
-
-        // Watch for Twitter ready event
-        if (window.twttr) {
-            window.twttr.ready(function(twttr) {
-                console.log('Twitter ready event fired');
-                processEmbeds();
-            });
-        }
 
         // Expose globally for manual triggering if needed
         window.processEmbeds = processEmbeds;
