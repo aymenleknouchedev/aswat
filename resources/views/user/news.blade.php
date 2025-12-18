@@ -7,28 +7,36 @@
     <script>
         // Function to process all Twitter and Instagram embeds
         function processEmbeds() {
-            // Process Twitter/X embeds
-            if (window.twttr && window.twttr.widgets && window.twttr.widgets.load) {
-                console.log('Processing Twitter embeds...');
+            console.log('Processing embeds...');
+            
+            // Process Twitter/X embeds - use the proper Twitter API
+            if (window.twttr && window.twttr.widgets) {
+                console.log('Found Twitter widget, loading...');
                 try {
-                    window.twttr.widgets.load();
+                    // This will find all blockquote.twitter-tweet and render them
+                    window.twttr.widgets.load(document.querySelector('.custom-article-content'));
                 } catch (e) {
-                    console.error('Error processing Twitter embeds:', e);
+                    console.error('Error loading Twitter widgets:', e);
+                    try {
+                        window.twttr.widgets.load();
+                    } catch (e2) {
+                        console.error('Fallback Twitter load also failed:', e2);
+                    }
                 }
             } else {
-                console.log('Twitter widgets not ready yet');
+                console.log('Twitter widgets not available');
             }
 
             // Process Instagram embeds
-            if (window.instgrm && window.instgrm.Embed && window.instgrm.Embed.process) {
-                console.log('Processing Instagram embeds...');
+            if (window.instgrm && window.instgrm.Embed) {
+                console.log('Found Instagram, processing...');
                 try {
                     window.instgrm.Embed.process();
                 } catch (e) {
-                    console.error('Error processing Instagram embeds:', e);
+                    console.error('Error processing Instagram:', e);
                 }
             } else {
-                console.log('Instagram embed not ready yet');
+                console.log('Instagram not available');
             }
         }
 
@@ -64,21 +72,19 @@
                 }
             });
 
-            // Initial embed processing
+            // Process embeds at different intervals as scripts load
             processEmbeds();
-            
-            // Keep trying to process embeds as scripts load
             setTimeout(processEmbeds, 300);
             setTimeout(processEmbeds, 800);
             setTimeout(processEmbeds, 1500);
             setTimeout(processEmbeds, 3000);
         });
 
-        // Setup Twitter embed ready listener
+        // Watch for Twitter ready event
         if (window.twttr) {
             window.twttr.ready(function(twttr) {
-                console.log('Twitter ready - loading embeds');
-                twttr.widgets.load();
+                console.log('Twitter ready event fired');
+                processEmbeds();
             });
         }
 
@@ -424,15 +430,42 @@
             background-size: contain;
         }
 
-        /* Twitter/X Embed Styles */
+        /* Twitter/X Embed Styles - Allow default Twitter styling */
         .custom-article-content .twitter-tweet {
             margin: 20px auto !important;
-            width: 100% !important;
-            max-width: 550px !important;
+            font-family: system-ui, -apple-system, sans-serif !important;
         }
 
-        .custom-article-content .twitter-tweet iframe {
-            max-width: 100% !important;
+        .custom-article-content blockquote.twitter-tweet {
+            background-color: #FFF !important;
+            color: #000 !important;
+            border: none !important;
+            padding: 16px !important;
+            border-radius: 12px !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+            font-family: system-ui, -apple-system, sans-serif !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+            width: 100% !important;
+            max-width: 550px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        .custom-article-content blockquote.twitter-tweet p {
+            font-family: system-ui, -apple-system, sans-serif !important;
+            font-size: 14px !important;
+            color: #0f1419 !important;
+            text-align: left !important;
+            direction: ltr !important;
+        }
+
+        .custom-article-content blockquote.twitter-tweet a {
+            color: #1da1f2 !important;
+            text-decoration: none !important;
+            border: none !important;
+            padding: 0 !important;
+            background: transparent !important;
         }
 
         /* Instagram Embed Styles */

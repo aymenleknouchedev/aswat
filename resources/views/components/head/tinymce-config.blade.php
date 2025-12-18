@@ -2620,21 +2620,12 @@
 
                     const safeUrl = escapeHtml(trimmedUrl);
                     
-                    // Extract tweet ID from URL for better rendering
-                    const tweetIdMatch = trimmedUrl.match(/\/status\/(\d+)/);
-                    const tweetId = tweetIdMatch ? tweetIdMatch[1] : null;
-                    
-                    const twitterPostHtml = `
-                        <div style="display: flex; justify-content: center; margin: 20px 0;">
-                            <blockquote class="twitter-tweet" data-theme="${theme}" data-width="500" data-conversation="none" data-dnt="true">
-                                <a href="${safeUrl}">منشور على تويتر/X</a>
-                            </blockquote>
-                        </div>
-                    `;
+                    // Twitter requires this exact structure to work
+                    const twitterPostHtml = `<blockquote class="twitter-tweet"><p lang="ar" dir="ltr"><a href="${safeUrl}"></a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"><\/script>`;
 
                     editor.insertContent(twitterPostHtml);
                     
-                    // Schedule reprocessing after a short delay to allow DOM to update
+                    // Reprocess after a short delay
                     setTimeout(() => {
                         if (window.twttr && window.twttr.widgets) {
                             window.twttr.widgets.load();
