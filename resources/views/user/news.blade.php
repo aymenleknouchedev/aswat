@@ -36,6 +36,16 @@
                     }
                 }
             });
+
+            // Load Twitter/X embeds if available
+            if (window.twttr && window.twttr.widgets) {
+                window.twttr.widgets.load();
+            }
+
+            // Load Instagram embeds if available
+            if (window.instgrm && window.instgrm.Embed) {
+                window.instgrm.Embed.process();
+            }
         });
     </script>
 
@@ -375,6 +385,28 @@
             height: 32px;
             background: url('/user/assets/icons/down.png') no-repeat center;
             background-size: contain;
+        }
+
+        /* Twitter/X Embed Styles */
+        .custom-article-content .twitter-tweet {
+            margin: 20px auto !important;
+            width: 100% !important;
+            max-width: 550px !important;
+        }
+
+        .custom-article-content .twitter-tweet iframe {
+            max-width: 100% !important;
+        }
+
+        /* Instagram Embed Styles */
+        .custom-article-content .instagram-media {
+            margin: 20px auto !important;
+            width: 100% !important;
+            max-width: 540px !important;
+        }
+
+        .custom-article-content .instagram-media iframe {
+            max-width: 100% !important;
         }
 
         /* Tags */

@@ -2167,6 +2167,24 @@
      * ============================================
      */
 
+    // Load Twitter/X and Instagram embed scripts
+    if (!window.twitterEmbedLoaded) {
+        const twitterScript = document.createElement('script');
+        twitterScript.src = 'https://platform.twitter.com/widgets.js';
+        twitterScript.async = true;
+        twitterScript.charset = 'utf-8';
+        document.head.appendChild(twitterScript);
+        window.twitterEmbedLoaded = true;
+    }
+
+    if (!window.instagramEmbedLoaded) {
+        const instagramScript = document.createElement('script');
+        instagramScript.src = 'https://www.instagram.com/embed.js';
+        instagramScript.async = true;
+        document.head.appendChild(instagramScript);
+        window.instagramEmbedLoaded = true;
+    }
+
     // Detect theme preference
     const theme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
 
@@ -2589,6 +2607,60 @@
                 }
             });
 
+            // ---- TWITTER/X POST EMBED BUTTON ----
+            editor.ui.registry.addButton('vvcTwitterPost', {
+                text: 'تويتر',
+                tooltip: 'إدراج منشور تويتر/X',
+                onAction: () => {
+                    const url = window.prompt('أدخل رابط منشور تويتر/X');
+                    if (!url) return;
+
+                    const trimmedUrl = url.trim();
+                    if (!trimmedUrl) return;
+
+                    const safeUrl = escapeHtml(trimmedUrl);
+                    const twitterPostHtml = `
+                        <blockquote class="twitter-tweet" data-theme="${theme}" data-width="500" data-conversation="none">
+                            <a href="${safeUrl}"></a>
+                        </blockquote>
+                    `;
+
+                    editor.insertContent(twitterPostHtml);
+                    
+                    // Reload Twitter widgets if available
+                    if (window.twttr && window.twttr.widgets) {
+                        window.twttr.widgets.load();
+                    }
+                }
+            });
+
+            // ---- INSTAGRAM POST EMBED BUTTON ----
+            editor.ui.registry.addButton('vvcInstagramPost', {
+                text: 'انستجرام',
+                tooltip: 'إدراج منشور انستجرام',
+                onAction: () => {
+                    const url = window.prompt('أدخل رابط منشور انستجرام');
+                    if (!url) return;
+
+                    const trimmedUrl = url.trim();
+                    if (!trimmedUrl) return;
+
+                    const safeUrl = escapeHtml(trimmedUrl);
+                    const instagramPostHtml = `
+                        <blockquote class="instagram-media" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
+                            <div style="padding:16px;"> <a href="${safeUrl}" target="_blank" rel="noopener">منشور من Instagram</a></div>
+                        </blockquote>
+                    `;
+
+                    editor.insertContent(instagramPostHtml);
+                    
+                    // Reload Instagram embeds if available
+                    if (window.instgrm && window.instgrm.Embed) {
+                        window.instgrm.Embed.process();
+                    }
+                }
+            });
+
             // ---- CONTEXT MENU (Right-click) ----
             editor.ui.registry.addContextMenu('copy_cut_paste', {
                 predicate: (node) => true,
@@ -2647,7 +2719,7 @@
         toolbar: [
             'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
             '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
-            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcPaste',
+            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcTwitterPost vvcInstagramPost vvcPaste',
             '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
         ].join(' '),
         fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',

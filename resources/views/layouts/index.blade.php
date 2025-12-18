@@ -49,6 +49,13 @@
             pointer-events: none !important;
         }
     </style>
+
+    <!-- Load Twitter/X Embed Script -->
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+    <!-- Load Instagram Embed Script -->
+    <script async src="https://www.instagram.com/embed.js"></script>
+
     <script>
         // Make Facebook embeds clickable to redirect to Facebook
         document.addEventListener('DOMContentLoaded', function() {
