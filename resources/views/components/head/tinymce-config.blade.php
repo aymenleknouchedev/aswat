@@ -2619,18 +2619,27 @@
                     if (!trimmedUrl) return;
 
                     const safeUrl = escapeHtml(trimmedUrl);
+                    
+                    // Extract tweet ID from URL for better rendering
+                    const tweetIdMatch = trimmedUrl.match(/\/status\/(\d+)/);
+                    const tweetId = tweetIdMatch ? tweetIdMatch[1] : null;
+                    
                     const twitterPostHtml = `
-                        <blockquote class="twitter-tweet" data-theme="${theme}" data-width="500" data-conversation="none">
-                            <a href="${safeUrl}"></a>
-                        </blockquote>
+                        <div style="display: flex; justify-content: center; margin: 20px 0;">
+                            <blockquote class="twitter-tweet" data-theme="${theme}" data-width="500" data-conversation="none" data-dnt="true">
+                                <a href="${safeUrl}">منشور على تويتر/X</a>
+                            </blockquote>
+                        </div>
                     `;
 
                     editor.insertContent(twitterPostHtml);
                     
-                    // Reload Twitter widgets if available
-                    if (window.twttr && window.twttr.widgets) {
-                        window.twttr.widgets.load();
-                    }
+                    // Schedule reprocessing after a short delay to allow DOM to update
+                    setTimeout(() => {
+                        if (window.twttr && window.twttr.widgets) {
+                            window.twttr.widgets.load();
+                        }
+                    }, 100);
                 }
             });
 
@@ -2646,18 +2655,25 @@
                     if (!trimmedUrl) return;
 
                     const safeUrl = escapeHtml(trimmedUrl);
+                    
                     const instagramPostHtml = `
-                        <blockquote class="instagram-media" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
-                            <div style="padding:16px;"> <a href="${safeUrl}" target="_blank" rel="noopener">منشور من Instagram</a></div>
-                        </blockquote>
+                        <div style="display: flex; justify-content: center; margin: 20px 0;">
+                            <blockquote class="instagram-media" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
+                                <div style="padding:16px;">
+                                    <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">منشور من Instagram</a>
+                                </div>
+                            </blockquote>
+                        </div>
                     `;
 
                     editor.insertContent(instagramPostHtml);
                     
-                    // Reload Instagram embeds if available
-                    if (window.instgrm && window.instgrm.Embed) {
-                        window.instgrm.Embed.process();
-                    }
+                    // Schedule reprocessing after a short delay to allow DOM to update
+                    setTimeout(() => {
+                        if (window.instgrm && window.instgrm.Embed) {
+                            window.instgrm.Embed.process();
+                        }
+                    }, 100);
                 }
             });
 

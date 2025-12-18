@@ -5,6 +5,21 @@
 @section('content')
 
     <script>
+        // Function to process all Twitter and Instagram embeds
+        function processEmbeds() {
+            // Process Twitter/X embeds
+            if (window.twttr && window.twttr.widgets) {
+                console.log('Processing Twitter embeds...');
+                window.twttr.widgets.load();
+            }
+
+            // Process Instagram embeds
+            if (window.instgrm && window.instgrm.Embed) {
+                console.log('Processing Instagram embeds...');
+                window.instgrm.Embed.process();
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll('.custom-article-content a').forEach(function(el) {
                 el.setAttribute('target', '_blank');
@@ -37,16 +52,15 @@
                 }
             });
 
-            // Load Twitter/X embeds if available
-            if (window.twttr && window.twttr.widgets) {
-                window.twttr.widgets.load();
-            }
-
-            // Load Instagram embeds if available
-            if (window.instgrm && window.instgrm.Embed) {
-                window.instgrm.Embed.process();
-            }
+            // Wait a moment for embed scripts to be fully loaded
+            setTimeout(processEmbeds, 500);
+            
+            // Also process embeds after a longer delay to ensure scripts are ready
+            setTimeout(processEmbeds, 2000);
         });
+
+        // Also expose the function globally in case it needs to be called manually
+        window.processEmbeds = processEmbeds;
     </script>
 
     {{-- ================= CSS ================= --}}
