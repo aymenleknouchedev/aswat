@@ -2167,16 +2167,7 @@
      * ============================================
      */
 
-    // Load Twitter/X and Instagram embed scripts
-    if (!window.twitterEmbedLoaded) {
-        const twitterScript = document.createElement('script');
-        twitterScript.src = 'https://platform.twitter.com/widgets.js';
-        twitterScript.async = true;
-        twitterScript.charset = 'utf-8';
-        document.head.appendChild(twitterScript);
-        window.twitterEmbedLoaded = true;
-    }
-
+    // Load Instagram embed script
     if (!window.instagramEmbedLoaded) {
         const instagramScript = document.createElement('script');
         instagramScript.src = 'https://www.instagram.com/embed.js';
@@ -2607,64 +2598,6 @@
                 }
             });
 
-            // ---- TWITTER/X POST EMBED BUTTON ----
-            editor.ui.registry.addButton('vvcTwitterPost', {
-                text: 'تويتر',
-                tooltip: 'إدراج منشور تويتر/X',
-                onAction: () => {
-                    const url = window.prompt('أدخل رابط منشور تويتر/X');
-                    if (!url) return;
-
-                    const trimmedUrl = url.trim();
-                    if (!trimmedUrl) return;
-
-                    // Show loading indicator
-                    editor.notificationManager.open({
-                        text: 'جاري تحميل منشور تويتر...',
-                        type: 'info'
-                    });
-
-                    // Use Twitter's oEmbed API to get proper embed HTML
-                    fetch(`https://publish.twitter.com/oembed?url=${encodeURIComponent(trimmedUrl)}&hide_thread=true`)
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.html) {
-                                // Insert the proper Twitter embed HTML
-                                editor.insertContent(`<div style="display: flex; justify-content: center; margin: 20px 0;">${data.html}</div>`);
-                                
-                                // Reprocess after insertion
-                                setTimeout(() => {
-                                    if (window.twttr && window.twttr.widgets) {
-                                        window.twttr.widgets.load();
-                                    }
-                                }, 200);
-                                
-                                editor.notificationManager.close();
-                            } else {
-                                throw new Error('لم يتم الحصول على بيانات الفيديو');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Twitter embed error:', error);
-                            // Fallback: simple blockquote
-                            const safeUrl = escapeHtml(trimmedUrl);
-                            const fallbackHtml = `<div style="display: flex; justify-content: center; margin: 20px 0;"><blockquote class="twitter-tweet" data-dnt="true"><a href="${safeUrl}"></a></blockquote></div>`;
-                            editor.insertContent(fallbackHtml);
-                            
-                            setTimeout(() => {
-                                if (window.twttr && window.twttr.widgets) {
-                                    window.twttr.widgets.load();
-                                }
-                            }, 200);
-                            
-                            editor.notificationManager.open({
-                                text: 'تم إدراج المنشور (قد يحتاج إلى إعادة تحميل الصفحة للعرض)',
-                                type: 'warning'
-                            });
-                        });
-                }
-            });
-
             // ---- INSTAGRAM POST EMBED BUTTON ----
             editor.ui.registry.addButton('vvcInstagramPost', {
                 text: 'انستجرام',
@@ -2757,7 +2690,7 @@
         toolbar: [
             'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
             '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
-            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcTwitterPost vvcInstagramPost vvcPaste',
+            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcInstagramPost vvcPaste',
             '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
         ].join(' '),
         fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',

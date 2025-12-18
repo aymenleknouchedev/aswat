@@ -5,20 +5,10 @@
 @section('content')
 
     <script>
-        // Function to process all Twitter and Instagram embeds
+        // Function to process Instagram embeds
         function processEmbeds() {
-            console.log('Processing embeds...');
+            console.log('Processing Instagram embeds...');
             
-            // Process Twitter/X embeds
-            if (window.twttr && window.twttr.widgets) {
-                console.log('Found Twitter widget, loading all embeds...');
-                try {
-                    window.twttr.widgets.load();
-                } catch (e) {
-                    console.error('Error loading Twitter widgets:', e);
-                }
-            }
-
             // Process Instagram embeds
             if (window.instgrm && window.instgrm.Embed) {
                 console.log('Found Instagram, processing...');
@@ -408,44 +398,6 @@
             height: 32px;
             background: url('/user/assets/icons/down.png') no-repeat center;
             background-size: contain;
-        }
-
-        /* Twitter/X Embed Styles - Allow default Twitter styling */
-        .custom-article-content .twitter-tweet {
-            margin: 20px auto !important;
-            font-family: system-ui, -apple-system, sans-serif !important;
-        }
-
-        .custom-article-content blockquote.twitter-tweet {
-            background-color: #FFF !important;
-            color: #000 !important;
-            border: none !important;
-            padding: 16px !important;
-            border-radius: 12px !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
-            font-family: system-ui, -apple-system, sans-serif !important;
-            font-size: 14px !important;
-            line-height: 1.5 !important;
-            width: 100% !important;
-            max-width: 550px !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-        }
-
-        .custom-article-content blockquote.twitter-tweet p {
-            font-family: system-ui, -apple-system, sans-serif !important;
-            font-size: 14px !important;
-            color: #0f1419 !important;
-            text-align: left !important;
-            direction: ltr !important;
-        }
-
-        .custom-article-content blockquote.twitter-tweet a {
-            color: #1da1f2 !important;
-            text-decoration: none !important;
-            border: none !important;
-            padding: 0 !important;
-            background: transparent !important;
         }
 
         /* Instagram Embed Styles */

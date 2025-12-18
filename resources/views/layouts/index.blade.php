@@ -50,29 +50,8 @@
         }
     </style>
 
-    <!-- Load Twitter/X Embed Script -->
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" onload="console.log('Twitter script loaded')"></script>
-
     <!-- Load Instagram Embed Script -->
     <script async src="https://www.instagram.com/embed.js" onload="console.log('Instagram script loaded')"></script>
-
-    <script>
-        // Wait for Twitter widget to be ready
-        window.addEventListener('load', function() {
-            console.log('Page loaded - checking for embed scripts');
-            if (window.twttr) {
-                console.log('Twitter object found');
-                if (window.twttr.ready) {
-                    window.twttr.ready(function(twttr) {
-                        console.log('Twitter ready callback');
-                        if (window.processEmbeds) {
-                            window.processEmbeds();
-                        }
-                    });
-                }
-            }
-        });
-    </script>
 
     <script>
         // Make Facebook embeds clickable to redirect to Facebook
