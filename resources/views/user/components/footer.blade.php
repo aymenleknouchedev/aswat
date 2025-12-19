@@ -205,7 +205,7 @@
         <div class="contact-us">
             <div class="right-side">
                 <ul>
-                    <li>من نحن</li>
+                    <li><a href="{{ route('about-us') }}">من نحن</a></li>
                     <li>الوظائف</li>
                     <li>اتصل بنا</li>
                     <li>سياسة الخصوصية</li>

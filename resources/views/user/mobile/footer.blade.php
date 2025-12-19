@@ -150,7 +150,7 @@
         <img class="m-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="أصوات جزائرية">
         <div class="m-divider" aria-hidden="true"></div>
         <ul class="m-links" role="list">
-            <li>من نحن</li>
+            <li><a href="{{ route('about-us') }}" style="color: inherit; text-decoration: none;">من نحن</a></li>
             <li>الوظائف</li>
             <li>اتصل بنا</li>
             <li>سياسة الخصوصية</li>
