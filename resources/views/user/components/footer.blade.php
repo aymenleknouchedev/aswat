@@ -206,8 +206,8 @@
             <div class="right-side">
                 <ul>
                     <li><a href="{{ route('about-us') }}">من نحن</a></li>
-                    <li>الوظائف</li>
-                    <li>اتصل بنا</li>
+                    {{-- <li>الوظائف</li>
+                    <li>اتصل بنا</li> --}}
                     <li><a href="{{ route('privacy-and-statements') }}">سياسة الخصوصية</a></li>
                 </ul>
             </div>

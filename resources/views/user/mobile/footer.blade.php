@@ -153,7 +153,8 @@
             <li><a href="{{ route('about-us') }}" style="color: inherit; text-decoration: none;">من نحن</a></li>
             <li>الوظائف</li>
             <li>اتصل بنا</li>
-            <li>سياسة الخصوصية</li>
+            <li><a href="{{ route('privacy-and-statements') }}">سياسة الخصوصية</a></li>
+
         </ul>
         <div class="m-icons" aria-label="وسائل التواصل الاجتماعي">
             <span class="m-icon">@include('user.icons.facebook')</span>
@@ -165,7 +166,7 @@
         </div>
 
         <div class="m-contact">
-                <form class="m-contact-form" method="post" action="#" onsubmit="return false;">
+            <form class="m-contact-form" method="post" action="#" onsubmit="return false;">
                 <input type="email" name="email" placeholder="البريد الإلكتروني">
                 <button type="submit">إرسال</button>
             </form>
