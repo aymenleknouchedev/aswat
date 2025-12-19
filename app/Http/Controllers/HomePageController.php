@@ -820,4 +820,9 @@ class HomePageController extends Controller
     {
         return view('user.about-us');
     }
+
+    public function privacyAndStatements()
+    {
+        return view('user.privacy-and-statements');
+    }
 }

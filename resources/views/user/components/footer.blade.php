@@ -208,7 +208,7 @@
                     <li><a href="{{ route('about-us') }}">من نحن</a></li>
                     <li>الوظائف</li>
                     <li>اتصل بنا</li>
-                    <li>سياسة الخصوصية</li>
+                    <li><a href="{{ route('privacy-and-statements') }}">سياسة الخصوصية</a></li>
                 </ul>
             </div>
             <div class="left-side">
