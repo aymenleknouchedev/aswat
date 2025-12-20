@@ -592,15 +592,23 @@ class HomePageController extends Controller
             ->take($perPage)
             ->get();
 
+        // Combine featured and more content IDs to exclude from sidebar
+        $displayedContentIds = $contents->pluck('id')->merge($moreContents->pluck('id'))->toArray();
+
         // Top viewed + suggestions
         $topViewed = Content::where('section_id', $sectionId)
             ->where('status', 'published')
+            ->whereNotIn('id', $displayedContentIds)
             ->orderByDesc('read_count')
             ->take(5)
             ->get();
 
+        $topViewedIds = $topViewed->pluck('id')->toArray();
+
         $suggestions = Content::where('section_id', $sectionId)
             ->where('status', 'published')
+            ->whereNotIn('id', $displayedContentIds)
+            ->whereNotIn('id', $topViewedIds)
             ->where('created_at', '>=', now()->subMonth())
             ->inRandomOrder()
             ->take(5)
