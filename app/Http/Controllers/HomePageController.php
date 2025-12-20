@@ -576,7 +576,7 @@ class HomePageController extends Controller
         // === أول 4 مقالات ثابتة ===
         $contents = \App\Models\Content::where('section_id', $sectionId)
             ->where('status', 'published')
-            ->orderByDesc('created_at')
+            ->orderByDesc('published_at')
             ->take($count)
             ->get();
 
