@@ -593,10 +593,8 @@ class HomePageController extends Controller
             ->get();
 
         // Top viewed + suggestions
-        $excludeIds = $contents->pluck('id')->merge($moreContents->pluck('id'))->toArray();
         $topViewed = Content::where('section_id', $sectionId)
             ->where('status', 'published')
-            ->whereNotIn('id', $excludeIds)
             ->orderByDesc('read_count')
             ->take(5)
             ->get();
@@ -604,7 +602,6 @@ class HomePageController extends Controller
         $suggestions = Content::where('section_id', $sectionId)
             ->where('status', 'published')
             ->where('created_at', '>=', now()->subMonth())
-            ->whereNotIn('id', $topViewed->pluck('id')->toArray())
             ->inRandomOrder()
             ->take(5)
             ->get();
