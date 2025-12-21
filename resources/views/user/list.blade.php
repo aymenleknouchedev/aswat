@@ -1054,6 +1054,7 @@
             .hero-image {
                 height: 50vh;
                 min-height: 300px;
+                margin-top: 25px;
             }
 
             .hero-caption {
@@ -1066,7 +1067,8 @@
             }
 
             .hero-content h1 {
-                font-size: 24px;
+                padding: 10px 10px;
+                font-size: 32px;
                 margin-bottom: 15px;
             }
 
@@ -1932,7 +1934,7 @@
             <p>{{ $news->summary }}</p>
 
             <div class="actor-info">
-                <div class="actor-name">{{ $news->writers->first()?->name ?? '' }} - {{ $news->city->name ?? '' }}
+                <div class="actor-name">{{ $news->city->name ?? '' }} - {{ $news->writers->first()?->name ?? '' }}</div>
                 </div>
             </div>
         </div>
