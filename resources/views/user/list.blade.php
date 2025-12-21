@@ -813,7 +813,7 @@
             font-family: asswat-regular !important;
             direction: rtl !important;
             position: relative;
-            max-height: calc(1.9em * 9);
+            max-height: calc(1.9em * 6);
             overflow: hidden;
             transition: max-height 0.3s ease;
         }
