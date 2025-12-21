@@ -1067,7 +1067,7 @@
             }
 
             .hero-content h1 {
-                padding: 10px 10px;
+                padding: 35px 10px 10px 10px;
                 font-size: 32px;
                 margin-bottom: 15px;
             }
