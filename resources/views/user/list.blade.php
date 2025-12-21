@@ -813,6 +813,7 @@
             font-family: asswat-regular !important;
             direction: rtl !important;
             position: relative;
+            max-height: calc(1.9em * 9);
             overflow: hidden;
             transition: max-height 0.3s ease;
         }
@@ -2312,15 +2313,7 @@
                 const description = button.previousElementSibling;
                 const buttonText = button.querySelector('.expand-description-btn-text');
                 
-                // Calculate 9 lines height dynamically
-                // Font-size: 16px, line-height: 1.9
-                // 9 lines = 16px * 1.9 * 9 = 273.6px
-                const collapsedHeight = parseFloat(getComputedStyle(description).fontSize) * 
-                                       parseFloat(getComputedStyle(description).lineHeight) * 9;
-                
-                description.style.maxHeight = collapsedHeight + 'px';
-                
-                // Check if description text is overflowing
+                // Check if description text is overflowing (more than 9 lines)
                 const isOverflowing = description.scrollHeight > description.offsetHeight;
                 
                 if (!isOverflowing) {
@@ -2333,13 +2326,11 @@
 
                     if (isExpanded) {
                         description.classList.remove('expanded');
-                        description.style.maxHeight = collapsedHeight + 'px';
                         this.classList.remove('expanded');
                         this.classList.add('collapsed');
                         buttonText.textContent = 'عرض المزيد';
                     } else {
                         description.classList.add('expanded');
-                        description.style.maxHeight = description.scrollHeight + 'px';
                         this.classList.add('expanded');
                         this.classList.remove('collapsed');
                         buttonText.textContent = 'إخفاء';
