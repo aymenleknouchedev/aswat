@@ -896,23 +896,37 @@
             background: none;
             border: none;
             cursor: pointer;
-            padding: 15px 0;
+            padding: 12px 0;
             margin-top: 20px;
             margin-bottom: 10px;
             color: #000000;
             font-size: 16px;
             transition: all 0.3s ease;
             display: flex;
+            flex-direction: row-reverse;
             align-items: center;
-            gap: 12px;
-            font-weight: 600;
+            gap: 8px;
+            font-weight: 400;
             font-family: asswat-regular;
             width: 100%;
-            justify-content: center;
+            justify-content: flex-start;
             position: relative;
         }
 
-        .expand-description-btn::before,
+        .expand-description-btn::before {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 14px;
+            flex-shrink: 0;
+            transform: rotate(0deg);
+            transition: transform 0.3s ease;
+        }
+
+        .expand-description-btn.expanded::before {
+            transform: rotate(180deg);
+        }
+
         .expand-description-btn::after {
             content: '';
             flex: 1;
@@ -921,8 +935,7 @@
         }
 
         .expand-description-btn-text {
-            white-space: nowrap;
-            padding: 0 12px;
+            display: none;
         }
 
        
@@ -2047,7 +2060,7 @@
                             <div class="film-description-wrapper">
                                 <div class="film-description">{!! $item->description !!}</div>
                                 <button class="expand-description-btn" aria-label="عرض المزيد">
-                                    <span class="expand-description-btn-text">عرض المزيد</span>
+                                    <span class="expand-description-btn-text"></span>
                                 </button>
                             </div>
                         </div>
