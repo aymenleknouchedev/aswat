@@ -272,7 +272,7 @@ class HomePageController extends Controller
         $page = $request->get('page', 1);
         $skip = ($page - 1) * $perPage;
 
-        $windows = Window::orderByDesc('published_at')
+        $windows = Window::orderByDesc('created_at')
             ->skip($skip)
             ->take($perPage)
             ->get();
