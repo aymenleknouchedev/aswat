@@ -148,6 +148,10 @@
             .mobile {
                 display: none;
             }
+
+            .web {
+                display: block !important;
+            }
         }
 
         @media (max-width: 900px) {
