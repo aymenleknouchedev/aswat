@@ -2313,11 +2313,15 @@
                 const description = button.previousElementSibling;
                 const buttonText = button.querySelector('.expand-description-btn-text');
                 
-                // Dynamically set max-height based on current scrollHeight
-                const collapsedHeight = description.scrollHeight;
+                // Calculate 9 lines height dynamically
+                // Font-size: 16px, line-height: 1.9
+                // 9 lines = 16px * 1.9 * 9 = 273.6px
+                const collapsedHeight = parseFloat(getComputedStyle(description).fontSize) * 
+                                       parseFloat(getComputedStyle(description).lineHeight) * 9;
+                
                 description.style.maxHeight = collapsedHeight + 'px';
                 
-                // Check if description text is overflowing (more than 9 lines)
+                // Check if description text is overflowing
                 const isOverflowing = description.scrollHeight > description.offsetHeight;
                 
                 if (!isOverflowing) {
