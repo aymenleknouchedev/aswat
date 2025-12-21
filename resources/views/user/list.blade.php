@@ -818,6 +818,14 @@
             transition: max-height 0.3s ease;
         }
 
+        .film-description p {
+            margin-bottom: 1.5em;
+        }
+
+        .film-description p:last-child {
+            margin-bottom: 0;
+        }
+
         .film-description.expanded {
             max-height: none;
             overflow: visible;
