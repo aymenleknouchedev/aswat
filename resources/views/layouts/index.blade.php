@@ -66,10 +66,10 @@
     <link rel="stylesheet" href="{{ asset('user/css/section-title.css') }}">
 
     <!-- ================= OPEN GRAPH ================= -->
-    <meta property="og:title" content="{{ $shareTitle ?? 'أصوات جزائرية' }}" />
+    <meta property="og:title" content="{{ $news->shareTitle ?? 'أصوات جزائرية' }}" />
     <meta property="og:description"
-        content="{{ $shareDescription ?? 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.' }}" />
-    <meta property="og:image" content="{{ $shareImage ?? ($news->media()->wherePivot('type', 'main')->first() ?? asset('covergoogle.png')) }}" />
+        content="{{ $news->shareDescription ?? 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.' }}" />
+    <meta property="og:image" content="{{ $news->shareImage ?? ($news->media()->wherePivot('type', 'main')->first() ?? asset('covergoogle.png')) }}" />
     <meta property="og:url" content="{{ request()->fullUrl() }}" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="أصوات جزائرية" />
