@@ -69,7 +69,7 @@
     <meta property="og:title" content="{{ $shareTitle ?? 'أصوات جزائرية' }}" />
     <meta property="og:description"
         content="{{ $shareDescription ?? 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.' }}" />
-    <meta property="og:image" content="{{ $shareImage ?? ($news->media()->wherePivot('type', 'main')->first() ?? asset('covergoogle.png')) }}" />
+    <meta property="og:image" content="{{ asset('covergoogle.png') }}" />
     <meta property="og:url" content="{{ request()->fullUrl() }}" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="أصوات جزائرية" />
