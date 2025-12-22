@@ -8,7 +8,7 @@
 
     <!-- ================= SEO META ================= -->
     <meta name="description"
-        content="{{ $metaDescription ?? 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين، ينقل أخبار الجزائر لحظة بلحظة.' }}">
+        content="موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين، ينقل أخبار الجزائر لحظة بلحظة.">
 
     <meta name="keywords"
         content="
@@ -69,8 +69,7 @@
     <meta property="og:title" content="{{ $shareTitle ?? 'أصوات جزائرية' }}" />
     <meta property="og:description"
         content="{{ $shareDescription ?? 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.' }}" />
-    <meta property="og:image"
-        content="{{ isset($shareImage) ? asset($shareImage) : asset('user/assets/images/default-share.jpg') }}" />
+    <meta property="og:image" content="{{ asset('covergoogle.png') }}" />
     <meta property="og:url" content="{{ request()->fullUrl() }}" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="أصوات جزائرية" />
@@ -82,7 +81,7 @@
     <meta name="twitter:description"
         content="{{ $shareDescription ?? 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.' }}">
     <meta name="twitter:image"
-        content="{{ isset($shareImage) ? asset($shareImage) : asset('user/assets/images/default-share.jpg') }}">
+        content="{{ asset('covergoogle.png') }}">
     <meta name="twitter:site" content="@asswatdjazairia">
 
     <!-- ================= SOCIAL LINKS ================= -->
