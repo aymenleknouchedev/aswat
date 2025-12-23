@@ -151,10 +151,12 @@
                 background-size: cover;
                 background-position: center;
                 background-repeat: no-repeat;
+                background-color: #1a1a1a; /* Placeholder color while loading */
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-end;
                 overflow: hidden;
+                transition: background-image 0.3s ease-in-out;
             }
 
             /* Most Reads full-screen section */
@@ -897,7 +899,7 @@
                             @php $c = $tc->content ?? null; @endphp
                             @if ($c)
                                 <div class="h-snap-slide mobile-featured-post"
-                                    style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}');">
+                                    data-bg="{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}">
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content2">
                                         @if (isset($c->category) && $c->category)
@@ -945,7 +947,7 @@
                         <div class="h-snap" dir="rtl">
                             @foreach ($trends->take(5) as $content)
                                 <div class="h-snap-slide mobile-featured-post"
-                                    style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? ($content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg')) }}');">
+                                    data-bg="{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? ($content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg')) }}">
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content2">
                                         @if (isset($content->category) && $content->category)
@@ -1017,7 +1019,7 @@
                             <div class="h-snap" dir="rtl">
                                 @foreach ($collection->take(5) as $content)
                                     <div class="h-snap-slide mobile-featured-post"
-                                        style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                        data-bg="{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}">
                                         <div class="post-overlay-dark"></div>
                                         <div class="featured-post-content">
                                             @php
@@ -1030,7 +1032,7 @@
                                                         style="text-decoration: none; color: inherit;">
                                                         <img class="opinion-avatar"
                                                             src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}"
-                                                            alt="{{ $firstWriter->name ?? '' }}">
+                                                            alt="{{ $firstWriter->name ?? '' }}" loading="lazy">
                                                     </a>
                                                     <div>
                                                         <a href="{{ route('writer.show', ['id' => $firstWriter->id]) }}">
@@ -1098,7 +1100,7 @@
                             <div class="h-snap" dir="rtl">
                                 @foreach ($collection->take(5) as $content)
                                     <div class="h-snap-slide mobile-featured-post"
-                                        style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                        data-bg="{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}">
                                         <div class="post-overlay-dark"></div>
 
                                         @if ($content->template === 'normal_image' && $sectionSlug === 'photos')
@@ -1155,6 +1157,43 @@
 
 
     <script>
+        // Lazy load background images for mobile sections
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.innerWidth > 991) return; // mobile only
+            
+            // Lazy load background images using Intersection Observer
+            const lazyBackgrounds = document.querySelectorAll('.mobile-featured-post[data-bg]');
+            if ('IntersectionObserver' in window && lazyBackgrounds.length > 0) {
+                const bgObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const el = entry.target;
+                            const bgUrl = el.getAttribute('data-bg');
+                            if (bgUrl) {
+                                el.style.backgroundImage = `url('${bgUrl}')`;
+                                el.removeAttribute('data-bg');
+                            }
+                            observer.unobserve(el);
+                        }
+                    });
+                }, {
+                    rootMargin: '200px 0px', // Start loading 200px before entering viewport
+                    threshold: 0.01
+                });
+                
+                lazyBackgrounds.forEach(el => bgObserver.observe(el));
+            } else {
+                // Fallback: load all backgrounds immediately if no IntersectionObserver
+                lazyBackgrounds.forEach(el => {
+                    const bgUrl = el.getAttribute('data-bg');
+                    if (bgUrl) {
+                        el.style.backgroundImage = `url('${bgUrl}')`;
+                        el.removeAttribute('data-bg');
+                    }
+                });
+            }
+        });
+
         // Mobile auto horizontal scroll ONLY for currently visible vertical section (immediate start)
         document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth > 991) return; // mobile only
@@ -1308,23 +1347,28 @@
 
         // Back to Top Button Functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Hide loader when page is fully loaded (images included) or after a max timeout
+            // Hide loader when critical content is ready (faster perception)
             const loader = document.getElementById('pageLoader');
             const hideLoader = () => {
                 if (!loader) return;
                 loader.classList.add('hidden');
                 setTimeout(() => loader.remove(), 400);
             };
-            // Prefer window load for full content readiness
+            
+            // Hide loader as soon as DOM is interactive for better perceived performance
+            // Images will continue loading in background with lazy loading
             if (document.readyState === 'complete') {
                 hideLoader();
+            } else if (document.readyState === 'interactive') {
+                // DOM is ready, hide loader immediately
+                setTimeout(hideLoader, 500);
             } else {
-                window.addEventListener('load', hideLoader, {
-                    once: true
-                });
-                // Fallback: in case load doesn't fire (e.g., cached resources), hide after 3.5s
-                setTimeout(hideLoader, 3500);
+                // Fallback: hide after DOMContentLoaded
+                setTimeout(hideLoader, 800);
             }
+            
+            // Safety fallback
+            setTimeout(hideLoader, 2000);
 
             if (window.innerWidth > 991) return; // mobile only
 

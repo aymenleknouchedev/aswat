@@ -61,7 +61,7 @@
 <section class="podcast-feature-grid">
     <div class="podcast-grid-container container">
         <div class="podcast-card">
-            <img src="https://picsum.photos/1920/1080" alt="Feature podcast">
+            <img src="https://picsum.photos/1920/1080" alt="Feature podcast" loading="lazy">
             <div class="video-icon">
                 <!-- أيقونة تشغيل SVG -->
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -73,7 +73,7 @@
         </div>
 
         <div class="podcast-card">
-            <img src="https://picsum.photos/1920/1080" alt="Feature podcast">
+            <img src="https://picsum.photos/1920/1080" alt="Feature podcast" loading="lazy">
             <div class="video-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M8 5v14l11-7z" />
@@ -84,7 +84,7 @@
         </div>
 
         <div class="podcast-card">
-            <img src="https://picsum.photos/1920/1080" alt="Feature podcast">
+            <img src="https://picsum.photos/1920/1080" alt="Feature podcast" loading="lazy">
             <div class="video-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M8 5v14l11-7z" />
@@ -95,7 +95,7 @@
         </div>
 
         <div class="podcast-card">
-            <img src="https://picsum.photos/1920/1080" alt="Feature podcast">
+            <img src="https://picsum.photos/1920/1080" alt="Feature podcast" loading="lazy">
             <div class="video-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M8 5v14l11-7z" />

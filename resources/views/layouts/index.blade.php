@@ -202,9 +202,9 @@
 
     @yield('content')
 
-    <script src="{{ asset('user/js/fixed-nav.js') }}"></script>
-    <script src="{{ asset('user/js/photos-scroll.js') }}"></script>
-    <script src="{{ asset('user/js/breaking-news.js') }}"></script>
+    <script src="{{ asset('user/js/fixed-nav.js') }}" defer></script>
+    <script src="{{ asset('user/js/photos-scroll.js') }}" defer></script>
+    <script src="{{ asset('user/js/breaking-news.js') }}" defer></script>
 </body>
 
 </html>

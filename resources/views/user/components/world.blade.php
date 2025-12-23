@@ -91,7 +91,7 @@
         <div class="world-feature">
             <a href="{{ route('news.show', $world[0]->shortlink) }}">
                 <img src="{{ $world[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                    alt="{{ $world[0]->title ?? '' }}">
+                    alt="{{ $world[0]->title ?? '' }}" loading="lazy">
             </a>
 
             <h3>

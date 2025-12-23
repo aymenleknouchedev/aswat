@@ -208,7 +208,7 @@
         @if (isset($algeria) && count($algeria) >= 4)
             <div class="algeria-feature">
                 <a href="{{ route('news.show', $algeria[0]->shortlink) }}">
-                    <img src="{{ $algeria[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature algeria">
+                    <img src="{{ $algeria[0]->media()->wherePivot('type', 'main')->first()->path }}" alt="Feature algeria" loading="lazy">
                 </a>
                 <h3>
                     <x-category-links :content="$algeria[0]" />
@@ -223,7 +223,7 @@
                 <div class="algeria-feature-m">
                     <a href="{{ route('news.show', $algeria[1]->shortlink) }}">
                         <img src="{{ $algeria[1]->media()->wherePivot('type', 'main')->first()->path }}"
-                            alt="Feature algeria small">
+                            alt="Feature algeria small" loading="lazy">
                     </a>
                     <h3>
                         <x-category-links :content="$algeria[1]" />
@@ -241,7 +241,7 @@
                         <div class="news-card-image">
                             <a href="{{ route('news.show', $algeria[2]->shortlink) }}">
                                 <img src="{{ $algeria[2]->media()->wherePivot('type', 'main')->first()->path }}"
-                                    alt="{{ $algeria[2]->title }}">
+                                    alt="{{ $algeria[2]->title }}" loading="lazy">
                             </a>
                         </div>
                         <div class="news-card-text">
@@ -260,7 +260,7 @@
                         <div class="news-card-image">
                             <a href="{{ route('news.show', $algeria[3]->shortlink) }}">
                                 <img src="{{ $algeria[3]->media()->wherePivot('type', 'main')->first()->path }}"
-                                    alt="{{ $algeria[3]->title }}">
+                                    alt="{{ $algeria[3]->title }}" loading="lazy">
                             </a>
                         </div>
                         <div class="news-card-text">

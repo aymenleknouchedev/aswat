@@ -203,7 +203,7 @@
                 <div class="sport-feature">
                     <a href="{{ route('news.show', $variety[0]->shortlink) }}">
                         <img src="{{ $variety[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                            alt="{{ $variety[0]->title ?? '' }}">
+                            alt="{{ $variety[0]->title ?? '' }}" loading="lazy">
                     </a>
                     <h3>
                         <x-category-links :content="$variety[0]" />
@@ -221,7 +221,7 @@
                             <div class="two-titles-files-card-image">
                                 <a href="{{ route('news.show', $variet->shortlink) }}">
                                     <img src="{{ $variet->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                        alt="{{ $variet->title ?? '' }}">
+                                        alt="{{ $variet->title ?? '' }}" loading="lazy">
                                 </a>
                             </div>
                             <div class="two-titles-files-card-text">

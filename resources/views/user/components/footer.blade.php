@@ -162,7 +162,7 @@
 <div class="footer">
     <div class="container">
         <a href="#gototop">
-            <img class="footer-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="logo">
+            <img class="footer-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="logo" loading="lazy">
         </a>
         <div class="ligne"></div>
         <div class="links">
@@ -254,7 +254,7 @@
             </div>
             <div class="right-side">
                 <p>تصميم وتطوير</p>
-                <img src="{{ asset('user/assets/images/brand.svg') }}" alt="">
+                <img src="{{ asset('user/assets/images/brand.svg') }}" alt="" loading="lazy">
             </div>
         </div>
     </div>
