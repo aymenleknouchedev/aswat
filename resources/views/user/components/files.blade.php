@@ -85,8 +85,8 @@
         @foreach ($files as $item)
             <div class="files-card">
                 <div class="files-card-image">
-                    <img src="{{ $item- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="{{ $item->title ?? '' }}">
+                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $item->title ?? '' }}" loading="lazy">
                 </div>
                 <div class="files-card-text">
                     <span>

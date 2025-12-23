@@ -96,8 +96,8 @@
         <!-- Column 1 -->
         <div class="sport-feature">
             <a href="{{ route('news.show', $sports[0]->shortlink) }}">
-                <img src="{{ $sports[0]- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                    alt="{{ $sports[0]->title ?? '' }}">
+                <img src="{{ $sports[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="{{ $sports[0]->title ?? '' }}" loading="lazy">
             </a>
             <h3>
                 <x-category-links :content="$sports[0]" />
@@ -111,8 +111,8 @@
         <!-- Column 2 -->
         <div class="sport-feature">
             <a href="{{ route('news.show', $sports[1]->shortlink) }}">
-                <img src="{{ $sports[1]- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                    alt="{{ $sports[1]->title ?? '' }}">
+                <img src="{{ $sports[1]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="{{ $sports[1]->title ?? '' }}" loading="lazy">
             </a>
             <h3>
                 <x-category-links :content="$sports[1]" />
@@ -130,8 +130,8 @@
                     <div class="sport-card-horizontal">
                         <div class="sport-card-image">
                             <a href="{{ route('news.show', $sports[$i]->shortlink) }}">
-                                <img src="{{ $sports[$i]- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                    alt="{{ $sports[$i]->title ?? '' }}">
+                                <img src="{{ $sports[$i]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $sports[$i]->title ?? '' }}" loading="lazy">
                             </a>
                         </div>
                         <div class="sport-card-text">

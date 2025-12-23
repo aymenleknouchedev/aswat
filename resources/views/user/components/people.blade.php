@@ -132,8 +132,8 @@
         <!-- Right: big feature -->
         <div class="people-feature">
             <a href="{{ route('news.show', $people[0]->shortlink) }}">
-                <img src="{{ $people[0]- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                    alt="{{ $people[0]->title ?? '' }}">
+                <img src="{{ $people[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    alt="{{ $people[0]->title ?? '' }}" loading="lazy">
             </a>
             <div class="buttom-side">
                 <h3>
@@ -152,8 +152,8 @@
             @foreach ($people->slice(1, 2) as $person)
                 <div class="people-feature-m">
                     <a href="{{ route('news.show', $person->shortlink) }}">
-                        <img src="{{ $person- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                            alt="{{ $person->title ?? '' }}">
+                        <img src="{{ $person->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                            alt="{{ $person->title ?? '' }}" loading="lazy">
                     </a>
                     <h3>
                         <x-category-links :content="$person" />

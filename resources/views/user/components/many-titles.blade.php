@@ -142,8 +142,8 @@
                     <div class="many-titles-feature-m">
                         <div class="top">
                             <a href="{{ route('news.show', $technology[0]->shortlink) }}">
-                                <img src="{{ $technology[0]- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                    alt="{{ $technology[0]->title ?? '' }}">
+                                <img src="{{ $technology[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $technology[0]->title ?? '' }}" loading="lazy">
                             </a>
                             <h3>
                                 <x-category-links :content="$technology[0]" />
@@ -163,8 +163,8 @@
                     <div class="many-titles-card">
                         <div class="many-titles-card-image">
                             <a href="{{ route('news.show', $item->shortlink) }}">
-                                <img src="{{ $item- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                    alt="{{ $item->title ?? '' }}">
+                                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $item->title ?? '' }}" loading="lazy">
                             </a>
                         </div>
                         <div class="many-titles-card-text">
@@ -197,8 +197,8 @@
                     <div class="many-titles-feature-m">
                         <div class="top">
                             <a href="{{ route('news.show', $health[0]->shortlink) }}">
-                                <img src="{{ $health[0]- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                    alt="{{ $health[0]->title ?? '' }}">
+                                <img src="{{ $health[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $health[0]->title ?? '' }}" loading="lazy">
                             </a>
                             <h3>
                                 <x-category-links :content="$health[0]" />
@@ -218,8 +218,8 @@
                     <div class="many-titles-card">
                         <div class="many-titles-card-image">
                             <a href="{{ route('news.show', $item->shortlink) }}">
-                                <img src="{{ $item- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                    alt="{{ $item->title ?? '' }}">
+                                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $item->title ?? '' }}" loading="lazy">
                             </a>
                         </div>
                         <div class="many-titles-card-text">
@@ -251,8 +251,8 @@
                     <div class="many-titles-feature-m">
                         <div class="top">
                             <a href="{{ route('news.show', $environment[0]->shortlink) }}">
-                                <img src="{{ $environment[0]- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                    alt="{{ $environment[0]->title ?? '' }}">
+                                <img src="{{ $environment[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $environment[0]->title ?? '' }}" loading="lazy">
                             </a>
                             <h3>
                                 <x-category-links :content="$environment[0]" />
@@ -272,8 +272,8 @@
                     <div class="many-titles-card">
                         <div class="many-titles-card-image">
                             <a href="{{ route('news.show', $item->shortlink) }}">
-                                <img src="{{ $item- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                                    alt="{{ $item->title ?? '' }}">
+                                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    alt="{{ $item->title ?? '' }}" loading="lazy">
                             </a>
                         </div>
                         <div class="many-titles-card-text">

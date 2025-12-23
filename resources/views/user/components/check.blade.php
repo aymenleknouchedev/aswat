@@ -54,8 +54,8 @@
         @foreach ($cheeck as $item)
             <div class="check-card">
                 <a href="{{ route('news.show', $item->shortlink) }}">
-                    <img src="{{ $item- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="{{ $item->title ?? '' }}">
+                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="{{ $item->title ?? '' }}" loading="lazy">
                 </a>
                 <h3>
                     <x-category-links :content="$item" />
