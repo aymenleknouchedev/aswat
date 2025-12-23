@@ -96,7 +96,7 @@
         <!-- Column 1 -->
         <div class="sport-feature">
             <a href="{{ route('news.show', $sports[0]->shortlink) }}">
-                <img src="{{ $sports[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                <img src="{{ $sports[0]- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="{{ $sports[0]->title ?? '' }}">
             </a>
             <h3>
@@ -111,7 +111,7 @@
         <!-- Column 2 -->
         <div class="sport-feature">
             <a href="{{ route('news.show', $sports[1]->shortlink) }}">
-                <img src="{{ $sports[1]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                <img src="{{ $sports[1]- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="{{ $sports[1]->title ?? '' }}">
             </a>
             <h3>
@@ -130,7 +130,7 @@
                     <div class="sport-card-horizontal">
                         <div class="sport-card-image">
                             <a href="{{ route('news.show', $sports[$i]->shortlink) }}">
-                                <img src="{{ $sports[$i]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                <img src="{{ $sports[$i]- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                     alt="{{ $sports[$i]->title ?? '' }}">
                             </a>
                         </div>

@@ -1347,23 +1347,28 @@
 
         // Back to Top Button Functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Hide loader when page is fully loaded (images included) or after a max timeout
+            // Hide loader when critical content is ready (faster perception)
             const loader = document.getElementById('pageLoader');
             const hideLoader = () => {
                 if (!loader) return;
                 loader.classList.add('hidden');
                 setTimeout(() => loader.remove(), 400);
             };
-            // Prefer window load for full content readiness
+            
+            // Hide loader as soon as DOM is interactive for better perceived performance
+            // Images will continue loading in background with lazy loading
             if (document.readyState === 'complete') {
                 hideLoader();
+            } else if (document.readyState === 'interactive') {
+                // DOM is ready, hide loader immediately
+                setTimeout(hideLoader, 500);
             } else {
-                window.addEventListener('load', hideLoader, {
-                    once: true
-                });
-                // Fallback: in case load doesn't fire (e.g., cached resources), hide after 3.5s
-                setTimeout(hideLoader, 3500);
+                // Fallback: hide after DOMContentLoaded
+                setTimeout(hideLoader, 800);
             }
+            
+            // Safety fallback
+            setTimeout(hideLoader, 2000);
 
             if (window.innerWidth > 991) return; // mobile only
 

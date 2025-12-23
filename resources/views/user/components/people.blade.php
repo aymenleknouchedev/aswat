@@ -132,7 +132,7 @@
         <!-- Right: big feature -->
         <div class="people-feature">
             <a href="{{ route('news.show', $people[0]->shortlink) }}">
-                <img src="{{ $people[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                <img src="{{ $people[0]- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="{{ $people[0]->title ?? '' }}">
             </a>
             <div class="buttom-side">
@@ -152,7 +152,7 @@
             @foreach ($people->slice(1, 2) as $person)
                 <div class="people-feature-m">
                     <a href="{{ route('news.show', $person->shortlink) }}">
-                        <img src="{{ $person->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        <img src="{{ $person- loading="lazy">media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $person->title ?? '' }}">
                     </a>
                     <h3>

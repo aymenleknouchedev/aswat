@@ -1,7 +1,7 @@
 <div class="photos-feature">
     <a href="{{ route('news.show', $photos[0]->shortlink) }}">
         <div class="image-wrapper">
-            <img id="photoImage" src="{{ $photos[0]->media()->wherePivot('type', 'main')->first()->path }}"
+            <img id="photoImage" src="{{ $photos[0]- loading="lazy">media()->wherePivot('type', 'main')->first()->path }}"
                 alt="Feature Algeria">
             <div class="corner-icon">
                 @include('user.icons.image')
