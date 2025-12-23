@@ -1668,7 +1668,7 @@
         <div class="navbar-content">
             <div class="navbar-logo">
                 <a href="{{ route('index') }}">
-                    <img src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
+                    <img loading="lazy" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
                 </a>
             </div>
             <div class="navbar-icons">
@@ -1907,7 +1907,7 @@
             </div>
         </header>
         <div class="hero-image">
-            <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="{{ $news->title }}">
+            <img loading="lazy" src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="{{ $news->title }}">
             @if ($news->caption)
                 <figcaption class="hero-caption">{{ $news->caption }}</figcaption>
             @endif
@@ -2039,7 +2039,7 @@
                     <div class="film-item">
                         <div class="film-left">
                             <div class="film-poster">
-                                <img src="{{ asset($item->image) }}" alt="{{ $item->title }}" class="preview-image" data-preview-src="{{ asset($item->image) }}" data-preview-title="{{ $item->title }}" style="cursor: pointer;">
+                                <img loading="lazy" src="{{ asset($item->image) }}" alt="{{ $item->title }}" class="preview-image" data-preview-src="{{ asset($item->image) }}" data-preview-title="{{ $item->title }}" style="cursor: pointer;">
                             </div>
                         </div>
                         <div class="film-right">

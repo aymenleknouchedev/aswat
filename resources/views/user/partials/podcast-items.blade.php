@@ -1,7 +1,7 @@
 @foreach ($otherPodcasts as $podcast)
     <div class="podcasts-section-item">
         <a href="{{ route('news.show', $podcast->shortlink) }}" class="podcasts-section-item-image-wrapper">
-            <img src="{{ $podcast->media()->wherePivot('type', 'main')->first()->path }}" alt="{{ $podcast->title }}">
+            <img loading="lazy" src="{{ $podcast->media()->wherePivot('type', 'main')->first()->path }}" alt="{{ $podcast->title }}">
             <div class="podcasts-section-item-play-icon">
                 <i class="fas fa-headphones"></i>
             </div>

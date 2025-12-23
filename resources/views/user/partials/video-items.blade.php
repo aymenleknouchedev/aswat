@@ -1,7 +1,7 @@
 @foreach ($otherVideos as $video)
     <div class="videos-section-item">
         <a href="{{ route('news.show', $video->shortlink) }}" class="videos-section-item-image-wrapper">
-            <img src="{{ $video->media()->wherePivot('type', 'main')->first()->path }}" alt="{{ $video->title }}">
+            <img loading="lazy" src="{{ $video->media()->wherePivot('type', 'main')->first()->path }}" alt="{{ $video->title }}">
             <div class="videos-section-item-play-icon">
                 <i class="fas fa-play"></i>
             </div>

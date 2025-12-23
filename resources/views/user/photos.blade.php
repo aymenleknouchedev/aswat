@@ -130,7 +130,7 @@
                 <div class="custom-photos-feature">
                     <a href="{{ route('news.show', $featured->shortlink) }}">
                         <div class="custom-image-wrapper">
-                            <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
+                            <img loading="lazy" src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
                                 alt="{{ $featured->title }}"
                                 style="aspect-ratio: 16 / 9; object-fit: cover; width: 100%; display: block;">
                             <div class="custom-corner-icon">

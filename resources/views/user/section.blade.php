@@ -789,7 +789,7 @@
                     <div class="newCategory-feature">
                         @if (isset($contents[0]))
                             <a href="{{ route('news.show', $contents[0]->shortlink ?? '') }}">
-                                <img src="{{ $contents[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                <img loading="lazy" src="{{ $contents[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
                                     alt="{{ $contents[0]->title ?? 'عنوان الخبر' }}">
                             </a>
                             <h3>
@@ -801,7 +801,7 @@
                             </a>
                             <p>{{ $contents[0]->summary ?? 'ملخص الخبر' }}</p>
                         @else
-                            <img src="./user/assets/images/placeholder.jpg" alt="لا يوجد محتوى">
+                            <img loading="lazy" src="./user/assets/images/placeholder.jpg" alt="لا يوجد محتوى">
                             <h3>لا يوجد محتوى</h3>
                             <h2>لا توجد أخبار متاحة</h2>
                             <p>لم يتم العثور على أي محتوى لهذا القسم.</p>
@@ -813,7 +813,7 @@
                         @if (isset($contents[1]))
                             <div class="newCategory-feature-m">
                                 <a href="{{ route('news.show', $contents[1]->shortlink ?? '') }}">
-                                    <img src="{{ $contents[1]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                    <img loading="lazy" src="{{ $contents[1]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
                                         alt="{{ $contents[1]->title ?? 'عنوان الخبر' }}">
                                 </a>
                                 <h3>
@@ -833,7 +833,7 @@
                                     <div class="news-card-horizontal">
                                         <div class="news-card-image">
                                             <a href="{{ route('news.show', $contents[$i]->shortlink ?? '') }}">
-                                                <img src="{{ $contents[$i]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                                <img loading="lazy" src="{{ $contents[$i]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
                                                     alt="{{ $contents[$i]->title ?? 'عنوان الخبر' }}">
                                             </a>
                                         </div>
@@ -870,7 +870,7 @@
                             @foreach ($window->contents->take(4) as $content)
                                 <div class="art-section-card">
                                     <a href="{{ route('news.show', $content->shortlink ?? '') }}">
-                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
+                                        <img loading="lazy" src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
                                             alt="{{ $content->title ?? 'عنوان الخبر' }}">
                                     </a>
                                     <a href="{{ route('news.show', $content->shortlink ?? '') }}"
@@ -942,7 +942,7 @@
                             <div class="news-card-horizontal">
                                 <div class="news-card-image">
                                     <a href="{{ route('news.show', $content->shortlink ?? '') }}">
-                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                        <img loading="lazy" src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
                                             alt="{{ $content->title ?? 'تحلية مياه البحر' }}">
                                     </a>
                                 </div>
@@ -996,7 +996,7 @@
                         <a href="{{ route('news.show', $featuredPost->shortlink ?? '') }}"
                             style="text-decoration: none; color: inherit;">
                             <div class="mobile-section-featured-image">
-                                <img src="{{ $featuredPost->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                                <img loading="lazy" src="{{ $featuredPost->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
                                     alt="{{ $featuredPost->title ?? 'عنوان الخبر' }}">
                             </div>
                             <div class="mobile-section-featured-content">
@@ -1020,7 +1020,7 @@
                                             href="{{ route('news.show', $contents[$i]->shortlink) }}"
                                             aria-label="{{ $contents[$i]->title }}">
                                             <div class="ms-thumb">
-                                                <img src="{{ $contents[$i]->media()->wherePivot('type', 'main')->first()->path ?? asset($contents[$i]->image ?? 'user/assets/images/default-post.jpg') }}"
+                                                <img loading="lazy" src="{{ $contents[$i]->media()->wherePivot('type', 'main')->first()->path ?? asset($contents[$i]->image ?? 'user/assets/images/default-post.jpg') }}"
                                                     alt="{{ $contents[$i]->title }}">
                                             </div>
                                             <div class="ms-text">

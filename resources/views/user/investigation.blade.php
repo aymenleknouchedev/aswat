@@ -125,7 +125,7 @@
                 <div class="custom-investigations-feature">
                     <a href="{{ route('news.show', $featured->shortlink) }}">
                         <div class="custom-image-wrapper">
-                            <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
+                            <img loading="lazy" src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
                                 alt="{{ $featured->title }}">
                         </div>
                     </a>
