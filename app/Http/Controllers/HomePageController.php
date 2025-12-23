@@ -140,7 +140,7 @@ class HomePageController extends Controller
                 ->take(5)
                 ->get();
         }
-
+        
         return view('user.home', compact('sectionscontents', 'topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant', 'principalTrend', 'trends'));
     }
 
