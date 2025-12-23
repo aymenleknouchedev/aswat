@@ -57,13 +57,30 @@
     <!-- ================= FAVICON ================= -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('user/assets/images/icon-logo.svg') }}" />
 
+    <!-- ================= RESOURCE HINTS ================= -->
+    <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+    <link rel="preconnect" href="https://www.instagram.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
     <!-- ================= STYLES ================= -->
+    <!-- Critical CSS (blocks render) -->
     <link rel="stylesheet" href="{{ asset('user/css/main.css') }}">
-    <link rel="stylesheet" href="{{ asset('user/css/fixed-nav.css') }}">
-    <link rel="stylesheet" href="{{ asset('user/css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('user/css/fonts.css') }}">
-    <link rel="stylesheet" href="{{ asset('user/css/icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('user/css/section-title.css') }}">
+
+    <!-- Non-critical CSS (deferred) -->
+    <link rel="stylesheet" href="{{ asset('user/css/fixed-nav.css') }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('user/css/header.css') }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('user/css/icons.css') }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('user/css/section-title.css') }}" media="print" onload="this.media='all'">
+
+    <!-- Fallback for JS disabled -->
+    <noscript>
+        <link rel="stylesheet" href="{{ asset('user/css/fixed-nav.css') }}">
+        <link rel="stylesheet" href="{{ asset('user/css/header.css') }}">
+        <link rel="stylesheet" href="{{ asset('user/css/icons.css') }}">
+        <link rel="stylesheet" href="{{ asset('user/css/section-title.css') }}">
+    </noscript>
 
     <!-- ================= OPEN GRAPH ================= -->
     <meta property="og:title" content="{{ $shareTitle ?? 'أصوات جزائرية' }}" />
@@ -116,9 +133,6 @@
         }
     </style>
 
-    <!-- ================= INSTAGRAM ================= -->
-    <script async src="https://www.instagram.com/embed.js" onload="console.log('Instagram script loaded')"></script>
-
     <!-- ================= FACEBOOK EMBED CLICK ================= -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -134,56 +148,11 @@
         });
     </script>
 
-    <!-- ================= QUOTES REPLACER ================= -->
-    <script>
-        function replaceQuotes(str) {
-            return str.replace(/"([^"]*)"/g, '«$1»');
-        }
+    <!-- ================= OPTIMIZED QUOTE REPLACER ================= -->
+    <script src="{{ asset('user/js/quote-replacer-optimized.js') }}" defer></script>
 
-        function traverseAndReplaceText(node) {
-            if (
-                node.nodeName === 'SCRIPT' ||
-                node.nodeName === 'STYLE' ||
-                node.nodeName === 'CODE' ||
-                node.nodeName === 'PRE' ||
-                node.nodeName === 'TEXTAREA'
-            ) {
-                return;
-            }
-
-            if (node.nodeType === Node.TEXT_NODE) {
-                const text = node.textContent.trim();
-                if (text.length > 0) {
-                    node.textContent = replaceQuotes(node.textContent);
-                }
-            } else {
-                node.childNodes.forEach(traverseAndReplaceText);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            traverseAndReplaceText(document.body);
-        });
-
-        if (typeof MutationObserver !== 'undefined') {
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    mutation.addedNodes.forEach(function(node) {
-                        if (node.nodeType === Node.ELEMENT_NODE) {
-                            traverseAndReplaceText(node);
-                        }
-                    });
-                });
-            });
-
-            document.addEventListener('DOMContentLoaded', function() {
-                observer.observe(document.body, {
-                    childList: true,
-                    subtree: true
-                });
-            });
-        }
-    </script>
+    <!-- ================= OPTIMIZED EXTERNAL SDKs ================= -->
+    <script src="{{ asset('user/js/external-sdks-optimized.js') }}" defer></script>
 
     <!-- ================= TITLE ================= -->
     <title>@yield('title')</title>
@@ -197,14 +166,13 @@
 <body id="gototop">
 
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v20.0">
-    </script>
 
     @yield('content')
 
-    <script src="{{ asset('user/js/fixed-nav.js') }}"></script>
-    <script src="{{ asset('user/js/photos-scroll.js') }}"></script>
-    <script src="{{ asset('user/js/breaking-news.js') }}"></script>
+    <!-- ================= YOUR SCRIPTS ================= -->
+    <script src="{{ asset('user/js/fixed-nav.js') }}" defer></script>
+    <script src="{{ asset('user/js/photos-scroll-optimized.js') }}" defer></script>
+    <script src="{{ asset('user/js/breaking-news.js') }}" defer></script>
 </body>
 
 </html>
