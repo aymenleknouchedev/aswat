@@ -90,7 +90,7 @@
         <!-- Right column: big feature -->
         <div class="world-feature">
             <a href="{{ route('news.show', $world[0]->shortlink) }}">
-                <img src="{{ $world[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                <img loading="lazy" src="{{ $world[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="{{ $world[0]->title ?? '' }}">
             </a>
 
@@ -127,7 +127,7 @@
                 @php $item = $world[2]; @endphp
                 <div class="world-feature-m">
                     <a href="{{ route('news.show', $item->shortlink) }}">
-                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        <img loading="lazy" src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $item->title ?? '' }}">
                     </a>
                     <h3>
@@ -147,7 +147,7 @@
                 @php $item = $world[3]; @endphp
                 <div class="world-feature-m">
                     <a href="{{ route('news.show', $item->shortlink) }}">
-                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        <img loading="lazy" src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $item->title ?? '' }}">
                     </a>
                     <h3>
@@ -163,7 +163,7 @@
                 @php $item = $world[4]; @endphp
                 <div class="world-feature-m">
                     <a href="{{ route('news.show', $item->shortlink) }}">
-                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        <img loading="lazy" src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $item->title ?? '' }}">
                     </a>
                     <h3>

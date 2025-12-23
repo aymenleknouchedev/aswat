@@ -6,7 +6,7 @@
             <!-- Logo Section (Always visible) -->
             <div class="navbar-logo">
                 <a href="{{ route('index') }}">
-                    <img src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
+                    <img loading="lazy" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
                 </a>
             </div>
 

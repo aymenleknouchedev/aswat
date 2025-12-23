@@ -616,7 +616,7 @@
                             @foreach ($trends as $content)
                                 <div class="art-section-card">
                                     <a href="{{ route('news.show', $content->shortlink) }}">
-                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
+                                        <img loading="lazy" src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
                                             alt="{{ $content->title }}">
                                     </a>
                                     <a href="{{ route('news.show', $content->shortlink) }}"
@@ -697,10 +697,10 @@
                         <div class="under-title-ligne-space"></div>
                         <div style="display: flex;" class="icons">
                             <div id="reviewBackArrow" style="height: 32px; width: 32px; cursor: pointer;">
-                                <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
+                                <img class="nav-logo" loading="lazy" src="./user/assets/icons/chevron_forward.svg" alt="logo">
                             </div>
                             <div id="reviewNextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
-                                <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+                                <img class="nav-logo" loading="lazy" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
                             </div>
                         </div>
                     </div>
@@ -845,10 +845,10 @@
                             <div class="under-title-ligne-space"></div>
                             <div style="display: flex;" class="icons">
                                 <div id="backArrow" style="height: 32px; width: 32px; cursor: pointer;">
-                                    <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
+                                    <img class="nav-logo" loading="lazy" src="./user/assets/icons/chevron_forward.svg" alt="logo">
                                 </div>
                                 <div id="nextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
-                                    <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+                                    <img class="nav-logo" loading="lazy" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
                                 </div>
                             </div>
                         </div>
@@ -1028,7 +1028,7 @@
                                                     <a href="{{ route('writer.show', ['id' => $firstWriter->id]) }}"
                                                         class="opinion-writer-link"
                                                         style="text-decoration: none; color: inherit;">
-                                                        <img class="opinion-avatar"
+                                                        <img class="opinion-avatar" loading="lazy"
                                                             src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}"
                                                             alt="{{ $firstWriter->name ?? '' }}">
                                                     </a>

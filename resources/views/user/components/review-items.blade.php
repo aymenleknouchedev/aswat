@@ -6,7 +6,7 @@
             <a href="{{ route('news.show', $review->shortlink) }}" style="text-decoration: none; color: inherit;">
                 <div class="custom-card">
                     <div class="custom-image">
-                        <img src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}" alt="خبر">
+                        <img loading="lazy" src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}" alt="خبر">
                     </div>
                     <div class="custom-texts">
                         <h2>{{ $review->title }}</h2>

@@ -75,7 +75,7 @@
             <div class="videos-card">
                 <a href="{{ route('news.show', $item->shortlink) }}">
                     <div class="image-wrapper">
-                        <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        <img loading="lazy" src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $item->title ?? '' }}">
                         <div class="video-icon">
                             @include('user.icons.play')

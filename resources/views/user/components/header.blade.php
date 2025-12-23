@@ -153,7 +153,7 @@
         <!-- Right column: big feature -->
         <div class="news-feature">
             <a href="{{ route('news.show', $topContents[0]->content->shortlink) }}">
-                <img src="{{ $topContents[0]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                <img loading="lazy" src="{{ $topContents[0]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                     alt="{{ $topContents[0]->content->title ?? '' }}">
             </a>
             <h3>
@@ -170,7 +170,7 @@
         <div class="news-list">
             <div class="news-item">
                 <a href="{{ route('news.show', $topContents[1]->content->shortlink) }}">
-                    <img src="{{ $topContents[1]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    <img loading="lazy" src="{{ $topContents[1]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                         alt="News 1">
                 </a>
                 <h3>
@@ -183,7 +183,7 @@
             </div>
             <div class="news-item">
                 <a href="{{ route('news.show', $topContents[2]->content->shortlink) }}">
-                    <img src="{{ $topContents[2]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    <img loading="lazy" src="{{ $topContents[2]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                         alt="News 2">
                 </a>
                 <h3>
@@ -210,7 +210,7 @@
         <div class="news-list">
             <div class="news-item">
                 <a href="{{ route('news.show', $topContents[4]->content->shortlink) }}">
-                    <img src="{{ $topContents[4]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    <img loading="lazy" src="{{ $topContents[4]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                         alt="News 1">
                 </a>
                 <h3>
@@ -223,7 +223,7 @@
             </div>
             <div class="news-item">
                 <a href="{{ route('news.show', $topContents[5]->content->shortlink) }}">
-                    <img src="{{ $topContents[5]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                    <img loading="lazy" src="{{ $topContents[5]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                         alt="News 2">
                 </a>
                 <h3>
