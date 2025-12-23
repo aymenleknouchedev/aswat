@@ -96,7 +96,7 @@
                     <div class="review-card-image">
                         @if ($firstWriter && $firstWriter->image)
                             <a href="{{ route('writer.show', $firstWriter->id) }}">
-                                <img src="{{ $firstWriter->image }}" alt="{{ $firstWriter->name }}">
+                                <img src="{{ $firstWriter->image }}" alt="{{ $firstWriter->name }}" loading="lazy">
                             </a>
                         @else
                             <a href="{{ route('news.show', $review->shortlink) }}">
