@@ -102,8 +102,7 @@ class HomePageController extends Controller
             ->take(4)
             ->get();
 
-        $topViewed = Content::where('section_id', $sections['منوعات'] ?? null)
-            ->where('status', 'published')
+        $topViewed = Content::where('status', 'published')
             ->orderByDesc('read_count')
             ->take(5)
             ->get();
