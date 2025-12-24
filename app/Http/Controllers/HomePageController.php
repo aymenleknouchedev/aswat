@@ -154,7 +154,12 @@ class HomePageController extends Controller
             ->take(20)
             ->get();
 
-            dd($latestContents);
+            $latestContents = $latestContents->map(function($content) {
+                return [
+                    'title' => $content->title,
+                    'published_at' => $content->published_at,
+                ];
+            });
 
         return view('user.latest-news', compact('latestContents'));
     }
