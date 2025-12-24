@@ -1907,7 +1907,7 @@
             </div>
         </header>
         <div class="hero-image">
-            <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="{{ $news->title }}">
+            <img loading="lazy" src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}" alt="{{ $news->title }}">
             @if ($news->caption)
                 <figcaption class="hero-caption">{{ $news->caption }}</figcaption>
             @endif
@@ -1946,7 +1946,15 @@
             <p>{{ $news->summary }}</p>
 
             <div class="actor-info">
-                <div class="actor-name">{{ $news->city->name ?? '' }}  {{ $news->writers ? ' - ' . $news->writers->first()->name : '' }}</div>
+                <div class="actor-name">
+                    @if ($news->city?->name && $news->writers->first()?->name)
+                        {{ $news->city->name }} - {{ $news->writers->first()?->name }}
+                    @elseif ($news->city?->name)
+                        {{ $news->city->name }}
+                    @elseif ($news->writers->first()?->name)
+                        {{ $news->writers->first()?->name }}
+                    @endif
+                </div>
                 </div>
             </div>
         </div>
@@ -2039,7 +2047,7 @@
                     <div class="film-item">
                         <div class="film-left">
                             <div class="film-poster">
-                                <img src="{{ asset($item->image) }}" alt="{{ $item->title }}" class="preview-image" data-preview-src="{{ asset($item->image) }}" data-preview-title="{{ $item->title }}" style="cursor: pointer;">
+                                <img loading="lazy" src="{{ asset($item->image) }}" alt="{{ $item->title }}" class="preview-image" data-preview-src="{{ asset($item->image) }}" data-preview-title="{{ $item->title }}" style="cursor: pointer;">
                             </div>
                         </div>
                         <div class="film-right">
