@@ -13,7 +13,7 @@
 /* Hide images with lazy loading until they fully load */
 img[loading="lazy"] {
     opacity: 0;
-    transition: opacity 0.35s ease-in-out;
+    transition: opacity 0.3s ease;
 }
 
 img[loading="lazy"].loaded {
