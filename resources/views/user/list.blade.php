@@ -1946,7 +1946,7 @@
             <p>{{ $news->summary }}</p>
 
             <div class="actor-info">
-                <div class="actor-name">{{ $news->city->name ?? '' }} - {{ $news->writers->first()?->name ?? '' }}</div>
+                <div class="actor-name">{{ $news->city->name ?? '' }} {{$news->writers->first() ? '-': ''}} {{ $news->writers->first()?->name ?? '' }}</div>
                 </div>
             </div>
         </div>
