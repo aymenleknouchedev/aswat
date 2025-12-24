@@ -202,6 +202,28 @@
 
     @yield('content')
 
+    <script>
+        // Show images only when completely loaded (global for all pages)
+        document.addEventListener('DOMContentLoaded', function() {
+            const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+            lazyImages.forEach(img => {
+                // If image is cached and already loaded
+                if (img.complete) {
+                    img.classList.add('loaded');
+                } else {
+                    // When image finishes loading
+                    img.addEventListener('load', function() {
+                        this.classList.add('loaded');
+                    });
+                    // Fallback: show even if error occurs
+                    img.addEventListener('error', function() {
+                        this.classList.add('loaded');
+                    });
+                }
+            });
+        });
+    </script>
+
     <script src="{{ asset('user/js/fixed-nav.js') }}"></script>
     <script src="{{ asset('user/js/photos-scroll.js') }}"></script>
     <script src="{{ asset('user/js/breaking-news.js') }}"></script>

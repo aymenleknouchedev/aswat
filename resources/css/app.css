@@ -9,3 +9,13 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* Hide images with lazy loading until they fully load */
+img[loading="lazy"] {
+    opacity: 0;
+    transition: opacity 0.35s ease-in-out;
+}
+
+img[loading="lazy"].loaded {
+    opacity: 1;
+}
