@@ -34,9 +34,9 @@ class HomePageController extends Controller
 
         if ($query) {
             $results = Content::where('status', 'published')
-                ->where(function ($q) use ($query) {
+                ->where(function($q) use ($query) {
                     $q->where('title', 'like', '%' . $query . '%')
-                        ->orWhere('summary', 'like', '%' . $query . '%');
+                      ->orWhere('summary', 'like', '%' . $query . '%');
                 })
                 ->orderByDesc('published_at')
                 ->take(20)
@@ -140,7 +140,7 @@ class HomePageController extends Controller
                 ->take(5)
                 ->get();
         }
-
+        
         return view('user.home', compact('sectionscontents', 'topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant', 'principalTrend', 'trends'));
     }
 
@@ -153,8 +153,6 @@ class HomePageController extends Controller
             ->orderByDesc('published_at')
             ->take(20)
             ->get();
-
-        dd($latestContents->toArray());
 
         return view('user.latest-news', compact('latestContents'));
     }
@@ -193,9 +191,9 @@ class HomePageController extends Controller
                 ->orderByDesc('published_at')
                 ->get();
 
-            return $breakingContent->pluck('text')->map(function ($text) {
+            return $breakingContent->pluck('text')->map(function($text) {
                 // Replace straight quotes with guillemets (« and »)
-                return preg_replace_callback('/"([^"]*)"/', function ($matches) {
+                return preg_replace_callback('/"([^"]*)"/', function($matches) {
                     return '«' . $matches[1] . '»';
                 }, $text);
             });
@@ -216,13 +214,13 @@ class HomePageController extends Controller
             ->orderByDesc('published_at')
             ->take(5)
             ->get(['title', 'shortlink'])
-            ->map(function ($content) {
+            ->map(function($content) {
                 $title = $content->title;
                 // Replace straight quotes with guillemets (« and »)
-                $title = preg_replace_callback('/"([^"]*)"/', function ($matches) {
+                $title = preg_replace_callback('/"([^"]*)"/', function($matches) {
                     return '«' . $matches[1] . '»';
                 }, $title);
-
+                
                 return [
                     'title' => $title,
                     'shortlink' => $content->shortlink
@@ -702,7 +700,7 @@ class HomePageController extends Controller
         $this->contentService->recordView($news);
 
         if ($news->contentLists()->exists()) {
-            return view('user.list', compact('news'));
+            return view('user.list', compact('news') );
         }
 
         return view('user.news', compact('news', 'lastNews', 'lastWeekNews', 'relatedNews'));
