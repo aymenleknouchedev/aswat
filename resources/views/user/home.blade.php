@@ -613,7 +613,7 @@
                     <div class="art-section-overlay">
                         <h2 class="art-section-title">{{ $principalTrend->trend->title ?? '' }}</h2>
                         <div class="art-section-grid">
-                            @foreach ($trends as $content)
+                            @foreach ($trends->take(4) as $content)
                                 <div class="art-section-card">
                                     <a href="{{ route('news.show', $content->shortlink) }}">
                                         <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
