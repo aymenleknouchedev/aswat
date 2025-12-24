@@ -64,6 +64,7 @@
     <link rel="stylesheet" href="{{ asset('user/css/fonts.css') }}">
     <link rel="stylesheet" href="{{ asset('user/css/icons.css') }}">
     <link rel="stylesheet" href="{{ asset('user/css/section-title.css') }}">
+    <link rel="stylesheet" href="{{ asset('user/css/lazy-loading.css') }}">
 
     <!-- ================= OPEN GRAPH ================= -->
     <meta property="og:title" content="{{ $shareTitle ?? 'أصوات جزائرية' }}" />
@@ -113,16 +114,6 @@
         .fb-embed-block .fb-post,
         .fb-embed-block .fb-post * {
             pointer-events: none !important;
-        }
-
-        /* Hide images with lazy loading until they fully load */
-        img[loading="lazy"] {
-            opacity: 0;
-            transition: opacity 0.35s ease-in-out;
-        }
-
-        img[loading="lazy"].loaded {
-            opacity: 1;
         }
     </style>
 
@@ -212,28 +203,7 @@
 
     @yield('content')
 
-    <script>
-        // Show images only when completely loaded (global for all pages)
-        document.addEventListener('DOMContentLoaded', function() {
-            const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-            lazyImages.forEach(img => {
-                // If image is cached and already loaded
-                if (img.complete) {
-                    img.classList.add('loaded');
-                } else {
-                    // When image finishes loading
-                    img.addEventListener('load', function() {
-                        this.classList.add('loaded');
-                    });
-                    // Fallback: show even if error occurs
-                    img.addEventListener('error', function() {
-                        this.classList.add('loaded');
-                    });
-                }
-            });
-        });
-    </script>
-
+    <script src="{{ asset('user/js/lazy-loading.js') }}"></script>
     <script src="{{ asset('user/js/fixed-nav.js') }}"></script>
     <script src="{{ asset('user/js/photos-scroll.js') }}"></script>
     <script src="{{ asset('user/js/breaking-news.js') }}"></script>
