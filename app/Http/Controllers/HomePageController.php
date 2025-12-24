@@ -188,7 +188,8 @@ class HomePageController extends Controller
         // Always fetch fresh data if cache is missing or expired
         $breakingNews = Cache::remember('breaking-news', 5, function () use ($tenMinutesAgo) {
             $breakingContent = BreakingContent::where('created_at', '>=', $tenMinutesAgo)
-                ->orderByDesc('published_date')
+                ->where('status', 'published')
+                ->orderByDesc('created_at')
                 ->get();
 
             return $breakingContent->pluck('text')->map(function($text) {
