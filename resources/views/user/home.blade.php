@@ -1155,6 +1155,30 @@
 
 
     <script>
+        // Lazy loading setup for images
+        function setupLazyLoading() {
+            const lazyImages = document.querySelectorAll('img[loading="lazy"]:not(.loaded)');
+            lazyImages.forEach(img => {
+                if (img.complete) {
+                    img.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', function() {
+                        this.classList.add('loaded');
+                    }, { once: true });
+                    img.addEventListener('error', function() {
+                        this.classList.add('loaded');
+                    }, { once: true });
+                }
+            });
+        }
+        setupLazyLoading();
+        document.addEventListener('DOMContentLoaded', setupLazyLoading);
+        const observer = new MutationObserver(() => {
+            clearTimeout(observer.timeout);
+            observer.timeout = setTimeout(setupLazyLoading, 100);
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+
         // Mobile auto horizontal scroll ONLY for currently visible vertical section (immediate start)
         document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth > 991) return; // mobile only
