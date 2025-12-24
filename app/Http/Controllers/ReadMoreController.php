@@ -125,7 +125,7 @@ class ReadMoreController extends BaseController
                 });
             }
 
-            $readMores = $query->limit(50)->get();
+            $readMores = $query->get();
 
             $results = $readMores->map(function ($readMore) {
                 if (!$readMore->content) {

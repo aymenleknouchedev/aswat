@@ -894,7 +894,6 @@
                         'section',
                     ])
                     ->orderBy('created_at', 'desc')
-                    ->limit(50)
                     ->get()
                     ->map(function ($item) {
                         $mainImage = $item->media()->wherePivot('type', 'main')->first();
