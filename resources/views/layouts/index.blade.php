@@ -114,6 +114,16 @@
         .fb-embed-block .fb-post * {
             pointer-events: none !important;
         }
+
+        /* Hide images with lazy loading until they fully load */
+        img[loading="lazy"] {
+            opacity: 0;
+            transition: opacity 0.35s ease-in-out;
+        }
+
+        img[loading="lazy"].loaded {
+            opacity: 1;
+        }
     </style>
 
     <!-- ================= INSTAGRAM ================= -->

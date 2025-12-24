@@ -10,12 +10,3 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-/* Hide images with lazy loading until they fully load */
-img[loading="lazy"] {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-img[loading="lazy"].loaded {
-    opacity: 1;
-}
