@@ -50,7 +50,7 @@ class HomePageController extends Controller
     {
 
         $principalTrend = PrincipalTrend::latest()->first();
-        $trends = $principalTrend->trend->contents;
+        $trends = $principalTrend->trend->contents->sortByDesc('published_at');
         $topContentIds = TopContent::orderByDesc('order')->take(7)->pluck('content_id')->toArray();
         $trends = $trends->filter(function ($trend) use ($topContentIds) {
             return !in_array($trend->id, $topContentIds);
