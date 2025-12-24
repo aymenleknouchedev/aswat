@@ -59,7 +59,8 @@ class ContentController extends BaseController
             $query->where(function ($q) use ($search) {
                 $q->where('mobile_title', 'like', "%{$search}%")
                     ->orWhere('title', 'like', "%{$search}%")
-                    ->orWhere("long_title", "like", "%{$search}%");
+                    ->orWhere('long_title', 'like', "%{$search}%")
+                    ->orWhere('summary', 'like', "%{$search}%");
             });
         }
 

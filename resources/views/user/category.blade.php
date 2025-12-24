@@ -12,7 +12,7 @@
         .mobile {
             display: none !important;
         }
-
+published_at
         .newCategory-all-section {
             display: grid;
             grid-template-columns: 10fr 2fr;
