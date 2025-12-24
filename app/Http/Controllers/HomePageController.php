@@ -161,6 +161,8 @@ class HomePageController extends Controller
                 ];
             });
 
+            dd($latestContents);
+
         return view('user.latest-news', compact('latestContents'));
     }
 
