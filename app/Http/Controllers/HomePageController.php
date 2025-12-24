@@ -211,7 +211,7 @@ class HomePageController extends Controller
     {
         $latestContents = Content::where('is_latest', 1)
             ->where('status', 'published')
-            ->orderBy('published_at')
+            ->orderByDesc('published_at')
             ->take(5)
             ->get(['title', 'shortlink'])
             ->map(function($content) {
