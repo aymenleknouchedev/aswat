@@ -9,24 +9,28 @@ function setupLazyLoading() {
             // When image finishes loading
             img.addEventListener('load', function() {
                 this.classList.add('loaded');
-            });
+            }, { once: true });
             // Fallback: show even if error occurs
             img.addEventListener('error', function() {
                 this.classList.add('loaded');
-            });
+            }, { once: true });
         }
     });
 }
 
-// Run on initial page load
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupLazyLoading);
-} else {
-    setupLazyLoading();
-}
+// Run immediately if DOM is ready
+setupLazyLoading();
 
-// Handle dynamically added images
-const observer = new MutationObserver(setupLazyLoading);
+// Run on page load
+document.addEventListener('DOMContentLoaded', setupLazyLoading);
+
+// Watch for dynamically added images (for AJAX/partial loads)
+const observer = new MutationObserver((mutations) => {
+    // Debounce to avoid running too frequently
+    clearTimeout(observer.timeout);
+    observer.timeout = setTimeout(setupLazyLoading, 100);
+});
+
 observer.observe(document.body, {
     childList: true,
     subtree: true
