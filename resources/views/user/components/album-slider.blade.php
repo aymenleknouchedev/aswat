@@ -9,7 +9,7 @@
 
             @foreach($albumImages as $index => $image)
                 <div class="slide {{ $index === 0 ? 'active' : '' }}">
-                    <img loading="lazy" src="{{ $image->path }}"
+                    <img src="{{ $image->path }}"
                          alt="{{ $image->alt ?? 'Album Image ' . ($index + 1) }}"
                          class="album-image-clickable"
                          data-index="{{ $index }}"

@@ -96,11 +96,11 @@
                     <div class="review-card-image">
                         @if ($firstWriter && $firstWriter->image)
                             <a href="{{ route('writer.show', $firstWriter->id) }}">
-                                    <img loading="lazy" src="{{ $firstWriter->image }}" alt="{{ $firstWriter->name }}">
+                                <img src="{{ $firstWriter->image }}" alt="{{ $firstWriter->name }}">
                             </a>
                         @else
                             <a href="{{ route('news.show', $review->shortlink) }}">
-                                    <img loading="lazy" src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
+                                <img src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
                                     alt="خبر">
                             </a>
                         @endif

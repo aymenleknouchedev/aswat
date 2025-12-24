@@ -147,7 +147,7 @@
 
 <footer id="mobileFooter" class="m-footer" role="contentinfo">
     <div class="m-wrap">
-        <img class="m-logo" loading="lazy" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="أصوات جزائرية">
+        <img class="m-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="أصوات جزائرية">
         <div class="m-divider" aria-hidden="true"></div>
         <ul class="m-links" role="list">
             <li><a href="{{ route('about-us') }}" style="color: inherit; text-decoration: none;">من نحن</a></li>
@@ -176,7 +176,7 @@
             <p class="m-copy">جميع الحقوق محفوظة © مساحات للإعلام والثقافة والفنون 2025</p>
             <span class="m-brand">
                 <span>تصميم وتطوير</span>
-                <img loading="lazy" src="{{ asset('user/assets/images/brand.svg') }}" alt="brand">
+                <img src="{{ asset('user/assets/images/brand.svg') }}" alt="brand">
             </span>
         </div>
     </div>

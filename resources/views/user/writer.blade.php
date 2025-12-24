@@ -326,7 +326,7 @@
             <!-- Writer Info -->
             <div class="writer-header">
                 @if ($writer->image)
-                    <img loading="lazy" src="{{ $writer->image }}" alt="{{ $writer->name }}">
+                    <img src="{{ $writer->image }}" alt="{{ $writer->name }}">
                 @endif
                 <div class="writer-info">
                     <h1>{{ $writer->name }}</h1>
@@ -400,7 +400,7 @@
                 <!-- Writer Header -->
                 <div class="mobile-writer-header">
                     @if ($writer->image)
-                        <img loading="lazy" src="{{ $writer->image }}" alt="{{ $writer->name }}">
+                        <img src="{{ $writer->image }}" alt="{{ $writer->name }}">
                     @endif
                     <h1>{{ $writer->name }}</h1>
                     <p>{{ \Illuminate\Support\Str::limit($writer->bio ?? '', 250) }}</p>

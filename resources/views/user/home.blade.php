@@ -616,7 +616,7 @@
                             @foreach ($trends as $content)
                                 <div class="art-section-card">
                                     <a href="{{ route('news.show', $content->shortlink) }}">
-                                        <img loading="lazy" src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
+                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
                                             alt="{{ $content->title }}">
                                     </a>
                                     <a href="{{ route('news.show', $content->shortlink) }}"
@@ -697,10 +697,10 @@
                         <div class="under-title-ligne-space"></div>
                         <div style="display: flex;" class="icons">
                             <div id="reviewBackArrow" style="height: 32px; width: 32px; cursor: pointer;">
-                                <img class="nav-logo" loading="lazy" src="./user/assets/icons/chevron_forward.svg" alt="logo">
+                                <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
                             </div>
                             <div id="reviewNextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
-                                <img class="nav-logo" loading="lazy" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+                                <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
                             </div>
                         </div>
                     </div>
@@ -845,10 +845,10 @@
                             <div class="under-title-ligne-space"></div>
                             <div style="display: flex;" class="icons">
                                 <div id="backArrow" style="height: 32px; width: 32px; cursor: pointer;">
-                                    <img class="nav-logo" loading="lazy" src="./user/assets/icons/chevron_forward.svg" alt="logo">
+                                    <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
                                 </div>
                                 <div id="nextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
-                                    <img class="nav-logo" loading="lazy" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+                                    <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
                                 </div>
                             </div>
                         </div>
@@ -1028,7 +1028,7 @@
                                                     <a href="{{ route('writer.show', ['id' => $firstWriter->id]) }}"
                                                         class="opinion-writer-link"
                                                         style="text-decoration: none; color: inherit;">
-                                                        <img class="opinion-avatar" loading="lazy"
+                                                        <img class="opinion-avatar"
                                                             src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}"
                                                             alt="{{ $firstWriter->name ?? '' }}">
                                                     </a>
@@ -1155,30 +1155,6 @@
 
 
     <script>
-        // Lazy loading setup for images
-        function setupLazyLoading() {
-            const lazyImages = document.querySelectorAll('img[loading="lazy"]:not(.loaded)');
-            lazyImages.forEach(img => {
-                if (img.complete) {
-                    img.classList.add('loaded');
-                } else {
-                    img.addEventListener('load', function() {
-                        this.classList.add('loaded');
-                    }, { once: true });
-                    img.addEventListener('error', function() {
-                        this.classList.add('loaded');
-                    }, { once: true });
-                }
-            });
-        }
-        setupLazyLoading();
-        document.addEventListener('DOMContentLoaded', setupLazyLoading);
-        const observer = new MutationObserver(() => {
-            clearTimeout(observer.timeout);
-            observer.timeout = setTimeout(setupLazyLoading, 100);
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-
         // Mobile auto horizontal scroll ONLY for currently visible vertical section (immediate start)
         document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth > 991) return; // mobile only

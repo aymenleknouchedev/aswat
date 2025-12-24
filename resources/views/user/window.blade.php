@@ -212,7 +212,7 @@
                                         <a href="{{ route('news.show', $content->shortlink ?? '') }}"
                                             class="mobile-window-link">
                                             <div class="ms-thumb">
-                                                <img loading="lazy" src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
+                                                <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
                                                     alt="{{ $content->title ?? 'عنوان الخبر' }}">
                                             </div>
                                             <div class="ms-text">

@@ -64,7 +64,6 @@
     <link rel="stylesheet" href="{{ asset('user/css/fonts.css') }}">
     <link rel="stylesheet" href="{{ asset('user/css/icons.css') }}">
     <link rel="stylesheet" href="{{ asset('user/css/section-title.css') }}">
-    <link rel="stylesheet" href="{{ asset('user/css/lazy-loading.css') }}">
 
     <!-- ================= OPEN GRAPH ================= -->
     <meta property="og:title" content="{{ $shareTitle ?? 'أصوات جزائرية' }}" />
@@ -203,7 +202,6 @@
 
     @yield('content')
 
-    <script src="{{ asset('user/js/lazy-loading.js') }}"></script>
     <script src="{{ asset('user/js/fixed-nav.js') }}"></script>
     <script src="{{ asset('user/js/photos-scroll.js') }}"></script>
     <script src="{{ asset('user/js/breaking-news.js') }}"></script>

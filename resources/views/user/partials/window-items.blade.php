@@ -8,7 +8,7 @@
                       @foreach (($item->contents ?? [])->sortByDesc('created_at')->take(4) as $content)
                           <div class="art-section-card">
                               <a href="{{ route('news.show', $content->shortlink) }}">
-                                  <img loading="lazy" src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
+                                  <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
                                       alt="{{ $content->title }}">
                               </a>
                               <a href="{{ route('news.show', $content->shortlink) }}"

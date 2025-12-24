@@ -126,7 +126,7 @@
                 <div class="custom-files-feature">
                     <a href="{{ route('news.show', $featured->shortlink) }}">
                         <div class="custom-image-wrapper">
-                            <img loading="lazy" src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
+                            <img src="{{ $featured->media()->wherePivot('type', 'main')->first()->path }}"
                                 alt="{{ $featured->title }}">
                         </div>
                     </a>
@@ -462,29 +462,5 @@
             loading = false;
         }
     });
-
-    // Lazy loading setup
-    function setupLazyLoading() {
-        const lazyImages = document.querySelectorAll('img[loading="lazy"]:not(.loaded)');
-        lazyImages.forEach(img => {
-            if (img.complete) {
-                img.classList.add('loaded');
-            } else {
-                img.addEventListener('load', function() {
-                    this.classList.add('loaded');
-                }, { once: true });
-                img.addEventListener('error', function() {
-                    this.classList.add('loaded');
-                }, { once: true });
-            }
-        });
-    }
-    setupLazyLoading();
-    document.addEventListener('DOMContentLoaded', setupLazyLoading);
-    const observer = new MutationObserver(() => {
-        clearTimeout(observer.timeout);
-        observer.timeout = setTimeout(setupLazyLoading, 100);
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
 </script>
 

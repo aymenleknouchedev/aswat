@@ -74,7 +74,7 @@
             <div class="podcasts-card">
                 <a href="{{ route('news.show', $podcast->shortlink) }}">
                     <div class="image-wrapper">
-                        <img loading="lazy" src="{{ $podcast->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        <img src="{{ $podcast->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $podcast->title ?? '' }}">
                         <div class="video-icon">
                             @include('user.icons.headphones')

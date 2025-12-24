@@ -19,7 +19,7 @@
         <!-- Image -->
         <div class="newCategory-all-card-image">
             <a href="{{ route('news.show', $item->shortlink) }}">
-                <img loading="lazy" src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
+                <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
                      alt="{{ $item->title }}">
             </a>
         </div>

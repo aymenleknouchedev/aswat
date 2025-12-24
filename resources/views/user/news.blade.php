@@ -2572,7 +2572,7 @@ $time = $date->format('H:i');
                         {{-- Share Button --}}
                         <button class="share-btn" id="shareToggle" type="button" title="مشاركة"
                             aria-label="زر المشاركة">
-                            <img loading="lazy" src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
+                            <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
                         </button>
                     </div>
                 </div>
@@ -2939,7 +2939,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     {{-- Share Button --}}
                     <button class="share-btn" id="shareToggleMobile" type="button" title="مشاركة"
                         aria-label="زر المشاركة">
-                        <img loading="lazy" src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
+                        <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
                     </button>
                 </div>
             </div>
@@ -3076,7 +3076,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                                             ($item->media()->wherePivot('type', 'main')->first()?->path ??
                                                 asset($item->image ?? 'user/assets/images/default-post.jpg'));
                                     @endphp
-                                    <img loading="lazy" src="{{ $img }}" alt="{{ $item->title }}">
+                                    <img src="{{ $img }}" alt="{{ $item->title }}">
                                 </a>
                                 <div class="related-news-scroll-card-content">
                                     @if (isset($item->category) && $item->category)
@@ -3709,30 +3709,6 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         // Initialize both feature image and gallery when page loads
         initializeFeatureImage();
         initializeGallery();
-
-        // Lazy loading setup
-        function setupLazyLoading() {
-            const lazyImages = document.querySelectorAll('img[loading="lazy"]:not(.loaded)');
-            lazyImages.forEach(img => {
-                if (img.complete) {
-                    img.classList.add('loaded');
-                } else {
-                    img.addEventListener('load', function() {
-                        this.classList.add('loaded');
-                    }, { once: true });
-                    img.addEventListener('error', function() {
-                        this.classList.add('loaded');
-                    }, { once: true });
-                }
-            });
-        }
-        setupLazyLoading();
-        document.addEventListener('DOMContentLoaded', setupLazyLoading);
-        const observer = new MutationObserver(() => {
-            clearTimeout(observer.timeout);
-            observer.timeout = setTimeout(setupLazyLoading, 100);
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
     </script>
 
 

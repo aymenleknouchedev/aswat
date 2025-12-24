@@ -6,7 +6,7 @@
             <!-- Logo Section (Always visible) -->
             <div class="navbar-logo">
                 <a href="{{ route('index') }}">
-                    <img loading="lazy" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
+                    <img src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
                 </a>
             </div>
 
@@ -648,39 +648,4 @@
             window.addEventListener('resize', handleFooterVisibility);
             handleFooterVisibility(); // Initial check
         });
-
-        // Lazy loading setup
-        function setupLazyLoading() {
-            const lazyImages = document.querySelectorAll('img[loading="lazy"]:not(.loaded)');
-            lazyImages.forEach(img => {
-                if (img.complete) {
-                    img.classList.add('loaded');
-                } else {
-                    img.addEventListener('load', function() {
-                        this.classList.add('loaded');
-                    }, { once: true });
-                    img.addEventListener('error', function() {
-                        this.classList.add('loaded');
-                    }, { once: true });
-                }
-            });
-        }
-        setupLazyLoading();
-        document.addEventListener('DOMContentLoaded', setupLazyLoading);
-        window.addEventListener('load', setupLazyLoading);
-        const lazyObserver = new MutationObserver(() => {
-            clearTimeout(lazyObserver.timeout);
-            lazyObserver.timeout = setTimeout(setupLazyLoading, 50);
-        });
-        lazyObserver.observe(document.body, { childList: true, subtree: true });
-        
-        // Mobile snap scroll handler
-        const mobileSnap = document.querySelector('.mobile-snap');
-        if (mobileSnap) {
-            let scrollTimer;
-            mobileSnap.addEventListener('scroll', () => {
-                clearTimeout(scrollTimer);
-                scrollTimer = setTimeout(setupLazyLoading, 100);
-            }, { passive: true });
-        }
     </script>

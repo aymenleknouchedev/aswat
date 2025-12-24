@@ -202,7 +202,7 @@
             <div class="second-grid">
                 <div class="sport-feature">
                     <a href="{{ route('news.show', $variety[0]->shortlink) }}">
-                        <img loading="lazy" src="{{ $variety[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        <img src="{{ $variety[0]->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                             alt="{{ $variety[0]->title ?? '' }}">
                     </a>
                     <h3>
@@ -220,7 +220,7 @@
                         <div class="two-titles-files-card">
                             <div class="two-titles-files-card-image">
                                 <a href="{{ route('news.show', $variet->shortlink) }}">
-                                    <img loading="lazy" src="{{ $variet->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    <img src="{{ $variet->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                         alt="{{ $variet->title ?? '' }}">
                                 </a>
                             </div>
