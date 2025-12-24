@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'أصوات جزائرية | ' . $news->mobile_title)
+@section('title', $news->mobile_title)
 
 @section('content')
 
