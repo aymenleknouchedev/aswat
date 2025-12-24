@@ -1950,7 +1950,7 @@
                     @if ($news->city?->name && $news->writers->first()?->name)
                         {{ $news->city->name }} - {{ $news->writers->first()?->name }}
                     @elseif ($news->city?->name)
-                        ''
+                        
                     @elseif ($news->writers->first()?->name)
                         {{ $news->writers->first()?->name }}
                     @endif
