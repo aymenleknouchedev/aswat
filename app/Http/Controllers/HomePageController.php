@@ -150,7 +150,7 @@ class HomePageController extends Controller
     {
         $latestContents = Content::where('is_latest', 1)
             ->where('status', 'published')
-            ->orderBy('published_at')
+            ->orderByAsc('published_at')
             ->take(20)
             ->get();
 
