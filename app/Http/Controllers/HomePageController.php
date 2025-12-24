@@ -154,6 +154,8 @@ class HomePageController extends Controller
             ->take(20)
             ->get();
 
+            dd($latestContents);
+
         return view('user.latest-news', compact('latestContents'));
     }
 
