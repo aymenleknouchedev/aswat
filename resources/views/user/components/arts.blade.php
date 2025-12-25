@@ -51,7 +51,7 @@
 
 <section class="arts-feature-grid">
     <div class="arts-grid-container">
-        @foreach ($arts->take(5) as $item)
+        @foreach ($arts as $item)
             <div class="arts-card">
                 <a href="{{ route('news.show', $item->shortlink) }}">
                     <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
