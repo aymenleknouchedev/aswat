@@ -156,21 +156,36 @@
             return str.replace(/"([^"]*)"/g, '«$1»');
         }
 
+        function isWithinAnchor(node) {
+            let parent = node.parentNode;
+            while (parent) {
+                if (parent.nodeName === 'A') {
+                    return true;
+                }
+                parent = parent.parentNode;
+            }
+            return false;
+        }
+
         function traverseAndReplaceText(node) {
             if (
                 node.nodeName === 'SCRIPT' ||
                 node.nodeName === 'STYLE' ||
                 node.nodeName === 'CODE' ||
                 node.nodeName === 'PRE' ||
-                node.nodeName === 'TEXTAREA'
+                node.nodeName === 'TEXTAREA' ||
+                node.nodeName === 'A'
             ) {
                 return;
             }
 
             if (node.nodeType === Node.TEXT_NODE) {
-                const text = node.textContent.trim();
-                if (text.length > 0) {
-                    node.textContent = replaceQuotes(node.textContent);
+                // Skip if this text node is within an anchor tag
+                if (!isWithinAnchor(node)) {
+                    const text = node.textContent.trim();
+                    if (text.length > 0) {
+                        node.textContent = replaceQuotes(node.textContent);
+                    }
                 }
             } else {
                 node.childNodes.forEach(traverseAndReplaceText);
