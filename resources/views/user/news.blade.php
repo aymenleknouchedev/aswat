@@ -18,8 +18,6 @@
 @section('meta_twitter_title', $shareTitle)
 @section('meta_twitter_description', $shareDescription)
 @section('meta_twitter_image', $shareImageUrl)
-@section('meta_facebook', $shareTitle)
-@section('meta_facebook_image', $news->media()->wherePivot('type', 'main')->first();
 
 @section('content')
 
