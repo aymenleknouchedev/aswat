@@ -75,6 +75,10 @@
     <meta property="og:site_name" content="أصوات جزائرية" />
     <meta property="og:locale" content="ar_AR" />
 
+    <!-- ================= FACEBOOK META ================= -->
+    <meta name="facebook:title" content="@yield('meta_facebook', 'أصوات جزائرية')">
+    <meta name="facebook:image" content="@yield('meta_facebook_image', asset('covergoogle.png'))">
+
     <!-- ================= TWITTER / X ================= -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('meta_twitter_title', 'أصوات جزائرية')">
