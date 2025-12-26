@@ -213,31 +213,31 @@
             </div>
             <div class="left-side">
                 <div class="icons">
-                    <a href="https://www.facebook.com" target="_blank" class="footer-icon" aria-label="Facebook">
+                    <a href="https://www.facebook.com/asswatdjazairia" target="_blank" class="footer-icon" aria-label="Facebook">
                         @include('user.icons.facebook')
                     </a>
-                    <a href="https://www.twitter.com" target="_blank" class="footer-icon" aria-label="Twitter">
+                    <a href="https://x.com/asswatdjazairia" target="_blank" class="footer-icon" aria-label="Twitter">
                         @include('user.icons.twitter')
                     </a>
-                    <a href="https://www.youtube.com" target="_blank" class="footer-icon" aria-label="YouTube">
+                    <a href="https://www.youtube.com/@asswatdjazairia" target="_blank" class="footer-icon" aria-label="YouTube">
                         @include('user.icons.youtube')
                     </a>
-                    <a href="https://www.instagram.com" target="_blank" class="footer-icon" aria-label="Instagram">
+                    <a href="https://www.instagram.com/asswatdjazairia" target="_blank" class="footer-icon" aria-label="Instagram">
                         @include('user.icons.instagram')
                     </a>
-                    <a href="https://t.me" target="_blank" class="footer-icon" aria-label="Telegram">
+                    <a href="https://t.me/AsswatDjazairia" target="_blank" class="footer-icon" aria-label="Telegram">
                         @include('user.icons.telegram')
                     </a>
-                    <a href="https://www.linkedin.com" target="_blank" class="footer-icon" aria-label="LinkedIn">
+                    <a href="https://www.linkedin.com/in/asswatdjazairia/" target="_blank" class="footer-icon" aria-label="LinkedIn">
                         @include('user.icons.linkedin')
                     </a>
-                    <a href="https://www.spotify.com" target="_blank" class="footer-icon" aria-label="Spotify">
+                    {{-- <a href="https://www.spotify.com" target="_blank" class="footer-icon" aria-label="Spotify">
                         @include('user.icons.spotify')
-                    </a>
-                    <a href="#" target="_blank" class="footer-icon" aria-label="Podcast">
+                    </a> --}}
+                    {{-- <a href="#" target="_blank" class="footer-icon" aria-label="Podcast">
                         @include('user.icons.podcast')
-                    </a>
-                    <a href="https://linktr.ee" target="_blank" class="footer-icon" aria-label="Linktree">
+                    </a> --}}
+                    <a href="https://linktr.ee/asswatdjazairia" target="_blank" class="footer-icon" aria-label="Linktree">
                         @include('user.icons.linktree')
                     </a>
                 </div>
