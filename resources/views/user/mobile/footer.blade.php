@@ -157,12 +157,27 @@
 
         </ul>
         <div class="m-icons" aria-label="وسائل التواصل الاجتماعي">
-            <span class="m-icon">@include('user.icons.facebook')</span>
-            <span class="m-icon">@include('user.icons.twitter')</span>
-            <span class="m-icon">@include('user.icons.youtube')</span>
-            <span class="m-icon">@include('user.icons.instagram')</span>
-            <span class="m-icon">@include('user.icons.telegram')</span>
-            <span class="m-icon">@include('user.icons.linkedin')</span>
+            <a href="https://www.facebook.com/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Facebook">
+                @include('user.icons.facebook')
+            </a>
+            <a href="https://x.com/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Twitter">
+                @include('user.icons.twitter')
+            </a>
+            <a href="https://www.youtube.com/@asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="YouTube">
+                @include('user.icons.youtube')
+            </a>
+            <a href="https://www.instagram.com/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Instagram">
+                @include('user.icons.instagram')
+            </a>
+            <a href="https://t.me/AsswatDjazairia" target="_blank" class="m-icon footer-icon" aria-label="Telegram">
+                @include('user.icons.telegram')
+            </a>
+            <a href="https://www.linkedin.com/in/asswatdjazairia/" target="_blank" class="m-icon footer-icon" aria-label="LinkedIn">
+                @include('user.icons.linkedin')
+            </a>
+            <a href="https://linktr.ee/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Linktree">
+                @include('user.icons.linktree')
+            </a>
         </div>
 
         <div class="m-contact">
