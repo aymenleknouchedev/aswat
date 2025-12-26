@@ -43,25 +43,25 @@
         <div
             style="display: flex; margin-right: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
             @if (isset($item->country))
-                <a href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
+                <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}'; event.stopPropagation();">
                     {{ $item->category->name ?? '' }}
-                </a>
+                </span>
                 <span style="margin-right: 4px; margin-left: 4px;">-</span>
-                <a href="{{ route('category.show', ['id' => $item->country->id, 'type' => 'Country']) }}">
+                <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->country->id, 'type' => 'Country']) }}'; event.stopPropagation();">
                     {{ $item->country->name ?? '' }}
-                </a>
+                </span>
             @elseif (isset($item->continent))
-                <a href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
+                <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}'; event.stopPropagation();">
                     {{ $item->category->name ?? '' }}
-                </a>
+                </span>
                 <span style="margin-right: 4px; margin-left: 4px;">-</span>
-                <a href="{{ route('category.show', ['id' => $item->continent->id, 'type' => 'Continent']) }}">
+                <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->continent->id, 'type' => 'Continent']) }}'; event.stopPropagation();">
                     {{ $item->continent->name ?? '' }}
-                </a>
+                </span>
             @else
-                <a href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
+                <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}'; event.stopPropagation();">
                     {{ $item->category->name ?? '' }}
-                </a>
+                </span>
             @endif
         </div>
 

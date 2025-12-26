@@ -863,25 +863,25 @@
                     $windowmanagement->status == 1 &&
                     isset($window->contents) &&
                     count($window->contents) > 0)
-                <section class="art-section-hero">
-                    <div class="art-section-overlay">
-                        <h2 class="art-section-title">{{ $window->name ?? 'النافذة' }}</h2>
-                        <div class="art-section-grid">
-                            @foreach ($window->contents->take(4) as $content)
-                                <div class="art-section-card">
-                                    <a href="{{ route('news.show', $content->shortlink ?? '') }}">
-                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
-                                            alt="{{ $content->title ?? 'عنوان الخبر' }}">
-                                    </a>
-                                    <a href="{{ route('news.show', $content->shortlink ?? '') }}"
-                                        style="text-decoration: none; color: inherit;">
-                                        <h2>{{ $content->title ?? 'عنوان الخبر' }}</h2>
-                                    </a>
-                                </div>
-                            @endforeach
+                    <section class="art-section-hero">
+                        <div class="art-section-overlay">
+                            <h2 class="art-section-title">{{ $window->name ?? 'النافذة' }}</h2>
+                            <div class="art-section-grid">
+                                @foreach ($window->contents->take(4) as $content)
+                                    <div class="art-section-card">
+                                        <a href="{{ route('news.show', $content->shortlink ?? '') }}">
+                                            <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
+                                                alt="{{ $content->title ?? 'عنوان الخبر' }}">
+                                        </a>
+                                        <a href="{{ route('news.show', $content->shortlink ?? '') }}"
+                                            style="text-decoration: none; color: inherit;">
+                                            <h2>{{ $content->title ?? 'عنوان الخبر' }}</h2>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
             @endif
 
             @include('user.components.sp60')
