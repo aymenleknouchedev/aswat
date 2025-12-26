@@ -116,7 +116,7 @@
     color: #fff;
     border-radius: 999px;
     padding: 6px 10px;
-    font-size: 16px;
+    font-size: 13px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -194,7 +194,7 @@
         left: 10px;
         bottom: 10px;
         padding: 5px 8px;
-        font-size: 11px;
+        font-size: 16px;
     }
 
     .slider-btn {
