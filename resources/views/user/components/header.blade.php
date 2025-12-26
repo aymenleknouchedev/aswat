@@ -24,13 +24,13 @@
         font-size: 12px;
         margin: 8px 0 4px;
         color: #74747C;
-        font-family: asswat-medium;
+        font-family: asswat-light;
         font-weight: lighter;
     }
 
     .news-item-noimage p {
         font-size: 16px;
-        font-family: asswat-bold;
+        font-family: asswat-medium;
     }
 
     .news-feature h3 {
@@ -58,7 +58,7 @@
 
     .news-item p {
         font-size: 16px;
-        font-family: asswat-bold;
+        font-family: asswat-medium;
     }
 
     .news-feature {
