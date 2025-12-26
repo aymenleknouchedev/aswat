@@ -116,7 +116,7 @@
     color: #fff;
     border-radius: 999px;
     padding: 6px 10px;
-    font-size: 13px;
+    font-size: 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
