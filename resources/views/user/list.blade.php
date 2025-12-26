@@ -516,6 +516,13 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
+        .article-date {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.75);
+            font-family: asswat-light;
+            margin-top: 10px;
+        }
+
         /* ==================== CONTENT SECTION ==================== */
         .content {
             padding: 80px 0;
@@ -1947,6 +1954,43 @@
             <h1>{{ $news->long_title }}</h1>
             <p>{{ $news->summary }}</p>
 
+            @php
+                $months = [
+                    '01' => 'جانفي',
+                    '02' => 'فيفري',
+                    '03' => 'مارس',
+                    '04' => 'أفريل',
+                    '05' => 'ماي',
+                    '06' => 'جوان',
+                    '07' => 'جويلية',
+                    '08' => 'أوت',
+                    '09' => 'سبتمبر',
+                    '10' => 'أكتوبر',
+                    '11' => 'نوفمبر',
+                    '12' => 'ديسمبر',
+                ];
+
+                $dateToUse = null;
+                if ($news->published_date) {
+                    $dateToUse = $news->published_date;
+                } elseif ($news->published_at) {
+                    $dateToUse = $news->published_at;
+                } else {
+                    $dateToUse = $news->created_at;
+                }
+
+                if (is_string($dateToUse)) {
+                    $date = \Carbon\Carbon::parse($dateToUse);
+                } else {
+                    $date = $dateToUse;
+                }
+
+                $day = $date->format('d');
+                $month = $months[$date->format('m')];
+                $year = $date->format('Y');
+                $time = $date->format('H:i');
+            @endphp
+
             <div class="actor-info">
                 <div class="actor-name">
                     @if ($news->city?->name && $news->writers->first()?->name)
@@ -1957,7 +2001,7 @@
                         {{ $news->writers->first()?->name }}
                     @endif
                 </div>
-                </div>
+                <div class="article-date">{{ $day }} {{ $month }} {{ $year }} | {{ $time }}</div>
             </div>
         </div>
     </section>
