@@ -48,7 +48,6 @@ class HomePageController extends Controller
 
     public function index()
     {
-
         $principalTrend = PrincipalTrend::latest()->first();
         $trends = $principalTrend->trend->contents->sortByDesc('published_date');
         $topContentIds = TopContent::orderByDesc('order')->take(7)->pluck('content_id')->toArray();
@@ -83,7 +82,7 @@ class HomePageController extends Controller
         $sections = Section::pluck('id', 'name');
         $topContentIds = $topContents->pluck('content_id')->toArray();
         $hidetrends = $trends->pluck('id')->toArray();
-
+        
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
                 ->whereNotIn('id', $topContentIds)

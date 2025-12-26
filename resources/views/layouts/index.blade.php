@@ -98,6 +98,14 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        img {
+            -webkit-user-drag: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
         .fb-embed-block .fb-embed-title,
         .fb-embed-block .fb-embed-url {
             display: none;
@@ -183,6 +191,23 @@
                 });
             });
         }
+    </script>
+
+    <!-- ================= DISABLE IMAGE RIGHT-CLICK & DRAG ================= -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('contextmenu', function(e) {
+                if (e.target.tagName === 'IMG') {
+                    e.preventDefault();
+                }
+            });
+
+            document.addEventListener('dragstart', function(e) {
+                if (e.target.tagName === 'IMG') {
+                    e.preventDefault();
+                }
+            });
+        });
     </script>
 
     <!-- ================= TITLE ================= -->
