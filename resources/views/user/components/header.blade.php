@@ -24,7 +24,7 @@
         font-size: 12px;
         margin: 8px 0 4px;
         color: #74747C;
-        font-family: asswat-light;
+        font-family: asswat-medium;
         font-weight: lighter;
     }
 
