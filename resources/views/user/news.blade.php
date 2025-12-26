@@ -5,15 +5,9 @@
 @php
     $shareTitle = $news->share_title ?: $news->long_title;
     $shareDescription = $news->share_description ?: $news->summary;
-    // Prefer explicit share image, otherwise fall back to main media image
-    $mainMedia = $news->media()->wherePivot('type', 'main')->first();
-    $shareImagePath = $news->share_image ?: ($mainMedia ? $mainMedia->path : null);
-
-    // Ensure we always give Open Graph an absolute URL
-    if ($shareImagePath && !filter_var($shareImagePath, FILTER_VALIDATE_URL)) {
-        $shareImagePath = asset(ltrim($shareImagePath, '/'));
-    }
-
+    $shareImagePath = $news->share_image ?? $news->media()->wherePivot('type', 'main')->first();
+    // share_image and main_image are already stored as absolute URLs in the DB,
+    // so we use them directly and only fall back to a local default image.
     $shareImageUrl = $shareImagePath ?: asset('covergoogle.png');
 @endphp
 
