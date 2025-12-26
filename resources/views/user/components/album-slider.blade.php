@@ -4,11 +4,6 @@
     @endphp
     @if(isset($albumImages) && $albumImages->count())
         <div class="slider-container" id="{{ $sliderId }}">
-            <button class="slider-btn prev-btn" onclick="moveSlide(-1)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6" />
-                </svg>
-            </button>
 
             @foreach($albumImages as $index => $image)
                 <div class="slide {{ $index === 0 ? 'active' : '' }}">
@@ -23,12 +18,6 @@
                          data-caption="{{ $index === 0 && isset($caption) ? $caption : ($image->alt ?? '') }}">
                 </div>
             @endforeach
-
-            <button class="slider-btn next-btn" onclick="moveSlide(1)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6" />
-                </svg>
-            </button>
         </div>
 
         {{-- Persistent caption for all slides --}}
