@@ -74,7 +74,7 @@
     .news-feature h2 {
         font-size: 24px;
         margin: 0px 0px 8px 0;
-        font-family: asswat-bold;
+        font-family: asswat-medium;
     }
 
     .news-feature h3 {
