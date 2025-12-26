@@ -16,6 +16,9 @@
                          data-index="{{ $index }}"
                          loading="lazy"
                          data-caption="{{ $index === 0 && isset($caption) ? $caption : ($image->alt ?? '') }}">
+                    <div class="album-gallery-indicator">
+                        <i class="fa-solid fa-images"></i>
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -105,6 +108,28 @@
     opacity: 1;
 }
 
+/* ===== Gallery icon indicator ===== */
+.album-gallery-indicator {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    z-index: 3;
+    pointer-events: none; /* keep image click behavior */
+}
+
+.album-gallery-indicator i {
+    font-size: 14px;
+}
+
 /* ===== Caption ===== */
 .slide-caption {
     background: #f6f6f6;
@@ -164,6 +189,13 @@
 @media (max-width: 768px) {
     .slide img {
         height: 250px;
+    }
+
+    .album-gallery-indicator {
+        left: 10px;
+        bottom: 10px;
+        padding: 5px 8px;
+        font-size: 11px;
     }
 
     .slider-btn {
