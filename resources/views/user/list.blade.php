@@ -8,6 +8,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Use project fonts instead of Google Poppins -->
     <link rel="stylesheet" href="{{ asset('user/css/fonts.css') }}">
+     <!-- ================= FAVICON ================= -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('user/assets/images/icon-logo.svg') }}" />
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
