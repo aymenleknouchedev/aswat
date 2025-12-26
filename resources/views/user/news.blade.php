@@ -2505,16 +2505,16 @@
                     }
 
                     // Convert to Carbon instance if it's a string
-if (is_string($dateToUse)) {
-    $date = \Carbon\Carbon::parse($dateToUse);
-} else {
-    $date = $dateToUse;
-}
+                if (is_string($dateToUse)) {
+                    $date = \Carbon\Carbon::parse($dateToUse);
+                } else {
+                    $date = $dateToUse;
+                }
 
-$day = $date->format('d');
-$month = $months[$date->format('m')];
-$year = $date->format('Y');
-$time = $date->format('H:i');
+                $day = $date->format('d');
+                $month = $months[$date->format('m')];
+                $year = $date->format('Y');
+                $time = $date->format('H:i');
                 @endphp
 
                 @php
@@ -2602,8 +2602,8 @@ $time = $date->format('H:i');
                 @if ($news->template == 'album' && $news->media()->wherePivot('type', 'album')->count())
                     @php
                         // Use the article's main image as the first slide (cover) in the album
-$mainImage = $news->media()->wherePivot('type', 'main')->first();
-$albumImages = $news->media()->wherePivot('type', 'album')->get();
+                        $mainImage = $news->media()->wherePivot('type', 'main')->first();
+                        $albumImages = $news->media()->wherePivot('type', 'album')->get();
 
                         // Prepend main image as the first slide if it exists
                         if ($mainImage) {

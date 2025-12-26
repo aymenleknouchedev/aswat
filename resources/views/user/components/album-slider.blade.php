@@ -9,10 +9,14 @@
 
             @foreach($albumImages as $index => $image)
                 <div class="slide {{ $index === 0 ? 'active' : '' }}">
+                    <div class="image-placeholder">
+                        <div class="spinner"></div>
+                    </div>
                     <img src="{{ $image->path }}"
                          alt="{{ $image->alt ?? 'Album Image ' . ($index + 1) }}"
                          class="album-image-clickable"
                          data-index="{{ $index }}"
+                         loading="lazy"
                          data-caption="{{ $index === 0 && isset($caption) ? $caption : ($image->alt ?? '') }}">
                 </div>
             @endforeach
@@ -49,6 +53,7 @@
 
 .slide {
     display: none;
+    position: relative;
 }
 
 .slide.active {
@@ -61,11 +66,51 @@
     object-fit: cover;
     user-select: none;
     cursor: pointer;
-    transition: opacity 0.3s;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .slide img:hover {
     opacity: 0.9;
+}
+
+/* ===== Image placeholder / loader ===== */
+.image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #111;
+    background: radial-gradient(circle at center, #333 0, #000 60%);
+    z-index: 2;
+    transition: opacity 0.3s ease;
+}
+
+.image-placeholder .spinner {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    animation: album-spinner 0.8s linear infinite;
+}
+
+@keyframes album-spinner {
+    to { transform: rotate(360deg); }
+}
+
+/* When image finished loading */
+.slide.loaded .image-placeholder {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.slide.loaded img {
+    opacity: 1;
 }
 
 /* ===== Caption ===== */
@@ -147,6 +192,28 @@ document.addEventListener('DOMContentLoaded', function () {
     let autoSlideInterval;
     const slides = document.querySelectorAll('.slide');
     const sliderContainer = document.getElementById('albumSlider');
+
+    // Handle image loading / placeholder fade
+    slides.forEach(slide => {
+        const img = slide.querySelector('img');
+        const placeholder = slide.querySelector('.image-placeholder');
+        if (!img || !placeholder) return;
+
+        function markLoaded() {
+            slide.classList.add('loaded');
+        }
+
+        function markError() {
+            placeholder.innerHTML = '<span style="color:#fff;font-family:asswat-regular;font-size:14px;">تعذر تحميل الصورة</span>';
+        }
+
+        if (img.complete && img.naturalWidth > 0) {
+            markLoaded();
+        } else {
+            img.addEventListener('load', markLoaded, { once: true });
+            img.addEventListener('error', markError, { once: true });
+        }
+    });
 
     function showSlide(index) {
         if (index >= slides.length) currentSlideIndex = 0;
