@@ -17,7 +17,7 @@
 @section('meta_og_image', $shareImageUrl)
 @section('meta_twitter_title', $shareTitle)
 @section('meta_twitter_description', $shareDescription)
-{{-- @section('meta_twitter_image', $shareImageUrl) --}}
+@section('meta_twitter_image', $shareImageUrl)
 
 @section('content')
 
