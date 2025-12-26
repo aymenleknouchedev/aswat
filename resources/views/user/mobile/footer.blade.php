@@ -37,9 +37,17 @@
             width: 24px;
             height: 24px;
             opacity: .75;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Removed click effect */
+        .m-footer .m-icon:hover {
+            opacity: 1;
+        }
 
         .m-footer .m-links {
             list-style: none;
