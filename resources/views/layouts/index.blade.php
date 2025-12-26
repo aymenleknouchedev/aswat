@@ -69,7 +69,7 @@
     <meta property="og:title" content="@yield('meta_og_title', 'أصوات جزائرية')" />
     <meta property="og:description"
         content="@yield('meta_og_description', 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.')" />
-    <meta property="og:image" content="@yield('meta_og_image', asset('covergoogle.png'))" />
+    <meta property="og:image" content="@yield('meta_twitter_image', asset('covergoogle.png'))" />
     <meta property="og:url" content="{{ request()->fullUrl() }}" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="أصوات جزائرية" />
