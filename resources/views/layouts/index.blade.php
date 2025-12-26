@@ -8,7 +8,7 @@
 
     <!-- ================= SEO META ================= -->
     <meta name="description"
-        content="موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين، ينقل أخبار الجزائر لحظة بلحظة.">
+        content="@yield('meta_description', 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين، ينقل أخبار الجزائر لحظة بلحظة.')">
 
     <meta name="keywords"
         content="
@@ -66,10 +66,10 @@
     <link rel="stylesheet" href="{{ asset('user/css/section-title.css') }}">
 
     <!-- ================= OPEN GRAPH ================= -->
-    <meta property="og:title" content="{{ $shareTitle ?? 'أصوات جزائرية' }}" />
+    <meta property="og:title" content="@yield('meta_og_title', 'أصوات جزائرية')" />
     <meta property="og:description"
-        content="{{ $shareDescription ?? 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.' }}" />
-    <meta property="og:image" content="{{ asset('covergoogle.png') }}" />
+        content="@yield('meta_og_description', 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.')" />
+    <meta property="og:image" content="@yield('meta_og_image', asset('covergoogle.png'))" />
     <meta property="og:url" content="{{ request()->fullUrl() }}" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="أصوات جزائرية" />
@@ -77,10 +77,10 @@
 
     <!-- ================= TWITTER / X ================= -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $shareTitle ?? 'أصوات جزائرية' }}">
+    <meta name="twitter:title" content="@yield('meta_twitter_title', @yield('meta_og_title', 'أصوات جزائرية'))">
     <meta name="twitter:description"
-        content="{{ $shareDescription ?? 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.' }}">
-    <meta name="twitter:image" content="{{ asset('covergoogle.png') }}">
+        content="@yield('meta_twitter_description', @yield('meta_og_description', 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.'))">
+    <meta name="twitter:image" content="@yield('meta_twitter_image', @yield('meta_og_image', asset('covergoogle.png')))">
     <meta name="twitter:site" content="@asswatdjazairia">
 
     <!-- ================= SOCIAL LINKS ================= -->

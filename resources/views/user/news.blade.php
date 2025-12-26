@@ -2,6 +2,21 @@
 
 @section('title', $news->mobile_title)
 
+@php
+    $shareTitle = $news->share_title ?: $news->long_title;
+    $shareDescription = $news->share_description ?: $news->summary;
+    $shareImagePath = $news->share_image ?: $news->main_image;
+    $shareImageUrl = $shareImagePath ? asset($shareImagePath) : asset('covergoogle.png');
+@endphp
+
+@section('meta_description', $shareDescription)
+@section('meta_og_title', $shareTitle)
+@section('meta_og_description', $shareDescription)
+@section('meta_og_image', $shareImageUrl)
+@section('meta_twitter_title', $shareTitle)
+@section('meta_twitter_description', $shareDescription)
+@section('meta_twitter_image', $shareImageUrl)
+
 @section('content')
 
     <script>
