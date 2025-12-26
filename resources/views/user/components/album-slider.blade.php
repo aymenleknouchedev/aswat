@@ -57,7 +57,8 @@
 
 .slide img {
     width: 100%;
-    height: 400px;
+    aspect-ratio: 16 / 9;
+    height: auto;
     object-fit: cover;
     user-select: none;
     cursor: pointer;
@@ -186,10 +187,6 @@
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-    .slide img {
-        height: 250px;
-    }
-
     .album-gallery-indicator {
         left: 10px;
         bottom: 10px;
