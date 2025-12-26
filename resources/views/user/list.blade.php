@@ -625,6 +625,10 @@
             direction: rtl;
         }
 
+        .intro figcaption:empty {
+            display: none;
+        }
+
         .intro video {
             width: 100%;
             height: auto;
@@ -1994,11 +1998,11 @@
             <div class="actor-info">
                 <div class="actor-name">
                     @if ($news->city?->name && $news->writers->first()?->name)
-                        {{ $news->city->name }} - {{ $news->writers->first()?->name }}
+                        {{ $news->city->name }} - <a href="{{ route('writer.show', $news->writers->first()->id) }}" style="text-decoration: none; color: inherit; cursor: pointer;">{{ $news->writers->first()?->name }}</a>
                     @elseif ($news->city?->name)
                         
                     @elseif ($news->writers->first()?->name)
-                        {{ $news->writers->first()?->name }}
+                        <a href="{{ route('writer.show', $news->writers->first()->id) }}" style="text-decoration: none; color: inherit; cursor: pointer;">{{ $news->writers->first()?->name }}</a>
                     @endif
                 </div>
                 <div class="article-date">{{ $day }} {{ $month }} {{ $year }} | {{ $time }}</div>
@@ -2099,7 +2103,7 @@
                         <div class="film-right">
                             <div class="film-number"></div>
                             @if ($item->writer()->first())
-                                <p class="film-writer">{{ $item->writer()->first()->name }}</p>
+                                <p class="film-writer"><a href="{{ route('writer.show', $item->writer()->first()->id) }}" style="text-decoration: none; color: inherit; cursor: pointer;">{{ $item->writer()->first()->name }}</a></p>
                             @else
                                 <p class="film-writer hidden">كاتب غير معروف</p>
                             @endif
