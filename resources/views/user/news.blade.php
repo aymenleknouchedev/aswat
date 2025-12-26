@@ -5,10 +5,21 @@
 @php
     $shareTitle = $news->share_title ?: $news->long_title;
     $shareDescription = $news->share_description ?: $news->summary;
-    $shareImagePath = $news->share_image ?? $news->media()->wherePivot('type', 'main')->first();
-    // share_image and main_image are already stored as absolute URLs in the DB,
-    // so we use them directly and only fall back to a local default image.
-    $shareImageUrl = $shareImagePath ?: asset('covergoogle.png');
+
+    // Build a clean, absolute URL for Open Graph / Twitter images
+    if (!empty($news->share_image)) {
+        // Direct share image (should already be an absolute URL)
+        $shareImageUrl = $news->share_image;
+    } else {
+        // Fallback to main media relation, using the accessor that returns a full URL
+        $mainMedia = $news->media()->wherePivot('type', 'main')->first();
+        $shareImageUrl = $mainMedia?->url;
+    }
+
+    // Final fallback to a default image in case nothing else is available
+    if (empty($shareImageUrl)) {
+        $shareImageUrl = asset('covergoogle.png');
+    }
 @endphp
 
 @section('meta_description', $shareDescription)
