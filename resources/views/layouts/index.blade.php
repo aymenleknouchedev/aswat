@@ -77,10 +77,10 @@
 
     <!-- ================= TWITTER / X ================= -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@yield('meta_twitter_title', @yield('meta_og_title', 'أصوات جزائرية'))">
+    <meta name="twitter:title" content="@yield('meta_twitter_title', 'أصوات جزائرية')">
     <meta name="twitter:description"
-        content="@yield('meta_twitter_description', @yield('meta_og_description', 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.'))">
-    <meta name="twitter:image" content="@yield('meta_twitter_image', @yield('meta_og_image', asset('covergoogle.png')))">
+        content="@yield('meta_twitter_description', 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.')">
+    <meta name="twitter:image" content="@yield('meta_twitter_image', asset('covergoogle.png'))">
     <meta name="twitter:site" content="@asswatdjazairia">
 
     <!-- ================= SOCIAL LINKS ================= -->
