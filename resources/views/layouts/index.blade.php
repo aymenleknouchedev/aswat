@@ -114,6 +114,23 @@
             user-select: none;
         }
 
+        .watermark-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.08;
+            font-size: 4rem;
+            font-weight: 800;
+            color: #000;
+            text-align: center;
+            transform: rotate(-20deg);
+            white-space: nowrap;
+        }
+
         .fb-embed-block .fb-embed-title,
         .fb-embed-block .fb-embed-url {
             display: none;
@@ -238,6 +255,10 @@
 </head>
 
 <body id="gototop">
+
+    <div class="watermark-overlay">
+        أصوات جزائرية - Asswat Djazairia
+    </div>
 
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v20.0">
