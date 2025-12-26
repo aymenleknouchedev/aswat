@@ -162,7 +162,8 @@
                 node.nodeName === 'STYLE' ||
                 node.nodeName === 'CODE' ||
                 node.nodeName === 'PRE' ||
-                node.nodeName === 'TEXTAREA'
+                node.nodeName === 'TEXTAREA' ||
+                node.nodeName === 'A'  // Skip links to preserve animation
             ) {
                 return;
             }
@@ -173,7 +174,9 @@
                     node.textContent = replaceQuotes(node.textContent);
                 }
             } else {
-                node.childNodes.forEach(traverseAndReplaceText);
+                for (let child of node.childNodes) {
+                    traverseAndReplaceText(child);
+                }
             }
         }
 
