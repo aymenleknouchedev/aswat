@@ -115,8 +115,8 @@
     bottom: 12px;
     color: #fff;
     border-radius: 999px;
-    padding: 6px 10px;
-    font-size: 16px;
+    padding: 8px 12px;
+    font-size: 15px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -126,7 +126,7 @@
 }
 
 .album-gallery-indicator i {
-    font-size: 14px;
+    font-size: 18px;
 }
 
 /* ===== Caption ===== */
@@ -193,8 +193,8 @@
     .album-gallery-indicator {
         left: 10px;
         bottom: 10px;
-        padding: 5px 8px;
-        font-size: 16px;
+        padding: 7px 10px;
+        font-size: 13px;
     }
 
     .slider-btn {
