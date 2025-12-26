@@ -264,6 +264,10 @@
             direction: rtl;
         }
 
+        .custom-article-image-wrapper figcaption:empty {
+            display: none;
+        }
+
         /* ===================== CONTENT ===================== */
         .custom-article-content {
             font-size: 16px !important;
@@ -332,6 +336,10 @@
             text-align: right;
             font-family: asswat-regular;
             direction: rtl;
+        }
+
+        .custom-article-content figcaption:empty {
+            display: none;
         }
 
         /* Video styling within content */
