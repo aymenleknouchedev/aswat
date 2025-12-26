@@ -152,6 +152,10 @@
 
     <!-- ================= QUOTES REPLACER ================= -->
     <script>
+        /*
+        // DISABLED: Quote replacement breaks hyperlink animations
+        // This functionality is disabled to preserve CSS animations on links
+        
         function replaceQuotes(str) {
             return str.replace(/"([^"]*)"/g, '«$1»');
         }
@@ -214,6 +218,7 @@
                 });
             });
         }
+        */
     </script>
 
     <!-- ================= DISABLE IMAGE RIGHT-CLICK & DRAG ================= -->
