@@ -1,6 +1,9 @@
 <div class="album-slider">
+    @php
+        $sliderId = $sliderId ?? ('albumSlider_' . uniqid());
+    @endphp
     @if(isset($albumImages) && $albumImages->count())
-        <div class="slider-container" id="albumSlider">
+        <div class="slider-container" id="{{ $sliderId }}">
             <button class="slider-btn prev-btn" onclick="moveSlide(-1)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="15 18 9 12 15 6" />
@@ -189,8 +192,11 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     let currentSlideIndex = 0;
-    const slides = document.querySelectorAll('.slide');
-    const sliderContainer = document.getElementById('albumSlider');
+    const sliderContainer = document.getElementById('{{ $sliderId }}');
+    if (!sliderContainer) {
+        return;
+    }
+    const slides = sliderContainer.querySelectorAll('.slide');
 
     // Handle image loading / placeholder fade
     slides.forEach(slide => {
@@ -232,15 +238,16 @@ document.addEventListener('DOMContentLoaded', function () {
     window.moveSlide = moveSlide;
 
     // Initialize album gallery for fullscreen viewing
-    initializeAlbumGallery();
+    initializeAlbumGallery(sliderContainer);
 });
 
 /**
  * Initialize album gallery for fullscreen preview
  */
-function initializeAlbumGallery() {
+function initializeAlbumGallery(root) {
+    if (!root) return;
     const albumImages = [];
-    const clickableImages = document.querySelectorAll('.album-image-clickable');
+    const clickableImages = root.querySelectorAll('.album-image-clickable');
 
     // Collect all album images with their data
     clickableImages.forEach((img, index) => {
