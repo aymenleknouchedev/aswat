@@ -189,7 +189,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     let currentSlideIndex = 0;
-    let autoSlideInterval;
     const slides = document.querySelectorAll('.slide');
     const sliderContainer = document.getElementById('albumSlider');
 
@@ -227,20 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
         showSlide(currentSlideIndex + step);
     }
 
-    function startAutoSlide() {
-        stopAutoSlide();
-        autoSlideInterval = setInterval(() => moveSlide(1), 5000);
-    }
-
-    function stopAutoSlide() {
-        clearInterval(autoSlideInterval);
-    }
-
-    sliderContainer.addEventListener('mouseenter', stopAutoSlide);
-    sliderContainer.addEventListener('mouseleave', startAutoSlide);
-
     showSlide(currentSlideIndex);
-    startAutoSlide();
 
     // Make moveSlide globally accessible for the buttons
     window.moveSlide = moveSlide;
