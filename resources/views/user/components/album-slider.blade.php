@@ -221,9 +221,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function showSlide(index) {
-        if (index >= slides.length) currentSlideIndex = 0;
-        else if (index < 0) currentSlideIndex = slides.length - 1;
-        else currentSlideIndex = index;
+        // Clamp index so slider does NOT loop infinitely
+        if (index >= slides.length) index = slides.length - 1;
+        if (index < 0) index = 0;
+        currentSlideIndex = index;
 
         slides.forEach((s, i) => s.classList.toggle('active', i === currentSlideIndex));
     }
