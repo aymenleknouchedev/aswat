@@ -8,8 +8,12 @@
 
     // Build a clean, absolute URL for Open Graph / Twitter images
     if (!empty($news->share_image)) {
-        // Direct share image (should already be an absolute URL)
-        $shareImageUrl = $news->share_image;
+        // If share_image is already a full URL, use it; otherwise convert it to an asset URL
+        if (filter_var($news->share_image, FILTER_VALIDATE_URL)) {
+            $shareImageUrl = $news->share_image;
+        } else {
+            $shareImageUrl = asset(ltrim($news->share_image, '/'));
+        }
     } else {
         // Fallback to main media relation, using the accessor that returns a full URL
         $mainMedia = $news->media()->wherePivot('type', 'main')->first();
