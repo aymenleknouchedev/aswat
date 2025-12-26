@@ -314,8 +314,8 @@ function initializeAlbumGallery(root) {
             const currentImage = albumImages[currentAlbumIndex];
             fullscreenImageContent.src = currentImage.src;
 
-            // Only show caption for the first image (main image/cover)
-            if (currentAlbumIndex === 0 && currentImage.caption) {
+            // Show caption/alt text when available for any image
+            if (currentImage.caption) {
                 fullscreenImageCaption.textContent = currentImage.caption;
                 fullscreenImageCaption.style.display = 'block';
             } else {
