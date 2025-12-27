@@ -14,6 +14,7 @@ use App\Models\Category;
 use App\Models\Location;
 use App\Models\Writer;
 use App\Models\Tag;
+use App\Models\Trend;
 use Illuminate\Support\Facades\Cache;
 use App\Services\ContentService;
 
@@ -813,6 +814,43 @@ class HomePageController extends Controller
             ->get();
 
         return view('user.tags', compact('theme', 'articles', 'type', 'current_id'));
+    }
+
+    public function showTrend(Request $request, $trend)
+    {
+        // Find the trend by ID
+        $theme = Trend::findOrFail($trend);
+        $current_id = $trend;
+        $type = 'Trend';
+
+        $perPage = 9;
+        $page = $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        // Get articles for AJAX requests (pagination)
+        $articles = Content::whereHas('trends', function ($query) use ($trend) {
+            $query->where('trends.id', $trend);
+        })
+            ->where('status', 'published')
+            ->orderByDesc('published_date')
+            ->skip($skip)
+            ->take($perPage)
+            ->get();
+
+        if ($request->ajax()) {
+            return view('user.partials.tag-items', compact('articles'))->render();
+        }
+
+        // For initial page load, get the first page
+        $articles = Content::whereHas('trends', function ($query) use ($trend) {
+            $query->where('trends.id', $trend);
+        })
+            ->where('status', 'published')
+            ->orderByDesc('published_date')
+            ->take($perPage)
+            ->get();
+
+        return view('user.trends', compact('theme', 'articles', 'type', 'current_id'));
     }
 
     public function aboutUs()

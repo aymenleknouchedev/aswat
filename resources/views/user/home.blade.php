@@ -612,7 +612,9 @@
             <div class="container">
                 <section class="art-section-hero">
                     <div class="art-section-overlay">
-                        <h2 class="art-section-title">{{ $principalTrend->trend->title ?? '' }}</h2>
+                        <a href="{{ route('trend.show', $principalTrend->trend->id) }}" style="text-decoration: none; color: inherit;">
+                            <h2 class="art-section-title">{{ $principalTrend->trend->title ?? '' }}</h2>
+                        </a>
                         <div class="art-section-grid">
                             @foreach ($trends->take(4) as $content)
                                 <div class="art-section-card">
