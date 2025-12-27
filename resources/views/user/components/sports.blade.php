@@ -27,7 +27,7 @@
     }
 
     .sport-feature h2 {
-        font-size: 16px;
+        font-size: 18px;
         margin: 0px 0px 4px 0px;
         font-family: asswat-bold;
         color: #333;
