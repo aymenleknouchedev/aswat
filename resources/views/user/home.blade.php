@@ -365,8 +365,8 @@
             }
 
             .h-indicator {
-                width: 7px;
-                height: 7px;
+                width: 9px;
+                height: 9px;
                 border-radius: 50%;
                 background: rgba(255, 255, 255, 0.45);
                 transition: background 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
