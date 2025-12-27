@@ -61,6 +61,7 @@
                         <li><a href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة وفنون</a></li>
                         <li><a href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a></li>
                         <li><a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>
+                        <li><a href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a></li>
                         <li><a href="{{ route('newSection', ['section' => 'media']) }}">ميديا</a></li>
                         <li><a href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a></li>
                     </ul>
@@ -442,9 +443,9 @@
                 transition: max-height 0.3s ease;
             }
 
-            .submenu.active {
+            /* .submenu.active {
                 max-height: 600px;
-            }
+            } */
 
             /* Submenu separators inset */
             .submenu li { border-bottom: none; }
