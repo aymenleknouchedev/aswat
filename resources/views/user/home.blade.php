@@ -347,6 +347,10 @@
             }
 
             .h-indicators {
+                position: absolute;
+                bottom: 60px;
+                left: 50%;
+                transform: translateX(-50%);
                 display: flex;
                 flex-direction: row;
                 /* horizontal array */
@@ -354,7 +358,6 @@
                 justify-content: center;
                 gap: 8px;
                 /* spacing between dots */
-                margin-top: 16px;
             }
 
             .h-indicator {
@@ -946,18 +949,18 @@
                                             <p class="featured-post-description">
                                                 {{ \Illuminate\Support\Str::limit(strip_tags($c->summary ?? ($c->description ?? '')), 130) }}
                                             </p>
-                                            <div class="h-indicators" role="tablist" aria-label="slides">
-                                                @for ($i = 0; $i < $topcontentslist; $i++)
-                                                    <span class="h-indicator @if ($i === 0) active @endif"
-                                                        aria-label="{{ $i + 1 }}"
-                                                        aria-current="@if ($i === 0) true @else false @endif"></span>
-                                                @endfor
-                                            </div>
                                         </a>
                                     </div>
                                 </div>
                             @endif
                         @endforeach
+                    </div>
+                    <div class="h-indicators" role="tablist" aria-label="slides">
+                        @for ($i = 0; $i < $topcontentslist; $i++)
+                            <span class="h-indicator @if ($i === 0) active @endif"
+                                aria-label="{{ $i + 1 }}"
+                                aria-current="@if ($i === 0) true @else false @endif"></span>
+                        @endfor
                     </div>
                 </div>
 
@@ -968,6 +971,7 @@
             @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
                 @php $trendsCount = isset($trends) && is_countable($trends) ? count($trends) : 0; @endphp
                 @if ($trendsCount >= 1)
+                    @php $trendIndicators = min(5, $trendsCount); @endphp
                     <div class="mobile-h-wrapper">
                         <div class="section-fixed-ui">
                             <div class="featured-post-section-badge">
@@ -998,17 +1002,17 @@
                                             <p class="featured-post-description">
                                                 {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ''), 130) }}
                                             </p>
-                                            <div class="h-indicators" role="tablist" aria-label="slides">
-                                                @for ($i = 0; $i < min(5, $trendsCount); $i++)
-                                                    <span class="h-indicator @if ($i === 0) active @endif"
-                                                        aria-label="{{ $i + 1 }}"
-                                                        aria-current="@if ($i === 0) true @else false @endif"></span>
-                                                @endfor
-                                            </div>
                                         </a>
                                     </div>
                                 </div>
                             @endforeach
+                        </div>
+                        <div class="h-indicators" role="tablist" aria-label="slides">
+                            @for ($i = 0; $i < $trendIndicators; $i++)
+                                <span class="h-indicator @if ($i === 0) active @endif"
+                                    aria-label="{{ $i + 1 }}"
+                                    aria-current="@if ($i === 0) true @else false @endif"></span>
+                            @endfor
                         </div>
                     </div>
                 @endif
@@ -1047,13 +1051,6 @@
                                     <a href="{{ route('newSection', ['section' => 'reviews']) }}"
                                         style="color: inherit; text-decoration: none;">{{ $sectionTitle }}</a>
                                 </div>
-                                <div class="h-indicators" role="tablist" aria-label="slides">
-                                    @for ($i = 0; $i < $slideCount; $i++)
-                                        <span class="h-indicator @if ($i === 0) active @endif"
-                                            aria-label="{{ $i + 1 }}"
-                                            aria-current="@if ($i === 0) true @else false @endif"></span>
-                                    @endfor
-                                </div>
                             </div>
                             <div class="h-snap" dir="rtl">
                                 @foreach ($collection->take(5) as $content)
@@ -1088,6 +1085,13 @@
                                         </div>
                                     </div>
                                 @endforeach
+                            </div>
+                            <div class="h-indicators" role="tablist" aria-label="slides">
+                                @for ($i = 0; $i < $slideCount; $i++)
+                                    <span class="h-indicator @if ($i === 0) active @endif"
+                                        aria-label="{{ $i + 1 }}"
+                                        aria-current="@if ($i === 0) true @else false @endif"></span>
+                                @endfor
                             </div>
                         </div>
                     @endif
@@ -1127,13 +1131,6 @@
                                     @else
                                         {{ $sectionTitle }}
                                     @endif
-                                </div>
-                                <div class="h-indicators" role="tablist" aria-label="slides">
-                                    @for ($i = 0; $i < $slideCount; $i++)
-                                        <span class="h-indicator @if ($i === 0) active @endif"
-                                            aria-label="{{ $i + 1 }}"
-                                            aria-current="@if ($i === 0) true @else false @endif"></span>
-                                    @endfor
                                 </div>
                             </div>
                             <div class="h-snap" dir="rtl">
@@ -1179,6 +1176,13 @@
                                         </div>
                                     </div>
                                 @endforeach
+                            </div>
+                            <div class="h-indicators" role="tablist" aria-label="slides">
+                                @for ($i = 0; $i < $slideCount; $i++)
+                                    <span class="h-indicator @if ($i === 0) active @endif"
+                                        aria-label="{{ $i + 1 }}"
+                                        aria-current="@if ($i === 0) true @else false @endif"></span>
+                                @endfor
                             </div>
                         </div>
                     @endif
