@@ -319,12 +319,12 @@
                 content: '';
                 position: absolute;
                 top: 50%;
-                right: 0;
+                right: 22px;
                 transform: translate(50%, -50%);
-                width: 42px;
-                height: 42px;
+                width: 60px;
+                height: 60px;
                 border-radius: 50%;
-                background: rgba(120, 120, 120, 0.7);
+                background: grey;
                 z-index: -1;
             }
 
