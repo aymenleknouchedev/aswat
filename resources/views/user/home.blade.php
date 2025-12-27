@@ -297,36 +297,22 @@
                 z-index: 1;
             }
 
-            /* Top section badge: white text with overlapping grey circle */
+            /* Top section badge (white background, black text, no radius) */
             .featured-post-section-badge {
                 position: absolute;
                 top: 90px;
                 right: 16px;
                 /* RTL alignment */
                 z-index: 2;
-                background: transparent;
-                color: #ffffff;
-                padding: 6px 18px 6px 6px;
+                background: #fff;
+                color: #000;
+                padding: 6px 12px;
                 font-size: 23px;
-                font-family: 'asswat-bold';
+                font-weight: 800;
                 line-height: 1;
                 border-radius: 0;
                 display: inline-block;
                 text-align: center;
-            }
-
-            .featured-post-section-badge::after {
-                content: '';
-                position: absolute;
-                top: 50%;
-                right: 22px;
-                transform: translate(50%, -50%);
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                background: rgba(0, 128, 0, 0.3);
-
-                z-index: -1;
             }
 
             /* Fixed UI container holding section badge */
