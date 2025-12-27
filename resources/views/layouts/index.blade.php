@@ -1,5 +1,21 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+    
+    {{-- Global lazy-loading for images --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Automatically make all images lazy-loaded, unless explicitly opted out
+            if ('loading' in HTMLImageElement.prototype) {
+                document.querySelectorAll('img').forEach(function(img) {
+                    // Allow manual override with data-loading="eager"
+                    if (img.dataset.loading === 'eager') return;
+                    if (!img.hasAttribute('loading')) {
+                        img.setAttribute('loading', 'lazy');
+                    }
+                });
+            }
+        });
+    </script>
 
 <head>
     <meta charset="UTF-8">
@@ -225,21 +241,6 @@
 
     @yield('content')
 
-    {{-- Global lazy-loading for images --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Automatically make all images lazy-loaded, unless explicitly opted out
-            if ('loading' in HTMLImageElement.prototype) {
-                document.querySelectorAll('img').forEach(function(img) {
-                    // Allow manual override with data-loading="eager"
-                    if (img.dataset.loading === 'eager') return;
-                    if (!img.hasAttribute('loading')) {
-                        img.setAttribute('loading', 'lazy');
-                    }
-                });
-            }
-        });
-    </script>
 
     <script src="{{ asset('user/js/fixed-nav.js') }}"></script>
     <script src="{{ asset('user/js/photos-scroll.js') }}"></script>
