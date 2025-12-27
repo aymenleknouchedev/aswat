@@ -358,8 +358,7 @@
                 bottom: 20px;
                 left: 50%;
                 transform: translateX(-50%);
-                z-index: 1000;
-                pointer-events: none;
+                z-index: 3;
             }
 
             .h-indicator {
@@ -371,7 +370,6 @@
                 /* perfect circle */
                 cursor: pointer;
                 transition: all 0.3s ease;
-                pointer-events: auto;
             }
 
             .h-indicator.active {
