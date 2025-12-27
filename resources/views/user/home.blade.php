@@ -350,7 +350,7 @@
                 position: static;
                 margin-bottom: 10px;
                 pointer-events: auto;
-                align-self: flex-end;
+                align-self: flex-start;
             }
 
             /* Horizontal slide indicators as dots at the bottom of each snap */
