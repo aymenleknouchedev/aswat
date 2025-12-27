@@ -29,6 +29,13 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        ul, ol {
+            list-style: none;
+        }
+
+        a {
+            color: inherit;
+        }
 
 
         body {
