@@ -34,7 +34,7 @@
         color: #74747C;
         font-family: asswat-light;
         font-weight: lighter;
-        padding: 20px 20px 0 20px;
+        padding: 0px 20px 0 20px;
     }
 
     .world-feature p {
