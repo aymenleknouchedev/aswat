@@ -204,15 +204,19 @@
     <!-- ================= DISABLE IMAGE RIGHT-CLICK & DRAG ================= -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            
-
-            document.addEventListener('dragstart', function(e) {
+            // Prevent right-click on images only
+            document.addEventListener('contextmenu', function(e) {
                 if (e.target.tagName === 'IMG') {
                     e.preventDefault();
                 }
             });
 
-            
+            // Prevent dragging images
+            document.addEventListener('dragstart', function(e) {
+                if (e.target.tagName === 'IMG') {
+                    e.preventDefault();
+                }
+            });
         });
     </script>
 
