@@ -235,7 +235,7 @@
                 display: inline-block;
                 color: #fff;
                 text-decoration: none;
-                font-size: 1rem;
+                font-size: 16px;
                 font-weight: 800;
                 line-height: 1.4;
                 font-family: 'asswat-bold';
@@ -350,24 +350,32 @@
                 display: flex;
                 flex-direction: row;
                 /* horizontal array */
-                align-items: stretch;
-                /* match badge height */
-                justify-content: flex-start;
-                gap: 5px;
-                /* spacing between vertical lines */
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                /* spacing between dots */
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 3;
             }
 
             .h-indicator {
-                width: 4px;
-                /* thin vertical line */
-                height: 100%;
-                /* same height as badge */
-                background: rgba(255, 255, 255, 0.262);
-                border-radius: 2px;
+                width: 8px;
+                /* dot size */
+                height: 8px;
+                background: rgba(255, 255, 255, 0.4);
+                border-radius: 50%;
+                /* perfect circle */
+                cursor: pointer;
+                transition: all 0.3s ease;
             }
 
             .h-indicator.active {
                 background: #ffffff;
+                width: 10px;
+                height: 10px;
             }
 
             /* Featured Post Content */
