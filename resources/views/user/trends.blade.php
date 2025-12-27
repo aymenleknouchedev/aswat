@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'أصوات جزائرية | ' . ($theme->name ?? 'الأخبار'))
+@section('title', 'أصوات جزائرية | ' . ($theme->title ?? 'الأخبار'))
 
 @section('content')
 
@@ -207,7 +207,7 @@
 
         <div class="container">
             <div class="title">
-                <p class="section-title">{{ $theme->name ?? 'الأخبار' }}</p>
+                <p class="section-title">{{ $theme->title ?? 'الأخبار' }}</p>
                 @include('user.components.ligne')
                 <div class="under-title-ligne-space"></div>
             </div>
@@ -287,7 +287,7 @@
         <div class="mobile-flow">
             <div class="mobile-container" style="margin-top: 68px;">
                 <div class="mobile-simple-list" dir="rtl">
-                    <h2 class="mobile-simple-header">{{ $theme->name ?? 'الأخبار' }}</h2>
+                    <h2 class="mobile-simple-header">{{ $theme->title ?? 'الأخبار' }}</h2>
                     <div style="padding: 0px 16px">
                         @include('user.components.ligne')
                     </div>
