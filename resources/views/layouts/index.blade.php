@@ -98,20 +98,8 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        body,
-        body *:not(input):not(textarea):not([contenteditable="true"]) {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
         img {
             -webkit-user-drag: none;
-            -moz-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
 
         .fb-embed-block .fb-embed-title,
