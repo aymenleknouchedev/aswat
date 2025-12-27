@@ -394,7 +394,7 @@
             .featured-post-content2 {
                 position: absolute;
                 /* pin block to bottom area */
-                bottom: 180px;
+                bottom: 160px;
                 /* keep 80px empty space at the bottom of the page */
                 left: 0;
                 right: 0;
