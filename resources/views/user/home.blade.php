@@ -348,7 +348,7 @@
             .h-indicators {
                 position: absolute;
                 left: 50%;
-                bottom: 96px;
+                bottom: 64px;
                 transform: translateX(-50%);
                 z-index: 3;
                 display: flex;
@@ -394,8 +394,8 @@
             .featured-post-content2 {
                 position: absolute;
                 /* pin block to bottom area */
-                bottom: 90px;
-                /* keep 80px empty space at the bottom of the page */
+                bottom: 130px;
+                /* extra space to avoid overlap with indicators */
                 left: 0;
                 right: 0;
                 z-index: 2;
