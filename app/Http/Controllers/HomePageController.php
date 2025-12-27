@@ -828,9 +828,7 @@ class HomePageController extends Controller
         $skip = ($page - 1) * $perPage;
 
         // Get articles for AJAX requests (pagination)
-        $articles = Content::whereHas('trends', function ($query) use ($trend) {
-            $query->where('trends.id', $trend);
-        })
+        $articles = Content::where('trend_id', $trend)
             ->where('status', 'published')
             ->orderByDesc('published_date')
             ->skip($skip)
@@ -842,9 +840,7 @@ class HomePageController extends Controller
         }
 
         // For initial page load, get the first page
-        $articles = Content::whereHas('trends', function ($query) use ($trend) {
-            $query->where('trends.id', $trend);
-        })
+        $articles = Content::where('trend_id', $trend)
             ->where('status', 'published')
             ->orderByDesc('published_date')
             ->take($perPage)
