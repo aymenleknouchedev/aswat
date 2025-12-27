@@ -354,11 +354,7 @@
                 justify-content: center;
                 gap: 8px;
                 /* spacing between dots */
-                position: absolute;
-                top: 280px;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 3;
+                margin-top: 16px;
             }
 
             .h-indicator {
@@ -925,13 +921,6 @@
                 <div class="mobile-h-wrapper">
                     <div class="section-fixed-ui">
                         <div class="featured-post-section-badge">في الواجهة</div>
-                        <div class="h-indicators" role="tablist" aria-label="slides">
-                            @for ($i = 0; $i < $topcontentslist; $i++)
-                                <span class="h-indicator @if ($i === 0) active @endif"
-                                    aria-label="{{ $i + 1 }}"
-                                    aria-current="@if ($i === 0) true @else false @endif"></span>
-                            @endfor
-                        </div>
                     </div>
                     <div class="h-snap" dir="rtl">
                         @foreach ($topContents->take($topcontentslist) as $tc)
@@ -957,6 +946,13 @@
                                             <p class="featured-post-description">
                                                 {{ \Illuminate\Support\Str::limit(strip_tags($c->summary ?? ($c->description ?? '')), 130) }}
                                             </p>
+                                            <div class="h-indicators" role="tablist" aria-label="slides">
+                                                @for ($i = 0; $i < $topcontentslist; $i++)
+                                                    <span class="h-indicator @if ($i === 0) active @endif"
+                                                        aria-label="{{ $i + 1 }}"
+                                                        aria-current="@if ($i === 0) true @else false @endif"></span>
+                                                @endfor
+                                            </div>
                                         </a>
                                     </div>
                                 </div>
@@ -978,13 +974,6 @@
                                 <a href="{{ route('trend.show', $principalTrend->trend->id) }}" style="color: inherit; text-decoration: none;">
                                     {{ $principalTrend->trend->title ?? 'اتجاه' }}
                                 </a>
-                            </div>
-                            <div class="h-indicators" role="tablist" aria-label="slides">
-                                @for ($i = 0; $i < min(5, $trendsCount); $i++)
-                                    <span class="h-indicator @if ($i === 0) active @endif"
-                                        aria-label="{{ $i + 1 }}"
-                                        aria-current="@if ($i === 0) true @else false @endif"></span>
-                                @endfor
                             </div>
                         </div>
                         <div class="h-snap" dir="rtl">
@@ -1009,6 +998,13 @@
                                             <p class="featured-post-description">
                                                 {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ''), 130) }}
                                             </p>
+                                            <div class="h-indicators" role="tablist" aria-label="slides">
+                                                @for ($i = 0; $i < min(5, $trendsCount); $i++)
+                                                    <span class="h-indicator @if ($i === 0) active @endif"
+                                                        aria-label="{{ $i + 1 }}"
+                                                        aria-current="@if ($i === 0) true @else false @endif"></span>
+                                                @endfor
+                                            </div>
                                         </a>
                                     </div>
                                 </div>
