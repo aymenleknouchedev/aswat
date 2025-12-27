@@ -29,16 +29,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        ul, ol {
-            list-style: none;
-            
-        }
 
-        ul, ol a {
-            text-decoration: none;
-            color: white;
-            
-        }
 
         body {
             font-family: 'asswat-regular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
