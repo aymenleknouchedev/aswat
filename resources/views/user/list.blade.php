@@ -31,6 +31,13 @@
 
         ul, ol {
             list-style: none;
+            
+        }
+
+        ul, ol a {
+            text-decoration: none;
+            color: white;
+            
         }
 
         body {
