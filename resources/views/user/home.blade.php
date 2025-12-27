@@ -359,6 +359,7 @@
                 left: 50%;
                 transform: translateX(-50%);
                 z-index: 3;
+                width: 100%;
             }
 
             /* Hide indicators by default, show only in mobile-h-wrapper */
