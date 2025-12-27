@@ -183,7 +183,7 @@
             /* Most Reads full-screen section */
             .most-reads-screen {
                 width: 100%;
-                height: 100%;
+                height: 100dvh;
                 background: #252525;
                 /* grey background */
                 color: #000;
@@ -537,7 +537,7 @@
 
             /* Vertical snap scroller container */
             .mobile-snap {
-                height: 100dvh;
+                height: 100vh;
                 overflow-y: auto;
                 scroll-behavior: smooth;
                 scroll-snap-type: y mandatory;
