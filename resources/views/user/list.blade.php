@@ -29,6 +29,10 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        ul, ol {
+            list-style: none;
+        }
+
         body {
             font-family: 'asswat-regular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;

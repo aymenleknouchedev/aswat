@@ -61,31 +61,21 @@
 
     .footer .contact-us .right-side ul {
         display: flex;
-        list-style: none;
-        padding: 0;
-        gap: 30px;
     }
 
     .footer .contact-us .right-side ul li {
-        margin: 0;
+        margin-left: 20px;
     }
 
     .footer .contact-us .right-side ul li a {
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: .1s ease;
         color: white;
         text-decoration: none;
-        font-size: 14px;
-        padding: 8px 15px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 4px;
-        display: inline-block;
     }
 
     .footer .contact-us .right-side ul li a:hover {
-        color: #252525;
-        background-color: white;
-        border-color: white;
+        color: rgb(169, 169, 169);
     }
 
     .footer .contact-us .left-side {
