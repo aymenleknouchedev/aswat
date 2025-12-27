@@ -936,7 +936,11 @@
                 @if ($trendsCount >= 1)
                     <div class="mobile-h-wrapper">
                         <div class="section-fixed-ui">
-                            <div class="featured-post-section-badge">{{ $principalTrend->trend->title ?? 'اتجاه' }}</div>
+                            <div class="featured-post-section-badge">
+                                <a href="{{ route('trend.show', $principalTrend->trend->id) }}" style="color: inherit; text-decoration: none;">
+                                    {{ $principalTrend->trend->title ?? 'اتجاه' }}
+                                </a>
+                            </div>
                             <div class="h-indicators" role="tablist" aria-label="slides">
                                 @for ($i = 0; $i < min(5, $trendsCount); $i++)
                                     <span class="h-indicator @if ($i === 0) active @endif"
