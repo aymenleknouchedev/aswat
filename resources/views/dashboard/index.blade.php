@@ -21,8 +21,12 @@
                             </div>
 
                             {{-- ===================== 3 Lists ===================== --}}
+                            @php
+                                $user = auth()->user();
+                            @endphp
                             <div class="row g-4 mb-5">
-                                {{-- List 1 --}}
+                                {{-- List 1: Content / Media / Breaking --}}
+                                @if ($user && $user->hasAnyPermission(['content_access', 'media_access', 'content_management_access']))
                                 <div class="col-sm-6 col-md-4">
                                     <div class="card card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
@@ -36,6 +40,7 @@
                                             </div>
                                             <ul class="list-unstyled flex-grow-1">
 
+                                                @canDo('content_access')
                                                 <li class="mb-2">
                                                     <a href="{{ route('dashboard.content.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
@@ -43,6 +48,9 @@
                                                         <span data-en="Add Content" data-ar="إضافة محتوى">Add Content</span>
                                                     </a>
                                                 </li>
+                                                @endcanDo
+
+                                                @canDo('media_access')
                                                 <li class="mb-2">
                                                     <a href="{{ route('dashboard.medias.index') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
@@ -50,6 +58,9 @@
                                                         <span data-en="Upload Media" data-ar="رفع وسائط">Upload Media</span>
                                                     </a>
                                                 </li>
+                                                @endcanDo
+
+                                                @canDo('content_access')
                                                 <li>
                                                     <a href="{{ route('dashboard.breakingnew.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
@@ -57,12 +68,15 @@
                                                         <span data-en="Add Breaking News" data-ar="إضافة خبر عاجل">Add Breaking News</span>
                                                     </a>
                                                 </li>
+                                                @endcanDo
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
+                                @endif
 
-                                {{-- List 2 --}}
+                                {{-- List 2: Structure (categories / trends / windows) --}}
+                                @if ($user && $user->hasAnyPermission(['categories_access', 'trends_access', 'windows_access', 'sections_access']))
                                 <div class="col-sm-6 col-md-4">
                                     <div class="card card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
@@ -75,6 +89,7 @@
                                                 </h5>
                                             </div>
                                             <ul class="list-unstyled flex-grow-1">
+                                                @canDo('categories_access')
                                                 <li class="mb-2">
                                                     <a href="{{ route('dashboard.categorie.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
@@ -82,6 +97,9 @@
                                                         <span data-en="Add Category" data-ar="إضافة تصنيف">Add Category</span>
                                                     </a>
                                                 </li>
+                                                @endcanDo
+
+                                                @canDo('trends_access')
                                                 <li class="mb-2">
                                                     <a href="{{ route('dashboard.trend.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
@@ -89,6 +107,9 @@
                                                         <span data-en="Add Trend" data-ar="إضافة اتجاه">Add Trend</span>
                                                     </a>
                                                 </li>
+                                                @endcanDo
+
+                                                @canDo('windows_access')
                                                 <li>
                                                     <a href="{{ route('dashboard.window.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
@@ -96,12 +117,15 @@
                                                         <span data-en="Add Window" data-ar="إضافة نافذة">Add Window</span>
                                                     </a>
                                                 </li>
+                                                @endcanDo
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
+                                @endif
 
-                                {{-- List 3 --}}
+                                {{-- List 3: Users / Writers / Tags --}}
+                                @if ($user && $user->hasAnyPermission(['users_access', 'writers_access', 'tags_access']))
                                 <div class="col-sm-6 col-md-4">
                                     <div class="card card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
@@ -114,6 +138,7 @@
                                                     More Actions</h5>
                                             </div>
                                             <ul class="list-unstyled flex-grow-1">
+                                                @canDo('users_access')
                                                 <li class="mb-2">
                                                     <a href="{{ route('dashboard.user.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
@@ -121,6 +146,9 @@
                                                         <span data-en="Add User" data-ar="إضافة مستخدم">Add User</span>
                                                     </a>
                                                 </li>
+                                                @endcanDo
+
+                                                @canDo('writers_access')
                                                 <li class="mb-2">
                                                     <a href="{{ route('dashboard.writer.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
@@ -128,6 +156,9 @@
                                                         <span data-en="Add Writer" data-ar="إضافة كاتب">Add Writer</span>
                                                     </a>
                                                 </li>
+                                                @endcanDo
+
+                                                @canDo('tags_access')
                                                 <li>
                                                     <a href="{{ route('dashboard.tag.create') }}"
                                                         class="d-flex align-items-center text-decoration-none text-dark hover-bg-light rounded px-2 py-1 transition">
@@ -135,10 +166,12 @@
                                                         <span data-en="Add Tag" data-ar="إضافة وسم">Add Tag</span>
                                                     </a>
                                                 </li>
+                                                @endcanDo
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
 
                             {{-- ===================== 4 Stats (block 1) ===================== --}}
