@@ -102,6 +102,13 @@
             text-decoration: underline;
         }
 
+        .art-section-card-date {
+            color: #ffffff;
+            font-size: 12px;
+            margin-top: 8px;
+            font-family: 'asswat-light';
+        }
+
         /* Critical visibility CSS to avoid flash of wrong layout on first paint */
         .web {
             display: none;
@@ -621,6 +628,7 @@
                                         <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
                                             alt="{{ $content->title }}">
                                     </a>
+                                    <p class="art-section-card-date">{{ $content->created_at->format('d M Y') }}</p>
                                     <a href="{{ route('news.show', $content->shortlink) }}"
                                         style="text-decoration: none; color: inherit;">
                                         <h2>{{ $content->title }}</h2>
