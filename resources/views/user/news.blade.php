@@ -40,7 +40,7 @@
         // Function to process Instagram embeds
         function processEmbeds() {
             console.log('Processing Instagram embeds...');
-            
+
             // Process Instagram embeds
             if (window.instgrm && window.instgrm.Embed) {
                 console.log('Found Instagram, processing...');
@@ -2545,16 +2545,16 @@
                     }
 
                     // Convert to Carbon instance if it's a string
-                if (is_string($dateToUse)) {
-                    $date = \Carbon\Carbon::parse($dateToUse);
-                } else {
-                    $date = $dateToUse;
-                }
+if (is_string($dateToUse)) {
+    $date = \Carbon\Carbon::parse($dateToUse);
+} else {
+    $date = $dateToUse;
+}
 
-                $day = $date->format('d');
-                $month = $months[$date->format('m')];
-                $year = $date->format('Y');
-                $time = $date->format('H:i');
+$day = $date->format('d');
+$month = $months[$date->format('m')];
+$year = $date->format('Y');
+$time = $date->format('H:i');
                 @endphp
 
                 @php
@@ -2572,14 +2572,13 @@
                         @php
                             $totalViews = $news->contentDailyViews->sum('views') ?? 0;
                         @endphp
-
-                        @if ($totalViews > 50)
+                        @auth
                             <div class="views-count"
                                 style="display: flex; align-items: center; gap: 5px; color: #888; font-size: 14px;">
                                 <i class="fas fa-eye"></i>
                                 <span>{{ number_format($totalViews) }}</span>
                             </div>
-                        @endif
+                        @endauth
                     </div>
 
                     {{-- Share on the LEFT --}}
@@ -2642,8 +2641,8 @@
                 @if ($news->template == 'album' && $news->media()->wherePivot('type', 'album')->count())
                     @php
                         // Use the article's main image as the first slide (cover) in the album
-                        $mainImage = $news->media()->wherePivot('type', 'main')->first();
-                        $albumImages = $news->media()->wherePivot('type', 'album')->get();
+$mainImage = $news->media()->wherePivot('type', 'main')->first();
+$albumImages = $news->media()->wherePivot('type', 'album')->get();
 
                         // Prepend main image as the first slide if it exists
                         if ($mainImage) {
@@ -3507,7 +3506,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             // Function to show modal with text definition (including image)
             function showTextModal(term, definition) {
                 modalTitle.textContent = term;
-                
+
                 // Apply quote replacement to the description
                 const descriptionWithQuotes = definition.description.replace(/"([^"]*)"/g, '«$1»');
                 modalContent.innerHTML = descriptionWithQuotes;
@@ -3757,5 +3756,3 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
     @include('components.readmore-loader')
 
 @endsection
-
-
