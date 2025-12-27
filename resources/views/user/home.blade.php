@@ -315,15 +315,19 @@
                 text-align: center;
             }
 
-            /* Fixed UI container holding badge + vertical indicators */
+            /* Fixed UI container holding badge + bottom indicators overlaying the slide */
             .section-fixed-ui {
                 position: absolute;
-                top: 90px;
-                right: 16px;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
                 z-index: 3;
                 display: flex;
-                align-items: stretch;
-                gap: 8px;
+                flex-direction: column;
+                align-items: flex-end;
+                padding: 90px 16px 24px;
+                pointer-events: none;
             }
 
             /* Icon positioned separately on the side */
@@ -341,40 +345,38 @@
                 margin-left: auto;
             }
 
-            /* When badge is inside the fixed UI, make it flow-static to allow indicators sized to its height */
+            /* When badge is inside the fixed UI, make it flow-static */
             .section-fixed-ui .featured-post-section-badge {
                 position: static;
+                margin-bottom: 10px;
+                pointer-events: auto;
             }
 
+            /* Horizontal slide indicators as dots at the bottom of each snap */
             .h-indicators {
-                position: absolute;
-                bottom: 60px;
-                left: 50%;
-                transform: translateX(-50%);
                 display: flex;
                 flex-direction: row;
-                /* horizontal array */
                 align-items: center;
                 justify-content: center;
-                gap: 8px;
-                /* spacing between dots */
+                gap: 6px;
+                margin-top: auto;
+                align-self: center;
+                pointer-events: auto;
             }
 
             .h-indicator {
-                width: 8px;
-                /* dot size */
-                height: 8px;
-                background: rgba(255, 255, 255, 0.4);
+                width: 7px;
+                height: 7px;
                 border-radius: 50%;
-                /* perfect circle */
-                cursor: pointer;
-                transition: all 0.3s ease;
+                background: rgba(255, 255, 255, 0.45);
+                transition: background 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+                opacity: 0.7;
             }
 
             .h-indicator.active {
                 background: #ffffff;
-                width: 10px;
-                height: 10px;
+                transform: scale(1.3);
+                opacity: 1;
             }
 
             /* Featured Post Content */
@@ -924,6 +926,13 @@
                 <div class="mobile-h-wrapper">
                     <div class="section-fixed-ui">
                         <div class="featured-post-section-badge">في الواجهة</div>
+                        <div class="h-indicators" role="tablist" aria-label="slides">
+                            @for ($i = 0; $i < $topcontentslist; $i++)
+                                <span class="h-indicator @if ($i === 0) active @endif"
+                                    aria-label="{{ $i + 1 }}"
+                                    aria-current="@if ($i === 0) true @else false @endif"></span>
+                            @endfor
+                        </div>
                     </div>
                     <div class="h-snap" dir="rtl">
                         @foreach ($topContents->take($topcontentslist) as $tc)
@@ -949,13 +958,6 @@
                                             <p class="featured-post-description">
                                                 {{ \Illuminate\Support\Str::limit(strip_tags($c->summary ?? ($c->description ?? '')), 130) }}
                                             </p>
-                                            <div class="h-indicators" role="tablist" aria-label="slides">
-                                                @for ($i = 0; $i < $topcontentslist; $i++)
-                                                    <span class="h-indicator @if ($i === 0) active @endif"
-                                                        aria-label="{{ $i + 1 }}"
-                                                        aria-current="@if ($i === 0) true @else false @endif"></span>
-                                                @endfor
-                                            </div>
                                         </a>
                                     </div>
                                 </div>
@@ -977,6 +979,13 @@
                                 <a href="{{ route('trend.show', $principalTrend->trend->id) }}" style="color: inherit; text-decoration: none;">
                                     {{ $principalTrend->trend->title ?? 'اتجاه' }}
                                 </a>
+                            </div>
+                            <div class="h-indicators" role="tablist" aria-label="slides">
+                                @for ($i = 0; $i < min(5, $trendsCount); $i++)
+                                    <span class="h-indicator @if ($i === 0) active @endif"
+                                        aria-label="{{ $i + 1 }}"
+                                        aria-current="@if ($i === 0) true @else false @endif"></span>
+                                @endfor
                             </div>
                         </div>
                         <div class="h-snap" dir="rtl">
@@ -1001,13 +1010,6 @@
                                             <p class="featured-post-description">
                                                 {{ \Illuminate\Support\Str::limit(strip_tags($content->summary ?? ''), 130) }}
                                             </p>
-                                            <div class="h-indicators" role="tablist" aria-label="slides">
-                                                @for ($i = 0; $i < min(5, $trendsCount); $i++)
-                                                    <span class="h-indicator @if ($i === 0) active @endif"
-                                                        aria-label="{{ $i + 1 }}"
-                                                        aria-current="@if ($i === 0) true @else false @endif"></span>
-                                                @endfor
-                                            </div>
                                         </a>
                                     </div>
                                 </div>
