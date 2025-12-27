@@ -235,36 +235,35 @@
 
     @yield('content')
 
-    {{-- Global lazy-loading + fade-in (browser loads images in natural DOM order) --}}
+    {{-- Global lazy-loading + show images only after they finish loading --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var supportsNativeLazy = 'loading' in HTMLImageElement.prototype;
 
             document.querySelectorAll('img').forEach(function(img) {
-                var forceEager = img.dataset.loading === 'eager';
-
-                // Let browser load images normally, just hint lazy/eager
-                if (supportsNativeLazy) {
-                    if (forceEager && img.getAttribute('loading') === 'lazy') {
-                        img.removeAttribute('loading');
-                    } else if (!forceEager && !img.hasAttribute('loading')) {
-                        img.setAttribute('loading', 'lazy');
-                    }
+                // Skip images explicitly marked as eager
+                if (img.dataset.loading !== 'eager' && supportsNativeLazy && !img.hasAttribute('loading')) {
+                    img.setAttribute('loading', 'lazy');
                 }
 
-                // Always start hidden, then fade in on load/error
+                // Start hidden, then reveal on load/error
                 img.classList.add('img-fade');
 
                 function reveal() {
                     img.classList.add('img-fade-in');
                 }
 
-                // Already loaded (cache, very fast connections, etc.)
+                // Already loaded (from cache, etc.)
                 if (img.complete && img.naturalWidth > 0) {
                     reveal();
                 } else {
-                    img.addEventListener('load', reveal, { once: true });
-                    img.addEventListener('error', reveal, { once: true });
+                    img.addEventListener('load', reveal, {
+                        once: true
+                    });
+                    // Also reveal on error so broken images don't stay invisible
+                    img.addEventListener('error', reveal, {
+                        once: true
+                    });
                 }
             });
         });
