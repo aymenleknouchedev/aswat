@@ -362,11 +362,6 @@
                 width: 100%;
             }
 
-            /* Hide indicators by default, show only in mobile-h-wrapper */
-            .mobile-h-wrapper .h-indicators {
-                display: flex;
-            }
-
             .h-indicator {
                 width: 8px;
                 /* dot size */
