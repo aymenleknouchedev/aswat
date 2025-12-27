@@ -354,12 +354,11 @@
                 justify-content: center;
                 gap: 8px;
                 /* spacing between dots */
-                position: absolute;
+                position: fixed;
                 bottom: 20px;
                 left: 50%;
                 transform: translateX(-50%);
-                z-index: 3;
-                width: 100%;
+                z-index: 1000;
             }
 
             .h-indicator {
