@@ -132,6 +132,22 @@
     </style>
 
     <style>
+        @php
+            $months = [
+                '01' => 'جانفي',
+                '02' => 'فيفري',
+                '03' => 'مارس',
+                '04' => 'أفريل',
+                '05' => 'ماي',
+                '06' => 'جوان',
+                '07' => 'جويلية',
+                '08' => 'أوت',
+                '09' => 'سبتمبر',
+                '10' => 'أكتوبر',
+                '11' => 'نوفمبر',
+                '12' => 'ديسمبر',
+            ];
+        @endphp
         @media (max-width: 991px) {
             body {
                 margin: 0;
@@ -623,12 +639,19 @@
                         </a>
                         <div class="art-section-grid">
                             @foreach ($trends->take(4) as $content)
+                                @php
+                                    $date = $content->created_at;
+                                    $day = $date->format('d');
+                                    $month = $months[$date->format('m')];
+                                    $year = $date->format('Y');
+                                    $time = $date->format('H:i');
+                                @endphp
                                 <div class="art-section-card">
                                     <a href="{{ route('news.show', $content->shortlink) }}">
                                         <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
                                             alt="{{ $content->title }}">
                                     </a>
-                                    <p class="art-section-card-date">{{ $content->created_at->format('d M Y') }}</p>
+                                    <p class="art-section-card-date">{{ $day }} {{ $month }} {{ $year }} | {{ $time }}</p>
                                     <a href="{{ route('news.show', $content->shortlink) }}"
                                         style="text-decoration: none; color: inherit;">
                                         <h2>{{ $content->title }}</h2>
