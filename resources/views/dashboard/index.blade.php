@@ -296,27 +296,44 @@
                             @if(!empty($activeUsers) && count($activeUsers))
                             <div class="card card-bordered mb-5">
                                 <div class="card-inner">
-                                    <h5 class="card-title mb-3" data-en="Who is active now" data-ar="المستخدمون النشطون حالياً">
-                                        المستخدمون النشطون حالياً
-                                    </h5>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="card-title mb-0" data-en="Who is active now" data-ar="المستخدمون النشطون حالياً">
+                                            المستخدمون النشطون حالياً
+                                        </h5>
+                                        <span class="badge bg-success-soft text-success fw-medium px-3 py-1">
+                                            {{ count($activeUsers) }}
+                                            <span class="d-inline-block ms-1" data-en="online" data-ar="متصلون">متصلون</span>
+                                        </span>
+                                    </div>
                                     <div class="table-responsive">
-                                        <table class="table table-hover align-middle mb-0">
-                                            <thead class="thead-light">
+                                        <table class="table table-hover table-striped align-middle mb-0">
+                                            <thead class="thead-light small text-muted">
                                                 <tr>
                                                     <th scope="col" data-en="Name" data-ar="الاسم">الاسم</th>
                                                     <th scope="col" data-en="Username" data-ar="اسم المستخدم">اسم المستخدم</th>
                                                     <th scope="col" data-en="Email" data-ar="البريد الإلكتروني">البريد الإلكتروني</th>
-                                                    <th scope="col" data-en="Last Activity" data-ar="آخر نشاط">آخر نشاط</th>
+                                                    <th scope="col" class="text-end" data-en="Last Activity" data-ar="آخر نشاط">آخر نشاط</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach($activeUsers as $au)
                                                 <tr>
-                                                    <td>{{ $au->name }} {{ $au->surname }}</td>
-                                                    <td>{{ $au->username }}</td>
-                                                    <td>{{ $au->email }}</td>
                                                     <td>
-                                                        {{ \Illuminate\Support\Carbon::createFromTimestamp($au->last_activity)->diffForHumans() }}
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <span class="badge rounded-pill bg-success-soft text-success p-0" style="width:10px;height:10px;"></span>
+                                                            <span class="fw-semibold">{{ $au->name }} {{ $au->surname }}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted small">{{ $au->username }}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted small">{{ $au->email }}</span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <span class="badge bg-light text-dark border">
+                                                            {{ \Illuminate\Support\Carbon::createFromTimestamp($au->last_activity)->diffForHumans() }}
+                                                        </span>
                                                     </td>
                                                 </tr>
                                                 @endforeach
