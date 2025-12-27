@@ -325,7 +325,7 @@
                 z-index: 3;
                 display: flex;
                 flex-direction: column;
-                align-items: flex-end;
+                align-items: stretch;
                 padding: 90px 16px 24px;
                 pointer-events: none;
             }
@@ -350,6 +350,7 @@
                 position: static;
                 margin-bottom: 10px;
                 pointer-events: auto;
+                align-self: flex-end;
             }
 
             /* Horizontal slide indicators as dots at the bottom of each snap */
