@@ -297,7 +297,7 @@
                 z-index: 1;
             }
 
-            /* Top section badge: white text with right vertical bar */
+            /* Top section badge: white text with overlapping grey circle */
             .featured-post-section-badge {
                 position: absolute;
                 top: 90px;
@@ -306,14 +306,26 @@
                 z-index: 2;
                 background: transparent;
                 color: #ffffff;
-                padding: 6px 14px 6px 6px;
+                padding: 6px 18px 6px 6px;
                 font-size: 23px;
                 font-family: 'asswat-bold';
                 line-height: 1;
                 border-radius: 0;
                 display: inline-block;
                 text-align: center;
-                border-right: 4px solid #ffffff;
+            }
+
+            .featured-post-section-badge::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                right: 0;
+                transform: translate(50%, -50%);
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                background: rgba(120, 120, 120, 0.7);
+                z-index: -1;
             }
 
             /* Fixed UI container holding section badge */
