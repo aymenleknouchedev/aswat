@@ -98,7 +98,6 @@
 
         .art-section-card h2:hover {
             margin-top: 5px;
-            font-size: 15px;
             cursor: pointer;
             text-decoration: underline;
         }
