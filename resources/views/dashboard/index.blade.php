@@ -26,7 +26,7 @@
                             @endphp
                             <div class="row g-4 mb-5">
                                 {{-- List 1: Content / Media / Breaking --}}
-                                @if ($user && $user->hasAnyPermission(['content_access', 'media_access', 'content_management_access']))
+                                @if ($user && ($user->hasPermission('content_access') || $user->hasPermission('media_access') || $user->hasPermission('content_management_access')))
                                 <div class="col-sm-6 col-md-4">
                                     <div class="card card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
@@ -76,7 +76,7 @@
                                 @endif
 
                                 {{-- List 2: Structure (categories / trends / windows) --}}
-                                @if ($user && $user->hasAnyPermission(['categories_access', 'trends_access', 'windows_access', 'sections_access']))
+                                @if ($user && ($user->hasPermission('categories_access') || $user->hasPermission('trends_access') || $user->hasPermission('windows_access') || $user->hasPermission('sections_access')))
                                 <div class="col-sm-6 col-md-4">
                                     <div class="card card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
@@ -125,7 +125,7 @@
                                 @endif
 
                                 {{-- List 3: Users / Writers / Tags --}}
-                                @if ($user && $user->hasAnyPermission(['users_access', 'writers_access', 'tags_access']))
+                                @if ($user && ($user->hasPermission('users_access') || $user->hasPermission('writers_access') || $user->hasPermission('tags_access')))
                                 <div class="col-sm-6 col-md-4">
                                     <div class="card card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
