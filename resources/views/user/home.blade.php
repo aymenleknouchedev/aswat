@@ -91,7 +91,7 @@
 
         .art-section-card h2 {
             margin-top: 5px;
-            font-size: 15px;
+            font-size: 16px;
             cursor: pointer;
             font-family: 'asswat-medium';
         }
