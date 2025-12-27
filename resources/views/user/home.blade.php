@@ -103,7 +103,7 @@
         }
 
         .art-section-card-date {
-            color: #ffffff;
+            color: #dadada;
             font-size: 12px;
             margin-top: 8px;
             font-family: 'asswat-regular';
