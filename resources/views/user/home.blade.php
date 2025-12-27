@@ -348,7 +348,7 @@
             .h-indicators {
                 position: absolute;
                 left: 50%;
-                bottom: 40px;
+                bottom: 96px;
                 transform: translateX(-50%);
                 z-index: 3;
                 display: flex;
