@@ -204,12 +204,7 @@
     <!-- ================= DISABLE IMAGE RIGHT-CLICK & DRAG ================= -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            document.addEventListener('contextmenu', function(e) {
-                const tag = e.target.tagName;
-                if (tag !== 'INPUT' && tag !== 'TEXTAREA' && !e.target.isContentEditable) {
-                    e.preventDefault();
-                }
-            });
+            
 
             document.addEventListener('dragstart', function(e) {
                 if (e.target.tagName === 'IMG') {
@@ -217,14 +212,7 @@
                 }
             });
 
-            document.addEventListener('keydown', function(e) {
-                if (e.ctrlKey) {
-                    const blocked = ['c', 'x', 'a', 's', 'u', 'p'];
-                    if (blocked.includes(e.key.toLowerCase())) {
-                        e.preventDefault();
-                    }
-                }
-            });
+            
         });
     </script>
 
