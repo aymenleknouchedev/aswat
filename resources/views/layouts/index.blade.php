@@ -235,77 +235,38 @@
 
     @yield('content')
 
-    {{-- Global lazy-loading + fade-in, loading images sequentially by DOM order --}}
+    {{-- Global lazy-loading + fade-in (browser loads images in natural DOM order) --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var supportsNativeLazy = 'loading' in HTMLImageElement.prototype;
-            var lazyQueue = [];
 
-            // Prepare images: eager first, others queued for sequential loading
             document.querySelectorAll('img').forEach(function(img) {
                 var forceEager = img.dataset.loading === 'eager';
 
-                // Always start hidden, then fade in on load
-                img.classList.add('img-fade');
-
-                if (forceEager) {
-                    // Eager images keep their src and load immediately
-                    if (supportsNativeLazy && img.getAttribute('loading') === 'lazy') {
+                // Let browser load images normally, just hint lazy/eager
+                if (supportsNativeLazy) {
+                    if (forceEager && img.getAttribute('loading') === 'lazy') {
                         img.removeAttribute('loading');
-                    }
-
-                    function revealEager() {
-                        img.classList.add('img-fade-in');
-                    }
-
-                    if (img.complete && img.naturalWidth > 0) {
-                        revealEager();
-                    } else {
-                        img.addEventListener('load', revealEager, { once: true });
-                        img.addEventListener('error', revealEager, { once: true });
-                    }
-                } else {
-                    var src = img.getAttribute('src');
-                    if (!src) return;
-
-                    // Move src to data-src so we control when it starts loading
-                    img.dataset.src = src;
-                    img.removeAttribute('src');
-
-                    if (supportsNativeLazy) {
+                    } else if (!forceEager && !img.hasAttribute('loading')) {
                         img.setAttribute('loading', 'lazy');
                     }
-
-                    lazyQueue.push(img);
                 }
-            });
 
-            // Load queued images one-by-one in DOM order
-            function loadNext(index) {
-                if (index >= lazyQueue.length) return;
-                var img = lazyQueue[index];
-                var src = img.dataset.src;
-                if (!src) {
-                    loadNext(index + 1);
-                    return;
-                }
+                // Always start hidden, then fade in on load/error
+                img.classList.add('img-fade');
 
                 function reveal() {
                     img.classList.add('img-fade-in');
-                    loadNext(index + 1);
                 }
 
-                img.addEventListener('load', reveal, { once: true });
-                img.addEventListener('error', reveal, { once: true });
-                img.setAttribute('src', src);
-
-                // If it was already loaded from cache
+                // Already loaded (cache, very fast connections, etc.)
                 if (img.complete && img.naturalWidth > 0) {
                     reveal();
+                } else {
+                    img.addEventListener('load', reveal, { once: true });
+                    img.addEventListener('error', reveal, { once: true });
                 }
-            }
-
-            loadNext(0);
+            });
         });
     </script>
 
