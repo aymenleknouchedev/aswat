@@ -315,19 +315,15 @@
                 text-align: center;
             }
 
-            /* Fixed UI container holding badge + bottom indicators overlaying the slide */
+            /* Fixed UI container holding badge + vertical indicators */
             .section-fixed-ui {
                 position: absolute;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                left: 0;
+                top: 90px;
+                right: 16px;
                 z-index: 3;
                 display: flex;
-                flex-direction: column;
                 align-items: stretch;
-                padding: 90px 16px 24px;
-                pointer-events: none;
+                gap: 8px;
             }
 
             /* Icon positioned separately on the side */
@@ -345,40 +341,33 @@
                 margin-left: auto;
             }
 
-            /* When badge is inside the fixed UI, make it flow-static */
+            /* When badge is inside the fixed UI, make it flow-static to allow indicators sized to its height */
             .section-fixed-ui .featured-post-section-badge {
                 position: static;
-                margin-bottom: 10px;
-                pointer-events: auto;
-                align-self: flex-start;
             }
 
-            /* Horizontal slide indicators as dots at the bottom of each snap */
             .h-indicators {
                 display: flex;
                 flex-direction: row;
-                align-items: center;
-                justify-content: center;
-                gap: 6px;
-                margin-top: auto;
-                align-self: center;
-                pointer-events: auto;
-                margin-bottom: 20px;
+                /* horizontal array */
+                align-items: stretch;
+                /* match badge height */
+                justify-content: flex-start;
+                gap: 5px;
+                /* spacing between vertical lines */
             }
 
             .h-indicator {
-                width: 9px;
-                height: 9px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.45);
-                transition: background 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
-                opacity: 0.7;
+                width: 4px;
+                /* thin vertical line */
+                height: 100%;
+                /* same height as badge */
+                background: rgba(255, 255, 255, 0.262);
+                border-radius: 2px;
             }
 
             .h-indicator.active {
                 background: #ffffff;
-                transform: scale(1.3);
-                opacity: 1;
             }
 
             /* Featured Post Content */
