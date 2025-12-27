@@ -15,13 +15,11 @@
         position: relative;
         background-color: #f5f5f5;
         padding: 20px;
-        border-radius: 8px;
     }
 
     .world-feature img {
         width: 100%;
         aspect-ratio: 16 / 9;
-        border-radius: 4px;
     }
 
     .world-feature h2 {
