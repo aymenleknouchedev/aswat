@@ -279,7 +279,7 @@
                             {{-- ===================== Active Users (admin / developer only) ===================== --}}
                             @php $currentUser = auth()->user(); @endphp
                             @if ($currentUser && ($currentUser->hasRole('admin') || $currentUser->hasRole('developer')))
-                            <div class="row g-4 mb-5 justify-content-center">
+                            <div class="row g-4 mb-4 justify-content-center">
                                 <div class="col-sm-6 col-xl-3">
                                     <div class="card card-bordered text-center h-100">
                                         <div class="card-inner">
@@ -292,6 +292,40 @@
                                     </div>
                                 </div>
                             </div>
+
+                            @if(!empty($activeUsers) && count($activeUsers))
+                            <div class="card card-bordered mb-5">
+                                <div class="card-inner">
+                                    <h5 class="card-title mb-3" data-en="Who is active now" data-ar="المستخدمون النشطون حالياً">
+                                        المستخدمون النشطون حالياً
+                                    </h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th scope="col" data-en="Name" data-ar="الاسم">الاسم</th>
+                                                    <th scope="col" data-en="Username" data-ar="اسم المستخدم">اسم المستخدم</th>
+                                                    <th scope="col" data-en="Email" data-ar="البريد الإلكتروني">البريد الإلكتروني</th>
+                                                    <th scope="col" data-en="Last Activity" data-ar="آخر نشاط">آخر نشاط</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($activeUsers as $au)
+                                                <tr>
+                                                    <td>{{ $au->name }} {{ $au->surname }}</td>
+                                                    <td>{{ $au->username }}</td>
+                                                    <td>{{ $au->email }}</td>
+                                                    <td>
+                                                        {{ \Illuminate\Support\Carbon::createFromTimestamp($au->last_activity)->diffForHumans() }}
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                             @endif
                         </div> {{-- .card-inner --}}
                     </div> {{-- .container --}}

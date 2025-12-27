@@ -61,6 +61,28 @@ class DashboardController extends Controller
                     ->count('user_id');
             });
 
+            // قائمة تفصيلية بالمستخدمين النشطين (للمسؤول والمطور فقط)
+            $activeUsers = Cache::remember('active_users_list', $last_10_cache_ttl, function () {
+                $timeoutMinutes = config('session.lifetime', 120);
+                $threshold = Carbon::now()->subMinutes($timeoutMinutes)->timestamp;
+
+                return DB::table('sessions')
+                    ->join('users', 'sessions.user_id', '=', 'users.id')
+                    ->whereNotNull('sessions.user_id')
+                    ->where('sessions.last_activity', '>=', $threshold)
+                    ->select(
+                        'users.id',
+                        'users.name',
+                        'users.surname',
+                        'users.username',
+                        'users.email',
+                        DB::raw('MAX(sessions.last_activity) as last_activity')
+                    )
+                    ->groupBy('users.id', 'users.name', 'users.surname', 'users.username', 'users.email')
+                    ->orderByDesc('last_activity')
+                    ->get();
+            });
+
             $lastTenContents = Cache::remember('last_ten_contents', $last_10_cache_ttl, function () {
                 return Content::latest()->take(10)->get();
             });
@@ -88,6 +110,7 @@ class DashboardController extends Controller
                 'waitingValidationCount' => $waitingValidationCount,
                 'writersCount'           => $writersCount,
                 'activeUsersCount'       => $activeUsersCount,
+                'activeUsers'            => $activeUsers,
                 'lastTenContents'        => $lastTenContents,
                 'viewsLastDay'          => $viewsLastDay,
                 'viewsLast3Days'        => $viewsLast3Days,
