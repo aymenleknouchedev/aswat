@@ -348,7 +348,7 @@
             /* When badge is inside the fixed UI, make it flow-static */
             .section-fixed-ui .featured-post-section-badge {
                 position: static;
-                margin-bottom: 40px;
+                margin-bottom: 10px;
                 pointer-events: auto;
                 align-self: flex-start;
             }
@@ -367,7 +367,7 @@
 
             .h-indicator {
                 width: 9px;
-                height: 9px;
+                height: 30px;
                 border-radius: 50%;
                 background: rgba(255, 255, 255, 0.45);
                 transition: background 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
