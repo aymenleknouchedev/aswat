@@ -25,7 +25,7 @@
         font-size: 24px;
         margin: 0px 0px 8px 0;
         font-family: asswat-bold;
-        padding: 20px 20px 0 20px;
+        padding: 0px 20px 0 20px;
     }
 
     .world-feature h3 {
