@@ -1,21 +1,5 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-    
-    {{-- Global lazy-loading for images --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Automatically make all images lazy-loaded, unless explicitly opted out
-            if ('loading' in HTMLImageElement.prototype) {
-                document.querySelectorAll('img').forEach(function(img) {
-                    // Allow manual override with data-loading="eager"
-                    if (img.dataset.loading === 'eager') return;
-                    if (!img.hasAttribute('loading')) {
-                        img.setAttribute('loading', 'lazy');
-                    }
-                });
-            }
-        });
-    </script>
 
 <head>
     <meta charset="UTF-8">
@@ -116,6 +100,16 @@
 
         img {
             -webkit-user-drag: none;
+        }
+
+        /* Generic fade-in for images after they finish loading */
+        img.img-fade {
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        img.img-fade.img-fade-in {
+            opacity: 1;
         }
 
         .fb-embed-block .fb-embed-title,
@@ -241,6 +235,39 @@
 
     @yield('content')
 
+    {{-- Global lazy-loading + show images only after they finish loading --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var supportsNativeLazy = 'loading' in HTMLImageElement.prototype;
+
+            document.querySelectorAll('img').forEach(function(img) {
+                // Skip images explicitly marked as eager
+                if (img.dataset.loading !== 'eager' && supportsNativeLazy && !img.hasAttribute('loading')) {
+                    img.setAttribute('loading', 'lazy');
+                }
+
+                // Start hidden, then reveal on load/error
+                img.classList.add('img-fade');
+
+                function reveal() {
+                    img.classList.add('img-fade-in');
+                }
+
+                // Already loaded (from cache, etc.)
+                if (img.complete && img.naturalWidth > 0) {
+                    reveal();
+                } else {
+                    img.addEventListener('load', reveal, {
+                        once: true
+                    });
+                    // Also reveal on error so broken images don't stay invisible
+                    img.addEventListener('error', reveal, {
+                        once: true
+                    });
+                }
+            });
+        });
+    </script>
 
     <script src="{{ asset('user/js/fixed-nav.js') }}"></script>
     <script src="{{ asset('user/js/photos-scroll.js') }}"></script>
