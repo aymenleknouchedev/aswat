@@ -297,22 +297,30 @@
                 z-index: 1;
             }
 
-            /* Top section badge (white background, black text, no radius) */
+            /* Top section badge - modern pill / glass style */
             .featured-post-section-badge {
-                position: absolute;
-                top: 90px;
-                right: 16px;
-                /* RTL alignment */
+                position: relative;
                 z-index: 2;
-                background: #fff;
-                color: #000;
-                padding: 6px 12px;
-                font-size: 23px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 8px 20px 10px;
+                min-width: 120px;
+                max-width: 80vw;
+                border-radius: 999px;
+                background: radial-gradient(circle at 0% 0%, rgba(255, 193, 7, 0.22), transparent 55%),
+                    rgba(0, 0, 0, 0.65);
+                color: #ffffff;
+                font-size: 18px;
                 font-weight: 800;
-                line-height: 1;
-                border-radius: 0;
-                display: inline-block;
+                line-height: 1.3;
                 text-align: center;
+                letter-spacing: 0.3px;
+                border: 1px solid rgba(255, 255, 255, 0.22);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+                overflow: hidden;
             }
 
             /* Fixed UI container holding section badge */
@@ -322,7 +330,7 @@
                 right: 16px;
                 z-index: 3;
                 display: flex;
-                align-items: stretch;
+                align-items: center;
             }
 
             /* Icon positioned separately on the side */
@@ -342,6 +350,34 @@
 
             .section-fixed-ui .featured-post-section-badge {
                 position: static;
+            }
+
+            /* Decorative accent inside the badge */
+            .featured-post-section-badge::before {
+                content: "";
+                position: absolute;
+                inset-inline-start: 18px;
+                inset-inline-end: 18px;
+                inset-block-end: 4px;
+                height: 2px;
+                border-radius: 999px;
+                background: linear-gradient(90deg, #ffb300, #ff5722, #ff1744);
+                opacity: 0.9;
+            }
+
+            /* Soft breathing glow to draw subtle attention */
+            .featured-post-section-badge {
+                animation: featuredBadgeGlow 5.5s ease-in-out infinite;
+            }
+
+            @keyframes featuredBadgeGlow {
+                0%,
+                100% {
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+                }
+                50% {
+                    box-shadow: 0 0 22px rgba(255, 193, 7, 0.65);
+                }
             }
 
             /* Refined bottom-center indicators (mobile carousels) */
