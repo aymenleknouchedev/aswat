@@ -355,7 +355,7 @@
                 gap: 8px;
                 /* spacing between dots */
                 position: absolute;
-                top: 140px;
+                top: 280px;
                 left: 50%;
                 transform: translateX(-50%);
                 z-index: 3;
