@@ -275,6 +275,24 @@
                                     </div>
                                 </div>
                             </div>
+
+                            {{-- ===================== Active Users (admin / developer only) ===================== --}}
+                            @php $currentUser = auth()->user(); @endphp
+                            @if ($currentUser && ($currentUser->hasRole('admin') || $currentUser->hasRole('developer')))
+                            <div class="row g-4 mb-5 justify-content-center">
+                                <div class="col-sm-6 col-xl-3">
+                                    <div class="card card-bordered text-center h-100">
+                                        <div class="card-inner">
+                                            <em class="icon ni ni-users fs-2 text-primary mb-2"></em>
+                                            <h2 class="mb-0">{{ $activeUsersCount ?? 0 }}</h2>
+                                            <p class="text-soft" data-en="Active Users (Online)" data-ar="المستخدمون النشطون الآن">
+                                                المستخدمون النشطون الآن
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                         </div> {{-- .card-inner --}}
                     </div> {{-- .container --}}
                 </div> {{-- .nk-content --}}

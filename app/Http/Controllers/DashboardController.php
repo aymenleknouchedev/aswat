@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Content;
 use App\Models\Writer;
@@ -48,6 +49,18 @@ class DashboardController extends Controller
                 return Writer::count();
             });
 
+            // عدد المستخدمين النشطين حالياً (وفقاً لجلسات Laravel)
+            $activeUsersCount = Cache::remember('active_users_count', $last_10_cache_ttl, function () {
+                $timeoutMinutes = config('session.lifetime', 120);
+                $threshold = Carbon::now()->subMinutes($timeoutMinutes)->timestamp;
+
+                return DB::table('sessions')
+                    ->whereNotNull('user_id')
+                    ->where('last_activity', '>=', $threshold)
+                    ->distinct('user_id')
+                    ->count('user_id');
+            });
+
             $lastTenContents = Cache::remember('last_ten_contents', $last_10_cache_ttl, function () {
                 return Content::latest()->take(10)->get();
             });
@@ -74,6 +87,7 @@ class DashboardController extends Controller
                 'publishedTodayCount'    => $publishedTodayCount,
                 'waitingValidationCount' => $waitingValidationCount,
                 'writersCount'           => $writersCount,
+                'activeUsersCount'       => $activeUsersCount,
                 'lastTenContents'        => $lastTenContents,
                 'viewsLastDay'          => $viewsLastDay,
                 'viewsLast3Days'        => $viewsLast3Days,
