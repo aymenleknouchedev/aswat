@@ -399,28 +399,19 @@
             }
 
             .featured-post-section-badge {
-                position: relative;
+                position: absolute;
+                top: 90px;
+                right: 16px;
                 z-index: 2;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                padding: 8px 20px 10px;
-                min-width: 120px;
-                max-width: 80vw;
-                border-radius: 999px;
-                background: radial-gradient(circle at 0% 0%, rgba(255, 193, 7, 0.22), transparent 55%),
-                    rgba(0, 0, 0, 0.65);
-                color: #ffffff;
-                font-size: 18px;
+                background: #fff;
+                color: #000;
+                padding: 6px 12px;
+                font-size: 23px;
                 font-weight: 800;
-                line-height: 1.3;
+                line-height: 1;
+                border-radius: 0;
+                display: inline-block;
                 text-align: center;
-                letter-spacing: 0.3px;
-                border: 1px solid rgba(255, 255, 255, 0.22);
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
-                backdrop-filter: blur(14px);
-                -webkit-backdrop-filter: blur(14px);
-                overflow: hidden;
             }
 
             .section-fixed-ui {
@@ -429,28 +420,12 @@
                 right: 16px;
                 z-index: 3;
                 display: flex;
-                align-items: center;
+                align-items: stretch;
                 gap: 8px;
             }
 
             .section-fixed-ui .featured-post-section-badge {
                 position: static;
-            }
-
-            .featured-post-section-badge::before {
-                content: "";
-                position: absolute;
-                inset-inline-start: 18px;
-                inset-inline-end: 18px;
-                inset-block-end: 4px;
-                height: 2px;
-                border-radius: 999px;
-                background: linear-gradient(90deg, #ffb300, #ff5722, #ff1744);
-                opacity: 0.9;
-            }
-
-            .featured-post-section-badge {
-                animation: featuredBadgeGlow 5.5s ease-in-out infinite;
             }
 
             .h-indicators {
