@@ -1229,16 +1229,12 @@
                         passive: true
                     });
                 });
-                // Update indicators when user scrolls manually (debounced)
-                let scrollT;
+                // Update indicators when user scrolls manually (instant)
                 track.addEventListener('scroll', () => {
-                    clearTimeout(scrollT);
-                    scrollT = setTimeout(() => {
-                        const st = states.get(w);
-                        if (!st) return;
-                        syncIndexToNearest(st);
-                        updateIndicators(st);
-                    }, 120);
+                    const st = states.get(w);
+                    if (!st) return;
+                    syncIndexToNearest(st);
+                    updateIndicators(st);
                 }, {
                     passive: true
                 });
