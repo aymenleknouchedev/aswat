@@ -23,10 +23,16 @@
                             {{-- ===================== 3 Lists ===================== --}}
                             @php
                                 $user = auth()->user();
+                                $canQuickList1 = $user && ($user->hasPermission('content_access') || $user->hasPermission('media_access') || $user->hasPermission('content_management_access'));
+                                $canQuickList2 = $user && ($user->hasPermission('categories_access') || $user->hasPermission('trends_access') || $user->hasPermission('windows_access') || $user->hasPermission('sections_access'));
+                                $canQuickList3 = $user && ($user->hasPermission('users_access') || $user->hasPermission('writers_access') || $user->hasPermission('tags_access'));
+                                $hasAnyQuickList = $canQuickList1 || $canQuickList2 || $canQuickList3;
                             @endphp
-                            <div class="row g-4 mb-5">
+
+                            @if ($hasAnyQuickList)
+                            <div class="row g-4 mb-5 justify-content-center">
                                 {{-- List 1: Content / Media / Breaking --}}
-                                @if ($user && ($user->hasPermission('content_access') || $user->hasPermission('media_access') || $user->hasPermission('content_management_access')))
+                                @if ($canQuickList1)
                                 <div class="col-sm-6 col-md-4">
                                     <div class="card card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
@@ -76,7 +82,7 @@
                                 @endif
 
                                 {{-- List 2: Structure (categories / trends / windows) --}}
-                                @if ($user && ($user->hasPermission('categories_access') || $user->hasPermission('trends_access') || $user->hasPermission('windows_access') || $user->hasPermission('sections_access')))
+                                @if ($canQuickList2)
                                 <div class="col-sm-6 col-md-4">
                                     <div class="card card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
@@ -125,7 +131,7 @@
                                 @endif
 
                                 {{-- List 3: Users / Writers / Tags --}}
-                                @if ($user && ($user->hasPermission('users_access') || $user->hasPermission('writers_access') || $user->hasPermission('tags_access')))
+                                @if ($canQuickList3)
                                 <div class="col-sm-6 col-md-4">
                                     <div class="card card-bordered h-100">
                                         <div class="card-body p-4 d-flex flex-column">
@@ -173,6 +179,14 @@
                                 </div>
                                 @endif
                             </div>
+                            @else
+                            <div class="alert alert-info mb-5 text-center" role="alert">
+                                <span data-en="You don't have quick actions available with your current permissions."
+                                      data-ar="لا توجد إجراءات سريعة متاحة ضمن صلاحياتك الحالية.">
+                                    لا توجد إجراءات سريعة متاحة ضمن صلاحياتك الحالية.
+                                </span>
+                            </div>
+                            @endif
 
                             {{-- ===================== 4 Stats (block 1) ===================== --}}
                             <div class="row g-4 mb-5">
