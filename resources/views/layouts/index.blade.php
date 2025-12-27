@@ -138,7 +138,7 @@
         });
     </script>
 
-    <!-- ================= QUOTES REPLACER ================= -->
+    {{-- <!-- ================= QUOTES REPLACER ================= -->
     <script>
         function replaceQuotes(str) {
             return str.replace(/"([^"]*)"/g, '«$1»');
@@ -187,7 +187,7 @@
                 });
             });
         }
-    </script>
+    </script> --}}
 
     <!-- ================= DISABLE IMAGE RIGHT-CLICK & DRAG ================= -->
     <script>
