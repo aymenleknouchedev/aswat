@@ -308,8 +308,7 @@
                 color: #ffffff;
                 padding: 6px 14px 6px 6px;
                 font-size: 23px;
-                                font-family: 'asswat-bold';
-
+                font-family: 'asswat-bold';
                 line-height: 1;
                 border-radius: 0;
                 display: inline-block;
