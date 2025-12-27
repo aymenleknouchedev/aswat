@@ -235,23 +235,15 @@
 
     @yield('content')
 
-    {{-- Global image behavior: lazy-load only far images + fade-in after load --}}
+    {{-- Global lazy-loading + show images only after they finish loading --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var supportsNativeLazy = 'loading' in HTMLImageElement.prototype;
-            var viewportH = window.innerHeight || document.documentElement.clientHeight || 0;
 
             document.querySelectorAll('img').forEach(function(img) {
-                // Decide whether this image should be lazy or eager
-                var isExplicitEager = img.dataset.loading === 'eager';
-                var rect = img.getBoundingClientRect();
-                var isNearViewport = rect.top < viewportH * 2; // within ~2 screens from initial view
-
-                if (!isExplicitEager && supportsNativeLazy && !img.hasAttribute('loading')) {
-                    // Only far-below images are lazy; near-viewport ones stay eager for smoother scroll
-                    if (!isNearViewport) {
-                        img.setAttribute('loading', 'lazy');
-                    }
+                // Skip images explicitly marked as eager
+                if (img.dataset.loading !== 'eager' && supportsNativeLazy && !img.hasAttribute('loading')) {
+                    img.setAttribute('loading', 'lazy');
                 }
 
                 // Start hidden, then reveal on load/error
