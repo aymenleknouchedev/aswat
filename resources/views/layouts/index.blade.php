@@ -239,10 +239,13 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var supportsNativeLazy = 'loading' in HTMLImageElement.prototype;
+            var ABOVE_THE_FOLD_COUNT = 10; // first images load eagerly for speed
 
-            document.querySelectorAll('img').forEach(function(img) {
+            document.querySelectorAll('img').forEach(function(img, index) {
                 // Skip images explicitly marked as eager
-                if (img.dataset.loading !== 'eager' && supportsNativeLazy && !img.hasAttribute('loading')) {
+                var forceEager = img.dataset.loading === 'eager' || index < ABOVE_THE_FOLD_COUNT;
+
+                if (!forceEager && supportsNativeLazy && !img.hasAttribute('loading')) {
                     img.setAttribute('loading', 'lazy');
                 }
 
