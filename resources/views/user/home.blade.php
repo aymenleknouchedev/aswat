@@ -106,7 +106,7 @@
             color: #ffffff;
             font-size: 12px;
             margin-top: 8px;
-            font-family: 'asswat-light';
+            font-family: 'asswat-regular';
         }
 
         /* Critical visibility CSS to avoid flash of wrong layout on first paint */
