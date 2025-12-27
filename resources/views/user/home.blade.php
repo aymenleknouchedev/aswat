@@ -297,22 +297,23 @@
                 z-index: 1;
             }
 
-            /* Top section badge (white background, black text, no radius) */
+            /* Top section badge: white text with right vertical bar */
             .featured-post-section-badge {
                 position: absolute;
                 top: 90px;
                 right: 16px;
                 /* RTL alignment */
                 z-index: 2;
-                background: #fff;
-                color: #000;
-                padding: 6px 12px;
+                background: transparent;
+                color: #ffffff;
+                padding: 6px 14px 6px 6px;
                 font-size: 23px;
                 font-weight: 800;
                 line-height: 1;
                 border-radius: 0;
                 display: inline-block;
                 text-align: center;
+                border-right: 4px solid #ffffff;
             }
 
             /* Fixed UI container holding section badge */
