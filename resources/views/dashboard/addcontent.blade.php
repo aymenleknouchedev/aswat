@@ -6,7 +6,7 @@
 @section('content')
 
     <style>
-        /* ===== VALIDATION STYLES ===== */
+        /*===== VALIDATION STYLES =====*/
         .hidden-input:invalid~.selected-item {
             border-color: var(--bs-form-invalid-color);
         }
