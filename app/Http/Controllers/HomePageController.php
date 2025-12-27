@@ -700,7 +700,7 @@ class HomePageController extends Controller
         $this->contentService->recordView($news);
 
         if ($news->contentLists()->exists()) {
-            return view('user.list', compact('news') );
+            return view('user.list', compact('news', 'relatedNews') );
         }
 
         return view('user.news', compact('news', 'lastNews', 'lastWeekNews', 'relatedNews'));

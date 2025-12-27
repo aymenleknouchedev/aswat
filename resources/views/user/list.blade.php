@@ -2137,6 +2137,36 @@
         </div>
     </section>
 
+    {{-- Related News Section --}}
+    @if (isset($relatedNews) && $relatedNews->count())
+        <section class="economy-feature-grid container">
+            <p class="section-title">ذات صلة</p>
+            <div style="height: 5px"></div>
+            @include('user.components.ligne')
+            <div style="height: 20px"></div>
+
+            <div class="economy-grid-container-news">
+                @foreach ($relatedNews as $item)
+                    <div class="economy-card-news">
+                        <a href="{{ route('news.show', $item->shortlink) }}">
+                            <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                alt="{{ $item->title ?? '' }}" loading="lazy">
+                        </a>
+
+                        <h3>
+                            <x-category-links :content="$item" />
+                        </h3>
+
+                        <a href="{{ route('news.show', $item->shortlink) }}"
+                            style="text-decoration: none; color: inherit;">
+                            <h2>{{ $item->title ?? '' }}</h2>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+    @endif
+
     <!-- Web Footer (desktop/tablet) -->
     <div class="web-footer">
         @include('user.components.footer')
