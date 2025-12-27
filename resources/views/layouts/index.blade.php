@@ -235,40 +235,77 @@
 
     @yield('content')
 
-    {{-- Global lazy-loading + show images only after they finish loading --}}
+    {{-- Global lazy-loading + fade-in, loading images sequentially by DOM order --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var supportsNativeLazy = 'loading' in HTMLImageElement.prototype;
-            var ABOVE_THE_FOLD_COUNT = 10; // first images load eagerly for speed
+            var lazyQueue = [];
 
-            document.querySelectorAll('img').forEach(function(img, index) {
-                // Skip images explicitly marked as eager
-                var forceEager = img.dataset.loading === 'eager' || index < ABOVE_THE_FOLD_COUNT;
+            // Prepare images: eager first, others queued for sequential loading
+            document.querySelectorAll('img').forEach(function(img) {
+                var forceEager = img.dataset.loading === 'eager';
 
-                if (!forceEager && supportsNativeLazy && !img.hasAttribute('loading')) {
-                    img.setAttribute('loading', 'lazy');
-                }
-
-                // Start hidden, then reveal on load/error
+                // Always start hidden, then fade in on load
                 img.classList.add('img-fade');
+
+                if (forceEager) {
+                    // Eager images keep their src and load immediately
+                    if (supportsNativeLazy && img.getAttribute('loading') === 'lazy') {
+                        img.removeAttribute('loading');
+                    }
+
+                    function revealEager() {
+                        img.classList.add('img-fade-in');
+                    }
+
+                    if (img.complete && img.naturalWidth > 0) {
+                        revealEager();
+                    } else {
+                        img.addEventListener('load', revealEager, { once: true });
+                        img.addEventListener('error', revealEager, { once: true });
+                    }
+                } else {
+                    var src = img.getAttribute('src');
+                    if (!src) return;
+
+                    // Move src to data-src so we control when it starts loading
+                    img.dataset.src = src;
+                    img.removeAttribute('src');
+
+                    if (supportsNativeLazy) {
+                        img.setAttribute('loading', 'lazy');
+                    }
+
+                    lazyQueue.push(img);
+                }
+            });
+
+            // Load queued images one-by-one in DOM order
+            function loadNext(index) {
+                if (index >= lazyQueue.length) return;
+                var img = lazyQueue[index];
+                var src = img.dataset.src;
+                if (!src) {
+                    loadNext(index + 1);
+                    return;
+                }
 
                 function reveal() {
                     img.classList.add('img-fade-in');
+                    loadNext(index + 1);
                 }
 
-                // Already loaded (from cache, etc.)
+                img.addEventListener('load', reveal, { once: true });
+                img.addEventListener('error', reveal, { once: true });
+                img.setAttribute('src', src);
+
+                // If it was already loaded from cache
                 if (img.complete && img.naturalWidth > 0) {
                     reveal();
-                } else {
-                    img.addEventListener('load', reveal, {
-                        once: true
-                    });
-                    // Also reveal on error so broken images don't stay invisible
-                    img.addEventListener('error', reveal, {
-                        once: true
-                    });
                 }
-            });
+            }
+
+            loadNext(0);
         });
     </script>
 
