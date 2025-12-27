@@ -354,7 +354,7 @@
                 justify-content: center;
                 gap: 8px;
                 /* spacing between dots */
-                position: fixed;
+                position: absolute;
                 bottom: 20px;
                 left: 50%;
                 transform: translateX(-50%);
