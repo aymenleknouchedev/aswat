@@ -443,9 +443,9 @@
                 transition: max-height 0.3s ease;
             }
 
-            /* .submenu.active {
-                max-height: 600px;
-            } */
+            .submenu.active {
+                max-height: 800px;
+            }
 
             /* Submenu separators inset */
             .submenu li { border-bottom: none; }
@@ -517,7 +517,6 @@
                 margin-top: 30px;
             }
             .sidebar-social .s-icon { width: 22px; height: 22px; opacity: 0.85; }
-
         }
     </style>
 
