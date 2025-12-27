@@ -171,6 +171,7 @@
                     <ul>
                         <li><a href="{{ route('latestNews') }}">أخبار</a></li>
                         <li><a href="{{ route('reviews') }}">آراء</a></li>
+                        <li><a href="{{ route('windows') }}">نوافذ</a></li>
                         <li><a href="{{ route('files') }}">ملفات</a></li>
                         <li><a href="{{ route('investigation') }}">فحص</a></li>
                     </ul>
