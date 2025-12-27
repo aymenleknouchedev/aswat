@@ -363,11 +363,12 @@
                 margin-top: auto;
                 align-self: center;
                 pointer-events: auto;
+                margin-bottom: 20px;
             }
 
             .h-indicator {
                 width: 9px;
-                height: 30px;
+                height: 9px;
                 border-radius: 50%;
                 background: rgba(255, 255, 255, 0.45);
                 transition: background 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
