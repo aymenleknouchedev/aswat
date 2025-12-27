@@ -76,12 +76,12 @@
             </ul>
 
             <div class="sidebar-social" aria-label="تابعنا">
-                <span class="s-icon">@include('user.icons.facebook')</span>
-                <span class="s-icon">@include('user.icons.twitter')</span>
-                <span class="s-icon">@include('user.icons.youtube')</span>
-                <span class="s-icon">@include('user.icons.instagram')</span>
-                <span class="s-icon">@include('user.icons.telegram')</span>
-                <span class="s-icon">@include('user.icons.linkedin')</span>
+                <a href="https://www.facebook.com/asswatdjazairia" target="_blank" class="s-icon" aria-label="Facebook">@include('user.icons.facebook')</a>
+                <a href="https://x.com/asswatdjazairia" target="_blank" class="s-icon" aria-label="Twitter">@include('user.icons.twitter')</a>
+                <a href="https://www.youtube.com/@asswatdjazairia" target="_blank" class="s-icon" aria-label="YouTube">@include('user.icons.youtube')</a>
+                <a href="https://www.instagram.com/asswatdjazairia" target="_blank" class="s-icon" aria-label="Instagram">@include('user.icons.instagram')</a>
+                <a href="https://t.me/AsswatDjazairia" target="_blank" class="s-icon" aria-label="Telegram">@include('user.icons.telegram')</a>
+                <a href="https://www.linkedin.com/in/asswatdjazairia/" target="_blank" class="s-icon" aria-label="LinkedIn">@include('user.icons.linkedin')</a>
             </div>
         </div>
     </div>
