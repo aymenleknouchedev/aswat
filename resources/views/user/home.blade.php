@@ -324,7 +324,8 @@
                 width: 60px;
                 height: 60px;
                 border-radius: 50%;
-                background: green;
+                background: rgba(0, 128, 0, 0.7);
+
                 z-index: -1;
             }
 
