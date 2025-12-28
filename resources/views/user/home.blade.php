@@ -326,6 +326,8 @@
                 background-image: url('{{ asset('user/assets/icons/adjicon.svg') }}');
                 background-repeat: no-repeat;
                 background-position: center;
+                /* make the SVG icon appear white */
+                filter: brightness(0) invert(1);
                 flex-shrink: 0;
             }
 
