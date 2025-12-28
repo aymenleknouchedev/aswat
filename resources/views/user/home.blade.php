@@ -297,40 +297,38 @@
                 z-index: 1;
             }
 
-            /* Top section badge - green circle with centered text */
+            /* Top section badge - green circle at the start of the text */
             .featured-post-section-badge {
                 position: absolute;
                 top: 90px;
                 right: 16px;
                 /* RTL alignment */
                 z-index: 2;
-                width: 64px;
-                height: 64px;
-                border-radius: 50%;
-                background-color: #1fa463;
-                color: #ffffff;
-                display: flex;
+                display: inline-flex;
                 align-items: center;
-                justify-content: center;
-                text-align: center;
-                font-size: 13px;
+                gap: 8px;
+                background: transparent;
+                color: #ffffff;
+                font-size: 16px;
                 font-weight: 800;
                 line-height: 1.2;
-                padding: 6px;
-                box-sizing: border-box;
-                overflow: hidden;
-                /* ensure text stays inside the circle */
+                padding: 0;
             }
 
-            /* make inner links follow the circle shape and avoid overlap */
-            .featured-post-section-badge a {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 100%;
+            /* small green circle before the text */
+            .featured-post-section-badge::before {
+                content: '';
+                width: 16px;
+                height: 16px;
                 border-radius: 50%;
+                background-color: #1fa463;
+                flex-shrink: 0;
+            }
+
+            /* keep inner links inline, not full-circle */
+            .featured-post-section-badge a {
                 color: inherit;
+                text-decoration: none;
             }
 
             /* Fixed UI container holding section badge */
@@ -342,12 +340,10 @@
                 display: flex;
                 align-items: center;
                 justify-content: flex-end;
-                pointer-events: none;
             }
 
             .section-fixed-ui .featured-post-section-badge {
                 position: static;
-                pointer-events: auto;
             }
 
             /* Refined bottom-center indicators (mobile carousels) */
