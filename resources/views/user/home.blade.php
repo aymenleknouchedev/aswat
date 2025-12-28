@@ -324,7 +324,7 @@
                 height: 22px;
                 border-radius: 50%;
                 background-color: #1fa463;
-                background-image: url('{{ asset('user/icons/adjicon.svg') }}');
+                background-image: url('{{ asset('user/assets/icons/adjicon.svg') }}');
                 background-size: 60%;
                 background-repeat: no-repeat;
                 background-position: center;
