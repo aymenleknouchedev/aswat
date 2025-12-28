@@ -305,7 +305,7 @@
                 /* RTL alignment */
                 z-index: 2;
                 background: transparent;
-                color: #000;
+                color: #fff;
                 padding: 6px 12px;
                 font-size: 18px;
                 font-weight: 800;
@@ -343,7 +343,7 @@
             .section-image-icon {
                 position: static;
                 background: #fff;
-                color: #000;
+                color: #fff;
                 width: 40px;
                 height: 40px;
                 min-height: 40px;
