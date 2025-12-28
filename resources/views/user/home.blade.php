@@ -307,7 +307,7 @@
                 background: transparent;
                 color: #fff;
                 padding: 6px 12px;
-                font-size: 18px;
+                font-size: 24px;
                 font-weight: 800;
                 line-height: 1.2;
                 display: inline-flex;
