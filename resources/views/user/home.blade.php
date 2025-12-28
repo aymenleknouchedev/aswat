@@ -297,38 +297,22 @@
                 z-index: 1;
             }
 
-            /* Top section badge - green circle at the start of the text */
+            /* Top section badge (white background, black text, no radius) */
             .featured-post-section-badge {
                 position: absolute;
                 top: 90px;
                 right: 16px;
                 /* RTL alignment */
                 z-index: 2;
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                background: transparent;
-                color: #ffffff;
-                font-size: 16px;
+                background: #fff;
+                color: #000;
+                padding: 6px 12px;
+                font-size: 23px;
                 font-weight: 800;
-                line-height: 1.2;
-                padding: 0;
-            }
-
-            /* small green circle before the text */
-            .featured-post-section-badge::before {
-                content: '';
-                width: 16px;
-                height: 16px;
-                border-radius: 50%;
-                background-color: #1fa463;
-                flex-shrink: 0;
-            }
-
-            /* keep inner links inline, not full-circle */
-            .featured-post-section-badge a {
-                color: inherit;
-                text-decoration: none;
+                line-height: 1;
+                border-radius: 0;
+                display: inline-block;
+                text-align: center;
             }
 
             /* Fixed UI container holding section badge */
@@ -338,8 +322,22 @@
                 right: 16px;
                 z-index: 3;
                 display: flex;
+                align-items: stretch;
+            }
+
+            /* Icon positioned separately on the side */
+            .section-image-icon {
+                position: static;
+                background: #fff;
+                color: #000;
+                width: 40px;
+                height: 40px;
+                min-height: 40px;
+                display: flex;
                 align-items: center;
-                justify-content: flex-end;
+                justify-content: center;
+                font-size: 20px;
+                margin-left: auto;
             }
 
             .section-fixed-ui .featured-post-section-badge {
