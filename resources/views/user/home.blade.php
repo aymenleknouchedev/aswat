@@ -297,22 +297,40 @@
                 z-index: 1;
             }
 
-            /* Top section badge (white background, black text, no radius) */
+            /* Top section badge - green circle with centered text */
             .featured-post-section-badge {
                 position: absolute;
                 top: 90px;
                 right: 16px;
                 /* RTL alignment */
                 z-index: 2;
-                background: #fff;
-                color: #000;
-                padding: 6px 12px;
-                font-size: 23px;
-                font-weight: 800;
-                line-height: 1;
-                border-radius: 0;
-                display: inline-block;
+                width: 64px;
+                height: 64px;
+                border-radius: 50%;
+                background-color: #1fa463;
+                color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 text-align: center;
+                font-size: 13px;
+                font-weight: 800;
+                line-height: 1.2;
+                padding: 6px;
+                box-sizing: border-box;
+                overflow: hidden;
+                /* ensure text stays inside the circle */
+            }
+
+            /* make inner links follow the circle shape and avoid overlap */
+            .featured-post-section-badge a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                color: inherit;
             }
 
             /* Fixed UI container holding section badge */
@@ -322,26 +340,14 @@
                 right: 16px;
                 z-index: 3;
                 display: flex;
-                align-items: stretch;
-            }
-
-            /* Icon positioned separately on the side */
-            .section-image-icon {
-                position: static;
-                background: #fff;
-                color: #000;
-                width: 40px;
-                height: 40px;
-                min-height: 40px;
-                display: flex;
                 align-items: center;
-                justify-content: center;
-                font-size: 20px;
-                margin-left: auto;
+                justify-content: flex-end;
+                pointer-events: none;
             }
 
             .section-fixed-ui .featured-post-section-badge {
                 position: static;
+                pointer-events: auto;
             }
 
             /* Refined bottom-center indicators (mobile carousels) */
