@@ -297,33 +297,32 @@
                 z-index: 1;
             }
 
-            /* Top section badge (white pill with icon + text) */
+            /* Top section badge: icon + text (no backgrounds) */
             .featured-post-section-badge {
                 position: absolute;
                 top: 90px;
                 right: 16px;
                 /* RTL alignment */
                 z-index: 2;
-                background: #fff;
+                background: transparent;
                 color: #000;
                 padding: 6px 12px;
                 font-size: 18px;
                 font-weight: 800;
                 line-height: 1.2;
-                border-radius: 999px;
                 display: inline-flex;
                 align-items: center;
                 gap: 8px;
                 text-align: center;
             }
 
-            /* green circular icon from public/adjicon.svg before the text */
+            /* svg icon from public/user/assets/icons/adjicon.svg before the text */
             .featured-post-section-badge::before {
                 content: '';
                 width: 22px;
                 height: 22px;
-                border-radius: 50%;
-                background-color: #1fa463;
+                border-radius: 0;
+                background-color: transparent;
                 background-image: url('{{ asset('user/assets/icons/adjicon.svg') }}');
                 background-size: 60%;
                 background-repeat: no-repeat;
