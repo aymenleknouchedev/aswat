@@ -319,12 +319,11 @@
             /* svg icon from public/user/assets/icons/adjicon.svg before the text */
             .featured-post-section-badge::before {
                 content: '';
-                width: 22px;
-                height: 22px;
+                width: 30px;
+                height: 30px;
                 border-radius: 0;
                 background-color: transparent;
                 background-image: url('{{ asset('user/assets/icons/adjicon.svg') }}');
-                background-size: 60%;
                 background-repeat: no-repeat;
                 background-position: center;
                 flex-shrink: 0;
