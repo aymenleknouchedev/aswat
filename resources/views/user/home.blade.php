@@ -306,7 +306,6 @@
                 z-index: 2;
                 background: transparent;
                 color: #fff;
-                padding: 6px 12px;
                 font-size: 24px;
                 font-weight: 800;
                 line-height: 1.2;
