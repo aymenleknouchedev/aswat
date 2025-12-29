@@ -47,6 +47,8 @@
 
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden;
+            width: 100%;
         }
 
         body {
@@ -55,6 +57,7 @@
             color: #1a1a1a;
             line-height: 1.6;
             overflow-x: hidden;
+            width: 100%;
             cursor: none;
         }
 
@@ -350,6 +353,8 @@
             padding: 140px 40px 80px;
             position: relative;
             overflow: hidden;
+            width: 100%;
+            max-width: 100vw;
         }
 
         .hero::before {
@@ -754,11 +759,15 @@
         section {
             padding: 120px 40px;
             position: relative;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
+            width: 100%;
         }
 
         .section-header {
