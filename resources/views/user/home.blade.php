@@ -383,7 +383,7 @@
                 border-radius: 999px;
                 /* background: rgba(255, 255, 255, 0.38); */
                 background: #59cc99;
-                opacity: 0.8;
+                opacity: 0.5;
                 transition: all 0.25s ease;
             }
 
