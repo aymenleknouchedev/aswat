@@ -336,6 +336,58 @@
             100% { background-position: 200% 0; }
         }
 
+        /* Scroll Reveal Animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .scroll-reveal-left.revealed {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scroll-reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .scroll-reveal-right.revealed {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scroll-reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .scroll-reveal-scale.revealed {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .stagger-delay-1 { transition-delay: 0.1s; }
+        .stagger-delay-2 { transition-delay: 0.2s; }
+        .stagger-delay-3 { transition-delay: 0.3s; }
+        .stagger-delay-4 { transition-delay: 0.4s; }
+        .stagger-delay-5 { transition-delay: 0.5s; }
+        .stagger-delay-6 { transition-delay: 0.6s; }
+
         .hero-description {
             font-size: 22px;
             color: #6b7280;
@@ -1219,7 +1271,7 @@
     <!-- Services Section -->
     <section id="services">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header scroll-reveal">
                 <div class="section-badge">
                     <i class="fas fa-cube"></i>
                     <span>الخدمات</span>
@@ -1228,7 +1280,7 @@
                 <p class="section-description">نقدم مجموعة شاملة من الخدمات الرقمية المصممة لتلبية احتياجاتكم وتحقيق أهدافكم</p>
             </div>
             <div class="services-grid">
-                <div class="service-card">
+                <div class="service-card scroll-reveal-scale stagger-delay-1">
                     <div class="service-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
                     <h3>تصميم UI/UX احترافي</h3>
                     <p>نصمم تجارب مستخدم بديهية وجذابة باستخدام أحدث معايير التصميم العالمية، مع التركيز على سهولة الاستخدام والجمال البصري.</p>
@@ -1237,7 +1289,7 @@
                         <i class="fas fa-arrow-left"></i>
                     </a>
                 </div>
-                <div class="service-card">
+                <div class="service-card scroll-reveal-scale stagger-delay-2">
                     <div class="service-icon"><i class="fas fa-code"></i></div>
                     <h3>تطوير ويب متقدم</h3>
                     <p>نبني منصات ويب قوية وسريعة باستخدام Laravel, React, و Vue.js. حلول قابلة للتوسع ومحسّنة للأداء.</p>
@@ -1246,7 +1298,7 @@
                         <i class="fas fa-arrow-left"></i>
                     </a>
                 </div>
-                <div class="service-card">
+                <div class="service-card scroll-reveal-scale stagger-delay-3">
                     <div class="service-icon"><i class="fas fa-mobile-screen-button"></i></div>
                     <h3>تطبيقات الموبايل</h3>
                     <p>تطبيقات iOS و Android أصلية وهجينة تقدم تجربة سلسة وعالية الأداء على جميع الأجهزة المحمولة.</p>
@@ -1255,7 +1307,7 @@
                         <i class="fas fa-arrow-left"></i>
                     </a>
                 </div>
-                <div class="service-card">
+                <div class="service-card scroll-reveal-scale stagger-delay-4">
                     <div class="service-icon"><i class="fas fa-chart-line"></i></div>
                     <h3>تسويق رقمي ذكي</h3>
                     <p>استراتيجيات تسويق رقمي متكاملة: SEO, SEM, إدارة وسائل التواصل، وحملات إعلانية مدروسة تحقق نتائج حقيقية.</p>
@@ -1264,7 +1316,7 @@
                         <i class="fas fa-arrow-left"></i>
                     </a>
                 </div>
-                <div class="service-card">
+                <div class="service-card scroll-reveal-scale stagger-delay-5">
                     <div class="service-icon"><i class="fas fa-pen-nib"></i></div>
                     <h3>إنتاج محتوى إبداعي</h3>
                     <p>كتابة محتوى احترافي، إنتاج فيديو، تصوير فوتوغرافي، وبودكاست. نحكي قصتكم بطريقة مؤثرة وجذابة.</p>
@@ -1273,7 +1325,7 @@
                         <i class="fas fa-arrow-left"></i>
                     </a>
                 </div>
-                <div class="service-card">
+                <div class="service-card scroll-reveal-scale stagger-delay-6">
                     <div class="service-icon"><i class="fas fa-shield-halved"></i></div>
                     <h3>استشارات تقنية</h3>
                     <p>نساعدك في اتخاذ القرارات التقنية الصحيحة: اختيار التقنيات، تخطيط البنية التحتية، وتحسين الأداء.</p>
@@ -1289,7 +1341,7 @@
     <!-- Process Section -->
     <section id="process">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header scroll-reveal">
                 <div class="section-badge">
                     <i class="fas fa-diagram-project"></i>
                     <span>طريقة العمل</span>
@@ -1299,33 +1351,33 @@
             </div>
             <div class="process-timeline">
                 <div class="process-step">
-                    <div class="process-content">
+                    <div class="process-content scroll-reveal-left">
                         <h3>الاستكشاف والتخطيط</h3>
                         <p>نبدأ بفهم عميق لأهدافك واحتياجات جمهورك. نحلل المنافسين ونضع استراتيجية واضحة للمشروع مع جدول زمني دقيق.</p>
                     </div>
-                    <div class="process-number">01</div>
+                    <div class="process-number scroll-reveal-scale">01</div>
                     <div></div>
                 </div>
                 <div class="process-step">
                     <div></div>
-                    <div class="process-number">02</div>
-                    <div class="process-content">
+                    <div class="process-number scroll-reveal-scale">02</div>
+                    <div class="process-content scroll-reveal-right">
                         <h3>التصميم والنماذج الأولية</h3>
                         <p>نصمم واجهات مستخدم عصرية ونماذج تفاعلية تمنحك رؤية واضحة للمنتج النهائي قبل بدء التطوير.</p>
                     </div>
                 </div>
                 <div class="process-step">
-                    <div class="process-content">
+                    <div class="process-content scroll-reveal-left">
                         <h3>التطوير والبناء</h3>
                         <p>فريقنا التقني يحول التصاميم إلى منصة حية، مع اختبارات مستمرة لضمان الجودة والأداء العالي.</p>
                     </div>
-                    <div class="process-number">03</div>
+                    <div class="process-number scroll-reveal-scale">03</div>
                     <div></div>
                 </div>
                 <div class="process-step">
                     <div></div>
-                    <div class="process-number">04</div>
-                    <div class="process-content">
+                    <div class="process-number scroll-reveal-scale">04</div>
+                    <div class="process-content scroll-reveal-right">
                         <h3>الإطلاق والدعم المستمر</h3>
                         <p>نطلق مشروعك بثقة ونبقى معك للدعم الفني، التحديثات، والتحسينات المستمرة لضمان نجاحك على المدى الطويل.</p>
                     </div>
@@ -1338,19 +1390,19 @@
     <section id="stats" class="stats-section">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-item">
+                <div class="stat-item scroll-reveal stagger-delay-1">
                     <span class="stat-number">150+</span>
                     <div class="stat-label">مشروع منجز بنجاح</div>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item scroll-reveal stagger-delay-2">
                     <span class="stat-number">95+</span>
                     <div class="stat-label">عميل راضٍ ومتكرر</div>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item scroll-reveal stagger-delay-3">
                     <span class="stat-number">8+</span>
                     <div class="stat-label">سنوات خبرة متخصصة</div>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item scroll-reveal stagger-delay-4">
                     <span class="stat-number">100%</span>
                     <div class="stat-label">التزام بالجودة</div>
                 </div>
@@ -1361,7 +1413,7 @@
     <!-- CTA Section -->
     <section id="contact" style="padding: 80px 40px;">
         <div class="container">
-            <div class="cta-section">
+            <div class="cta-section scroll-reveal-scale">
                 <div class="cta-content">
                     <h2>هل أنتم مستعدون لبدء مشروعكم؟</h2>
                     <p>دعونا نحول أفكاركم إلى واقع رقمي مذهل. فريقنا جاهز لمساعدتكم في كل خطوة.</p>
@@ -1570,6 +1622,26 @@
         document.addEventListener('mousemove', (e) => {
             document.documentElement.style.setProperty('--mouse-x', e.clientX + 'px');
             document.documentElement.style.setProperty('--mouse-y', e.clientY + 'px');
+        });
+
+        // Scroll reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target); // Animate only once
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with scroll-reveal classes
+        document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale').forEach(el => {
+            observer.observe(el);
         });
     </script>
 </body>
