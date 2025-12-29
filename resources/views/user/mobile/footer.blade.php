@@ -155,12 +155,8 @@
 
 <footer id="mobileFooter" class="m-footer" role="contentinfo">
     <div class="m-wrap">
-        <a href="#gototop">
-            <img class="m-logo"
-                 src="{{ asset('user/assets/images/white_logo.svg') }}"
-                 alt="أصوات جزائرية"
-                 onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;">
-        </a>
+        <img class="m-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="أصوات جزائرية"
+            onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;">
         <div class="m-divider" aria-hidden="true"></div>
         <ul class="m-links" role="list">
             <li><a href="{{ route('about-us') }}" style="color: inherit; text-decoration: none;">من نحن</a></li>
