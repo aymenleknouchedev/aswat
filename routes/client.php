@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\ReadMoreController;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['coming.soon'])->group(function () {
@@ -33,6 +34,9 @@ Route::middleware(['coming.soon'])->group(function () {
     Route::get('/writer/{id}', [HomePageController::class, 'writer'])->name('writer.show');
     Route::get('/trend/{trend}', [HomePageController::class, 'showTrend'])->name('trend.show');
     Route::get('/category/{id}/{type}', [HomePageController::class, 'category'])->name('category.show');
+    Route::get('/missahat', function () {
+        return view('user.missahat');
+    })->name('missahat');
     Route::get('/{section}', [HomePageController::class, 'newSection'])->name('newSection');
     Route::get('/article/{news}', [HomePageController::class, 'showNews'])->name('news.show');
     Route::get('/tag/{tag}', [HomePageController::class, 'showTag'])->name('tag.show');
