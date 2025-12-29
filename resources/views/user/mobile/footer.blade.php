@@ -155,8 +155,7 @@
 
 <footer id="mobileFooter" class="m-footer" role="contentinfo">
     <div class="m-wrap">
-        <img class="m-logo" id="mFooterLogoTop" src="{{ asset('user/assets/images/white_logo.svg') }}"
-            alt="أصوات جزائرية">
+        <img class="m-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="أصوات جزائرية">
         <div class="m-divider" aria-hidden="true"></div>
         <ul class="m-links" role="list">
             <li><a href="{{ route('about-us') }}" style="color: inherit; text-decoration: none;">من نحن</a></li>
@@ -166,30 +165,25 @@
 
         </ul>
         <div class="m-icons" aria-label="وسائل التواصل الاجتماعي">
-            <a href="https://www.facebook.com/asswatdjazairia" target="_blank" class="m-icon footer-icon"
-                aria-label="Facebook">
+            <a href="https://www.facebook.com/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Facebook">
                 @include('user.icons.facebook')
             </a>
             <a href="https://x.com/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Twitter">
                 @include('user.icons.twitter')
             </a>
-            <a href="https://www.youtube.com/@asswatdjazairia" target="_blank" class="m-icon footer-icon"
-                aria-label="YouTube">
+            <a href="https://www.youtube.com/@asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="YouTube">
                 @include('user.icons.youtube')
             </a>
-            <a href="https://www.instagram.com/asswatdjazairia" target="_blank" class="m-icon footer-icon"
-                aria-label="Instagram">
+            <a href="https://www.instagram.com/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Instagram">
                 @include('user.icons.instagram')
             </a>
             <a href="https://t.me/AsswatDjazairia" target="_blank" class="m-icon footer-icon" aria-label="Telegram">
                 @include('user.icons.telegram')
             </a>
-            <a href="https://www.linkedin.com/in/asswatdjazairia/" target="_blank" class="m-icon footer-icon"
-                aria-label="LinkedIn">
+            <a href="https://www.linkedin.com/in/asswatdjazairia/" target="_blank" class="m-icon footer-icon" aria-label="LinkedIn">
                 @include('user.icons.linkedin')
             </a>
-            <a href="https://linktr.ee/asswatdjazairia" target="_blank" class="m-icon footer-icon"
-                aria-label="Linktree">
+            <a href="https://linktr.ee/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Linktree">
                 @include('user.icons.linktree')
             </a>
         </div>
@@ -229,40 +223,20 @@
     document.addEventListener('DOMContentLoaded', function() {
         var footer = document.getElementById('mobileFooter');
         var navbar = document.getElementById('mobileNavbar');
-        if (footer && navbar) {
-            var obs = new IntersectionObserver(function(entries) {
-                entries.forEach(function(e) {
-                    if (e.isIntersecting && e.intersectionRatio > 0.15) {
-                        navbar.classList.add('navbar-hidden');
-                    } else {
-                        navbar.classList.remove('navbar-hidden');
-                    }
-                });
-            }, {
-                threshold: [0, 0.15, 0.5, 1]
-            });
+        if (!footer || !navbar) return;
 
-            obs.observe(footer);
-        }
-
-        // Scroll to top of the mobile snap container when clicking the footer logo
-        var logo = document.getElementById('mFooterLogoTop');
-        if (logo) {
-            logo.addEventListener('click', function(event) {
-                event.preventDefault();
-                var mobileSnap = document.querySelector('.mobile-snap');
-                if (mobileSnap && typeof mobileSnap.scrollTo === 'function') {
-                    mobileSnap.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
+        var obs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting && e.intersectionRatio > 0.15) {
+                    navbar.classList.add('navbar-hidden');
                 } else {
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
+                    navbar.classList.remove('navbar-hidden');
                 }
             });
-        }
+        }, {
+            threshold: [0, 0.15, 0.5, 1]
+        });
+
+        obs.observe(footer);
     });
 </script>
