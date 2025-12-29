@@ -172,16 +172,35 @@
             justify-content: center;
             padding: 140px 40px 80px;
             position: relative;
-            cursor: none;
+            perspective: 1000px;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(5, 150, 105, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            animation: meshMove 20s ease-in-out infinite;
+        }
+
+        @keyframes meshMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-5%, -5%) rotate(5deg); }
+            66% { transform: translate(5%, 5%) rotate(-5deg); }
         }
 
         .hero::after {
             content: '';
             position: fixed;
-            width: 400px;
-            height: 400px;
+            width: 600px;
+            height: 600px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.05) 40%, transparent 70%);
             pointer-events: none;
             left: var(--mouse-x, 50%);
             top: var(--mouse-y, 50%);
@@ -189,6 +208,7 @@
             transition: opacity 0.3s ease;
             z-index: 10;
             opacity: 0;
+            filter: blur(40px);
         }
 
         .hero:hover::after {
@@ -207,27 +227,30 @@
 
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #10b981;
             border-radius: 50%;
-            opacity: 0.6;
+            opacity: 0;
             animation: particleFloat 15s infinite;
+            filter: blur(1px);
         }
 
         @keyframes particleFloat {
-            0%, 100% {
-                transform: translateY(0) translateX(0);
+            0% {
+                transform: translateY(0) translateX(0) scale(0);
                 opacity: 0;
             }
             10% {
-                opacity: 0.6;
+                opacity: 1;
+                transform: translateY(-10vh) translateX(10px) scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: translateY(-50vh) translateX(-20px) scale(1.5);
             }
             90% {
-                opacity: 0.6;
+                opacity: 0.4;
             }
             100% {
-                transform: translateY(-100vh) translateX(50px);
+                transform: translateY(-100vh) translateX(30px) scale(0.5);
                 opacity: 0;
             }
         }
@@ -236,6 +259,14 @@
             max-width: 1400px;
             width: 100%;
             text-align: center;
+            position: relative;
+            z-index: 20;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease-out;
+        }
+
+        .hero-content > * {
+            transform: translateZ(50px);
         }
 
         .hero-badge {
@@ -274,6 +305,8 @@
             margin-bottom: 32px;
             letter-spacing: -2px;
             animation: fadeInUp 1s ease 0.2s both;
+            position: relative;
+            text-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
         }
 
         .hero h1 .gradient-text {
@@ -281,6 +314,28 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero h1 .gradient-text::before {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(16, 185, 129, 0.6), transparent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
 
         .hero-description {
@@ -312,6 +367,30 @@
             gap: 12px;
             position: relative;
             overflow: hidden;
+            transform: translateZ(0);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn > * {
+            position: relative;
+            z-index: 1;
         }
 
         .btn-primary {
@@ -371,14 +450,16 @@
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
-            mix-blend-mode: difference;
+            transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
         }
 
         .custom-cursor.active {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-color: #059669;
+            background: rgba(16, 185, 129, 0.15);
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.6);
         }
 
         /* Section Styles */
@@ -1203,18 +1284,23 @@
             });
         }
 
-        // Parallax effect on floating elements
-        const heroSection = document.querySelector('.hero');
-        const floatingElements = document.querySelectorAll('.hero-float');
+        // Parallax 3D tilt effect on hero content
+        const heroContent = document.querySelector('.hero-content');
         
-        if (heroSection) {
+        if (heroSection && heroContent) {
             heroSection.addEventListener('mousemove', (e) => {
                 const rect = heroSection.getBoundingClientRect();
                 const x = (e.clientX - rect.left) / rect.width - 0.5;
                 const y = (e.clientY - rect.top) / rect.height - 0.5;
                 
+                // 3D tilt effect on content
+                const tiltX = y * 10;
+                const tiltY = x * -10;
+                heroContent.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+                
+                // Parallax on floating elements
                 floatingElements.forEach((element, index) => {
-                    const speed = (index + 1) * 20;
+                    const speed = (index + 1) * 30;
                     const moveX = x * speed;
                     const moveY = y * speed;
                     element.style.transform = `translate(${moveX}px, ${moveY}px)`;
@@ -1222,13 +1308,30 @@
             });
 
             heroSection.addEventListener('mouseleave', () => {
+                heroContent.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
                 floatingElements.forEach(element => {
                     element.style.transform = 'translate(0, 0)';
                 });
             });
         }
 
-        // Create floating particles
+        // Magnetic button effect
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(button => {
+            button.addEventListener('mousemove', (e) => {
+                const rect = button.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                button.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) translateZ(0)`;
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translate(0, 0) translateZ(0)';
+            });
+        });
+
+        // Create floating particles with varied colors and sizes
         function createParticle() {
             const hero = document.querySelector('.hero');
             if (!hero) return;
@@ -1242,9 +1345,25 @@
             
             const particle = document.createElement('div');
             particle.classList.add('particle');
+            
+            // Random size between 3-8px
+            const size = 3 + Math.random() * 5;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            // Varied green shades
+            const colors = [
+                '#10b981',
+                '#059669',
+                '#34d399',
+                '#6ee7b7',
+                'rgba(16, 185, 129, 0.8)'
+            ];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
             particle.style.left = Math.random() * 100 + '%';
             particle.style.animationDelay = Math.random() * 5 + 's';
-            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+            particle.style.animationDuration = (10 + Math.random() * 15) + 's';
             
             particlesContainer.appendChild(particle);
             
@@ -1253,12 +1372,12 @@
             }, 25000);
         }
 
-        // Generate particles periodically
-        setInterval(createParticle, 500);
+        // Generate particles more frequently
+        setInterval(createParticle, 300);
         
-        // Initial particles
-        for (let i = 0; i < 20; i++) {
-            setTimeout(createParticle, i * 100);
+        // Initial burst of particles
+        for (let i = 0; i < 30; i++) {
+            setTimeout(createParticle, i * 50);
         }
 
         // Update spotlight position using CSS custom properties
