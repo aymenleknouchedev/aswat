@@ -5,7 +5,7 @@
             color: #fff;
             padding: 50px 16px calc(100px + env(safe-area-inset-bottom));
             border-top: 1px solid rgba(255, 255, 255, 0.12);
-            height: 100vh;
+            height: 100dvh;
             /* full screen */
             display: flex;
             z-index: 20000;
