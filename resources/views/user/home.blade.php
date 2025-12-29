@@ -373,7 +373,8 @@
                 gap: 6px;
                 padding: 4px 8px;
                 border-radius: 999px;
-                background-color: rgba(0, 0, 0, 0.4);
+                background-color: #59cc99;
+                opacity: 0.8;
                 backdrop-filter: blur(10px);
             }
 
