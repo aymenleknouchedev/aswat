@@ -387,7 +387,7 @@
 
             .h-indicator.active {
                 width: 16px;
-                background: #59d102;
+                background: #59cc99;
             }
 
             /* Featured Post Content */
