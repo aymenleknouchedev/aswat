@@ -169,6 +169,125 @@
             display: none;
         }
 
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            padding: 8px;
+            z-index: 1001;
+            cursor: pointer;
+        }
+
+        .mobile-menu-btn span {
+            width: 28px;
+            height: 3px;
+            background: #10b981;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        /* Mobile Drawer */
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 1002;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 80px 30px 30px;
+        }
+
+        .mobile-drawer.active {
+            right: 0;
+        }
+
+        .mobile-drawer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mobile-drawer-links a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 16px 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-drawer-links a i {
+            font-size: 20px;
+            color: #10b981;
+            width: 24px;
+        }
+
+        .mobile-drawer-links a:hover {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            transform: translateX(-5px);
+        }
+
+        .mobile-drawer-links .nav-cta {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff !important;
+            margin-top: 16px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .mobile-drawer-links .nav-cta:hover {
+            transform: translateX(-5px) translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .mobile-drawer-links .nav-cta i {
+            color: #ffffff;
+        }
+
+        /* Drawer Overlay */
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -491,94 +610,69 @@
             animation-delay: 3s;
         }
 
-        /* Animated side elements */
-        .hero-shape {
+        /* Floating service icons */
+        .hero-icon {
             position: absolute;
-            opacity: 0.6;
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #10b981;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+            animation: iconFloat 6s ease-in-out infinite;
             z-index: 1;
         }
 
-        .hero-shape-left-1 {
-            top: 20%;
-            left: -100px;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.3));
-            border-radius: 20px;
-            animation: slideFromLeft 20s ease-in-out infinite;
-            transform: rotate(45deg);
+        .hero-icon-1 {
+            top: 25%;
+            left: 10%;
+            animation-delay: 0s;
         }
 
-        .hero-shape-left-2 {
-            top: 60%;
-            left: -150px;
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.2));
-            border-radius: 50%;
-            animation: slideFromLeft 25s ease-in-out infinite 5s;
+        .hero-icon-3 {
+            bottom: 20%;
+            left: 8%;
+            animation-delay: 2s;
         }
 
-        .hero-shape-right-1 {
-            top: 30%;
-            right: -120px;
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.3));
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            animation: slideFromRight 22s ease-in-out infinite 2s;
+        .hero-icon-5 {
+            top: 50%;
+            left: 6%;
+            animation-delay: 0.5s;
         }
 
-        .hero-shape-right-2 {
-            top: 70%;
-            right: -80px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.25));
-            border-radius: 15px;
-            animation: slideFromRight 18s ease-in-out infinite 7s;
-            transform: rotate(-30deg);
+        .hero-icon-2 {
+            top: 25%;
+            right: 10%;
+            animation-delay: 1s;
         }
 
-        @keyframes slideFromLeft {
+        
+        .hero-icon-4 {
+            bottom: 20%;
+            right: 8%;
+            animation-delay: 1.5s;
+        }
+
+        
+
+        .hero-icon-6 {
+            top: 50%;
+            right: 6%;
+            animation-delay: 2.5s;
+        }
+
+        @keyframes iconFloat {
             0%, 100% {
-                transform: translateX(0) translateY(0) rotate(45deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.6;
+                transform: translateY(0px) rotate(0deg);
             }
             50% {
-                transform: translateX(150vw) translateY(-50px) rotate(405deg);
-                opacity: 0.6;
-            }
-            90% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateX(150vw) translateY(-50px) rotate(405deg);
-                opacity: 0;
-            }
-        }
-
-        @keyframes slideFromRight {
-            0%, 100% {
-                transform: translateX(0) translateY(0) rotate(-30deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.6;
-            }
-            50% {
-                transform: translateX(-150vw) translateY(50px) rotate(-390deg);
-                opacity: 0.6;
-            }
-            90% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateX(-150vw) translateY(50px) rotate(-390deg);
-                opacity: 0;
+                transform: translateY(-20px) rotate(5deg);
             }
         }
 
@@ -1111,6 +1205,10 @@
                 display: none;
             }
 
+            .mobile-menu-btn {
+                display: flex;
+            }
+
             .hero {
                 padding: 120px 20px 60px;
                 min-height: 90vh;
@@ -1197,7 +1295,7 @@
                 display: none;
             }
 
-            .hero-shape {
+            .hero-icon {
                 display: none;
             }
 
@@ -1334,17 +1432,36 @@
                 <li><a href="#stats">إنجازاتنا</a></li>
                 <li><a href="#contact" class="nav-cta">تواصل معنا</a></li>
             </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
+
+    <!-- Mobile Drawer -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="mobile-drawer" id="mobileDrawer">
+        <ul class="mobile-drawer-links">
+            <li><a href="#home" class="drawer-link"><i class="fas fa-home"></i>الرئيسية</a></li>
+            <li><a href="#services" class="drawer-link"><i class="fas fa-cube"></i>الخدمات</a></li>
+            <li><a href="#process" class="drawer-link"><i class="fas fa-tasks"></i>طريقة العمل</a></li>
+            <li><a href="#stats" class="drawer-link"><i class="fas fa-chart-bar"></i>إنجازاتنا</a></li>
+            <li><a href="#contact" class="nav-cta"><i class="fas fa-envelope"></i>تواصل معنا</a></li>
+        </ul>
+    </div>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-float"></div>
         <div class="hero-float"></div>
-        <div class="hero-shape hero-shape-left-1"></div>
-        <div class="hero-shape hero-shape-left-2"></div>
-        <div class="hero-shape hero-shape-right-1"></div>
-        <div class="hero-shape hero-shape-right-2"></div>
+        <div class="hero-icon hero-icon-1"><i class="fas fa-wand-magic-sparkles"></i></div>
+        <div class="hero-icon hero-icon-2"><i class="fas fa-code"></i></div>
+        <div class="hero-icon hero-icon-3"><i class="fas fa-mobile-screen-button"></i></div>
+        <div class="hero-icon hero-icon-4"><i class="fas fa-chart-line"></i></div>
+        <div class="hero-icon hero-icon-5"><i class="fas fa-pen-nib"></i></div>
+        <div class="hero-icon hero-icon-6"><i class="fas fa-shield-halved"></i></div>
         <div class="hero-content">
             <div class="hero-badge">
                 <i class="fas fa-sparkles"></i>
@@ -1724,6 +1841,48 @@
         document.addEventListener('mousemove', (e) => {
             document.documentElement.style.setProperty('--mouse-x', e.clientX + 'px');
             document.documentElement.style.setProperty('--mouse-y', e.clientY + 'px');
+        });
+
+        // Mobile Drawer functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        const drawerOverlay = document.getElementById('drawerOverlay');
+        const drawerLinks = document.querySelectorAll('.drawer-link');
+
+        function toggleDrawer() {
+            mobileMenuBtn.classList.toggle('active');
+            mobileDrawer.classList.toggle('active');
+            drawerOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileDrawer.classList.contains('active') ? 'hidden' : '';
+        }
+
+        function closeDrawer() {
+            mobileMenuBtn.classList.remove('active');
+            mobileDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', toggleDrawer);
+        }
+
+        if (drawerOverlay) {
+            drawerOverlay.addEventListener('click', closeDrawer);
+        }
+
+        // Close drawer when clicking on a link
+        drawerLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                closeDrawer();
+            });
+        });
+
+        // Close drawer on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileDrawer.classList.contains('active')) {
+                closeDrawer();
+            }
         });
 
         // Scroll reveal animations
