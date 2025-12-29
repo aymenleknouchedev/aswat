@@ -308,7 +308,6 @@
                 color: #fff;
                 font-size: 24px;
                 font-weight: 800;
-                font-family: 'asswat-bold';
                 line-height: 1.2;
                 display: inline-flex;
                 align-items: center;
@@ -381,16 +380,13 @@
                 width: 7px;
                 height: 7px;
                 border-radius: 999px;
-                /* background: rgba(255, 255, 255, 0.38); */
-                background: #59cc99;
-                opacity: 0.2;
-                transition: all 0.1s ease;
+                background: rgba(255, 255, 255, 0.38);
+                transition: all 0.25s ease;
             }
 
             .h-indicator.active {
                 width: 16px;
-                background: #59cc99;
-                opacity: 1;
+                background: #ffffff;
             }
 
             /* Featured Post Content */
