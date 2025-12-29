@@ -384,7 +384,7 @@
                 /* background: rgba(255, 255, 255, 0.38); */
                 background: #59cc99;
                 opacity: 0.2;
-                transition: all 0.25s ease;
+                transition: all 0.1s ease;
             }
 
             .h-indicator.active {
