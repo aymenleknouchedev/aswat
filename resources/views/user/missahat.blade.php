@@ -454,21 +454,29 @@
             padding: 60px 0;
         }
 
-        .process-line {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: 50%;
-            width: 2px;
-            background: linear-gradient(180deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.3));
-        }
-
         .process-step {
             display: grid;
-            grid-template-columns: 1fr 120px 1fr;
+            grid-template-columns: 1fr auto 1fr;
             gap: 60px;
             margin-bottom: 80px;
             position: relative;
+            align-items: center;
+        }
+
+        .process-step::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 150px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.3));
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            transform-origin: top center;
+        }
+
+        .process-step:last-child::after {
+            display: none;
         }
 
         .process-step:nth-child(even) .process-content:first-child {
@@ -723,7 +731,7 @@
                 text-align: center;
             }
 
-            .process-line {
+            .process-step::after {
                 display: none;
             }
 
@@ -902,7 +910,6 @@
                 <p class="section-description">منهجية عمل احترافية ومجرّبة تضمن نجاح مشروعك في كل مرحلة</p>
             </div>
             <div class="process-timeline">
-                <div class="process-line"></div>
                 <div class="process-step">
                     <div class="process-content">
                         <h3>الاستكشاف والتخطيط</h3>
