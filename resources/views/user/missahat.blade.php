@@ -491,6 +491,97 @@
             animation-delay: 3s;
         }
 
+        /* Animated side elements */
+        .hero-shape {
+            position: absolute;
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        .hero-shape-left-1 {
+            top: 20%;
+            left: -100px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.3));
+            border-radius: 20px;
+            animation: slideFromLeft 20s ease-in-out infinite;
+            transform: rotate(45deg);
+        }
+
+        .hero-shape-left-2 {
+            top: 60%;
+            left: -150px;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.2));
+            border-radius: 50%;
+            animation: slideFromLeft 25s ease-in-out infinite 5s;
+        }
+
+        .hero-shape-right-1 {
+            top: 30%;
+            right: -120px;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.3));
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation: slideFromRight 22s ease-in-out infinite 2s;
+        }
+
+        .hero-shape-right-2 {
+            top: 70%;
+            right: -80px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.25));
+            border-radius: 15px;
+            animation: slideFromRight 18s ease-in-out infinite 7s;
+            transform: rotate(-30deg);
+        }
+
+        @keyframes slideFromLeft {
+            0%, 100% {
+                transform: translateX(0) translateY(0) rotate(45deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateX(150vw) translateY(-50px) rotate(405deg);
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateX(150vw) translateY(-50px) rotate(405deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideFromRight {
+            0%, 100% {
+                transform: translateX(0) translateY(0) rotate(-30deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateX(-150vw) translateY(50px) rotate(-390deg);
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateX(-150vw) translateY(50px) rotate(-390deg);
+                opacity: 0;
+            }
+        }
+
         .custom-cursor {
             position: fixed;
             width: 20px;
@@ -971,7 +1062,9 @@
             }
 
             .process-step {
-                grid-template-columns: 1fr;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
                 text-align: center;
                 gap: 32px;
                 margin-bottom: 60px;
@@ -983,23 +1076,12 @@
                 transform: translateX(-50%);
             }
 
-            .process-step:nth-child(odd) .process-content:last-child,
-            .process-step:nth-child(even) .process-content:first-child {
-                display: none;
-            }
-
-            .process-step:nth-child(odd) .process-content:first-child,
-            .process-step:nth-child(even) .process-content:last-child {
-                opacity: 1;
-                pointer-events: auto;
-                text-align: center;
-            }
-
-            .process-step::after {
+            .process-step > div:empty {
                 display: none;
             }
 
             .process-number {
+                order: 1;
                 margin: 0 auto;
                 width: 100px;
                 height: 100px;
@@ -1007,7 +1089,11 @@
             }
 
             .process-content {
+                order: 2;
                 padding: 28px 20px;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                text-align: center;
             }
 
             /* Simplify hero effects on tablets */
@@ -1108,6 +1194,10 @@
             }
 
             .hero-float {
+                display: none;
+            }
+
+            .hero-shape {
                 display: none;
             }
 
@@ -1251,6 +1341,10 @@
     <section id="home" class="hero">
         <div class="hero-float"></div>
         <div class="hero-float"></div>
+        <div class="hero-shape hero-shape-left-1"></div>
+        <div class="hero-shape hero-shape-left-2"></div>
+        <div class="hero-shape hero-shape-right-1"></div>
+        <div class="hero-shape hero-shape-right-2"></div>
         <div class="hero-content">
             <div class="hero-badge">
                 <i class="fas fa-sparkles"></i>
