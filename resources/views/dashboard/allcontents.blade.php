@@ -405,11 +405,10 @@
                                                                             @endif
                                                                         </a>
                                                                     </li>
-
-                                                                    <li>
+                                                                    @canDo('delete')
+                                                                     <li>
                                                                         <hr class="dropdown-divider">
                                                                     </li>
-                                                                    @canDo('delete')
                                                                     <li>
                                                                         <form
                                                                             action="{{ route('dashboard.content.destroy', $content->id) }}"
