@@ -223,20 +223,40 @@
     document.addEventListener('DOMContentLoaded', function() {
         var footer = document.getElementById('mobileFooter');
         var navbar = document.getElementById('mobileNavbar');
-        if (!footer || !navbar) return;
+        if (footer && navbar) {
+            var obs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (e.isIntersecting && e.intersectionRatio > 0.15) {
+                        navbar.classList.add('navbar-hidden');
+                    } else {
+                        navbar.classList.remove('navbar-hidden');
+                    }
+                });
+            }, {
+                threshold: [0, 0.15, 0.5, 1]
+            });
 
-        var obs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) {
-                if (e.isIntersecting && e.intersectionRatio > 0.15) {
-                    navbar.classList.add('navbar-hidden');
+            obs.observe(footer);
+        }
+
+        // Scroll to top when clicking the mobile footer logo
+        var logo = document.querySelector('.m-logo');
+        if (logo) {
+            logo.addEventListener('click', function(event) {
+                event.preventDefault();
+                var mobileSnap = document.querySelector('.mobile-snap');
+                if (mobileSnap && typeof mobileSnap.scrollTo === 'function') {
+                    mobileSnap.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                 } else {
-                    navbar.classList.remove('navbar-hidden');
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                 }
             });
-        }, {
-            threshold: [0, 0.15, 0.5, 1]
-        });
-
-        obs.observe(footer);
+        }
     });
 </script>
