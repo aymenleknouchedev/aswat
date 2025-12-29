@@ -326,8 +326,8 @@
                 background-repeat: no-repeat;
                 background-position: center;
                 /* make the SVG icon appear white */
+                filter: invert(68%) sepia(93%) saturate(600%) hue-rotate(58deg) brightness(92%) contrast(96%);
                 flex-shrink: 0;
-                color: red;
             }
 
             /* Fixed UI container holding section badge */
