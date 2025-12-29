@@ -536,7 +536,7 @@
                 width: 100%;
             }
         }
-    </link>
+    </style>
 </head>
 
 <body>
