@@ -1250,8 +1250,11 @@
 
                         {{-- ===== SUBMIT BUTTONS ===== --}}
                         <div class="mt-4 d-flex">
-                            <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر" data-en="Publish"
+                            @canDo('publish_content')
+                             <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر" data-en="Publish"
                                 id="publishButton" onclick="setStatus(this, 'published')">نشر</button>
+                            @endcanDo
+                        
                             <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="حفظ"
                                 data-en="Save as Draft" onclick="setStatus(this, 'draft')">حفظ</button>
                             <button type="submit" class="btn btn-primary btn-lg"
@@ -1634,12 +1637,12 @@
             const container = input.closest('.tags-search-container');
             const mydropdown = container.querySelector('.mydropdown');
             const items = mydropdown.querySelectorAll('li');
-            
+
             // Show only first 15 items
             items.forEach((li, index) => {
                 li.style.display = index < 15 ? '' : 'none';
             });
-            
+
             mydropdown.style.display = 'block';
         }
 
@@ -1665,13 +1668,15 @@
                 .then(tags => {
                     // Get selected tags IDs
                     const selectedContainer = document.getElementById('tags_id-selected-container');
-                    const selectedIds = Array.from(selectedContainer.querySelectorAll('.tag-item')).map(el => el.dataset.id);
+                    const selectedIds = Array.from(selectedContainer.querySelectorAll('.tag-item')).map(el => el.dataset
+                        .id);
 
                     // Clear and rebuild the list
                     optionsList.innerHTML = '';
-                    
+
                     if (tags.length === 0) {
-                        optionsList.innerHTML = '<li style="padding: 10px 15px; text-align: center; color: var(--bs-secondary-color);">لا توجد نتائج</li>';
+                        optionsList.innerHTML =
+                            '<li style="padding: 10px 15px; text-align: center; color: var(--bs-secondary-color);">لا توجد نتائج</li>';
                     } else {
                         tags.forEach(tag => {
                             const li = document.createElement('li');
