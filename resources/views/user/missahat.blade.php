@@ -172,7 +172,6 @@
             justify-content: center;
             padding: 140px 40px 80px;
             position: relative;
-            perspective: 1000px;
             overflow: hidden;
         }
 
@@ -261,12 +260,6 @@
             text-align: center;
             position: relative;
             z-index: 20;
-            transform-style: preserve-3d;
-            transition: transform 0.3s ease-out;
-        }
-
-        .hero-content > * {
-            transform: translateZ(50px);
         }
 
         .hero-badge {
@@ -900,6 +893,14 @@
                 font-size: 56px;
             }
 
+            .hero-description {
+                font-size: 20px;
+            }
+
+            .section-title {
+                font-size: 48px;
+            }
+
             .services-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -943,6 +944,15 @@
                 height: 100px;
                 font-size: 42px;
             }
+
+            /* Simplify hero effects on tablets */
+            .hero::before {
+                animation: none;
+            }
+
+            .particle {
+                animation-duration: 20s !important;
+            }
         }
 
         @media (max-width: 768px) {
@@ -950,25 +960,63 @@
                 display: none;
             }
 
+            .hero {
+                padding: 120px 20px 60px;
+                min-height: 90vh;
+            }
+
             .hero h1 {
-                font-size: 42px;
+                font-size: 36px;
+                letter-spacing: -1px;
+                text-shadow: none;
             }
 
             .hero-description {
-                font-size: 18px;
+                font-size: 16px;
+                margin-bottom: 32px;
+            }
+
+            .hero-badge {
+                font-size: 12px;
+                padding: 8px 16px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .btn {
+                padding: 14px 32px;
+                font-size: 14px;
+                width: 100%;
+                justify-content: center;
             }
 
             .section-title {
-                font-size: 36px;
+                font-size: 32px;
+            }
+
+            .section-description {
+                font-size: 16px;
             }
 
             .services-grid {
                 grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .service-card {
+                padding: 32px 24px;
             }
 
             .stats-grid {
                 grid-template-columns: 1fr;
                 gap: 40px;
+            }
+
+            .stat-number {
+                font-size: 48px;
             }
 
             .footer-content {
@@ -981,7 +1029,127 @@
             }
 
             .cta-section h2 {
-                font-size: 36px;
+                font-size: 32px;
+            }
+
+            .cta-section p {
+                font-size: 16px;
+            }
+
+            /* Disable heavy effects on mobile */
+            .hero::before,
+            .hero::after {
+                display: none;
+            }
+
+            .hero-float {
+                display: none;
+            }
+
+            .particles {
+                display: none;
+            }
+
+            .custom-cursor {
+                display: none;
+            }
+
+            .hero-content {
+                transform: none !important;
+            }
+
+            .hero h1 .gradient-text::before {
+                display: none;
+            }
+
+            .btn::before {
+                display: none;
+            }
+
+            .process-content:hover {
+                transform: none;
+            }
+
+            .service-card:hover {
+                transform: translateY(-4px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .section-badge {
+                font-size: 11px;
+                padding: 6px 14px;
+            }
+
+            .service-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+            }
+
+            .service-card h3 {
+                font-size: 20px;
+            }
+
+            .process-number {
+                width: 80px;
+                height: 80px;
+                font-size: 32px;
+            }
+
+            .process-content {
+                padding: 24px;
+            }
+
+            .process-content h3 {
+                font-size: 22px;
+            }
+
+            .stat-number {
+                font-size: 40px;
+            }
+
+            .cta-section h2 {
+                font-size: 26px;
+            }
+
+            .footer-brand h3 {
+                font-size: 24px;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .custom-cursor {
+                display: none;
+            }
+
+            .hero {
+                cursor: default;
+            }
+
+            .btn:hover::before {
+                display: none;
+            }
+
+            .hero-content {
+                transform: none !important;
+            }
+
+            .particles {
+                opacity: 0.5;
             }
         }
     </style>
@@ -1250,22 +1418,26 @@
             }
         });
 
-        // Custom cursor effect
-        const cursor = document.createElement('div');
-        cursor.classList.add('custom-cursor');
-        document.body.appendChild(cursor);
+        // Custom cursor effect (desktop only)
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        if (!isTouchDevice) {
+            const cursor = document.createElement('div');
+            cursor.classList.add('custom-cursor');
+            document.body.appendChild(cursor);
 
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
 
-        // Activate cursor on interactive elements
-        const interactiveElements = document.querySelectorAll('a, button, .btn');
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('active'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
-        });
+            // Activate cursor on interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, .btn');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+            });
+        }
 
         // Hero spotlight effect
         const hero = document.querySelector('.hero');
@@ -1284,19 +1456,16 @@
             });
         }
 
-        // Parallax 3D tilt effect on hero content
+        // Parallax effect on floating elements (desktop only)
         const heroContent = document.querySelector('.hero-content');
+        const heroSection = document.querySelector('.hero');
+        const floatingElements = document.querySelectorAll('.hero-float');
         
-        if (heroSection && heroContent) {
+        if (!isTouchDevice && heroSection) {
             heroSection.addEventListener('mousemove', (e) => {
                 const rect = heroSection.getBoundingClientRect();
                 const x = (e.clientX - rect.left) / rect.width - 0.5;
                 const y = (e.clientY - rect.top) / rect.height - 0.5;
-                
-                // 3D tilt effect on content
-                const tiltX = y * 10;
-                const tiltY = x * -10;
-                heroContent.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
                 
                 // Parallax on floating elements
                 floatingElements.forEach((element, index) => {
@@ -1308,33 +1477,33 @@
             });
 
             heroSection.addEventListener('mouseleave', () => {
-                heroContent.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
                 floatingElements.forEach(element => {
                     element.style.transform = 'translate(0, 0)';
                 });
             });
         }
 
-        // Magnetic button effect
-        const buttons = document.querySelectorAll('.btn');
-        buttons.forEach(button => {
-            button.addEventListener('mousemove', (e) => {
-                const rect = button.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
+        // Magnetic button effect (desktop only)
+        if (!isTouchDevice) {
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('mousemove', (e) => {
+                    // Removed magnetic effect
+                });
                 
-                button.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) translateZ(0)`;
+                button.addEventListener('mouseleave', () => {
+                    // Removed magnetic effect
+                });
             });
-            
-            button.addEventListener('mouseleave', () => {
-                button.style.transform = 'translate(0, 0) translateZ(0)';
-            });
-        });
+        }
 
-        // Create floating particles with varied colors and sizes
+        // Create floating particles with varied colors and sizes (reduced on mobile)
         function createParticle() {
             const hero = document.querySelector('.hero');
             if (!hero) return;
+            
+            // Skip particles on mobile for performance
+            if (window.innerWidth <= 768) return;
             
             let particlesContainer = hero.querySelector('.particles');
             if (!particlesContainer) {
@@ -1372,11 +1541,13 @@
             }, 25000);
         }
 
-        // Generate particles more frequently
-        setInterval(createParticle, 300);
+        // Generate particles more frequently (desktop only)
+        const particleInterval = window.innerWidth > 768 ? 300 : 1000;
+        setInterval(createParticle, particleInterval);
         
         // Initial burst of particles
-        for (let i = 0; i < 30; i++) {
+        const initialParticles = window.innerWidth > 768 ? 30 : 10;
+        for (let i = 0; i < initialParticles; i++) {
             setTimeout(createParticle, i * 50);
         }
 
