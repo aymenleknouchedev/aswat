@@ -202,7 +202,7 @@
             </div>
             <a href="{{ route('missahat') }}" class="right-side" style="text-decoration: none;">
             <p>تصميم وتطوير</p>
-            <img style="text-align: center" height="40" src="{{ asset('user/assets/images/brand.svg') }}" alt="Missahat - تصميم وتطوير">
+            <img class="mt-3" style="margin: auto" height="40" src="{{ asset('user/assets/images/brand.svg') }}" alt="Missahat - تصميم وتطوير">
             </a>
         </div>
     </div>
