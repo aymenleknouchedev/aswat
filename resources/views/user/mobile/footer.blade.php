@@ -155,8 +155,8 @@
 
 <footer id="mobileFooter" class="m-footer" role="contentinfo">
     <div class="m-wrap">
-        <img class="m-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="أصوات جزائرية"
-            onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;">
+        <img class="m-logo" id="mFooterLogoTop" src="{{ asset('user/assets/images/white_logo.svg') }}"
+            alt="أصوات جزائرية">
         <div class="m-divider" aria-hidden="true"></div>
         <ul class="m-links" role="list">
             <li><a href="{{ route('about-us') }}" style="color: inherit; text-decoration: none;">من نحن</a></li>
@@ -229,20 +229,40 @@
     document.addEventListener('DOMContentLoaded', function() {
         var footer = document.getElementById('mobileFooter');
         var navbar = document.getElementById('mobileNavbar');
-        if (!footer || !navbar) return;
+        if (footer && navbar) {
+            var obs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (e.isIntersecting && e.intersectionRatio > 0.15) {
+                        navbar.classList.add('navbar-hidden');
+                    } else {
+                        navbar.classList.remove('navbar-hidden');
+                    }
+                });
+            }, {
+                threshold: [0, 0.15, 0.5, 1]
+            });
 
-        var obs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) {
-                if (e.isIntersecting && e.intersectionRatio > 0.15) {
-                    navbar.classList.add('navbar-hidden');
+            obs.observe(footer);
+        }
+
+        // Scroll to top of the mobile snap container when clicking the footer logo
+        var logo = document.getElementById('mFooterLogoTop');
+        if (logo) {
+            logo.addEventListener('click', function(event) {
+                event.preventDefault();
+                var mobileSnap = document.querySelector('.mobile-snap');
+                if (mobileSnap && typeof mobileSnap.scrollTo === 'function') {
+                    mobileSnap.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                 } else {
-                    navbar.classList.remove('navbar-hidden');
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                 }
             });
-        }, {
-            threshold: [0, 0.15, 0.5, 1]
-        });
-
-        obs.observe(footer);
+        }
     });
 </script>
