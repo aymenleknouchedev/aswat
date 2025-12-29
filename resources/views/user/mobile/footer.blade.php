@@ -3,9 +3,10 @@
         .m-footer {
             background: #252525;
             color: #fff;
-            padding: 50px 16px calc(100px + env(safe-area-inset-bottom));
+            /* keep full-screen footer but reduce extra bottom gap */
+            padding: 50px 16px calc(24px + env(safe-area-inset-bottom));
             border-top: 1px solid rgba(255, 255, 255, 0.12);
-            height: 100dvh;
+            height: 100vh;
             /* full screen */
             display: flex;
             z-index: 20000;
