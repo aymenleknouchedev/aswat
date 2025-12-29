@@ -326,7 +326,7 @@
                 background-repeat: no-repeat;
                 background-position: center;
                 /* make the SVG icon appear white */
-                filter: invert(68%) sepia(93%) saturate(600%) hue-rotate(58deg) brightness(92%) contrast(96%);
+                filter: invert(63%) sepia(24%) saturate(749%) hue-rotate(103deg) brightness(93%) contrast(92%);
                 flex-shrink: 0;
             }
 
