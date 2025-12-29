@@ -454,59 +454,85 @@
             padding: 60px 0;
         }
 
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                transparent 0%, 
+                rgba(16, 185, 129, 0.2) 10%, 
+                rgba(16, 185, 129, 0.4) 50%, 
+                rgba(5, 150, 105, 0.2) 90%, 
+                transparent 100%);
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+        }
+
         .process-step {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             gap: 60px;
-            margin-bottom: 80px;
+            margin-bottom: 120px;
             position: relative;
             align-items: center;
         }
 
-        .process-step::after {
-            content: '';
-            position: absolute;
-            width: 2px;
-            height: 150px;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.3));
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%) rotate(45deg);
-            transform-origin: top center;
+        .process-step:last-child {
+            margin-bottom: 0;
         }
 
-        .process-step:last-child::after {
-            display: none;
+        .process-step:nth-child(odd) .process-content:first-child {
+            text-align: left;
+        }
+
+        .process-step:nth-child(odd) .process-content:last-child {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .process-step:nth-child(even) .process-content:first-child {
-            order: 3;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .process-step:nth-child(even) .process-content:last-child {
+            text-align: right;
         }
 
         .process-number {
-            width: 120px;
-            height: 120px;
-            background: #ffffff;
-            border: 3px solid rgba(16, 185, 129, 0.4);
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: 5px solid #ffffff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
+            font-size: 56px;
             font-weight: 900;
-            color: #10b981;
+            color: #ffffff;
             position: relative;
             z-index: 2;
-            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.15);
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+            flex-shrink: 0;
         }
 
         .process-content {
-            padding: 32px;
+            padding: 40px;
             background: #ffffff;
-            border: 1px solid rgba(16, 185, 129, 0.15);
-            border-radius: 20px;
+            border: 2px solid rgba(16, 185, 129, 0.15);
+            border-radius: 24px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+        }
+
+        .process-content:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 50px rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
         }
 
         .process-content h3 {
@@ -729,6 +755,22 @@
             .process-step {
                 grid-template-columns: 1fr;
                 text-align: center;
+                gap: 32px;
+                margin-bottom: 60px;
+            }
+
+            .process-timeline::before {
+                display: none;
+            }
+
+            .process-step:nth-child(odd) .process-content:last-child,
+            .process-step:nth-child(even) .process-content:first-child {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .process-step:nth-child(even) .process-content:last-child {
+                text-align: center;
             }
 
             .process-step::after {
@@ -736,7 +778,10 @@
             }
 
             .process-number {
-                margin: 0 auto 32px;
+                margin: 0 auto;
+                width: 100px;
+                height: 100px;
+                font-size: 42px;
             }
         }
 
