@@ -1851,6 +1851,10 @@
                 text-align: right;
             }
 
+            .mobile-article-image figcaption:empty {
+                display: none;
+            }
+
             .mobile-article-content {
                 font-size: 16px !important;
                 font-family: asswat-regular;
@@ -1925,6 +1929,10 @@
                 text-align: right;
                 font-family: asswat-regular;
                 direction: rtl;
+            }
+
+            .mobile-article-content figcaption:empty {
+                display: none;
             }
 
             /* Video styling within mobile content */
