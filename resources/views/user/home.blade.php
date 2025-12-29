@@ -326,8 +326,8 @@
                 background-repeat: no-repeat;
                 background-position: center;
                 /* make the SVG icon appear white */
-                filter: brightness(0) invert(1);
                 flex-shrink: 0;
+                color: red;
             }
 
             /* Fixed UI container holding section badge */
