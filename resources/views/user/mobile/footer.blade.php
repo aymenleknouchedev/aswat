@@ -155,7 +155,9 @@
 
 <footer id="mobileFooter" class="m-footer" role="contentinfo">
     <div class="m-wrap">
-        <img class="m-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="أصوات جزائرية">
+        <a href="#gototop">
+            <img class="m-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="أصوات جزائرية">
+        </a>
         <div class="m-divider" aria-hidden="true"></div>
         <ul class="m-links" role="list">
             <li><a href="{{ route('about-us') }}" style="color: inherit; text-decoration: none;">من نحن</a></li>
@@ -165,25 +167,30 @@
 
         </ul>
         <div class="m-icons" aria-label="وسائل التواصل الاجتماعي">
-            <a href="https://www.facebook.com/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Facebook">
+            <a href="https://www.facebook.com/asswatdjazairia" target="_blank" class="m-icon footer-icon"
+                aria-label="Facebook">
                 @include('user.icons.facebook')
             </a>
             <a href="https://x.com/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Twitter">
                 @include('user.icons.twitter')
             </a>
-            <a href="https://www.youtube.com/@asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="YouTube">
+            <a href="https://www.youtube.com/@asswatdjazairia" target="_blank" class="m-icon footer-icon"
+                aria-label="YouTube">
                 @include('user.icons.youtube')
             </a>
-            <a href="https://www.instagram.com/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Instagram">
+            <a href="https://www.instagram.com/asswatdjazairia" target="_blank" class="m-icon footer-icon"
+                aria-label="Instagram">
                 @include('user.icons.instagram')
             </a>
             <a href="https://t.me/AsswatDjazairia" target="_blank" class="m-icon footer-icon" aria-label="Telegram">
                 @include('user.icons.telegram')
             </a>
-            <a href="https://www.linkedin.com/in/asswatdjazairia/" target="_blank" class="m-icon footer-icon" aria-label="LinkedIn">
+            <a href="https://www.linkedin.com/in/asswatdjazairia/" target="_blank" class="m-icon footer-icon"
+                aria-label="LinkedIn">
                 @include('user.icons.linkedin')
             </a>
-            <a href="https://linktr.ee/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Linktree">
+            <a href="https://linktr.ee/asswatdjazairia" target="_blank" class="m-icon footer-icon"
+                aria-label="Linktree">
                 @include('user.icons.linktree')
             </a>
         </div>
