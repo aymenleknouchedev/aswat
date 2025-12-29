@@ -365,7 +365,8 @@
             gap: 32px;
         }
 
-        .service-card {#ffffff;
+        .service-card {
+            background: #ffffff;
             backdrop-filter: blur(20px);
             border: 1px solid rgba(16, 185, 129, 0.15);
             border-radius: 24px;
@@ -391,8 +392,7 @@
         .service-card:hover {
             transform: translateY(-12px);
             border-color: rgba(16, 185, 129, 0.4);
-            box-shadow: 0 30px 80px rgba(16, 185, 129, 0.15
-            box-shadow: 0 30px 80px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 30px 80px rgba(16, 185, 129, 0.15);
         }
 
         .service-card:hover::before {
@@ -400,7 +400,9 @@
         }
 
         .service-icon {
-            width: 80px;16, 185, 129, 0.1), rgba(5, 150, 105, 0.15));
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.15));
             border: 1px solid rgba(16, 185, 129, 0.3);
             border-radius: 20px;
             display: flex;
@@ -432,9 +434,7 @@
         }
 
         .service-link {
-            color: #10b98
-        .service-link {
-            color: #6366f1;
+            color: #10b981;
             font-weight: 600;
             font-size: 14px;
             text-decoration: none;
@@ -458,9 +458,9 @@
             position: absolute;
             top: 0;
             bottom: 0;
-            right: 50%;16, 185, 129, 0.3), rgba(5, 150, 105
+            right: 50%;
             width: 2px;
-            background: linear-gradient(180deg, rgba(99, 102, 241, 0.3), rgba(236, 72, 153, 0.3));
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.3));
         }
 
         .process-step {
@@ -476,7 +476,9 @@
         }
 
         .process-number {
-            width: 120px#ffffff;
+            width: 120px;
+            height: 120px;
+            background: #ffffff;
             border: 3px solid rgba(16, 185, 129, 0.4);
             border-radius: 50%;
             display: flex;
@@ -507,11 +509,13 @@
         }
 
         .process-content p {
-            color: #6b7280
-        .process-content p {
-            color: #94a3b8;
+            color: #6b7280;
             line-height: 1.8;
-        }16, 185, 129, 0.03) 0%, rgba(5, 150, 105, 0.05) 100%);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, rgba(5, 150, 105, 0.05) 100%);
             border-top: 1px solid rgba(16, 185, 129, 0.1);
             border-bottom: 1px solid rgba(16, 185, 129, 0.1);
         }
@@ -539,14 +543,13 @@
 
         .stat-label {
             font-size: 16px;
-            color: #6b7280
-
-        .stat-label {
-            font-size: 16px;
-            color: #94a3b8;
+            color: #6b7280;
             font-weight: 600;
         }
-10b981 0%, #059669 100%);
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             border-radius: 32px;
             padding: 100px 60px;
             text-align: center;
@@ -599,12 +602,12 @@
 
         .cta-section .btn:hover {
             transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2
-        .cta-section .btn:hover {
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
         }
-#f8f9fa;
+
+        /* Footer */
+        footer {
+            background: #f8f9fa;
             backdrop-filter: blur(20px);
             border-top: 1px solid rgba(16, 185, 129, 0.1);
             padding: 80px 40px 40px;
@@ -692,10 +695,8 @@
             padding-top: 40px;
             border-top: 1px solid rgba(16, 185, 129, 0.1);
             text-align: center;
-            color: #6b72800px;
-            border-top: 1px solid rgba(99, 102, 241, 0.1);
-            text-align: center;
-            color: #64748b;
+            color: #6b7280;
+            font-size: 14px;
             font-size: 14px;
         }
 
