@@ -197,11 +197,13 @@
         </div>
 
         <div class="m-bottom">
-            <p class="m-copy">جميع الحقوق محفوظة © مساحات للإعلام والثقافة والفنون 2025</p>
-            <span class="m-brand">
-                <span>تصميم وتطوير</span>
-                <img src="{{ asset('user/assets/images/brand.svg') }}" alt="brand">
-            </span>
+            <div class="left-side">
+            <p>جميع الحقوق محفوظة © مساحات للإعلام والثقافة والفنون 2025</p>
+            </div>
+            <a href="{{ route('missahat') }}" class="right-side" style="text-decoration: none;">
+            <p>تصميم وتطوير</p>
+            <img src="{{ asset('user/assets/images/brand.svg') }}" alt="Missahat - تصميم وتطوير">
+            </a>
         </div>
     </div>
 
