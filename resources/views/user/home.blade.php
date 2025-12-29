@@ -308,6 +308,7 @@
                 color: #fff;
                 font-size: 24px;
                 font-weight: 800;
+                font-family: 'asswat-bold';
                 line-height: 1.2;
                 display: inline-flex;
                 align-items: center;
