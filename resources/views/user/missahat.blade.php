@@ -978,16 +978,20 @@
             }
 
             .process-timeline::before {
-                display: none;
+                display: block;
+                left: 50%;
+                transform: translateX(-50%);
             }
 
             .process-step:nth-child(odd) .process-content:last-child,
             .process-step:nth-child(even) .process-content:first-child {
-                opacity: 1;
-                pointer-events: auto;
+                display: none;
             }
 
+            .process-step:nth-child(odd) .process-content:first-child,
             .process-step:nth-child(even) .process-content:last-child {
+                opacity: 1;
+                pointer-events: auto;
                 text-align: center;
             }
 
@@ -1000,6 +1004,10 @@
                 width: 100px;
                 height: 100px;
                 font-size: 42px;
+            }
+
+            .process-content {
+                padding: 28px 20px;
             }
 
             /* Simplify hero effects on tablets */
