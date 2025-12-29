@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Missahat | مساحات للإعلام والثقافة والفنون</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
             box-sizing: border-box;
@@ -170,6 +171,10 @@
             display: inline-block;
             position: relative;
             overflow: hidden;
+        }
+
+        .btn i {
+            margin-left: 8px;
         }
 
         .btn-primary {
@@ -531,7 +536,7 @@
                 width: 100%;
             }
         }
-    </style>
+    </link>
 </head>
 
 <body>
@@ -552,10 +557,10 @@
     <section id="home" class="hero">
         <div class="container">
             <h1>مساحات للإعلام<br>والثقافة والفنون</h1>
-            <p>نصمم ونطوّر التجارب الرقمية التي تحكي قصصكم. من الفكرة إلى المنصة الحية، نحن شريككم في كل خطوة.</p>
+            <p>شريككم الإبداعي في تصميم وتطوير المنصات الرقمية. نحوّل أفكاركم إلى تجارب رقمية استثنائية تجمع بين الجمال البصري والأداء التقني العالي. من التخطيط الاستراتيجي إلى الإطلاق والدعم المستمر.</p>
             <div class="hero-cta">
-                <a href="#contact" class="btn btn-primary"><span>ابدأ مشروعك</span></a>
-                <a href="#services" class="btn btn-secondary">اكتشف خدماتنا</a>
+                <a href="#contact" class="btn btn-primary"><span><i class="fas fa-rocket"></i> ابدأ مشروعك</span></a>
+                <a href="#services" class="btn btn-secondary"><i class="fas fa-arrow-down"></i> اكتشف خدماتنا</a>
             </div>
         </div>
     </section>
@@ -567,24 +572,34 @@
             <h2 class="section-heading">ما نقدّمه لكم</h2>
             <div class="services-grid">
                 <div class="service-card">
-                    <div class="service-icon">🎨</div>
-                    <h3>تصميم تجربة المستخدم</h3>
-                    <p>نصمم واجهات بسيطة، جميلة، وسهلة الاستخدام تضع المستخدم في قلب التجربة.</p>
+                    <div class="service-icon"><i class="fas fa-palette"></i></div>
+                    <h3>تصميم تجربة المستخدم UI/UX</h3>
+                    <p>نصمم واجهات مستخدم عصرية وبديهية باستخدام أحدث معايير التصميم. نركز على تجربة المستخدم من خلال بحث شامل، خرائط رحلة المستخدم، ونماذج أولية تفاعلية لضمان تفاعل سلس وممتع.</p>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">💻</div>
+                    <div class="service-icon"><i class="fas fa-code"></i></div>
                     <h3>تطوير المنصات الرقمية</h3>
-                    <p>نبني مواقع ومنصات سريعة، آمنة، وقابلة للتوسع باستخدام أحدث التقنيات.</p>
+                    <p>نبني حلولاً رقمية قوية باستخدام Laravel، React، Vue.js وأحدث التقنيات. مواقع سريعة الاستجابة، تطبيقات ويب تقدمية، وأنظمة معقدة مصممة للنمو والتوسع مع احتياجات عملك.</p>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">📱</div>
-                    <h3>نظم إدارة المحتوى</h3>
-                    <p>نطوّر أنظمة إدارة محتوى مخصصة تمنحكم السيطرة الكاملة على محتواكم الرقمي.</p>
+                    <div class="service-icon"><i class="fas fa-database"></i></div>
+                    <h3>نظم إدارة المحتوى CMS</h3>
+                    <p>نطور أنظمة إدارة محتوى مخصصة بالكامل تمنحكم تحكماً كاملاً. من لوحات تحكم بسيطة إلى منصات معقدة متعددة المستخدمين، نبني الأدوات التي تحتاجونها لإدارة محتواكم بكفاءة.</p>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">✍️</div>
-                    <h3>إنتاج المحتوى</h3>
-                    <p>نساعدكم في صياغة وإنتاج محتوى صحفي ورقمي احترافي يصل إلى جمهوركم.</p>
+                    <div class="service-icon"><i class="fas fa-pen-nib"></i></div>
+                    <h3>إنتاج المحتوى الرقمي</h3>
+                    <p>فريقنا الإبداعي يساعدكم في صياغة محتوى جذاب وفعّال. من كتابة المحتوى الصحفي والتسويقي إلى إنتاج الفيديو والبودكاست، نضمن أن رسالتكم تصل بوضوح وتأثير.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>تطبيقات الموبايل</h3>
+                    <p>نصمم ونطور تطبيقات موبايل أصلية وهجينة لنظامي iOS و Android. تطبيقات سريعة، آمنة، وسهلة الاستخدام تقدم تجربة استثنائية على جميع الأجهزة المحمولة.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>التسويق الرقمي و SEO</h3>
+                    <p>نساعدكم على الوصول إلى جمهوركم المستهدف من خلال استراتيجيات تسويق رقمي فعالة. تحسين محركات البحث، إدارة وسائل التواصل الاجتماعي، وحملات إعلانية مدروسة لتحقيق أهدافكم.</p>
                 </div>
             </div>
         </div>
@@ -595,27 +610,30 @@
         <div class="container">
             <div class="about-content">
                 <div class="about-text">
-                    <div class="section-title">من نحن</div>
+                    <div class="section-title"><i class="fas fa-building"></i> من نحن</div>
                     <h2>نؤمن بقوة التصميم والتطوير الذكي</h2>
-                    <p>"مساحات" هي شركة متخصصة في تصميم وتطوير الحلول الرقمية المتكاملة. نجمع بين الإبداع البصري والتطوير التقني لنقدم منتجات رقمية استثنائية.</p>
-                    <p>نعمل مع مؤسسات إعلامية، ثقافية، وإبداعية لتحويل أفكارهم إلى منصات رقمية حية تخدم جمهورهم وتحقق أهدافهم.</p>
+                    <p>"مساحات للإعلام والثقافة والفنون" هي شركة رائدة في تصميم وتطوير الحلول الرقمية المتكاملة. منذ انطلاقتنا، نجمع بين الإبداع البصري والتطوير التقني المتقدم لنقدم منتجات رقمية استثنائية تتجاوز توقعات عملائنا.</p>
+                    <p>نعمل مع مؤسسات إعلامية، ثقافية، وإبداعية في الجزائر والعالم العربي لتحويل رؤاهم إلى منصات رقمية حية وفعالة. فريقنا المتعدد التخصصات يضم مصممين، مطورين، كُتّاب محتوى، ومتخصصين في التسويق الرقمي.</p>
+                    <p><i class="fas fa-check-circle" style="color: #6366f1; margin-left: 8px;"></i> فريق محترف متعدد التخصصات<br>
+                    <i class="fas fa-check-circle" style="color: #6366f1; margin-left: 8px;"></i> منهجية عمل حديثة ومرنة<br>
+                    <i class="fas fa-check-circle" style="color: #6366f1; margin-left: 8px;"></i> دعم مستمر بعد الإطلاق</p>
                 </div>
                 <div class="stats">
                     <div class="stat-item">
-                        <div class="stat-number">50+</div>
-                        <div class="stat-label">مشروع منجز</div>
+                        <div class="stat-number"><i class="fas fa-project-diagram"></i> 120+</div>
+                        <div class="stat-label">مشروع منجز بنجاح</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">30+</div>
-                        <div class="stat-label">عميل راضٍ</div>
+                        <div class="stat-number"><i class="fas fa-users"></i> 80+</div>
+                        <div class="stat-label">عميل راضٍ ومتكرر</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">5+</div>
-                        <div class="stat-label">سنوات خبرة</div>
+                        <div class="stat-number"><i class="fas fa-clock"></i> 7+</div>
+                        <div class="stat-label">سنوات خبرة في السوق</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">100%</div>
-                        <div class="stat-label">التزام بالجودة</div>
+                        <div class="stat-number"><i class="fas fa-award"></i> 100%</div>
+                        <div class="stat-label">التزام بالجودة والمواعيد</div>
                     </div>
                 </div>
             </div>
@@ -626,20 +644,24 @@
     <section id="contact" class="contact">
         <div class="container">
             <div class="contact-content">
-                <div class="section-title">تواصل معنا</div>
+                <div class="section-title"><i class="fas fa-envelope"></i> تواصل معنا</div>
                 <h2>هل لديكم مشروع في ذهنكم؟</h2>
-                <p>نحن هنا للاستماع إليكم ومساعدتكم في تحويل أفكاركم إلى واقع رقمي.</p>
+                <p>نحن هنا للاستماع إليكم ومساعدتكم في تحويل أفكاركم إلى واقع رقمي. سواء كنتم تبحثون عن موقع إلكتروني جديد، تطبيق موبايل، أو حملة تسويقية رقمية، فريقنا جاهز لمساعدتكم في كل خطوة.</p>
                 <div class="hero-cta">
-                    <a href="mailto:info@missahat.com" class="btn btn-primary">راسلنا الآن</a>
+                    <a href="mailto:info@missahat.com" class="btn btn-primary"><span><i class="fas fa-paper-plane"></i> راسلنا الآن</span></a>
                 </div>
                 <div class="contact-info">
                     <div class="contact-item">
-                        <div class="contact-item-label">البريد الإلكتروني</div>
+                        <div class="contact-item-label"><i class="fas fa-envelope"></i> البريد الإلكتروني</div>
                         <div class="contact-item-value"><a href="mailto:info@missahat.com">info@missahat.com</a></div>
                     </div>
                     <div class="contact-item">
-                        <div class="contact-item-label">الهاتف</div>
+                        <div class="contact-item-label"><i class="fas fa-phone"></i> الهاتف</div>
                         <div class="contact-item-value"><a href="tel:+213000000000">+213 000 000 000</a></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-item-label"><i class="fas fa-map-marker-alt"></i> العنوان</div>
+                        <div class="contact-item-value">الجزائر العاصمة، الجزائر</div>
                     </div>
                 </div>
             </div>
@@ -648,7 +670,14 @@
 
     <!-- Footer -->
     <footer>
+        <div style="margin-bottom: 20px;">
+            <a href="#" style="color: #94a3b8; margin: 0 12px; font-size: 20px; transition: color 0.3s;" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#94a3b8'"><i class="fab fa-facebook"></i></a>
+            <a href="#" style="color: #94a3b8; margin: 0 12px; font-size: 20px; transition: color 0.3s;" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#94a3b8'"><i class="fab fa-twitter"></i></a>
+            <a href="#" style="color: #94a3b8; margin: 0 12px; font-size: 20px; transition: color 0.3s;" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#94a3b8'"><i class="fab fa-instagram"></i></a>
+            <a href="#" style="color: #94a3b8; margin: 0 12px; font-size: 20px; transition: color 0.3s;" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#94a3b8'"><i class="fab fa-linkedin"></i></a>
+        </div>
         <p>© 2025 مساحات للإعلام والثقافة والفنون. جميع الحقوق محفوظة.</p>
+        <p style="margin-top: 8px; font-size: 13px;">صُنع بـ <i class="fas fa-heart" style="color: #ec4899;"></i> في الجزائر</p>
     </footer>
 </body>
 
