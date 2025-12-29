@@ -6,9 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Missahat | مساحات - تصميم وتطوير استثنائي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
+        @font-face {
+            font-family: 'Suisse Intl';
+            src: url('/landingfont/SuisseIntl-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Suisse Intl';
+            src: url('/landingfont/SuisseIntl-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Suisse Intl';
+            src: url('/landingfont/SuisseIntl-SemiBold.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Suisse Intl';
+            src: url('/landingfont/SuisseIntl-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -20,7 +50,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Suisse Intl', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: #ffffff;
             color: #1a1a1a;
             line-height: 1.6;
@@ -186,19 +216,6 @@
             height: 3px;
             background: #10b981;
             border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu-btn.active span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
-        }
-
-        .mobile-menu-btn.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .mobile-menu-btn.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(8px, -8px);
         }
 
         /* Mobile Drawer */
@@ -206,7 +223,7 @@
             position: fixed;
             top: 0;
             right: -100%;
-            width: 280px;
+            width: 100%;
             height: 100vh;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(30px);
@@ -214,31 +231,67 @@
             box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
             z-index: 1002;
             transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 80px 30px 30px;
+            padding: 100px 40px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .mobile-drawer.active {
             right: 0;
         }
 
+        /* Drawer Close Button */
+        .drawer-close {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .drawer-close:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.5);
+        }
+
+        .drawer-close:active {
+            transform: scale(0.95) rotate(90deg);
+        }
+
         .mobile-drawer-links {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
+            width: 100%;
+            max-width: 400px;
         }
 
         .mobile-drawer-links a {
             color: #1a1a1a;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
-            padding: 16px 20px;
-            border-radius: 12px;
+            padding: 20px 24px;
+            border-radius: 16px;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 12px;
+            text-align: center;
         }
 
         .mobile-drawer-links a i {
@@ -1443,6 +1496,9 @@
     <!-- Mobile Drawer -->
     <div class="drawer-overlay" id="drawerOverlay"></div>
     <div class="mobile-drawer" id="mobileDrawer">
+        <button class="drawer-close" id="drawerCloseBtn" aria-label="إغلاق">
+            <i class="fas fa-times"></i>
+        </button>
         <ul class="mobile-drawer-links">
             <li><a href="#home" class="drawer-link"><i class="fas fa-home"></i>الرئيسية</a></li>
             <li><a href="#services" class="drawer-link"><i class="fas fa-cube"></i>الخدمات</a></li>
@@ -1847,6 +1903,7 @@
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileDrawer = document.getElementById('mobileDrawer');
         const drawerOverlay = document.getElementById('drawerOverlay');
+        const drawerCloseBtn = document.getElementById('drawerCloseBtn');
         const drawerLinks = document.querySelectorAll('.drawer-link');
 
         function toggleDrawer() {
@@ -1869,6 +1926,10 @@
 
         if (drawerOverlay) {
             drawerOverlay.addEventListener('click', closeDrawer);
+        }
+
+        if (drawerCloseBtn) {
+            drawerCloseBtn.addEventListener('click', closeDrawer);
         }
 
         // Close drawer when clicking on a link
