@@ -25,6 +25,11 @@
             color: #1a1a1a;
             line-height: 1.6;
             overflow-x: hidden;
+            cursor: none;
+        }
+
+        body * {
+            cursor: none !important;
         }
 
         /* Animated Background */
@@ -1054,6 +1059,11 @@
                 display: none;
             }
 
+            body,
+            body * {
+                cursor: auto !important;
+            }
+
             .hero-content {
                 transform: none !important;
             }
@@ -1134,6 +1144,11 @@
         @media (hover: none) and (pointer: coarse) {
             .custom-cursor {
                 display: none;
+            }
+
+            body,
+            body * {
+                cursor: auto !important;
             }
 
             .hero {
