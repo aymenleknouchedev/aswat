@@ -383,13 +383,14 @@
                 border-radius: 999px;
                 /* background: rgba(255, 255, 255, 0.38); */
                 background: #59cc99;
-                opacity: 0.4;
+                opacity: 0.8;
                 transition: all 0.25s ease;
             }
 
             .h-indicator.active {
                 width: 16px;
                 background: #59cc99;
+                opacity: 1;
             }
 
             /* Featured Post Content */
