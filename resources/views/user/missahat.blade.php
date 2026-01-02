@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Missahat | مساحات - تصميم وتطوير استثنائي</title>
+    <title>مساحات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @font-face {
@@ -89,7 +89,7 @@
         .bg-animation::before {
             width: 600px;
             height: 600px;
-            background: radial-gradient(circle, #10b981 0%, transparent 70%);
+            background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
             top: -300px;
             right: -200px;
             animation-delay: 0s;
@@ -98,7 +98,7 @@
         .bg-animation::after {
             width: 800px;
             height: 800px;
-            background: radial-gradient(circle, #059669 0%, transparent 70%);
+            background: radial-gradient(circle, #2563eb 0%, transparent 70%);
             bottom: -400px;
             left: -300px;
             animation-delay: 5s;
@@ -119,7 +119,7 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(30px) saturate(150%);
             -webkit-backdrop-filter: blur(30px) saturate(150%);
-            border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+            border-bottom: 1px solid rgb(59, 130, 246, 0.1);
             z-index: 1000;
             padding: 20px 0;
             transition: all 0.3s ease;
@@ -142,7 +142,7 @@
         .logo {
             font-size: 28px;
             font-weight: 900;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -173,12 +173,12 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #10b981, #059669);
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
             transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: #10b981;
+            color: #3b82f6;
         }
 
         .nav-links a:hover::after {
@@ -187,15 +187,15 @@
 
         .nav-cta {
             padding: 12px 28px !important;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             border-radius: 50px;
             color: #ffffff !important;
-            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 8px 24px rgb(59, 130, 246, 0.3);
         }
 
         .nav-cta:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5);
+            box-shadow: 0 12px 32px rgb(59, 130, 246, 0.5);
         }
 
         .nav-cta::after {
@@ -217,7 +217,7 @@
         .mobile-menu-btn span {
             width: 28px;
             height: 3px;
-            background: #10b981;
+            background: #3b82f6;
             border-radius: 3px;
         }
 
@@ -251,7 +251,7 @@
             left: 30px;
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             border: none;
             border-radius: 50%;
             display: flex;
@@ -259,14 +259,14 @@
             justify-content: center;
             font-size: 24px;
             color: #ffffff;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 15px rgb(59, 130, 246, 0.3);
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .drawer-close:hover {
             transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.5);
+            box-shadow: 0 6px 25px rgb(59, 130, 246, 0.5);
         }
 
         .drawer-close:active {
@@ -299,26 +299,26 @@
 
         .mobile-drawer-links a i {
             font-size: 20px;
-            color: #10b981;
+            color: #3b82f6;
             width: 24px;
         }
 
         .mobile-drawer-links a:hover {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
+            background: rgb(59, 130, 246, 0.1);
+            color: #3b82f6;
             transform: translateX(-5px);
         }
 
         .mobile-drawer-links .nav-cta {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: #ffffff !important;
             margin-top: 16px;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 12px rgb(59, 130, 246, 0.3);
         }
 
         .mobile-drawer-links .nav-cta:hover {
             transform: translateX(-5px) translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 6px 20px rgb(59, 130, 246, 0.4);
         }
 
         .mobile-drawer-links .nav-cta i {
@@ -363,9 +363,9 @@
             width: 200%;
             height: 200%;
             background: 
-                radial-gradient(circle at 20% 50%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(5, 150, 105, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 50%, rgb(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgb(37, 99, 235, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgb(59, 130, 246, 0.1) 0%, transparent 50%);
             animation: meshMove 20s ease-in-out infinite;
         }
 
@@ -381,7 +381,7 @@
             width: 600px;
             height: 600px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.05) 40%, transparent 70%);
+            background: radial-gradient(circle, rgb(59, 130, 246, 0.2) 0%, rgb(59, 130, 246, 0.05) 40%, transparent 70%);
             pointer-events: none;
             left: var(--mouse-x, 50%);
             top: var(--mouse-y, 50%);
@@ -449,17 +449,17 @@
             align-items: center;
             gap: 8px;
             padding: 10px 24px;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            background: rgb(59, 130, 246, 0.1);
+            border: 1px solid rgb(59, 130, 246, 0.3);
             border-radius: 50px;
             font-size: 14px;
-            color: #059669;
+            color: #2563eb;
             margin-bottom: 32px;
             animation: fadeInUp 0.8s ease;
         }
 
         .hero-badge i {
-            color: #10b981;
+            color: #3b82f6;
         }
 
         @keyframes fadeInUp {
@@ -481,11 +481,11 @@
             letter-spacing: -2px;
             animation: fadeInUp 1s ease 0.2s both;
             position: relative;
-            text-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
+            text-shadow: 0 0 40px rgb(59, 130, 246, 0.3);
         }
 
         .hero h1 .gradient-text {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -500,7 +500,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(16, 185, 129, 0.6), transparent);
+            background: linear-gradient(120deg, transparent, rgb(59, 130, 246, 0.6), transparent);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -621,26 +621,26 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: #ffffff;
-            box-shadow: 0 12px 40px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 12px 40px rgb(59, 130, 246, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 60px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 20px 60px rgb(59, 130, 246, 0.4);
         }
 
         .btn-secondary {
             background: #ffffff;
             color: #1a1a1a;
-            border: 2px solid rgba(16, 185, 129, 0.3);
+            border: 2px solid rgb(59, 130, 246, 0.3);
             backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-            background: rgba(16, 185, 129, 0.05);
-            border-color: rgba(16, 185, 129, 0.6);
+            background: rgb(59, 130, 246, 0.05);
+            border-color: rgb(59, 130, 246, 0.6);
             transform: translateY(-4px);
         }
 
@@ -650,7 +650,7 @@
             width: 400px;
             height: 400px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle, rgb(59, 130, 246, 0.15) 0%, transparent 70%);
             filter: blur(60px);
             animation: float 15s ease-in-out infinite;
             transition: transform 0.3s ease-out;
@@ -674,14 +674,14 @@
             width: 70px;
             height: 70px;
             background: rgba(255, 255, 255, 0.9);
-            border: 2px solid rgba(16, 185, 129, 0.3);
+            border: 2px solid rgb(59, 130, 246, 0.3);
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 32px;
-            color: #10b981;
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+            color: #3b82f6;
+            box-shadow: 0 8px 25px rgb(59, 130, 246, 0.2);
             animation: iconFloat 6s ease-in-out infinite;
             z-index: 1;
         }
@@ -738,21 +738,21 @@
             position: fixed;
             width: 20px;
             height: 20px;
-            border: 2px solid #10b981;
+            border: 2px solid #3b82f6;
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
             transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 0 20px rgb(59, 130, 246, 0.4);
         }
 
         .custom-cursor.active {
             width: 60px;
             height: 60px;
-            border-color: #059669;
-            background: rgba(16, 185, 129, 0.15);
-            box-shadow: 0 0 40px rgba(16, 185, 129, 0.6);
+            border-color: #2563eb;
+            background: rgb(59, 130, 246, 0.15);
+            box-shadow: 0 0 40px rgb(59, 130, 246, 0.6);
         }
 
         /* Section Styles */
@@ -780,13 +780,13 @@
             align-items: center;
             gap: 8px;
             padding: 8px 20px;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            background: rgb(59, 130, 246, 0.1);
+            border: 1px solid rgb(59, 130, 246, 0.2);
             border-radius: 50px;
             font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: #10b981;
+            color: #3b82f6;
             font-weight: 700;
             margin-bottom: 24px;
         }
@@ -801,7 +801,7 @@
         }
 
         .section-title .gradient-text {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -825,7 +825,7 @@
         .service-card {
             background: #ffffff;
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(16, 185, 129, 0.15);
+            border: 1px solid rgb(59, 130, 246, 0.15);
             border-radius: 24px;
             padding: 48px 36px;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -841,15 +841,15 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, #10b981, #059669);
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
             opacity: 0;
             transition: opacity 0.4s ease;
         }
 
         .service-card:hover {
             transform: translateY(-12px);
-            border-color: rgba(16, 185, 129, 0.4);
-            box-shadow: 0 30px 80px rgba(16, 185, 129, 0.15);
+            border-color: rgb(59, 130, 246, 0.4);
+            box-shadow: 0 30px 80px rgb(59, 130, 246, 0.15);
         }
 
         .service-card:hover::before {
@@ -859,20 +859,20 @@
         .service-icon {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.15));
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            background: linear-gradient(135deg, rgb(59, 130, 246, 0.1), rgb(37, 99, 235, 0.15));
+            border: 1px solid rgb(59, 130, 246, 0.3);
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 28px;
             font-size: 36px;
-            color: #10b981;
+            color: #3b82f6;
             transition: all 0.4s ease;
         }
 
         .service-card:hover .service-icon {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.25));
+            background: linear-gradient(135deg, rgb(59, 130, 246, 0.2), rgb(37, 99, 235, 0.25));
             transform: scale(1.1) rotate(5deg);
         }
 
@@ -891,7 +891,7 @@
         }
 
         .service-link {
-            color: #10b981;
+            color: #3b82f6;
             font-weight: 600;
             font-size: 14px;
             text-decoration: none;
@@ -918,9 +918,9 @@
             height: 100%;
             background: linear-gradient(180deg, 
                 transparent 0%, 
-                rgba(16, 185, 129, 0.2) 10%, 
-                rgba(16, 185, 129, 0.4) 50%, 
-                rgba(5, 150, 105, 0.2) 90%, 
+                rgb(59, 130, 246, 0.2) 10%, 
+                rgb(59, 130, 246, 0.4) 50%, 
+                rgb(37, 99, 235, 0.2) 90%, 
                 transparent 100%);
             left: 50%;
             top: 0;
@@ -961,7 +961,7 @@
         .process-number {
             width: 140px;
             height: 140px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             border: 5px solid #ffffff;
             border-radius: 50%;
             display: flex;
@@ -972,14 +972,14 @@
             color: #ffffff;
             position: relative;
             z-index: 2;
-            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 10px 40px rgb(59, 130, 246, 0.3);
             flex-shrink: 0;
         }
 
         .process-content {
             padding: 40px;
             background: #ffffff;
-            border: 2px solid rgba(16, 185, 129, 0.15);
+            border: 2px solid rgb(59, 130, 246, 0.15);
             border-radius: 24px;
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
@@ -988,8 +988,8 @@
 
         .process-content:hover {
             transform: translateY(-8px);
-            box-shadow: 0 16px 50px rgba(16, 185, 129, 0.15);
-            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 0 16px 50px rgb(59, 130, 246, 0.15);
+            border-color: rgb(59, 130, 246, 0.3);
         }
 
         .process-content h3 {
@@ -1006,41 +1006,74 @@
 
         /* Stats Section */
         .stats-section {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, rgba(5, 150, 105, 0.05) 100%);
-            border-top: 1px solid rgba(16, 185, 129, 0.1);
-            border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+            background: #ffffff;
+            padding: 80px 0;
+            position: relative;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 60px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .stat-item {
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            border: 2px solid rgb(59, 130, 246, 0.1);
+            border-radius: 24px;
+            padding: 50px 30px;
             text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgb(59, 130, 246, 0.15);
+            border-color: rgb(59, 130, 246, 0.3);
+        }
+
+        .stat-item:hover::before {
+            transform: scaleX(1);
         }
 
         .stat-number {
-            font-size: 64px;
+            font-size: 56px;
             font-weight: 900;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             display: block;
+            line-height: 1;
         }
 
         .stat-label {
-            font-size: 16px;
-            color: #6b7280;
+            font-size: 18px;
+            color: #374151;
             font-weight: 600;
+            line-height: 1.4;
         }
 
         /* CTA Section */
         .cta-section {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             border-radius: 32px;
             padding: 100px 60px;
             text-align: center;
@@ -1087,7 +1120,7 @@
 
         .cta-section .btn {
             background: #ffffff;
-            color: #10b981;
+            color: #3b82f6;
             font-weight: 800;
         }
 
@@ -1100,7 +1133,7 @@
         footer {
             background: #f8f9fa;
             backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(16, 185, 129, 0.1);
+            border-top: 1px solid rgb(59, 130, 246, 0.1);
             padding: 80px 40px 40px;
         }
 
@@ -1116,7 +1149,7 @@
         .footer-brand h3 {
             font-size: 32px;
             font-weight: 900;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -1137,20 +1170,20 @@
         .social-links a {
             width: 48px;
             height: 48px;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            background: rgb(59, 130, 246, 0.1);
+            border: 1px solid rgb(59, 130, 246, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #10b981;
+            color: #3b82f6;
             font-size: 20px;
             transition: all 0.3s ease;
         }
 
         .social-links a:hover {
-            background: rgba(16, 185, 129, 0.2);
-            border-color: rgba(16, 185, 129, 0.4);
+            background: rgb(59, 130, 246, 0.2);
+            border-color: rgb(59, 130, 246, 0.4);
             transform: translateY(-4px);
         }
 
@@ -1177,14 +1210,14 @@
         }
 
         .footer-section ul li a:hover {
-            color: #10b981;
+            color: #3b82f6;
         }
 
         .footer-bottom {
             max-width: 1400px;
             margin: 0 auto;
             padding-top: 40px;
-            border-top: 1px solid rgba(16, 185, 129, 0.1);
+            border-top: 1px solid rgb(59, 130, 246, 0.1);
             text-align: center;
             color: #6b7280;
             font-size: 14px;
@@ -1486,7 +1519,9 @@
     <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-container">
-            <div class="logo">مساحات</div>
+            <a href="#home" class="logo">
+                <img src="{{ asset('user/assets/images/brand.svg') }}" alt="مساحات" style="height: 40px; width: auto; filter: brightness(0) saturate(100%);">
+            </a>
             <ul class="nav-links">
                 <li><a href="#home">الرئيسية</a></li>
                 <li><a href="#services">الخدمات</a></li>
@@ -1568,55 +1603,31 @@
                     <div class="service-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
                     <h3>تصميم UI/UX احترافي</h3>
                     <p>نصمم تجارب مستخدم بديهية وجذابة باستخدام أحدث معايير التصميم العالمية، مع التركيز على سهولة الاستخدام والجمال البصري.</p>
-                    <a href="#" class="service-link">
-                        <span>اكتشف المزيد</span>
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
                 </div>
                 <div class="service-card scroll-reveal-scale stagger-delay-2">
                     <div class="service-icon"><i class="fas fa-code"></i></div>
                     <h3>تطوير ويب متقدم</h3>
-                    <p>نبني منصات ويب قوية وسريعة باستخدام Laravel, React, و Vue.js. حلول قابلة للتوسع ومحسّنة للأداء.</p>
-                    <a href="#" class="service-link">
-                        <span>اكتشف المزيد</span>
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
+                    <p>نبني منصات ويب قوية وسريعة. حلول قابلة للتوسع ومحسّنة للأداء.</p>
                 </div>
                 <div class="service-card scroll-reveal-scale stagger-delay-3">
                     <div class="service-icon"><i class="fas fa-mobile-screen-button"></i></div>
                     <h3>تطبيقات الموبايل</h3>
                     <p>تطبيقات iOS و Android أصلية وهجينة تقدم تجربة سلسة وعالية الأداء على جميع الأجهزة المحمولة.</p>
-                    <a href="#" class="service-link">
-                        <span>اكتشف المزيد</span>
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
                 </div>
                 <div class="service-card scroll-reveal-scale stagger-delay-4">
                     <div class="service-icon"><i class="fas fa-chart-line"></i></div>
                     <h3>تسويق رقمي ذكي</h3>
                     <p>استراتيجيات تسويق رقمي متكاملة: SEO, SEM, إدارة وسائل التواصل، وحملات إعلانية مدروسة تحقق نتائج حقيقية.</p>
-                    <a href="#" class="service-link">
-                        <span>اكتشف المزيد</span>
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
                 </div>
                 <div class="service-card scroll-reveal-scale stagger-delay-5">
                     <div class="service-icon"><i class="fas fa-pen-nib"></i></div>
                     <h3>إنتاج محتوى إبداعي</h3>
                     <p>كتابة محتوى احترافي، إنتاج فيديو، تصوير فوتوغرافي، وبودكاست. نحكي قصتكم بطريقة مؤثرة وجذابة.</p>
-                    <a href="#" class="service-link">
-                        <span>اكتشف المزيد</span>
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
                 </div>
                 <div class="service-card scroll-reveal-scale stagger-delay-6">
                     <div class="service-icon"><i class="fas fa-shield-halved"></i></div>
                     <h3>استشارات تقنية</h3>
                     <p>نساعدك في اتخاذ القرارات التقنية الصحيحة: اختيار التقنيات، تخطيط البنية التحتية، وتحسين الأداء.</p>
-                    <a href="#" class="service-link">
-                        <span>اكتشف المزيد</span>
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
                 </div>
             </div>
         </div>
@@ -1675,18 +1686,14 @@
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-item scroll-reveal stagger-delay-1">
-                    <span class="stat-number">150+</span>
-                    <div class="stat-label">مشروع منجز بنجاح</div>
+                    <span class="stat-number">24/7</span>
+                    <div class="stat-label">دعم متواصل</div>
                 </div>
                 <div class="stat-item scroll-reveal stagger-delay-2">
-                    <span class="stat-number">95+</span>
-                    <div class="stat-label">عميل راضٍ ومتكرر</div>
+                    <span class="stat-number">100%</span>
+                    <div class="stat-label">رضا العملاء</div>
                 </div>
                 <div class="stat-item scroll-reveal stagger-delay-3">
-                    <span class="stat-number">8+</span>
-                    <div class="stat-label">سنوات خبرة متخصصة</div>
-                </div>
-                <div class="stat-item scroll-reveal stagger-delay-4">
                     <span class="stat-number">100%</span>
                     <div class="stat-label">التزام بالجودة</div>
                 </div>
@@ -1701,7 +1708,7 @@
                 <div class="cta-content">
                     <h2>هل أنتم مستعدون لبدء مشروعكم؟</h2>
                     <p>دعونا نحول أفكاركم إلى واقع رقمي مذهل. فريقنا جاهز لمساعدتكم في كل خطوة.</p>
-                    <a href="mailto:contact@missahat.com" class="btn">
+                    <a href="https://wa.me/213771343435" target="_blank" class="btn">
                         <i class="fas fa-paper-plane"></i>
                         <span>تحدث مع فريقنا الآن</span>
                     </a>
@@ -1747,14 +1754,14 @@
             <div class="footer-section">
                 <h4>التواصل</h4>
                 <ul>
-                    <li><a href="mailto:contact@missahat.com">contact@missahat.com</a></li>
-                    <li><a href="tel:+213000000000">+213 000 000 000</a></li>
-                    <li><a>الجزائر العاصمة، الجزائر</a></li>
+                    <li><a href="mailto:missahatmedia@gmail.com" style="direction: ltr; display: inline-block;">missahatmedia@gmail.com</a></li>
+                    <li><a href="tel:+213771343435" style="direction: ltr; display: inline-block;">+213 771 343 435</a></li>
+                    <li><a>شارع سيدي يحيى الجزائر العاصمة</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2025 مساحات للإعلام والثقافة والفنون. جميع الحقوق محفوظة. صُنع بـ <i class="fas fa-heart" style="color: #10b981;"></i> في الجزائر</p>
+            <p style="direction: ltr;">© 2025 مساحات للإعلام والثقافة والفنون. جميع الحقوق محفوظة. صُنع بـ <i class="fas fa-heart" style="color: #3b82f6;"></i> في الجزائر</p>
         </div>
     </footer>
 
@@ -1871,13 +1878,13 @@
             particle.style.width = size + 'px';
             particle.style.height = size + 'px';
             
-            // Varied green shades
+            // Varied blue shades
             const colors = [
-                '#10b981',
-                '#059669',
-                '#34d399',
-                '#6ee7b7',
-                'rgba(16, 185, 129, 0.8)'
+                '#3b82f6',
+                '#2563eb',
+                '#60a5fa',
+                '#93c5fd',
+                'rgb(59, 130, 246, 0.8)'
             ];
             particle.style.background = colors[Math.floor(Math.random() * colors.length)];
             
@@ -1978,3 +1985,5 @@
 </body>
 
 </html>
+
+
