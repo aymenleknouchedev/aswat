@@ -84,10 +84,8 @@ class HomePageController extends Controller
         $sections = Section::pluck('id', 'name'); // get section ids by name
         $topContentIds = $topContents->pluck('content_id')->toArray(); // extract content ids from top contents
 
-        // If all trends have state 0, do not hide any; otherwise hide the first 4 trend contents
-        $hasActiveTrend = $trends->contains(function ($trend) {
-            return $trend->is_active == 1;
-        });
+        // If the principal trend is inactive, do not hide any; otherwise hide the first 4 trend contents
+        $hasActiveTrend = $principalTrend && $principalTrend->is_active == 1;
 
         $hidetrends = $hasActiveTrend
             ? $trends->take(4)->pluck('id')->toArray()
