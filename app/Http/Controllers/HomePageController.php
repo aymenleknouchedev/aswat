@@ -54,11 +54,16 @@ class HomePageController extends Controller
         $topContentIds = TopContent::orderByDesc('order')->take(7)->pluck('content_id')->toArray();
         $trends = $trends->filter(function ($trend) use ($topContentIds) {
             return !in_array($trend->id, $topContentIds);
-        })->values()->take(4);
+        })->values();
 
         $topContents = TopContent::orderByDesc('order')
             ->take(7)
             ->get();
+            
+        // $principalTrendstate = PrincipalTrend::latest()->first()->state ?? 'inactive';
+        // if ($principalTrendstate !== 'active') {
+        //     $hidetrends = [];
+        // }
 
         $sectionNames = [
             'algeria' => ['الجزائر', 4],
@@ -83,14 +88,6 @@ class HomePageController extends Controller
         $sections = Section::pluck('id', 'name');
         $topContentIds = $topContents->pluck('content_id')->toArray();
         $hidetrends = $trends->pluck('id')->toArray();
-        $hidetrendsfromsection = $trends->sortByDesc('published_date')->take(4);
-
-
-        $principalTrendstate = PrincipalTrend::latest()->first()->state ?? 'inactive';
-        if ($principalTrendstate !== 'active') {
-            $hidetrends = [];
-        }
-
 
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
