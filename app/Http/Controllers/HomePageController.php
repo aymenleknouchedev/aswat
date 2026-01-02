@@ -92,7 +92,6 @@ class HomePageController extends Controller
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
                 ->whereNotIn('id', $topContentIds)
-                ->whereNotIn('id', $hidetrends)
                 ->where('importance', 1)
                 ->orderByDesc('published_date')
                 ->where('status', 'published')
