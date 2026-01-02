@@ -49,21 +49,17 @@ class HomePageController extends Controller
 
     public function index()
     {
-        $principalTrend = PrincipalTrend::latest()->first();
-        $trends = $principalTrend->trend->contents->sortByDesc('published_date');
-        $topContentIds = TopContent::orderByDesc('order')->take(7)->pluck('content_id')->toArray();
-        $trends = $trends->filter(function ($trend) use ($topContentIds) {
+        $principalTrend = PrincipalTrend::latest()->first(); // get trend
+        $trends = $principalTrend->trend->contents->sortByDesc('published_date'); // get trend contents
+        $topContentIds = TopContent::orderByDesc('order')->take(7)->pluck('content_id')->toArray(); // topcontens ids
+        $trends = $trends->filter(function ($trend) use ($topContentIds) { 
             return !in_array($trend->id, $topContentIds);
-        })->values();
+        })->values(); // filter out top contents from trends
 
         $topContents = TopContent::orderByDesc('order')
             ->take(7)
-            ->get();
-            
-        // $principalTrendstate = PrincipalTrend::latest()->first()->state ?? 'inactive';
-        // if ($principalTrendstate !== 'active') {
-        //     $hidetrends = [];
-        // }
+            ->get();  // get top contents
+     
 
         $sectionNames = [
             'algeria' => ['الجزائر', 4],
@@ -85,9 +81,9 @@ class HomePageController extends Controller
             'photos' => ['صور', 5],
         ];
 
-        $sections = Section::pluck('id', 'name');
-        $topContentIds = $topContents->pluck('content_id')->toArray();
-        $hidetrends = $trends->pluck('id')->toArray();
+        $sections = Section::pluck('id', 'name'); // get section ids by name
+        $topContentIds = $topContents->pluck('content_id')->toArray(); // extract content ids from top contents
+        $hidetrends = $trends->take(4)->pluck('id')->toArray(); // extract trend content ids to hide from sections (only first 4)
 
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
