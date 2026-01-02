@@ -52,14 +52,14 @@ class HomePageController extends Controller
         $principalTrend = PrincipalTrend::latest()->first(); // get trend
         $trends = $principalTrend->trend->contents->sortByDesc('published_date'); // get trend contents
         $topContentIds = TopContent::orderByDesc('order')->take(7)->pluck('content_id')->toArray(); // topcontens ids
-        $trends = $trends->filter(function ($trend) use ($topContentIds) { 
+        $trends = $trends->filter(function ($trend) use ($topContentIds) {
             return !in_array($trend->id, $topContentIds);
         })->values(); // filter out top contents from trends
 
         $topContents = TopContent::orderByDesc('order')
             ->take(7)
             ->get();  // get top contents
-     
+
 
         $sectionNames = [
             'algeria' => ['الجزائر', 4],
@@ -84,7 +84,9 @@ class HomePageController extends Controller
         $sections = Section::pluck('id', 'name'); // get section ids by name
         $topContentIds = $topContents->pluck('content_id')->toArray(); // extract content ids from top contents
 
-                $hidetrends = $trends->take(4)->pluck('id')->toArray(); // extract trend content ids to hide from sections (only first 4)
+        $hidetrends = $trends->filter(function ($trend) {
+            return $trend->is_active !== 0;
+        })->take(4)->pluck('id')->toArray(); // extract trend content ids to hide from sections (only first 4, excluding disabled)
 
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
