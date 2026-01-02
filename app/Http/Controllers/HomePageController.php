@@ -85,12 +85,11 @@ class HomePageController extends Controller
         $hidetrends = $trends->pluck('id')->toArray();
         $hidetrends = $trends->pluck('id')->toArray();
         $hidetrendsfromsection = $trends->sortByDesc('published_date')->take(4);
-        $hidetrendsfromsectionmobile = $trends->sortByDesc('published_date')->take(5);
         
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
                 ->whereNotIn('id', $topContentIds)
-                ->whereNotIn('id', $hidetrendsfromsection)
+                ->whereNotIn('id', $hidetrends)
                 ->where('importance', 1)
                 ->orderByDesc('published_date')
                 ->where('status', 'published')
@@ -138,7 +137,7 @@ class HomePageController extends Controller
                 ->where('status', 'published')
                 ->orderByDesc('published_date')
                 ->whereNotIn('id', $topContentIds)
-                ->whereNotIn('id', $hidetrendsfromsectionmobile)
+                ->whereNotIn('id', $hidetrends)
                 ->take(5)
                 ->get();
         }
