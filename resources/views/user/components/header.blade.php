@@ -182,20 +182,10 @@
                 </a>
             </div>
             <div class="news-item">
-                <a href="{{ route('news.show', $topContents[2]->content->shortlink) }}">
-                    <img src="{{ $topContents[2]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="News 2">
+                <a href="{{ route('news.show', $topContents[3]->content->shortlink) }}">
+                    <img src="{{ $topContents[3]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="News 3">
                 </a>
-                <h3>
-                    <x-category-links :content="$topContents[2]->content" />
-
-                </h3>
-                <a href="{{ route('news.show', $topContents[2]->content->shortlink) }}"
-                    style="text-decoration: none; color: inherit;">
-                    <p>{{ $topContents[2]->content->title ?? '' }}</p>
-                </a>
-            </div>
-            <div class="news-item-noimage">
                 <h3>
                     <x-category-links :content="$topContents[3]->content" />
 
@@ -205,13 +195,36 @@
                     <p>{{ $topContents[3]->content->title ?? '' }}</p>
                 </a>
             </div>
+            <div class="news-item-noimage">
+                <h3>
+                    <x-category-links :content="$topContents[5]->content" />
+
+                </h3>
+                <a href="{{ route('news.show', $topContents[5]->content->shortlink) }}"
+                    style="text-decoration: none; color: inherit;">
+                    <p>{{ $topContents[5]->content->title ?? '' }}</p>
+                </a>
+            </div>
         </div>
         <!-- Left column: small news cards -->
         <div class="news-list">
             <div class="news-item">
+                <a href="{{ route('news.show', $topContents[2]->content->shortlink) }}">
+                    <img src="{{ $topContents[2]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                        alt="News 1">
+                </a>
+                <h3>
+                    <x-category-links :content="$topContents[2]->content" />
+                </h3>
+                <a href="{{ route('news.show', $topContents[2]->content->shortlink) }}"
+                    style="text-decoration: none; color: inherit;">
+                    <p>{{ $topContents[4]->content->title ?? '' }}</p>
+                </a>
+            </div>
+            <div class="news-item">
                 <a href="{{ route('news.show', $topContents[4]->content->shortlink) }}">
                     <img src="{{ $topContents[4]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="News 1">
+                        alt="News 2">
                 </a>
                 <h3>
                     <x-category-links :content="$topContents[4]->content" />
@@ -219,19 +232,6 @@
                 <a href="{{ route('news.show', $topContents[4]->content->shortlink) }}"
                     style="text-decoration: none; color: inherit;">
                     <p>{{ $topContents[4]->content->title ?? '' }}</p>
-                </a>
-            </div>
-            <div class="news-item">
-                <a href="{{ route('news.show', $topContents[5]->content->shortlink) }}">
-                    <img src="{{ $topContents[5]->content->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
-                        alt="News 2">
-                </a>
-                <h3>
-                    <x-category-links :content="$topContents[5]->content" />
-                </h3>
-                <a href="{{ route('news.show', $topContents[5]->content->shortlink) }}"
-                    style="text-decoration: none; color: inherit;">
-                    <p>{{ $topContents[5]->content->title ?? '' }}</p>
                 </a>
             </div>
             <div class="news-item-noimage">
