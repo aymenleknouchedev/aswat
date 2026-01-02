@@ -84,14 +84,16 @@ class HomePageController extends Controller
         $sections = Section::pluck('id', 'name'); // get section ids by name
         $topContentIds = $topContents->pluck('content_id')->toArray(); // extract content ids from top contents
 
+        // Only hide contents that are active; if all are inactive (is_active == 0), $hidetrends will be empty
         $hidetrends = $trends->filter(function ($trend) {
-            return $trend->is_active == 0;
-        })->take(4)->pluck('id')->toArray(); // extract trend content ids to hide from sections (only first 4, excluding disabled)
+            return $trend->is_active == 1;
+        })->take(4)->pluck('id')->toArray();
 
 
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
                 ->whereNotIn('id', $topContentIds)
+                ->whereNotIn('id', $hidetrends)
                 ->where('importance', 1)
                 ->orderByDesc('published_date')
                 ->where('status', 'published')

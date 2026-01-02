@@ -218,7 +218,7 @@
                 </h3>
                 <a href="{{ route('news.show', $topContents[2]->content->shortlink) }}"
                     style="text-decoration: none; color: inherit;">
-                    <p>{{ $topContents[4]->content->title ?? '' }}</p>
+                    <p>{{ $topContents[2]->content->title ?? '' }}</p>
                 </a>
             </div>
             <div class="news-item">
