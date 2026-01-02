@@ -85,8 +85,9 @@ class HomePageController extends Controller
         $topContentIds = $topContents->pluck('content_id')->toArray(); // extract content ids from top contents
 
         $hidetrends = $trends->filter(function ($trend) {
-            return $trend->is_active !== 0;
+            return $trend->is_active == 0;
         })->take(4)->pluck('id')->toArray(); // extract trend content ids to hide from sections (only first 4, excluding disabled)
+
 
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
