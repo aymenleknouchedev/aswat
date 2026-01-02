@@ -54,7 +54,7 @@ class HomePageController extends Controller
         $topContentIds = TopContent::orderByDesc('order')->take(7)->pluck('content_id')->toArray();
         $trends = $trends->filter(function ($trend) use ($topContentIds) {
             return !in_array($trend->id, $topContentIds);
-        })->values();
+        })->values()->take(4);
 
         $topContents = TopContent::orderByDesc('order')
             ->take(7)
