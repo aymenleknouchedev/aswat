@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Models\Location;
 use App\Models\Category;
+use App\Models\Trend;
+use App\Models\PrincipalTrend;
 
 class UserSeeder extends Seeder
 {
@@ -148,5 +150,16 @@ class UserSeeder extends Seeder
                 ['slug' => $category['slug']]
             );
         }
+
+        // Create a default trend and assign it as the principal trend
+        $trend = Trend::firstOrCreate(
+            ['slug' => 'main-trend'],
+            ['title' => 'الترند الرئيسي', 'image' => 'trend.png']
+        );
+
+        PrincipalTrend::updateOrCreate(
+            [],
+            ['trend_id' => $trend->id, 'is_active' => 1]
+        );
     }
 }
