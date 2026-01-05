@@ -68,7 +68,11 @@
     <!-- Open Graph -->
     <meta property="og:title" content="@yield('meta_og_title', 'أصوات جزائرية')" />
     <meta property="og:description" content="@yield('meta_og_description', 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.')" />
-    <meta property="og:image" content="@yield('meta_og_image', asset('covergoogle.png'))" />
+    <meta property="og:image" content="{{ 
+        isset($meta_og_image) && !Str::endsWith($meta_og_image, '.webp')
+            ? $meta_og_image
+            : asset('covergoogle.png')
+    }}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:url" content="{{ request()->fullUrl() }}" />
