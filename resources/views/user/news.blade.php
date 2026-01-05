@@ -29,7 +29,7 @@
 @section('meta_description', $shareDescription)
 @section('meta_og_title', $shareTitle)
 @section('meta_og_description', $shareDescription)
-@section('meta_og_image', $mainMedia)
+@section('meta_og_image', asset('covergoogle.png'))
 @section('meta_twitter_title', $shareTitle)
 @section('meta_twitter_description', $shareDescription)
 @section('meta_twitter_image', $shareImageUrl)
