@@ -161,38 +161,21 @@ class MediaController extends BaseController
             $isAudio = str_starts_with($mimeType, 'audio/');
             $isVideo = str_starts_with($mimeType, 'video/');
 
-            // ======== IMAGE HANDLING (WEBP) ========
+            // ======== IMAGE HANDLING (KEEP ORIGINAL FORMAT FOR OG COMPATIBILITY) ========
             if ($isImage) {
-                $fileName = $safeName . '_' . time() . '.webp';
+                // Store the original image (jpeg/png/webp...) without forcing WebP conversion.
+                // This ensures platforms like Facebook can correctly read og:image.
+                $fileName = $safeName . '_' . time() . '.' . $extension;
+                $storedPath = $file->storeAs('media', $fileName, 'public');
 
-                try {
-                    if (!extension_loaded('gd')) {
-                        throw new \Exception('GD extension not installed');
-                    }
+                $normalizedPath = str_replace('\\', '/', $storedPath);
 
-                    // Temporary original file
-                    $tempPath = $file->store('temp', 'local');
-
-                    $manager = new ImageManager(new Driver());
-                    $image = $manager->read(storage_path('app/' . $tempPath));
-
-                    // Save WebP file
-                    $webpPath = 'media/' . $fileName;
-                    Storage::disk('public')->put($webpPath, (string) $image->toWebp());
-
-                    Storage::disk('local')->delete($tempPath);
-
-                    // FULL URL PATH
-                    $path = asset('storage/' . $webpPath);
-                } catch (\Throwable $conversionError) {
-                    Log::warning('Image WebP conversion failed: ' . $conversionError->getMessage());
-
-                    $fileName = $safeName . '_' . time() . '.' . $extension;
-                    $storedPath = $file->storeAs('media', $fileName, 'public');
-
-                    $normalizedPath = str_replace('\\', '/', $storedPath);
-                    $path = asset('storage/' . ltrim($normalizedPath, '/'));
+                if (!Storage::disk('public')->exists($normalizedPath)) {
+                    throw new \Exception('Failed to store image file: ' . $fileName);
                 }
+
+                // FULL URL PATH
+                $path = asset('storage/' . ltrim($normalizedPath, '/'));
             }
 
             // ======== OTHER MEDIA (VIDEO / AUDIO / ANY FILE) ========
