@@ -65,15 +65,7 @@
     <link rel="stylesheet" href="{{ asset('user/css/icons.css') }}">
     <link rel="stylesheet" href="{{ asset('user/css/section-title.css') }}">
 
-    <!-- ================= OPEN GRAPH ================= -->
-    <!-- <meta property="og:title" content="@yield('meta_og_title', 'أصوات جزائرية')" /> -->
-    <meta property="og:description"
-        content="@yield('meta_og_description', 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.')" />
-    <meta property="og:image" content="@yield('meta_og_image', asset('covergoogle.png'))" />
-    <meta property="og:url" content="{{ request()->fullUrl() }}" />
-    <meta property="og:type" content="article" />
-    <meta property="og:site_name" content="أصوات جزائرية" />
-    <meta property="og:locale" content="ar_AR" />
+   
 
     <!-- ================= TWITTER / X ================= -->
     <meta name="twitter:card" content="summary_large_image">
