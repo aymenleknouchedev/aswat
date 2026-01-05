@@ -65,32 +65,10 @@
     <link rel="stylesheet" href="{{ asset('user/css/icons.css') }}">
     <link rel="stylesheet" href="{{ asset('user/css/section-title.css') }}">
 
-    @php
-        $rawOgImage = trim($__env->yieldContent('meta_og_image', asset('covergoogle.png')));
-        $rawTwitterImage = trim($__env->yieldContent('meta_twitter_image', asset('covergoogle.png')));
-
-        $normalizeImage = function ($url) {
-            if (! $url) {
-                return asset('covergoogle.png');
-            }
-
-            $path = parse_url($url, PHP_URL_PATH) ?? $url;
-
-            if (\Illuminate\Support\Str::endsWith($path, '.webp')) {
-                return asset('covergoogle.png');
-            }
-
-            return $url;
-        };
-
-        $ogImage = $normalizeImage($rawOgImage);
-        $twitterImage = $normalizeImage($rawTwitterImage);
-    @endphp
-
     <!-- Open Graph -->
     <meta property="og:title" content="@yield('meta_og_title', 'أصوات جزائرية')" />
     <meta property="og:description" content="@yield('meta_og_description', 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.')" />
-    <meta property="og:image" content="{{ $ogImage }}" />
+    <meta property="og:image" content="@yield('meta_og_image', asset('covergoogle.png'))" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:url" content="{{ request()->fullUrl() }}" />
@@ -103,7 +81,7 @@
     <meta name="twitter:title" content="@yield('meta_twitter_title', 'أصوات جزائرية')">
     <meta name="twitter:description"
         content="@yield('meta_twitter_description', 'موقع إخباري مستقل يُعنى بتقديم محتوًى إعلامي متوازن ورصين.')">
-    <meta name="twitter:image" content="{{ $twitterImage }}">
+    <meta name="twitter:image" content="@yield('meta_twitter_image', asset('covergoogle.png'))">
     <meta name="twitter:site" content="@asswatdjazairia">
 
     <!-- ================= SOCIAL LINKS ================= -->
