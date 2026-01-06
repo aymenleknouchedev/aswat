@@ -101,7 +101,7 @@
         }
 
         .share-icons a:hover {
-            color: #333;
+            color: #dbdbdbff;
         }
 
         .share-btn {
