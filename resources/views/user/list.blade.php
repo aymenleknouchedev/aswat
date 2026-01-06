@@ -60,9 +60,9 @@
         /* ===== Social Share Section (match news page colors) ===== */
         .custom-date-share {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
-            margin-top: 0px;
+            margin-top: 10px;
             margin-bottom: 18px;
             flex-wrap: wrap;
         }
@@ -70,7 +70,7 @@
         .share-container {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             gap: 10px;
             position: relative;
         }
@@ -105,20 +105,25 @@
         }
 
         .share-btn {
-            background: #ffffff;
+            background: transparent;
             border: none;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
+            border-radius: 0;
+            width: auto;
+            height: auto;
+            padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: none;
         }
 
         .share-btn:hover {
-            background: #ffffffff;
+            background: transparent;
+        }
+
+        .share-btn img {
+            filter: brightness(0) invert(1);
         }
 
         /* ===== Writer Card ===== */
@@ -1204,6 +1209,14 @@
             .sidebar-overlay {
                 display: none !important;
             }
+
+            /* Position share at bottom-left of grey hero area on desktop */
+            .hero-content .custom-date-share {
+                position: absolute;
+                bottom: 24px;
+                left: 40px;
+                margin: 0;
+            }
         }
 
         @media (max-width: 768px) {
@@ -2164,11 +2177,7 @@
                 </div>
                 <div class="article-date">{{ $day }} {{ $month }} {{ $year }} | {{ $time }}</div>
             </div>
-        </div>
-    </section>
 
-    <section class="content">
-        <div class="container">
             @php
                 $shareTitle = $news->share_title ?: $news->long_title;
                 $shareDescription = $news->share_description ?: $news->summary;
@@ -2208,6 +2217,11 @@
                     </button>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container">
 
             <div class="intro">
                 <p>{!! $news->content !!}</p>
