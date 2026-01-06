@@ -129,7 +129,8 @@
             padding: 20px;
             background: #fafafa;
             border: 1px solid #eee;
-            margin-top: 24px;
+            margin: 24px auto;
+            max-width: 800px;
         }
 
         .writer-card img {
