@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> {{ $news->mobile_title }}</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <!-- Use project fonts instead of Google Poppins -->
     <link rel="stylesheet" href="{{ asset('user/css/fonts.css') }}">
      <!-- ================= FAVICON ================= -->
@@ -55,6 +55,107 @@
             max-width: 1208px;
             margin: 0 auto;
             padding: 0 20px;
+        }
+
+        /* ===== Social Share Section (match news page colors) ===== */
+        .custom-date-share {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 0px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .share-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .share-icons {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transform: translateX(-10px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .share-container.active .share-icons {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .share-icons a {
+            border-radius: 50%;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #929292;
+            transition: color 0.3s ease;
+        }
+
+        .share-icons a:hover {
+            color: #333;
+        }
+
+        .share-btn {
+            background: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .share-btn:hover {
+            background: #ffffffff;
+        }
+
+        /* ===== Writer Card ===== */
+        .writer-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: #fafafa;
+            border: 1px solid #eee;
+            margin-top: 24px;
+        }
+
+        .writer-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .writer-info {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+            color: #555 !important;
+        }
+
+        .writer-info .name {
+            font-size: 16px;
+            color: #555 !important;
+            font-family: asswat-bold;
+        }
+
+        .writer-info .bio {
+            font-size: 16px;
+            color: #555 !important;
+            font-family: asswat-regular;
         }
 
 
@@ -535,7 +636,7 @@
 
         /* ==================== CONTENT SECTION ==================== */
         .content {
-            padding: 80px 0;
+            padding: 20px 0;
             background-color: inherit;
         }
 
@@ -1008,6 +1109,51 @@
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
+        /* ===== Related (ذات صلة) grid ===== */
+        .economy-grid-container-news {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .economy-card-news {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .economy-card-news img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
+        .economy-card-news h3 {
+            font-size: 12px;
+            margin: 8px 0 4px;
+            color: #74747C;
+            font-family: asswat-light;
+            font-weight: lighter;
+        }
+
+        .economy-card-news h2 {
+            font-size: 16px;
+            margin: 0;
+            font-family: asswat-bold;
+            color: #333;
+        }
+
+        .economy-card-news p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-family: asswat-bold;
+            color: #141414;
+            text-align: right;
+        }
+
         .back-to-top:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
@@ -1122,7 +1268,7 @@
             }
 
             .content {
-                padding: 40px 0;
+                padding: 20px 0;
             }
 
             .intro {
@@ -2022,6 +2168,46 @@
 
     <section class="content">
         <div class="container">
+            @php
+                $shareTitle = $news->share_title ?: $news->long_title;
+                $shareDescription = $news->share_description ?: $news->summary;
+            @endphp
+
+            <div class="custom-date-share">
+                <div class="share-container" id="shareContainer">
+                    <div class="share-icons">
+                        {{-- Facebook --}}
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
+                            target="_blank" title="مشاركة على فيسبوك" rel="noopener" class="share-icon">
+                            <i class="fa-brands fa-facebook"></i>
+                        </a>
+
+                        {{-- X (Twitter) --}}
+                        <a href="https://x.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($shareTitle . ' - ' . $shareDescription) }}"
+                            target="_blank" title="مشاركة على X" rel="noopener" class="share-icon">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+
+                        {{-- WhatsApp --}}
+                        <a href="https://wa.me/?text={{ urlencode($shareTitle . ' - ' . $shareDescription . ' ' . request()->fullUrl()) }}"
+                            target="_blank" title="مشاركة على واتساب" rel="noopener" class="share-icon">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+
+                        {{-- Copy Link --}}
+                        <a href="#" id="copyLinkBtn" title="نسخ الرابط" rel="noopener" class="share-icon">
+                            <i class="fa-solid fa-link"></i>
+                        </a>
+                    </div>
+
+                    {{-- Share Button --}}
+                    <button class="share-btn" id="shareToggle" type="button" title="مشاركة"
+                        aria-label="زر المشاركة">
+                        <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
+                    </button>
+                </div>
+            </div>
+
             <div class="intro">
                 <p>{!! $news->content !!}</p>
             </div>
@@ -2134,6 +2320,54 @@
                     </div>
                 @endforeach
             </div>
+            @php
+                $writers = $news->writers;
+            @endphp
+
+            @if ($writers->count() > 0)
+                @foreach ($writers as $writer)
+                    @if ($writer->bio != '')
+                        <a href="{{ route('writer.show', $writer->id) }}" style="text-decoration: none; color: inherit;">
+                            <div class="writer-card">
+                                <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}" loading="lazy">
+                                <div class="writer-info">
+                                    <span class="bio"><span class="name">{{ $writer->name }}</span>
+                                        {{ $writer->bio }}</span>
+                                </div>
+                            </div>
+                        </a>
+                    @endif
+                @endforeach
+            @endif
+
+            @if (isset($relatedNews) && $relatedNews->count() > 0)
+                <div style="margin-top: 50px;">
+                    <p class="section-title">ذات صلة</p>
+                    <div style="height: 5px"></div>
+                    @include('user.components.ligne')
+                    <div style="height: 20px"></div>
+
+                    <div class="economy-grid-container-news">
+                        @foreach ($relatedNews as $item)
+                            <div class="economy-card-news">
+                                <a href="{{ route('news.show', $item->shortlink) }}">
+                                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                        alt="{{ $item->title ?? '' }}" loading="lazy">
+                                </a>
+
+                                <h3>
+                                    <x-category-links :content="$item" />
+                                </h3>
+
+                                <a href="{{ route('news.show', $item->shortlink) }}"
+                                    style="text-decoration: none; color: inherit;">
+                                    <h2>{{ $item->title ?? '' }}</h2>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </div>
     </section>
 
@@ -2183,6 +2417,8 @@
             initMobileMenu();
             initDescriptionToggle();
             initImagePreview();
+            initializeShareFunctionality();
+            initializeCopyLink();
         });
 
         // Hero header subnav logic
@@ -2437,6 +2673,109 @@
                     }
                 });
             });
+        }
+
+        /**
+         * Initialize Share Functionality
+         */
+        function initializeShareFunctionality() {
+            // Initialize web share (list page uses only desktop container)
+            initializeSingleShare('shareContainer', 'shareToggle');
+        }
+
+        /**
+         * Initialize a single share container
+         */
+        function initializeSingleShare(containerId, toggleId) {
+            const shareContainer = document.getElementById(containerId);
+            const shareToggle = document.getElementById(toggleId);
+
+            if (!shareContainer || !shareToggle) {
+                return;
+            }
+
+            // Toggle share menu on button click
+            shareToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                shareContainer.classList.toggle('active');
+            });
+
+            // Close share menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!shareContainer.contains(e.target)) {
+                    shareContainer.classList.remove('active');
+                }
+            });
+
+            // Prevent closing when clicking inside share container
+            shareContainer.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+
+        /**
+         * Initialize Copy Link Functionality
+         */
+        function initializeCopyLink() {
+            // Initialize web copy link
+            initializeSingleCopyLink('copyLinkBtn');
+        }
+
+        /**
+         * Initialize a single copy link button
+         */
+        function initializeSingleCopyLink(btnId) {
+            const copyLinkBtn = document.getElementById(btnId);
+
+            if (!copyLinkBtn) {
+                return;
+            }
+
+            copyLinkBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const url = window.location.href;
+
+                // Copy to clipboard
+                navigator.clipboard.writeText(url).then(function() {
+                    // Show success message
+                    showCopySuccessMessage(copyLinkBtn);
+                }).catch(function(err) {
+                    console.error('Failed to copy:', err);
+                    // Fallback for older browsers
+                    fallbackCopyToClipboard(url, copyLinkBtn);
+                });
+            });
+        }
+
+        /**
+         * Show Copy Success Message
+         */
+        function showCopySuccessMessage(element) {
+            const originalHTML = element.innerHTML;
+            const originalTitle = element.title;
+
+            element.innerHTML = '<i class="fa-solid fa-check"></i>';
+            element.title = 'تم نسخ الرابط';
+
+            setTimeout(function() {
+                element.innerHTML = originalHTML;
+                element.title = originalTitle;
+            }, 2000);
+        }
+
+        /**
+         * Fallback Copy to Clipboard (for older browsers)
+         */
+        function fallbackCopyToClipboard(text, element) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            showCopySuccessMessage(element);
         }
     </script>
 
@@ -2749,6 +3088,18 @@
             .preview-title {
                 font-size: 14px;
                 padding: 0 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .economy-grid-container-news {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .economy-grid-container-news {
+                grid-template-columns: 1fr;
             }
         }
     </style>
