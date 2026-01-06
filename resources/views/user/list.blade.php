@@ -130,7 +130,7 @@
             background: #fafafa;
             border: 1px solid #eee;
             margin: 24px auto;
-            max-width: 800px;
+            max-width: 600px;
         }
 
         .writer-card img {
