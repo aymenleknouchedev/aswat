@@ -2609,68 +2609,55 @@
             console.log('Mobile menu initialized');
         }
 
-        // Description expand/collapse functionality
+        // Description expand/collapse functionality (show only first 3 paragraphs by default)
         function initDescriptionToggle() {
             const expandButtons = document.querySelectorAll('.expand-description-btn');
-            const MAX_CHARS = 500; // Professional character limit for preview
 
             expandButtons.forEach(button => {
                 const description = button.previousElementSibling;
-                const buttonText = button.querySelector('.expand-description-btn-text');
-                const fullText = description.textContent.trim();
-                const textLength = fullText.length;
-                
-                // Check if text exceeds character limit
-                const isOverflowing = textLength > MAX_CHARS;
-                
-                if (!isOverflowing) {
+                if (!description) return;
+
+                const paragraphs = Array.from(description.querySelectorAll('p'));
+
+                // If there are 3 or fewer paragraphs, no need for collapse
+                if (paragraphs.length <= 3) {
                     button.style.display = 'none';
-                } else {
-                    // Set initial max-height for collapsed state
-                    // Show only first MAX_CHARS characters worth of height
-                    const collapsedText = fullText.substring(0, MAX_CHARS);
-                    const tempDiv = document.createElement('div');
-                    tempDiv.style.fontSize = '16px';
-                    tempDiv.style.lineHeight = '1.9';
-                    tempDiv.style.position = 'absolute';
-                    tempDiv.style.visibility = 'hidden';
-                    tempDiv.style.whiteSpace = 'pre-wrap';
-                    tempDiv.style.width = '100%';
-                    tempDiv.textContent = collapsedText;
-                    description.parentElement.appendChild(tempDiv);
-                    const collapsedHeight = tempDiv.offsetHeight;
-                    tempDiv.remove();
-                    
-                    description.style.maxHeight = collapsedHeight + 'px';
+                    return;
                 }
+
+                // Initial collapsed state: show first 3 paragraphs, hide the rest
+                paragraphs.forEach((p, index) => {
+                    if (index >= 3) {
+                        p.style.display = 'none';
+                    }
+                });
+
+                button.classList.add('collapsed');
 
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const isExpanded = description.classList.contains('expanded');
 
                     if (isExpanded) {
+                        // Collapse back to first 3 paragraphs
                         description.classList.remove('expanded');
                         this.classList.remove('expanded');
                         this.classList.add('collapsed');
-                        // Reset to collapsed height
-                        const collapsedText = fullText.substring(0, MAX_CHARS);
-                        const tempDiv = document.createElement('div');
-                        tempDiv.style.fontSize = '16px';
-                        tempDiv.style.lineHeight = '1.9';
-                        tempDiv.style.position = 'absolute';
-                        tempDiv.style.visibility = 'hidden';
-                        tempDiv.style.whiteSpace = 'pre-wrap';
-                        tempDiv.style.width = '100%';
-                        tempDiv.textContent = collapsedText;
-                        description.parentElement.appendChild(tempDiv);
-                        const collapsedHeight = tempDiv.offsetHeight;
-                        tempDiv.remove();
-                        description.style.maxHeight = collapsedHeight + 'px';
+
+                        paragraphs.forEach((p, index) => {
+                            if (index >= 3) {
+                                p.style.display = 'none';
+                            }
+                        });
                     } else {
+                        // Expand: show all paragraphs
                         description.classList.add('expanded');
                         this.classList.add('expanded');
                         this.classList.remove('collapsed');
-                        description.style.maxHeight = description.scrollHeight + 'px';
+
+                        paragraphs.forEach(p => {
+                            p.style.display = '';
+                        });
                     }
                 });
             });
