@@ -37,9 +37,9 @@
 @section('content')
 
     <script>
-        // Function to process Instagram embeds
+        // Function to process social embeds (Instagram, Facebook, etc.)
         function processEmbeds() {
-            console.log('Processing Instagram embeds...');
+            console.log('Processing embeds...');
 
             // Process Instagram embeds
             if (window.instgrm && window.instgrm.Embed) {
@@ -48,6 +48,17 @@
                     window.instgrm.Embed.process();
                 } catch (e) {
                     console.error('Error processing Instagram:', e);
+                }
+            }
+
+            // Process Facebook embeds (posts, reels, videos)
+            if (window.FB && window.FB.XFBML && typeof window.FB.XFBML.parse === 'function') {
+                console.log('Found Facebook, processing...');
+                try {
+                    // Parse the whole document so dynamically-inserted embeds are resized
+                    window.FB.XFBML.parse();
+                } catch (e) {
+                    console.error('Error processing Facebook:', e);
                 }
             }
         }
@@ -88,6 +99,9 @@
             processEmbeds();
             setTimeout(processEmbeds, 500);
             setTimeout(processEmbeds, 1500);
+            // Extra passes for slower-loading Facebook SDK
+            setTimeout(processEmbeds, 3000);
+            setTimeout(processEmbeds, 5000);
         });
 
         // Expose globally for manual triggering if needed
@@ -453,6 +467,22 @@
 
         .custom-article-content .instagram-media iframe {
             max-width: 100% !important;
+        }
+
+        /* Facebook Embed Styles (posts, reels, videos) */
+        .custom-article-content .fb-post,
+        .custom-article-content .fb-video,
+        .custom-article-content .fb_iframe_widget,
+        .custom-article-content .fb_iframe_widget span,
+        .custom-article-content .fb_iframe_widget iframe,
+        .custom-article-content iframe[src*="facebook.com"] {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        .custom-article-content .fb-video,
+        .custom-article-content .fb-post {
+            margin: 20px 0 !important;
         }
 
         /* Tags */
@@ -1948,6 +1978,17 @@
                 height: auto;
                 aspect-ratio: 16/9;
                 border: none;
+            }
+
+            /* Facebook Embed Styles within mobile content (posts, reels, videos) */
+            .mobile-article-content .fb-post,
+            .mobile-article-content .fb-video,
+            .mobile-article-content .fb_iframe_widget,
+            .mobile-article-content .fb_iframe_widget span,
+            .mobile-article-content .fb_iframe_widget iframe,
+            .mobile-article-content iframe[src*="facebook.com"] {
+                width: 100% !important;
+                max-width: 100% !important;
             }
 
             /* Audio styling within mobile content */
