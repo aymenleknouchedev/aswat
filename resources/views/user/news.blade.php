@@ -473,16 +473,22 @@
         .custom-article-content .fb-post,
         .custom-article-content .fb-video,
         .custom-article-content .fb_iframe_widget,
-        .custom-article-content .fb_iframe_widget span,
-        .custom-article-content .fb_iframe_widget iframe,
-        .custom-article-content iframe[src*="facebook.com"] {
+        .custom-article-content .fb_iframe_widget span {
+            display: block !important;
             width: 100% !important;
             max-width: 100% !important;
+            line-height: 0 !important; /* avoid extra line-height gap under iframe */
+            margin: 0 auto 20px auto !important; /* controlled spacing under the reel */
+            overflow: hidden !important; /* hide any excess height Facebook reserves */
         }
 
-        .custom-article-content .fb-video,
-        .custom-article-content .fb-post {
-            margin: 20px 0 !important;
+        .custom-article-content .fb_iframe_widget iframe,
+        .custom-article-content iframe[src*="facebook.com"] {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            border: none !important;
+            height: 100% !important; /* fill the reserved height without extra blank */
         }
 
         /* Tags */
@@ -1984,11 +1990,22 @@
             .mobile-article-content .fb-post,
             .mobile-article-content .fb-video,
             .mobile-article-content .fb_iframe_widget,
-            .mobile-article-content .fb_iframe_widget span,
-            .mobile-article-content .fb_iframe_widget iframe,
-            .mobile-article-content iframe[src*="facebook.com"] {
+            .mobile-article-content .fb_iframe_widget span {
+                display: block !important;
                 width: 100% !important;
                 max-width: 100% !important;
+                line-height: 0 !important;
+                margin: 0 auto 20px auto !important;
+                overflow: hidden !important;
+            }
+
+            .mobile-article-content .fb_iframe_widget iframe,
+            .mobile-article-content iframe[src*="facebook.com"] {
+                display: block !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border: none !important;
+                height: 100% !important;
             }
 
             /* Audio styling within mobile content */
