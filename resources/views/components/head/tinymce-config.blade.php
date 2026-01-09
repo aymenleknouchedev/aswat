@@ -860,7 +860,7 @@
 <!-- ============================================
      SECTION 7: TINYMCE LIBRARY
      ============================================ -->
-<script src="https://cdn.tiny.cloud/1/qwcigpkrm410kyux7b6j7rhygc758v6hviqqvkgf4878s508/tinymce/8/tinymce.min.js"
+<script src="https://cdn.tiny.cloud/1/vw6sltzauw9x6b3cl3eby8nj99q4eoavzv581jnnmabxbhq2/tinymce/8/tinymce.min.js"
     referrerpolicy="origin" crossorigin="anonymous"></script>
 
 <!-- ============================================
