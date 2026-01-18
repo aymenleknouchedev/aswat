@@ -6,6 +6,17 @@
     $shareTitle = $news->share_title ?: $news->long_title;
     $shareDescription = $news->share_description ?: $news->summary;
 
+    // Build article-specific keywords from seo_keyword and tag names (for meta keywords)
+    $tagNames = $news->tags->pluck('name')->filter()->all();
+    $articleKeywordsParts = [];
+    if (!empty($news->seo_keyword)) {
+        $articleKeywordsParts[] = $news->seo_keyword;
+    }
+    if (!empty($tagNames)) {
+        $articleKeywordsParts[] = implode(', ', $tagNames);
+    }
+    $articleKeywords = $articleKeywordsParts ? implode(', ', $articleKeywordsParts) : null;
+
     // Build a clean, absolute URL for Open Graph / Twitter images
     if (!empty($news->share_image)) {
         // If share_image is already a full URL, use it; otherwise convert it to an asset URL
@@ -27,6 +38,7 @@
 @endphp
 
 @section('meta_description', $shareDescription)
+@section('meta_keywords', $articleKeywords)
 @section('meta_og_title', $shareTitle)
 @section('meta_og_description', $shareDescription)
 @section('meta_og_image', $shareImageUrl)
