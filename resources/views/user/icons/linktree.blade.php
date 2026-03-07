@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397.47 397.47">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397.47 397.47" width="100%" height="100%">
   <style>
     path { fill: white; }
   </style>

@@ -153,15 +153,29 @@ class HomePageController extends Controller
 
 
 
-    public function latestNews()
+    public function latestNews(Request $request)
     {
-        $latestContents = Content::where('is_latest', 1)
+        $perPage = 20;
+        $page = (int) $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        $latestQuery = Content::where('is_latest', 1)
             ->where('status', 'published')
-            ->orderByDesc('published_date')
-            ->take(20)
+            ->orderByDesc('published_date');
+
+        $latestContents = $latestQuery
+            ->skip($skip)
+            ->take($perPage)
             ->get();
 
-        return view('user.latest-news', compact('latestContents'));
+        if ($request->ajax()) {
+            return view('user.partials.latest-news-items', compact('latestContents'))->render();
+        }
+
+        // For initial page load, also compute whether there are more items
+        $totalLatest = $latestQuery->count();
+
+        return view('user.latest-news', compact('latestContents', 'totalLatest'));
     }
 
     public function photosApi()

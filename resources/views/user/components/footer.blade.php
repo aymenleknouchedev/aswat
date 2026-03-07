@@ -124,6 +124,11 @@
         margin-right: 17px;
         cursor: pointer;
         opacity: 0.5;
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
     }
 
     .footer .contact-us .left-side .icons .footer-icon:hover {
@@ -207,8 +212,8 @@
             <div class="right-side">
                 <ul>
                     <li><a href="{{ route('about-us') }}">من نحن</a></li>
-                    {{-- <li>الوظائف</li>
-                    <li>اتصل بنا</li> --}}
+                    {{-- <li>الوظائف</li> --}}
+                    <li>اتصل بنا</li> 
                     <li><a href="{{ route('privacy-and-statements') }}">سياسة الخصوصية</a></li>
                 </ul>
             </div>

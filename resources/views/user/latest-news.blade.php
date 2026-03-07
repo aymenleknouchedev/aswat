@@ -26,10 +26,10 @@
         .newCategory-all-list {
             display: flex;
             flex-direction: column;
-            gap: 20px;
         }
 
         .newCategory-all-card {
+            margin-bottom: 10px;
             display: flex;
             gap: 20px;
             direction: rtl;
@@ -76,6 +76,25 @@
             line-height: 1.5 !important;
             color: #555 !important;
             margin: 0 !important;
+        }
+
+        .photos-load-more-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 12px 0;
+            margin: 60px auto;
+            background: #f5f5f5;
+            color: #000;
+            font-family: asswat-medium;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: .3s ease;
+        }
+
+        .photos-load-more-btn:hover {
+            background: #ddd;
         }
 
         .newCategory-all-card-date {
@@ -205,48 +224,19 @@
             <div class="newCategory-all-section">
                 <!-- Left: آخر الأخبار -->
                 <div class="newCategory-all-list">
-                    @forelse ($latestContents as $item)
-                        <div class="newCategory-all-card">
-                            <div class="newCategory-all-card-date">
-                                <h4 style="width: 140px">
-                                    @php
-                                        \Carbon\Carbon::setLocale('ar'); // تفعيل اللغة العربية
-
-                                        $created = \Carbon\Carbon::parse($item->published_date);
-                                        $now = \Carbon\Carbon::now();
-                                        $diffHours = $created->diffInHours($now);
-                                    @endphp
-
-                                    @if ($diffHours < 24)
-                                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                                            <span>{{ $created->diffForHumans(null, null, false, 1) }}</span>
-                                        </div>
-                                    @else
-                                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                                            <span>{{ $created->translatedFormat('d F Y') }}</span>
-                                            <span style="color: #74747C;">{{ $created->translatedFormat('H:i') }}</span>
-                                        </div>
-                                    @endif
-                                </h4>
-                            </div>
-                            <div class="newCategory-all-card-image">
-                                <a href="{{ route('news.show', $item->shortlink) }}">
-                                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                                        alt="{{ $item->title }}">
-                                </a>
-                            </div>
-                            <div class="newCategory-all-card-text">
-                                <h3><x-category-links :content="$item" /></h3>
-                                <a href="{{ route('news.show', $item->shortlink) }}"
-                                    style="text-decoration: none; color: inherit;">
-                                    <h2>{{ $item->title }}</h2>
-                                </a>
-                                <p>{{ $item->summary }}</p>
-                            </div>
+                    @if (isset($latestContents) && count($latestContents) > 0)
+                        <div id="latest-content-container">
+                            @include('user.partials.latest-news-items', ['latestContents' => $latestContents])
                         </div>
-                    @empty
+
+                        @if (isset($totalLatest) && $totalLatest > count($latestContents))
+                            <div class="text-center mt-3" id="latest-load-more-container">
+                                <button class="photos-load-more-btn" data-page="1" type="button">المزيد</button>
+                            </div>
+                        @endif
+                    @else
                         <p>لا توجد أخبار حالياً.</p>
-                    @endforelse
+                    @endif
                 </div>
 
                 <!-- Right: الأكثر قراءة -->
@@ -319,6 +309,56 @@
         if (window.innerWidth <= 992) {
             initializeGreybarScroll();
         }
+    });
+</script>
+
+<script>
+    // Latest news load more (desktop)
+    let latestLoading = false;
+
+    document.addEventListener("click", async function(e) {
+        const btn = e.target.closest('#latest-load-more-container .photos-load-more-btn');
+        if (!btn) return;
+        if (latestLoading) return;
+
+        e.preventDefault();
+
+        let page = parseInt(btn.getAttribute("data-page")) + 1;
+
+        latestLoading = true;
+        btn.disabled = true;
+        btn.textContent = "جاري التحميل...";
+
+        try {
+            let response = await fetch(`{{ route('latestNews') }}?page=${page}`, {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
+
+            if (!response.ok) throw new Error("خطأ في السيرفر");
+
+            let data = await response.text();
+
+            if (data.trim().length === 0) {
+                btn.closest("#latest-load-more-container")?.remove();
+            } else {
+                let container = document.querySelector("#latest-content-container");
+                if (container) {
+                    container.insertAdjacentHTML("beforeend", data);
+                    btn.setAttribute("data-page", page);
+                    btn.disabled = false;
+                    btn.textContent = "المزيد";
+                }
+            }
+        } catch (error) {
+            console.error("Error loading more latest news:", error);
+            alert("خطأ في تحميل المزيد");
+            btn.disabled = false;
+            btn.textContent = "المزيد";
+        }
+
+        latestLoading = false;
     });
 </script>
 
