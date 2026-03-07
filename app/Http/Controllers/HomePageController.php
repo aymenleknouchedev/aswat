@@ -647,6 +647,14 @@ class HomePageController extends Controller
             ->take($count)
             ->get();
 
+        // Filter window contents to exclude the first 4 section contents
+        $topContentsIds = $contents->pluck('id')->toArray();
+        if ($window && isset($window->contents)) {
+            $window->contents = $window->contents->filter(function($content) use ($topContentsIds) {
+                return !in_array($content->id, $topContentsIds);
+            });
+        }
+
         // === باقي المقالات بالـ AJAX ===
         $perPage = 10;
         $page = $request->get('page', 1);
