@@ -30,7 +30,7 @@
 
     .news-item-noimage p {
         font-size: 16px;
-        font-family: asswat-medium;
+        font-family: asswat-bold;
     }
 
     .news-feature h3 {
@@ -58,7 +58,7 @@
 
     .news-item p {
         font-size: 16px;
-        font-family: asswat-medium;
+        font-family: asswat-bold;
     }
 
     .news-feature {
@@ -74,7 +74,7 @@
     .news-feature h2 {
         font-size: 24px;
         margin: 0px 0px 8px 0;
-        font-family: asswat-medium;
+        font-family: asswat-bold;
     }
 
     .news-feature h3 {
