@@ -652,10 +652,10 @@ class HomePageController extends Controller
         $page = $request->get('page', 1);
         $skip = $count + (($page - 1) * $perPage);
 
-        // Exclude content IDs that are in the window
+        // Exclude content IDs that are displayed in the window (only last 4)
         $excludedIds = [];
         if (isset($window) && isset($window->contents)) {
-            $excludedIds = $window->contents->pluck('id')->toArray();
+            $excludedIds = $window->contents->sortByDesc('published_date')->take(4)->pluck('id')->toArray();
         }
 
         $moreContents = \App\Models\Content::where('section_id', $sectionId)
@@ -735,14 +735,14 @@ class HomePageController extends Controller
             ->pluck('id')
             ->toArray();
 
-        // Get window contents to exclude
+        // Get window contents to exclude (only last 4 currently displayed)
         $windowmanagement = WindowManagement::where('section_id', $sectionId)->first();
         $excludedIds = collect($initialContents);
         
         if ($windowmanagement) {
             $window = Window::where('id', $windowmanagement->window_id)->first();
             if ($window && isset($window->contents)) {
-                $excludedIds = $excludedIds->merge($window->contents->pluck('id')->toArray());
+                $excludedIds = $excludedIds->merge($window->contents->sortByDesc('published_date')->take(4)->pluck('id')->toArray());
             }
         }
 
