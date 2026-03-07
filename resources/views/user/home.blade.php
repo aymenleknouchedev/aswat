@@ -317,7 +317,7 @@
             }
 
             /* svg icon from public/user/assets/icons/adjicon.svg before the text */
-            .featured-post-section-badge::before {
+            /* .featured-post-section-badge::before {
                 content: '';
                 width: 30px;
                 height: 30px;
@@ -326,10 +326,9 @@
                 background-image: url('{{ asset('user/assets/icons/adjicon.svg') }}');
                 background-repeat: no-repeat;
                 background-position: center;
-                /* make the SVG icon appear white */
                 filter: invert(63%) sepia(24%) saturate(749%) hue-rotate(103deg) brightness(93%) contrast(92%);
                 flex-shrink: 0;
-            }
+            } */
 
             /* Fixed UI container holding section badge */
             .section-fixed-ui {
