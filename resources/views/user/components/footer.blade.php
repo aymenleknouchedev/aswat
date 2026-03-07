@@ -213,7 +213,7 @@
                 <ul>
                     <li><a href="{{ route('about-us') }}">من نحن</a></li>
                     {{-- <li>الوظائف</li> --}}
-                    <li>اتصل بنا</li> 
+                    <li><a href="{{ route('contact-us') }}">اتصل بنا</a></li>
                     <li><a href="{{ route('privacy-and-statements') }}">سياسة الخصوصية</a></li>
                 </ul>
             </div>

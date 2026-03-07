@@ -619,13 +619,6 @@
                 height: 28px;
                 fill: #000000;
             }
-
-            @supports (padding: max(0px)) {
-                .back-to-top-btn {
-                    bottom: calc(40px + max(0px, env(safe-area-inset-bottom)));
-                    left: calc(15px + max(0px, env(safe-area-inset-left)));
-                }
-            }
         }
 
         @media (min-width: 992px) {

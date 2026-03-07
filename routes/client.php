@@ -23,6 +23,8 @@ Route::middleware(['coming.soon'])->group(function () {
     Route::get('/reviews', [HomePageController::class, 'reviews'])->name('reviews');
     Route::get('/about-us', [HomePageController::class, 'aboutUs'])->name('about-us');
     Route::get('/privacy-and-statements', [HomePageController::class, 'privacyAndStatements'])->name('privacy-and-statements');
+    Route::get('/contact-us', [HomePageController::class, 'contactUs'])->name('contact-us');
+    Route::post('/contact-us', [HomePageController::class, 'submitContact'])->name('contact-us.submit');
     Route::get('/list', [HomePageController::class, 'list'])->name('list');
     Route::get('/windows', [HomePageController::class, 'windows'])->name('windows');
     Route::get('/files', [HomePageController::class, 'files'])->name('files');

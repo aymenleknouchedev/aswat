@@ -176,7 +176,7 @@
         /* Optional: responsive for mobile */
         @media (max-width: 992px) {
             .newCategory-all-section {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr;    
                 gap: 40px;
             }
 

@@ -17,6 +17,9 @@ use App\Models\Tag;
 use App\Models\Trend;
 use Illuminate\Support\Facades\Cache;
 use App\Services\ContentService;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NormalEmail;
+use App\Models\Mail as MailModel;
 
 class HomePageController extends Controller
 {
@@ -45,6 +48,48 @@ class HomePageController extends Controller
         }
 
         return view('user.search', compact('query', 'results'));
+    }
+
+    public function contactUs()
+    {
+        return view('user.contact-us');
+    }
+
+    public function submitContact(Request $request)
+    {
+        $validated = $request->validate([
+            'first_name'  => 'required|string|max:255',
+            'last_name'   => 'required|string|max:255',
+            'email'       => 'required|email',
+            'subject'     => 'required|string|max:255',
+            'description' => 'required|string',
+            'files.*'     => 'nullable|file|max:10240', // up to 10MB each
+        ]);
+
+        // Store mail record (re-using existing Mail model + NormalEmail)
+        $mail = new MailModel();
+        $mail->user_id = null;
+        $mail->email = 'contact@asswatdjazairia.com';
+        $mail->subject = $validated['subject'];
+        $fullName = trim($validated['first_name'] . ' ' . $validated['last_name']);
+        $mail->body = "الاسم: {$validated['first_name']}\n" .
+            "اللقب: {$validated['last_name']}\n" .
+            "الاسم الكامل: {$fullName}\n" .
+            "البريد الإلكتروني: {$validated['email']}\n\n" .
+            $validated['description'];
+        $mail->save();
+
+        $files = [];
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $path = $file->store('attachments', 'public');
+                $files[] = asset('storage/' . $path);
+            }
+        }
+
+        Mail::to('contact@asswatdjazairia.com')->send(new NormalEmail($mail, $files));
+
+        return redirect()->route('contact-us')->with('status', 'تم إرسال رسالتك بنجاح. شكرًا لتواصلك معنا.');
     }
 
     public function index()
@@ -607,10 +652,17 @@ class HomePageController extends Controller
         $page = $request->get('page', 1);
         $skip = $count + (($page - 1) * $perPage);
 
+        // Exclude content IDs that are in the window
+        $excludedIds = [];
+        if (isset($window) && isset($window->contents)) {
+            $excludedIds = $window->contents->pluck('id')->toArray();
+        }
+
         $moreContents = \App\Models\Content::where('section_id', $sectionId)
             ->where('status', 'published')
+            ->whereNotIn('id', array_merge($contents->pluck('id')->toArray(), $excludedIds))
             ->orderByDesc('published_date')
-            ->skip($skip)
+            ->skip(($page - 1) * $perPage)
             ->take($perPage)
             ->get();
 
@@ -674,12 +726,31 @@ class HomePageController extends Controller
         $count = 4;
         $perPage = 10;
         $page = $request->get('page', 1);
-        $skip = $count + (($page - 1) * $perPage);
+
+        // Get initial top contents to exclude
+        $initialContents = Content::where('section_id', $sectionId)
+            ->where('status', 'published')
+            ->orderByDesc('published_date')
+            ->take($count)
+            ->pluck('id')
+            ->toArray();
+
+        // Get window contents to exclude
+        $windowmanagement = WindowManagement::where('section_id', $sectionId)->first();
+        $excludedIds = collect($initialContents);
+        
+        if ($windowmanagement) {
+            $window = Window::where('id', $windowmanagement->window_id)->first();
+            if ($window && isset($window->contents)) {
+                $excludedIds = $excludedIds->merge($window->contents->pluck('id')->toArray());
+            }
+        }
 
         $moreContents = Content::where('section_id', $sectionId)
             ->where('status', 'published')
+            ->whereNotIn('id', $excludedIds->toArray())
             ->orderByDesc('published_date')
-            ->skip($skip)
+            ->skip(($page - 1) * $perPage)
             ->take($perPage)
             ->get();
 
