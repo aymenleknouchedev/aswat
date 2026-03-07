@@ -121,7 +121,7 @@
                 <div class="nk-content">
                     <div class="nk-block nk-block-middle nk-auth-body wide-xs">
                         <div class="brand-logo pb-4 text-center">
-                            <a href="/" class="logo-link">
+                            <a target="_blank" href="/" class="logo-link">
                                 <img class="logo-img logo-img-lg" src="../dashlite/images/logo.jpg" alt="الشعار">
                             </a>
                         </div>
