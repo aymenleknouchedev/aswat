@@ -292,6 +292,10 @@
             cursor: pointer;
         }
 
+        .art-section-title:hover {
+            text-decoration: underline;
+        }
+
         .section-title {
             font-size: 32px;
         }
@@ -770,8 +774,6 @@
                 transform: translateY(-100%);
                 opacity: 0;
             }
-
-
         }
     </style>
 
@@ -867,7 +869,9 @@
                     count($window->contents) > 0)
                     <section class="art-section-hero">
                         <div class="art-section-overlay">
-                            <h2 class="art-section-title">{{ $window->name ?? 'النافذة' }}</h2>
+                            <a href="{{ route('window.show', $window->id) }}" style="text-decoration: none; color: inherit;">
+                                <h2 class="art-section-title">{{ $window->name ?? 'النافذة' }}</h2>
+                            </a>
                             <div class="art-section-grid">
                                 @foreach ($window->contents->sortByDesc('published_date')->take(4) as $content)
                                     <div class="art-section-card">

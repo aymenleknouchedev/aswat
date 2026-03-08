@@ -35,6 +35,7 @@ Route::middleware(['coming.soon'])->group(function () {
     Route::get('/windows', [HomePageController::class, 'windows'])->name('windows');
     Route::get('/writer/{id}', [HomePageController::class, 'writer'])->name('writer.show');
     Route::get('/trend/{trend}', [HomePageController::class, 'showTrend'])->name('trend.show');
+    Route::get('/window/{window}', [HomePageController::class, 'showWindow'])->name('window.show');
     Route::get('/category/{id}/{type}', [HomePageController::class, 'category'])->name('category.show');
     Route::get('/missahat', function () {
         return view('user.missahat');

@@ -12,4 +12,10 @@ class Window extends Model
     {
         return $this->hasMany(Content::class);
     }
+
+    // Add accessor to provide title property for view compatibility
+    public function getTitleAttribute()
+    {
+        return $this->name;
+    }
 }

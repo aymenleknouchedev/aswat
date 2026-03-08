@@ -950,6 +950,39 @@ class HomePageController extends Controller
         return view('user.trends', compact('theme', 'articles', 'type', 'current_id'));
     }
 
+    public function showWindow(Request $request, $window)
+    {
+        // Find the window by ID
+        $theme = Window::findOrFail($window);
+        $current_id = $window;
+        $type = 'Window';
+
+        $perPage = 9;
+        $page = $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        // Get articles for AJAX requests (pagination)
+        $articles = Content::where('window_id', $window)
+            ->where('status', 'published')
+            ->orderByDesc('published_date')
+            ->skip($skip)
+            ->take($perPage)
+            ->get();
+
+        if ($request->ajax()) {
+            return view('user.partials.tag-items', compact('articles'))->render();
+        }
+
+        // For initial page load, get the first page
+        $articles = Content::where('window_id', $window)
+            ->where('status', 'published')
+            ->orderByDesc('published_date')
+            ->take($perPage)
+            ->get();
+
+        return view('user.trends', compact('theme', 'articles', 'type', 'current_id'));
+    }
+
     public function aboutUs()
     {
         return view('user.about-us');
