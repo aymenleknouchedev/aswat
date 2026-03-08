@@ -3661,7 +3661,21 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             if (featureImage) {
                 featureImage.addEventListener('click', function() {
                     const fullImagePath = this.getAttribute('data-full-image');
-                    const caption = this.getAttribute('alt') || '{{ $news->caption ?? '' }}';
+                    
+                    // Try to get caption from figure/figcaption first (from editor HTML)
+                    let caption = '';
+                    const figure = this.closest('figure');
+                    if (figure) {
+                        const figcaption = figure.querySelector('figcaption');
+                        if (figcaption) {
+                            caption = figcaption.textContent.trim();
+                        }
+                    }
+                    
+                    // Fall back to alt attribute if no figcaption found
+                    if (!caption) {
+                        caption = this.getAttribute('alt') || '';
+                    }
 
                     if (fullImagePath) {
                         openSingleImage(fullImagePath, caption);
