@@ -319,7 +319,7 @@
             margin-top: 5px;
             font-size: 15px;
             cursor: pointer;
-            font-family: asswat-bold;
+            font-family: 'asswat-bold';
         }
 
         .art-section-card h2:hover {
