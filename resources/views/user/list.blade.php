@@ -1094,6 +1094,110 @@
             font-weight: 700;
         }
 
+        /* ==================== TAGS STYLING ==================== */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .tag-item {
+            display: inline-block;
+            background: #f1f1f1;
+            color: #000;
+            font-size: 14px;
+            padding: 6px 14px;
+            font-family: asswat-medium;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .tag-item:hover {
+            background: #e0e0e0;
+            color: #000;
+        }
+
+        /* ==================== READ MORE CARD STYLING ==================== */
+        .read-more-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 12px;
+            direction: rtl;
+            margin-top: 28px;
+            margin-bottom: 28px;
+            background: #F5F5F5;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            border-radius: 6px;
+        }
+
+        .read-more-placeholder {
+            display: block;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            padding: 1rem;
+        }
+
+        .read-more-block:has(.read-more-content) .read-more-placeholder {
+            display: none;
+        }
+
+        .read-more-label-text {
+            font-size: 18px;
+            font-family: asswat-bold;
+            color: #666;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            order: -1;
+        }
+
+        .read-more-image {
+            width: 160px;
+            height: 90px;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            flex-shrink: 0;
+            display: block;
+            position: relative;
+        }
+
+        .read-more-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            justify-content: center;
+            padding: 0 8px;
+        }
+
+        .read-more-category {
+            font-size: 12px;
+            font-family: asswat-regular;
+            color: #888;
+            text-align: right;
+            margin: 0;
+        }
+
+        .read-more-title {
+            font-size: 18px;
+            font-family: asswat-medium !important;
+            color: #000000;
+            margin-top: 2px !important;
+            margin-bottom: 2px !important;
+            line-height: 1.3;
+            text-align: right;
+        }
+
+        .read-more-summary {
+            display: none;
+        }
+
         /* ==================== BACK TO TOP BUTTON ==================== */
         .back-to-top {
             position: fixed;
@@ -2335,6 +2439,18 @@
                     </div>
                 @endforeach
             </div>
+
+            {{-- Tags --}}
+            @if ($news->tags && count($news->tags) > 0)
+                <div class="tags-container">
+                    @foreach ($news->tags as $tag)
+                        <a href="{{ route('tag.show', $tag->id) }}" class="tag-item">
+                            {{ $tag->name }}
+                        </a>
+                    @endforeach
+                </div>
+            @endif
+
             @php
                 $writers = $news->writers;
             @endphp
@@ -2432,6 +2548,8 @@
             initMobileMenu();
             initDescriptionToggle();
             initImagePreview();
+            initializeShareFunctionality();
+            initReadMoreClick();
             initializeShareFunctionality();
             initializeCopyLink();
         });
@@ -2778,6 +2896,43 @@
             document.body.removeChild(textarea);
 
             showCopySuccessMessage(element);
+        }
+
+        /**
+         * Initialize ReadMore Block Click Handler
+         */
+        function initReadMoreClick() {
+            document.addEventListener('click', function(e) {
+                const card = e.target.closest('.read-more-block');
+                if (card) {
+                    const shortlink = card.dataset.shortlink;
+                    if (shortlink) {
+                        e.preventDefault();
+                        window.location.href = '/article/' + shortlink;
+                    }
+                }
+            });
+
+            // Keyboard support for read more cards
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const card = e.target.closest('.read-more-block');
+                    if (card) {
+                        const shortlink = card.dataset.shortlink;
+                        if (shortlink) {
+                            e.preventDefault();
+                            window.location.href = '/article/' + shortlink;
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize readmore on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initReadMoreClick);
+        } else {
+            initReadMoreClick();
         }
     </script>
 
