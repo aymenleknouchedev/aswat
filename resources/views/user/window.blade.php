@@ -217,7 +217,7 @@
                                             </div>
                                             <div class="ms-text">
                                                 @if (isset($content->category) && $content->category)
-                                                    <p style="margin: 0; font-size: 14px; color: #999;">
+                                                    <p style="margin: 0; font-size: 14px; color: #999; font-family: asswat-bold;">
                                                         {{ $content->category->name }}
                                                     </p>
                                                 @endif
