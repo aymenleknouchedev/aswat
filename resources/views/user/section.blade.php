@@ -873,9 +873,9 @@
                                             <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? ($content->image ?? './user/assets/images/placeholder.jpg') }}"
                                                 alt="{{ $content->title ?? 'عنوان الخبر' }}">
                                         </a>
-                                        <a href="{{ route('news.show', $content->shortlink ?? '') }}"
-                                            style="text-decoration: none; color: inherit;font-family: 'asswat-bold' !important;">
-                                            <h2>{{ $content->title ?? 'عنوان الخبر' }}</h2>
+                                        <a  href="{{ route('news.show', $content->shortlink ?? '') }}"
+                                            style="text-decoration: none; color: inherit;">
+                                            <h2 style="font-family: asswat-bold;">{{ $content->title ?? 'عنوان الخبر' }}</h2>
                                         </a>
                                     </div>
                                 @endforeach
