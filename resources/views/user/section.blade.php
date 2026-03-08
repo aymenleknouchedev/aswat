@@ -315,12 +315,15 @@
             border: 1px solid white;
         }
 
-        .art-section-card h2 {
+        .art-section-card h2,
+        .art-section-card a h2 {
             margin-top: 5px;
             font-size: 15px;
             cursor: pointer;
             font-family: 'asswat-bold' !important;
-            font-weight: 800 !important;
+            font-weight: 600 !important;
+            font-style: normal !important;
+            text-rendering: optimizeLegibility !important;
         }
 
         .art-section-card h2:hover {
