@@ -1099,6 +1099,8 @@
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
+            margin: 24px auto;
+            max-width: 650px;
         }
 
         .tag-item {
