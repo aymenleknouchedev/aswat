@@ -320,10 +320,7 @@
             margin-top: 5px;
             font-size: 15px;
             cursor: pointer;
-            font-family: 'asswat-bold' !important;
-            font-weight: 600 !important;
-            font-style: normal !important;
-            text-rendering: optimizeLegibility !important;
+            font-family: 'asswat-medium' !important;
         }
 
         .art-section-card h2:hover {
