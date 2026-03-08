@@ -875,7 +875,7 @@
                                         </a>
                                         <a href="{{ route('news.show', $content->shortlink ?? '') }}"
                                             style="text-decoration: none; color: inherit;">
-                                            <h2>{{ $content->title ?? 'عنوان الخبر' }}</h2>
+                                            <h2 style="font-family: 'asswat-medium';">{{ $content->title ?? 'عنوان الخبر' }}</h2>
                                         </a>
                                     </div>
                                 @endforeach

@@ -217,11 +217,11 @@
                                             </div>
                                             <div class="ms-text">
                                                 @if (isset($content->category) && $content->category)
-                                                    <p style="margin: 0; font-size: 14px; color: #999">
+                                                    <p style="margin: 0; font-size: 14px; color: #999;">
                                                         {{ $content->category->name }}
                                                     </p>
                                                 @endif
-                                                <p style="font-family: 'asswat-medium';" class="ms-title">
+                                                <p class="ms-title">
                                                     {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 90) }}
                                                 </p>
                                                 <p
