@@ -221,7 +221,7 @@
                                                         {{ $content->category->name }}
                                                     </p>
                                                 @endif
-                                                <p style="font-weight: bold;" class="ms-title">
+                                                <p style="font-family: 'asswat-medium';" class="ms-title">
                                                     {{ \Illuminate\Support\Str::limit($content->mobile_title ?? $content->title, 90) }}
                                                 </p>
                                                 <p
