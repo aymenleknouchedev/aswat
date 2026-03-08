@@ -10,6 +10,7 @@ Route::middleware(['coming.soon'])->group(function () {
     // client
     Route::get('/', [HomePageController::class, 'index'])->name('index');
     Route::get('/latestNews', [HomePageController::class, 'latestNews'])->name('latestNews');
+    Route::get('/breakingNews', [HomePageController::class, 'breakingNews'])->name('breakingNews');
     Route::get('/api/photos', [HomePageController::class, 'photosApi'])->name('api.photos');
     Route::get('/api/breaking-news', [HomePageController::class, 'breakingNewsApi'])->name('api.breaking.news');
     Route::get('/api/latest-news', [HomePageController::class, 'latestNewsApi'])->name('api.latest.news');

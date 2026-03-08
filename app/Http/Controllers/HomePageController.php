@@ -223,6 +223,30 @@ class HomePageController extends Controller
         return view('user.latest-news', compact('latestContents', 'totalLatest'));
     }
 
+    public function breakingNews(Request $request)
+    {
+        $perPage = 20;
+        $page = (int) $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
+
+        $breakingQuery = BreakingContent::where('status', 'published')
+            ->orderByDesc('created_at');
+
+        $breakingContents = $breakingQuery
+            ->skip($skip)
+            ->take($perPage)
+            ->get();
+
+        if ($request->ajax()) {
+            return view('user.partials.breaking-news-items', compact('breakingContents'))->render();
+        }
+
+        // For initial page load, also compute whether there are more items
+        $totalBreaking = $breakingQuery->count();
+
+        return view('user.breaking-news', compact('breakingContents', 'totalBreaking'));
+    }
+
     public function photosApi()
     {
         $photos = Content::where('section_id', Section::where('name', 'صور')->value('id'))

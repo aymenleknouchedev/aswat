@@ -41,10 +41,13 @@
     <!-- === Breaking News === -->
     <nav id="site-breaking-news">
         <div class="site-container site-breaking-news-container">
-            <div class="site-breaking-news-content">
-                <span class="site-breaking-label" style="font-family: asswat-bold;">عاجل</span>
-                <p class="site-breaking-text" id="site-breaking-text"></p>
-            </div> <button class="site-close-breaking" aria-label="إغلاق">✖</button>
+            <a href="{{ route('breakingNews') }}" style="text-decoration: none; color: inherit; flex: 1; display: flex; align-items: center; gap: 10px;">
+                <div class="site-breaking-news-content">
+                    <span class="site-breaking-label" style="font-family: asswat-bold;">عاجل</span>
+                    <p class="site-breaking-text" id="site-breaking-text"></p>
+                </div>
+            </a>
+            <button class="site-close-breaking" aria-label="إغلاق">✖</button>
         </div>
     </nav>
 
