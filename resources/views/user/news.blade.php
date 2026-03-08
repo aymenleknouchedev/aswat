@@ -3737,10 +3737,16 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
             const currentImage = galleryImages[currentImageIndex];
             fullscreenImageContent.src = currentImage.src;
-            // Apply quote replacement to caption
-            const captionWithQuotes = currentImage.caption.replace(/"([^"]*)"/g, '«$1»');
-            fullscreenImageCaption.textContent = captionWithQuotes;
-            fullscreenImageCaption.style.display = 'block'; // Always show caption in gallery mode
+            
+            // Show or hide caption based on whether caption exists
+            if (currentImage.caption && currentImage.caption.trim() !== '') {
+                // Apply quote replacement to caption
+                const captionWithQuotes = currentImage.caption.replace(/"([^"]*)"/g, '«$1»');
+                fullscreenImageCaption.textContent = captionWithQuotes;
+                fullscreenImageCaption.style.display = 'block';
+            } else {
+                fullscreenImageCaption.style.display = 'none';
+            }
 
             // Update counter (1-based index for display)
             fullscreenImageCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
