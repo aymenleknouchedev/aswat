@@ -319,6 +319,7 @@
             margin-top: 5px;
             font-size: 15px;
             cursor: pointer;
+            font-family: asswat-bold;
         }
 
         .art-section-card h2:hover {
@@ -875,7 +876,7 @@
                                         </a>
                                         <a  href="{{ route('news.show', $content->shortlink ?? '') }}"
                                             style="text-decoration: none; color: inherit;">
-                                            <h2 style="font-family: asswat-bold;">{{ $content->title ?? 'عنوان الخبر' }}</h2>
+                                            <h2>{{ $content->title ?? 'عنوان الخبر' }}</h2>
                                         </a>
                                     </div>
                                 @endforeach
