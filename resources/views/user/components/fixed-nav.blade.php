@@ -29,10 +29,9 @@
             <div class="site-nav-left">
                 <form action="{{ route('search') }}" method="GET" class="site-search-form">
                     <input name="query" type="text" class="site-search-input" placeholder="ابحث...">
-                    <button type="submit" class="search" style="background:none;border:none;padding:0;">
-                        <button type="button" class="search-icon" style="background:none;border:none;padding:0;">
-                            @include('user.icons.search')
-                        </button>
+                    <button type="submit" class="search-icon" style="background:none;border:none;padding:0;">
+                        @include('user.icons.search')
+                    </button>
                 </form>
             </div>
         </div>
@@ -60,104 +59,7 @@
                     <p class="site-latest-text" id="site-latest-text"></p>
                 </div>
                 <div class="site-weather-widget">
-                    <div class="site-weather-location">
-                        @php
-                            $cityName = 'الجزائر';
-                            if (isset($weather['city'])) {
-                                $city = explode(',', $weather['city'])[0];
-                                $arabicCities = [
-                                    // Algerian Cities
-                                    'Algiers' => 'الجزائر',
-                                    'Oran' => 'وهران',
-                                    'Constantine' => 'قسنطينة',
-                                    'Annaba' => 'عنابة',
-                                    'Blida' => 'البليدة',
-                                    'Batna' => 'باتنة',
-                                    'Béjaïa' => 'بجاية',
-                                    'Biskra' => 'بسكرة',
-                                    'Bouira' => 'البويرة',
-                                    'Boumerdès' => 'بومرداس',
-                                    'Chlef' => 'الشلف',
-                                    'Djanet' => 'جانت',
-                                    'Djelfa' => 'الجلفة',
-                                    'El Bayadh' => 'الباياض',
-                                    'El Oued' => 'الوادي',
-                                    'Ghardaia' => 'غرداية',
-                                    'Guelma' => 'قالمة',
-                                    'Jijel' => 'جيجل',
-                                    'Khenchela' => 'خنشلة',
-                                    'Laghouat' => 'الأغواط',
-                                    'Mascara' => 'معسكر',
-                                    'Medea' => 'المدية',
-                                    'Mila' => 'ميلة',
-                                    'Mostaganem' => 'مستغانم',
-                                    'M\'Sila' => 'المسيلة',
-                                    'Nabeul' => 'نابل',
-                                    'Oran' => 'وهران',
-                                    'Ouargla' => 'ورقلة',
-                                    'Saida' => 'سعيدة',
-                                    'Sétif' => 'سطيف',
-                                    'Sidi Bel Abbès' => 'سيدي بلعباس',
-                                    'Souk Ahras' => 'سوق أهراس',
-                                    'Tamanrasset' => 'تمنراست',
-                                    'Tébessa' => 'تبسة',
-                                    'Tiaret' => 'تيارت',
-                                    'Tindouf' => 'تندوف',
-                                    'Tipasa' => 'تيبازة',
-                                    'Tlemcen' => 'تلمسان',
-                                    'Tizi Ouzou' => 'تيزي وزو',
-                                    'Tolga' => 'تولقة',
-                                    'Tougourt' => 'توقرت',
-                                    'Aïn Témouchent' => 'عين تموشنت',
-                                    'Aïn Defla' => 'عين الدفلى',
-                                    'Skikda' => 'سقيقدة',
-                                    'Illizi' => 'إليزي',
-                                    'In Amenas' => 'إن أمناس',
-                                    'In Guezzam' => 'إن قزام',
-                                    'Adrar' => 'أدرار',
-                                    'Béchar' => 'البشار',
-                                    // Other Arab Cities
-                                    'Cairo' => 'القاهرة',
-                                    'Alexandria' => 'الإسكندرية',
-                                    'Giza' => 'الجيزة',
-                                    'Riyadh' => 'الرياض',
-                                    'Jeddah' => 'جدة',
-                                    'Dubai' => 'دبي',
-                                    'Abu Dhabi' => 'أبو ظبي',
-                                    'Amman' => 'عمّان',
-                                    'Beirut' => 'بيروت',
-                                    'Damascus' => 'دمشق',
-                                    'Baghdad' => 'بغداد',
-                                    'Kuwait City' => 'مدينة الكويت',
-                                    'Doha' => 'الدوحة',
-                                    'Muscat' => 'مسقط',
-                                    'Sana\'a' => 'صنعاء',
-                                    'Gaza' => 'غزة',
-                                    'Ramallah' => 'رام الله',
-                                    'Tunis' => 'تونس',
-                                    'Casablanca' => 'الدار البيضاء',
-                                    'Marrakech' => 'مراكش',
-                                    'Rabat' => 'الرباط',
-                                    // International Cities
-                                    'Istanbul' => 'إسطنبول',
-                                    'Ankara' => 'أنقرة',
-                                    'London' => 'لندن',
-                                    'Paris' => 'باريس',
-                                    'Berlin' => 'برلين',
-                                    'New York' => 'نيويورك',
-                                    'Los Angeles' => 'لوس أنجلوس',
-                                    'Tokyo' => 'طوكيو',
-                                    'Beijing' => 'بيجينج',
-                                    'Mumbai' => 'مومباي',
-                                    'Delhi' => 'دلهي',
-                                    'Bangkok' => 'بانكوك',
-                                    'Singapore' => 'سنغافورة',
-                                ];
-                                $cityName = $arabicCities[$city] ?? $city;
-                            }
-                        @endphp
-                        {{ $cityName }}
-                    </div>
+                    <div class="site-weather-location">الجزائر</div>
                     <div class="site-weather-item">
                         <img src="{{ asset('user/assets/icons/day-mode.png') }}" alt="نهار">
                         <span>{{ isset($weather['day']) ? $weather['day'] . '°' : '26°' }}</span>

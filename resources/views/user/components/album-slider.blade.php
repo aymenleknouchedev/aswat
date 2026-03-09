@@ -17,7 +17,7 @@
                          loading="lazy"
                          data-caption="{{ $index === 0 && isset($caption) ? $caption : ($image->alt ?? '') }}">
                     <div class="album-gallery-indicator">
-                        <i class="fa-solid fa-images"></i>
+                        @include('user.icons.image')
                     </div>
                 </div>
             @endforeach
@@ -116,8 +116,8 @@
     bottom: 12px;
     color: #fff;
     border-radius: 999px;
-    padding: 8px 12px;
-    font-size: 15px;
+    padding: 12px 16px;
+    font-size: 20px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -127,7 +127,19 @@
 }
 
 .album-gallery-indicator i {
-    font-size: 18px;
+    font-size: 28px;
+}
+
+.album-gallery-indicator svg {
+    width: 36px;
+    height: 36px;
+    fill: currentColor;
+}
+
+.album-gallery-indicator img {
+    width: 36px;
+    height: 36px;
+    filter: brightness(0) invert(1);
 }
 
 /* ===== Caption ===== */

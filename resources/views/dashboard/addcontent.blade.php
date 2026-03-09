@@ -729,10 +729,9 @@
                                 {{-- TITLE FIELDS --}}
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <label class="form-label" for="title" data-ar="العنوان" data-en="Title">
+                                        <label class="form-label required-field" for="title" data-ar="العنوان" data-en="Title">
                                             العنوان
                                         </label>
-                                        <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input id="title" name="title" type="text"
                                                 class="form-control form-control" maxlength="68" data-ar="العنوان"
@@ -742,11 +741,10 @@
                                     </div>
 
                                     <div class="form-group col-12">
-                                        <label class="form-label" for="long_title" data-ar="العنوان الطويل"
+                                        <label class="form-label required-field" for="long_title" data-ar="العنوان الطويل"
                                             data-en="Long Title">
                                             العنوان الطويل
                                         </label>
-                                        <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input id="long_title" name="long_title" type="text"
                                                 class="form-control form-control" maxlength="210"
@@ -757,11 +755,10 @@
                                     </div>
 
                                     <div class="form-group col-12">
-                                        <label class="form-label" for="mobile_title" data-ar="عنوان الموبايل"
+                                        <label class="form-label required-field" for="mobile_title" data-ar="عنوان الموبايل"
                                             data-en="Mobile Title">
                                             عنوان الموبايل
                                         </label>
-                                        <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input id="mobile_title" name="mobile_title" type="text"
                                                 class="form-control form-control" maxlength="50" data-ar="عنوان الموبايل"
@@ -1164,9 +1161,8 @@
 
                                 {{-- ===== SUMMARY FIELD ===== --}}
                                 <div class="form-group col-12 my-3">
-                                    <label class="form-label" for="summary" data-ar="الملخص"
+                                    <label class="form-label required-field" for="summary" data-ar="الملخص"
                                         data-en="Summary">الملخص</label>
-                                    <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <textarea id="summary" name="summary" class="form-control form-control" rows="3"
                                             style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130">{{ old('summary', '') }}</textarea>
@@ -1176,9 +1172,8 @@
 
                                 {{-- ===== BODY CONTENT EDITOR ===== --}}
                                 <div class="form-group col-12 mb-3">
-                                    <label class="form-label" for="body" data-ar="المتن"
+                                    <label class="form-label required-field" for="body" data-ar="المتن"
                                         data-en="Body">المتن</label>
-                                    <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <x-forms.tinymce-editor id="myeditorinstance" :value="old('content', $post->content ?? '')" name="content" />
                                     </div>
@@ -1186,9 +1181,8 @@
 
                                 {{-- ===== SEO KEYWORD FIELD ===== --}}
                                 <div class="form-group col-12 mb-3">
-                                    <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
+                                    <label class="form-label required-field" for="seo_keyword" data-ar="الكلمة الرئيسية"
                                         data-en="SEO Keyword">الكلمة الرئيسية</label>
-                                    <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <input id="seo_keyword" name="seo_keyword" type="text"
                                             class="form-control form-control" maxlength="50"

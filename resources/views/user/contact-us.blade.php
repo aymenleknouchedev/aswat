@@ -160,6 +160,38 @@
             font-weight: bold;
         }
 
+        .form-alert {
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: 'asswat-regular';
+            animation: slideDown 0.3s ease;
+        }
+
+        .form-alert.success {
+            background: #e6f4ea;
+            color: #1e7e34;
+            border-left: 4px solid #1e7e34;
+        }
+
+        .form-alert.error {
+            background: #fce8e6;
+            color: #c5221f;
+            border-left: 4px solid #c5221f;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @media (max-width: 992px) {
             .web {
                 display: none !important;
@@ -211,6 +243,32 @@
                 cursor: pointer;
                 font-size: 14px;
                 margin-bottom: 80px;
+                transition: opacity 0.2s ease;
+            }
+
+            .mobile-contact-form button[type="submit"]:disabled {
+                opacity: 0.7;
+                cursor: not-allowed;
+            }
+
+            .mobile-contact-form .form-alert {
+                margin-bottom: 12px;
+                padding: 10px 12px;
+                border-radius: 3px;
+                font-size: 12px;
+                animation: slideDown 0.3s ease;
+            }
+
+            .mobile-contact-form .form-alert.success {
+                background: #e6f4ea;
+                color: #1e7e34;
+                border-left: 3px solid #1e7e34;
+            }
+
+            .mobile-contact-form .form-alert.error {
+                background: #fce8e6;
+                color: #c5221f;
+                border-left: 3px solid #c5221f;
             }
 
             .mobile-contact-header {
@@ -427,8 +485,6 @@
         }
     </style>
 
-@endsection
-
 <script>
     // Initialize Greybar Hide on Scroll
     function initializeGreybarScroll() {
@@ -436,6 +492,7 @@
         if (!greybar) return;
 
         const footer = document.querySelector('footer');
+        if (!footer) return;
 
         window.addEventListener('scroll', function() {
             const footerRect = footer.getBoundingClientRect();
@@ -480,23 +537,23 @@
 
             if (!input || !label || !list) return;
 
-            let selectedFiles = [];
-
             function renderFileList() {
                 list.innerHTML = '';
 
-                if (selectedFiles.length === 0) {
+                const files = input.files ? Array.from(input.files) : [];
+
+                if (files.length === 0) {
                     label.textContent = 'اختيار ملفات';
                     return;
                 }
 
-                if (selectedFiles.length === 1) {
-                    label.textContent = selectedFiles[0].name;
+                if (files.length === 1) {
+                    label.textContent = files[0].name;
                 } else {
-                    label.textContent = selectedFiles.length + ' ملفات مختارة';
+                    label.textContent = files.length + ' ملفات مختارة';
                 }
 
-                selectedFiles.forEach(function(file, index) {
+                files.forEach(function(file, index) {
                     const chip = document.createElement('span');
                     const sizeKb = Math.round(file.size / 1024);
                     chip.textContent = (index + 1) + '. ' + file.name + ' (' + sizeKb + ' KB)';
@@ -505,39 +562,13 @@
             }
 
             input.addEventListener('change', function() {
-                if (this.files && this.files.length > 0) {
-                    selectedFiles = selectedFiles.concat(Array.from(this.files));
-                    this.value = '';
-                }
                 renderFileList();
             });
 
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const formData = new FormData(form);
-                formData.delete('files[]');
-
-                selectedFiles.forEach(function(file) {
-                    formData.append('files[]', file);
-                });
-
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    redirect: 'follow'
-                })
-                .then(function(response) {
-                    window.location.reload();
-                })
-                .catch(function() {
-                    form.removeEventListener('submit', arguments.callee);
-                    form.submit();
-                });
-            });
+            // Initial render (in case of back navigation)
+            renderFileList();
         }
     });
 </script>
+
+@endsection

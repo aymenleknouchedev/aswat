@@ -123,4 +123,16 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Email Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This email address is used to receive contact form submissions and
+    | important system notifications.
+    |
+    */
+
+    'admin_email' => env('ADMIN_EMAIL', 'contact@asswatdjazairia.com'),
+
 ];

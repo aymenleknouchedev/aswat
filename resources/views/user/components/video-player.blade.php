@@ -43,23 +43,17 @@
     }
 
     .video-cover img {
-        transition: transform 0.3s ease;
-    }
-
-    .video-cover:hover img {
-        transform: scale(1.05);
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        aspect-ratio: 16/9;
     }
 
     .play-button {
         position: absolute;
         bottom: 15px;
         left: 15px;
-        transition: transform 0.3s ease;
         pointer-events: none;
-    }
-
-    .video-cover:hover .play-button {
-        transform: scale(1.1);
     }
 </style>
 

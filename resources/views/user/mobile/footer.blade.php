@@ -163,11 +163,13 @@
             {{-- <li>الوظائف</li>
             <li>اتصل بنا</li> --}}
             <li><a href="{{ route('privacy-and-statements') }}">سياسة الخصوصية</a></li>
-
         </ul>
         <div class="m-icons" aria-label="وسائل التواصل الاجتماعي">
             <a href="https://www.facebook.com/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Facebook">
                 @include('user.icons.facebook')
+            </a>
+            <a href="https://2ntik.com/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="2ntik">
+                @include('user.icons.2ntik')
             </a>
             <a href="https://x.com/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Twitter">
                 @include('user.icons.twitter')
@@ -183,6 +185,9 @@
             </a>
             <a href="https://www.linkedin.com/in/asswatdjazairia/" target="_blank" class="m-icon footer-icon" aria-label="LinkedIn">
                 @include('user.icons.linkedin')
+            </a>
+            <a href="https://wa.me/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="WhatsApp">
+                @include('user.icons.whatsapp')
             </a>
             <a href="https://linktr.ee/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Linktree">
                 @include('user.icons.linktree')
@@ -200,11 +205,16 @@
             <div class="left-side">
             <p>جميع الحقوق محفوظة © مساحات للإعلام والثقافة والفنون 2025</p>
             </div>
-            <a href="{{ route('missahat') }}" class="right-side" style="text-decoration: none;">
-            <p>تصميم وتطوير</p>
-            <br>
-            <img class="mt-3" style="margin: auto" height="40" src="{{ asset('user/assets/images/brand.svg') }}" alt="Missahat - تصميم وتطوير">
-            </a>
+            <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                <a href="https://asswatarabia.com/" target="_blank" style="text-decoration: none;">
+                    <img src="https://www.freepnglogos.com/uploads/pinterest-logos-vector-png-hd-14.png" alt="Aswat Arabia" height="35">
+                </a>
+                <a href="{{ route('missahat') }}" class="right-side" style="text-decoration: none;">
+                <p>تصميم وتطوير</p>
+                <br>
+                <img class="mt-3" style="margin: auto" height="40" src="{{ asset('user/assets/images/brand.svg') }}" alt="Missahat - تصميم وتطوير">
+                </a>
+            </div>
         </div>
     </div>
 

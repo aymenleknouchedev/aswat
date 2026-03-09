@@ -181,7 +181,7 @@
                                                             </a>
                                                         </div>
                                                         <div class="small text-muted">
-                                                            <span>المحرر: {{ $content->user->name }}</span>
+                                                            <span>المحرر: {{ optional($content->user)->name ?? '-' }}</span>
                                                             @if (optional($content->writer)->name)
                                                                 | <span>الكاتب:
                                                                     {{ optional($content->writer)->name }}</span>
@@ -225,10 +225,10 @@
 
                                                     <td>
                                                         <div class="fw-bold mb-1 text-center">
-                                                            {{ $content->section->name ?? '-' }}
+                                                            {{ optional($content->section)->name ?? '-' }}
                                                         </div>
                                                         <small class="text-muted d-block text-center">
-                                                            {{ $content->category->name ?? '-' }}
+                                                            {{ optional($content->category)->name ?? '-' }}
                                                         </small>
                                                     </td>
 

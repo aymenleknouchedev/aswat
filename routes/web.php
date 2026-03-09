@@ -10,7 +10,18 @@ require __DIR__ ."/admin.php";
 // Coming soon
 Route::post('/store-join-team', [JoinTeamController::class, 'store_join_team'])->name('dashboard.store-join-team');
 
-
+// Weather API endpoint
+Route::get('/api/weather', function () {
+    $city = request('city', 'Algiers,DZ');
+    $weatherService = app(\App\Services\WeatherService::class);
+    $weather = $weatherService->current($city);
+    
+    if (!$weather) {
+        return response()->json(['error' => 'Unable to fetch weather'], 500);
+    }
+    
+    return response()->json($weather);
+});
 
 // Debug weather detection
 Route::get('/debug/weather', function () {

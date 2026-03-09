@@ -9,7 +9,9 @@ use App\Models\PrincipalTrend;
 use App\Models\TopContent;
 use App\Models\Window;
 use App\Models\WindowManagement;
+use App\Models\Contact;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreContactRequest;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\Writer;
@@ -17,6 +19,7 @@ use App\Models\Tag;
 use App\Models\Trend;
 use Illuminate\Support\Facades\Cache;
 use App\Services\ContentService;
+use App\Services\ContactService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NormalEmail;
 use App\Models\Mail as MailModel;
@@ -24,10 +27,12 @@ use App\Models\Mail as MailModel;
 class HomePageController extends Controller
 {
     protected $contentService;
+    protected $contactService;
 
-    public function __construct(ContentService $contentService)
+    public function __construct(ContentService $contentService, ContactService $contactService)
     {
         $this->contentService = $contentService;
+        $this->contactService = $contactService;
     }
 
     public function search(Request $request)
@@ -55,40 +60,19 @@ class HomePageController extends Controller
         return view('user.contact-us');
     }
 
-    public function submitContact(Request $request)
+    public function submitContact(StoreContactRequest $request)
     {
-        $validated = $request->validate([
-            'first_name'  => 'required|string|max:255',
-            'last_name'   => 'required|string|max:255',
-            'email'       => 'required|email',
-            'subject'     => 'required|string|max:255',
-            'description' => 'required|string',
-            'files.*'     => 'nullable|file|max:10240', // up to 10MB each
-        ]);
+        $this->contactService->processContactSubmission($request->validated(), $request);
 
-        // Store mail record (re-using existing Mail model + NormalEmail)
-        $mail = new MailModel();
-        $mail->user_id = null;
-        $mail->email = 'contact@asswatdjazairia.com';
-        $mail->subject = $validated['subject'];
-        $fullName = trim($validated['first_name'] . ' ' . $validated['last_name']);
-        $mail->body = "الاسم: {$validated['first_name']}\n" .
-            "اللقب: {$validated['last_name']}\n" .
-            "الاسم الكامل: {$fullName}\n" .
-            "البريد الإلكتروني: {$validated['email']}\n\n" .
-            $validated['description'];
-        $mail->save();
-
-        $files = [];
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                $path = $file->store('attachments', 'public');
-                $files[] = asset('storage/' . $path);
-            }
+        // Return JSON for AJAX requests
+        if ($request->expectsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest') {
+            return response()->json([
+                'success' => true,
+                'message' => 'تم إرسال رسالتك بنجاح. شكرًا لتواصلك معنا.'
+            ]);
         }
 
-        Mail::to('contact@asswatdjazairia.com')->send(new NormalEmail($mail, $files));
-
+        // Redirect for normal form submissions
         return redirect()->route('contact-us')->with('status', 'تم إرسال رسالتك بنجاح. شكرًا لتواصلك معنا.');
     }
 

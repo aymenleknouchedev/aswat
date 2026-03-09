@@ -144,6 +144,248 @@ class WeatherService
     }
 
     /**
+     * Get weather for multiple Algerian cities.
+     * Returns array of weather data for each city.
+     * 
+     * @param array|null $cities Array of city names, defaults to major Algerian wilayas
+     * @return array
+     */
+    public function getAlgerianCitiesWeather(?array $cities = null): array
+    {
+        if (!$cities) {
+            // Default major Algerian wilayas + baladiyat from all regions
+            $cities = [
+                // Wilayas
+                'Algiers,DZ',
+                'Oran,DZ',
+                'Constantine,DZ',
+                'Annaba,DZ',
+                'Setif,DZ',
+                'Blida,DZ',
+                'Batna,DZ',
+                'Ghardaia,DZ',
+                'Ouargla,DZ',
+                'Tlemcen,DZ',
+                'Tizi Ouzou,DZ',
+                'Skikda,DZ',
+                'Sidi Bel Abbes,DZ',
+                'Tamanrasset,DZ',
+                // Algiers Baladiyat
+                'Bordj el Kiffan,DZ',
+                'Cheraga,DZ',
+                'Hussein Dey,DZ',
+                'Bab el Oued,DZ',
+                // Oran Baladiyat
+                'Es Senia,DZ',
+                'Misserghine,DZ',
+                // Constantine Baladiyat
+                'Ain Smara,DZ',
+                'Ben Azouz,DZ',
+                // Annaba Baladiyat
+                'Sidi Amar,DZ',
+                'El Bouni,DZ',
+                // Blida Baladiyat
+                'Bougara,DZ',
+                'Mouzaia,DZ',
+                // Setif Baladiyat
+                'Ain Oulmene,DZ',
+                'Beni Aziz,DZ',
+                // Batna Baladiyat
+                'Arris,DZ',
+                'Barika,DZ',
+                // Tizi Ouzou Baladiyat
+                'Draâ Ben Khedda,DZ',
+                'Azazga,DZ',
+                // Skikda Baladiyat
+                'Collo,DZ',
+                'Taher,DZ',
+            ];
+        }
+
+        $results = [];
+        foreach ($cities as $city) {
+            $weather = $this->current($city);
+            if ($weather) {
+                $results[$city] = $weather;
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get Arabic name for an Algerian city.
+     * 
+     * @param string $englishName
+     * @return string
+     */
+    public function getArabicCityName(string $englishName): string
+    {
+        $arabicCities = [
+            // Algerian Wilayas (58)
+            'Algiers' => 'الجزائر',
+            'Aïn Defla' => 'عين الدفلى',
+            'Aïn Témouchent' => 'عين تموشنت',
+            'Adrar' => 'أدرار',
+            'Annaba' => 'عنابة',
+            'Batna' => 'باتنة',
+            'Béchar' => 'البشار',
+            'Béjaïa' => 'بجاية',
+            'Biskra' => 'بسكرة',
+            'Blida' => 'البليدة',
+            'Boumerdès' => 'بومرداس',
+            'Bouira' => 'البويرة',
+            'Chlef' => 'الشلف',
+            'Constanine' => 'قسنطينة',
+            'Constantine' => 'قسنطينة',
+            'Djanet' => 'جانت',
+            'Djelfa' => 'الجلفة',
+            'El Bayadh' => 'الباياض',
+            'El Oued' => 'الوادي',
+            'El Taref' => 'الطارف',
+            'Ghardaia' => 'غرداية',
+            'Guelma' => 'قالمة',
+            'Illizi' => 'إليزي',
+            'In Amenas' => 'إن أمناس',
+            'In Guezzam' => 'إن قزام',
+            'Jijel' => 'جيجل',
+            'Khenchela' => 'خنشلة',
+            'Laghouat' => 'الأغواط',
+            'Mascara' => 'معسكر',
+            'Medea' => 'المدية',
+            'Mila' => 'ميلة',
+            'Mostaganem' => 'مستغانم',
+            'M\'Sila' => 'المسيلة',
+            'MSila' => 'المسيلة',
+            'Oran' => 'وهران',
+            'Ouargla' => 'ورقلة',
+            'Oum El Bouaghi' => 'أم البواقي',
+            'Saida' => 'سعيدة',
+            'Sétif' => 'سطيف',
+            'Setif' => 'سطيف',
+            'Sidi Bel Abbès' => 'سيدي بلعباس',
+            'Sidi Bel Abbes' => 'سيدي بلعباس',
+            'Souk Ahras' => 'سوق أهراس',
+            'Tamanrasset' => 'تمنراست',
+            'Tébessa' => 'تبسة',
+            'Tiaret' => 'تيارت',
+            'Tindouf' => 'تندوف',
+            'Tipasa' => 'تيبازة',
+            'Tlemcen' => 'تلمسان',
+            'Tizi Ouzou' => 'تيزي وزو',
+            'Tolga' => 'تولقة',
+            'Tougourt' => 'توقرت',
+            'Skikda' => 'سقيقدة',
+            'Relizane' => 'الريليزاني',
+            'Saïda' => 'سعيدة',
+            
+            // Algerian Baladiyat (Municipalities) - Algiers area and others
+            'Bordj el Kiffan' => 'برج الكيفان',
+            'Bordj Kiffan' => 'برج الكيفان',
+            'Cheraga' => 'شراقة',
+            'Dar el Beida' => 'دار البيضاء',
+            'Dar El Beida' => 'دار البيضاء',
+            'Beni Messous' => 'بني معسوس',
+            'Kouba' => 'القوبة',
+            'Sidi M\'Hamed' => 'سيدي محمد',
+            'Sidi Mhamed' => 'سيدي محمد',
+            'Baraki' => 'براقي',
+            'Bachiraoui' => 'باشيراوي',
+            'Belfort' => 'بلفور',
+            'Bir Mourad Rais' => 'بئر مراد رايس',
+            'Bab el Oued' => 'باب الواد',
+            'Bab Oued' => 'باب الواد',
+            'Hussein Dey' => 'حسين داي',
+            'El Madania' => 'المادية',
+            'Birkhadem' => 'بركهادم',
+            'Hydra' => 'حيدرة',
+            'Ben Aknoun' => 'بن عكنون',
+            'Sidi Fredj' => 'سيدي فرج',
+            'Zeralda' => 'زرالدة',
+            'Ouled Fayet' => 'أولاد فايت',
+            'Draria' => 'درارية',
+            'Bab Ezzouar' => 'باب الزوار',
+            'Bab Ez Zouar' => 'باب الزوار',
+            'Rais Hamidou' => 'رايس حميدو',
+            'Sidi Moussa' => 'سيدي موسى',
+            'Ouled Chebel' => 'أولاد شبل',
+            'Djamaa' => 'جمعة',
+            'Bir El Djir' => 'بئر الجير',
+            'Bir Eldjir' => 'بئر الجير',
+            
+            // Oran Wilaya Baladiyat
+            'Es Senia' => 'السانية',
+            'Sidi Cha\'m' => 'سيدي الشعم',
+            'Bir El Djir' => 'بئر الجير',
+            'Hammam Bouziane' => 'حمام بوزيان',
+            'Tafraoui' => 'تفراوي',
+            'Misserghine' => 'مسرغين',
+            
+            // Constantine Wilaya Baladiyat
+            'Ain Smara' => 'عين الصمراء',
+            'Ben Azouz' => 'بن عزوز',
+            'Didouche Mourad' => 'ديدوش مراد',
+            'Zighout Youcef' => 'زيغوت يوسف',
+            'Ibn Badis' => 'ابن باديس',
+            
+            // Annaba Wilaya Baladiyat
+            'Sidi Amar' => 'سيدي عمار',
+            'El Bouni' => 'البوني',
+            'Chetaibi' => 'الشطايبي',
+            'Oued El Aneb' => 'وادي العنب',
+            
+            // Blida Wilaya Baladiyat
+            'Bougara' => 'بوقرة',
+            'Chebli' => 'شبلي',
+            'Damous' => 'داموس',
+            'Soumaa' => 'سوما',
+            'Mouzaia' => 'موزاية',
+            'Larbaa' => 'العريب',
+            
+            // Setif Wilaya Baladiyat
+            'Ain Oulmene' => 'عين آولمن',
+            'Beni Aziz' => 'بني عزيز',
+            'Beni Ourtilane' => 'بني ورتيلان',
+            'Guellal' => 'قلال',
+            'Boutaleb' => 'بوتاليب',
+            
+            // Batna Wilaya Baladiyat
+            'Arris' => 'آريس',
+            'Barika' => 'بارقة',
+            'Belezma' => 'بلزمة',
+            'Oum El Bouaghi' => 'أم البواقي',
+            'Tazoult' => 'تازولت',
+            
+            // Tlemcen Wilaya
+            'Sidi Medel' => 'سيدي معدل',
+            'Sabra' => 'صابرة',
+            
+            // Tizi Ouzou Wilaya Baladiyat
+            'Draâ Ben Khedda' => 'درعة بن خديدة',
+            'Mekla' => 'مكلة',
+            'Azazga' => 'أزازقة',
+            'Tirourda' => 'تيرورضا',
+            
+            // Skikda Wilaya Baladiyat
+            'Collo' => 'القولة',
+            'Taher' => 'طاهر',
+            'Beni Oulbaz' => 'بني ولباز',
+            
+            // Ghardaia Wilaya Baladiyat
+            'Melika' => 'مليكة',
+            'Djanet' => 'جانت',
+            'Metlili' => 'متليلي',
+            
+            // Ouargla Wilaya Baladiyat
+            'Hassi Messaoud' => 'حاسي مسعود',
+            'Touggourt' => 'توقرت',
+            'Hassi Mouloud' => 'حاسي مولود',
+        ];
+
+        return $arabicCities[$englishName] ?? $englishName;
+    }
+
+    /**
      * Detect user's city from their IP address using free geolocation API.
      * Uses ipapi.co for reliable geolocation with Arabic city names support.
      * 
