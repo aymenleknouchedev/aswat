@@ -258,9 +258,9 @@
                 <p>جميع الحقوق محفوظة © مساحات للإعلام والثقافة والفنون 2025</p>
             </div>
             <div class="right-side" style="display: flex; gap: 30px; align-items: center;">
-                <a href="https://asswatarabia.com/" target="_blank" class="right-side" style="text-decoration: none;">
+                <!-- <a href="https://asswatarabia.com/" target="_blank" class="right-side" style="text-decoration: none;">
                     <img src="https://www.freepnglogos.com/uploads/pinterest-logos-vector-png-hd-14.png" alt="Aswat Arabia" height="35" style="display: block;">
-                </a>
+                </a> -->
                 <a href="{{ route('missahat') }}" class="right-side" style="text-decoration: none;">
                     <p>تصميم وتطوير</p>
                     <img src="{{ asset('user/assets/images/brand.svg') }}" alt="Missahat - تصميم وتطوير">
