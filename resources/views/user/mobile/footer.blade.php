@@ -30,7 +30,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 24px;
+            gap: 14px;
             margin: 6px 0 14px;
         }
 
@@ -160,8 +160,6 @@
         <div class="m-divider" aria-hidden="true"></div>
         <ul class="m-links" role="list">
             <li><a href="{{ route('about-us') }}" style="color: inherit; text-decoration: none;">من نحن</a></li>
-            {{-- <li>الوظائف</li>
-            <li>اتصل بنا</li> --}}
             <li><a href="{{ route('privacy-and-statements') }}">سياسة الخصوصية</a></li>
         </ul>
         <div class="m-icons" aria-label="وسائل التواصل الاجتماعي">
@@ -206,9 +204,9 @@
             <p>جميع الحقوق محفوظة © مساحات للإعلام والثقافة والفنون 2025</p>
             </div>
             <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
-                <a href="https://asswatarabia.com/" target="_blank" style="text-decoration: none;">
+                <!-- <a href="https://asswatarabia.com/" target="_blank" style="text-decoration: none;">
                     <img src="https://www.freepnglogos.com/uploads/pinterest-logos-vector-png-hd-14.png" alt="Aswat Arabia" height="35">
-                </a>
+                </a> -->
                 <a href="{{ route('missahat') }}" class="right-side" style="text-decoration: none;">
                 <p>تصميم وتطوير</p>
                 <br>
