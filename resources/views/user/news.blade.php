@@ -3236,6 +3236,10 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             initializeCopyLink();
             initializeAudioPlayer();
             initializeGreybarScroll();
+            initializeMobileFeatureImage();
+            initializeMobileGallery();
+            initializeFeatureImage();
+            initializeGallery();
         });
 
         /**
@@ -3679,6 +3683,30 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             }
         }
 
+        // Initialize mobile feature image (for mobile article)
+        function initializeMobileFeatureImage() {
+            const mobileFeatureImage = document.querySelector('.mobile-article-image img');
+            if (mobileFeatureImage) {
+                mobileFeatureImage.addEventListener('click', function() {
+                    const imagePath = this.src;
+                    
+                    // Get caption from figure/figcaption
+                    let caption = '';
+                    const figure = this.closest('figure');
+                    if (figure) {
+                        const figcaption = figure.querySelector('figcaption');
+                        if (figcaption) {
+                            caption = figcaption.textContent.trim();
+                        }
+                    }
+
+                    if (imagePath) {
+                        openSingleImage(imagePath, caption);
+                    }
+                });
+            }
+        }
+
         // Initialize content images gallery
         function initializeGallery() {
             galleryImages = [];
@@ -3700,6 +3728,34 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             galleryImages.forEach((imageData, index) => {
                 imageData.element.addEventListener('click', function(e) {
                     e.preventDefault();
+                    openGallery(index);
+                });
+            });
+        }
+
+        // Initialize mobile content images gallery
+        function initializeMobileGallery() {
+            let mobileGalleryImages = [];
+
+            // Add all mobile content images (excluding feature image)
+            const mobileContentImages = document.querySelectorAll('.mobile-article-content img');
+            mobileContentImages.forEach(img => {
+                const figure = img.closest('figure');
+                const caption = figure ? (figure.querySelector('figcaption')?.textContent?.trim() || '') : '';
+
+                mobileGalleryImages.push({
+                    src: img.src,
+                    caption: caption,
+                    element: img
+                });
+            });
+
+            // Add click handlers to all mobile gallery images
+            mobileGalleryImages.forEach((imageData, index) => {
+                imageData.element.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Merge both web and mobile gallery images
+                    galleryImages = mobileGalleryImages;
                     openGallery(index);
                 });
             });
