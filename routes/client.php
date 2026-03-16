@@ -3,18 +3,31 @@
 
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\ReadMoreController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['coming.soon'])->group(function () {
-    // client
-    Route::get('/clear-cache', function () {
+Route::get('/clearcache', function (Request $request) {
+    $expectedToken = (string) env('CLEAR_CACHE_TOKEN', '');
+    $providedToken = (string) $request->query('token', '');
+
+    if (!app()->environment('local')) {
+        if ($expectedToken === '' || !hash_equals($expectedToken, $providedToken)) {
+            abort(403);
+        }
+    }
+
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
     Artisan::call('route:clear');
     Artisan::call('view:clear');
+
     return response()->json(['message' => 'Cache cleared successfully']);
-    });
+});
+
+Route::middleware(['coming.soon'])->group(function () {
+    // client
     Route::get('/', [HomePageController::class, 'index'])->name('index');
     Route::get('/latestNews', [HomePageController::class, 'latestNews'])->name('latestNews');
     Route::get('/breakingNews', [HomePageController::class, 'breakingNews'])->name('breakingNews');

@@ -17,7 +17,9 @@ class ComingSoonMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (env("COMING_SOON") == true) {
+        $comingSoon = filter_var(env('COMING_SOON', false), FILTER_VALIDATE_BOOLEAN);
+
+        if ($comingSoon) {
             if ($request->is('dashboard/auth') || $request->is('dashboard/login')) {
                 return $next($request);
             }
