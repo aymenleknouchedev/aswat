@@ -89,6 +89,7 @@
 
         /* ================== Main Section ================== */
         .container {
+
             position: relative;
             display: flex;
             justify-content: center;
