@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['coming.soon'])->group(function () {
     // client
+    Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    return response()->json(['message' => 'Cache cleared successfully']);
+    });
     Route::get('/', [HomePageController::class, 'index'])->name('index');
     Route::get('/latestNews', [HomePageController::class, 'latestNews'])->name('latestNews');
     Route::get('/breakingNews', [HomePageController::class, 'breakingNews'])->name('breakingNews');
