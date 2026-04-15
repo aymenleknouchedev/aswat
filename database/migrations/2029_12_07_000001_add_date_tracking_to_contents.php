@@ -12,14 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('contents', function (Blueprint $table) {
-            // Add user tracking for updates
-            $table->foreignId('updated_by_user_id')->nullable()->constrained('users')->nullOnDelete();
-            
-            // Make published_at nullable (currently it's using useCurrent which always sets it)
+            if (!Schema::hasColumn('contents', 'updated_by_user_id')) {
+                $table->foreignId('updated_by_user_id')->nullable()->constrained('users')->nullOnDelete();
+            }
+
             $table->timestamp('published_at')->nullable()->change();
-            
-            // Add creation timestamp (will be set when content is published)
-            $table->timestamp('published_date')->nullable()->after('published_at');
+
+            if (!Schema::hasColumn('contents', 'published_date')) {
+                $table->timestamp('published_date')->nullable()->after('published_at');
+            }
         });
     }
 
