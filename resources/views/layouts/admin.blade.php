@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" data-bs-theme="white" lang="zxx" class="js">
+<html lang="ar" dir="rtl" data-bs-theme="white" class="js">
 
 <head>
     <link rel="icon" type="image/svg+xml" href="{{ asset('user/assets/images/icon-logo.svg') }}" />
@@ -19,8 +19,8 @@
             display: none;
         }
     </style>
-    <link id="rtl-style" rel="stylesheet" href="./dashlite/assets/css/dashlite.rtl.css" media="not all">
-    <link id="ltr-style" rel="stylesheet" href="./dashlite/assets/css/dashlite.css" media="all">
+    <link id="rtl-style" rel="stylesheet" href="./dashlite/assets/css/dashlite.rtl.css" media="all">
+    <link id="ltr-style" rel="stylesheet" href="./dashlite/assets/css/dashlite.css" media="not all">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 

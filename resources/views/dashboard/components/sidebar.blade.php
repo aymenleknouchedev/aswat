@@ -11,7 +11,7 @@
         </div>
         <div class="nk-sidebar-brand">
             <a href="/" target="_blank" class="logo-link nk-sidebar-logo">
-                <img id="site-logo" class="logo-img" src="" alt="logo">
+                <img id="site-logo" class="logo-img" src="{{ asset('user/assets/images/dark_logo_rtl.png') }}" alt="logo">
             </a>
         </div>
     </div>

@@ -106,36 +106,37 @@ window.addEventListener('DOMContentLoaded', function () {
     const savedDir = localStorage.getItem('siteDirection');
     const savedLang = localStorage.getItem('siteLang');
 
-    if (savedDir && savedLang) {
-        document.documentElement.setAttribute('dir', savedDir);
-        document.documentElement.setAttribute('lang', savedLang);
+    const dir = savedDir || 'rtl';
+    const lang = savedLang || 'ar';
 
-        if (savedDir === 'rtl') {
-            document.body.classList.add('has-rtl');
-            rtlStyle.media = 'all';
-            ltrStyle.media = 'not all';
-            if (localStorage.getItem('theme') === 'dark') {
-                logo.setAttribute('src', './user/assets/images/white_logo_rtl.png');
-            } else {
-                logo.setAttribute('src', './user/assets/images/dark_logo_rtl.png');
-            }
-            if (languageButtonLabel) languageButtonLabel.textContent = 'الوضع الليلي';
+    document.documentElement.setAttribute('dir', dir);
+    document.documentElement.setAttribute('lang', lang);
+
+    if (dir === 'rtl') {
+        document.body.classList.add('has-rtl');
+        rtlStyle.media = 'all';
+        ltrStyle.media = 'not all';
+        if (localStorage.getItem('theme') === 'dark') {
+            logo.setAttribute('src', './user/assets/images/white_logo_rtl.png');
         } else {
-            document.body.classList.remove('has-rtl');
-            rtlStyle.media = 'not all';
-            ltrStyle.media = 'all';
-            if (localStorage.getItem('theme') === 'dark') {
-                logo.setAttribute('src', './user/assets/images/white_logo_ltr.png');
-            } else {
-                logo.setAttribute('src', './user/assets/images/dark_logo_ltr.png');
-            }
-            if (languageButtonLabel) languageButtonLabel.textContent = 'Dark Mode';
+            logo.setAttribute('src', './user/assets/images/dark_logo_rtl.png');
         }
-
-        document.querySelectorAll('[data-en]').forEach(el => {
-            el.textContent = el.dataset[savedLang];
-        });
+        if (languageButtonLabel) languageButtonLabel.textContent = 'الوضع الليلي';
+    } else {
+        document.body.classList.remove('has-rtl');
+        rtlStyle.media = 'not all';
+        ltrStyle.media = 'all';
+        if (localStorage.getItem('theme') === 'dark') {
+            logo.setAttribute('src', './user/assets/images/white_logo_ltr.png');
+        } else {
+            logo.setAttribute('src', './user/assets/images/dark_logo_ltr.png');
+        }
+        if (languageButtonLabel) languageButtonLabel.textContent = 'Dark Mode';
     }
+
+    document.querySelectorAll('[data-en]').forEach(el => {
+        el.textContent = el.dataset[lang];
+    });
 
     // تحديث أزرار اللغة
     updateLanguageButtons();
