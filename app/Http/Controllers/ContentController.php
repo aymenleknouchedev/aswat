@@ -245,7 +245,7 @@ class ContentController extends BaseController
         // =========================================
         $rules = [
             'title'               => 'required|string|max:75',
-            'long_title'          => 'required|string|max:210',
+            'long_title'          => 'required|string|max:95',
             'mobile_title'        => 'required|string|max:50',
             'display_method'      => 'required|string|in:simple,list,file',
             'section_id'          => 'required|exists:sections,id',
@@ -894,7 +894,7 @@ class ContentController extends BaseController
         // ========= 1) Règles de validation =========
         $rules = [
             'title'               => 'required|string|max:75',
-            'long_title'          => 'required|string|max:210',
+            'long_title'          => 'required|string|max:95',
             'mobile_title'        => 'required|string|max:50',
             'display_method'      => 'required|string|in:simple,list,file',
             'section_id'          => 'required|exists:sections,id',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Str;
 use App\Models\Page;
 
 use App\Services\CacheService;
@@ -49,9 +50,10 @@ class PagesController extends BaseController
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255|unique:pages,title',
-            'slug' => 'required|string|max:255|unique:pages,slug',
             'content' => 'required|string',
         ]);
+
+        $validated['slug'] = Str::slug($validated['title']) ?: Str::random(8);
 
         Page::create($validated);
         CacheService::forget(CacheKeys::PAGES);
@@ -87,9 +89,10 @@ class PagesController extends BaseController
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:pages,slug,' . $page->id,
             'content' => 'required|string',
         ]);
+
+        $validated['slug'] = Str::slug($validated['title']) ?: Str::random(8);
 
         $page->update($validated);
         CacheService::forget(CacheKeys::PAGES);

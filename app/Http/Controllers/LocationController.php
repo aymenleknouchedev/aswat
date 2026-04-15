@@ -7,6 +7,7 @@ use App\Models\Location;
 use Illuminate\Routing\Controller as BaseController;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class LocationController extends BaseController
 {
@@ -64,11 +65,12 @@ class LocationController extends BaseController
         try {
             Validator::validate($request->all(), [
                 'name' => 'required|string',
-                'slug' => 'required|string|unique:locations,slug',
                 'type' => 'required|in:city,continent,country',
             ]);
 
-            Location::create($request->all());
+            Location::create(array_merge($request->only('name', 'type'), [
+                'slug' => Str::slug($request->input('name')) ?: Str::random(8),
+            ]));
 
             return redirect()->back()->with('success', 'Location created successfully.');
         } catch (\Exception $e) {
@@ -101,12 +103,13 @@ class LocationController extends BaseController
         try {
             Validator::validate($request->all(), [
                 'name' => 'required|string|unique:locations,name,' . $id,
-                'slug' => 'required|string|unique:locations,slug,' . $id,
                 'type' => 'required|in:city,continent,country',
             ]);
 
             $location = Location::findOrFail($id);
-            $location->update($request->only('name', 'slug', 'type'));
+            $location->update(array_merge($request->only('name', 'type'), [
+                'slug' => Str::slug($request->input('name')) ?: Str::random(8),
+            ]));
 
             return redirect()->back()->with('success', 'Location updated successfully.');
         } catch (\Exception $e) {

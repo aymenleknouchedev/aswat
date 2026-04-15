@@ -49,7 +49,7 @@
 @section('content')
 
     <script>
-        // Function to process social embeds (Instagram, Facebook, etc.)
+        // Function to process social embeds (Instagram, Facebook, X/Twitter, etc.)
         function processEmbeds() {
             console.log('Processing embeds...');
 
@@ -71,6 +71,16 @@
                     window.FB.XFBML.parse();
                 } catch (e) {
                     console.error('Error processing Facebook:', e);
+                }
+            }
+
+            // Process X (Twitter) embeds
+            if (window.twttr && window.twttr.widgets) {
+                console.log('Found Twitter/X, processing...');
+                try {
+                    window.twttr.widgets.load();
+                } catch (e) {
+                    console.error('Error processing Twitter/X:', e);
                 }
             }
         }
@@ -470,6 +480,27 @@
             background-size: contain;
         }
 
+        /* Prevent blockquote decorative icons on twitter-tweet embeds */
+        .custom-article-content blockquote.twitter-tweet::before,
+        .custom-article-content blockquote.twitter-tweet::after {
+            display: none !important;
+        }
+
+        /* Reset blockquote styling for twitter-tweet embeds */
+        .custom-article-content blockquote.twitter-tweet {
+            padding: 0 !important;
+            margin: 20px auto !important;
+            text-align: initial !important;
+            font-family: inherit !important;
+            position: relative;
+        }
+
+        .custom-article-content blockquote.twitter-tweet p {
+            font-size: inherit !important;
+            font-family: inherit !important;
+            text-align: initial !important;
+        }
+
         /* Instagram Embed Styles */
         .custom-article-content .instagram-media {
             margin: 20px auto !important;
@@ -501,6 +532,16 @@
             max-width: 100% !important;
             border: none !important;
             height: 100% !important; /* fill the reserved height without extra blank */
+        }
+
+        /* X (Twitter) Embed Styles */
+        .custom-article-content .twitter-tweet {
+            margin: 20px auto !important;
+            max-width: 550px !important;
+        }
+
+        .custom-article-content .twitter-tweet iframe {
+            max-width: 100% !important;
         }
 
         /* Tags */
@@ -2020,6 +2061,16 @@
                 height: 100% !important;
             }
 
+            /* X (Twitter) Embed Styles within mobile content */
+            .mobile-article-content .twitter-tweet {
+                margin: 20px auto !important;
+                max-width: 100% !important;
+            }
+
+            .mobile-article-content .twitter-tweet iframe {
+                max-width: 100% !important;
+            }
+
             /* Audio styling within mobile content */
             .mobile-article-content audio {
                 width: 100% !important;
@@ -2116,6 +2167,26 @@
                 height: 32px;
                 background: url('/user/assets/icons/down.png') no-repeat center;
                 background-size: contain;
+            }
+
+            /* Prevent blockquote decorative icons on twitter-tweet embeds */
+            .mobile-article-content blockquote.twitter-tweet::before,
+            .mobile-article-content blockquote.twitter-tweet::after {
+                display: none !important;
+            }
+
+            /* Reset blockquote styling for twitter-tweet embeds */
+            .mobile-article-content blockquote.twitter-tweet {
+                padding: 0 !important;
+                margin: 20px auto !important;
+                text-align: initial !important;
+                font-family: inherit !important;
+            }
+
+            .mobile-article-content blockquote.twitter-tweet p {
+                font-size: inherit !important;
+                font-family: inherit !important;
+                text-align: initial !important;
             }
 
             /* Clickable text styling */
@@ -2521,7 +2592,7 @@
 
                 {{-- Category --}}
                 <div class="custom-category">
-                    @if (isset($news->country))
+                    @if ($news->category && $news->country)
                         <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
                             style="color: #888; text-decoration: none;">
                             {{ $news->category->name ?? '' }}
@@ -2531,7 +2602,7 @@
                             style="color: #888; text-decoration: none;">
                             {{ $news->country->name ?? '' }}
                         </a>
-                    @elseif (isset($news->continent))
+                    @elseif ($news->category && $news->continent)
                         <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
                             style="color: #888; text-decoration: none;">
                             {{ $news->category->name ?? '' }}
@@ -2541,7 +2612,7 @@
                             style="color: #888; text-decoration: none;">
                             {{ $news->continent->name ?? '' }}
                         </a>
-                    @else
+                    @elseif ($news->category)
                         <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
                             style="color: #888; text-decoration: none;">
                             {{ $news->category->name ?? '' }}
@@ -2865,7 +2936,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
                 @include('user.components.sp60')
 
-                <p class="section-title">المزيد من {{ $news->category->name }}</p>
+                <p class="section-title">المزيد من {{ $news->category?->name }}</p>
                 @include('user.components.ligne')
 
                 @foreach ($lastNews as $content)
@@ -2929,7 +3000,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             </div>
             <!-- Category -->
             <div class="mobile-article-category">
-                @if (isset($news->country))
+                @if ($news->category && $news->country)
                     <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}">
                         {{ $news->category->name ?? '' }}
                     </a>
@@ -2937,7 +3008,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     <a href="{{ route('category.show', ['id' => $news->country->id, 'type' => 'Country']) }}">
                         {{ $news->country->name ?? '' }}
                     </a>
-                @elseif (isset($news->continent))
+                @elseif ($news->category && $news->continent)
                     <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}">
                         {{ $news->category->name ?? '' }}
                     </a>
@@ -2945,7 +3016,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     <a href="{{ route('category.show', ['id' => $news->continent->id, 'type' => 'Continent']) }}">
                         {{ $news->continent->name ?? '' }}
                     </a>
-                @else
+                @elseif ($news->category)
                     <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}">
                         {{ $news->category->name ?? '' }}
                     </a>
@@ -3532,11 +3603,17 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         function initializeTextDefinitionModal() {
             const textDefinitions = {};
 
+            // Helper to safely decode URI-encoded attribute values
+            function safeDecodeAttr(val) {
+                if (!val) return '';
+                try { return decodeURIComponent(val); } catch (e) { return val; }
+            }
+
             // Find all clickable terms in the content
             document.querySelectorAll('.clickable-term').forEach(function(element) {
                 const term = element.getAttribute('data-term');
                 const imagePath = element.getAttribute('data-image');
-                const description = element.getAttribute('data-description');
+                const description = safeDecodeAttr(element.getAttribute('data-description'));
 
                 if (term && description) {
                     textDefinitions[term] = {

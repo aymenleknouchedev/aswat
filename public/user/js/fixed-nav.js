@@ -91,9 +91,17 @@ searchButton.addEventListener('click', (e) => {
     e.stopPropagation(); // يمنع تفعيل document click
 
     if (searchInput.classList.contains('active')) {
+        // If input is visible and has text, let the form submit
+        if (searchInput.value.trim().length > 0) {
+            return; // allow default submit
+        }
+        // If empty, just hide it
+        e.preventDefault();
         searchInput.classList.remove('active');
         searchInput.blur();
     } else {
+        // Show the input and focus it, don't submit
+        e.preventDefault();
         searchInput.classList.add('active');
         searchInput.focus();
     }

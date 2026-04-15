@@ -227,7 +227,7 @@
                             <!-- Text -->
                             <div class="newCategory-all-card-text">
                                 <h3>
-                                    @if (isset($item->country))
+                                    @if ($item->category && $item->country)
                                         <a
                                             href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
                                             {{ $item->category->name ?? '' }}
@@ -237,7 +237,7 @@
                                             href="{{ route('category.show', ['id' => $item->country->id, 'type' => 'Country']) }}">
                                             {{ $item->country->name ?? '' }}
                                         </a>
-                                    @elseif (isset($item->continent))
+                                    @elseif ($item->category && $item->continent)
                                         <a
                                             href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
                                             {{ $item->category->name ?? '' }}
@@ -247,7 +247,7 @@
                                             href="{{ route('category.show', ['id' => $item->continent->id, 'type' => 'Continent']) }}">
                                             {{ $item->continent->name ?? '' }}
                                         </a>
-                                    @else
+                                    @elseif ($item->category)
                                         <a
                                             href="{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}">
                                             {{ $item->category->name ?? '' }}

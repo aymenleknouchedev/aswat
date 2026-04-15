@@ -190,18 +190,6 @@
                                 @enderror
                             </div>
 
-                            <!-- Slug -->
-                            <div class="form-group">
-                                <label class="form-label" for="slug" data-en="Slug" data-ar="الرابط المختصر">الرابط
-                                    المختصر</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" name="slug" class="form-control" id="slug"
-                                        value="{{ old('slug', $trend->slug) }}" required placeholder="مثال: trending-topic">
-                                </div>
-                                @error('slug')
-                                    <span class="text-danger small">{{ $message }}</span>
-                                @enderror
-                            </div>
 
                             <!-- صورة الترند - Enhanced with Modal -->
                             <div class="form-group">

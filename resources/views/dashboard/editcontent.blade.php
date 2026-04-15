@@ -746,13 +746,13 @@
                                         <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input required id="long_title" name="long_title" type="text"
-                                                class="form-control form-control" maxlength="210"
+                                                class="form-control form-control" maxlength="95"
                                                 data-ar="العنوان الطويل" data-en="Long Title"
                                                 value="{{ old('long_title', $content->long_title) }}">
                                         </div>
                                         <small class="text-muted"><span
                                                 id="long_title-count">{{ strlen(old('long_title', $content->long_title)) }}</span>
-                                            / 210</small>
+                                            / 95</small>
                                     </div>
 
                                     <div class="form-group col-12">
@@ -1497,10 +1497,6 @@
                         <div class="mb-3"><label for="category_name" class="form-label">اسم الصنف</label>
                             <input type="text" class="form-control" id="category_name" name="name" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="category_slug" class="form-label">الرابط المختصر</label>
-                            <input type="text" class="form-control" id="category_slug" name="slug" required>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -1525,11 +1521,6 @@
                         <div class="mb-3">
                             <label for="writer_name" class="form-label">اسم الكاتب</label>
                             <input type="text" class="form-control" id="writer_name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="writer_slug" class="form-label">الرابط المختصر (Slug)</label>
-                            <input type="text" class="form-control" id="writer_slug" name="slug" required>
-                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
                             <label for="writer_bio" class="form-label">السيرة الذاتية</label>
@@ -1587,11 +1578,6 @@
                             <label for="location_name" class="form-label">اسم الموقع</label>
                             <input type="text" class="form-control" id="location_name" name="name" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="location_slug" class="form-label">الرابط المختصر (Slug)</label>
-                            <input type="text" class="form-control" id="location_slug" name="slug" required>
-                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
-                        </div>
                         <input type="hidden" name="type" value="city">
                     </form>
                 </div>
@@ -1616,11 +1602,6 @@
                         <div class="mb-3">
                             <label for="trend_title" class="form-label">اسم الترند</label>
                             <input type="text" class="form-control" id="trend_title" name="title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="trend_slug" class="form-label">الرابط المختصر (Slug)</label>
-                            <input type="text" class="form-control" id="trend_slug" name="slug" required>
-                            <div class="form-text">يُولَّد تلقائيًا من العنوان ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
                             <label for="trend_image" class="form-label">الصورة</label>
@@ -1652,11 +1633,6 @@
                         <div class="mb-3">
                             <label for="window_name" class="form-label">اسم النافذة</label>
                             <input type="text" class="form-control" id="window_name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="window_slug" class="form-label">الرابط المختصر (Slug)</label>
-                            <input type="text" class="form-control" id="window_slug" name="slug" required>
-                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
                             <label for="window_image" class="form-label">الصورة</label>
@@ -2034,7 +2010,7 @@
                 },
                 {
                     id: "long_title",
-                    max: 210
+                    max: 95
                 },
                 {
                     id: "mobile_title",
@@ -2230,28 +2206,7 @@
                 'وصف المشاركة';
         }
 
-        // ========== SLUGIFY HELPER ==========
-        function slugify(v) {
-            return v.toString().toLowerCase()
-                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/^-+|-+$/g, '')
-                .substring(0, 150);
-        }
-
         // ========== MODAL AJAX FUNCTIONS ==========
-        document.addEventListener('DOMContentLoaded', function() {
-            const nameI = document.getElementById('writer_name');
-            const slugI = document.getElementById('writer_slug');
-            if (nameI && slugI) {
-                nameI.addEventListener('input', () => {
-                    if (!slugI.dataset.touched || slugI.value.trim() === '') {
-                        slugI.value = slugify(nameI.value);
-                    }
-                });
-                slugI.addEventListener('input', () => slugI.dataset.touched = '1');
-            }
-        });
 
         async function addNewWriter(e) {
             if (e && e.preventDefault) e.preventDefault();
@@ -2260,7 +2215,6 @@
             const fd = new FormData(form);
 
             const name = (fd.get('name') || '').trim();
-            const slug = (fd.get('slug') || '').trim();
             const bio = (fd.get('bio') || '').trim();
             const file = fd.get('image');
 
@@ -2268,11 +2222,6 @@
                 icon: 'error',
                 title: 'تنبيه',
                 text: 'يرجى إدخال اسم الكاتب.'
-            });
-            if (!slug) return Swal.fire({
-                icon: 'error',
-                title: 'تنبيه',
-                text: 'يرجى إد خال الرابط المختصر.'
             });
             if (!bio) return Swal.fire({
                 icon: 'error',
@@ -2527,14 +2476,6 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const titleI = document.getElementById('trend_title');
-            const slugI = document.getElementById('trend_slug');
-            titleI?.addEventListener('input', () => {
-                if (!slugI) return;
-                if (!slugI.dataset.touched || slugI.value.trim() === '') {
-                    slugI.value = slugify(titleI.value);
-                }
-            });
-            slugI?.addEventListener('input', () => slugI.dataset.touched = '1');
         });
 
         async function addNewTrend(e) {
@@ -2544,18 +2485,12 @@
             const fd = new FormData(form);
 
             const title = (fd.get('title') || '').trim();
-            const slug = (fd.get('slug') || '').trim();
             const file = fd.get('image');
 
             if (!title) return Swal.fire({
                 icon: 'error',
                 title: 'تنبيه',
                 text: 'يرجى إدخال اسم الترند.'
-            });
-            if (!slug) return Swal.fire({
-                icon: 'error',
-                title: 'تنبيه',
-                text: 'يرجى إدخال الرابط المختصر.'
             });
             if (!(file instanceof File) || !file.name) {
                 return Swal.fire({
@@ -2605,7 +2540,6 @@
                 if (res.ok && (data.id || (data.trend && data.trend.id))) {
                     const id = data.id || data.trend.id;
                     const name = data.title || (data.trend && data.trend.title) || title;
-                    const slugR = data.slug || (data.trend && data.trend.slug) || slug;
 
                     const trendSearch = document.querySelector('#trend_search');
                     if (trendSearch) {
@@ -2629,7 +2563,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'تمت الإضافة',
-                        text: `تم إنشاء الترند: ${name} (${slugR})`,
+                        text: `تم إنشاء الترند: ${name}`,
                         timer: 1600,
                         showConfirmButton: false
                     });
@@ -2660,7 +2594,6 @@
             const fd = new FormData(form);
 
             const name = (fd.get('name') || '').trim();
-            const slug = (fd.get('slug') || '').trim();
             const file = fd.get('image');
 
             if (!name) {
@@ -2668,13 +2601,6 @@
                     icon: 'error',
                     title: 'تنبيه',
                     text: 'يرجى إدخال اسم النافذة.'
-                });
-            }
-            if (!slug) {
-                return Swal.fire({
-                    icon: 'error',
-                    title: 'تنبيه',
-                    text: 'يرجى إدخال الرابط المختصر.'
                 });
             }
             if (!(file instanceof File) || !file.name) {
@@ -2777,19 +2703,6 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const nameInput = document.getElementById('window_name');
-            const slugInput = document.getElementById('window_slug');
-
-            if (nameInput && slugInput) {
-                nameInput.addEventListener('input', () => {
-                    if (!slugInput.dataset.touched || slugInput.value.trim() === '') {
-                        slugInput.value = slugify(nameInput.value);
-                    }
-                });
-
-                slugInput.addEventListener('input', () => {
-                    slugInput.dataset.touched = '1';
-                });
-            }
         });
 
         async function addNewWriterLocation(e) {
@@ -2799,7 +2712,6 @@
             const fd = new FormData(form);
 
             const name = (fd.get('name') || '').trim();
-            const slug = (fd.get('slug') || '').trim();
             const type = 'city';
 
             if (!name) {
@@ -2809,20 +2721,12 @@
                     text: 'يرجى إدخال اسم الموقع.'
                 });
             }
-            if (!slug) {
-                return Swal.fire({
-                    icon: 'error',
-                    title: 'تنبيه',
-                    text: 'يرجى إدخال الرابط المختصر.'
-                });
-            }
 
             try {
                 const res = await fetch('/dashboard/api/add-city', {
                     method: 'POST',
                     body: JSON.stringify({
                         name: name,
-                        slug: slug,
                         type: type
                     }),
                     headers: {
@@ -2846,7 +2750,6 @@
                 if (res.ok && (data.id || (data.location && data.location.id))) {
                     const id = data.id || data.location.id;
                     const name = data.name || data.location.name;
-                    const slug = data.slug || data.location.slug;
 
                     const locationSearch = document.querySelector('#writer_location_search');
                     if (locationSearch) {
@@ -2897,19 +2800,6 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const nameInput = document.getElementById('location_name');
-            const slugInput = document.getElementById('location_slug');
-
-            if (nameInput && slugInput) {
-                nameInput.addEventListener('input', () => {
-                    if (!slugInput.dataset.touched || slugInput.value.trim() === '') {
-                        slugInput.value = slugify(nameInput.value);
-                    }
-                });
-
-                slugInput.addEventListener('input', () => {
-                    slugInput.dataset.touched = '1';
-                });
-            }
         });
 
         // ========== AJAX FORM SUBMISSION ==========

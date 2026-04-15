@@ -904,9 +904,9 @@
                         return [
                             'id' => $item->id,
                             'title' => $item->title ?? 'Untitled',
-                            'category' => $item->category->name ?? null,
+                            'category' => $item->category?->name ?? null,
                             'section_id' => $item->section_id ?? null,
-                            'section' => $item->section->name ?? null,
+                            'section' => $item->section?->name ?? null,
                             'image_url' => $imagePath,
                             'summary' => \Illuminate\Support\Str::limit($item->summary ?? '', 150),
                             'link' => url('/content/' . $item->id),
@@ -1686,7 +1686,7 @@
                 if (elementToEdit) {
                     textContentInput.value = elementToEdit.textContent || '';
                     textKeyInput.value = elementToEdit.getAttribute('data-term') || '';
-                    textDescriptionInput.value = elementToEdit.getAttribute('data-description') || '';
+                    textDescriptionInput.value = safeDecodeAttr(elementToEdit.getAttribute('data-description'));
 
                     const imageUrl = elementToEdit.getAttribute('data-image');
                     if (imageUrl) {
@@ -2081,7 +2081,7 @@
                 // Update the element's attributes and content
                 textModalState.editingElement.textContent = content;
                 textModalState.editingElement.setAttribute('data-term', key);
-                textModalState.editingElement.setAttribute('data-description', description);
+                textModalState.editingElement.setAttribute('data-description', encodeURIComponent(description));
 
                 if (textModalState.selectedImagePath) {
                     textModalState.editingElement.setAttribute('data-image', textModalState
@@ -2104,10 +2104,10 @@
                 if (window.tinymce && tinymce.activeEditor) {
                     tinymce.activeEditor.focus();
                     const escapedKey = escapeHtml(key).replace(/"/g, '&quot;');
-                    const escapedDesc = escapeHtml(description).replace(/"/g, '&quot;');
+                    const encodedDesc = encodeURIComponent(description);
                     const escapedContent = escapeHtml(content);
                     let attr =
-                        `class="clickable-term" data-term="${escapedKey}" data-description="${escapedDesc}"`;
+                        `class="clickable-term" data-term="${escapedKey}" data-description="${encodedDesc}"`;
                     if (textModalState.selectedImagePath) {
                         attr +=
                             ` data-image="${escapeHtml(textModalState.selectedImagePath).replace(/"/g, '&quot;')}"`;
@@ -2157,6 +2157,20 @@
             if (str == null) return '';
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g,
                 '&quot;').replace(/'/g, '&#39;');
+        };
+
+        /**
+         * Safely decode a URI-encoded attribute value (backward compatible)
+         * @param {string} val - Attribute value (may or may not be URI-encoded)
+         * @returns {string} Decoded string
+         */
+        window.safeDecodeAttr = function(val) {
+            if (!val) return '';
+            try {
+                return decodeURIComponent(val);
+            } catch (e) {
+                return val;
+            }
         };
     })();
 
@@ -2241,6 +2255,65 @@
         .fb-embed-block .fb-post{
             display:none;
         }
+
+        /* X (Twitter) embed block placeholder inside editor */
+        .x-embed-block{
+            display:block;
+            border:2px dashed #000;
+            background:#f7f9f9;
+            padding:0.75rem 1rem;
+            margin:1rem 0;
+            border-radius:6px;
+            text-align:center;
+            font-size:0.9rem;
+            color:#0f1419;
+            cursor:pointer;
+        }
+        .x-embed-block .x-embed-title{
+            font-weight:700;
+            margin-bottom:0.25rem;
+        }
+        .x-embed-block .x-embed-url{
+            font-size:0.8rem;
+            direction:ltr;
+            unicode-bidi:bidi-override;
+            word-break:break-all;
+            color:#1d9bf0;
+        }
+        /* Hide actual blockquote markup inside editor; only show placeholder */
+        .x-embed-block .twitter-tweet{
+            display:none;
+        }
+
+        /* Instagram embed block placeholder inside editor */
+        .ig-embed-block{
+            display:block;
+            border:2px dashed #e4405f;
+            background:#fdf9f9;
+            padding:0.75rem 1rem;
+            margin:1rem 0;
+            border-radius:6px;
+            text-align:center;
+            font-size:0.9rem;
+            color:#262626;
+            cursor:pointer;
+        }
+        .ig-embed-block .ig-embed-title{
+            font-weight:700;
+            margin-bottom:0.25rem;
+        }
+        .ig-embed-block .ig-embed-url{
+            font-size:0.8rem;
+            direction:ltr;
+            unicode-bidi:bidi-override;
+            word-break:break-all;
+            color:#e4405f;
+        }
+        /* Hide actual instagram blockquote inside editor */
+        .ig-embed-block .instagram-media{
+            display:none;
+        }
+
         .clickable-term{color:#0066cc;text-decoration:underline;cursor:pointer;padding:2px 4px;border-radius:3px;transition:background-color 0.2s;background-color:transparent;}
         .clickable-term:hover{background-color:#e6f2ff;text-decoration:none;}
 
@@ -2582,7 +2655,7 @@
 
                     const safeUrl = escapeHtml(trimmedUrl);
                     const fbPostHtml = `
-                        <div class="fb-embed-block mceNonEditable" contenteditable="false" data-fb-url="${safeUrl}" onclick="window.open('${safeUrl}', '_blank')" style="cursor: pointer;">
+                        <div class="fb-embed-block mceNonEditable" contenteditable="false" data-fb-url="${safeUrl}" style="cursor: pointer;">
                             <div class="fb-embed-title">منشور فيسبوك</div>
                             <div class="fb-embed-url">${safeUrl}</div>
                             <div class="fb-post" data-href="${safeUrl}" data-show-text="false">
@@ -2609,25 +2682,68 @@
                     if (!trimmedUrl) return;
 
                     const safeUrl = escapeHtml(trimmedUrl);
-                    
+
                     const instagramPostHtml = `
-                        <div style="display: flex; justify-content: center; margin: 20px 0;">
-                            <blockquote class="instagram-media" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
-                                <div style="padding:16px;">
-                                    <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">منشور من Instagram</a>
-                                </div>
+                        <div class="ig-embed-block mceNonEditable" contenteditable="false" data-ig-url="${safeUrl}" style="cursor: pointer;">
+                            <div class="ig-embed-title">📷 منشور انستجرام</div>
+                            <div class="ig-embed-url">${safeUrl}</div>
+                            <blockquote class="instagram-media" data-instgrm-version="14" style="display:none;">
+                                <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>
                             </blockquote>
                         </div>
                     `;
 
                     editor.insertContent(instagramPostHtml);
-                    
-                    // Schedule reprocessing after a short delay to allow DOM to update
-                    setTimeout(() => {
-                        if (window.instgrm && window.instgrm.Embed) {
-                            window.instgrm.Embed.process();
-                        }
-                    }, 100);
+                }
+            });
+
+            // ---- X (TWITTER) POST EMBED BUTTON ----
+            editor.ui.registry.addButton('vvcXPost', {
+                text: '𝕏 بوست',
+                tooltip: 'إدراج منشور X (تويتر)',
+                onAction: () => {
+                    const input = window.prompt('الصق كود التضمين من X (تويتر)\nانسخ كود التضمين من زر "Embed Tweet" في X');
+                    if (!input) return;
+
+                    const trimmed = input.trim();
+                    if (!trimmed) return;
+
+                    // Extract the <blockquote> from the pasted embed code (strip <script> tags)
+                    const blockquoteMatch = trimmed.match(/<blockquote[\s\S]*?<\/blockquote>/i);
+
+                    if (blockquoteMatch) {
+                        // User pasted the full embed code — use the blockquote as-is
+                        const blockquoteHtml = blockquoteMatch[0];
+
+                        // Extract URL from the blockquote for the click handler
+                        const urlMatch = blockquoteHtml.match(/href="(https?:\/\/(?:twitter\.com|x\.com)\/[^"]+)"/i);
+                        const postUrl = urlMatch ? urlMatch[1] : '';
+                        const safeUrl = escapeHtml(postUrl);
+
+                        const xPostHtml = `
+                            <div class="x-embed-block mceNonEditable" contenteditable="false" data-x-url="${safeUrl}" style="cursor: pointer;">
+                                <div class="x-embed-title">𝕏 منشور</div>
+                                <div class="x-embed-url">${safeUrl}</div>
+                                ${blockquoteHtml}
+                            </div>
+                        `;
+
+                        editor.insertContent(xPostHtml);
+                    } else {
+                        // Fallback: user pasted just a URL
+                        const normalizedUrl = trimmed.replace(/^https?:\/\/(www\.)?twitter\.com/i, 'https://x.com');
+                        const safeUrl = escapeHtml(normalizedUrl);
+
+                        const xPostHtml = `
+                            <div class="x-embed-block mceNonEditable" contenteditable="false" data-x-url="${safeUrl}" style="cursor: pointer;">
+                                <div class="x-embed-title">𝕏 منشور</div>
+                                <div class="x-embed-url">${safeUrl}</div>
+                                <blockquote class="twitter-tweet"><a href="${safeUrl}">${safeUrl}</a></blockquote>
+                            </div>
+                        `;
+
+                        editor.insertContent(xPostHtml);
+                    }
                 }
             });
 
@@ -2689,7 +2805,7 @@
         toolbar: [
             'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
             '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
-            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcInstagramPost vvcPaste',
+            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcInstagramPost vvcXPost vvcPaste',
             '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
         ].join(' '),
         fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',

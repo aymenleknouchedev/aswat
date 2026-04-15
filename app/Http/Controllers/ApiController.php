@@ -63,17 +63,10 @@ class ApiController extends Controller
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255|min:2|unique:locations,name',
-                'slug' => 'required|string|max:255|min:2|unique:locations,slug',
                 'type' => 'required|in:city',
             ]);
 
-            $normalizedSlug = Str::slug($validated['slug']);
-            if ($normalizedSlug !== $validated['slug'] && Location::where('slug', $normalizedSlug)->exists()) {
-                throw ValidationException::withMessages([
-                    'slug' => ['The slug has been normalized and now conflicts with an existing one. Please choose another.'],
-                ]);
-            }
-            $slug = $normalizedSlug;
+            $slug = Str::slug($validated['name']) ?: Str::random(8);
 
             $location = Location::create([
                 'name' => $validated['name'],
@@ -125,12 +118,11 @@ class ApiController extends Controller
         try {
             $request->validate([
                 'name' => 'required|string|max:255|min:3|unique:categories,name',
-                'slug' => 'required|string|max:255|min:3|unique:categories,slug',
             ]);
 
             $category = Category::create([
                 'name' => $request->input('name'),
-                'slug' => $request->input('slug'),
+                'slug' => Str::slug($request->input('name')) ?: Str::random(8),
             ]);
 
             return response()->json(['id' => $category->id, 'name' => $category->name, 'slug' => $category->slug], 201);
@@ -168,19 +160,10 @@ class ApiController extends Controller
         try {
             $validated = $request->validate([
                 'title' => 'required|string|min:3|max:255|unique:trends,title',
-                'slug'  => 'required|string|min:3|max:255|unique:trends,slug',
                 'image' => 'required|image|mimes:jpeg,png,webp,gif|max:6144',
             ]);
 
-            $normalizedSlug = Str::slug($validated['slug']);
-            if ($normalizedSlug !== $validated['slug']) {
-                if (Trend::where('slug', $normalizedSlug)->exists()) {
-                    throw ValidationException::withMessages([
-                        'slug' => ['The slug has been normalized and now conflicts with an existing one. Please choose another.'],
-                    ]);
-                }
-            }
-            $slug = $normalizedSlug;
+            $slug = Str::slug($validated['title']) ?: Str::random(8);
 
             $path = $request->file('image')->store('trends', 'public');
             $imageUrl = asset('storage/' . $path);
@@ -238,13 +221,12 @@ class ApiController extends Controller
         try {
             $validated = $request->validate([
                 'name'  => 'required|string|max:255|unique:windows,name',
-                'slug'  => 'required|string|max:255|unique:windows,slug',
                 'image' => 'required|image|mimes:jpeg,png,webp,gif|max:6000',
             ]);
 
             $window = new Window();
             $window->name = $validated['name'];
-            $window->slug = $validated['slug'];
+            $window->slug = Str::slug($validated['name']) ?: Str::random(8);
 
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
@@ -339,7 +321,6 @@ class ApiController extends Controller
         try {
             $validated = $request->validate([
                 'name'      => 'required|string|max:150|unique:writers,name',
-                'slug'      => 'required|string|max:150|unique:writers,slug',
                 'bio'       => 'required|string',
                 'image'     => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
                 'facebook'  => 'nullable|url',
@@ -349,13 +330,7 @@ class ApiController extends Controller
                 'email'     => 'nullable|email|max:190',
             ]);
 
-            $normalizedSlug = Str::slug($validated['slug']);
-            if ($normalizedSlug !== $validated['slug'] && Writer::where('slug', $normalizedSlug)->exists()) {
-                throw ValidationException::withMessages([
-                    'slug' => ['The slug has been normalized and now conflicts with an existing one. Please choose another.'],
-                ]);
-            }
-            $slug = $normalizedSlug;
+            $slug = Str::slug($validated['name']) ?: Str::random(8);
 
             $path = $request->file('image')->store('writers', 'public');
             $imageUrl = asset('storage/' . $path);

@@ -12,11 +12,31 @@
     <link rel="icon" type="image/svg+xml" href="{{ asset('user/assets/images/icon-logo.svg') }}" />
 
     <script>
+        // Function to process social embeds (Instagram, Facebook, X/Twitter)
+        function processEmbeds() {
+            if (window.instgrm && window.instgrm.Embed) {
+                try { window.instgrm.Embed.process(); } catch (e) { console.error('Instagram error:', e); }
+            }
+            if (window.FB && window.FB.XFBML && typeof window.FB.XFBML.parse === 'function') {
+                try { window.FB.XFBML.parse(); } catch (e) { console.error('Facebook error:', e); }
+            }
+            if (window.twttr && window.twttr.widgets) {
+                try { window.twttr.widgets.load(); } catch (e) { console.error('Twitter/X error:', e); }
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll('.intro a').forEach(function(el) {
                 el.setAttribute('target', '_blank');
                 el.setAttribute('rel', 'noopener');
             });
+
+            // Process embeds at different intervals as scripts load
+            processEmbeds();
+            setTimeout(processEmbeds, 500);
+            setTimeout(processEmbeds, 1500);
+            setTimeout(processEmbeds, 3000);
+            setTimeout(processEmbeds, 5000);
         });
     </script>
 
@@ -843,6 +863,43 @@
             transform: scale(1.1);
         }
 
+        /* X (Twitter) Embed Styles in intro */
+        .intro .twitter-tweet {
+            margin: 20px auto !important;
+            max-width: 100% !important;
+        }
+
+        .intro .twitter-tweet iframe {
+            max-width: 100% !important;
+        }
+
+        /* Prevent blockquote decorative icons on twitter-tweet embeds */
+        .intro blockquote.twitter-tweet::before,
+        .intro blockquote.twitter-tweet::after {
+            display: none !important;
+        }
+
+        /* Reset blockquote styling for twitter-tweet embeds */
+        .intro blockquote.twitter-tweet {
+            padding: 0 !important;
+            margin: 20px auto !important;
+            text-align: initial !important;
+            font-family: inherit !important;
+        }
+
+        .intro blockquote.twitter-tweet p {
+            font-size: inherit !important;
+            font-family: inherit !important;
+            text-align: initial !important;
+        }
+
+        /* Instagram Embed Styles in intro */
+        .intro .instagram-media {
+            margin: 20px auto !important;
+            width: 100% !important;
+            max-width: 540px !important;
+        }
+
         /* ==================== FILM LIST STYLES ==================== */
         .film-list {
             counter-reset: film-counter;
@@ -1015,6 +1072,23 @@
         .film-description p .clickable-term:hover {
             background-color: #d0e8e5;
             transform: scale(1.1);
+        }
+
+        /* X (Twitter) Embed Styles */
+        .film-description .twitter-tweet {
+            margin: 20px auto !important;
+            max-width: 100% !important;
+        }
+
+        .film-description .twitter-tweet iframe {
+            max-width: 100% !important;
+        }
+
+        /* Instagram Embed Styles */
+        .film-description .instagram-media {
+            margin: 20px auto !important;
+            width: 100% !important;
+            max-width: 540px !important;
         }
 
         .film-description-wrapper {
@@ -2204,7 +2278,7 @@
         <div class="hero-content">
             {{-- Category --}}
             <div class="custom-category">
-                @if (isset($news->country))
+                @if ($news->category && $news->country)
                     <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
                         style="color: #888; text-decoration: none;">
                         {{ $news->category->name ?? '' }}
@@ -2214,7 +2288,7 @@
                         style="color: #888; text-decoration: none;">
                         {{ $news->country->name ?? '' }}
                     </a>
-                @elseif (isset($news->continent))
+                @elseif ($news->category && $news->continent)
                     <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
                         style="color: #888; text-decoration: none;">
                         {{ $news->category->name ?? '' }}
@@ -2224,7 +2298,7 @@
                         style="color: #888; text-decoration: none;">
                         {{ $news->continent->name ?? '' }}
                     </a>
-                @else
+                @elseif ($news->category)
                     <a href="{{ route('category.show', ['id' => $news->category->id, 'type' => 'Category']) }}"
                         style="color: #888; text-decoration: none;">
                         {{ $news->category->name ?? '' }}
@@ -2965,11 +3039,17 @@
         function initializeTextDefinitionModal() {
             const textDefinitions = {};
 
+            // Helper to safely decode URI-encoded attribute values
+            function safeDecodeAttr(val) {
+                if (!val) return '';
+                try { return decodeURIComponent(val); } catch (e) { return val; }
+            }
+
             // Find all clickable terms in the content
             document.querySelectorAll('.clickable-term').forEach(function(element) {
                 const term = element.getAttribute('data-term');
                 const imagePath = element.getAttribute('data-image');
-                const description = element.getAttribute('data-description');
+                const description = safeDecodeAttr(element.getAttribute('data-description'));
 
                 if (term && description) {
                     textDefinitions[term] = {

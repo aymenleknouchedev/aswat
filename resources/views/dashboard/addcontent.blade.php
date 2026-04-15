@@ -24,11 +24,6 @@
             transition: all 0.2s ease;
         }
 
-        .required-field::after {
-            content: " *";
-            color: var(--bs-danger);
-        }
-
         /* ===== SELECT2 RTL SUPPORT ===== */
         .select2-mydropdown-rtl {
             direction: rtl !important;
@@ -747,11 +742,11 @@
                                         </label>
                                         <div class="form-control-wrap">
                                             <input id="long_title" name="long_title" type="text"
-                                                class="form-control form-control" maxlength="210"
+                                                class="form-control form-control" maxlength="95"
                                                 data-ar="العنوان الطويل" data-en="Long Title"
                                                 value="{{ old('long_title', '') }}">
                                         </div>
-                                        <small class="text-muted"><span id="long_title-count">0</span> / 210</small>
+                                        <small class="text-muted"><span id="long_title-count">0</span> / 95</small>
                                     </div>
 
                                     <div class="form-group col-12">
@@ -1897,7 +1892,7 @@
                 },
                 {
                     id: "long_title",
-                    max: 210
+                    max: 95
                 },
                 {
                     id: "mobile_title",

@@ -50,7 +50,7 @@
         .art-section-hero {
             position: relative;
             background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)),
-                url('{{ asset($principalTrend->trend->image) }}') center/cover no-repeat;
+                url('{{ asset($principalTrend->trend?->image ?? '') }}') center/cover no-repeat;
             color: #fff;
             direction: rtl;
             overflow: hidden;
@@ -643,7 +643,7 @@
         @endif
 
         {{-- Principal Trend Section --}}
-        @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
+        @if ($principalTrend->id == 1 and $principalTrend->trend and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
             <div class="container">
                 <section class="art-section-hero">
                     <div class="art-section-overlay">
@@ -974,7 +974,7 @@
 
 
             {{-- Principal Trend Section (Mobile) --}}
-            @if ($principalTrend->id == 1 and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
+            @if ($principalTrend->id == 1 and $principalTrend->trend and $principalTrend->trend->contents->count() >= 1 and $principalTrend->is_active == 1)
                 @php $trendsCount = isset($trends) && is_countable($trends) ? count($trends) : 0; @endphp
                 @if ($trendsCount >= 1)
                     <div class="mobile-h-wrapper">

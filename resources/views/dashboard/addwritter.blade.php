@@ -191,17 +191,6 @@
                                 @enderror
                             </div>
 
-                            <!-- سلاق -->
-                            <div class="form-group">
-                                <label class="form-label" for="slug" data-en="Slug" data-ar="الرابط">الرابط</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" name="slug" class="form-control" id="slug"
-                                        value="{{ old('slug') }}" placeholder="مثال: ahmed-mohamed" required>
-                                </div>
-                                @error('slug')
-                                    <span class="text-danger small">{{ $message }}</span>
-                                @enderror
-                            </div>
 
                             <!-- نبذة تعريفية -->
                             <div class="form-group">

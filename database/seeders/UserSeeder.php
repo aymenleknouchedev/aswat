@@ -17,6 +17,7 @@ use App\Models\Section;
 use App\Models\Content;
 use App\Models\ContentMedia;
 use App\Models\Tag;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -69,7 +70,7 @@ class UserSeeder extends Seeder
                 'name'     => 'super',
                 'surname'  => 'admin',
                 'username' => 'superadmin',
-                'email'    => 'admin@asswat.com',
+                'email'    => ' ',
                 'password' => Hash::make('123456789'),
                 'image'    => 'user.png',
             ]
@@ -80,61 +81,58 @@ class UserSeeder extends Seeder
 
         // 4. Create continents
         $continents = [
-            ['name' => 'أفريقيا', 'slug' => 'africa'],
-            ['name' => 'آسيا', 'slug' => 'asia'],
-            ['name' => 'أوروبا', 'slug' => 'europe'],
-            ['name' => 'أمريكا الشمالية', 'slug' => 'north-america'],
-            ['name' => 'أمريكا الجنوبية', 'slug' => 'south-america'],
-            ['name' => 'أستراليا', 'slug' => 'australia'],
-            ['name' => 'القارة القطبية الجنوبية', 'slug' => 'antarctica'],
+            'أفريقيا',
+            'آسيا',
+            'أوروبا',
+            'أمريكا الشمالية',
+            'أمريكا الجنوبية',
+            'أستراليا',
+            'القارة القطبية الجنوبية',
         ];
 
-        foreach ($continents as $continent) {
-            Location::firstOrCreate([
-                'name' => $continent['name'],
-                'slug' => $continent['slug'],
-                'type' => 'continent',
-            ]);
+        foreach ($continents as $name) {
+            Location::firstOrCreate(
+                ['name' => $name, 'type' => 'continent'],
+                ['slug' => Str::slug($name) ?: Str::random(8)]
+            );
         }
 
         // 5. Create some countries
         $countries = [
-            ['name' => 'الجزائر', 'slug' => 'algeria'],
-            ['name' => 'مصر', 'slug' => 'egypt'],
-            ['name' => 'المغرب', 'slug' => 'morocco'],
-            ['name' => 'تونس', 'slug' => 'tunisia'],
-            ['name' => 'السعودية', 'slug' => 'saudi-arabia'],
-            ['name' => 'فرنسا', 'slug' => 'france'],
-            ['name' => 'الولايات المتحدة', 'slug' => 'united-states']
+            'الجزائر',
+            'مصر',
+            'المغرب',
+            'تونس',
+            'السعودية',
+            'فرنسا',
+            'الولايات المتحدة',
         ];
 
-        foreach ($countries as $country) {
-            Location::firstOrCreate([
-                'name' => $country['name'],
-                'slug' => $country['slug'],
-                'type' => 'country',
-            ]);
+        foreach ($countries as $name) {
+            Location::firstOrCreate(
+                ['name' => $name, 'type' => 'country'],
+                ['slug' => Str::slug($name) ?: Str::random(8)]
+            );
         }
 
         // 6. Create some cities
         $cities = [
-            ['name' => 'الجزائر العاصمة', 'slug' => 'algiers'],
-            ['name' => 'وهران', 'slug' => 'oran'],
-            ['name' => 'قسنطينة', 'slug' => 'constantine'],
-            ['name' => 'القاهرة', 'slug' => 'cairo'],
-            ['name' => 'الدار البيضاء', 'slug' => 'casablanca'],
-            ['name' => 'تونس', 'slug' => 'tunis'],
-            ['name' => 'الرياض', 'slug' => 'riyadh'],
-            ['name' => 'باريس', 'slug' => 'paris'],
-            ['name' => 'نيويورك', 'slug' => 'new-york']
+            'الجزائر العاصمة',
+            'وهران',
+            'قسنطينة',
+            'القاهرة',
+            'الدار البيضاء',
+            'تونس',
+            'الرياض',
+            'باريس',
+            'نيويورك',
         ];
 
-        foreach ($cities as $city) {
-            Location::firstOrCreate([
-                'name' => $city['name'],
-                'slug' => $city['slug'],
-                'type' => 'city',
-            ]);
+        foreach ($cities as $name) {
+            Location::firstOrCreate(
+                ['name' => $name, 'type' => 'city'],
+                ['slug' => Str::slug($name) ?: Str::random(8)]
+            );
         }
 
         // 7. Create some categories

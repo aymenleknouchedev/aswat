@@ -284,7 +284,7 @@
         @if (isset($algeriaLatestImportant) && count($algeriaLatestImportant) > 3)
             @foreach ($algeriaLatestImportant as $item)
                 <div class="extra-item">
-                    <h3>{{ $item->category->name ?? '' }}</h3>
+                    <h3>{{ $item->category?->name ?? '' }}</h3>
                     <a href="{{ route('news.show', $item->shortlink) }}" style="text-decoration: none; color: inherit;">
                         <p>{{ $item->title }}</p>
                     </a>

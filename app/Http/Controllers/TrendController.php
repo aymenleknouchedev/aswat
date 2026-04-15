@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Str;
 use App\Models\Trend;
 
 class TrendController extends BaseController
@@ -60,13 +61,12 @@ class TrendController extends BaseController
         try {
             $request->validate([
                 'title' => 'required|string|min:3|max:255|unique:trends,title',
-                'slug' => 'required|string|min:3|max:255|unique:trends,slug',
                 'image' => 'required|max:6000',
             ]);
 
             $trend = new Trend();
             $trend->title = $request->input('title');
-            $trend->slug = $request->input('slug');
+            $trend->slug = Str::slug($request->input('title')) ?: Str::random(8);
 
             $trend->image = $request->input('image');
             $trend->save();
@@ -102,12 +102,11 @@ class TrendController extends BaseController
         try {
             $request->validate([
                 'title' => 'required|string|min:3|max:255|unique:trends,title,' . $id,
-                'slug' => 'required|string|min:3|max:255|unique:trends,slug,' . $id,
                 'image' => 'nullable',
             ]);
             $trend = Trend::findOrFail($id);
             $trend->title = $request->input('title');
-            $trend->slug = $request->input('slug');
+            $trend->slug = Str::slug($request->input('title')) ?: Str::random(8);
             if ($request->filled('image')) {
                 $trend->image = $request->input('image');
             }

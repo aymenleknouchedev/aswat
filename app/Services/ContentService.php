@@ -95,8 +95,12 @@ class ContentService
      * @param int $limit
      * @return Collection
      */
-    public function getLastWeekMostViewed(Content $excludeContent, int $sectionId, int $limit = 5): Collection
+    public function getLastWeekMostViewed(Content $excludeContent, ?int $sectionId, int $limit = 5): Collection
     {
+        if ($sectionId === null) {
+            return collect();
+        }
+
         $lastWeek = now()->subWeek();
 
         // First: Get news from last week from same section
@@ -134,8 +138,12 @@ class ContentService
      * @param int $limit
      * @return Collection
      */
-    public function getLatestFromCategory(Content $excludeContent, int $categoryId, int $limit = 5): Collection
+    public function getLatestFromCategory(Content $excludeContent, ?int $categoryId, int $limit = 5): Collection
     {
+        if ($categoryId === null) {
+            return collect();
+        }
+
         return Content::where('title', '!=', $excludeContent->title)
             ->where('status', 'published')
             ->where('category_id', $categoryId)

@@ -51,7 +51,7 @@
                 <input type="radio" name="template" id="article-radio" value="no_image" class="media-type-input">
                 <label for="article-radio" class="media-type-label">
                     <i class="fas fa-file-alt"></i>
-                    <span data-ar="مقال" data-en="Article">مقال</span>
+                    <span data-ar="بلا صورة" data-en="Article">بلا صورة</span>
                 </label>
             </div>
         </div>
@@ -112,7 +112,7 @@
             // Field labels for validation messages
             this.fieldLabels = {
                 normal_main_image: {
-                    ar: 'الصورة الرئيسية',
+                    ar: 'صورة الواجهة',
                     en: 'Main Image'
                 },
                 normal_content_image: {
@@ -172,11 +172,11 @@
                     en: 'Album Assets'
                 },
                 no_image_main_image: {
-                    ar: 'الصورة الرئيسية',
+                    ar: 'صورة الواجهة',
                     en: 'Main Image'
                 },
                 no_image_mobile_image: {
-                    ar: 'صورة المقال للموبايل',
+                    ar: 'صورة بلا صورة للموبايل',
                     en: 'Article Mobile Image'
                 }
             };
@@ -200,7 +200,7 @@
                     en: 'Album'
                 },
                 no_image: {
-                    ar: 'المقال',
+                    ar: 'بلا صورة',
                     en: 'Article'
                 }
             };
@@ -1181,7 +1181,7 @@
       <h6 class="template-title" data-ar="إعدادات الصورة" data-en="Image Settings">${title}</h6>
       <div class="fields-grid">
         ${this.createCaptionField()}
-        ${this.createField('normal_main_image','الصورة الرئيسية','Main Image','fas fa-image')}
+        ${this.createField('normal_main_image','صورة الواجهة','Main Image','fas fa-image')}
         ${this.createField('normal_content_image','صورة المحتوى','Content Image','fas fa-image')}
         ${this.createField('normal_mobile_image','صورة الموبايل','Mobile Image','fas fa-mobile-alt')}
       </div>
@@ -1234,14 +1234,14 @@
         }
 
         getNoImageTemplate() {
-            const title = this.state.currentLanguage === 'ar' ? 'إعدادات المقال' : 'Article Settings';
+            const title = this.state.currentLanguage === 'ar' ? 'إعدادات بلا صورة' : 'Article Settings';
             return `
     <div class="template-fields">
-      <h6 class="template-title" data-ar="إعدادات المقال" data-en="Article Settings">${title}</h6>
+      <h6 class="template-title" data-ar="إعدادات بلا صورة" data-en="Article Settings">${title}</h6>
       <div class="fields-grid">
         ${this.createCaptionField()}
-        ${this.createField('no_image_main_image','الصورة الرئيسية','Main Image','fas fa-image')}
-        ${this.createField('no_image_mobile_image','صورة المقال للموبايل','Article Mobile Image','fas fa-mobile-alt')}
+        ${this.createField('no_image_main_image','صورة الواجهة','Main Image','fas fa-image')}
+        ${this.createField('no_image_mobile_image','صورة بلا صورة للموبايل','Article Mobile Image','fas fa-mobile-alt')}
       </div>
     </div>`;
         }
@@ -1380,6 +1380,11 @@
         color: var(--bs-gray);
         margin-bottom: .5rem;
         display: block;
+    }
+
+    .field-label::after {
+        content: " *";
+        color: var(--bs-danger);
     }
 
     /* Empty state */

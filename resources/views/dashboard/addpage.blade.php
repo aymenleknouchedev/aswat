@@ -63,16 +63,6 @@
                                 </div>
                             </div>
 
-                            <!-- رابط الصفحة (Slug) -->
-                            <div class="form-group">
-                                <label class="form-label" for="slug" data-en="Page Slug" data-ar="رابط الصفحة">
-                                    رابط الصفحة
-                                </label>
-                                <div class="form-control-wrap">
-                                    <input type="text" name="slug" class="form-control" id="slug" required
-                                        placeholder="example-page-slug">
-                                </div>
-                            </div>
 
 
                             <!-- وصف الصفحة -->

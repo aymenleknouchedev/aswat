@@ -26,17 +26,6 @@ Route::get('/clearcache', function (Request $request) {
     return response()->json(['message' => 'Cache cleared successfully']);
 });
 
-Route::get('/fuckyou_alawa_fresh', function () {
-    $exitCode = Artisan::call('migrate:fresh', [
-        '--force' => true,
-    ]);
-
-    return response()->json([
-        'message' => 'Migration fresh executed',
-        'exit_code' => $exitCode,
-        'output' => Artisan::output(),
-    ]);
-});
 
 Route::middleware(['coming.soon'])->group(function () {
     // client

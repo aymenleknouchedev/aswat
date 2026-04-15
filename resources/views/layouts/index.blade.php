@@ -88,9 +88,23 @@
             position: relative;
         }
 
+        /* Hide raw fb-post blockquote until Facebook SDK renders */
+        .fb-embed-block .fb-post {
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+        }
+
+        /* Show once Facebook SDK has processed it (adds iframe) */
+        .fb-embed-block .fb-post.fb_iframe_widget,
+        .fb-embed-block .fb_iframe_widget {
+            visibility: visible !important;
+            height: auto !important;
+            overflow: visible !important;
+        }
+
         .fb-embed-block iframe,
-        .fb-embed-block .fb-post,
-        .fb-embed-block .fb-post * {
+        .fb-embed-block .fb-post *:not(iframe) {
             pointer-events: none !important;
         }
     </style>
@@ -98,7 +112,49 @@
     <!-- ================= INSTAGRAM ================= -->
     <script async src="https://www.instagram.com/embed.js" onload="console.log('Instagram script loaded')"></script>
 
-    <!-- ================= FACEBOOK EMBED CLICK ================= -->
+    <!-- ================= X (TWITTER) ================= -->
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" onload="console.log('Twitter widgets.js loaded')"></script>
+    <style>
+        /* Hide placeholder text */
+        .x-embed-block .x-embed-title,
+        .x-embed-block .x-embed-url {
+            display: none;
+        }
+
+        .x-embed-block {
+            margin: 1.5rem 0;
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* Hide raw blockquote until widgets.js renders the iframe */
+        blockquote.twitter-tweet {
+            display: none !important;
+        }
+
+        /* Hide raw Instagram blockquote until embed.js renders */
+        blockquote.instagram-media {
+            display: none !important;
+        }
+
+        /* Show Instagram once embed.js processes it into iframe */
+        .instagram-media-rendered,
+        iframe.instagram-media {
+            display: block !important;
+        }
+
+        /* Hide Instagram placeholder text on frontend */
+        .ig-embed-block .ig-embed-title,
+        .ig-embed-block .ig-embed-url {
+            display: none;
+        }
+
+        .ig-embed-block {
+            margin: 1.5rem 0;
+        }
+    </style>
+
+    <!-- ================= SOCIAL EMBED CLICK HANDLERS ================= -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.addEventListener('click', function(e) {
@@ -107,6 +163,24 @@
                     const fbUrl = fbBlock.getAttribute('data-fb-url');
                     if (fbUrl) {
                         window.open(fbUrl, '_blank');
+                    }
+                }
+
+                // X (Twitter) embed click handler
+                const xBlock = e.target.closest('.x-embed-block');
+                if (xBlock) {
+                    const xUrl = xBlock.getAttribute('data-x-url');
+                    if (xUrl) {
+                        window.open(xUrl, '_blank');
+                    }
+                }
+
+                // Instagram embed click handler
+                const igBlock = e.target.closest('.ig-embed-block');
+                if (igBlock) {
+                    const igUrl = igBlock.getAttribute('data-ig-url');
+                    if (igUrl) {
+                        window.open(igUrl, '_blank');
                     }
                 }
             });

@@ -184,8 +184,11 @@
             <a href="https://www.linkedin.com/in/asswatdjazairia/" target="_blank" class="m-icon footer-icon" aria-label="LinkedIn">
                 @include('user.icons.linkedin')
             </a>
-            <a href="https://wa.me/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="WhatsApp">
+            <a href="https://whatsapp.com/channel/0029Vb7U1hR59PwQH5hLIv2k" target="_blank" class="m-icon footer-icon" aria-label="WhatsApp">
                 @include('user.icons.whatsapp')
+            </a>
+            <a href="https://www.threads.com/@asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Threads">
+                @include('user.icons.threads')
             </a>
             <a href="https://linktr.ee/asswatdjazairia" target="_blank" class="m-icon footer-icon" aria-label="Linktree">
                 @include('user.icons.linktree')
@@ -207,11 +210,7 @@
                 <!-- <a href="https://asswatarabia.com/" target="_blank" style="text-decoration: none;">
                     <img src="https://www.freepnglogos.com/uploads/pinterest-logos-vector-png-hd-14.png" alt="Aswat Arabia" height="35">
                 </a> -->
-                <a href="{{ route('missahat') }}" class="right-side" style="text-decoration: none;">
-                <p>تصميم وتطوير</p>
-                <br>
-                <img class="mt-3" style="margin: auto" height="40" src="{{ asset('user/assets/images/brand.svg') }}" alt="Missahat - تصميم وتطوير">
-                </a>
+                <p>تصميم وتطوير Missahat Creative</p>
             </div>
         </div>
     </div>

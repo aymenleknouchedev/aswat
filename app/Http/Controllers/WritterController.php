@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Writer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Str;
 
 class WritterController extends BaseController
 {
@@ -57,7 +58,6 @@ class WritterController extends BaseController
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:150|unique:writers,name',
-                'slug' => 'required|string|max:150',
                 'bio' => 'nullable|string|max:200',
                 'image' => 'required',
                 'facebook' => 'nullable|url',
@@ -66,6 +66,7 @@ class WritterController extends BaseController
                 'linkedin' => 'nullable|url',
             ]);
 
+            $validated['slug'] = Str::slug($validated['name']) ?: Str::random(8);
 
             Writer::create($validated);
             return redirect()->route('dashboard.writer.create')->with('success', 'Writer added successfully.');
@@ -98,7 +99,6 @@ class WritterController extends BaseController
 
             $validated = $request->validate([
                 'name' => 'required|string|max:150',
-                'slug' => 'required|string|max:150|unique:writers,slug,' . $writer->id,
                 'bio' => 'nullable|string|max:200',
                 'image.*' => 'nullable',
                 'facebook' => 'nullable|url',
@@ -106,6 +106,8 @@ class WritterController extends BaseController
                 'instagram' => 'nullable|url',
                 'linkedin' => 'nullable|url',
             ]);
+
+            $validated['slug'] = Str::slug($validated['name']) ?: Str::random(8);
 
             if ($request->filled('image')) {
                 $writer->image = $request->input('image');

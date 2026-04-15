@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Str;
 use App\Models\Window;
 
 class WindowController extends BaseController
@@ -57,13 +58,12 @@ class WindowController extends BaseController
         try {
             $request->validate([
                 'name' => 'required|string|max:255|unique:windows,name',
-                'slug' => 'required|string|max:255|unique:windows,slug',
                 'image' => 'required',
             ]);
 
             $window = new Window();
             $window->name = $request->input('name');
-            $window->slug = $request->input('slug');
+            $window->slug = Str::slug($request->input('name')) ?: Str::random(8);
 
             $window->image = $request->input('image');
 
@@ -102,12 +102,11 @@ class WindowController extends BaseController
 
             $request->validate([
                 'name' => 'required|string|max:255',
-                'slug' => 'required|string|max:255|unique:windows,slug,' . $window->id,
                 'image' => 'nullable|max:6000',
             ]);
 
             $window->name = $request->input('name');
-            $window->slug = $request->input('slug');
+            $window->slug = Str::slug($request->input('name')) ?: Str::random(8);
 
             if ($request->filled('image')) {
                 $window->image = $request->input('image');

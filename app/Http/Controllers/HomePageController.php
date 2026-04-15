@@ -140,7 +140,8 @@ class HomePageController extends Controller
             ->get();
 
         $topViewed = Content::where('status', 'published')
-            ->orderByDesc('read_count')
+            ->withSum('contentDailyViews', 'views')
+            ->orderByDesc('content_daily_views_sum_views')
             ->take(5)
             ->get();
 
@@ -685,7 +686,8 @@ class HomePageController extends Controller
         // Top viewed + suggestions
         $topViewed = Content::where('section_id', $sectionId)
             ->where('status', 'published')
-            ->orderByDesc('read_count')
+            ->withSum('contentDailyViews', 'views')
+            ->orderByDesc('content_daily_views_sum_views')
             ->take(5)
             ->get();
 

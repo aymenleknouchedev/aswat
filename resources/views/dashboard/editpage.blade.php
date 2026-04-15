@@ -65,16 +65,6 @@
                                 </div>
                             </div>
 
-                            <!-- رابط الصفحة (Slug) -->
-                            <div class="form-group">
-                                <label class="form-label" for="slug" data-en="Page Slug" data-ar="رابط الصفحة">
-                                    رابط الصفحة
-                                </label>
-                                <div class="form-control-wrap">
-                                    <input type="text" name="slug" class="form-control" id="slug"
-                                        value="{{ old('slug', $page->slug) }}" required>
-                                </div>
-                            </div>
 
                             <!-- محتوى الصفحة -->
                             <x-forms.tinymce-editor id="myeditorinstance" :value="old('content', $page->content)" />
