@@ -1,5 +1,11 @@
 @php
-    $photosData = collect($photos)->map(function ($p) {
+    $photosSliderItems = \App\Models\Content::where('section_id', \App\Models\Section::where('name', 'صور')->value('id'))
+        ->where('status', 'published')
+        ->orderByDesc('published_date')
+        ->take(10)
+        ->get();
+    $firstPhoto = $photosSliderItems->first() ?? $firstPhoto;
+    $photosData = $photosSliderItems->map(function ($p) {
         return [
             'title' => $p->title,
             'shortlink' => $p->shortlink,
@@ -11,9 +17,9 @@
 @endphp
 <script>window.__photosData = @json($photosData);</script>
 <div class="photos-feature">
-    <a href="{{ route('news.show', $photos[0]->shortlink) }}">
+    <a href="{{ route('news.show', $firstPhoto->shortlink) }}">
         <div class="image-wrapper">
-            <img id="photoImage" src="{{ $photos[0]->media()->wherePivot('type', 'main')->first()->path }}"
+            <img id="photoImage" src="{{ $firstPhoto->media()->wherePivot('type', 'main')->first()->path }}"
                 alt="Feature Algeria">
             <div class="corner-icon">
                 @include('user.icons.image')
@@ -23,12 +29,12 @@
 
     <div class="content">
         <h3 id="photoCategory">
-            <x-category-links :content="$photos[0]" />
+            <x-category-links :content="$firstPhoto" />
         </h3>
-        <a href="{{ route('news.show', $photos[0]->shortlink) }}" style="text-decoration: none; color: inherit;">
-            <h2 id="photoTitle">{{ $photos[0]->title }}</h2>
+        <a href="{{ route('news.show', $firstPhoto->shortlink) }}" style="text-decoration: none; color: inherit;">
+            <h2 id="photoTitle">{{ $firstPhoto->title }}</h2>
         </a>
-        <p id="photoDescription">{{ $photos[0]->summary }}</p>
+        <p id="photoDescription">{{ $firstPhoto->summary }}</p>
     </div>
 </div>
 

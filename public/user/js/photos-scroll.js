@@ -68,7 +68,7 @@ function changePhoto(next = true) {
 
             // Update title link
             if (photoTitleLink && nextPhoto.title) {
-                photoTitleLink.href = `/news/${nextPhoto.title}`;
+                photoTitleLink.href = `/news/${nextPhoto.shortlink}`;
             }
 
             // Fade back in
