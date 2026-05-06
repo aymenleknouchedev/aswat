@@ -357,8 +357,13 @@
         }
 
         .custom-article-content h3 {
-            color: #333 !important;
+            color: #000 !important;
+            font-size: 16px !important;
+            font-family: asswat-regular !important;
+            font-weight: bold !important;
+            line-height: 1.9 !important;
             margin: 0 !important;
+            text-align: right !important;
         }
 
         /* Image spacing and captions */
@@ -2001,9 +2006,13 @@
             }
 
             .mobile-article-content h3 {
-                color: #333 !important;
+                color: #000 !important;
+                font-size: 16px !important;
+                font-family: asswat-regular !important;
+                font-weight: bold !important;
+                line-height: 1.9 !important;
                 margin: 0 !important;
-                font-family: 'asswat-medium' !important;
+                text-align: right !important;
             }
 
             /* Image spacing and captions */
