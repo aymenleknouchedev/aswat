@@ -152,7 +152,6 @@
     }
 
     .footer .who .right-side p {
-        margin-left: 10px;
         color: white;
         font-size: 14px;
     }
