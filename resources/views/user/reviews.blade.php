@@ -304,6 +304,9 @@
                         @include('user.components.ligne')
                     </div>
                     <ul class="mobile-simple-ul" role="list" id="mobile-reviews-container">
+                        @if (isset($reviews) && count($reviews) > 0 && isset($reviews[0]))
+                            @include('user.mobile.writer-item', ['item' => $reviews[0]])
+                        @endif
                         @forelse ($otherReviews as $item)
                             @include('user.mobile.writer-item')
                         @empty
