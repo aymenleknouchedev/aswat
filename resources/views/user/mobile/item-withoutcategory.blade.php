@@ -44,8 +44,13 @@
 <li class="mobile-simple-item">
     <a class="mobile-more-link" href="{{ route('news.show', $item->shortlink) }}" aria-label="{{ $item->title }}">
         <div class="ms-thumb">
-            <img loading="lazy" decoding="async" src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                alt="{{ $item->title }}">
+            <x-responsive-img
+                :src="$item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg'"
+                :alt="$item->title"
+                sizes="40vw"
+                :widths="[200, 400, 600]"
+                :default="400"
+            />
         </div>
 
         <div class="ms-text">

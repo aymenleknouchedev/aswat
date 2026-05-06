@@ -2799,12 +2799,20 @@ $time = $date->format('H:i');
                         $news->template !== 'video' &&
                         $news->template !== 'album' &&
                         $news->template !== 'podcast')
+                    @php $detailMedia = $news->media()->wherePivot('type', 'detail')->first(); @endphp
                     <figure class="custom-article-image-wrapper">
-                        <img loading="lazy" decoding="async" src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}"
-                            alt="{{ $news->caption }}" loading="lazy"
+                        <x-responsive-img
+                            :src="$detailMedia->path"
+                            :alt="$news->caption"
+                            sizes="(max-width: 900px) 100vw, 800px"
+                            :widths="[400, 800, 1200, 1600]"
+                            :default="1200"
+                            :eager="true"
+                            :priority="true"
                             style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;"
                             class="feature-image-clickable"
-                            data-full-image="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}">
+                            :data-full-image="$detailMedia->path"
+                        />
                         <figcaption>{{ $news->caption ?? '' }}</figcaption>
                     </figure>
                 @endif
@@ -3162,9 +3170,18 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
             <!-- Feature Image -->
             @if ($news->template == 'normal_image')
+                @php $mDetailMedia = $news->media()->wherePivot('type', 'detail')->first(); @endphp
                 <figure class="mobile-article-image">
-                    <img loading="lazy" decoding="async" src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}"
-                        alt="{{ $news->caption }}" loading="lazy" style="cursor: pointer;">
+                    <x-responsive-img
+                        :src="$mDetailMedia->path"
+                        :alt="$news->caption"
+                        sizes="100vw"
+                        :widths="[400, 600, 800, 1200]"
+                        :default="800"
+                        :eager="true"
+                        :priority="true"
+                        style="cursor: pointer;"
+                    />
                     @if ($news->caption)
                         <figcaption>{{ $news->caption }}</figcaption>
                     @endif

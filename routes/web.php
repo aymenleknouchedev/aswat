@@ -1,11 +1,18 @@
 <?php
 
 use App\Http\Controllers\JoinTeamController;
+use App\Http\Controllers\ImageResizeController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ ."/mail.php";
 require __DIR__ ."/client.php";
 require __DIR__ ."/admin.php";
+
+// On-the-fly responsive image resize endpoint (cached as static files)
+Route::get('/img/w-{width}/{path}', [ImageResizeController::class, 'show'])
+    ->where('width', '[0-9]+')
+    ->where('path', '.*')
+    ->name('img.resize');
 
 
 

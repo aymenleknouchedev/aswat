@@ -23,8 +23,13 @@
         </div>
         <div class="newCategory-all-card-image">
             <a href="{{ route('news.show', $item->shortlink) }}">
-                <img loading="lazy" decoding="async" src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
-                    alt="{{ $item->title }}">
+                <x-responsive-img
+                    :src="$item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg'"
+                    :alt="$item->title"
+                    sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 400px"
+                    :widths="[400, 600, 800]"
+                    :default="600"
+                />
             </a>
         </div>
         <div class="newCategory-all-card-text">
