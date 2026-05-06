@@ -94,16 +94,10 @@
                 @endphp
                 <div class="review-card">
                     <div class="review-card-image">
-                        @if ($firstWriter && $firstWriter->image)
-                            <a href="{{ route('writer.show', $firstWriter->id) }}">
-                                <img src="{{ $firstWriter->image }}" alt="{{ $firstWriter->name }}">
-                            </a>
-                        @else
-                            <a href="{{ route('news.show', $review->shortlink) }}">
-                                <img src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
-                                    alt="خبر">
-                            </a>
-                        @endif
+                        <a href="{{ route('news.show', $review->shortlink) }}">
+                            <img src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
+                                alt="خبر">
+                        </a>
                     </div>
                     <div class="review-card-text">
                         @if ($firstWriter && $firstWriter->name)

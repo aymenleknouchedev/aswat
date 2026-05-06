@@ -798,6 +798,10 @@ class HomePageController extends Controller
     {
         $news = Content::where('shortlink', $title)->orderByDesc('published_date')->firstOrFail();
 
+        if ($news->status !== 'published' && !auth()->check()) {
+            return redirect('/');
+        }
+
         // Get latest news from same category
         $lastNews = $this->contentService->getLatestFromCategory($news, $news->category_id);
 

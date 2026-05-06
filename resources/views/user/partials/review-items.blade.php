@@ -25,8 +25,6 @@
                             <span style="margin-right: 4px;">-</span>
                             <span>{{ $writer->location }}</span>
                         @endif
-                    @else
-                        <p>بدون كاتب</p>
                     @endif
                 </div>
             </div>

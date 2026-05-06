@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="{{ ($news->status ?? 'published') === 'published' ? 'index, follow' : 'noindex, nofollow' }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> {{ $news->mobile_title }}</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">

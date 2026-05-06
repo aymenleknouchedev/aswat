@@ -1351,10 +1351,6 @@
                         <div class="mb-3"><label for="category_name" class="form-label">اسم الصنف</label>
                             <input type="text" class="form-control" id="category_name" name="name" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="category_slug" class="form-label">الرابط المختصر</label>
-                            <input type="text" class="form-control" id="category_slug" name="slug" required>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -1379,11 +1375,6 @@
                         <div class="mb-3">
                             <label for="writer_name" class="form-label">اسم الكاتب</label>
                             <input type="text" class="form-control" id="writer_name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="writer_slug" class="form-label">الرابط المختصر (Slug)</label>
-                            <input type="text" class="form-control" id="writer_slug" name="slug" required>
-                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
                             <label for="writer_bio" class="form-label">السيرة الذاتية</label>
@@ -1441,11 +1432,6 @@
                             <label for="location_name" class="form-label">اسم الموقع</label>
                             <input type="text" class="form-control" id="location_name" name="name" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="location_slug" class="form-label">الرابط المختصر (Slug)</label>
-                            <input type="text" class="form-control" id="location_slug" name="slug" required>
-                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
-                        </div>
                         <input type="hidden" name="type" value="city">
                     </form>
                 </div>
@@ -1470,11 +1456,6 @@
                         <div class="mb-3">
                             <label for="trend_title" class="form-label">اسم الترند</label>
                             <input type="text" class="form-control" id="trend_title" name="title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="trend_slug" class="form-label">الرابط المختصر (Slug)</label>
-                            <input type="text" class="form-control" id="trend_slug" name="slug" required>
-                            <div class="form-text">يُولَّد تلقائيًا من العنوان ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
                             <label for="trend_image" class="form-label">الصورة</label>
@@ -1506,11 +1487,6 @@
                         <div class="mb-3">
                             <label for="window_name" class="form-label">اسم النافذة</label>
                             <input type="text" class="form-control" id="window_name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="window_slug" class="form-label">الرابط المختصر (Slug)</label>
-                            <input type="text" class="form-control" id="window_slug" name="slug" required>
-                            <div class="form-text">يُولَّد تلقائيًا من الاسم ويمكن تعديله.</div>
                         </div>
                         <div class="mb-3">
                             <label for="window_image" class="form-label">الصورة</label>
@@ -2024,7 +2000,6 @@
             const fd = new FormData(form);
 
             const name = (fd.get('name') || '').trim();
-            const slug = (fd.get('slug') || '').trim();
             const bio = (fd.get('bio') || '').trim();
             const file = fd.get('image');
 
@@ -2032,11 +2007,6 @@
                 icon: 'error',
                 title: 'تنبيه',
                 text: 'يرجى إدخال اسم الكاتب.'
-            });
-            if (!slug) return Swal.fire({
-                icon: 'error',
-                title: 'تنبيه',
-                text: 'يرجى إدخال الرابط المختصر.'
             });
             if (!bio) return Swal.fire({
                 icon: 'error',
@@ -2328,18 +2298,12 @@
             const fd = new FormData(form);
 
             const title = (fd.get('title') || '').trim();
-            const slug = (fd.get('slug') || '').trim();
             const file = fd.get('image');
 
             if (!title) return Swal.fire({
                 icon: 'error',
                 title: 'تنبيه',
                 text: 'يرجى إدخال اسم الترند.'
-            });
-            if (!slug) return Swal.fire({
-                icon: 'error',
-                title: 'تنبيه',
-                text: 'يرجى إدخال الرابط المختصر.'
             });
             if (!(file instanceof File) || !file.name) {
                 return Swal.fire({
@@ -2389,7 +2353,7 @@
                 if (res.ok && (data.id || (data.trend && data.trend.id))) {
                     const id = data.id || data.trend.id;
                     const name = data.title || (data.trend && data.trend.title) || title;
-                    const slugR = data.slug || (data.trend && data.trend.slug) || slug;
+                    const slugR = data.slug || (data.trend && data.trend.slug) || '';
 
                     const trendSearch = document.querySelector('#trend_search');
                     if (trendSearch) {
@@ -2445,7 +2409,6 @@
             const fd = new FormData(form);
 
             const name = (fd.get('name') || '').trim();
-            const slug = (fd.get('slug') || '').trim();
             const file = fd.get('image');
 
             // Validation
@@ -2454,13 +2417,6 @@
                     icon: 'error',
                     title: 'تنبيه',
                     text: 'يرجى إدخال اسم النافذة.'
-                });
-            }
-            if (!slug) {
-                return Swal.fire({
-                    icon: 'error',
-                    title: 'تنبيه',
-                    text: 'يرجى إدخال الرابط المختصر.'
                 });
             }
             if (!(file instanceof File) || !file.name) {
@@ -2621,7 +2577,6 @@
             const fd = new FormData(form);
 
             const name = (fd.get('name') || '').trim();
-            const slug = (fd.get('slug') || '').trim();
             const type = 'city'; // Hardcoded as per your backend
 
             // Validation
@@ -2632,20 +2587,12 @@
                     text: 'يرجى إدخال اسم الموقع.'
                 });
             }
-            if (!slug) {
-                return Swal.fire({
-                    icon: 'error',
-                    title: 'تنبيه',
-                    text: 'يرجى إدخال الرابط المختصر.'
-                });
-            }
 
             try {
                 const res = await fetch('/dashboard/api/add-city', {
                     method: 'POST',
                     body: JSON.stringify({
                         name: name,
-                        slug: slug,
                         type: type
                     }),
                     headers: {

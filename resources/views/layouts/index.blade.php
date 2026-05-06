@@ -14,7 +14,7 @@
         content="@yield('meta_keywords', 'أصوات جزائرية, أصوات, أخبار الجزائر، أخبار جزائرية، أخبار عاجلة، الجزائر، السياسة في الجزائر، الاقتصاد الجزائري، رياضة جزائرية، المجتمع الجزائري، الثقافة الجزائرية، الإعلام الجزائري، الصحافة الجزائرية، أخبار اليوم الجزائر، أخبار محلية، أخبار وطنية، أخبار دولية، صوت الجزائر، asswatdjazairira, asswat, djazair, algeriavoices, algeria, algerian news, algeria news today, breaking news algeria, algeria politics, algeria economy, algeria sports, algerian media, arabic news, north africa news, maghreb news, dz news, dz media')">
 
     <meta name="author" content="أصوات جزائرية">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="@yield('meta_robots', 'index, follow')">
     <meta name="language" content="ar">
     <link rel="canonical" href="{{ request()->fullUrl() }}">
 

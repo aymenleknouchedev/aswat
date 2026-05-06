@@ -1067,25 +1067,17 @@
                                                 $firstWriter = $content->writers()->first();
                                             @endphp
                                             <div class="opinion-center">
-                                                @if ($firstWriter)
-                                                    <a href="{{ route('writer.show', ['id' => $firstWriter->id]) }}"
-                                                        class="opinion-writer-link"
-                                                        style="text-decoration: none; color: inherit;">
-                                                        <img class="opinion-avatar"
-                                                            src="{{ asset($firstWriter->image ?? 'user/assets/images/default-post.jpg') }}"
-                                                            alt="{{ $firstWriter->name ?? '' }}">
-                                                    </a>
-                                                    <div>
+                                                <div>
+                                                    @if ($firstWriter)
                                                         <a href="{{ route('writer.show', ['id' => $firstWriter->id]) }}">
                                                             <span class="opinion-author">{{ $firstWriter->name }}</span>
                                                         </a>
-                                                        <a href="{{ route('news.show', $content->shortlink) }}"
-                                                            style="text-decoration: none; color: inherit;">
-                                                            <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
-                                                        </a>
-                                                    </div>
-                                                @endif
-
+                                                    @endif
+                                                    <a href="{{ route('news.show', $content->shortlink) }}"
+                                                        style="text-decoration: none; color: inherit;">
+                                                        <h1 class="opinion-title">{{ $content->mobile_title }}</h1>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

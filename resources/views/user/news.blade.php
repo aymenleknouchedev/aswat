@@ -2,6 +2,10 @@
 
 @section('title', $news->mobile_title)
 
+@if ($news->status !== 'published')
+    @section('meta_robots', 'noindex, nofollow')
+@endif
+
 @php
     $shareTitle = $news->share_title ?: $news->long_title;
     $shareDescription = $news->share_description ?: $news->summary;
