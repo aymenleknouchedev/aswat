@@ -909,7 +909,10 @@
                 alert("⚠️ لم يتم اختيار أي ملف للرفع.");
                 return;
             }
-            const file0 = files[0];
+            let file0 = files[0];
+            if (window.compressImage && /^image\//i.test(file0.type)) {
+                try { file0 = await window.compressImage(file0); } catch (_) {}
+            }
             const nameVal = (uploadName.value || "").trim();
             const altVal = (uploadAlt.value || "").trim();
 

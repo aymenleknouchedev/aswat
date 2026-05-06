@@ -1142,9 +1142,18 @@
                 alert("⚠️ لم يتم اختيار أي ملف للرفع.");
                 return;
             }
-            const file0 = files[0];
+            let file0 = files[0];
             const nameVal = (uploadName.value || "").trim();
             const altVal = (uploadAlt.value || "").trim();
+
+            // Client-side image compression (when available)
+            if (window.compressImage && /^image\//i.test(file0.type)) {
+                try {
+                    btnUploadToGallery.textContent = "جارٍ ضغط الصورة...";
+                    btnUploadSelectAndClose.textContent = "جارٍ ضغط الصورة...";
+                    file0 = await window.compressImage(file0);
+                } catch (_) { /* keep original on failure */ }
+            }
 
             const form = new FormData();
             form.append("media", file0);
@@ -1155,18 +1164,28 @@
             try {
                 btnUploadToGallery.disabled = true;
                 btnUploadSelectAndClose.disabled = true;
-                btnUploadToGallery.textContent = "جارٍ الرفع...";
-                btnUploadSelectAndClose.textContent = "جارٍ الرفع...";
+                btnUploadToGallery.textContent = "جارٍ الرفع... 0%";
+                btnUploadSelectAndClose.textContent = "جارٍ الرفع... 0%";
 
-                const res = await fetch(UPLOAD_URL, {
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": CSRF,
-                        "Accept": "application/json"
-                    },
-                    body: form
-                });
-                const bodyText = await res.text();
+                const res = window.uploadWithProgress
+                    ? await window.uploadWithProgress(UPLOAD_URL, form, {
+                        headers: { "X-CSRF-TOKEN": CSRF, "Accept": "application/json" },
+                        onProgress: ({ percent }) => {
+                            const t = percent != null ? `جارٍ الرفع... ${percent}%` : "جارٍ الرفع...";
+                            btnUploadToGallery.textContent = t;
+                            btnUploadSelectAndClose.textContent = t;
+                        },
+                    })
+                    : await (async () => {
+                        const r = await fetch(UPLOAD_URL, {
+                            method: "POST",
+                            headers: { "X-CSRF-TOKEN": CSRF, "Accept": "application/json" },
+                            body: form
+                        });
+                        return { ok: r.ok, status: r.status, body: await r.text() };
+                    })();
+
+                const bodyText = res.body;
                 if (!res.ok) {
                     console.error("❌ Upload failed:", res.status, bodyText);
                     alert("فشل رفع الملف.\nStatus: " + res.status);
