@@ -356,11 +356,12 @@
             font-size: 32px !important;
         }
 
-        .custom-article-content h3 {
+        .custom-article-content h3,
+        .custom-article-content h3 * {
             color: #000 !important;
             font-size: 16px !important;
-            font-family: asswat-regular !important;
-            font-weight: bold !important;
+            font-family: asswat-bold !important;
+            font-weight: normal !important;
             line-height: 1.9 !important;
             margin: 0 !important;
             text-align: right !important;
@@ -2005,11 +2006,12 @@
                 font-size: 24px !important;
             }
 
-            .mobile-article-content h3 {
+            .mobile-article-content h3,
+            .mobile-article-content h3 * {
                 color: #000 !important;
                 font-size: 16px !important;
-                font-family: asswat-regular !important;
-                font-weight: bold !important;
+                font-family: asswat-bold !important;
+                font-weight: normal !important;
                 line-height: 1.9 !important;
                 margin: 0 !important;
                 text-align: right !important;
