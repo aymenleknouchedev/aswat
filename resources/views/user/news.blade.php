@@ -128,6 +128,19 @@
             // Extra passes for slower-loading Facebook SDK
             setTimeout(processEmbeds, 3000);
             setTimeout(processEmbeds, 5000);
+
+            // Fallback: if an embed didn't render an iframe after 6s, show a clickable link card
+            setTimeout(function() {
+                document.querySelectorAll('.fb-embed-block').forEach(function(el) {
+                    if (!el.querySelector('iframe')) el.classList.add('embed-fallback');
+                });
+                document.querySelectorAll('.x-embed-block').forEach(function(el) {
+                    if (!el.querySelector('iframe')) el.classList.add('embed-fallback');
+                });
+                document.querySelectorAll('.ig-embed-block').forEach(function(el) {
+                    if (!el.querySelector('iframe')) el.classList.add('embed-fallback');
+                });
+            }, 6000);
         });
 
         // Expose globally for manual triggering if needed

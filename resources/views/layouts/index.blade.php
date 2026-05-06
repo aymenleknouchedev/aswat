@@ -88,8 +88,9 @@
             position: relative;
         }
 
-        /* Hide raw fb-post blockquote until Facebook SDK renders */
-        .fb-embed-block .fb-post {
+        /* Hide raw fb-post/fb-video blockquote until Facebook SDK renders */
+        .fb-embed-block .fb-post,
+        .fb-embed-block .fb-video {
             visibility: hidden;
             height: 0;
             overflow: hidden;
@@ -97,14 +98,53 @@
 
         /* Show once Facebook SDK has processed it (adds iframe) */
         .fb-embed-block .fb-post.fb_iframe_widget,
+        .fb-embed-block .fb-video.fb_iframe_widget,
         .fb-embed-block .fb_iframe_widget {
             visibility: visible !important;
             height: auto !important;
             overflow: visible !important;
         }
 
+        /* Fallback link card shown when SDK fails to render the embed */
+        .fb-embed-block.embed-fallback .fb-post,
+        .fb-embed-block.embed-fallback .fb-video,
+        .x-embed-block.embed-fallback blockquote.twitter-tweet,
+        .ig-embed-block.embed-fallback blockquote.instagram-media {
+            display: none !important;
+        }
+        .fb-embed-block.embed-fallback .fb-embed-title,
+        .fb-embed-block.embed-fallback .fb-embed-url,
+        .x-embed-block.embed-fallback .x-embed-title,
+        .x-embed-block.embed-fallback .x-embed-url,
+        .ig-embed-block.embed-fallback .ig-embed-title,
+        .ig-embed-block.embed-fallback .ig-embed-url {
+            display: block !important;
+        }
+        .embed-fallback {
+            border: 1px solid #e2e2e2;
+            border-radius: 8px;
+            padding: 16px;
+            background: #fafafa;
+            text-align: right;
+            direction: rtl;
+        }
+        .embed-fallback .fb-embed-title,
+        .embed-fallback .x-embed-title,
+        .embed-fallback .ig-embed-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .embed-fallback .fb-embed-url,
+        .embed-fallback .x-embed-url,
+        .embed-fallback .ig-embed-url {
+            color: #1877f2;
+            word-break: break-all;
+            font-size: 14px;
+        }
+
         .fb-embed-block iframe,
-        .fb-embed-block .fb-post *:not(iframe) {
+        .fb-embed-block .fb-post *:not(iframe),
+        .fb-embed-block .fb-video *:not(iframe) {
             pointer-events: none !important;
         }
     </style>
@@ -189,8 +229,19 @@
 
     <!-- ================= QUOTES REPLACER ================= -->
     <script>
+        const EMBED_SKIP_SELECTOR =
+            '.fb-embed-block, .x-embed-block, .ig-embed-block, ' +
+            '.fb-post, .fb-video, .fb-page, ' +
+            'blockquote.twitter-tweet, blockquote.instagram-media, blockquote.fb-xfbml-parse-ignore, ' +
+            '[class*="fb_iframe_widget"], iframe';
+
         function replaceQuotes(str) {
             return str.replace(/"([^"]*)"/g, '«$1»');
+        }
+
+        function isInsideEmbed(node) {
+            const el = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
+            return !!(el && el.closest && el.closest(EMBED_SKIP_SELECTOR));
         }
 
         function traverseAndReplaceText(node) {
@@ -204,7 +255,12 @@
                 return;
             }
 
+            if (node.nodeType === Node.ELEMENT_NODE && node.matches && node.matches(EMBED_SKIP_SELECTOR)) {
+                return;
+            }
+
             if (node.nodeType === Node.TEXT_NODE) {
+                if (isInsideEmbed(node)) return;
                 const text = node.textContent.trim();
                 if (text.length > 0) {
                     node.textContent = replaceQuotes(node.textContent);
@@ -223,6 +279,8 @@
                 mutations.forEach(function(mutation) {
                     mutation.addedNodes.forEach(function(node) {
                         if (node.nodeType === Node.ELEMENT_NODE) {
+                            if (node.matches && node.matches(EMBED_SKIP_SELECTOR)) return;
+                            if (isInsideEmbed(node)) return;
                             traverseAndReplaceText(node);
                         }
                     });
@@ -269,7 +327,7 @@
 <body id="gototop">
 
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v20.0">
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v21.0">
     </script>
 
     @yield('content')

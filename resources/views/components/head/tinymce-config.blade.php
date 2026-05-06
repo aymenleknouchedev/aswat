@@ -2653,12 +2653,34 @@
                     const trimmedUrl = url.trim();
                     if (!trimmedUrl) return;
 
-                    const safeUrl = escapeHtml(trimmedUrl);
+                    // Normalize: force www.facebook.com host and strip tracking params
+                    let normalized = trimmedUrl;
+                    try {
+                        const u = new URL(trimmedUrl);
+                        if (/(^|\.)facebook\.com$/i.test(u.hostname)) {
+                            u.hostname = 'www.facebook.com';
+                        }
+                        // Strip FB tracking params that often break the SDK
+                        ['__cft__[0]', '__cft__', '__tn__', 'mibextid', '__xts__[0]', '_rdc', '_rdr'].forEach(k => u.searchParams.delete(k));
+                        // Drop any remaining query string for permalink-style URLs
+                        if (/\/(posts|videos|reel|share|story\.php|permalink\.php)/i.test(u.pathname)) {
+                            // keep story_fbid/id/v params if present, drop the rest
+                            const keep = ['story_fbid', 'id', 'v'];
+                            [...u.searchParams.keys()].forEach(k => { if (!keep.includes(k)) u.searchParams.delete(k); });
+                        }
+                        normalized = u.toString();
+                    } catch (e) { /* not a parseable URL — use as-is */ }
+
+                    // Detect post type: video/reel vs post
+                    const isVideo = /\/(videos|reel|watch)/i.test(normalized);
+                    const wrapperClass = isVideo ? 'fb-video' : 'fb-post';
+
+                    const safeUrl = escapeHtml(normalized);
                     const fbPostHtml = `
                         <div class="fb-embed-block mceNonEditable" contenteditable="false" data-fb-url="${safeUrl}" style="cursor: pointer;">
                             <div class="fb-embed-title">منشور فيسبوك</div>
                             <div class="fb-embed-url">${safeUrl}</div>
-                            <div class="fb-post" data-href="${safeUrl}" data-show-text="false">
+                            <div class="${wrapperClass}" data-href="${safeUrl}" data-show-text="true" data-allowfullscreen="true" data-width="auto">
                                 <blockquote class="fb-xfbml-parse-ignore" cite="${safeUrl}">
                                     <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>
                                 </blockquote>
