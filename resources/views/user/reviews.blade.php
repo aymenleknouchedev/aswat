@@ -236,15 +236,13 @@
                         </div>
                     </a>
                     <div class="custom-content">
-                        <h3>
-                            @if ($reviews[0]->writer && $reviews[0]->writer->name)
+                        @if ($reviews[0]->writer && $reviews[0]->writer->name)
+                            <h3>
                                 <a href="{{ route('writer.show', $reviews[0]->writer->id) }}">
                                     {{ $reviews[0]->writer->name }}
                                 </a>
-                            @else
-                                بدون كاتب
-                            @endif
-                        </h3>
+                            </h3>
+                        @endif
                         <a href="{{ route('news.show', $reviews[0]->shortlink ?? '') }}"
                             style="text-decoration: none; color: inherit;">
                             <h2>{{ $reviews[0]->title ?? 'عنوان الرأي' }}</h2>
