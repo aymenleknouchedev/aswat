@@ -1,3 +1,15 @@
+@php
+    $photosData = collect($photos)->map(function ($p) {
+        return [
+            'title' => $p->title,
+            'shortlink' => $p->shortlink,
+            'category' => $p->section ? $p->section->name : null,
+            'summary' => $p->summary,
+            'image' => optional($p->media()->wherePivot('type', 'main')->first())->path,
+        ];
+    })->values();
+@endphp
+<script>window.__photosData = @json($photosData);</script>
 <div class="photos-feature">
     <a href="{{ route('news.show', $photos[0]->shortlink) }}">
         <div class="image-wrapper">

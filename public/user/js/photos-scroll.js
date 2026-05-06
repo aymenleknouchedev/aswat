@@ -1,17 +1,4 @@
-const photos = []; // Will be populated from API
-
-// Fetch photos from API and replace initial photos array
-fetch('/api/photos')
-    .then(response => response.json())
-    .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-            photos.length = 0;
-            photos.push(...data);
-        }
-    })
-    .catch(err => {
-        console.error('Failed to fetch photos:', err);
-    });
+const photos = Array.isArray(window.__photosData) ? window.__photosData.slice() : [];
 
 
 let currentIndex = 0;
@@ -76,7 +63,7 @@ function changePhoto(next = true) {
 
             // Update image link
             if (photoLink && nextPhoto.title) {
-                photoLink.href = `/news/${nextPhoto.title}`;
+                photoLink.href = `/news/${nextPhoto.shortlink}`;
             }
 
             // Update title link
