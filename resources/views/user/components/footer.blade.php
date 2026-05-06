@@ -120,6 +120,9 @@
     .footer .contact-us .left-side .icons .footer-icon {
         height: 20px;
         width: 20px;
+        min-width: 20px;
+        min-height: 20px;
+        flex: 0 0 20px;
         transition: .3s ease;
         margin-right: 17px;
         cursor: pointer;
@@ -129,6 +132,19 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .footer .contact-us .left-side .icons .footer-icon svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+        fill: currentColor;
+    }
+
+    .footer .contact-us .left-side .icons .footer-icon svg path,
+    .footer .contact-us .left-side .icons .footer-icon svg g {
+        fill: currentColor;
     }
 
     .footer .contact-us .left-side .icons .footer-icon:hover {

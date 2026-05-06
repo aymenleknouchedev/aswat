@@ -37,13 +37,30 @@
         .m-footer .m-icon {
             width: 24px;
             height: 24px;
+            min-width: 24px;
+            min-height: 24px;
+            flex: 0 0 24px;
             opacity: .75;
             cursor: pointer;
             pointer-events: auto;
             transition: opacity 0.3s ease;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
+            color: #ffffff;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .m-footer .m-icon svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            fill: currentColor;
+        }
+
+        .m-footer .m-icon svg path,
+        .m-footer .m-icon svg g {
+            fill: currentColor;
         }
 
         .m-footer .m-icon:hover {
