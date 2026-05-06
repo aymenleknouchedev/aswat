@@ -21,6 +21,7 @@
             font-weight: normal;
         }
 
+    
         * {
             box-sizing: border-box;
         }
