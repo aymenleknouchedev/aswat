@@ -2,48 +2,46 @@
 <div class="tab-pane" id="social-media" role="tabpanel" aria-labelledby="social-media-tab">
     <div class="social-media-tab-content">
         <div class="row g-3 mt-3">
-            <!-- Content Image (full width) -->
+            <!-- Share Image (uses the same field-card pattern as the Media tab) -->
             <div class="col-12">
-                <div class="card h-100">
-                    <div class="card-header">
-                        <h6 class="card-title mb-0">الصورة</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <div class="input-group">
-                                <input type="text" id="share_image_url" name="share_image_url" class="form-control"
-                                    placeholder="لم يتم الاختيار" readonly>
-                                <button type="button" class="btn btn-outline-secondary" id="btnPickShareImage"
-                                    title="اختيار من الوسائط">
-                                    <i class="fas fa-images"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-danger" id="btnClearShareImage"
-                                    title="حذف">
-                                    <i class="fas fa-xmark"></i>
-                                </button>
+                <div class="template-fields">
+                    <h6 class="template-title">الصورة</h6>
+                    <div class="fields-grid">
+                        <div class="field-card field-card--full">
+                            <label class="field-label">صورة المشاركة</label>
+                        </div>
+                        <div class="field-card">
+                            <div class="field-preview" id="share_image_preview_field">
+                                <!-- Empty state (visible when no image is selected) -->
+                                <div id="share_image_placeholder" class="field-empty"
+                                    onclick="document.getElementById('btnPickShareImage').click();">
+                                    <i class="fas fa-image"></i>
+                                    <span>اختر صورة</span>
+                                </div>
+                                <!-- Preview state (visible when an image is selected) -->
+                                <div id="share_image_preview_wrapper" class="media-preview-selected d-none">
+                                    <div class="media-visual">
+                                        <img id="share_image_preview" class="media-thumb" src="" alt="">
+                                    </div>
+                                    <div class="media-info">
+                                        <span class="media-title" id="share_image_name">بدون عنوان</span>
+                                        <span class="media-type">صورة</span>
+                                    </div>
+                                    <div class="media-actions">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                                            id="btnPickShareImage">تغيير</button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                            id="btnRemoveShareImage">حذف</button>
+                                    </div>
+                                </div>
                             </div>
-                            <!-- Champs supplémentaires -->
+                            <!-- Hidden inputs that JS / form submission consume -->
+                            <input type="hidden" id="share_image_url" name="share_image_url">
                             <input type="hidden" id="share_image_id" name="share_image_id">
                             <input type="hidden" id="share_image_title" name="share_image_title">
                             <input type="hidden" id="share_image_alt" name="share_image_alt">
-                        </div>
-
-                        <div class="image-preview-container border rounded p-3 text-center bg-light">
-                            <div id="share_image_preview_wrapper" class="d-none">
-                                <div class="image-preview-wrapper position-relative d-inline-block">
-                                    <img id="share_image_preview" src="" alt="صورة المشاركة"
-                                        class="img-fluid rounded shadow-sm">
-                                    <button type="button"
-                                        class="btn btn-sm btn-danger position-absolute top-0 end-0 translate-middle"
-                                        id="btnRemoveShareImage" title="حذف الصورة"
-                                        style="border-radius:999px; line-height:1; width:28px; height:28px;">×</button>
-                                </div>
-                                <div class="mt-2"><small class="text-muted" id="share_image_name"></small></div>
-                            </div>
-                            <div id="share_image_placeholder" class="py-4">
-                                <i class="fas fa-image fa-2x text-muted mb-2"></i>
-                                <p class="text-muted small mb-0">لم يتم اختيار صورة بعد</p>
-                            </div>
+                            <!-- Compatibility shim: the bridge JS still binds to btnClearShareImage -->
+                            <button type="button" id="btnClearShareImage" class="d-none" aria-hidden="true"></button>
                         </div>
                     </div>
                 </div>
@@ -51,13 +49,11 @@
 
             <!-- Share Title (full width) -->
             <div class="col-12">
-                <div class="card h-100">
-                    <div class="card-header">
-                        <h6 class="card-title mb-0">العنوان</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-0">
-                            <label for="share_title" class="form-label">العنوان</label>
+                <div class="template-fields">
+                    <h6 class="template-title">العنوان</h6>
+                    <div class="fields-grid">
+                        <div class="field-card field-card--full">
+                            <label for="share_title" class="field-label">العنوان</label>
                             <input type="text" id="share_title" name="share_title" class="form-control"
                                 value="{{ old('share_title', '') }}" placeholder="أدخل عنوان المشاركة" maxlength="100"
                                 oninput="updatePreview()">
@@ -68,13 +64,11 @@
 
             <!-- Share Description (full width) -->
             <div class="col-12">
-                <div class="card h-100">
-                    <div class="card-header">
-                        <h6 class="card-title mb-0">الوصف</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-0">
-                            <label for="share_description" class="form-label">الوصف</label>
+                <div class="template-fields">
+                    <h6 class="template-title">الوصف</h6>
+                    <div class="fields-grid">
+                        <div class="field-card field-card--full">
+                            <label for="share_description" class="field-label">الوصف</label>
                             <textarea id="share_description" name="share_description" class="form-control" rows="4"
                                 placeholder="أدخل وصف المشاركة" maxlength="260" oninput="updatePreview()">{{ old('share_description', '') }}</textarea>
                         </div>
@@ -818,6 +812,569 @@
             width: 100%;
         }
     }
+
+/* === MMX-UI-ENHANCE-V2 === */
+.mmxc-modal.mmxc-modal ,
+.mmxc-modal.mmxc-modal  * { border-radius: 0 !important; }
+.mmxc-modal.mmxc-modal .mmxc-container {
+    max-height: 90vh !important;
+    height: auto !important;
+    width: clamp(320px, 94vw, 1080px) !important;
+    border-radius: 0 !important;
+    box-shadow: 0 12px 32px rgba(15,23,42,.12) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    border: 1px solid rgba(15,23,42,.06);
+    background: var(--mmxc-bg, #fff) !important;
+}
+.mmxc-modal.mmxc-modal .mmxc-header {
+    padding: 1rem 1.25rem !important;
+    background: var(--mmxc-bg, #fff) !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0;
+}
+.mmxc-modal.mmxc-modal .mmxc-header h5 { font-size: 1rem !important; font-weight: 600 !important; letter-spacing: -0.01em; }
+.mmxc-modal.mmxc-modal .mmxc-close {
+    width: 30px; height: 30px;
+    border-radius: 0 !important;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--mmxc-muted, #94a3b8) !important;
+    transition: background .12s, color .12s;
+    background: transparent !important;
+}
+.mmxc-modal.mmxc-modal .mmxc-close:hover { background: rgba(15,23,42,.05) !important; color: var(--mmxc-text, #1e293b) !important; }
+
+.mmxc-modal.mmxc-modal .mmxc-tabs {
+    padding: .5rem .85rem !important;
+    gap: .25rem !important;
+    background: var(--mmxc-bg, #fff) !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0;
+    overflow-x: auto;
+}
+.mmxc-modal.mmxc-modal .mmxc-tab-btn {
+    border-radius: 0 !important;
+    padding: .5rem .9rem !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: var(--mmxc-muted, #64748b) !important;
+    font-weight: 500 !important;
+    font-size: .88rem !important;
+    transition: background .12s, color .12s;
+    white-space: nowrap;
+    box-shadow: none !important;
+}
+.mmxc-modal.mmxc-modal .mmxc-tab-btn:hover:not(.mmxc-is-active) {
+    background: rgba(15,23,42,.04) !important;
+    color: var(--mmxc-text, #1e293b) !important;
+}
+.mmxc-modal.mmxc-modal .mmxc-tab-btn.mmxc-is-active {
+    background: rgba(101,118,255,.10) !important;
+    color: var(--mmxc-primary, #6576ff) !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.mmxc-modal.mmxc-modal .mmxc-tab-panel { display: flex !important; flex-direction: column; flex: 1 1 auto; min-height: 0; overflow: hidden; }
+.mmxc-modal.mmxc-modal .mmxc-tab-panel[hidden] { display: none !important; }
+
+.mmxc-modal.mmxc-modal .mmxc-filters {
+    padding: .9rem 1.25rem !important;
+    background: var(--mmxc-bg, #fff) !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0;
+    gap: .5rem !important;
+}
+
+.mmxc-modal.mmxc-modal .mmxc-body {
+    flex: 1 1 auto !important;
+    min-height: 200px !important;
+    overflow: auto !important;
+    padding: 1.25rem !important;
+    background: var(--mmxc-bg, #fff) !important;
+    scrollbar-width: thin;
+}
+.mmxc-modal.mmxc-modal .mmxc-body::-webkit-scrollbar { width: 6px; }
+.mmxc-modal.mmxc-modal .mmxc-body::-webkit-scrollbar-thumb { background: rgba(15,23,42,.15); border-radius: 0; }
+.mmxc-modal.mmxc-modal .mmxc-body::-webkit-scrollbar-thumb:hover { background: rgba(15,23,42,.25); }
+
+.mmxc-modal.mmxc-modal .mmxc-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+    gap: .75rem !important;
+}
+
+.mmxc-modal.mmxc-modal .mmxc-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--mmxc-muted, #94a3b8);
+    font-size: .92rem;
+    padding: 3rem 1rem !important;
+    background: transparent;
+    border: 0;
+    margin: 0 !important;
+}
+
+.mmxc-modal.mmxc-modal .mmxc-item {
+    background: var(--mmxc-bg, #fff) !important;
+    border: 1px solid rgba(15,23,42,.08) !important;
+    border-radius: 0 !important;
+    overflow: hidden;
+    padding: 0 !important;
+    transition: border-color .12s, box-shadow .12s !important;
+    display: flex !important;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
+}
+.mmxc-modal.mmxc-modal .mmxc-item:hover {
+    border-color: rgba(101,118,255,.4) !important;
+    box-shadow: 0 2px 8px rgba(15,23,42,.06) !important;
+}
+.mmxc-modal.mmxc-modal .mmxc-item.mmxc-is-selected {
+    border-color: var(--mmxc-primary, #6576ff) !important;
+    box-shadow: 0 0 0 2px rgba(101,118,255,.25) !important;
+}
+.mmxc-modal.mmxc-modal .mmxc-item.mmxc-is-selected::before {
+    content: '✓';
+    position: absolute;
+    top: 8px;
+    inset-inline-end: 8px;
+    width: 22px; height: 22px;
+    background: var(--mmxc-primary, #6576ff);
+    color: #fff;
+    border-radius: 50% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .75rem;
+    font-weight: 700;
+    z-index: 2;
+}
+
+.mmxc-modal.mmxc-modal .mmxc-thumb {
+    height: 120px !important;
+    width: 100% !important;
+    border: 0 !important;
+    background: rgba(15,23,42,.03) !important;
+    border-radius: 0 !important;
+}
+.mmxc-modal.mmxc-modal .mmxc-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+.mmxc-modal.mmxc-modal .mmxc-title {
+    margin: 0 !important;
+    padding: .5rem .65rem !important;
+    font-size: .82rem !important;
+    font-weight: 500 !important;
+    color: var(--mmxc-text, #334155) !important;
+    background: var(--mmxc-bg, #fff);
+    border-top: 1px solid rgba(15,23,42,.05);
+}
+
+.mmxc-modal.mmxc-modal .mmxc-badge {
+    border-radius: 0 !important;
+    background: rgba(15,23,42,.65) !important;
+    backdrop-filter: blur(4px);
+    border: 0 !important;
+    width: 24px !important;
+    height: 24px !important;
+    top: 6px;
+    inset-inline-start: 6px;
+}
+
+.mmxc-modal.mmxc-modal .mmxc-loader {
+    text-align: center;
+    color: var(--mmxc-muted, #94a3b8);
+    padding: 1rem !important;
+    font-size: .88rem;
+}
+.mmxc-modal.mmxc-modal .mmxc-loader::before {
+    content: '';
+    display: inline-block;
+    width: 12px; height: 12px;
+    margin-inline-end: .5rem;
+    border: 2px solid rgba(15,23,42,.1);
+    border-top-color: var(--mmxc-primary, #6576ff);
+    border-radius: 50% !important;
+    animation: mmxc-spin .7s linear infinite;
+    vertical-align: -1px;
+}
+@keyframes mmxc-spin { to { transform: rotate(360deg); } }
+
+.mmxc-modal.mmxc-modal .mmxc-pagination {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: .25rem !important;
+    align-items: center;
+    padding: .6rem 1.25rem !important;
+    background: var(--mmxc-bg, #fff) !important;
+    border-top: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0 !important;
+}
+.mmxc-modal.mmxc-modal .mmxc-pagination button {
+    min-width: 32px !important;
+    height: 32px !important;
+    padding: 0 .55rem !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: var(--mmxc-text, #475569) !important;
+    border-radius: 0 !important;
+    font-weight: 500 !important;
+    font-size: .85rem !important;
+    cursor: pointer;
+    transition: background .12s, color .12s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none !important;
+}
+.mmxc-modal.mmxc-modal .mmxc-pagination button:hover:not(:disabled) {
+    background: rgba(15,23,42,.05) !important;
+    color: var(--mmxc-text, #1e293b) !important;
+    border-color: transparent !important;
+}
+.mmxc-modal.mmxc-modal .mmxc-pagination button.mmxc-page-active {
+    background: var(--mmxc-primary, #6576ff) !important;
+    border-color: var(--mmxc-primary, #6576ff) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+.mmxc-modal.mmxc-modal .mmxc-pagination button:disabled { opacity: .35; cursor: not-allowed; }
+.mmxc-modal.mmxc-modal .mmxc-pagination .mmxc-page-ellipsis { padding: 0 .25rem; color: var(--mmxc-muted, #94a3b8); }
+.mmxc-modal.mmxc-modal .mmxc-pagination .mmxc-page-info {
+    margin-inline-start: auto;
+    font-size: .8rem;
+    color: var(--mmxc-muted, #94a3b8);
+    font-weight: 400;
+}
+
+.mmxc-modal.mmxc-modal .mmxc-footer {
+    padding: .85rem 1.25rem !important;
+    background: var(--mmxc-bg, #fff) !important;
+    border-top: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0 !important;
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
+}
+.mmxc-modal.mmxc-modal .mmxc-btn {
+    border-radius: 0 !important;
+    padding: .55rem 1.1rem !important;
+    font-weight: 500 !important;
+    font-size: .9rem !important;
+    transition: background .12s, color .12s, border-color .12s;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+}
+.mmxc-modal.mmxc-modal .mmxc-btn-primary { background: var(--mmxc-primary, #6576ff) !important; color: #fff !important; border-color: var(--mmxc-primary, #6576ff) !important; }
+.mmxc-modal.mmxc-modal .mmxc-btn-primary:hover:not(:disabled) { background: #5566ee !important; border-color: #5566ee !important; }
+.mmxc-modal.mmxc-modal .mmxc-btn-secondary { background: rgba(15,23,42,.05) !important; color: var(--mmxc-text, #1e293b) !important; }
+.mmxc-modal.mmxc-modal .mmxc-btn-secondary:hover:not(:disabled) { background: rgba(15,23,42,.09) !important; }
+.mmxc-modal.mmxc-modal .mmxc-btn-cancel { background: transparent !important; color: var(--mmxc-muted, #64748b) !important; border-color: rgba(15,23,42,.12) !important; }
+.mmxc-modal.mmxc-modal .mmxc-btn-cancel:hover { background: rgba(15,23,42,.04) !important; color: var(--mmxc-text, #1e293b) !important; }
+.mmxc-modal.mmxc-modal .mmxc-btn-select:not(:disabled) { background: var(--mmxc-primary, #6576ff) !important; color: #fff !important; border-color: var(--mmxc-primary, #6576ff) !important; }
+.mmxc-modal.mmxc-modal .mmxc-btn-select:not(:disabled):hover { background: #5566ee !important; border-color: #5566ee !important; }
+.mmxc-modal.mmxc-modal .mmxc-btn-select:disabled { background: rgba(15,23,42,.05) !important; color: var(--mmxc-muted, #94a3b8) !important; }
+
+.mmxc-modal.mmxc-modal .mmxc-tab-body {
+    padding: 1.25rem !important;
+    background: var(--mmxc-bg, #fff) !important;
+    overflow: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.mmxc-modal.mmxc-modal  input[type="text"],
+.mmxc-modal.mmxc-modal  input[type="search"],
+.mmxc-modal.mmxc-modal  input[type="url"],
+.mmxc-modal.mmxc-modal  input[type="email"],
+.mmxc-modal.mmxc-modal  input[type="number"],
+.mmxc-modal.mmxc-modal  input[type="file"],
+.mmxc-modal.mmxc-modal  textarea,
+.mmxc-modal.mmxc-modal  select {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.10) !important;
+    padding: .55rem .8rem !important;
+    background: var(--mmxc-bg, #fff) !important;
+    color: var(--mmxc-text, #1e293b) !important;
+    font-size: .9rem !important;
+    transition: border-color .12s, box-shadow .12s !important;
+    box-shadow: none !important;
+    line-height: 1.4 !important;
+    font-family: inherit !important;
+    font-weight: 400 !important;
+}
+.mmxc-modal.mmxc-modal  input:focus,
+.mmxc-modal.mmxc-modal  textarea:focus,
+.mmxc-modal.mmxc-modal  select:focus {
+    border-color: var(--mmxc-primary, #6576ff) !important;
+    box-shadow: 0 0 0 3px rgba(101,118,255,.12) !important;
+    outline: none !important;
+}
+.mmxc-modal.mmxc-modal  input::placeholder,
+.mmxc-modal.mmxc-modal  textarea::placeholder {
+    color: var(--mmxc-muted, #94a3b8) !important;
+    opacity: 1;
+    font-weight: 400;
+}
+.mmxc-modal.mmxc-modal  input[type="file"] { padding: .4rem .55rem !important; cursor: pointer; }
+.mmxc-modal.mmxc-modal  label {
+    color: var(--mmxc-text, #334155) !important;
+    font-size: .85rem !important;
+    font-weight: 500 !important;
+    display: inline-block;
+    margin-bottom: .25rem;
+}
+.mmxc-modal.mmxc-modal  fieldset {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.08) !important;
+    padding: .7rem 1rem !important;
+    background: transparent !important;
+}
+.mmxc-modal.mmxc-modal  fieldset legend {
+    font-size: .78rem !important;
+    color: var(--mmxc-muted, #94a3b8) !important;
+    font-weight: 500 !important;
+    padding: 0 .4rem !important;
+}
+.mmxc-modal.mmxc-modal  .mmxc-radio {
+    background: transparent;
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: 0;
+    padding: .3rem .65rem !important;
+    transition: border-color .12s;
+    font-size: .85rem !important;
+}
+.mmxc-modal.mmxc-modal  .mmxc-radio:hover { border-color: rgba(101,118,255,.4); }
+.mmxc-modal.mmxc-modal  .mmxc-radio input[type="radio"] { accent-color: var(--mmxc-primary, #6576ff); margin-inline-end: .25rem; }
+.mmxc-modal.mmxc-modal  .mmxc-uploader,
+.mmxc-modal.mmxc-modal  .mmxc-uploader-url {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.08) !important;
+    background: var(--mmxc-bg, #fff) !important;
+    padding: 1rem !important;
+    gap: .6rem !important;
+    box-shadow: none !important;
+}
+.mmxc-modal.mmxc-modal  [id$="-upload-label"] {
+    border-radius: 0 !important;
+    border: 1px dashed rgba(15,23,42,.18) !important;
+    background: rgba(15,23,42,.02) !important;
+    padding: 1rem !important;
+    transition: border-color .12s, background .12s;
+    color: var(--mmxc-muted, #64748b) !important;
+}
+.mmxc-modal.mmxc-modal  [id$="-upload-label"]:hover {
+    border-color: var(--mmxc-primary, #6576ff) !important;
+    background: rgba(101,118,255,.04) !important;
+    color: var(--mmxc-text, #1e293b) !important;
+}
+
+/* File-selected state: green/success accent */
+.mmxc-modal.mmxc-modal  [id$="-upload-label"][data-file-selected="true"] {
+    border: 1px solid #16a34a !important;
+    background: rgba(22,163,74,.06) !important;
+    color: #15803d !important;
+    text-align: start !important;
+    padding: .85rem 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: .75rem !important;
+}
+.mmxc-modal.mmxc-modal  [id$="-upload-label"][data-file-selected="true"] i,
+.mmxc-modal.mmxc-modal  [id$="-upload-label"][data-file-selected="true"] em { display: none !important; }
+.mmxc-modal.mmxc-modal  [id$="-upload-label"][data-file-selected="true"]::before {
+    content: '✓';
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    background: #16a34a;
+    color: #fff;
+    border-radius: 50% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    font-weight: 700;
+}
+.mmxc-modal.mmxc-modal  [id$="-upload-label"][data-file-selected="true"] span,
+.mmxc-modal.mmxc-modal  [id$="-upload-label"][data-file-selected="true"] [id$="-upload-label-text"] {
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+    color: #15803d !important;
+}
+.mmxc-modal.mmxc-modal  [id$="-upload-label"][data-file-selected="true"]::after {
+    content: 'تغيير';
+    flex-shrink: 0;
+    font-size: .78rem;
+    padding: .25rem .55rem;
+    border-radius: 6px;
+    background: rgba(22,163,74,.12);
+    color: #15803d;
+    font-weight: 500;
+}
+
+/* === Field layout: clean two-column grid === */
+.mmxc-modal.mmxc-modal  .mmxc-upload-fields {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: .85rem !important;
+    width: 100% !important;
+}
+.mmxc-modal.mmxc-modal  .mmxc-upload-fields > * {
+    flex: unset !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+/* file picker spans full width — it's the prominent field */
+.mmxc-modal.mmxc-modal  .mmxc-upload-fields > *:has(> [id$="-upload-label"]),
+.mmxc-modal.mmxc-modal  .mmxc-upload-fields > *:has([id$="-upload-input"]) {
+    grid-column: 1 / -1 !important;
+}
+
+/* Import-by-URL row layout: URL on its own row, name+alt side-by-side */
+.mmxc-modal.mmxc-modal  .mmxc-uploader-url > div:first-of-type {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: .75rem !important;
+    margin-bottom: .85rem !important;
+}
+.mmxc-modal.mmxc-modal  .mmxc-uploader-url > div:first-of-type > *:first-child {
+    grid-column: 1 / -1 !important;
+}
+.mmxc-modal.mmxc-modal  .mmxc-uploader-url > div:first-of-type > * { flex: unset !important; width: 100% !important; min-width: 0 !important; }
+
+/* Radio group: even spacing */
+.mmxc-modal.mmxc-modal  .mmxc-url-type-group > div {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: .5rem !important;
+}
+
+/* Action button rows */
+.mmxc-modal.mmxc-modal  .mmxc-uploader-actions {
+    display: flex !important;
+    gap: .5rem !important;
+    justify-content: flex-end !important;
+    margin-top: .25rem !important;
+    width: 100% !important;
+    padding-top: .75rem;
+    border-top: 1px solid rgba(15,23,42,.06);
+}
+
+/* Tab body single column constraint for narrow modals */
+@media (max-width: 640px) {
+    .mmxc-modal.mmxc-modal  .mmxc-upload-fields,
+    .mmxc-modal.mmxc-modal  .mmxc-uploader-url > div:first-of-type {
+        grid-template-columns: 1fr !important;
+    }
+    .mmxc-modal.mmxc-modal  .mmxc-uploader-actions { flex-direction: column; }
+    .mmxc-modal.mmxc-modal  .mmxc-uploader-actions .mmxc-btn { width: 100%; }
+}
+
+@media (max-width: 600px) {
+    .mmxc-modal.mmxc-modal .mmxc-pagination .mmxc-page-info { width: 100%; text-align: center; margin-top: .25rem; }
+    .mmxc-modal.mmxc-modal .mmxc-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important; }
+    .mmxc-modal.mmxc-modal .mmxc-thumb { height: 110px !important; }
+}
+/* === END MMX-UI-ENHANCE-V2 === */
+</style>
+<script>
+(function() {
+    if (window.__mxxFileSelectedHook) return;
+    window.__mxxFileSelectedHook = true;
+    document.addEventListener('change', function(e) {
+        const input = e.target;
+        if (!input || input.type !== 'file' || !input.id || !input.id.endsWith('-upload-input')) return;
+        const labelId = input.id.replace('-upload-input', '-upload-label');
+        const label = document.getElementById(labelId);
+        if (!label) return;
+        const file = input.files && input.files[0];
+        if (file) {
+            label.setAttribute('data-file-selected', 'true');
+            const txtId = labelId + '-text';
+            const txtEl = document.getElementById(txtId) || label.querySelector('span');
+            if (txtEl) txtEl.textContent = file.name;
+            else {
+                const span = document.createElement('span');
+                span.textContent = file.name;
+                label.appendChild(span);
+            }
+        } else {
+            label.removeAttribute('data-file-selected');
+        }
+    }, true);
+})();
+</script>
+<style>
+</style>
+<script>
+(function() {
+    if (window.__mxxFileSelectedHook) return;
+    window.__mxxFileSelectedHook = true;
+    document.addEventListener('change', function(e) {
+        const input = e.target;
+        if (!input || input.type !== 'file' || !input.id || !input.id.endsWith('-upload-input')) return;
+        const labelId = input.id.replace('-upload-input', '-upload-label');
+        const label = document.getElementById(labelId);
+        if (!label) return;
+        const file = input.files && input.files[0];
+        if (file) {
+            label.setAttribute('data-file-selected', 'true');
+            const txtId = labelId + '-text';
+            const txtEl = document.getElementById(txtId) || label.querySelector('span');
+            if (txtEl) txtEl.textContent = file.name;
+            else {
+                const span = document.createElement('span');
+                span.textContent = file.name;
+                label.appendChild(span);
+            }
+        } else {
+            label.removeAttribute('data-file-selected');
+        }
+    }, true);
+})();
+</script>
+<style>
+</style>
+<script>
+(function() {
+    if (window.__mxxFileSelectedHook) return;
+    window.__mxxFileSelectedHook = true;
+    document.addEventListener('change', function(e) {
+        const input = e.target;
+        if (!input || input.type !== 'file' || !input.id || !input.id.endsWith('-upload-input')) return;
+        const labelId = input.id.replace('-upload-input', '-upload-label');
+        const label = document.getElementById(labelId);
+        if (!label) return;
+        const file = input.files && input.files[0];
+        if (file) {
+            label.setAttribute('data-file-selected', 'true');
+            const txtId = labelId + '-text';
+            const txtEl = document.getElementById(txtId) || label.querySelector('span');
+            if (txtEl) txtEl.textContent = file.name;
+            else {
+                const span = document.createElement('span');
+                span.textContent = file.name;
+                label.appendChild(span);
+            }
+        } else {
+            label.removeAttribute('data-file-selected');
+        }
+    }, true);
+})();
+</script>
+<style>
 </style>
 
 <!-- ====================== Scripts ====================== -->
@@ -1558,7 +2115,7 @@
             previewImg.alt = payload.alt || payload.title || '';
             previewName.textContent = payload.title || payload.url;
             previewWrap.classList.remove('d-none');
-            placeholder.style.display = 'none';
+            placeholder.classList.add('d-none');
             if (prevImg) {
                 prevImg.src = payload.url;
                 prevImg.alt = payload.alt || payload.title || '';
@@ -1566,7 +2123,7 @@
             }
         } else {
             previewWrap.classList.add('d-none');
-            placeholder.style.display = 'block';
+            placeholder.classList.remove('d-none');
             if (prevImg) {
                 prevImg.removeAttribute('src');
                 prevImgWrap && (prevImgWrap.style.display = 'none');

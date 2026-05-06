@@ -520,6 +520,569 @@
             width: 100%;
         }
     }
+
+/* === MMX-UI-ENHANCE-V2 === */
+#mmmMediaModal ,
+#mmmMediaModal  * { border-radius: 0 !important; }
+#mmmMediaModal .mmm-container {
+    max-height: 90vh !important;
+    height: auto !important;
+    width: clamp(320px, 94vw, 1080px) !important;
+    border-radius: 0 !important;
+    box-shadow: 0 12px 32px rgba(15,23,42,.12) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    border: 1px solid rgba(15,23,42,.06);
+    background: var(--mmm-bg, #fff) !important;
+}
+#mmmMediaModal .mmm-header {
+    padding: 1rem 1.25rem !important;
+    background: var(--mmm-bg, #fff) !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0;
+}
+#mmmMediaModal .mmm-header h5 { font-size: 1rem !important; font-weight: 600 !important; letter-spacing: -0.01em; }
+#mmmMediaModal .mmm-close {
+    width: 30px; height: 30px;
+    border-radius: 0 !important;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--mmm-muted, #94a3b8) !important;
+    transition: background .12s, color .12s;
+    background: transparent !important;
+}
+#mmmMediaModal .mmm-close:hover { background: rgba(15,23,42,.05) !important; color: var(--mmm-text, #1e293b) !important; }
+
+#mmmMediaModal .mmm-tabs {
+    padding: .5rem .85rem !important;
+    gap: .25rem !important;
+    background: var(--mmm-bg, #fff) !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0;
+    overflow-x: auto;
+}
+#mmmMediaModal .mmm-tab-btn {
+    border-radius: 0 !important;
+    padding: .5rem .9rem !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: var(--mmm-muted, #64748b) !important;
+    font-weight: 500 !important;
+    font-size: .88rem !important;
+    transition: background .12s, color .12s;
+    white-space: nowrap;
+    box-shadow: none !important;
+}
+#mmmMediaModal .mmm-tab-btn:hover:not(.mmm-is-active) {
+    background: rgba(15,23,42,.04) !important;
+    color: var(--mmm-text, #1e293b) !important;
+}
+#mmmMediaModal .mmm-tab-btn.mmm-is-active {
+    background: rgba(101,118,255,.10) !important;
+    color: var(--mmm-primary, #6576ff) !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+#mmmMediaModal .mmm-tab-panel { display: flex !important; flex-direction: column; flex: 1 1 auto; min-height: 0; overflow: hidden; }
+#mmmMediaModal .mmm-tab-panel[hidden] { display: none !important; }
+
+#mmmMediaModal .mmm-filters {
+    padding: .9rem 1.25rem !important;
+    background: var(--mmm-bg, #fff) !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0;
+    gap: .5rem !important;
+}
+
+#mmmMediaModal .mmm-body {
+    flex: 1 1 auto !important;
+    min-height: 200px !important;
+    overflow: auto !important;
+    padding: 1.25rem !important;
+    background: var(--mmm-bg, #fff) !important;
+    scrollbar-width: thin;
+}
+#mmmMediaModal .mmm-body::-webkit-scrollbar { width: 6px; }
+#mmmMediaModal .mmm-body::-webkit-scrollbar-thumb { background: rgba(15,23,42,.15); border-radius: 0; }
+#mmmMediaModal .mmm-body::-webkit-scrollbar-thumb:hover { background: rgba(15,23,42,.25); }
+
+#mmmMediaModal .mmm-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+    gap: .75rem !important;
+}
+
+#mmmMediaModal .mmm-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--mmm-muted, #94a3b8);
+    font-size: .92rem;
+    padding: 3rem 1rem !important;
+    background: transparent;
+    border: 0;
+    margin: 0 !important;
+}
+
+#mmmMediaModal .mmm-item {
+    background: var(--mmm-bg, #fff) !important;
+    border: 1px solid rgba(15,23,42,.08) !important;
+    border-radius: 0 !important;
+    overflow: hidden;
+    padding: 0 !important;
+    transition: border-color .12s, box-shadow .12s !important;
+    display: flex !important;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
+}
+#mmmMediaModal .mmm-item:hover {
+    border-color: rgba(101,118,255,.4) !important;
+    box-shadow: 0 2px 8px rgba(15,23,42,.06) !important;
+}
+#mmmMediaModal .mmm-item.mmm-is-selected {
+    border-color: var(--mmm-primary, #6576ff) !important;
+    box-shadow: 0 0 0 2px rgba(101,118,255,.25) !important;
+}
+#mmmMediaModal .mmm-item.mmm-is-selected::before {
+    content: '✓';
+    position: absolute;
+    top: 8px;
+    inset-inline-end: 8px;
+    width: 22px; height: 22px;
+    background: var(--mmm-primary, #6576ff);
+    color: #fff;
+    border-radius: 50% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .75rem;
+    font-weight: 700;
+    z-index: 2;
+}
+
+#mmmMediaModal .mmm-thumb {
+    height: 120px !important;
+    width: 100% !important;
+    border: 0 !important;
+    background: rgba(15,23,42,.03) !important;
+    border-radius: 0 !important;
+}
+#mmmMediaModal .mmm-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+#mmmMediaModal .mmm-title {
+    margin: 0 !important;
+    padding: .5rem .65rem !important;
+    font-size: .82rem !important;
+    font-weight: 500 !important;
+    color: var(--mmm-text, #334155) !important;
+    background: var(--mmm-bg, #fff);
+    border-top: 1px solid rgba(15,23,42,.05);
+}
+
+#mmmMediaModal .mmm-badge {
+    border-radius: 0 !important;
+    background: rgba(15,23,42,.65) !important;
+    backdrop-filter: blur(4px);
+    border: 0 !important;
+    width: 24px !important;
+    height: 24px !important;
+    top: 6px;
+    inset-inline-start: 6px;
+}
+
+#mmmMediaModal .mmm-loader {
+    text-align: center;
+    color: var(--mmm-muted, #94a3b8);
+    padding: 1rem !important;
+    font-size: .88rem;
+}
+#mmmMediaModal .mmm-loader::before {
+    content: '';
+    display: inline-block;
+    width: 12px; height: 12px;
+    margin-inline-end: .5rem;
+    border: 2px solid rgba(15,23,42,.1);
+    border-top-color: var(--mmm-primary, #6576ff);
+    border-radius: 50% !important;
+    animation: mmm-spin .7s linear infinite;
+    vertical-align: -1px;
+}
+@keyframes mmm-spin { to { transform: rotate(360deg); } }
+
+#mmmMediaModal .mmm-pagination {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: .25rem !important;
+    align-items: center;
+    padding: .6rem 1.25rem !important;
+    background: var(--mmm-bg, #fff) !important;
+    border-top: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0 !important;
+}
+#mmmMediaModal .mmm-pagination button {
+    min-width: 32px !important;
+    height: 32px !important;
+    padding: 0 .55rem !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: var(--mmm-text, #475569) !important;
+    border-radius: 0 !important;
+    font-weight: 500 !important;
+    font-size: .85rem !important;
+    cursor: pointer;
+    transition: background .12s, color .12s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none !important;
+}
+#mmmMediaModal .mmm-pagination button:hover:not(:disabled) {
+    background: rgba(15,23,42,.05) !important;
+    color: var(--mmm-text, #1e293b) !important;
+    border-color: transparent !important;
+}
+#mmmMediaModal .mmm-pagination button.mmm-page-active {
+    background: var(--mmm-primary, #6576ff) !important;
+    border-color: var(--mmm-primary, #6576ff) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+#mmmMediaModal .mmm-pagination button:disabled { opacity: .35; cursor: not-allowed; }
+#mmmMediaModal .mmm-pagination .mmm-page-ellipsis { padding: 0 .25rem; color: var(--mmm-muted, #94a3b8); }
+#mmmMediaModal .mmm-pagination .mmm-page-info {
+    margin-inline-start: auto;
+    font-size: .8rem;
+    color: var(--mmm-muted, #94a3b8);
+    font-weight: 400;
+}
+
+#mmmMediaModal .mmm-footer {
+    padding: .85rem 1.25rem !important;
+    background: var(--mmm-bg, #fff) !important;
+    border-top: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0 !important;
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
+}
+#mmmMediaModal .mmm-btn {
+    border-radius: 0 !important;
+    padding: .55rem 1.1rem !important;
+    font-weight: 500 !important;
+    font-size: .9rem !important;
+    transition: background .12s, color .12s, border-color .12s;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+}
+#mmmMediaModal .mmm-btn-primary { background: var(--mmm-primary, #6576ff) !important; color: #fff !important; border-color: var(--mmm-primary, #6576ff) !important; }
+#mmmMediaModal .mmm-btn-primary:hover:not(:disabled) { background: #5566ee !important; border-color: #5566ee !important; }
+#mmmMediaModal .mmm-btn-secondary { background: rgba(15,23,42,.05) !important; color: var(--mmm-text, #1e293b) !important; }
+#mmmMediaModal .mmm-btn-secondary:hover:not(:disabled) { background: rgba(15,23,42,.09) !important; }
+#mmmMediaModal .mmm-btn-cancel { background: transparent !important; color: var(--mmm-muted, #64748b) !important; border-color: rgba(15,23,42,.12) !important; }
+#mmmMediaModal .mmm-btn-cancel:hover { background: rgba(15,23,42,.04) !important; color: var(--mmm-text, #1e293b) !important; }
+#mmmMediaModal .mmm-btn-select:not(:disabled) { background: var(--mmm-primary, #6576ff) !important; color: #fff !important; border-color: var(--mmm-primary, #6576ff) !important; }
+#mmmMediaModal .mmm-btn-select:not(:disabled):hover { background: #5566ee !important; border-color: #5566ee !important; }
+#mmmMediaModal .mmm-btn-select:disabled { background: rgba(15,23,42,.05) !important; color: var(--mmm-muted, #94a3b8) !important; }
+
+#mmmMediaModal .mmm-tab-body {
+    padding: 1.25rem !important;
+    background: var(--mmm-bg, #fff) !important;
+    overflow: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+#mmmMediaModal  input[type="text"],
+#mmmMediaModal  input[type="search"],
+#mmmMediaModal  input[type="url"],
+#mmmMediaModal  input[type="email"],
+#mmmMediaModal  input[type="number"],
+#mmmMediaModal  input[type="file"],
+#mmmMediaModal  textarea,
+#mmmMediaModal  select {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.10) !important;
+    padding: .55rem .8rem !important;
+    background: var(--mmm-bg, #fff) !important;
+    color: var(--mmm-text, #1e293b) !important;
+    font-size: .9rem !important;
+    transition: border-color .12s, box-shadow .12s !important;
+    box-shadow: none !important;
+    line-height: 1.4 !important;
+    font-family: inherit !important;
+    font-weight: 400 !important;
+}
+#mmmMediaModal  input:focus,
+#mmmMediaModal  textarea:focus,
+#mmmMediaModal  select:focus {
+    border-color: var(--mmm-primary, #6576ff) !important;
+    box-shadow: 0 0 0 3px rgba(101,118,255,.12) !important;
+    outline: none !important;
+}
+#mmmMediaModal  input::placeholder,
+#mmmMediaModal  textarea::placeholder {
+    color: var(--mmm-muted, #94a3b8) !important;
+    opacity: 1;
+    font-weight: 400;
+}
+#mmmMediaModal  input[type="file"] { padding: .4rem .55rem !important; cursor: pointer; }
+#mmmMediaModal  label {
+    color: var(--mmm-text, #334155) !important;
+    font-size: .85rem !important;
+    font-weight: 500 !important;
+    display: inline-block;
+    margin-bottom: .25rem;
+}
+#mmmMediaModal  fieldset {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.08) !important;
+    padding: .7rem 1rem !important;
+    background: transparent !important;
+}
+#mmmMediaModal  fieldset legend {
+    font-size: .78rem !important;
+    color: var(--mmm-muted, #94a3b8) !important;
+    font-weight: 500 !important;
+    padding: 0 .4rem !important;
+}
+#mmmMediaModal  .mmm-radio {
+    background: transparent;
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: 0;
+    padding: .3rem .65rem !important;
+    transition: border-color .12s;
+    font-size: .85rem !important;
+}
+#mmmMediaModal  .mmm-radio:hover { border-color: rgba(101,118,255,.4); }
+#mmmMediaModal  .mmm-radio input[type="radio"] { accent-color: var(--mmm-primary, #6576ff); margin-inline-end: .25rem; }
+#mmmMediaModal  .mmm-uploader,
+#mmmMediaModal  .mmm-uploader-url {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.08) !important;
+    background: var(--mmm-bg, #fff) !important;
+    padding: 1rem !important;
+    gap: .6rem !important;
+    box-shadow: none !important;
+}
+#mmmMediaModal  [id$="-upload-label"] {
+    border-radius: 0 !important;
+    border: 1px dashed rgba(15,23,42,.18) !important;
+    background: rgba(15,23,42,.02) !important;
+    padding: 1rem !important;
+    transition: border-color .12s, background .12s;
+    color: var(--mmm-muted, #64748b) !important;
+}
+#mmmMediaModal  [id$="-upload-label"]:hover {
+    border-color: var(--mmm-primary, #6576ff) !important;
+    background: rgba(101,118,255,.04) !important;
+    color: var(--mmm-text, #1e293b) !important;
+}
+
+/* File-selected state: green/success accent */
+#mmmMediaModal  [id$="-upload-label"][data-file-selected="true"] {
+    border: 1px solid #16a34a !important;
+    background: rgba(22,163,74,.06) !important;
+    color: #15803d !important;
+    text-align: start !important;
+    padding: .85rem 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: .75rem !important;
+}
+#mmmMediaModal  [id$="-upload-label"][data-file-selected="true"] i,
+#mmmMediaModal  [id$="-upload-label"][data-file-selected="true"] em { display: none !important; }
+#mmmMediaModal  [id$="-upload-label"][data-file-selected="true"]::before {
+    content: '✓';
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    background: #16a34a;
+    color: #fff;
+    border-radius: 50% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    font-weight: 700;
+}
+#mmmMediaModal  [id$="-upload-label"][data-file-selected="true"] span,
+#mmmMediaModal  [id$="-upload-label"][data-file-selected="true"] [id$="-upload-label-text"] {
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+    color: #15803d !important;
+}
+#mmmMediaModal  [id$="-upload-label"][data-file-selected="true"]::after {
+    content: 'تغيير';
+    flex-shrink: 0;
+    font-size: .78rem;
+    padding: .25rem .55rem;
+    border-radius: 6px;
+    background: rgba(22,163,74,.12);
+    color: #15803d;
+    font-weight: 500;
+}
+
+/* === Field layout: clean two-column grid === */
+#mmmMediaModal  .mmm-upload-fields {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: .85rem !important;
+    width: 100% !important;
+}
+#mmmMediaModal  .mmm-upload-fields > * {
+    flex: unset !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+/* file picker spans full width — it's the prominent field */
+#mmmMediaModal  .mmm-upload-fields > *:has(> [id$="-upload-label"]),
+#mmmMediaModal  .mmm-upload-fields > *:has([id$="-upload-input"]) {
+    grid-column: 1 / -1 !important;
+}
+
+/* Import-by-URL row layout: URL on its own row, name+alt side-by-side */
+#mmmMediaModal  .mmm-uploader-url > div:first-of-type {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: .75rem !important;
+    margin-bottom: .85rem !important;
+}
+#mmmMediaModal  .mmm-uploader-url > div:first-of-type > *:first-child {
+    grid-column: 1 / -1 !important;
+}
+#mmmMediaModal  .mmm-uploader-url > div:first-of-type > * { flex: unset !important; width: 100% !important; min-width: 0 !important; }
+
+/* Radio group: even spacing */
+#mmmMediaModal  .mmm-url-type-group > div {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: .5rem !important;
+}
+
+/* Action button rows */
+#mmmMediaModal  .mmm-uploader-actions {
+    display: flex !important;
+    gap: .5rem !important;
+    justify-content: flex-end !important;
+    margin-top: .25rem !important;
+    width: 100% !important;
+    padding-top: .75rem;
+    border-top: 1px solid rgba(15,23,42,.06);
+}
+
+/* Tab body single column constraint for narrow modals */
+@media (max-width: 640px) {
+    #mmmMediaModal  .mmm-upload-fields,
+    #mmmMediaModal  .mmm-uploader-url > div:first-of-type {
+        grid-template-columns: 1fr !important;
+    }
+    #mmmMediaModal  .mmm-uploader-actions { flex-direction: column; }
+    #mmmMediaModal  .mmm-uploader-actions .mmm-btn { width: 100%; }
+}
+
+@media (max-width: 600px) {
+    #mmmMediaModal .mmm-pagination .mmm-page-info { width: 100%; text-align: center; margin-top: .25rem; }
+    #mmmMediaModal .mmm-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important; }
+    #mmmMediaModal .mmm-thumb { height: 110px !important; }
+}
+/* === END MMX-UI-ENHANCE-V2 === */
+</style>
+<script>
+(function() {
+    if (window.__mxxFileSelectedHook) return;
+    window.__mxxFileSelectedHook = true;
+    document.addEventListener('change', function(e) {
+        const input = e.target;
+        if (!input || input.type !== 'file' || !input.id || !input.id.endsWith('-upload-input')) return;
+        const labelId = input.id.replace('-upload-input', '-upload-label');
+        const label = document.getElementById(labelId);
+        if (!label) return;
+        const file = input.files && input.files[0];
+        if (file) {
+            label.setAttribute('data-file-selected', 'true');
+            const txtId = labelId + '-text';
+            const txtEl = document.getElementById(txtId) || label.querySelector('span');
+            if (txtEl) txtEl.textContent = file.name;
+            else {
+                const span = document.createElement('span');
+                span.textContent = file.name;
+                label.appendChild(span);
+            }
+        } else {
+            label.removeAttribute('data-file-selected');
+        }
+    }, true);
+})();
+</script>
+<style>
+</style>
+<script>
+(function() {
+    if (window.__mxxFileSelectedHook) return;
+    window.__mxxFileSelectedHook = true;
+    document.addEventListener('change', function(e) {
+        const input = e.target;
+        if (!input || input.type !== 'file' || !input.id || !input.id.endsWith('-upload-input')) return;
+        const labelId = input.id.replace('-upload-input', '-upload-label');
+        const label = document.getElementById(labelId);
+        if (!label) return;
+        const file = input.files && input.files[0];
+        if (file) {
+            label.setAttribute('data-file-selected', 'true');
+            const txtId = labelId + '-text';
+            const txtEl = document.getElementById(txtId) || label.querySelector('span');
+            if (txtEl) txtEl.textContent = file.name;
+            else {
+                const span = document.createElement('span');
+                span.textContent = file.name;
+                label.appendChild(span);
+            }
+        } else {
+            label.removeAttribute('data-file-selected');
+        }
+    }, true);
+})();
+</script>
+<style>
+</style>
+<script>
+(function() {
+    if (window.__mxxFileSelectedHook) return;
+    window.__mxxFileSelectedHook = true;
+    document.addEventListener('change', function(e) {
+        const input = e.target;
+        if (!input || input.type !== 'file' || !input.id || !input.id.endsWith('-upload-input')) return;
+        const labelId = input.id.replace('-upload-input', '-upload-label');
+        const label = document.getElementById(labelId);
+        if (!label) return;
+        const file = input.files && input.files[0];
+        if (file) {
+            label.setAttribute('data-file-selected', 'true');
+            const txtId = labelId + '-text';
+            const txtEl = document.getElementById(txtId) || label.querySelector('span');
+            if (txtEl) txtEl.textContent = file.name;
+            else {
+                const span = document.createElement('span');
+                span.textContent = file.name;
+                label.appendChild(span);
+            }
+        } else {
+            label.removeAttribute('data-file-selected');
+        }
+    }, true);
+})();
+</script>
+<style>
 </style>
 
 <script>

@@ -1526,10 +1526,25 @@
                             <label for="writer_bio" class="form-label">السيرة الذاتية</label>
                             <textarea class="form-control" id="writer_bio" name="bio" rows="3" required></textarea>
                         </div>
-                        <div class="mb-3">
-                            <label for="writer_image" class="form-label">الصورة</label>
-                            <input type="file" class="form-control" id="writer_image" name="image"
-                                accept=".jpeg,.jpg,.png,.gif,.webp" required>
+                                                <div class="mb-3 gallery-picker-field" data-picker="writer_image">
+                            <label class="form-label">الصورة</label>
+                            <input type="file" id="writer_image" name="image"
+                                accept=".jpeg,.jpg,.png,.gif,.webp" class="d-none" required>
+                            <div class="gp-empty" data-gp-empty>
+                                <i class="fas fa-image"></i>
+                                <span>اختر صورة من المعرض</span>
+                            </div>
+                            <div class="gp-preview d-none" data-gp-preview>
+                                <img class="gp-thumb" data-gp-thumb src="" alt="">
+                                <div class="gp-info">
+                                    <span class="gp-title" data-gp-title>بدون عنوان</span>
+                                    <span class="gp-type">صورة</span>
+                                </div>
+                                <div class="gp-actions">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-gp-change>تغيير</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-gp-remove>حذف</button>
+                                </div>
+                            </div>
                             <div class="form-text">الحد الأقصى 2MB. يُقبل: jpeg, png, webp, gif</div>
                         </div>
                         <div class="mb-3">
@@ -1603,10 +1618,25 @@
                             <label for="trend_title" class="form-label">اسم الترند</label>
                             <input type="text" class="form-control" id="trend_title" name="title" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="trend_image" class="form-label">الصورة</label>
-                            <input type="file" class="form-control" id="trend_image" name="image"
-                                accept=".jpeg,.jpg,.png,.webp,.gif" required>
+                                                <div class="mb-3 gallery-picker-field" data-picker="trend_image">
+                            <label class="form-label">الصورة</label>
+                            <input type="file" id="trend_image" name="image"
+                                accept=".jpeg,.jpg,.png,.webp,.gif" class="d-none" required>
+                            <div class="gp-empty" data-gp-empty>
+                                <i class="fas fa-image"></i>
+                                <span>اختر صورة من المعرض</span>
+                            </div>
+                            <div class="gp-preview d-none" data-gp-preview>
+                                <img class="gp-thumb" data-gp-thumb src="" alt="">
+                                <div class="gp-info">
+                                    <span class="gp-title" data-gp-title>بدون عنوان</span>
+                                    <span class="gp-type">صورة</span>
+                                </div>
+                                <div class="gp-actions">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-gp-change>تغيير</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-gp-remove>حذف</button>
+                                </div>
+                            </div>
                             <div class="form-text">الحد الأقصى 6MB. يُقبل: jpeg, png, webp, gif</div>
                         </div>
                     </form>
@@ -1634,10 +1664,25 @@
                             <label for="window_name" class="form-label">اسم النافذة</label>
                             <input type="text" class="form-control" id="window_name" name="name" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="window_image" class="form-label">الصورة</label>
-                            <input type="file" class="form-control" id="window_image" name="image"
-                                accept=".jpeg,.jpg,.png,.webp,.gif" required>
+                                                <div class="mb-3 gallery-picker-field" data-picker="window_image">
+                            <label class="form-label">الصورة</label>
+                            <input type="file" id="window_image" name="image"
+                                accept=".jpeg,.jpg,.png,.webp,.gif" class="d-none" required>
+                            <div class="gp-empty" data-gp-empty>
+                                <i class="fas fa-image"></i>
+                                <span>اختر صورة من المعرض</span>
+                            </div>
+                            <div class="gp-preview d-none" data-gp-preview>
+                                <img class="gp-thumb" data-gp-thumb src="" alt="">
+                                <div class="gp-info">
+                                    <span class="gp-title" data-gp-title>بدون عنوان</span>
+                                    <span class="gp-type">صورة</span>
+                                </div>
+                                <div class="gp-actions">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-gp-change>تغيير</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-gp-remove>حذف</button>
+                                </div>
+                            </div>
                             <div class="form-text">الحد الأقصى 6MB. يُقبل: jpeg, png, webp, gif</div>
                         </div>
                     </form>
@@ -2948,6 +2993,299 @@
                 });
             }
         }
+    </script>
+
+    {{-- ====== Quick-add modals (Writer / Trend / Window / Tag / Location) styling ====== --}}
+    <style>
+        #addWriterModal .modal-content,
+        #addTrendModal .modal-content,
+        #addWindowModal .modal-content,
+        #addTagModal .modal-content,
+        #addWriterLocationModal .modal-content {
+            border: 1px solid rgba(15,23,42,.06);
+            border-radius: 0;
+            box-shadow: 0 14px 36px rgba(15,23,42,.18);
+            overflow: hidden;
+        }
+        #addWriterModal .modal-header,
+        #addTrendModal .modal-header,
+        #addWindowModal .modal-header,
+        #addTagModal .modal-header,
+        #addWriterLocationModal .modal-header {
+            padding: 1rem 1.25rem;
+            background: #fff;
+            border-bottom: 1px solid rgba(15,23,42,.06);
+            border-radius: 0;
+        }
+        #addWriterModal .modal-title,
+        #addTrendModal .modal-title,
+        #addWindowModal .modal-title,
+        #addTagModal .modal-title,
+        #addWriterLocationModal .modal-title {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+        #addWriterModal .btn-close,
+        #addTrendModal .btn-close,
+        #addWindowModal .btn-close,
+        #addTagModal .btn-close,
+        #addWriterLocationModal .btn-close { border-radius: 0; opacity: .55; }
+        #addWriterModal .btn-close:hover,
+        #addTrendModal .btn-close:hover,
+        #addWindowModal .btn-close:hover,
+        #addTagModal .btn-close:hover,
+        #addWriterLocationModal .btn-close:hover { opacity: 1; background: rgba(15,23,42,.05); }
+
+        #addWriterModal .modal-body,
+        #addTrendModal .modal-body,
+        #addWindowModal .modal-body,
+        #addTagModal .modal-body,
+        #addWriterLocationModal .modal-body { padding: 1.25rem; background: #fff; }
+        #addWriterModal .mb-3,
+        #addTrendModal .mb-3,
+        #addWindowModal .mb-3,
+        #addTagModal .mb-3,
+        #addWriterLocationModal .mb-3 { margin-bottom: 1rem !important; }
+
+        #addWriterModal .form-label,
+        #addTrendModal .form-label,
+        #addWindowModal .form-label,
+        #addTagModal .form-label,
+        #addWriterLocationModal .form-label {
+            font-size: .85rem;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: .35rem;
+            display: inline-block;
+        }
+        #addWriterModal .form-text,
+        #addTrendModal .form-text,
+        #addWindowModal .form-text,
+        #addTagModal .form-text,
+        #addWriterLocationModal .form-text {
+            font-size: .78rem;
+            color: #94a3b8;
+            margin-top: .35rem;
+        }
+
+        #addWriterModal .form-control,
+        #addWriterModal .form-select,
+        #addTrendModal .form-control,
+        #addTrendModal .form-select,
+        #addWindowModal .form-control,
+        #addWindowModal .form-select,
+        #addTagModal .form-control,
+        #addTagModal .form-select,
+        #addWriterLocationModal .form-control,
+        #addWriterLocationModal .form-select {
+            border-radius: 0 !important;
+            border: 1px solid rgba(15,23,42,.10);
+            padding: .55rem .8rem;
+            font-size: .9rem;
+            background: #fff;
+            color: #1e293b;
+            transition: border-color .12s, box-shadow .12s;
+            box-shadow: none !important;
+        }
+        #addWriterModal .form-control:focus,
+        #addWriterModal .form-select:focus,
+        #addTrendModal .form-control:focus,
+        #addTrendModal .form-select:focus,
+        #addWindowModal .form-control:focus,
+        #addWindowModal .form-select:focus,
+        #addTagModal .form-control:focus,
+        #addTagModal .form-select:focus,
+        #addWriterLocationModal .form-control:focus,
+        #addWriterLocationModal .form-select:focus {
+            border-color: #6576ff;
+            box-shadow: 0 0 0 3px rgba(101,118,255,.12) !important;
+            outline: none;
+        }
+        #addWriterModal .form-control::placeholder,
+        #addTrendModal .form-control::placeholder,
+        #addWindowModal .form-control::placeholder,
+        #addTagModal .form-control::placeholder,
+        #addWriterLocationModal .form-control::placeholder { color: #94a3b8; }
+
+        #addWriterModal textarea.form-control,
+        #addTrendModal textarea.form-control,
+        #addWindowModal textarea.form-control,
+        #addTagModal textarea.form-control,
+        #addWriterLocationModal textarea.form-control { min-height: 110px; resize: vertical; }
+
+        #addWriterModal .modal-footer,
+        #addTrendModal .modal-footer,
+        #addWindowModal .modal-footer,
+        #addTagModal .modal-footer,
+        #addWriterLocationModal .modal-footer {
+            padding: .85rem 1.25rem;
+            background: #fff;
+            border-top: 1px solid rgba(15,23,42,.06);
+            gap: .5rem;
+            border-radius: 0;
+        }
+        #addWriterModal .modal-footer .btn,
+        #addTrendModal .modal-footer .btn,
+        #addWindowModal .modal-footer .btn,
+        #addTagModal .modal-footer .btn,
+        #addWriterLocationModal .modal-footer .btn {
+            border-radius: 0 !important;
+            padding: .55rem 1.1rem;
+            font-size: .9rem;
+            font-weight: 500;
+            box-shadow: none !important;
+        }
+        #addWriterModal .btn-secondary,
+        #addTrendModal .btn-secondary,
+        #addWindowModal .btn-secondary,
+        #addTagModal .btn-secondary,
+        #addWriterLocationModal .btn-secondary {
+            background: rgba(15,23,42,.05);
+            color: #1e293b;
+            border-color: transparent;
+        }
+        #addWriterModal .btn-secondary:hover,
+        #addTrendModal .btn-secondary:hover,
+        #addWindowModal .btn-secondary:hover,
+        #addTagModal .btn-secondary:hover,
+        #addWriterLocationModal .btn-secondary:hover { background: rgba(15,23,42,.09); color: #0f172a; }
+        #addWriterModal .btn-primary,
+        #addTrendModal .btn-primary,
+        #addWindowModal .btn-primary,
+        #addTagModal .btn-primary,
+        #addWriterLocationModal .btn-primary {
+            background: #6576ff;
+            border-color: #6576ff;
+            color: #fff;
+        }
+        #addWriterModal .btn-primary:hover:not(:disabled),
+        #addTrendModal .btn-primary:hover:not(:disabled),
+        #addWindowModal .btn-primary:hover:not(:disabled),
+        #addTagModal .btn-primary:hover:not(:disabled),
+        #addWriterLocationModal .btn-primary:hover:not(:disabled) {
+            background: #5566ee;
+            border-color: #5566ee;
+        }
+    </style>
+
+    {{-- ====== Gallery picker (writer/trend/window image fields) ====== --}}
+    <style>
+        .gallery-picker-field .gp-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            border: 1px dashed rgba(15,23,42,.18);
+            background: rgba(15,23,42,.02);
+            cursor: pointer;
+            transition: border-color .15s, background .15s;
+            color: #64748b;
+            min-height: 140px;
+        }
+        .gallery-picker-field .gp-empty:hover {
+            border-color: #6576ff;
+            background: rgba(101,118,255,.04);
+            color: #1e293b;
+        }
+        .gallery-picker-field .gp-empty i { font-size: 1.6rem; margin-bottom: .5rem; color: #94a3b8; }
+        .gallery-picker-field .gp-empty span { font-weight: 500; }
+        .gallery-picker-field .gp-preview {
+            display: flex;
+            align-items: center;
+            gap: .9rem;
+            padding: .75rem;
+            border: 1px solid rgba(15,23,42,.10);
+            background: #fff;
+        }
+        .gallery-picker-field .gp-thumb {
+            width: 88px; height: 88px;
+            object-fit: cover;
+            background: rgba(15,23,42,.05);
+            flex-shrink: 0;
+        }
+        .gallery-picker-field .gp-info { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: .15rem; }
+        .gallery-picker-field .gp-title {
+            font-weight: 500; color: #1e293b; font-size: .9rem;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .gallery-picker-field .gp-type { font-size: .78rem; color: #94a3b8; }
+        .gallery-picker-field .gp-actions { display: flex; gap: .35rem; flex-shrink: 0; }
+        .gallery-picker-field .btn { border-radius: 0; }
+    </style>
+    <script>
+        (function() {
+            async function pickFromGallery(fieldEl) {
+                if (!window.mmxMediaModalManager?.openModal) {
+                    alert('معرض الوسائط غير متاح على هذه الصفحة.');
+                    return;
+                }
+                const fileInput = fieldEl.querySelector('input[type="file"]');
+                const empty = fieldEl.querySelector('[data-gp-empty]');
+                const preview = fieldEl.querySelector('[data-gp-preview]');
+                const thumb = fieldEl.querySelector('[data-gp-thumb]');
+                const title = fieldEl.querySelector('[data-gp-title]');
+
+                // Move the mmx modal to <body> so it isn't trapped inside the
+                // Bootstrap modal's stacking context, and force a z-index above it.
+                const mmxEl = document.getElementById('mmxMediaModal');
+                if (mmxEl) {
+                    if (mmxEl.parentElement !== document.body) document.body.appendChild(mmxEl);
+                    mmxEl.style.zIndex = '20000';
+                }
+
+                const previousHandler = window.mmxMediaModalManager.onMediaSelected;
+                window.mmxMediaModalManager.openModal('gallery_picker_' + fieldEl.dataset.picker);
+                window.mmxMediaModalManager.onMediaSelected = async function(media) {
+                    window.mmxMediaModalManager.onMediaSelected = previousHandler;
+                    if (!media || !media.url) return;
+                    if (!/\.(jpe?g|png|webp|gif)(\?|$)/i.test(media.url)) {
+                        alert('الرجاء اختيار صورة (jpg, png, webp, gif).');
+                        return;
+                    }
+                    try {
+                        const res = await fetch(media.url, { credentials: 'same-origin' });
+                        if (!res.ok) throw new Error('HTTP ' + res.status);
+                        const blob = await res.blob();
+                        const ext = (media.url.split('?')[0].split('.').pop() || 'jpg').toLowerCase();
+                        const baseName = (media.title || 'image').replace(/[^\w؀-ۿ.\-]/g, '_');
+                        const filename = baseName.endsWith('.' + ext) ? baseName : (baseName + '.' + ext);
+                        const file = new File([blob], filename, { type: blob.type || 'image/' + ext });
+                        const dt = new DataTransfer();
+                        dt.items.add(file);
+                        fileInput.files = dt.files;
+                        fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+                        thumb.src = media.url;
+                        title.textContent = media.title || filename;
+                        empty.classList.add('d-none');
+                        preview.classList.remove('d-none');
+                    } catch (err) {
+                        console.error('Gallery picker fetch failed:', err);
+                        alert('فشل تحميل الصورة من المعرض. حاول مرة أخرى.');
+                    }
+                };
+            }
+            function clearField(fieldEl) {
+                const fileInput = fieldEl.querySelector('input[type="file"]');
+                const empty = fieldEl.querySelector('[data-gp-empty]');
+                const preview = fieldEl.querySelector('[data-gp-preview]');
+                fileInput.value = '';
+                empty.classList.remove('d-none');
+                preview.classList.add('d-none');
+            }
+            document.addEventListener('click', function(e) {
+                const field = e.target.closest('.gallery-picker-field');
+                if (!field) return;
+                if (e.target.closest('[data-gp-empty]') || e.target.closest('[data-gp-change]')) {
+                    e.preventDefault();
+                    pickFromGallery(field);
+                } else if (e.target.closest('[data-gp-remove]')) {
+                    e.preventDefault();
+                    clearField(field);
+                }
+            });
+        })();
     </script>
 
 @endsection

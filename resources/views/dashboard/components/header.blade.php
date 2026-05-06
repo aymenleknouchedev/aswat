@@ -25,14 +25,6 @@
             <div class="nk-header-tools">
                 <ul class="nk-quick-nav">
 
-                    <!-- Language Switcher -->
-                    <li>
-                        <div class="language-switcher">
-                            <button id="english" class="btn btn-outline-primary">English</button>
-                            <button id="arabic" class="btn btn-outline-primary">عربي</button>
-                        </div>
-                    </li>
-
                     <!-- User Dropdown -->
                     <li class="dropdown user-dropdown">
                         <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
@@ -88,13 +80,6 @@
                                             <em class="icon ni ni-setting-alt"></em>
                                             <span class="trans" data-en="Account Setting"
                                                 data-ar="إعدادات الحساب">Account Setting</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a id="dark-switch" class="dark-switch" href="#">
-                                            <em class="icon ni ni-moon"></em>
-                                            <span class="trans" data-en="Dark Mode" data-ar="الوضع الداكن">Dark
-                                                Mode</span>
                                         </a>
                                     </li>
                                 </ul>

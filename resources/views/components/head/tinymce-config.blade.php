@@ -906,6 +906,569 @@
             width: 100%;
         }
     }
+
+/* === MMX-UI-ENHANCE-V2 === */
+.vvc-modal.vvc-modal ,
+.vvc-modal.vvc-modal  * { border-radius: 0 !important; }
+.vvc-modal.vvc-modal .vvc-container {
+    max-height: 90vh !important;
+    height: auto !important;
+    width: clamp(320px, 94vw, 1080px) !important;
+    border-radius: 0 !important;
+    box-shadow: 0 12px 32px rgba(15,23,42,.12) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    border: 1px solid rgba(15,23,42,.06);
+    background: var(--vvc-bg, #fff) !important;
+}
+.vvc-modal.vvc-modal .vvc-header {
+    padding: 1rem 1.25rem !important;
+    background: var(--vvc-bg, #fff) !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0;
+}
+.vvc-modal.vvc-modal .vvc-header h5 { font-size: 1rem !important; font-weight: 600 !important; letter-spacing: -0.01em; }
+.vvc-modal.vvc-modal .vvc-close {
+    width: 30px; height: 30px;
+    border-radius: 0 !important;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--vvc-muted, #94a3b8) !important;
+    transition: background .12s, color .12s;
+    background: transparent !important;
+}
+.vvc-modal.vvc-modal .vvc-close:hover { background: rgba(15,23,42,.05) !important; color: var(--vvc-text, #1e293b) !important; }
+
+.vvc-modal.vvc-modal .vvc-tabs {
+    padding: .5rem .85rem !important;
+    gap: .25rem !important;
+    background: var(--vvc-bg, #fff) !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0;
+    overflow-x: auto;
+}
+.vvc-modal.vvc-modal .vvc-tab-btn {
+    border-radius: 0 !important;
+    padding: .5rem .9rem !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: var(--vvc-muted, #64748b) !important;
+    font-weight: 500 !important;
+    font-size: .88rem !important;
+    transition: background .12s, color .12s;
+    white-space: nowrap;
+    box-shadow: none !important;
+}
+.vvc-modal.vvc-modal .vvc-tab-btn:hover:not(.vvc-is-active) {
+    background: rgba(15,23,42,.04) !important;
+    color: var(--vvc-text, #1e293b) !important;
+}
+.vvc-modal.vvc-modal .vvc-tab-btn.vvc-is-active {
+    background: rgba(101,118,255,.10) !important;
+    color: var(--vvc-primary, #6576ff) !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.vvc-modal.vvc-modal .vvc-tab-panel { display: flex !important; flex-direction: column; flex: 1 1 auto; min-height: 0; overflow: hidden; }
+.vvc-modal.vvc-modal .vvc-tab-panel[hidden] { display: none !important; }
+
+.vvc-modal.vvc-modal .vvc-filters {
+    padding: .9rem 1.25rem !important;
+    background: var(--vvc-bg, #fff) !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0;
+    gap: .5rem !important;
+}
+
+.vvc-modal.vvc-modal .vvc-body {
+    flex: 1 1 auto !important;
+    min-height: 200px !important;
+    overflow: auto !important;
+    padding: 1.25rem !important;
+    background: var(--vvc-bg, #fff) !important;
+    scrollbar-width: thin;
+}
+.vvc-modal.vvc-modal .vvc-body::-webkit-scrollbar { width: 6px; }
+.vvc-modal.vvc-modal .vvc-body::-webkit-scrollbar-thumb { background: rgba(15,23,42,.15); border-radius: 0; }
+.vvc-modal.vvc-modal .vvc-body::-webkit-scrollbar-thumb:hover { background: rgba(15,23,42,.25); }
+
+.vvc-modal.vvc-modal .vvc-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+    gap: .75rem !important;
+}
+
+.vvc-modal.vvc-modal .vvc-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--vvc-muted, #94a3b8);
+    font-size: .92rem;
+    padding: 3rem 1rem !important;
+    background: transparent;
+    border: 0;
+    margin: 0 !important;
+}
+
+.vvc-modal.vvc-modal .vvc-item {
+    background: var(--vvc-bg, #fff) !important;
+    border: 1px solid rgba(15,23,42,.08) !important;
+    border-radius: 0 !important;
+    overflow: hidden;
+    padding: 0 !important;
+    transition: border-color .12s, box-shadow .12s !important;
+    display: flex !important;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
+}
+.vvc-modal.vvc-modal .vvc-item:hover {
+    border-color: rgba(101,118,255,.4) !important;
+    box-shadow: 0 2px 8px rgba(15,23,42,.06) !important;
+}
+.vvc-modal.vvc-modal .vvc-item.vvc-is-selected {
+    border-color: var(--vvc-primary, #6576ff) !important;
+    box-shadow: 0 0 0 2px rgba(101,118,255,.25) !important;
+}
+.vvc-modal.vvc-modal .vvc-item.vvc-is-selected::before {
+    content: '✓';
+    position: absolute;
+    top: 8px;
+    inset-inline-end: 8px;
+    width: 22px; height: 22px;
+    background: var(--vvc-primary, #6576ff);
+    color: #fff;
+    border-radius: 50% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .75rem;
+    font-weight: 700;
+    z-index: 2;
+}
+
+.vvc-modal.vvc-modal .vvc-thumb {
+    height: 120px !important;
+    width: 100% !important;
+    border: 0 !important;
+    background: rgba(15,23,42,.03) !important;
+    border-radius: 0 !important;
+}
+.vvc-modal.vvc-modal .vvc-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+.vvc-modal.vvc-modal .vvc-title {
+    margin: 0 !important;
+    padding: .5rem .65rem !important;
+    font-size: .82rem !important;
+    font-weight: 500 !important;
+    color: var(--vvc-text, #334155) !important;
+    background: var(--vvc-bg, #fff);
+    border-top: 1px solid rgba(15,23,42,.05);
+}
+
+.vvc-modal.vvc-modal .vvc-badge {
+    border-radius: 0 !important;
+    background: rgba(15,23,42,.65) !important;
+    backdrop-filter: blur(4px);
+    border: 0 !important;
+    width: 24px !important;
+    height: 24px !important;
+    top: 6px;
+    inset-inline-start: 6px;
+}
+
+.vvc-modal.vvc-modal .vvc-loader {
+    text-align: center;
+    color: var(--vvc-muted, #94a3b8);
+    padding: 1rem !important;
+    font-size: .88rem;
+}
+.vvc-modal.vvc-modal .vvc-loader::before {
+    content: '';
+    display: inline-block;
+    width: 12px; height: 12px;
+    margin-inline-end: .5rem;
+    border: 2px solid rgba(15,23,42,.1);
+    border-top-color: var(--vvc-primary, #6576ff);
+    border-radius: 50% !important;
+    animation: vvc-spin .7s linear infinite;
+    vertical-align: -1px;
+}
+@keyframes vvc-spin { to { transform: rotate(360deg); } }
+
+.vvc-modal.vvc-modal .vvc-pagination {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: .25rem !important;
+    align-items: center;
+    padding: .6rem 1.25rem !important;
+    background: var(--vvc-bg, #fff) !important;
+    border-top: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0 !important;
+}
+.vvc-modal.vvc-modal .vvc-pagination button {
+    min-width: 32px !important;
+    height: 32px !important;
+    padding: 0 .55rem !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: var(--vvc-text, #475569) !important;
+    border-radius: 0 !important;
+    font-weight: 500 !important;
+    font-size: .85rem !important;
+    cursor: pointer;
+    transition: background .12s, color .12s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none !important;
+}
+.vvc-modal.vvc-modal .vvc-pagination button:hover:not(:disabled) {
+    background: rgba(15,23,42,.05) !important;
+    color: var(--vvc-text, #1e293b) !important;
+    border-color: transparent !important;
+}
+.vvc-modal.vvc-modal .vvc-pagination button.vvc-page-active {
+    background: var(--vvc-primary, #6576ff) !important;
+    border-color: var(--vvc-primary, #6576ff) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+.vvc-modal.vvc-modal .vvc-pagination button:disabled { opacity: .35; cursor: not-allowed; }
+.vvc-modal.vvc-modal .vvc-pagination .vvc-page-ellipsis { padding: 0 .25rem; color: var(--vvc-muted, #94a3b8); }
+.vvc-modal.vvc-modal .vvc-pagination .vvc-page-info {
+    margin-inline-start: auto;
+    font-size: .8rem;
+    color: var(--vvc-muted, #94a3b8);
+    font-weight: 400;
+}
+
+.vvc-modal.vvc-modal .vvc-footer {
+    padding: .85rem 1.25rem !important;
+    background: var(--vvc-bg, #fff) !important;
+    border-top: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0 !important;
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
+}
+.vvc-modal.vvc-modal .vvc-btn {
+    border-radius: 0 !important;
+    padding: .55rem 1.1rem !important;
+    font-weight: 500 !important;
+    font-size: .9rem !important;
+    transition: background .12s, color .12s, border-color .12s;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+}
+.vvc-modal.vvc-modal .vvc-btn-primary { background: var(--vvc-primary, #6576ff) !important; color: #fff !important; border-color: var(--vvc-primary, #6576ff) !important; }
+.vvc-modal.vvc-modal .vvc-btn-primary:hover:not(:disabled) { background: #5566ee !important; border-color: #5566ee !important; }
+.vvc-modal.vvc-modal .vvc-btn-secondary { background: rgba(15,23,42,.05) !important; color: var(--vvc-text, #1e293b) !important; }
+.vvc-modal.vvc-modal .vvc-btn-secondary:hover:not(:disabled) { background: rgba(15,23,42,.09) !important; }
+.vvc-modal.vvc-modal .vvc-btn-cancel { background: transparent !important; color: var(--vvc-muted, #64748b) !important; border-color: rgba(15,23,42,.12) !important; }
+.vvc-modal.vvc-modal .vvc-btn-cancel:hover { background: rgba(15,23,42,.04) !important; color: var(--vvc-text, #1e293b) !important; }
+.vvc-modal.vvc-modal .vvc-btn-select:not(:disabled) { background: var(--vvc-primary, #6576ff) !important; color: #fff !important; border-color: var(--vvc-primary, #6576ff) !important; }
+.vvc-modal.vvc-modal .vvc-btn-select:not(:disabled):hover { background: #5566ee !important; border-color: #5566ee !important; }
+.vvc-modal.vvc-modal .vvc-btn-select:disabled { background: rgba(15,23,42,.05) !important; color: var(--vvc-muted, #94a3b8) !important; }
+
+.vvc-modal.vvc-modal .vvc-tab-body {
+    padding: 1.25rem !important;
+    background: var(--vvc-bg, #fff) !important;
+    overflow: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.vvc-modal.vvc-modal  input[type="text"],
+.vvc-modal.vvc-modal  input[type="search"],
+.vvc-modal.vvc-modal  input[type="url"],
+.vvc-modal.vvc-modal  input[type="email"],
+.vvc-modal.vvc-modal  input[type="number"],
+.vvc-modal.vvc-modal  input[type="file"],
+.vvc-modal.vvc-modal  textarea,
+.vvc-modal.vvc-modal  select {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.10) !important;
+    padding: .55rem .8rem !important;
+    background: var(--vvc-bg, #fff) !important;
+    color: var(--vvc-text, #1e293b) !important;
+    font-size: .9rem !important;
+    transition: border-color .12s, box-shadow .12s !important;
+    box-shadow: none !important;
+    line-height: 1.4 !important;
+    font-family: inherit !important;
+    font-weight: 400 !important;
+}
+.vvc-modal.vvc-modal  input:focus,
+.vvc-modal.vvc-modal  textarea:focus,
+.vvc-modal.vvc-modal  select:focus {
+    border-color: var(--vvc-primary, #6576ff) !important;
+    box-shadow: 0 0 0 3px rgba(101,118,255,.12) !important;
+    outline: none !important;
+}
+.vvc-modal.vvc-modal  input::placeholder,
+.vvc-modal.vvc-modal  textarea::placeholder {
+    color: var(--vvc-muted, #94a3b8) !important;
+    opacity: 1;
+    font-weight: 400;
+}
+.vvc-modal.vvc-modal  input[type="file"] { padding: .4rem .55rem !important; cursor: pointer; }
+.vvc-modal.vvc-modal  label {
+    color: var(--vvc-text, #334155) !important;
+    font-size: .85rem !important;
+    font-weight: 500 !important;
+    display: inline-block;
+    margin-bottom: .25rem;
+}
+.vvc-modal.vvc-modal  fieldset {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.08) !important;
+    padding: .7rem 1rem !important;
+    background: transparent !important;
+}
+.vvc-modal.vvc-modal  fieldset legend {
+    font-size: .78rem !important;
+    color: var(--vvc-muted, #94a3b8) !important;
+    font-weight: 500 !important;
+    padding: 0 .4rem !important;
+}
+.vvc-modal.vvc-modal  .vvc-radio {
+    background: transparent;
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: 0;
+    padding: .3rem .65rem !important;
+    transition: border-color .12s;
+    font-size: .85rem !important;
+}
+.vvc-modal.vvc-modal  .vvc-radio:hover { border-color: rgba(101,118,255,.4); }
+.vvc-modal.vvc-modal  .vvc-radio input[type="radio"] { accent-color: var(--vvc-primary, #6576ff); margin-inline-end: .25rem; }
+.vvc-modal.vvc-modal  .vvc-uploader,
+.vvc-modal.vvc-modal  .vvc-uploader-url {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.08) !important;
+    background: var(--vvc-bg, #fff) !important;
+    padding: 1rem !important;
+    gap: .6rem !important;
+    box-shadow: none !important;
+}
+.vvc-modal.vvc-modal  [id$="-upload-label"] {
+    border-radius: 0 !important;
+    border: 1px dashed rgba(15,23,42,.18) !important;
+    background: rgba(15,23,42,.02) !important;
+    padding: 1rem !important;
+    transition: border-color .12s, background .12s;
+    color: var(--vvc-muted, #64748b) !important;
+}
+.vvc-modal.vvc-modal  [id$="-upload-label"]:hover {
+    border-color: var(--vvc-primary, #6576ff) !important;
+    background: rgba(101,118,255,.04) !important;
+    color: var(--vvc-text, #1e293b) !important;
+}
+
+/* File-selected state: green/success accent */
+.vvc-modal.vvc-modal  [id$="-upload-label"][data-file-selected="true"] {
+    border: 1px solid #16a34a !important;
+    background: rgba(22,163,74,.06) !important;
+    color: #15803d !important;
+    text-align: start !important;
+    padding: .85rem 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: .75rem !important;
+}
+.vvc-modal.vvc-modal  [id$="-upload-label"][data-file-selected="true"] i,
+.vvc-modal.vvc-modal  [id$="-upload-label"][data-file-selected="true"] em { display: none !important; }
+.vvc-modal.vvc-modal  [id$="-upload-label"][data-file-selected="true"]::before {
+    content: '✓';
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    background: #16a34a;
+    color: #fff;
+    border-radius: 50% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    font-weight: 700;
+}
+.vvc-modal.vvc-modal  [id$="-upload-label"][data-file-selected="true"] span,
+.vvc-modal.vvc-modal  [id$="-upload-label"][data-file-selected="true"] [id$="-upload-label-text"] {
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+    color: #15803d !important;
+}
+.vvc-modal.vvc-modal  [id$="-upload-label"][data-file-selected="true"]::after {
+    content: 'تغيير';
+    flex-shrink: 0;
+    font-size: .78rem;
+    padding: .25rem .55rem;
+    border-radius: 6px;
+    background: rgba(22,163,74,.12);
+    color: #15803d;
+    font-weight: 500;
+}
+
+/* === Field layout: clean two-column grid === */
+.vvc-modal.vvc-modal  .vvc-upload-fields {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: .85rem !important;
+    width: 100% !important;
+}
+.vvc-modal.vvc-modal  .vvc-upload-fields > * {
+    flex: unset !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+/* file picker spans full width — it's the prominent field */
+.vvc-modal.vvc-modal  .vvc-upload-fields > *:has(> [id$="-upload-label"]),
+.vvc-modal.vvc-modal  .vvc-upload-fields > *:has([id$="-upload-input"]) {
+    grid-column: 1 / -1 !important;
+}
+
+/* Import-by-URL row layout: URL on its own row, name+alt side-by-side */
+.vvc-modal.vvc-modal  .vvc-uploader-url > div:first-of-type {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: .75rem !important;
+    margin-bottom: .85rem !important;
+}
+.vvc-modal.vvc-modal  .vvc-uploader-url > div:first-of-type > *:first-child {
+    grid-column: 1 / -1 !important;
+}
+.vvc-modal.vvc-modal  .vvc-uploader-url > div:first-of-type > * { flex: unset !important; width: 100% !important; min-width: 0 !important; }
+
+/* Radio group: even spacing */
+.vvc-modal.vvc-modal  .vvc-url-type-group > div {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: .5rem !important;
+}
+
+/* Action button rows */
+.vvc-modal.vvc-modal  .vvc-uploader-actions {
+    display: flex !important;
+    gap: .5rem !important;
+    justify-content: flex-end !important;
+    margin-top: .25rem !important;
+    width: 100% !important;
+    padding-top: .75rem;
+    border-top: 1px solid rgba(15,23,42,.06);
+}
+
+/* Tab body single column constraint for narrow modals */
+@media (max-width: 640px) {
+    .vvc-modal.vvc-modal  .vvc-upload-fields,
+    .vvc-modal.vvc-modal  .vvc-uploader-url > div:first-of-type {
+        grid-template-columns: 1fr !important;
+    }
+    .vvc-modal.vvc-modal  .vvc-uploader-actions { flex-direction: column; }
+    .vvc-modal.vvc-modal  .vvc-uploader-actions .vvc-btn { width: 100%; }
+}
+
+@media (max-width: 600px) {
+    .vvc-modal.vvc-modal .vvc-pagination .vvc-page-info { width: 100%; text-align: center; margin-top: .25rem; }
+    .vvc-modal.vvc-modal .vvc-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important; }
+    .vvc-modal.vvc-modal .vvc-thumb { height: 110px !important; }
+}
+/* === END MMX-UI-ENHANCE-V2 === */
+</style>
+<script>
+(function() {
+    if (window.__mxxFileSelectedHook) return;
+    window.__mxxFileSelectedHook = true;
+    document.addEventListener('change', function(e) {
+        const input = e.target;
+        if (!input || input.type !== 'file' || !input.id || !input.id.endsWith('-upload-input')) return;
+        const labelId = input.id.replace('-upload-input', '-upload-label');
+        const label = document.getElementById(labelId);
+        if (!label) return;
+        const file = input.files && input.files[0];
+        if (file) {
+            label.setAttribute('data-file-selected', 'true');
+            const txtId = labelId + '-text';
+            const txtEl = document.getElementById(txtId) || label.querySelector('span');
+            if (txtEl) txtEl.textContent = file.name;
+            else {
+                const span = document.createElement('span');
+                span.textContent = file.name;
+                label.appendChild(span);
+            }
+        } else {
+            label.removeAttribute('data-file-selected');
+        }
+    }, true);
+})();
+</script>
+<style>
+</style>
+<script>
+(function() {
+    if (window.__mxxFileSelectedHook) return;
+    window.__mxxFileSelectedHook = true;
+    document.addEventListener('change', function(e) {
+        const input = e.target;
+        if (!input || input.type !== 'file' || !input.id || !input.id.endsWith('-upload-input')) return;
+        const labelId = input.id.replace('-upload-input', '-upload-label');
+        const label = document.getElementById(labelId);
+        if (!label) return;
+        const file = input.files && input.files[0];
+        if (file) {
+            label.setAttribute('data-file-selected', 'true');
+            const txtId = labelId + '-text';
+            const txtEl = document.getElementById(txtId) || label.querySelector('span');
+            if (txtEl) txtEl.textContent = file.name;
+            else {
+                const span = document.createElement('span');
+                span.textContent = file.name;
+                label.appendChild(span);
+            }
+        } else {
+            label.removeAttribute('data-file-selected');
+        }
+    }, true);
+})();
+</script>
+<style>
+</style>
+<script>
+(function() {
+    if (window.__mxxFileSelectedHook) return;
+    window.__mxxFileSelectedHook = true;
+    document.addEventListener('change', function(e) {
+        const input = e.target;
+        if (!input || input.type !== 'file' || !input.id || !input.id.endsWith('-upload-input')) return;
+        const labelId = input.id.replace('-upload-input', '-upload-label');
+        const label = document.getElementById(labelId);
+        if (!label) return;
+        const file = input.files && input.files[0];
+        if (file) {
+            label.setAttribute('data-file-selected', 'true');
+            const txtId = labelId + '-text';
+            const txtEl = document.getElementById(txtId) || label.querySelector('span');
+            if (txtEl) txtEl.textContent = file.name;
+            else {
+                const span = document.createElement('span');
+                span.textContent = file.name;
+                label.appendChild(span);
+            }
+        } else {
+            label.removeAttribute('data-file-selected');
+        }
+    }, true);
+})();
+</script>
+<style>
 </style>
 
 <!-- ============================================
@@ -2472,7 +3035,116 @@
         .mceNonEditable:focus,.mceNonEditable.mce-edit-focus{outline-color:#6576ff !important;}
     `,
         setup: (editor) => {
-            // ---- READMORE LOADER FOR TINYMCE ----
+            // Expose a reusable button-registration helper so other TinyMCE instances
+            // (e.g. itemDescription inside the Template add/edit-item modal) can get
+            // the same custom toolbar buttons and behaviour.
+            if (!window.vvcRegisterCustomButtons) {
+                window.vvcRegisterCustomButtons = function(ed) {
+                    // Picker — opens vvc media modal for image/video selection
+                    ed.ui.registry.addButton('vvcPicker', {
+                        text: 'وسائط',
+                        tooltip: 'اختيار وسائط من المعرض',
+                        onAction: async () => {
+                            const picked = await window.pickMediaForTiny({ type: 'media' });
+                            if (!picked || !picked.url) return;
+                            const isImg = /\.(png|jpe?g|webp|gif|bmp|svg)(\?|$)/i.test(picked.url);
+                            ed.focus();
+                            const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+                            if (isImg) {
+                                ed.execCommand('mceInsertContent', false,
+                                    `<figure class="image"><img class="tiny-sm" src="${esc(picked.url)}" alt="${esc(picked.alt||picked.title)}" title="${esc(picked.title)}"/><figcaption>${esc(picked.title)}</figcaption></figure>`);
+                            } else {
+                                const yt = picked.url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/i);
+                                const vm = picked.url.match(/vimeo\.com\/(\d+)/i);
+                                if (yt) ed.execCommand('mceInsertContent', false, `<iframe class="tiny-sm" src="https://www.youtube.com/embed/${esc(yt[1])}" frameborder="0" allowfullscreen></iframe>`);
+                                else if (vm) ed.execCommand('mceInsertContent', false, `<iframe class="tiny-sm" src="https://player.vimeo.com/video/${esc(vm[1])}" frameborder="0" allowfullscreen></iframe>`);
+                                else ed.execCommand('mceInsertContent', false, `<video class="tiny-sm" src="${esc(picked.url)}" controls></video>`);
+                            }
+                        }
+                    });
+                    // Clickable text
+                    ed.ui.registry.addButton('vvcClickableText', {
+                        text: 'نص قابل للنقر',
+                        tooltip: 'إدراج نص قابل للنقر',
+                        onAction: () => {
+                            if (window.vvcTextModalManager?.openModal) {
+                                const sel = ed.selection.getContent({ format: 'text' });
+                                window.vvcTextModalManager.openModal(sel);
+                            }
+                        }
+                    });
+                    // Read more
+                    ed.ui.registry.addButton('vvcReadMore', {
+                        text: 'اقرأ المزيد',
+                        tooltip: 'إدراج بطاقة "اقرأ المزيد"',
+                        onAction: () => { if (window.vvcReadMoreModalManager?.openModal) window.vvcReadMoreModalManager.openModal(); }
+                    });
+                    // Facebook embed
+                    ed.ui.registry.addButton('vvcFacebookPost', {
+                        text: 'Facebook',
+                        tooltip: 'إدراج منشور Facebook',
+                        onAction: () => {
+                            ed.windowManager.open({
+                                title: 'إدراج منشور Facebook',
+                                body: { type: 'panel', items: [{ type: 'input', name: 'url', label: 'رابط المنشور' }] },
+                                buttons: [{ type: 'cancel', text: 'إلغاء' }, { type: 'submit', text: 'إدراج', primary: true }],
+                                onSubmit: (api) => {
+                                    const url = (api.getData().url || '').trim();
+                                    if (!url) return;
+                                    ed.insertContent(`<div class="fb-embed-block"><div class="fb-embed-title">Facebook</div><div class="fb-embed-url">${url}</div><div class="fb-post" data-href="${url}"></div></div>`);
+                                    api.close();
+                                }
+                            });
+                        }
+                    });
+                    // Instagram embed
+                    ed.ui.registry.addButton('vvcInstagramPost', {
+                        text: 'Instagram',
+                        tooltip: 'إدراج منشور Instagram',
+                        onAction: () => {
+                            ed.windowManager.open({
+                                title: 'إدراج منشور Instagram',
+                                body: { type: 'panel', items: [{ type: 'input', name: 'url', label: 'رابط المنشور' }] },
+                                buttons: [{ type: 'cancel', text: 'إلغاء' }, { type: 'submit', text: 'إدراج', primary: true }],
+                                onSubmit: (api) => {
+                                    const url = (api.getData().url || '').trim();
+                                    if (!url) return;
+                                    ed.insertContent(`<div class="ig-embed-block"><div class="ig-embed-title">Instagram</div><div class="ig-embed-url">${url}</div><blockquote class="instagram-media" data-instgrm-permalink="${url}"></blockquote></div>`);
+                                    api.close();
+                                }
+                            });
+                        }
+                    });
+                    // X (Twitter) embed
+                    ed.ui.registry.addButton('vvcXPost', {
+                        text: 'X',
+                        tooltip: 'إدراج منشور X (Twitter)',
+                        onAction: () => {
+                            ed.windowManager.open({
+                                title: 'إدراج منشور X',
+                                body: { type: 'panel', items: [{ type: 'input', name: 'url', label: 'رابط المنشور' }] },
+                                buttons: [{ type: 'cancel', text: 'إلغاء' }, { type: 'submit', text: 'إدراج', primary: true }],
+                                onSubmit: (api) => {
+                                    const url = (api.getData().url || '').trim();
+                                    if (!url) return;
+                                    ed.insertContent(`<div class="x-embed-block"><div class="x-embed-title">X (Twitter)</div><div class="x-embed-url">${url}</div><blockquote class="twitter-tweet"><a href="${url}"></a></blockquote></div>`);
+                                    api.close();
+                                }
+                            });
+                        }
+                    });
+                    // Paste from clipboard
+                    ed.ui.registry.addButton('vvcPaste', {
+                        text: 'لصق',
+                        tooltip: 'لصق من الحافظة',
+                        onAction: () => {
+                            navigator.clipboard.readText().then(text => {
+                                if (text) ed.execCommand('mceInsertContent', false, text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])));
+                            }).catch(() => alert('⚠️ تعذّر الوصول إلى الحافظة. استخدم Ctrl+V بدلاً من ذلك.'));
+                        }
+                    });
+                };
+            }
             // Load and render ReadMore blocks inside TinyMCE editor
             function loadReadMoreBlocksInEditor() {
                 const editorBody = editor.getBody();

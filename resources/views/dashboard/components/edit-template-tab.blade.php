@@ -1731,6 +1731,190 @@
 </div>
 
 <!-- ======================= ITEM MODAL (PARENT) ======================= -->
+
+<style>
+/* === Item Modal UI Enhancement === */
+#itemModal .modal-dialog { max-width: 1100px; }
+#itemModal .modal-content {
+    border: 1px solid rgba(15,23,42,.06);
+    border-radius: 0;
+    box-shadow: 0 14px 36px rgba(15,23,42,.18);
+    overflow: hidden;
+}
+#itemModal .modal-header {
+    padding: 1rem 1.25rem;
+    background: #fff;
+    border-bottom: 1px solid rgba(15,23,42,.06);
+    border-radius: 0;
+}
+#itemModal .modal-title { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; }
+#itemModal .btn-close {
+    width: 30px; height: 30px;
+    border-radius: 0;
+    opacity: .55;
+    transition: opacity .12s, background .12s;
+}
+#itemModal .btn-close:hover { opacity: 1; background: rgba(15,23,42,.05); }
+
+#itemModal .modal-body { padding: 1.25rem; background: #fff; }
+#itemModal .modal-body .row > [class*="col-"] { padding-bottom: .25rem; }
+#itemModal .modal-body .mb-2 { margin-bottom: 1rem !important; }
+
+#itemModal .form-label {
+    font-size: .85rem;
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: .35rem;
+    display: inline-block;
+}
+#itemModal .form-label .text-danger { font-weight: 700; }
+#itemModal .form-label .text-muted { font-weight: 400; }
+
+#itemModal .form-control,
+#itemModal .form-select {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.10);
+    padding: .55rem .8rem;
+    font-size: .9rem;
+    background: #fff;
+    color: #1e293b;
+    transition: border-color .12s, box-shadow .12s;
+    box-shadow: none !important;
+}
+#itemModal .form-control:focus,
+#itemModal .form-select:focus {
+    border-color: #6576ff;
+    box-shadow: 0 0 0 3px rgba(101,118,255,.12) !important;
+    outline: none;
+}
+#itemModal .form-control[readonly] { background: rgba(15,23,42,.025); cursor: default; }
+#itemModal .form-control::placeholder { color: #94a3b8; }
+
+#itemModal .input-group { gap: .35rem; }
+#itemModal .input-group > .form-control,
+#itemModal .input-group > .btn { border-radius: 0 !important; }
+
+#itemModal .btn {
+    border-radius: 0 !important;
+    padding: .55rem 1rem;
+    font-size: .9rem;
+    font-weight: 500;
+    box-shadow: none !important;
+}
+#itemModal .btn-outline-secondary {
+    border-color: rgba(15,23,42,.12);
+    color: #475569;
+    background: transparent;
+}
+#itemModal .btn-outline-secondary:hover {
+    background: rgba(15,23,42,.05);
+    color: #1e293b;
+    border-color: rgba(15,23,42,.18);
+}
+#itemModal .btn-outline-danger {
+    border-color: rgba(229,62,62,.28);
+    color: #c0392b;
+    background: transparent;
+}
+#itemModal .btn-outline-danger:hover { background: rgba(229,62,62,.10); color: #b71c1c; border-color: #e53e3e; }
+#itemModal .btn-secondary { background: rgba(15,23,42,.05); color: #1e293b; border-color: transparent; }
+#itemModal .btn-secondary:hover { background: rgba(15,23,42,.09); color: #0f172a; }
+#itemModal .btn-success { background: #16a34a; border-color: #16a34a; color: #fff; }
+#itemModal .btn-success:hover { background: #15803d; border-color: #15803d; }
+
+#itemModal #itemMediaPreview { margin-top: .5rem; }
+#itemModal #itemMediaPreview img,
+#itemModal #itemMediaPreview video {
+    max-width: 100%;
+    max-height: 220px;
+    border: 1px solid rgba(15,23,42,.08);
+    border-radius: 0;
+    background: rgba(15,23,42,.025);
+    object-fit: contain;
+}
+
+#itemModal .modal-footer {
+    padding: .85rem 1.25rem;
+    background: #fff;
+    border-top: 1px solid rgba(15,23,42,.06);
+    gap: .5rem;
+    border-radius: 0;
+}
+#itemModal .modal-footer .btn { padding: .55rem 1.1rem; }
+
+/* Select2 to match the flat aesthetic */
+#itemModal .select2-container--default .select2-selection--single {
+    border-radius: 0;
+    border: 1px solid rgba(15,23,42,.10);
+    height: 38px;
+    padding: .25rem .5rem;
+    background: #fff;
+}
+#itemModal .select2-container--default .select2-selection--single .select2-selection__rendered { line-height: 30px; color: #1e293b; }
+#itemModal .select2-container--default .select2-selection--single .select2-selection__arrow { height: 36px; }
+
+/* TinyMCE inside the modal: match the flat look */
+#itemModal .tox.tox-tinymce { border-radius: 0 !important; border: 1px solid rgba(15,23,42,.10) !important; }
+#itemModal .tox .tox-toolbar, #itemModal .tox .tox-toolbar__primary { background: #fff !important; }
+#itemModal .tox .tox-tbtn { border-radius: 0 !important; }
+
+@media (max-width: 768px) {
+    #itemModal .modal-dialog { margin: .5rem; }
+    #itemModal .modal-body { padding: 1rem; }
+}
+
+/* TinyMCE white-mode background overrides */
+[data-bs-theme="light"] #itemModal .tox.tox-tinymce,
+:root:not([data-bs-theme="dark"]) #itemModal .tox.tox-tinymce { background: #fff !important; }
+[data-bs-theme="light"] #itemModal .tox .tox-toolbar,
+[data-bs-theme="light"] #itemModal .tox .tox-toolbar__primary,
+[data-bs-theme="light"] #itemModal .tox .tox-toolbar__overflow,
+[data-bs-theme="light"] #itemModal .tox .tox-menubar,
+[data-bs-theme="light"] #itemModal .tox .tox-statusbar,
+[data-bs-theme="light"] #itemModal .tox .tox-edit-area,
+[data-bs-theme="light"] #itemModal .tox .tox-edit-area__iframe,
+:root:not([data-bs-theme="dark"]) #itemModal .tox .tox-toolbar,
+:root:not([data-bs-theme="dark"]) #itemModal .tox .tox-toolbar__primary,
+:root:not([data-bs-theme="dark"]) #itemModal .tox .tox-toolbar__overflow,
+:root:not([data-bs-theme="dark"]) #itemModal .tox .tox-menubar,
+:root:not([data-bs-theme="dark"]) #itemModal .tox .tox-statusbar,
+:root:not([data-bs-theme="dark"]) #itemModal .tox .tox-edit-area,
+:root:not([data-bs-theme="dark"]) #itemModal .tox .tox-edit-area__iframe { background: #fff !important; }
+[data-bs-theme="light"] #itemModal .tox .tox-tbtn,
+:root:not([data-bs-theme="dark"]) #itemModal .tox .tox-tbtn { color: #1e293b !important; }
+[data-bs-theme="light"] #itemModal .tox .tox-tbtn:hover,
+:root:not([data-bs-theme="dark"]) #itemModal .tox .tox-tbtn:hover { background: rgba(15,23,42,.06) !important; }
+
+/* Hard force TinyMCE white in itemModal regardless of html theme attr */
+#itemModal .tox.tox-tinymce { background: #fff !important; border: 1px solid rgba(15,23,42,.10) !important; }
+#itemModal .tox .tox-toolbar,
+#itemModal .tox .tox-toolbar__primary,
+#itemModal .tox .tox-toolbar__overflow,
+#itemModal .tox .tox-menubar,
+#itemModal .tox .tox-statusbar,
+#itemModal .tox .tox-edit-area,
+#itemModal .tox .tox-edit-area__iframe { background: #fff !important; }
+#itemModal .tox .tox-tbtn,
+#itemModal .tox .tox-mbtn,
+#itemModal .tox .tox-statusbar a,
+#itemModal .tox .tox-statusbar__path-item { color: #1e293b !important; }
+#itemModal .tox .tox-tbtn svg,
+#itemModal .tox .tox-mbtn svg { fill: #1e293b !important; }
+#itemModal .tox .tox-tbtn:hover,
+#itemModal .tox .tox-mbtn:hover { background: rgba(15,23,42,.06) !important; }
+#itemModal .tox .tox-tbtn--enabled,
+#itemModal .tox .tox-tbtn--enabled:hover { background: rgba(101,118,255,.12) !important; }
+#itemModal .tox .tox-toolbar__group { border-color: rgba(15,23,42,.08) !important; }
+#itemModal .tox .tox-split-button,
+#itemModal .tox .tox-split-button:hover { background: transparent !important; box-shadow: none !important; }
+#itemModal .tox .tox-listboxfield .tox-listbox--select,
+#itemModal .tox .tox-textfield,
+#itemModal .tox .tox-toolbar-textfield {
+    background: #fff !important;
+    color: #1e293b !important;
+    border: 1px solid rgba(15,23,42,.12) !important;
+}
+</style>
 <div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -1784,191 +1968,78 @@
                             <textarea id="itemDescription" class="form-control tinymce-simple" rows="4"></textarea>
                         </div>
 
-                        <script src="https://cdn.tiny.cloud/1/vw6sltzauw9x6b3cl3eby8nj99q4eoavzv581jnnmabxbhq2/tinymce/6/tinymce.min.js"
-                            referrerpolicy="origin"></script>
                         <script>
+                            // Initialise the itemDescription editor using the SAME global TinyMCE
+                            // that powers the main article editor (tinymce-config.blade.php).
                             document.addEventListener('DOMContentLoaded', function() {
-                                // Enhanced theme detection
-                                function getPreferredTheme() {
-                                    const stored = localStorage.getItem('theme');
-                                    if (stored) return stored;
-                                    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                                if (!window.tinymce) {
+                                    console.warn('Global TinyMCE not loaded; itemDescription editor will not initialise.');
+                                    return;
                                 }
-
-                                const theme = getPreferredTheme();
+                                const theme = (localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
 
                                 tinymce.init({
                                     selector: 'textarea#itemDescription',
                                     directionality: 'rtl',
-                                    height: 600,
+                                    height: 520,
                                     promotion: false,
                                     onboarding: false,
-
-                                    // 🚫 Disable auto focus
+                                    branding: false,
                                     auto_focus: '',
-
-                                    // Dark/light mode
-                                    skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
-                                    content_css: theme === 'dark' ? 'dark' : 'default',
-
-                                    // Plugins
-                                    plugins: 'advlist anchor autolink autosave charmap code codesample directionality emoticons fullscreen help hr image imagetools insertdatetime link lists media nonbreaking pagebreak preview print save searchreplace table visualblocks visualchars wordcount',
-
-                                    // Show all tools without collapsing
-                                    toolbar_mode: 'expand',
-
-                                    // Toolbar (added twitterEmbed button)
-                                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | outdent indent | code fullscreen wordcount searchreplace | link table image media blockquote twitterEmbed | bullist numlist | copy cut paste selectall pastetext | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print visualblocks visualchars help',
-
-                                    // Font families & sizes (pt based)
+                                    skin: 'oxide',
+                                    content_css: 'default',
+                                    plugins: 'advlist anchor autolink autosave charmap code codesample directionality emoticons fullscreen help hr image imagetools importcss insertdatetime link lists media nonbreaking noneditable pagebreak preview print save searchreplace table template visualblocks visualchars wordcount',
+                                    noneditable_class: 'mceNonEditable',
+                                    toolbar_mode: 'wrap',
+                                    toolbar: [
+                                        'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
+                                        '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
+                                        '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcInstagramPost vvcXPost vvcPaste',
+                                        '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
+                                    ].join(' '),
                                     fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',
                                     font_family_formats: 'Arial=arial,helvetica,sans-serif; Helvetica=helvetica; Times New Roman=times new roman,times; Courier New=courier new,courier;',
-
-                                    // Default style applied to content
                                     content_style: 'body { font-family: Arial, Helvetica, sans-serif; font-size:18pt; line-height:1.6; }',
-
-                                    // Setup - FIXED with skip_focus
-                                    setup: (editor) => {
-                                        // Default font on init - USING skip_focus: true
-                                        editor.on('init', () => {
-                                            editor.execCommand('FontName', false, 'Arial', {
-                                                skip_focus: true
-                                            });
-                                            editor.execCommand('FontSize', false, '18pt', {
-                                                skip_focus: true
-                                            });
-                                        });
-
-                                        // ✅ Enhanced Twitter Embed button with validation
-                                        editor.ui.registry.addButton('twitterEmbed', {
-                                            text: 'Twitter',
-                                            tooltip: 'Embed Twitter Post',
-                                            onAction: () => {
-                                                editor.windowManager.open({
-                                                    title: 'Embed Twitter Post',
-                                                    body: {
-                                                        type: 'panel',
-                                                        items: [{
-                                                            type: 'textarea',
-                                                            name: 'embed',
-                                                            label: 'Paste Twitter embed code here',
-                                                            placeholder: '<blockquote class="twitter-tweet">...</blockquote>'
-                                                        }]
-                                                    },
-                                                    buttons: [{
-                                                            type: 'cancel',
-                                                            text: 'Cancel'
-                                                        },
-                                                        {
-                                                            type: 'submit',
-                                                            text: 'Insert',
-                                                            primary: true,
-                                                            enabled: false
-                                                        }
-                                                    ],
-                                                    onChange: (api) => {
-                                                        const data = api.getData();
-                                                        const isValid = data.embed.includes(
-                                                            'twitter-tweet');
-                                                        api.blocking.set('submit', !isValid);
-                                                    },
-                                                    onSubmit: (api) => {
-                                                        const data = api.getData();
-                                                        const embedCode = data.embed.trim();
-
-                                                        // Enhanced validation for Twitter embed
-                                                        if (!embedCode.includes('twitter-tweet')) {
-                                                            editor.windowManager.alert(
-                                                                'Please enter a valid Twitter embed code containing "twitter-tweet"'
-                                                            );
-                                                            return;
-                                                        }
-
-                                                        editor.insertContent(embedCode, {
-                                                            skip_focus: true
-                                                        });
-                                                        api.close();
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    },
-
-                                    // Security enhancement
-                                    paste_preprocess: (plugin, args) => {
-                                        // Clean pasted content from potential XSS
-                                        args.content = args.content.replace(
-                                            /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-                                    },
-
-                                    // Enhanced file upload with size validation
-                                    file_picker_types: 'image',
-                                    file_picker_callback: (cb, value, meta) => {
-                                        const input = document.createElement('input');
-                                        input.setAttribute('type', 'file');
-                                        input.setAttribute('accept', 'image/*');
-
-                                        input.onchange = function() {
-                                            const file = this.files[0];
-
-                                            // File size validation (5MB limit)
-                                            if (file.size > 5 * 1024 * 1024) {
-                                                alert('File size too large. Please select a file smaller than 5MB.');
-                                                return;
-                                            }
-
-                                            const reader = new FileReader();
-                                            reader.onload = function() {
-                                                const id = 'blobid' + (new Date()).getTime();
-                                                const blobCache = tinymce.activeEditor.editorUpload.blobCache;
-                                                const base64 = reader.result.split(',')[1];
-                                                const blobInfo = blobCache.create(id, file, base64);
-                                                blobCache.add(blobInfo);
-
-                                                cb(blobInfo.blobUri(), {
-                                                    title: file.name
-                                                });
-                                            };
-                                            reader.readAsDataURL(file);
-                                        };
-
-                                        input.click();
-                                    },
-
-                                    // Menubar
                                     menubar: 'file edit view insert format tools table help',
-
-                                    // Other settings
-                                    editimage_cors_hosts: ['picsum.photos'],
-                                    autosave_ask_before_unload: true,
-                                    autosave_interval: '30s',
-                                    autosave_prefix: '{path}{query}-{id}-',
-                                    autosave_restore_when_empty: false,
-                                    autosave_retention: '2m',
+                                    contextmenu: 'copy cut vvcPaste | selectall',
                                     image_advtab: true,
                                     image_caption: true,
-                                    noneditable_class: 'mceNonEditable',
-                                    contextmenu: 'link image table',
-
-                                    // 🚀 Allow Twitter / embed tags
-                                    extended_valid_elements: 'script[src|async|charset],blockquote[class|lang|dir],iframe[src|width|height|frameborder|allowfullscreen]',
+                                    image_title: true,
+                                    file_picker_types: 'image media',
+                                    file_picker_callback: async (cb, value, meta) => {
+                                        if (!window.pickMediaForTiny) return;
+                                        const picked = await window.pickMediaForTiny({ type: meta.filetype });
+                                        if (!picked || !picked.url) return;
+                                        if (meta.filetype === 'image') {
+                                            cb(picked.url, { title: picked.title || '', alt: picked.alt || '', class: 'tiny-sm' });
+                                        } else {
+                                            cb(picked.url, { text: picked.title || picked.url });
+                                        }
+                                    },
+                                    autosave_ask_before_unload: true,
+                                    autosave_interval: '30s',
+                                    autosave_prefix: '{path}{query}-{id}-itemdesc-',
+                                    autosave_restore_when_empty: false,
+                                    autosave_retention: '2m',
+                                    extended_valid_elements: 'script[src|async|charset],blockquote[class|lang|dir],iframe[src|width|height|frameborder|allowfullscreen|allow|scrolling|style]',
                                     valid_children: '+body[script],+div[script]',
                                     valid_elements: '*[*]',
-
-                                    // Remove branding for better UX
-                                    branding: false
+                                    paste_preprocess: (plugin, args) => {
+                                        args.content = args.content.replace(/<script[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+                                    },
+                                    setup: (editor) => {
+                                        editor.on('init', () => {
+                                            editor.execCommand('FontName', false, 'Arial', { skip_focus: true });
+                                            editor.execCommand('FontSize', false, '18pt', { skip_focus: true });
+                                        });
+                                        if (window.vvcRegisterCustomButtons) {
+                                            window.vvcRegisterCustomButtons(editor);
+                                        }
+                                    }
                                 }).catch(error => {
-                                    console.error('TinyMCE initialization error:', error);
+                                    console.error('TinyMCE init error (itemDescription):', error);
                                 });
                             });
-
-                            // Theme toggle function (if needed elsewhere)
-                            function toggleTheme() {
-                                const currentTheme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
-                                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                                localStorage.setItem('theme', newTheme);
-                                location.reload();
-                            }
                         </script>
                     </div>
                 </div>
@@ -2509,4 +2580,567 @@
     .az-actions {
         gap: .25rem;
     }
+
+/* === MMX-UI-ENHANCE-V2 === */
+.mmxx-modal.mmxx-modal ,
+.mmxx-modal.mmxx-modal  * { border-radius: 0 !important; }
+.mmxx-modal.mmxx-modal .mmxx-container {
+    max-height: 90vh !important;
+    height: auto !important;
+    width: clamp(320px, 94vw, 1080px) !important;
+    border-radius: 0 !important;
+    box-shadow: 0 12px 32px rgba(15,23,42,.12) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    border: 1px solid rgba(15,23,42,.06);
+    background: var(--mmxx-bg, #fff) !important;
+}
+.mmxx-modal.mmxx-modal .mmxx-header {
+    padding: 1rem 1.25rem !important;
+    background: var(--mmxx-bg, #fff) !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0;
+}
+.mmxx-modal.mmxx-modal .mmxx-header h5 { font-size: 1rem !important; font-weight: 600 !important; letter-spacing: -0.01em; }
+.mmxx-modal.mmxx-modal .mmxx-close {
+    width: 30px; height: 30px;
+    border-radius: 0 !important;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--mmxx-muted, #94a3b8) !important;
+    transition: background .12s, color .12s;
+    background: transparent !important;
+}
+.mmxx-modal.mmxx-modal .mmxx-close:hover { background: rgba(15,23,42,.05) !important; color: var(--mmxx-text, #1e293b) !important; }
+
+.mmxx-modal.mmxx-modal .mmxx-tabs {
+    padding: .5rem .85rem !important;
+    gap: .25rem !important;
+    background: var(--mmxx-bg, #fff) !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0;
+    overflow-x: auto;
+}
+.mmxx-modal.mmxx-modal .mmxx-tab-btn {
+    border-radius: 0 !important;
+    padding: .5rem .9rem !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: var(--mmxx-muted, #64748b) !important;
+    font-weight: 500 !important;
+    font-size: .88rem !important;
+    transition: background .12s, color .12s;
+    white-space: nowrap;
+    box-shadow: none !important;
+}
+.mmxx-modal.mmxx-modal .mmxx-tab-btn:hover:not(.mmxx-is-active) {
+    background: rgba(15,23,42,.04) !important;
+    color: var(--mmxx-text, #1e293b) !important;
+}
+.mmxx-modal.mmxx-modal .mmxx-tab-btn.mmxx-is-active {
+    background: rgba(101,118,255,.10) !important;
+    color: var(--mmxx-primary, #6576ff) !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.mmxx-modal.mmxx-modal .mmxx-tab-panel { display: flex !important; flex-direction: column; flex: 1 1 auto; min-height: 0; overflow: hidden; }
+.mmxx-modal.mmxx-modal .mmxx-tab-panel[hidden] { display: none !important; }
+
+.mmxx-modal.mmxx-modal .mmxx-filters {
+    padding: .9rem 1.25rem !important;
+    background: var(--mmxx-bg, #fff) !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0;
+    gap: .5rem !important;
+}
+
+.mmxx-modal.mmxx-modal .mmxx-body {
+    flex: 1 1 auto !important;
+    min-height: 200px !important;
+    overflow: auto !important;
+    padding: 1.25rem !important;
+    background: var(--mmxx-bg, #fff) !important;
+    scrollbar-width: thin;
+}
+.mmxx-modal.mmxx-modal .mmxx-body::-webkit-scrollbar { width: 6px; }
+.mmxx-modal.mmxx-modal .mmxx-body::-webkit-scrollbar-thumb { background: rgba(15,23,42,.15); border-radius: 0; }
+.mmxx-modal.mmxx-modal .mmxx-body::-webkit-scrollbar-thumb:hover { background: rgba(15,23,42,.25); }
+
+.mmxx-modal.mmxx-modal .mmxx-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+    gap: .75rem !important;
+}
+
+.mmxx-modal.mmxx-modal .mmxx-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--mmxx-muted, #94a3b8);
+    font-size: .92rem;
+    padding: 3rem 1rem !important;
+    background: transparent;
+    border: 0;
+    margin: 0 !important;
+}
+
+.mmxx-modal.mmxx-modal .mmxx-item {
+    background: var(--mmxx-bg, #fff) !important;
+    border: 1px solid rgba(15,23,42,.08) !important;
+    border-radius: 0 !important;
+    overflow: hidden;
+    padding: 0 !important;
+    transition: border-color .12s, box-shadow .12s !important;
+    display: flex !important;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
+}
+.mmxx-modal.mmxx-modal .mmxx-item:hover {
+    border-color: rgba(101,118,255,.4) !important;
+    box-shadow: 0 2px 8px rgba(15,23,42,.06) !important;
+}
+.mmxx-modal.mmxx-modal .mmxx-item.mmxx-is-selected {
+    border-color: var(--mmxx-primary, #6576ff) !important;
+    box-shadow: 0 0 0 2px rgba(101,118,255,.25) !important;
+}
+.mmxx-modal.mmxx-modal .mmxx-item.mmxx-is-selected::before {
+    content: '✓';
+    position: absolute;
+    top: 8px;
+    inset-inline-end: 8px;
+    width: 22px; height: 22px;
+    background: var(--mmxx-primary, #6576ff);
+    color: #fff;
+    border-radius: 50% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .75rem;
+    font-weight: 700;
+    z-index: 2;
+}
+
+.mmxx-modal.mmxx-modal .mmxx-thumb {
+    height: 120px !important;
+    width: 100% !important;
+    border: 0 !important;
+    background: rgba(15,23,42,.03) !important;
+    border-radius: 0 !important;
+}
+.mmxx-modal.mmxx-modal .mmxx-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+.mmxx-modal.mmxx-modal .mmxx-title {
+    margin: 0 !important;
+    padding: .5rem .65rem !important;
+    font-size: .82rem !important;
+    font-weight: 500 !important;
+    color: var(--mmxx-text, #334155) !important;
+    background: var(--mmxx-bg, #fff);
+    border-top: 1px solid rgba(15,23,42,.05);
+}
+
+.mmxx-modal.mmxx-modal .mmxx-badge {
+    border-radius: 0 !important;
+    background: rgba(15,23,42,.65) !important;
+    backdrop-filter: blur(4px);
+    border: 0 !important;
+    width: 24px !important;
+    height: 24px !important;
+    top: 6px;
+    inset-inline-start: 6px;
+}
+
+.mmxx-modal.mmxx-modal .mmxx-loader {
+    text-align: center;
+    color: var(--mmxx-muted, #94a3b8);
+    padding: 1rem !important;
+    font-size: .88rem;
+}
+.mmxx-modal.mmxx-modal .mmxx-loader::before {
+    content: '';
+    display: inline-block;
+    width: 12px; height: 12px;
+    margin-inline-end: .5rem;
+    border: 2px solid rgba(15,23,42,.1);
+    border-top-color: var(--mmxx-primary, #6576ff);
+    border-radius: 50% !important;
+    animation: mmxx-spin .7s linear infinite;
+    vertical-align: -1px;
+}
+@keyframes mmxx-spin { to { transform: rotate(360deg); } }
+
+.mmxx-modal.mmxx-modal .mmxx-pagination {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: .25rem !important;
+    align-items: center;
+    padding: .6rem 1.25rem !important;
+    background: var(--mmxx-bg, #fff) !important;
+    border-top: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0 !important;
+}
+.mmxx-modal.mmxx-modal .mmxx-pagination button {
+    min-width: 32px !important;
+    height: 32px !important;
+    padding: 0 .55rem !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: var(--mmxx-text, #475569) !important;
+    border-radius: 0 !important;
+    font-weight: 500 !important;
+    font-size: .85rem !important;
+    cursor: pointer;
+    transition: background .12s, color .12s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none !important;
+}
+.mmxx-modal.mmxx-modal .mmxx-pagination button:hover:not(:disabled) {
+    background: rgba(15,23,42,.05) !important;
+    color: var(--mmxx-text, #1e293b) !important;
+    border-color: transparent !important;
+}
+.mmxx-modal.mmxx-modal .mmxx-pagination button.mmxx-page-active {
+    background: var(--mmxx-primary, #6576ff) !important;
+    border-color: var(--mmxx-primary, #6576ff) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+.mmxx-modal.mmxx-modal .mmxx-pagination button:disabled { opacity: .35; cursor: not-allowed; }
+.mmxx-modal.mmxx-modal .mmxx-pagination .mmxx-page-ellipsis { padding: 0 .25rem; color: var(--mmxx-muted, #94a3b8); }
+.mmxx-modal.mmxx-modal .mmxx-pagination .mmxx-page-info {
+    margin-inline-start: auto;
+    font-size: .8rem;
+    color: var(--mmxx-muted, #94a3b8);
+    font-weight: 400;
+}
+
+.mmxx-modal.mmxx-modal .mmxx-footer {
+    padding: .85rem 1.25rem !important;
+    background: var(--mmxx-bg, #fff) !important;
+    border-top: 1px solid rgba(15,23,42,.06) !important;
+    flex-shrink: 0 !important;
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
+}
+.mmxx-modal.mmxx-modal .mmxx-btn {
+    border-radius: 0 !important;
+    padding: .55rem 1.1rem !important;
+    font-weight: 500 !important;
+    font-size: .9rem !important;
+    transition: background .12s, color .12s, border-color .12s;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+}
+.mmxx-modal.mmxx-modal .mmxx-btn-primary { background: var(--mmxx-primary, #6576ff) !important; color: #fff !important; border-color: var(--mmxx-primary, #6576ff) !important; }
+.mmxx-modal.mmxx-modal .mmxx-btn-primary:hover:not(:disabled) { background: #5566ee !important; border-color: #5566ee !important; }
+.mmxx-modal.mmxx-modal .mmxx-btn-secondary { background: rgba(15,23,42,.05) !important; color: var(--mmxx-text, #1e293b) !important; }
+.mmxx-modal.mmxx-modal .mmxx-btn-secondary:hover:not(:disabled) { background: rgba(15,23,42,.09) !important; }
+.mmxx-modal.mmxx-modal .mmxx-btn-cancel { background: transparent !important; color: var(--mmxx-muted, #64748b) !important; border-color: rgba(15,23,42,.12) !important; }
+.mmxx-modal.mmxx-modal .mmxx-btn-cancel:hover { background: rgba(15,23,42,.04) !important; color: var(--mmxx-text, #1e293b) !important; }
+.mmxx-modal.mmxx-modal .mmxx-btn-select:not(:disabled) { background: var(--mmxx-primary, #6576ff) !important; color: #fff !important; border-color: var(--mmxx-primary, #6576ff) !important; }
+.mmxx-modal.mmxx-modal .mmxx-btn-select:not(:disabled):hover { background: #5566ee !important; border-color: #5566ee !important; }
+.mmxx-modal.mmxx-modal .mmxx-btn-select:disabled { background: rgba(15,23,42,.05) !important; color: var(--mmxx-muted, #94a3b8) !important; }
+
+.mmxx-modal.mmxx-modal .mmxx-tab-body {
+    padding: 1.25rem !important;
+    background: var(--mmxx-bg, #fff) !important;
+    overflow: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.mmxx-modal.mmxx-modal  input[type="text"],
+.mmxx-modal.mmxx-modal  input[type="search"],
+.mmxx-modal.mmxx-modal  input[type="url"],
+.mmxx-modal.mmxx-modal  input[type="email"],
+.mmxx-modal.mmxx-modal  input[type="number"],
+.mmxx-modal.mmxx-modal  input[type="file"],
+.mmxx-modal.mmxx-modal  textarea,
+.mmxx-modal.mmxx-modal  select {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.10) !important;
+    padding: .55rem .8rem !important;
+    background: var(--mmxx-bg, #fff) !important;
+    color: var(--mmxx-text, #1e293b) !important;
+    font-size: .9rem !important;
+    transition: border-color .12s, box-shadow .12s !important;
+    box-shadow: none !important;
+    line-height: 1.4 !important;
+    font-family: inherit !important;
+    font-weight: 400 !important;
+}
+.mmxx-modal.mmxx-modal  input:focus,
+.mmxx-modal.mmxx-modal  textarea:focus,
+.mmxx-modal.mmxx-modal  select:focus {
+    border-color: var(--mmxx-primary, #6576ff) !important;
+    box-shadow: 0 0 0 3px rgba(101,118,255,.12) !important;
+    outline: none !important;
+}
+.mmxx-modal.mmxx-modal  input::placeholder,
+.mmxx-modal.mmxx-modal  textarea::placeholder {
+    color: var(--mmxx-muted, #94a3b8) !important;
+    opacity: 1;
+    font-weight: 400;
+}
+.mmxx-modal.mmxx-modal  input[type="file"] { padding: .4rem .55rem !important; cursor: pointer; }
+.mmxx-modal.mmxx-modal  label {
+    color: var(--mmxx-text, #334155) !important;
+    font-size: .85rem !important;
+    font-weight: 500 !important;
+    display: inline-block;
+    margin-bottom: .25rem;
+}
+.mmxx-modal.mmxx-modal  fieldset {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.08) !important;
+    padding: .7rem 1rem !important;
+    background: transparent !important;
+}
+.mmxx-modal.mmxx-modal  fieldset legend {
+    font-size: .78rem !important;
+    color: var(--mmxx-muted, #94a3b8) !important;
+    font-weight: 500 !important;
+    padding: 0 .4rem !important;
+}
+.mmxx-modal.mmxx-modal  .mmxx-radio {
+    background: transparent;
+    border: 1px solid rgba(15,23,42,.10);
+    border-radius: 0;
+    padding: .3rem .65rem !important;
+    transition: border-color .12s;
+    font-size: .85rem !important;
+}
+.mmxx-modal.mmxx-modal  .mmxx-radio:hover { border-color: rgba(101,118,255,.4); }
+.mmxx-modal.mmxx-modal  .mmxx-radio input[type="radio"] { accent-color: var(--mmxx-primary, #6576ff); margin-inline-end: .25rem; }
+.mmxx-modal.mmxx-modal  .mmxx-uploader,
+.mmxx-modal.mmxx-modal  .mmxx-uploader-url {
+    border-radius: 0 !important;
+    border: 1px solid rgba(15,23,42,.08) !important;
+    background: var(--mmxx-bg, #fff) !important;
+    padding: 1rem !important;
+    gap: .6rem !important;
+    box-shadow: none !important;
+}
+.mmxx-modal.mmxx-modal  [id$="-upload-label"] {
+    border-radius: 0 !important;
+    border: 1px dashed rgba(15,23,42,.18) !important;
+    background: rgba(15,23,42,.02) !important;
+    padding: 1rem !important;
+    transition: border-color .12s, background .12s;
+    color: var(--mmxx-muted, #64748b) !important;
+}
+.mmxx-modal.mmxx-modal  [id$="-upload-label"]:hover {
+    border-color: var(--mmxx-primary, #6576ff) !important;
+    background: rgba(101,118,255,.04) !important;
+    color: var(--mmxx-text, #1e293b) !important;
+}
+
+/* File-selected state: green/success accent */
+.mmxx-modal.mmxx-modal  [id$="-upload-label"][data-file-selected="true"] {
+    border: 1px solid #16a34a !important;
+    background: rgba(22,163,74,.06) !important;
+    color: #15803d !important;
+    text-align: start !important;
+    padding: .85rem 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: .75rem !important;
+}
+.mmxx-modal.mmxx-modal  [id$="-upload-label"][data-file-selected="true"] i,
+.mmxx-modal.mmxx-modal  [id$="-upload-label"][data-file-selected="true"] em { display: none !important; }
+.mmxx-modal.mmxx-modal  [id$="-upload-label"][data-file-selected="true"]::before {
+    content: '✓';
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    background: #16a34a;
+    color: #fff;
+    border-radius: 50% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    font-weight: 700;
+}
+.mmxx-modal.mmxx-modal  [id$="-upload-label"][data-file-selected="true"] span,
+.mmxx-modal.mmxx-modal  [id$="-upload-label"][data-file-selected="true"] [id$="-upload-label-text"] {
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+    color: #15803d !important;
+}
+.mmxx-modal.mmxx-modal  [id$="-upload-label"][data-file-selected="true"]::after {
+    content: 'تغيير';
+    flex-shrink: 0;
+    font-size: .78rem;
+    padding: .25rem .55rem;
+    border-radius: 6px;
+    background: rgba(22,163,74,.12);
+    color: #15803d;
+    font-weight: 500;
+}
+
+/* === Field layout: clean two-column grid === */
+.mmxx-modal.mmxx-modal  .mmxx-upload-fields {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: .85rem !important;
+    width: 100% !important;
+}
+.mmxx-modal.mmxx-modal  .mmxx-upload-fields > * {
+    flex: unset !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+/* file picker spans full width — it's the prominent field */
+.mmxx-modal.mmxx-modal  .mmxx-upload-fields > *:has(> [id$="-upload-label"]),
+.mmxx-modal.mmxx-modal  .mmxx-upload-fields > *:has([id$="-upload-input"]) {
+    grid-column: 1 / -1 !important;
+}
+
+/* Import-by-URL row layout: URL on its own row, name+alt side-by-side */
+.mmxx-modal.mmxx-modal  .mmxx-uploader-url > div:first-of-type {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: .75rem !important;
+    margin-bottom: .85rem !important;
+}
+.mmxx-modal.mmxx-modal  .mmxx-uploader-url > div:first-of-type > *:first-child {
+    grid-column: 1 / -1 !important;
+}
+.mmxx-modal.mmxx-modal  .mmxx-uploader-url > div:first-of-type > * { flex: unset !important; width: 100% !important; min-width: 0 !important; }
+
+/* Radio group: even spacing */
+.mmxx-modal.mmxx-modal  .mmxx-url-type-group > div {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: .5rem !important;
+}
+
+/* Action button rows */
+.mmxx-modal.mmxx-modal  .mmxx-uploader-actions {
+    display: flex !important;
+    gap: .5rem !important;
+    justify-content: flex-end !important;
+    margin-top: .25rem !important;
+    width: 100% !important;
+    padding-top: .75rem;
+    border-top: 1px solid rgba(15,23,42,.06);
+}
+
+/* Tab body single column constraint for narrow modals */
+@media (max-width: 640px) {
+    .mmxx-modal.mmxx-modal  .mmxx-upload-fields,
+    .mmxx-modal.mmxx-modal  .mmxx-uploader-url > div:first-of-type {
+        grid-template-columns: 1fr !important;
+    }
+    .mmxx-modal.mmxx-modal  .mmxx-uploader-actions { flex-direction: column; }
+    .mmxx-modal.mmxx-modal  .mmxx-uploader-actions .mmxx-btn { width: 100%; }
+}
+
+@media (max-width: 600px) {
+    .mmxx-modal.mmxx-modal .mmxx-pagination .mmxx-page-info { width: 100%; text-align: center; margin-top: .25rem; }
+    .mmxx-modal.mmxx-modal .mmxx-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important; }
+    .mmxx-modal.mmxx-modal .mmxx-thumb { height: 110px !important; }
+}
+/* === END MMX-UI-ENHANCE-V2 === */
+</style>
+<script>
+(function() {
+    if (window.__mxxFileSelectedHook) return;
+    window.__mxxFileSelectedHook = true;
+    document.addEventListener('change', function(e) {
+        const input = e.target;
+        if (!input || input.type !== 'file' || !input.id || !input.id.endsWith('-upload-input')) return;
+        const labelId = input.id.replace('-upload-input', '-upload-label');
+        const label = document.getElementById(labelId);
+        if (!label) return;
+        const file = input.files && input.files[0];
+        if (file) {
+            label.setAttribute('data-file-selected', 'true');
+            const txtId = labelId + '-text';
+            const txtEl = document.getElementById(txtId) || label.querySelector('span');
+            if (txtEl) txtEl.textContent = file.name;
+            else {
+                const span = document.createElement('span');
+                span.textContent = file.name;
+                label.appendChild(span);
+            }
+        } else {
+            label.removeAttribute('data-file-selected');
+        }
+    }, true);
+})();
+</script>
+<style>
+</style>
+<script>
+(function() {
+    if (window.__mxxFileSelectedHook) return;
+    window.__mxxFileSelectedHook = true;
+    document.addEventListener('change', function(e) {
+        const input = e.target;
+        if (!input || input.type !== 'file' || !input.id || !input.id.endsWith('-upload-input')) return;
+        const labelId = input.id.replace('-upload-input', '-upload-label');
+        const label = document.getElementById(labelId);
+        if (!label) return;
+        const file = input.files && input.files[0];
+        if (file) {
+            label.setAttribute('data-file-selected', 'true');
+            const txtId = labelId + '-text';
+            const txtEl = document.getElementById(txtId) || label.querySelector('span');
+            if (txtEl) txtEl.textContent = file.name;
+            else {
+                const span = document.createElement('span');
+                span.textContent = file.name;
+                label.appendChild(span);
+            }
+        } else {
+            label.removeAttribute('data-file-selected');
+        }
+    }, true);
+})();
+</script>
+<style>
+</style>
+<script>
+(function() {
+    if (window.__mxxFileSelectedHook) return;
+    window.__mxxFileSelectedHook = true;
+    document.addEventListener('change', function(e) {
+        const input = e.target;
+        if (!input || input.type !== 'file' || !input.id || !input.id.endsWith('-upload-input')) return;
+        const labelId = input.id.replace('-upload-input', '-upload-label');
+        const label = document.getElementById(labelId);
+        if (!label) return;
+        const file = input.files && input.files[0];
+        if (file) {
+            label.setAttribute('data-file-selected', 'true');
+            const txtId = labelId + '-text';
+            const txtEl = document.getElementById(txtId) || label.querySelector('span');
+            if (txtEl) txtEl.textContent = file.name;
+            else {
+                const span = document.createElement('span');
+                span.textContent = file.name;
+                label.appendChild(span);
+            }
+        } else {
+            label.removeAttribute('data-file-selected');
+        }
+    }, true);
+})();
+</script>
+<style>
 </style>

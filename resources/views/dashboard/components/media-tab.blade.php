@@ -63,19 +63,6 @@
     <!-- Dynamic Template Content -->
     <div id="mediaTypeContent"></div>
 
-    <!-- Summary Panel -->
-    <div class="media-summary-panel mt-4">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0" data-ar="ملخص الوسائط المختارة" data-en="Selected Media Summary">ملخص الوسائط
-                    المختارة</h5>
-                <span class="badge bg-primary" id="selected-count">0</span>
-            </div>
-            <div class="card-body">
-                <div id="summary-table-body" class="media-summary-grid"></div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- ======================= SCRIPT ======================= -->
@@ -1024,6 +1011,9 @@
         updateSummary() {
             const summaryBody = document.getElementById('summary-table-body');
             const selectedCount = document.getElementById('selected-count');
+            // Summary panel was removed from the markup — bail out silently when
+            // the corresponding DOM nodes don't exist.
+            if (!summaryBody || !selectedCount) return;
 
             const flattenItems = Object.values(this.state.selectedMedia).flatMap(v => Array.isArray(v) ? v : (v ? [
                 v
