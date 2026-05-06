@@ -10,7 +10,7 @@
                     <div class="image-placeholder">
                         <div class="spinner"></div>
                     </div>
-                    <img src="{{ $image->path }}"
+                    <img loading="lazy" decoding="async" src="{{ $image->path }}"
                          alt="{{ $image->alt ?? 'Album Image ' . ($index + 1) }}"
                          class="album-image-clickable"
                          data-index="{{ $index }}"

@@ -228,7 +228,7 @@
                 <div class="custom-photos-feature">
                     <a href="{{ route('news.show', $reviews[0]->shortlink ?? '') }}">
                         <div class="custom-image-wrapper">
-                            <img src="{{ $reviews[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
+                            <img loading="lazy" decoding="async" src="{{ $reviews[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
                                 alt="{{ $reviews[0]->title ?? 'رأي مميز' }}">
                             <div class="custom-corner-icon">
                                 @include('user.icons.image')
@@ -549,7 +549,7 @@
                                         <li class="mobile-simple-item">
                                             <a class="mobile-more-link" href="${href}" aria-label="${title}">
                                                 <div class="ms-thumb">
-                                                    <img src="${imgSrc}" alt="${title}">
+                                                    <img loading="lazy" decoding="async" src="${imgSrc}" alt="${title}">
                                                 </div>
                                                 <div class="ms-text">
                                                     <p class="ms-title">${title}</p>

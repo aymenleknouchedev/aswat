@@ -3,7 +3,7 @@
         <div class="site-container">
             <div class="site-nav-right">
                 <a href="{{ route('index') }}">
-                    <img class="site-logo" src="{{ asset('user/assets/images/logo.svg') }}" alt="Logo">
+                    <img loading="lazy" decoding="async" class="site-logo" src="{{ asset('user/assets/images/logo.svg') }}" alt="Logo">
                 </a>
                 <ul class="site-nav-links">
                     <li class="site-nav-link {{ request()->routeIs('latestNews') ? 'active' : '' }}"
@@ -61,12 +61,12 @@
                 <div class="site-weather-widget">
                     <div class="site-weather-location">الجزائر</div>
                     <div class="site-weather-item">
-                        <img src="{{ asset('user/assets/icons/day-mode.png') }}" alt="نهار">
+                        <img loading="lazy" decoding="async" src="{{ asset('user/assets/icons/day-mode.png') }}" alt="نهار">
                         <span>{{ isset($weather['day']) ? $weather['day'] . '°' : '26°' }}</span>
                     </div>
                     <div class="site-weather-divider"></div>
                     <div class="site-weather-item">
-                        <img src="{{ asset('user/assets/icons/night-mode.png') }}" alt="ليل">
+                        <img loading="lazy" decoding="async" src="{{ asset('user/assets/icons/night-mode.png') }}" alt="ليل">
                         <span>{{ isset($weather['night']) ? $weather['night'] . '°' : '15°' }}</span>
                     </div>
                 </div>

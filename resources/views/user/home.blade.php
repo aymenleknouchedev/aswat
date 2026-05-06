@@ -661,7 +661,7 @@
                                 @endphp
                                 <div class="art-section-card">
                                     <a href="{{ route('news.show', $content->shortlink) }}">
-                                        <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
+                                        <img loading="lazy" decoding="async" src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? asset($content->image) }}"
                                             alt="{{ $content->title }}">
                                     </a>
                                     <p class="art-section-card-date">{{ $day }} {{ $month }} {{ $year }} | {{ $time }}</p>
@@ -743,10 +743,10 @@
                         <div class="under-title-ligne-space"></div>
                         <div style="display: flex;" class="icons">
                             <div id="reviewBackArrow" style="height: 32px; width: 32px; cursor: pointer;">
-                                <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
+                                <img loading="lazy" decoding="async" class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
                             </div>
                             <div id="reviewNextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
-                                <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+                                <img loading="lazy" decoding="async" class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
                             </div>
                         </div>
                     </div>
@@ -891,10 +891,10 @@
                             <div class="under-title-ligne-space"></div>
                             <div style="display: flex;" class="icons">
                                 <div id="backArrow" style="height: 32px; width: 32px; cursor: pointer;">
-                                    <img class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
+                                    <img loading="lazy" decoding="async" class="nav-logo" src="./user/assets/icons/chevron_forward.svg" alt="logo">
                                 </div>
                                 <div id="nextArrow" style="height: 32px; width: 32px; margin-left: 5px; cursor: pointer;">
-                                    <img class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
+                                    <img loading="lazy" decoding="async" class="nav-logo" src="./user/assets/icons/chevron_backwar.svg" alt="logo">
                                 </div>
                             </div>
                         </div>

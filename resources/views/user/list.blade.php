@@ -2032,7 +2032,7 @@
         <div class="navbar-content">
             <div class="navbar-logo">
                 <a href="{{ route('index') }}">
-                    <img src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
+                    <img loading="lazy" decoding="async" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
                 </a>
             </div>
             <div class="navbar-icons">
@@ -2394,7 +2394,7 @@
                     {{-- Share Button --}}
                     <button class="share-btn" id="shareToggle" type="button" title="مشاركة"
                         aria-label="زر المشاركة">
-                        <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
+                        <img loading="lazy" decoding="async" src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
                     </button>
                 </div>
             </div>
@@ -2537,7 +2537,7 @@
                     @if ($writer->bio != '')
                         <a href="{{ route('writer.show', $writer->id) }}" style="text-decoration: none; color: inherit;">
                             <div class="writer-card">
-                                <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}" loading="lazy">
+                                <img loading="lazy" decoding="async" src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}" loading="lazy">
                                 <div class="writer-info">
                                     <span class="bio"><span class="name">{{ $writer->name }}</span>
                                         {{ $writer->bio }}</span>
@@ -2559,7 +2559,7 @@
                         @foreach ($relatedNews as $item)
                             <div class="economy-card-news">
                                 <a href="{{ route('news.show', $item->shortlink) }}">
-                                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                                    <img loading="lazy" decoding="async" src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                         alt="{{ $item->title ?? '' }}" loading="lazy">
                                 </a>
 
@@ -3023,7 +3023,7 @@
             </div>
             <div class="text-modal-body">
                 <div id="textModalImageContainer" style="display: none;">
-                    <img id="textModalImage" src="" alt="صورة التعريف">
+                    <img loading="lazy" decoding="async" id="textModalImage" src="" alt="صورة التعريف">
                 </div>
                 <div>
                     <h3 id="textModalTitle" class="text-modal-title"></h3>
@@ -3226,7 +3226,7 @@
         <div id="previewBackdrop" class="preview-backdrop"></div>
         <div class="preview-container">
             <button id="closeImagePreview" class="preview-close-btn" aria-label="إغلاق">×</button>
-            <img id="previewImg" src="" alt="معاينة الصورة" class="preview-image-large">
+            <img loading="lazy" decoding="async" id="previewImg" src="" alt="معاينة الصورة" class="preview-image-large">
             <div class="preview-title" id="previewTitle"></div>
         </div>
     </div>

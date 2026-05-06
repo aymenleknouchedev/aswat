@@ -326,7 +326,7 @@
             <!-- Writer Info -->
             <div class="writer-header">
                 @if ($writer->image)
-                    <img src="{{ $writer->image }}" alt="{{ $writer->name }}">
+                    <img loading="lazy" decoding="async" src="{{ $writer->image }}" alt="{{ $writer->name }}">
                 @endif
                 <div class="writer-info">
                     <h1>{{ $writer->name }}</h1>
@@ -400,7 +400,7 @@
                 <!-- Writer Header -->
                 <div class="mobile-writer-header">
                     @if ($writer->image)
-                        <img src="{{ $writer->image }}" alt="{{ $writer->name }}">
+                        <img loading="lazy" decoding="async" src="{{ $writer->image }}" alt="{{ $writer->name }}">
                     @endif
                     <h1>{{ $writer->name }}</h1>
                     <p>{{ \Illuminate\Support\Str::limit($writer->bio ?? '', 250) }}</p>
@@ -580,7 +580,7 @@
                                         <li class="mobile-simple-item">
                                             <a class="mobile-more-link" href="${href}" aria-label="${title}">
                                                 <div class="ms-thumb">
-                                                    <img src="${imgSrc}" alt="${title}">
+                                                    <img loading="lazy" decoding="async" src="${imgSrc}" alt="${title}">
                                                 </div>
                                                 <div class="ms-text">
                                                     <p class="ms-title">${title}</p>

@@ -2,7 +2,7 @@
     <div class="custom-card">
         <div class="custom-image">
             <a href="{{ route('news.show', $review->shortlink) }}">
-                <img src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
+                <img loading="lazy" decoding="async" src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
                     alt="خبر">
             </a>
         </div>

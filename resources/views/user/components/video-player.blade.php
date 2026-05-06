@@ -127,7 +127,7 @@ function loadLocalVideo(uniqueId) {
                 $uniqueVideoId = $youtubeId . $uniqueSuffix;
             @endphp
             <div class="video-cover" id="videoCover{{ $uniqueVideoId }}" onclick="loadYouTubeVideo('{{ $uniqueVideoId }}')">
-                <img src="{{ $posterUrl }}" alt="Video thumbnail" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16/9;">
+                <img loading="lazy" decoding="async" src="{{ $posterUrl }}" alt="Video thumbnail" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16/9;">
                 <div class="play-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
                         <path d="M12 8L30 20L12 32V8Z" fill="#FFFFFF"/>
@@ -154,7 +154,7 @@ function loadLocalVideo(uniqueId) {
                 $uniqueVideoId = $vimeoId . $uniqueSuffix;
             @endphp
             <div class="video-cover" id="videoCover{{ $uniqueVideoId }}" onclick="loadVimeoVideo('{{ $uniqueVideoId }}')">
-                <img src="{{ $posterUrl }}" alt="Video thumbnail" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16/9;">
+                <img loading="lazy" decoding="async" src="{{ $posterUrl }}" alt="Video thumbnail" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16/9;">
                 <div class="play-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
                         <path d="M12 8L30 20L12 32V8Z" fill="#FFFFFF"/>
@@ -202,7 +202,7 @@ function loadLocalVideo(uniqueId) {
         @if ($hasPoster)
             {{-- Show poster as clickable cover for local videos --}}
             <div class="video-cover" id="videoCover{{ $localVideoId }}" onclick="loadLocalVideo('{{ $localVideoId }}')">
-                <img src="{{ $posterImage }}" alt="Video thumbnail" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16/9;">
+                <img loading="lazy" decoding="async" src="{{ $posterImage }}" alt="Video thumbnail" style="width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16/9;">
                 <div class="play-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
                         <path d="M12 8L30 20L12 32V8Z" fill="#FFFFFF"/>

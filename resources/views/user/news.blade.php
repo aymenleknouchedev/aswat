@@ -2585,7 +2585,7 @@
                 aria-label="الصورة السابقة">‹</button>
             <button class="fullscreen-image-next" id="fullscreenImageNext" type="button"
                 aria-label="الصورة التالية">›</button>
-            <img id="fullscreenImageContent" src="" alt="صورة بحجم كامل">
+            <img loading="lazy" decoding="async" id="fullscreenImageContent" src="" alt="صورة بحجم كامل">
             <div class="fullscreen-image-caption" id="fullscreenImageCaption"></div>
             <div class="fullscreen-image-counter" id="fullscreenImageCounter"></div>
         </div>
@@ -2601,7 +2601,7 @@
             </div>
             <div class="text-modal-body">
                 <div id="textModalImageContainer" style="display: none;">
-                    <img id="textModalImage" src="" alt="صورة التعريف">
+                    <img loading="lazy" decoding="async" id="textModalImage" src="" alt="صورة التعريف">
                 </div>
                 <div>
                     <h3 id="textModalTitle" class="text-modal-title"></h3>
@@ -2788,7 +2788,7 @@ $time = $date->format('H:i');
                         {{-- Share Button --}}
                         <button class="share-btn" id="shareToggle" type="button" title="مشاركة"
                             aria-label="زر المشاركة">
-                            <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
+                            <img loading="lazy" decoding="async" src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
                         </button>
                     </div>
                 </div>
@@ -2800,7 +2800,7 @@ $time = $date->format('H:i');
                         $news->template !== 'album' &&
                         $news->template !== 'podcast')
                     <figure class="custom-article-image-wrapper">
-                        <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}"
+                        <img loading="lazy" decoding="async" src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}"
                             alt="{{ $news->caption }}" loading="lazy"
                             style="aspect-ratio: 16/9; object-fit: cover; cursor: pointer;"
                             class="feature-image-clickable"
@@ -2862,7 +2862,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     <div class="audio-player-wrapper" id="audioPlayerWrapper">
 
                         <div class="audio-player-image" style="position:relative;">
-                            <img src="{{ $coverImage }}" alt="{{ $news->caption ?? 'بودكاست' }}" loading="lazy">
+                            <img loading="lazy" decoding="async" src="{{ $coverImage }}" alt="{{ $news->caption ?? 'بودكاست' }}" loading="lazy">
                             {{-- Play icon positioned at bottom left --}}
                             <div class="audio-play-icon" id="audioPlayIcon">
                                 <i class="fa-solid fa-play"></i>
@@ -2928,7 +2928,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                                 <a href="{{ route('writer.show', $writer->id) }}"
                                     style="text-decoration: none; color: inherit;">
                                     <div class="writer-card">
-                                        <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
+                                        <img loading="lazy" decoding="async" src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
                                             loading="lazy"
                                             style="border-radius:50%; width:80px; height:80px; object-fit:cover;">
                                         <div class="writer-info">
@@ -2972,7 +2972,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     <div class="news-card-horizontal-news">
                         <div class="news-card-image-news">
                             <a href="{{ route('news.show', $content->shortlink) }}">
-                                <img src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
+                                <img loading="lazy" decoding="async" src="{{ $content->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
                                     alt="{{ $content->title ?? 'News' }}" loading="lazy">
                             </a>
                         </div>
@@ -2998,7 +2998,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 @foreach ($relatedNews as $item)
                     <div class="economy-card-news">
                         <a href="{{ route('news.show', $item->shortlink) }}">
-                            <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
+                            <img loading="lazy" decoding="async" src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? '' }}"
                                 alt="{{ $item->title ?? '' }}" loading="lazy">
                         </a>
 
@@ -3155,7 +3155,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     {{-- Share Button --}}
                     <button class="share-btn" id="shareToggleMobile" type="button" title="مشاركة"
                         aria-label="زر المشاركة">
-                        <img src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
+                        <img loading="lazy" decoding="async" src="{{ asset('user/assets/icons/send.png') }}" alt="Share" style="width:20px;">
                     </button>
                 </div>
             </div>
@@ -3163,7 +3163,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             <!-- Feature Image -->
             @if ($news->template == 'normal_image')
                 <figure class="mobile-article-image">
-                    <img src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}"
+                    <img loading="lazy" decoding="async" src="{{ $news->media()->wherePivot('type', 'detail')->first()->path }}"
                         alt="{{ $news->caption }}" loading="lazy" style="cursor: pointer;">
                     @if ($news->caption)
                         <figcaption>{{ $news->caption }}</figcaption>
@@ -3217,7 +3217,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
                 <div class="audio-player-wrapper" id="audioPlayerWrapperMobile">
                     <div class="audio-player-image" style="position:relative;">
-                        <img src="{{ $coverImage }}" alt="{{ $news->caption ?? 'بودكاست' }}" loading="lazy">
+                        <img loading="lazy" decoding="async" src="{{ $coverImage }}" alt="{{ $news->caption ?? 'بودكاست' }}" loading="lazy">
                         <div class="audio-play-icon" id="audioPlayIconMobile">
                             <i class="fa-solid fa-play"></i>
                         </div>
@@ -3261,7 +3261,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     @if ($writer->bio != '')
                         <a href="{{ route('writer.show', $writer->id) }}" style="text-decoration: none; color: inherit;">
                             <div class="mobile-writer-card">
-                                <img src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
+                                <img loading="lazy" decoding="async" src="{{ $writer->image ?? asset('user.png') }}" alt="{{ $writer->name }}"
                                     class="mobile-writer-image" loading="lazy">
                                 <div class="mobile-writer-info">
                                     <div class="mobile-writer-bio"><span class="mobile-writer-name">{{ $writer->name }}
@@ -3292,7 +3292,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                                             ($item->media()->wherePivot('type', 'main')->first()?->path ??
                                                 asset($item->image ?? 'user/assets/images/default-post.jpg'));
                                     @endphp
-                                    <img src="{{ $img }}" alt="{{ $item->title }}">
+                                    <img loading="lazy" decoding="async" src="{{ $img }}" alt="{{ $item->title }}">
                                 </a>
                                 <div class="related-news-scroll-card-content">
                                     @if (isset($item->category) && $item->category)

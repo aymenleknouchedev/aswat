@@ -173,7 +173,7 @@
 
 <footer id="mobileFooter" class="m-footer" role="contentinfo">
     <div class="m-wrap">
-        <img class="m-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="أصوات جزائرية">
+        <img loading="lazy" decoding="async" class="m-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="أصوات جزائرية">
         <div class="m-divider" aria-hidden="true"></div>
         <ul class="m-links" role="list">
             <li><a href="{{ route('about-us') }}" style="color: inherit; text-decoration: none;">من نحن</a></li>
@@ -225,7 +225,7 @@
             </div>
             <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
                 <!-- <a href="https://asswatarabia.com/" target="_blank" style="text-decoration: none;">
-                    <img src="https://www.freepnglogos.com/uploads/pinterest-logos-vector-png-hd-14.png" alt="Aswat Arabia" height="35">
+                    <img loading="lazy" decoding="async" src="https://www.freepnglogos.com/uploads/pinterest-logos-vector-png-hd-14.png" alt="Aswat Arabia" height="35">
                 </a> -->
                 <p>تصميم وتطوير Missahat Creative</p>
             </div>

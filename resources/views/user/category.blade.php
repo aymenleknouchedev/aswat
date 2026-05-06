@@ -250,7 +250,7 @@
                             <!-- Image -->
                             <div class="newCategory-all-card-image">
                                 <a href="{{ route('news.show', $item->shortlink) }}">
-                                    <img src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
+                                    <img loading="lazy" decoding="async" src="{{ $item->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/IMG20.jpg' }}"
                                         alt="{{ $item->title }}">
                                 </a>
                             </div>
@@ -460,7 +460,7 @@
                         li.innerHTML = `
                             <a class="mobile-more-link" href="${href}" aria-label="${title}">
                               <div class="ms-thumb">
-                                <img src="${src}" alt="${title}">
+                                <img loading="lazy" decoding="async" src="${src}" alt="${title}">
                               </div>
                               <div class="ms-text">
                                 <p class="ms-title">${title}</p>

@@ -182,7 +182,7 @@
 <div class="footer">
     <div class="container">
         <a href="#gototop">
-            <img class="footer-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="logo">
+            <img loading="lazy" decoding="async" class="footer-logo" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="logo">
         </a>
         <div class="ligne"></div>
         <div class="links">
@@ -271,7 +271,7 @@
             </div>
             <div class="right-side" style="display: flex align-items: center;">
                 <!-- <a href="https://asswatarabia.com/" target="_blank" class="right-side" style="text-decoration: none;">
-                    <img src="https://www.freepnglogos.com/uploads/pinterest-logos-vector-png-hd-14.png" alt="Aswat Arabia" height="35" style="display: block;">
+                    <img loading="lazy" decoding="async" src="https://www.freepnglogos.com/uploads/pinterest-logos-vector-png-hd-14.png" alt="Aswat Arabia" height="35" style="display: block;">
                 </a> -->
                 <p>تصميم وتطوير Missahat Creative</p>
             </div>

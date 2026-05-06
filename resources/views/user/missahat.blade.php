@@ -1520,7 +1520,7 @@
     <nav id="navbar">
         <div class="nav-container">
             <a href="#home" class="logo">
-                <img src="{{ asset('user/assets/images/brand.svg') }}" alt="مساحات" style="height: 40px; width: auto; filter: brightness(0) saturate(100%);">
+                <img loading="lazy" decoding="async" src="{{ asset('user/assets/images/brand.svg') }}" alt="مساحات" style="height: 40px; width: auto; filter: brightness(0) saturate(100%);">
             </a>
             <ul class="nav-links">
                 <li><a href="#home">الرئيسية</a></li>
