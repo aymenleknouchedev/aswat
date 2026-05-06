@@ -364,7 +364,7 @@
                 <div class="mmxx-body">
                     <div id="mmxx-list" class="mmxx-grid"></div>
                     <div id="mmxx-loader" class="mmxx-loader" hidden>جاري التحميل...</div>
-                    <div id="mmxx-sentinel" class="mmxx-sentinel"></div>
+                    <nav id="mmxx-pagination" class="mmxx-pagination" aria-label="ترقيم الصفحات"></nav>
                 </div>
 
                 <div class="mmxx-footer">
@@ -782,6 +782,39 @@
         .mmxx-sentinel {
             height: 1px;
         }
+    .mmxx-pagination {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .35rem;
+        justify-content: center;
+        align-items: center;
+        padding: .75rem 1rem;
+        border-top: 1px solid var(--mmxx-border, #dbdfea);
+        background: var(--mmxx-bg, #fff);
+    }
+    .mmxx-pagination button {
+        min-width: 36px;
+        padding: .35rem .65rem;
+        border: 1px solid var(--mmxx-border, #dbdfea);
+        background: var(--mmxx-bg, #fff);
+        color: var(--mmxx-text, #526484);
+        cursor: pointer;
+        font-weight: 600;
+        font-size: .9rem;
+    }
+    .mmxx-pagination button:hover:not(:disabled) {
+        background: var(--mmxx-gray-100, #ebeef2);
+        border-color: var(--mmxx-primary, #6576ff);
+    }
+    .mmxx-pagination button.mmxx-page-active {
+        background: var(--mmxx-primary, #6576ff);
+        border-color: var(--mmxx-primary, #6576ff);
+        color: #fff;
+    }
+    .mmxx-pagination button:disabled { opacity: .5; cursor: not-allowed; }
+    .mmxx-pagination .mmxx-page-ellipsis { padding: 0 .35rem; color: var(--mmxx-muted, #8091a7); }
+    .mmxx-pagination .mmxx-page-info { margin-inline-start: auto; font-size: .85rem; color: var(--mmxx-muted, #8091a7); }
+
 
         @media (max-width: 768px) {
             .mmxx-container {
@@ -827,7 +860,7 @@
 
             const listEl = document.getElementById("mmxx-list");
             const loaderEl = document.getElementById("mmxx-loader");
-            const sentinel = document.getElementById("mmxx-sentinel");
+            const paginationEl = document.getElementById("mmxx-pagination");
             const searchInput = document.getElementById("mmxx-search");
             const typeSelect = document.getElementById("mmxx-type-filter");
             const btnSelect = document.getElementById("mmxx-btn-select");
@@ -854,13 +887,12 @@
             const state = {
                 isOpen: false,
                 page: 1,
-                perPage: 12,
-                hasMore: true,
+                lastPage: 1,
+                total: 0,
                 isLoading: false,
                 search: "",
                 list: [],
                 selected: null,
-                observer: null,
                 activeTab: 'gallery'
             };
 
@@ -890,7 +922,6 @@
                 typeSelect.value = "all";
                 switchTab('gallery');
                 resetAndLoad();
-                setupObserver();
             }
 
             function closeModal() {
@@ -919,57 +950,79 @@
                 });
                 Object.entries(tabPanels).forEach(([name, panel]) => panel.hidden = (name !== tab));
             }
-
             async function resetAndLoad() {
                 state.page = 1;
-                state.hasMore = true;
-                state.list = [];
-                renderList();
-                await loadMore(true);
+                await loadPage(1);
             }
 
-            function setupObserver() {
-                if (state.observer) state.observer.disconnect();
-                const rootEl = tabPanels.gallery.querySelector(".mmxx-body");
-                state.observer = new IntersectionObserver(entries => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) loadMore();
-                    });
-                }, {
-                    root: rootEl,
-                    threshold: 1
-                });
-                state.observer.observe(sentinel);
-            }
-
-            async function loadMore(reset = false) {
-                if (state.isLoading || !state.hasMore) return;
+            async function loadPage(pageNum) {
+                if (state.isLoading) return;
                 state.isLoading = true;
                 loaderEl.hidden = false;
                 try {
                     const url = new URL(FETCH_URL, window.location.origin);
-                    url.searchParams.set("page", state.page);
+                    url.searchParams.set("page", pageNum);
                     url.searchParams.set("search", state.search.trim());
-                    url.searchParams.set("type", "image");
-                    const res = await fetch(url.toString(), {
-                        headers: {
-                            Accept: "application/json"
-                        }
-                    });
+                    if (state.type) url.searchParams.set("type", state.type);
+                    const res = await fetch(url.toString(), { headers: { Accept: "application/json" } });
                     const data = await res.json();
-                    const items = Array.isArray(data.data) ? data.data : [];
-                    const hasMore = !!data.next_page_url;
-                    state.list = reset ? items : state.list.concat(items);
-                    state.hasMore = hasMore;
-                    state.page += 1;
+                    state.list = Array.isArray(data.data) ? data.data : [];
+                    state.page = data.current_page || pageNum;
+                    state.lastPage = data.last_page || 1;
+                    state.total = data.total || 0;
                 } catch (err) {
                     console.error(err);
+                    state.list = [];
                 } finally {
                     state.isLoading = false;
                     loaderEl.hidden = true;
                     renderList();
+                    renderPagination();
                 }
             }
+
+            function renderPagination() {
+                if (!paginationEl) return;
+                paginationEl.innerHTML = "";
+                if (state.lastPage <= 1) return;
+                const cur = state.page, last = state.lastPage;
+                const mkBtn = (label, page, opts = {}) => {
+                    const b = document.createElement("button");
+                    b.type = "button";
+                    b.textContent = label;
+                    if (opts.active) b.classList.add("mmxx-page-active");
+                    if (opts.disabled) b.disabled = true;
+                    else b.addEventListener("click", () => loadPage(page));
+                    return b;
+                };
+                paginationEl.appendChild(mkBtn("«", cur - 1, { disabled: cur <= 1 }));
+                const pages = new Set([1, last, cur, cur - 1, cur + 1]);
+                const sorted = [...pages].filter(x => x >= 1 && x <= last).sort((a, b) => a - b);
+                let prev = 0;
+                for (const pg of sorted) {
+                    if (pg - prev > 1) {
+                        const span = document.createElement("span");
+                        span.className = "mmxx-page-ellipsis";
+                        span.textContent = "…";
+                        paginationEl.appendChild(span);
+                    }
+                    paginationEl.appendChild(mkBtn(String(pg), pg, { active: pg === cur }));
+                    prev = pg;
+                }
+                paginationEl.appendChild(mkBtn("»", cur + 1, { disabled: cur >= last }));
+                const info = document.createElement("span");
+                info.className = "mmxx-page-info";
+                info.textContent = `صفحة ${cur} من ${last} — ${state.total} عنصر`;
+                paginationEl.appendChild(info);
+            }
+
+
+
+
+
+
+
+
 
             function renderList() {
                 listEl.innerHTML = "";

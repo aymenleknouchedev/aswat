@@ -61,9 +61,8 @@
             <div class="vvc-body">
                 <div id="vvc-list" class="vvc-grid"></div>
                 <div id="vvc-loader" class="vvc-loader" hidden>جاري التحميل...</div>
-                <!-- Sentinel element for infinite scroll detection -->
-                <div id="vvc-sentinel" class="vvc-sentinel"></div>
             </div>
+            <nav id="vvc-pagination" class="vvc-pagination" aria-label="ترقيم الصفحات"></nav>
             <!-- Footer with action buttons -->
             <div class="vvc-footer">
                 <button class="vvc-btn vvc-btn-select" type="button" id="vvc-btn-select" disabled>اختر</button>
@@ -99,7 +98,7 @@
                                 placeholder="النص البديل (للصور)"
                                 style="width:100%;padding:.6rem .7rem;border:1px solid var(--bs-border-color);background:var(--bs-body-bg);color:var(--bs-body-color);border-radius:var(--bs-border-radius);" />
                         </div>
-                    </div>
+            </div>
                     <!-- Upload action button -->
                     <div class="vvc-uploader-actions">
                         <button class="vvc-btn vvc-btn-primary" type="button" id="vvc-btn-upload-to-gallery"
@@ -711,6 +710,39 @@
     .vvc-sentinel {
         height: 1px;
     }
+    .vvc-pagination {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .35rem;
+        justify-content: center;
+        align-items: center;
+        padding: .75rem 1rem;
+        border-top: 1px solid var(--vvc-border, #dbdfea);
+        background: var(--vvc-bg, #fff);
+    }
+    .vvc-pagination button {
+        min-width: 36px;
+        padding: .35rem .65rem;
+        border: 1px solid var(--vvc-border, #dbdfea);
+        background: var(--vvc-bg, #fff);
+        color: var(--vvc-text, #526484);
+        cursor: pointer;
+        font-weight: 600;
+        font-size: .9rem;
+    }
+    .vvc-pagination button:hover:not(:disabled) {
+        background: var(--vvc-gray-100, #ebeef2);
+        border-color: var(--vvc-primary, #6576ff);
+    }
+    .vvc-pagination button.vvc-page-active {
+        background: var(--vvc-primary, #6576ff);
+        border-color: var(--vvc-primary, #6576ff);
+        color: #fff;
+    }
+    .vvc-pagination button:disabled { opacity: .5; cursor: not-allowed; }
+    .vvc-pagination .vvc-page-ellipsis { padding: 0 .35rem; color: var(--vvc-muted, #8091a7); }
+    .vvc-pagination .vvc-page-info { margin-inline-start: auto; font-size: .85rem; color: var(--vvc-muted, #8091a7); }
+
 
     /* ---- CLICKABLE TERM STYLES ---- */
     .clickable-term {
@@ -942,7 +974,7 @@
 
         const listEl = document.getElementById('vvc-list');
         const loaderEl = document.getElementById('vvc-loader');
-        const sentinel = document.getElementById('vvc-sentinel');
+        const paginationEl = document.getElementById('vvc-pagination');
         const searchInp = document.getElementById('vvc-search');
         const typeSel = document.getElementById('vvc-type-filter');
         const btnSelect = document.getElementById('vvc-btn-select');
@@ -963,13 +995,13 @@
         const state = {
             isOpen: false,
             page: 1,
-            hasMore: true,
+            lastPage: 1,
+            total: 0,
             isLoading: false,
             search: "",
             type: "all",
             list: [],
             selected: null,
-            observer: null,
             activeTab: 'gallery',
             currentField: 'tiny'
         };
@@ -1182,7 +1214,8 @@
          */
         function resetState() {
             state.page = 1;
-            state.hasMore = true;
+            state.lastPage = 1;
+            state.total = 0;
             state.isLoading = false;
             state.search = "";
             state.type = 'all';
@@ -1190,12 +1223,6 @@
             state.selected = null;
             if (searchInp) searchInp.value = '';
             if (typeSel) typeSel.value = 'all';
-            if (state.observer) {
-                try {
-                    state.observer.disconnect();
-                } catch {}
-                state.observer = null;
-            }
             if (upInput) upInput.value = '';
             if (upName) upName.value = '';
             if (upAlt) upAlt.value = '';
@@ -1210,68 +1237,72 @@
             if (btnSelect) btnSelect.disabled = true;
         }
 
-        /**
-         * Reset and load initial media list
-         */
         async function resetAndLoad() {
             state.page = 1;
-            state.hasMore = true;
-            state.list = [];
-            renderList();
-            await loadMore(true);
-            setupObserver();
+            await loadPage(1);
         }
 
-        /**
-         * Setup Intersection Observer for infinite scroll
-         */
-        function setupObserver() {
-            if (state.observer) state.observer.disconnect();
-            const rootEl = document.querySelector('#vvc-tab-gallery .vvc-body');
-            state.observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) loadMore();
-                });
-            }, {
-                root: rootEl,
-                threshold: 1
-            });
-            state.observer.observe(sentinel);
-        }
-
-        /**
-         * Load more media items (pagination)
-         * @param {boolean} reset - Whether to reset pagination
-         */
-        async function loadMore(reset = false) {
-            if (state.isLoading || !state.hasMore) return;
+        async function loadPage(pageNum) {
+            if (state.isLoading) return;
             state.isLoading = true;
             loaderEl.hidden = false;
             try {
                 const url = new URL(FETCH_URL, window.location.origin);
-                url.searchParams.set('page', state.page);
+                url.searchParams.set('page', pageNum);
                 url.searchParams.set('search', state.search.trim());
                 url.searchParams.set('type', state.type);
-                const res = await fetch(url.toString(), {
-                    headers: {
-                        Accept: 'application/json'
-                    }
-                });
+                const res = await fetch(url.toString(), { headers: { Accept: 'application/json' } });
                 if (!res.ok) throw new Error(`Fetch ${res.status}`);
                 const data = await res.json();
-                const items = Array.isArray(data.data) ? data.data : [];
-                const hasMore = !!data.next_page_url;
-                state.list = reset ? items : state.list.concat(items);
-                state.hasMore = hasMore;
-                state.page += 1;
+                state.list = Array.isArray(data.data) ? data.data : [];
+                state.page = data.current_page || pageNum;
+                state.lastPage = data.last_page || 1;
+                state.total = data.total || 0;
             } catch (err) {
                 console.error(err);
-                if (reset) listEl.innerHTML = '<div class="vvc-empty">تعذّر تحميل الوسائط.</div>';
+                state.list = [];
+                listEl.innerHTML = '<div class="vvc-empty">تعذّر تحميل الوسائط.</div>';
             } finally {
                 state.isLoading = false;
                 loaderEl.hidden = true;
                 renderList();
+                renderPagination();
             }
+        }
+
+        function renderPagination() {
+            if (!paginationEl) return;
+            paginationEl.innerHTML = '';
+            if (state.lastPage <= 1) return;
+            const cur = state.page, last = state.lastPage;
+            const mkBtn = (label, page, opts = {}) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = label;
+                if (opts.active) b.classList.add('vvc-page-active');
+                if (opts.disabled) b.disabled = true;
+                else b.addEventListener('click', () => loadPage(page));
+                return b;
+            };
+            paginationEl.appendChild(mkBtn('«', cur - 1, { disabled: cur <= 1 }));
+            const pages = new Set([1, last, cur, cur - 1, cur + 1]);
+            const sorted = [...pages].filter(x => x >= 1 && x <= last).sort((a, b) => a - b);
+            let prev = 0;
+            for (const pg of sorted) {
+                if (pg - prev > 1) {
+                    const span = document.createElement('span');
+                    span.className = 'vvc-page-ellipsis';
+                    span.textContent = '…';
+                    paginationEl.appendChild(span);
+                }
+                paginationEl.appendChild(mkBtn(String(pg), pg, { active: pg === cur }));
+                prev = pg;
+            }
+            paginationEl.appendChild(mkBtn('»', cur + 1, { disabled: cur >= last }));
+            const info = document.createElement('span');
+            info.className = 'vvc-page-info';
+            info.textContent = `صفحة ${cur} من ${last} — ${state.total} عنصر`;
+            paginationEl.appendChild(info);
         }
 
         /**

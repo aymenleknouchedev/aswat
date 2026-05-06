@@ -468,6 +468,39 @@
     .mmxc-sentinel {
         height: 1px;
     }
+    .mmxc-pagination {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .35rem;
+        justify-content: center;
+        align-items: center;
+        padding: .75rem 1rem;
+        border-top: 1px solid var(--mmxc-border, #dbdfea);
+        background: var(--mmxc-bg, #fff);
+    }
+    .mmxc-pagination button {
+        min-width: 36px;
+        padding: .35rem .65rem;
+        border: 1px solid var(--mmxc-border, #dbdfea);
+        background: var(--mmxc-bg, #fff);
+        color: var(--mmxc-text, #526484);
+        cursor: pointer;
+        font-weight: 600;
+        font-size: .9rem;
+    }
+    .mmxc-pagination button:hover:not(:disabled) {
+        background: var(--mmxc-gray-100, #ebeef2);
+        border-color: var(--mmxc-primary, #6576ff);
+    }
+    .mmxc-pagination button.mmxc-page-active {
+        background: var(--mmxc-primary, #6576ff);
+        border-color: var(--mmxc-primary, #6576ff);
+        color: #fff;
+    }
+    .mmxc-pagination button:disabled { opacity: .5; cursor: not-allowed; }
+    .mmxc-pagination .mmxc-page-ellipsis { padding: 0 .35rem; color: var(--mmxc-muted, #8091a7); }
+    .mmxc-pagination .mmxc-page-info { margin-inline-start: auto; font-size: .85rem; color: var(--mmxc-muted, #8091a7); }
+
 
     @media (max-width: 768px) {
         .mmxc-container {
@@ -672,8 +705,8 @@
             <div class="mmxc-body">
                 <div id="mmxc-list" class="mmxc-grid"></div>
                 <div id="mmxc-loader" class="mmxc-loader" hidden>جاري التحميل...</div>
-                <div id="mmxc-sentinel" class="mmxc-sentinel"></div>
             </div>
+            <nav id="mmxc-pagination" class="mmxc-pagination" aria-label="ترقيم الصفحات"></nav>
 
             <div class="mmxc-footer">
                 <button class="mmxc-btn mmxc-btn-select" type="button" id="mmxc-btn-select" data-en="Select"
@@ -788,7 +821,7 @@
         // Gallery
         const listEl = document.getElementById("mmxc-list");
         const loaderEl = document.getElementById("mmxc-loader");
-        const sentinel = document.getElementById("mmxc-sentinel");
+        const paginationEl = document.getElementById("mmxc-pagination");
         const searchInput = document.getElementById("mmxc-search");
         const typeSelect = document.getElementById("mmxc-type-filter");
         const btnSelect = document.getElementById("mmxc-btn-select");
@@ -819,15 +852,14 @@
         const state = {
             isOpen: false,
             page: 1,
-            perPage: 12,
-            hasMore: true,
+            lastPage: 1,
+            total: 0,
             isLoading: false,
             search: "",
             type: "all",
             list: [],
             selected: null,
             currentField: "",
-            observer: null,
             activeTab: 'gallery'
         };
 
@@ -956,58 +988,72 @@
             });
         }
 
-        // ===== Fetch/pagination =====
+                // ===== Fetch/pagination =====
         async function resetAndLoad() {
             state.page = 1;
-            state.hasMore = true;
-            state.list = [];
-            renderList();
-            await loadMore(true);
-            setupObserver();
+            await loadPage(1);
         }
 
-        function setupObserver() {
-            if (state.observer) state.observer.disconnect();
-            const rootEl = tabPanels.gallery.querySelector(".mmxc-body");
-            state.observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) loadMore();
-                });
-            }, {
-                root: rootEl,
-                threshold: 1
-            });
-            state.observer.observe(sentinel);
-        }
-        async function loadMore(reset = false) {
-            if (state.isLoading || !state.hasMore) return;
+        async function loadPage(pageNum) {
+            if (state.isLoading) return;
             state.isLoading = true;
             loaderEl.hidden = false;
             try {
                 const url = new URL(FETCH_URL, window.location.origin);
-                url.searchParams.set("page", state.page);
+                url.searchParams.set("page", pageNum);
                 url.searchParams.set("search", state.search.trim());
                 url.searchParams.set("type", mapFilterForServer(state.type));
-                const res = await fetch(url.toString(), {
-                    headers: {
-                        Accept: "application/json"
-                    }
-                });
+                const res = await fetch(url.toString(), { headers: { Accept: "application/json" } });
                 const data = await res.json();
-                const items = Array.isArray(data.data) ? data.data : [];
-                const hasMore = !!data.next_page_url;
-                state.list = reset ? items : state.list.concat(items);
-                state.hasMore = hasMore;
-                state.page += 1;
+                state.list = Array.isArray(data.data) ? data.data : [];
+                state.page = data.current_page || pageNum;
+                state.lastPage = data.last_page || 1;
+                state.total = data.total || 0;
             } catch (err) {
                 console.error(err);
+                state.list = [];
             } finally {
                 state.isLoading = false;
                 loaderEl.hidden = true;
                 renderList();
+                renderPagination();
             }
         }
 
+        function renderPagination() {
+            if (!paginationEl) return;
+            paginationEl.innerHTML = "";
+            if (state.lastPage <= 1) return;
+            const cur = state.page, last = state.lastPage;
+            const mkBtn = (label, page, opts = {}) => {
+                const b = document.createElement("button");
+                b.type = "button";
+                b.textContent = label;
+                if (opts.active) b.classList.add("mmxc-page-active");
+                if (opts.disabled) b.disabled = true;
+                else b.addEventListener("click", () => loadPage(page));
+                return b;
+            };
+            paginationEl.appendChild(mkBtn("«", cur - 1, { disabled: cur <= 1 }));
+            const pages = new Set([1, last, cur, cur - 1, cur + 1]);
+            const sorted = [...pages].filter(x => x >= 1 && x <= last).sort((a, b) => a - b);
+            let prev = 0;
+            for (const pg of sorted) {
+                if (pg - prev > 1) {
+                    const span = document.createElement("span");
+                    span.className = "mmxc-page-ellipsis";
+                    span.textContent = "…";
+                    paginationEl.appendChild(span);
+                }
+                paginationEl.appendChild(mkBtn(String(pg), pg, { active: pg === cur }));
+                prev = pg;
+            }
+            paginationEl.appendChild(mkBtn("»", cur + 1, { disabled: cur >= last }));
+            const info = document.createElement("span");
+            info.className = "mmxc-page-info";
+            info.textContent = `صفحة ${cur} من ${last} — ${state.total} عنصر`;
+            paginationEl.appendChild(info);
+        }
         // ===== Render =====
         function renderList() {
             listEl.innerHTML = "";

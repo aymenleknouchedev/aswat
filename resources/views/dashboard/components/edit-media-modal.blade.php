@@ -71,8 +71,8 @@
             <div class="xmm-body">
                 <div id="xmm-list" class="xmm-grid"></div>
                 <div id="xmm-loader" class="xmm-loader" hidden>جاري التحميل...</div>
-                <div id="xmm-sentinel" class="xmm-sentinel"></div>
             </div>
+            <nav id="xmm-pagination" class="xmm-pagination" aria-label="ترقيم الصفحات"></nav>
 
             <div class="xmm-footer">
                 <button class="xmm-btn xmm-btn-select" type="button" id="xmm-btn-select">اختر</button>
@@ -519,6 +519,39 @@
     .xmm-sentinel {
         height: 1px;
     }
+    .xmm-pagination {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .35rem;
+        justify-content: center;
+        align-items: center;
+        padding: .75rem 1rem;
+        border-top: 1px solid var(--xmm-border, #dbdfea);
+        background: var(--xmm-bg, #fff);
+    }
+    .xmm-pagination button {
+        min-width: 36px;
+        padding: .35rem .65rem;
+        border: 1px solid var(--xmm-border, #dbdfea);
+        background: var(--xmm-bg, #fff);
+        color: var(--xmm-text, #526484);
+        cursor: pointer;
+        font-weight: 600;
+        font-size: .9rem;
+    }
+    .xmm-pagination button:hover:not(:disabled) {
+        background: var(--xmm-gray-100, #ebeef2);
+        border-color: var(--xmm-primary, #6576ff);
+    }
+    .xmm-pagination button.xmm-page-active {
+        background: var(--xmm-primary, #6576ff);
+        border-color: var(--xmm-primary, #6576ff);
+        color: #fff;
+    }
+    .xmm-pagination button:disabled { opacity: .5; cursor: not-allowed; }
+    .xmm-pagination .xmm-page-ellipsis { padding: 0 .35rem; color: var(--xmm-muted, #8091a7); }
+    .xmm-pagination .xmm-page-info { margin-inline-start: auto; font-size: .85rem; color: var(--xmm-muted, #8091a7); }
+
 
     @media (max-width: 768px) {
         .xmm-container {
@@ -570,7 +603,7 @@
         // Gallery
         const listEl = document.getElementById("xmm-list");
         const loaderEl = document.getElementById("xmm-loader");
-        const sentinel = document.getElementById("xmm-sentinel");
+        const paginationEl = document.getElementById("xmm-pagination");
         const searchInput = document.getElementById("xmm-search");
         const typeSelect = document.getElementById("xmm-type-filter");
         const btnSelect = document.getElementById("xmm-btn-select");
@@ -601,15 +634,14 @@
         const state = {
             isOpen: false,
             page: 1,
-            perPage: 12,
-            hasMore: true,
+            lastPage: 1,
+            total: 0,
             isLoading: false,
             search: "",
             type: "all",
             list: [],
             selected: null,
             currentField: "",
-            observer: null,
             activeTab: 'gallery'
         };
 
@@ -743,58 +775,72 @@
             });
         }
 
-        // ===== Fetch/pagination =====
+                // ===== Fetch/pagination =====
         async function resetAndLoad() {
             state.page = 1;
-            state.hasMore = true;
-            state.list = [];
-            renderList();
-            await loadMore(true);
-            setupObserver();
+            await loadPage(1);
         }
 
-        function setupObserver() {
-            if (state.observer) state.observer.disconnect();
-            const rootEl = tabPanels.gallery.querySelector(".xmm-body");
-            state.observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) loadMore();
-                });
-            }, {
-                root: rootEl,
-                threshold: 1
-            });
-            state.observer.observe(sentinel);
-        }
-        async function loadMore(reset = false) {
-            if (state.isLoading || !state.hasMore) return;
+        async function loadPage(pageNum) {
+            if (state.isLoading) return;
             state.isLoading = true;
             loaderEl.hidden = false;
             try {
                 const url = new URL(FETCH_URL, window.location.origin);
-                url.searchParams.set("page", state.page);
+                url.searchParams.set("page", pageNum);
                 url.searchParams.set("search", state.search.trim());
                 url.searchParams.set("type", mapFilterForServer(state.type));
-                const res = await fetch(url.toString(), {
-                    headers: {
-                        Accept: "application/json"
-                    }
-                });
+                const res = await fetch(url.toString(), { headers: { Accept: "application/json" } });
                 const data = await res.json();
-                const items = Array.isArray(data.data) ? data.data : [];
-                const hasMore = !!data.next_page_url;
-                state.list = reset ? items : state.list.concat(items);
-                state.hasMore = hasMore;
-                state.page += 1;
+                state.list = Array.isArray(data.data) ? data.data : [];
+                state.page = data.current_page || pageNum;
+                state.lastPage = data.last_page || 1;
+                state.total = data.total || 0;
             } catch (err) {
                 console.error(err);
+                state.list = [];
             } finally {
                 state.isLoading = false;
                 loaderEl.hidden = true;
                 renderList();
+                renderPagination();
             }
         }
 
+        function renderPagination() {
+            if (!paginationEl) return;
+            paginationEl.innerHTML = "";
+            if (state.lastPage <= 1) return;
+            const cur = state.page, last = state.lastPage;
+            const mkBtn = (label, page, opts = {}) => {
+                const b = document.createElement("button");
+                b.type = "button";
+                b.textContent = label;
+                if (opts.active) b.classList.add("xmm-page-active");
+                if (opts.disabled) b.disabled = true;
+                else b.addEventListener("click", () => loadPage(page));
+                return b;
+            };
+            paginationEl.appendChild(mkBtn("«", cur - 1, { disabled: cur <= 1 }));
+            const pages = new Set([1, last, cur, cur - 1, cur + 1]);
+            const sorted = [...pages].filter(x => x >= 1 && x <= last).sort((a, b) => a - b);
+            let prev = 0;
+            for (const pg of sorted) {
+                if (pg - prev > 1) {
+                    const span = document.createElement("span");
+                    span.className = "xmm-page-ellipsis";
+                    span.textContent = "…";
+                    paginationEl.appendChild(span);
+                }
+                paginationEl.appendChild(mkBtn(String(pg), pg, { active: pg === cur }));
+                prev = pg;
+            }
+            paginationEl.appendChild(mkBtn("»", cur + 1, { disabled: cur >= last }));
+            const info = document.createElement("span");
+            info.className = "xmm-page-info";
+            info.textContent = `صفحة ${cur} من ${last} — ${state.total} عنصر`;
+            paginationEl.appendChild(info);
+        }
         // ===== Render =====
         function renderList() {
             listEl.innerHTML = "";
