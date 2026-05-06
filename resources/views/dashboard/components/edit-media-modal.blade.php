@@ -336,6 +336,7 @@
         overflow: auto;
         flex: 1;
         background: #fff;
+        min-height: 0;
     }
 
     .xmm-grid {
@@ -525,32 +526,50 @@
         gap: .35rem;
         justify-content: center;
         align-items: center;
-        padding: .75rem 1rem;
+        padding: .65rem 1rem;
         border-top: 1px solid var(--xmm-border, #dbdfea);
-        background: var(--xmm-bg, #fff);
+        background: var(--xmm-gray-100, #f3f4f8);
+        flex-shrink: 0;
     }
     .xmm-pagination button {
         min-width: 36px;
-        padding: .35rem .65rem;
-        border: 1px solid var(--xmm-border, #dbdfea);
+        height: 34px;
+        padding: 0 .7rem;
+        border: 1px solid var(--xmm-border, #dbdfea) !important;
         background: var(--xmm-bg, #fff);
         color: var(--xmm-text, #526484);
         cursor: pointer;
         font-weight: 600;
         font-size: .9rem;
+        border-radius: 6px !important;
+        transition: background .15s, color .15s, border-color .15s, transform .05s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
     .xmm-pagination button:hover:not(:disabled) {
-        background: var(--xmm-gray-100, #ebeef2);
-        border-color: var(--xmm-primary, #6576ff);
-    }
-    .xmm-pagination button.xmm-page-active {
         background: var(--xmm-primary, #6576ff);
-        border-color: var(--xmm-primary, #6576ff);
+        border-color: var(--xmm-primary, #6576ff) !important;
         color: #fff;
     }
-    .xmm-pagination button:disabled { opacity: .5; cursor: not-allowed; }
-    .xmm-pagination .xmm-page-ellipsis { padding: 0 .35rem; color: var(--xmm-muted, #8091a7); }
-    .xmm-pagination .xmm-page-info { margin-inline-start: auto; font-size: .85rem; color: var(--xmm-muted, #8091a7); }
+    .xmm-pagination button:active:not(:disabled) { transform: scale(.96); }
+    .xmm-pagination button.xmm-page-active {
+        background: var(--xmm-primary, #6576ff);
+        border-color: var(--xmm-primary, #6576ff) !important;
+        color: #fff;
+        box-shadow: 0 2px 6px rgba(101, 118, 255, 0.35);
+    }
+    .xmm-pagination button:disabled { opacity: .45; cursor: not-allowed; }
+    .xmm-pagination .xmm-page-ellipsis { padding: 0 .25rem; color: var(--xmm-muted, #8091a7); font-weight: 700; }
+    .xmm-pagination .xmm-page-info {
+        margin-inline-start: auto;
+        font-size: .85rem;
+        color: var(--xmm-muted, #8091a7);
+        font-weight: 500;
+    }
+    @media (max-width: 600px) {
+        .xmm-pagination .xmm-page-info { width: 100%; text-align: center; margin: .25rem 0 0; }
+    }
 
 
     @media (max-width: 768px) {

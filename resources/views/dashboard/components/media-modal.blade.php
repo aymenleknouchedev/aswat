@@ -408,7 +408,8 @@
     .mmx-body {
         padding: 1rem 1.25rem;
         overflow: auto;
-        flex: 1;
+        flex: 1 1 auto;
+        min-height: 0;
         background: var(--mmx-bg);
     }
 
@@ -664,48 +665,74 @@
         gap: .35rem;
         justify-content: center;
         align-items: center;
-        padding: .75rem 1rem;
+        padding: .65rem 1rem;
         border-top: 1px solid var(--mmx-border);
-        background: var(--mmx-bg);
+        background: var(--mmx-gray-100);
+        flex-shrink: 0;
     }
 
     .mmx-pagination button {
         min-width: 36px;
-        padding: .35rem .65rem;
-        border: 1px solid var(--mmx-border);
+        height: 34px;
+        padding: 0 .7rem;
+        border: 1px solid var(--mmx-border) !important;
         background: var(--mmx-bg);
         color: var(--mmx-text);
         cursor: pointer;
         font-weight: 600;
         font-size: .9rem;
-        transition: background .15s, color .15s, border-color .15s;
+        border-radius: 6px !important;
+        transition: background .15s, color .15s, border-color .15s, transform .05s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .mmx-pagination button:hover:not(:disabled) {
-        background: var(--mmx-gray-100);
-        border-color: var(--mmx-primary);
+        background: var(--mmx-primary);
+        border-color: var(--mmx-primary) !important;
+        color: #fff;
+    }
+
+    .mmx-pagination button:active:not(:disabled) {
+        transform: scale(.96);
     }
 
     .mmx-pagination button.mmx-page-active {
         background: var(--mmx-primary);
-        border-color: var(--mmx-primary);
+        border-color: var(--mmx-primary) !important;
         color: #fff;
+        box-shadow: 0 2px 6px rgba(101, 118, 255, 0.35);
     }
 
     .mmx-pagination button:disabled {
-        opacity: .5;
+        opacity: .45;
         cursor: not-allowed;
     }
 
     .mmx-pagination .mmx-page-ellipsis {
-        padding: 0 .35rem;
+        padding: 0 .25rem;
         color: var(--mmx-muted);
+        font-weight: 700;
     }
 
     .mmx-pagination .mmx-page-info {
         margin-inline-start: auto;
         font-size: .85rem;
         color: var(--mmx-muted);
+        font-weight: 500;
+    }
+
+    .mmx-footer {
+        flex-shrink: 0;
+    }
+
+    @media (max-width: 600px) {
+        .mmx-pagination .mmx-page-info {
+            width: 100%;
+            text-align: center;
+            margin: .25rem 0 0;
+        }
     }
 
     @media (max-width: 768px) {
