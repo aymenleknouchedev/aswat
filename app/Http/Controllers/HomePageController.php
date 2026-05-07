@@ -86,6 +86,7 @@ class HomePageController extends Controller
         })->values(); // filter out top contents from trends
 
         $topContents = TopContent::orderByDesc('order')
+            ->with(['content.media', 'content.section', 'content.category', 'content.writers'])
             ->take(7)
             ->get();  // get top contents
 
@@ -123,6 +124,7 @@ class HomePageController extends Controller
 
         foreach ($sectionNames as $var => [$name, $count]) {
             $$var = Content::where('section_id', $sections[$name] ?? null)
+                ->with(['media', 'section', 'category', 'writers'])
                 ->whereNotIn('id', $topContentIds)
                 ->whereNotIn('id', $hidetrends)
                 ->where('importance', 1)
@@ -133,6 +135,7 @@ class HomePageController extends Controller
         }
 
         $algeriaLatestImportant = Content::where('section_id', $sections['الجزائر'] ?? null)
+            ->with(['media', 'section', 'category', 'writers'])
             ->where('importance', 2)
             ->where('status', 'published')
             ->orderByDesc('published_date')
@@ -140,6 +143,7 @@ class HomePageController extends Controller
             ->get();
 
         $topViewed = Content::where('status', 'published')
+            ->with(['media', 'section', 'category', 'writers'])
             ->withSum('contentDailyViews', 'views')
             ->orderByDesc('content_daily_views_sum_views')
             ->take(5)
@@ -170,6 +174,7 @@ class HomePageController extends Controller
         foreach ($sectionstitles as $name) {
             $sectionId = Section::where('name', $name)->value('id');
             $sectionscontents[$name] = Content::where('section_id', $sectionId)
+                ->with(['media', 'section', 'category', 'writers'])
                 ->where('status', 'published')
                 ->orderByDesc('published_date')
                 ->whereNotIn('id', $topContentIds)
@@ -796,7 +801,10 @@ class HomePageController extends Controller
 
     public function showNews($title)
     {
-        $news = Content::where('shortlink', $title)->orderByDesc('published_date')->firstOrFail();
+        $news = Content::where('shortlink', $title)
+            ->with(['media', 'section', 'category', 'writers', 'tags', 'country', 'continent'])
+            ->orderByDesc('published_date')
+            ->firstOrFail();
 
         if ($news->status !== 'published' && !auth()->check()) {
             return redirect('/');
