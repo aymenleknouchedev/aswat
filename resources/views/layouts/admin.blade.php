@@ -49,6 +49,40 @@
 
     {{-- ===== GLOBAL MOBILE FIXES FOR ALL MEDIA / GALLERY MODALS ===== --}}
     <style>
+        /* Lock horizontal overflow site-wide on phones — fixes content being pushed off-screen */
+        @media (max-width: 768px) {
+            html, body { overflow-x: hidden !important; max-width: 100vw !important; }
+            .nk-app-root, .nk-main, .nk-wrap, .nk-content, .nk-content-inner,
+            .nk-content-body, .nk-block, .container, .container-fluid {
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+                box-sizing: border-box !important;
+            }
+            /* Bootstrap row negative margins blow out small viewports */
+            .row { margin-left: 0 !important; margin-right: 0 !important; }
+            .row > [class^="col-"], .row > [class*=" col-"] {
+                padding-left: 6px !important;
+                padding-right: 6px !important;
+                max-width: 100% !important;
+            }
+            /* Tab bars: scrollable instead of overflowing */
+            .nav-tabs, .nav.nav-tabs {
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .nav-tabs::-webkit-scrollbar { display: none; }
+            .nav-tabs .nav-item, .nav-tabs .nav-link { flex-shrink: 0 !important; white-space: nowrap !important; }
+
+            /* Generic input sanity caps for the whole dashboard */
+            .form-control, input.form-control, textarea.form-control, select.form-control {
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+        }
+
         @media (max-width: 768px) {
             [id$="MediaModal"] .mmm-modal-dialog,
             [id$="MediaModal"] .mmx-modal-dialog,
