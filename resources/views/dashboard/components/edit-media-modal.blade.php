@@ -1168,6 +1168,31 @@
 })();
 </script>
 <style>
+/* ===== MOBILE FIXES (xmm) ===== */
+@media (max-width: 768px) {
+    #xmmMediaModal .xmm-modal-dialog,
+    #xmmMediaModal > div,
+    #xmmMediaModal .modal-dialog {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        max-height: 100vh !important;
+        height: 100vh !important;
+    }
+    #xmmMediaModal .xmm-modal-body,
+    #xmmMediaModal .modal-body { padding: 10px !important; overflow-y: auto; }
+    #xmmMediaModal .xmm-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important; gap: 6px !important; }
+    #xmmMediaModal .xmm-thumb { height: 100px !important; }
+    #xmmMediaModal .xmm-toolbar,
+    #xmmMediaModal .xmm-tabs { flex-wrap: wrap !important; gap: 6px !important; }
+    #xmmMediaModal input, #xmmMediaModal select, #xmmMediaModal textarea { font-size: 14px !important; }
+    #xmmMediaModal .xmm-preview-area { max-width: 100% !important; }
+}
+@media (max-width: 420px) {
+    #xmmMediaModal .xmm-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)) !important; }
+    #xmmMediaModal .xmm-thumb { height: 80px !important; }
+}
 </style>
 
 <script>

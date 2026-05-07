@@ -1265,6 +1265,7 @@
     @media (max-width: 768px) {
         .fields-grid {
             grid-template-columns: 1fr;
+            gap: 12px;
         }
 
         .media-type-selector .d-flex {
@@ -1278,10 +1279,34 @@
         .media-type-card,
         .field-card {
             margin: 0 0 5px 0;
+            min-width: 0;
         }
 
         .field-empty {
-            min-height: 200px;
+            min-height: 160px;
+        }
+
+        /* Album asset grid: smaller tiles on mobile */
+        .assets-wrapper { --asset-size: 110px !important; }
+        .assets-wrapper.is-grid .assets-grid { gap: 6px !important; }
+
+        /* Summary panel + caption inputs: prevent horizontal overflow */
+        .media-summary-panel,
+        .summary-item,
+        .caption-input { max-width: 100%; min-width: 0; box-sizing: border-box; }
+        .summary-item { flex-wrap: wrap; }
+
+        /* Media picker modal: full-width on phones */
+        .modal-dialog.modal-xl,
+        .modal-dialog.modal-lg { max-width: 100%; margin: 0; }
+        .modal-content { border-radius: 0; }
+        .mmx-modal .modal-body,
+        .mmxc-modal .modal-body { padding: 10px !important; }
+
+        /* Picker grids inside the modal */
+        .mmx-grid, .mmxc-grid, .gallery-picker-grid {
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
+            gap: 6px !important;
         }
     }
 

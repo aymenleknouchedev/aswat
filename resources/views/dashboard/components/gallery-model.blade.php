@@ -996,6 +996,32 @@
     #mmmMediaModal .mmm-thumb { height: 110px !important; }
 }
 /* === END MMX-UI-ENHANCE-V2 === */
+
+/* ===== MOBILE FIXES ===== */
+@media (max-width: 768px) {
+    #mmmMediaModal .mmm-modal-dialog,
+    #mmmMediaModal > div,
+    #mmmMediaModal .modal-dialog {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        max-height: 100vh !important;
+        height: 100vh !important;
+    }
+    #mmmMediaModal .mmm-modal-body,
+    #mmmMediaModal .modal-body { padding: 10px !important; overflow-y: auto; }
+    #mmmMediaModal .mmm-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important; gap: 6px !important; }
+    #mmmMediaModal .mmm-thumb { height: 100px !important; }
+    #mmmMediaModal .mmm-toolbar,
+    #mmmMediaModal .mmm-tabs { flex-wrap: wrap !important; gap: 6px !important; }
+    #mmmMediaModal input, #mmmMediaModal select, #mmmMediaModal textarea { font-size: 14px !important; }
+    #mmmMediaModal .mmm-preview-area { max-width: 100% !important; }
+}
+@media (max-width: 420px) {
+    #mmmMediaModal .mmm-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)) !important; }
+    #mmmMediaModal .mmm-thumb { height: 80px !important; }
+}
 </style>
 <script>
 (function() {

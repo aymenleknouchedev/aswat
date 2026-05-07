@@ -1244,6 +1244,32 @@
     #mmxMediaModal .mmx-thumb { height: 110px !important; }
 }
 /* === END MMX-UI-ENHANCE-V2 === */
+
+/* ===== MOBILE FIXES ===== */
+@media (max-width: 768px) {
+    #mmxMediaModal .mmx-modal-dialog,
+    #mmxMediaModal > div,
+    #mmxMediaModal .modal-dialog {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        max-height: 100vh !important;
+        height: 100vh !important;
+    }
+    #mmxMediaModal .mmx-modal-body,
+    #mmxMediaModal .modal-body { padding: 10px !important; overflow-y: auto; }
+    #mmxMediaModal .mmx-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important; gap: 6px !important; }
+    #mmxMediaModal .mmx-thumb { height: 100px !important; }
+    #mmxMediaModal .mmx-toolbar,
+    #mmxMediaModal .mmx-tabs { flex-wrap: wrap !important; gap: 6px !important; }
+    #mmxMediaModal input, #mmxMediaModal select, #mmxMediaModal textarea { font-size: 14px !important; }
+    #mmxMediaModal .mmx-preview-area { max-width: 100% !important; }
+}
+@media (max-width: 420px) {
+    #mmxMediaModal .mmx-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)) !important; }
+    #mmxMediaModal .mmx-thumb { height: 80px !important; }
+}
 </style>
 <script>
 (function() {

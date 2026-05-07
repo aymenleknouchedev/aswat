@@ -47,7 +47,71 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
+    {{-- ===== GLOBAL MOBILE FIXES FOR ALL MEDIA / GALLERY MODALS ===== --}}
+    <style>
+        @media (max-width: 768px) {
+            [id$="MediaModal"] .mmm-modal-dialog,
+            [id$="MediaModal"] .mmx-modal-dialog,
+            [id$="MediaModal"] .mmxx-modal-dialog,
+            [id$="MediaModal"] .mmxc-modal-dialog,
+            [id$="MediaModal"] .xmm-modal-dialog,
+            [id$="MediaModal"] > div,
+            [id$="MediaModal"] .modal-dialog,
+            #itemModal .modal-dialog {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+                border-radius: 0 !important;
+                max-height: 100vh !important;
+                height: 100vh !important;
+            }
+            [id$="MediaModal"] .modal-body,
+            #itemModal .modal-body { padding: 10px !important; overflow-y: auto; }
 
+            [id$="MediaModal"] .mmm-grid,
+            [id$="MediaModal"] .mmx-grid,
+            [id$="MediaModal"] .mmxx-grid,
+            [id$="MediaModal"] .mmxc-grid,
+            [id$="MediaModal"] .xmm-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
+                gap: 6px !important;
+            }
+            [id$="MediaModal"] .mmm-thumb,
+            [id$="MediaModal"] .mmx-thumb,
+            [id$="MediaModal"] .mmxx-thumb,
+            [id$="MediaModal"] .mmxc-thumb,
+            [id$="MediaModal"] .xmm-thumb { height: 100px !important; }
+
+            [id$="MediaModal"] .mmm-toolbar,
+            [id$="MediaModal"] .mmx-toolbar,
+            [id$="MediaModal"] .mmxx-toolbar,
+            [id$="MediaModal"] .mmxc-toolbar,
+            [id$="MediaModal"] .xmm-toolbar,
+            [id$="MediaModal"] .mmm-tabs,
+            [id$="MediaModal"] .mmx-tabs,
+            [id$="MediaModal"] .mmxx-tabs,
+            [id$="MediaModal"] .mmxc-tabs,
+            [id$="MediaModal"] .xmm-tabs { flex-wrap: wrap !important; gap: 6px !important; }
+
+            [id$="MediaModal"] input,
+            [id$="MediaModal"] select,
+            [id$="MediaModal"] textarea { font-size: 14px !important; }
+        }
+        @media (max-width: 420px) {
+            [id$="MediaModal"] .mmm-grid,
+            [id$="MediaModal"] .mmx-grid,
+            [id$="MediaModal"] .mmxx-grid,
+            [id$="MediaModal"] .mmxc-grid,
+            [id$="MediaModal"] .xmm-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)) !important;
+            }
+            [id$="MediaModal"] .mmm-thumb,
+            [id$="MediaModal"] .mmx-thumb,
+            [id$="MediaModal"] .mmxx-thumb,
+            [id$="MediaModal"] .mmxc-thumb,
+            [id$="MediaModal"] .xmm-thumb { height: 80px !important; }
+        }
+    </style>
 
 </head>
 

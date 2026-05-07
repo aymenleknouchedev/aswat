@@ -119,6 +119,63 @@
                 flex-direction: column;
                 gap: 10px;
             }
+
+            /* Tabs: allow horizontal scroll instead of wrapping/cutting */
+            #contentTabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            #contentTabs::-webkit-scrollbar { display: none; }
+            #contentTabs .nav-item { flex-shrink: 0; }
+            #contentTabs .nav-link {
+                white-space: nowrap;
+                padding: 8px 10px;
+                margin-right: 4px;
+                font-size: 14px;
+            }
+
+            /* Right sidebar gets full width and proper spacing */
+            .col-md-3 { padding-left: 0; padding-right: 0; margin-top: 16px; }
+            .col-md-9 { padding-left: 0; padding-right: 0; }
+
+            /* Inputs: 18pt is too large on phones */
+            input.form-control,
+            textarea.form-control,
+            select.form-control,
+            .search-input,
+            .writer-role-input,
+            input[type="text"],
+            input[type="email"],
+            input[type="url"],
+            input[type="datetime-local"] {
+                font-size: 14pt !important;
+            }
+
+            /* Submit buttons stack neatly */
+            .mt-4.d-flex { flex-wrap: wrap; gap: 8px; }
+            .mt-4.d-flex > .btn { flex: 1 1 calc(50% - 8px); margin: 0 !important; }
+
+            /* Make modal dialogs use the full screen */
+            .modal-dialog { margin: 0; max-width: 100%; }
+            .modal-content { border-radius: 0; min-height: 100vh; }
+        }
+
+        @media (max-width: 480px) {
+            /* Tighter spacing on very small screens */
+            .nk-content-inner, .nk-content-body { padding-left: 8px !important; padding-right: 8px !important; }
+            input.form-control,
+            textarea.form-control,
+            select.form-control,
+            input[type="text"],
+            input[type="email"],
+            input[type="url"],
+            input[type="datetime-local"] {
+                font-size: 13pt !important;
+            }
+            .mt-4.d-flex > .btn { flex: 1 1 100%; }
         }
 
         /* ===== TAB STYLES ===== */
