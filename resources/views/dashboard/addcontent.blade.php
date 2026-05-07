@@ -1244,12 +1244,11 @@
                                 id="publishButton" onclick="setStatus(this, 'published')">نشر</button>
                             @endcanDo
                         
-                            <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="حفظ"
-                                data-en="Save as Draft" onclick="setStatus(this, 'draft')">حفظ</button>
-                            <button type="submit" class="btn btn-primary btn-lg"
-                                style="margin-left: 10px; color: white;" data-ar="حفظ وعرض" data-en="Save and Show"
-                                onclick="setStatus(this, 'preview')">حفظ
-                                وعرض</button>
+                            <button type="submit" class="btn btn-primary btn-lg me-3"
+                                style="color: white;" data-ar="حفظ" data-en="Save"
+                                onclick="setStatus(this, 'preview')">حفظ</button>
+                            <button type="submit" class="btn btn-primary btn-lg" data-ar="حفظ وخروج"
+                                data-en="Save and Exit" onclick="setStatus(this, 'draft')">حفظ وخروج</button>
                         </div>
                     </div>
 
