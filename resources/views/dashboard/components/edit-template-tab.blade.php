@@ -1009,37 +1009,25 @@
 
 
     @media (max-width: 768px) {
-        .mmxx-container {
-            top: 2%;
-            max-height: 96%;
+        #mmxxMediaModal .mmxx-container,
+        .mmxx-modal.mmxx-modal .mmxx-container {
+            top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+            transform: none !important;
+            width: 100vw !important; max-width: 100vw !important;
+            height: 100vh !important; max-height: 100vh !important;
+            border-radius: 0 !important; position: fixed !important;
         }
-
-        .mmxx-tabs {
-            flex-wrap: wrap;
-        }
-
-        .mmxx-filters {
-            flex-direction: column;
-        }
-
+        .mmxx-tabs { flex-wrap: wrap; }
+        .mmxx-filters { flex-direction: column; padding: .75rem !important; }
         .mmxx-filters input,
         .mmxx-filters select,
         .mmxx-uploader {
-            width: 100%;
+            width: 100% !important; flex: 0 0 auto !important;
+            height: auto !important; min-height: 0 !important;
         }
-
-        .mmxx-uploader {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .mmxx-uploader-actions {
-            width: 100%;
-        }
-
-        .mmxx-uploader-actions .mmxx-btn {
-            width: 100%;
-        }
+        .mmxx-uploader { flex-direction: column; align-items: stretch; }
+        .mmxx-uploader-actions { width: 100%; }
+        .mmxx-uploader-actions .mmxx-btn { width: 100%; }
     }
 </style>
 

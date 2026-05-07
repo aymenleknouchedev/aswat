@@ -522,37 +522,25 @@
 
 
     @media (max-width: 768px) {
-        .mmxc-container {
-            top: 2%;
-            max-height: 96%;
+        #mmxcMediaModal .mmxc-container,
+        .mmxc-modal.mmxc-modal .mmxc-container {
+            top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+            transform: none !important;
+            width: 100vw !important; max-width: 100vw !important;
+            height: 100vh !important; max-height: 100vh !important;
+            border-radius: 0 !important; position: fixed !important;
         }
-
-        .mmxc-tabs {
-            flex-wrap: wrap;
-        }
-
-        .mmxc-filters {
-            flex-direction: column;
-        }
-
+        .mmxc-tabs { flex-wrap: wrap; }
+        .mmxc-filters { flex-direction: column; padding: .75rem !important; }
         .mmxc-filters input,
         .mmxc-filters select,
         .mmxc-uploader {
-            width: 100%;
+            width: 100% !important; flex: 0 0 auto !important;
+            height: auto !important; min-height: 0 !important;
         }
-
-        .mmxc-uploader {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .mmxc-uploader-actions {
-            width: 100%;
-        }
-
-        .mmxc-uploader-actions .mmxc-btn {
-            width: 100%;
-        }
+        .mmxc-uploader { flex-direction: column; align-items: stretch; }
+        .mmxc-uploader-actions { width: 100%; }
+        .mmxc-uploader-actions .mmxc-btn { width: 100%; }
     }
 
 /* === MMX-UI-ENHANCE-V2 === */
