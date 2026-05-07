@@ -68,18 +68,11 @@
             .mmxc-modal .mmxc-backdrop,
             .mmxx-modal .mmxx-backdrop { display: none !important; }
 
-            /* Force every container variant to fill the viewport, beating the
-               doubled-class !important `width: clamp(...)` rules with matching specificity. */
-            .xmm-modal.xmm-modal.xmm-modal .xmm-container,
-            .mmm-modal.mmm-modal.mmm-modal .mmm-container,
-            .mmx-modal.mmx-modal.mmx-modal .mmx-container,
-            .mmxc-modal.mmxc-modal.mmxc-modal .mmxc-container,
-            .mmxx-modal.mmxx-modal.mmxx-modal .mmxx-container,
-            #xmmMediaModal.xmm-modal .xmm-container,
-            #mmmMediaModal.mmm-modal .mmm-container,
-            #mmxMediaModal.mmx-modal .mmx-container,
-            #mmxcMediaModal.mmxc-modal .mmxc-container,
-            #mmxxMediaModal.mmxx-modal .mmxx-container {
+            /* Universal full-screen rule — :not(#_) boosts specificity to (1,2,0),
+               so this beats any per-page `#xxxMediaModal .xxx-container { width: clamp(...) }`
+               rule (specificity 1,1,0) regardless of which modal ID a page uses. */
+            [id$="MediaModal"]:not(#_) [class$="-container"]:not(#_),
+            [class$="-modal"]:not(#_) [class$="-container"]:not(#_) {
                 position: fixed !important;
                 top: 0 !important;
                 left: 0 !important;
@@ -106,6 +99,23 @@
             .mmx-modal .mmx-body,
             .mmxc-modal .mmxc-body,
             .mmxx-modal .mmxx-body { flex: 1 1 auto !important; overflow-y: auto !important; min-height: 0 !important; }
+
+            /* Universal fix for the gigantic search/filter inputs in any media modal.
+               Defeats `.xxx-filters input { flex: 1 1 180px }` which made each input grow vertically. */
+            [id$="MediaModal"]:not(#_) [class$="-filters"]:not(#_) {
+                flex-direction: column !important;
+                padding: .75rem !important;
+            }
+            [id$="MediaModal"]:not(#_) [class$="-filters"]:not(#_) input,
+            [id$="MediaModal"]:not(#_) [class$="-filters"]:not(#_) select,
+            [id$="MediaModal"]:not(#_) [class$="-filters"]:not(#_) textarea {
+                width: 100% !important;
+                flex: 0 0 auto !important;
+                height: auto !important;
+                min-height: 0 !important;
+                font-size: 14px !important;
+            }
+            [id$="MediaModal"]:not(#_) [class$="-tabs"]:not(#_) { flex-wrap: wrap !important; }
 
             /* Bootstrap modals → full screen too */
             .modal.show .modal-dialog { margin: 0 !important; max-width: 100% !important; min-height: 100vh !important; }
