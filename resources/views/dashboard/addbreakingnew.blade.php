@@ -79,6 +79,7 @@
                                 </p>
                             </div>
                         @else
+                            <div class="table-responsive">
                             <table class="table table-orders">
                                 <thead class="tb-odr-head">
                                     <tr class="tb-odr-item">
@@ -120,6 +121,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            </div>
                         @endif
 
                     </div>

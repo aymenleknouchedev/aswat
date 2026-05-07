@@ -155,6 +155,86 @@
                 max-width: 100% !important;
                 box-sizing: border-box !important;
             }
+
+            /* ===== TABLES: horizontal scroll on phones ===== */
+            .table-responsive,
+            .nk-tb-list,
+            .card-inner > .table,
+            .card-body > .table {
+                display: block !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            /* Tables that aren't wrapped in .table-responsive: scroll their parent */
+            .card-inner, .card-body, .nk-block { max-width: 100% !important; }
+            .card-inner > table, .card-body > table {
+                display: block !important;
+                overflow-x: auto !important;
+                white-space: nowrap !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            /* Inside .table-responsive don't force nowrap on the table itself */
+            .table-responsive .table { white-space: nowrap !important; min-width: 600px; }
+            .table th, .table td { font-size: 13px !important; padding: 8px !important; }
+
+            /* ===== PAGINATION: compact + wrap on phones ===== */
+            .pagination {
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+                gap: 4px !important;
+                row-gap: 6px !important;
+                margin: 12px 0 !important;
+                padding: 0 !important;
+            }
+            .pagination .page-item { margin: 0 !important; }
+            .pagination .page-link {
+                padding: 5px 9px !important;
+                font-size: 13px !important;
+                min-width: 32px !important;
+                line-height: 1.2 !important;
+            }
+            /* Hide some ellipsis-padding numbers on tiny screens */
+            nav[role="navigation"] svg { width: 14px !important; height: 14px !important; }
+
+            /* ===== Generic page wrappers tighter on mobile ===== */
+            .nk-block-head .nk-block-head-content,
+            .nk-block-head .nk-block-tools { width: 100% !important; }
+            .nk-block-head { padding: 12px 0 !important; }
+            .nk-block-title, h3.nk-block-title, .page-title { font-size: 18px !important; line-height: 1.3 !important; }
+            .nk-block-des, .page-subtitle { font-size: 13px !important; }
+
+            /* Action button rows wrap */
+            .nk-block-tools, .btn-group {
+                flex-wrap: wrap !important;
+                gap: 6px !important;
+            }
+
+            /* Breadcrumbs scroll horizontally */
+            .breadcrumb {
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                white-space: nowrap !important;
+            }
+            .breadcrumb::-webkit-scrollbar { display: none; }
+
+            /* Cards: full width without negative margins */
+            .card { margin-left: 0 !important; margin-right: 0 !important; width: 100% !important; }
+
+            /* Stats / data tiles: stack instead of overflow */
+            .nk-data-list, .data-list { flex-wrap: wrap !important; }
+
+            /* Buttons: make tap targets reasonable but not giant */
+            .btn { padding: 8px 12px !important; font-size: 14px !important; }
+            .btn-lg { padding: 9px 14px !important; font-size: 15px !important; }
+        }
+
+        @media (max-width: 480px) {
+            .pagination .page-link { padding: 4px 7px !important; font-size: 12px !important; min-width: 28px !important; }
+            .table th, .table td { font-size: 12px !important; padding: 6px !important; }
+            .nk-block-title, h3.nk-block-title, .page-title { font-size: 16px !important; }
         }
 
         @media (max-width: 768px) {
