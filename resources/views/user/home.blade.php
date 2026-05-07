@@ -1428,39 +1428,51 @@
         });
     </script>
 
-    {{-- Blur-up loader for mobile featured slides --}}
+    {{-- Blur-up loader for mobile featured slides — sequential top-to-bottom --}}
     <script>
         (function () {
-            function loadBlurUp(el) {
+            const slides = Array.from(document.querySelectorAll('.mobile-featured-post.bg-blur-up[data-bg]'));
+            if (!slides.length) return;
+
+            // Sort by document position (top-to-bottom)
+            slides.sort((a, b) => {
+                const r = a.compareDocumentPosition(b);
+                if (r & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+                if (r & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+                return 0;
+            });
+
+            const CONCURRENCY = 2;
+            let cursor = 0;
+            let inFlight = 0;
+
+            function loadOne(el) {
                 const url = el.getAttribute('data-bg');
-                if (!url || el._bgInit) return;
-                el._bgInit = true;
+                if (!url) { startNext(); return; }
                 el.style.setProperty('--bg-img', `url("${url}")`);
                 el.classList.add('bg-pending');
                 const img = new Image();
-                img.onload = () => el.classList.add('bg-ready');
-                img.onerror = () => el.classList.add('bg-ready');
+                const done = () => {
+                    el.classList.add('bg-ready');
+                    inFlight--;
+                    startNext();
+                };
+                img.onload = done;
+                img.onerror = done;
                 img.src = url;
             }
 
-            const slides = document.querySelectorAll('.mobile-featured-post.bg-blur-up[data-bg]');
-            if (!slides.length) return;
-
-            if ('IntersectionObserver' in window) {
-                const io = new IntersectionObserver((entries) => {
-                    entries.forEach(e => {
-                        if (e.isIntersecting) { loadBlurUp(e.target); io.unobserve(e.target); }
-                    });
-                }, { rootMargin: '200px' });
-                slides.forEach(s => io.observe(s));
-                // Eagerly load the first slide of each slider so the hero is ready instantly
-                document.querySelectorAll('.h-snap').forEach(track => {
-                    const first = track.querySelector('.mobile-featured-post.bg-blur-up[data-bg]');
-                    if (first) loadBlurUp(first);
-                });
-            } else {
-                slides.forEach(loadBlurUp);
+            function startNext() {
+                while (inFlight < CONCURRENCY && cursor < slides.length) {
+                    const el = slides[cursor++];
+                    if (el._bgInit) continue;
+                    el._bgInit = true;
+                    inFlight++;
+                    loadOne(el);
+                }
             }
+
+            startNext();
         })();
     </script>
 
