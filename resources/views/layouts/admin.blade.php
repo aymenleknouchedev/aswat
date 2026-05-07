@@ -49,6 +49,70 @@
 
     {{-- ===== GLOBAL MOBILE FIXES FOR ALL MEDIA / GALLERY MODALS ===== --}}
     <style>
+        /* Full-screen images/media modals on mobile (covers all custom modal wrappers) */
+        @media (max-width: 768px) {
+            .xmm-modal[aria-hidden="false"],
+            .mmm-modal[aria-hidden="false"],
+            .mmx-modal[aria-hidden="false"],
+            .mmxc-modal[aria-hidden="false"],
+            .mmxx-modal[aria-hidden="false"] {
+                position: fixed !important;
+                inset: 0 !important;
+                z-index: 10050 !important;
+                background: #fff !important;
+            }
+            /* Hide the backdrop since the container already fills the screen */
+            .xmm-modal .xmm-backdrop,
+            .mmm-modal .mmm-backdrop,
+            .mmx-modal .mmx-backdrop,
+            .mmxc-modal .mmxc-backdrop,
+            .mmxx-modal .mmxx-backdrop { display: none !important; }
+
+            /* Force every container variant to fill the viewport, beating !important rules */
+            .xmm-modal .xmm-container,
+            .mmm-modal .mmm-container,
+            .mmx-modal .mmx-container,
+            .mmxc-modal .mmxc-container,
+            .mmxx-modal .mmxx-container,
+            #xmmMediaModal .xmm-container,
+            #mmmMediaModal .mmm-container,
+            #mmxMediaModal .mmx-container,
+            #mmxcMediaModal .mmxc-container,
+            #mmxxMediaModal .mmxx-container {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                margin: 0 !important;
+                transform: none !important;
+                width: 100vw !important;
+                max-width: 100vw !important;
+                height: 100vh !important;
+                max-height: 100vh !important;
+                min-height: 100vh !important;
+                border: 0 !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                display: flex !important;
+                flex-direction: column !important;
+                overflow: hidden !important;
+            }
+
+            /* Make the inner scroll area take remaining height */
+            .xmm-modal .xmm-body,
+            .mmm-modal .mmm-body,
+            .mmx-modal .mmx-body,
+            .mmxc-modal .mmxc-body,
+            .mmxx-modal .mmxx-body { flex: 1 1 auto !important; overflow-y: auto !important; min-height: 0 !important; }
+
+            /* Bootstrap modals → full screen too */
+            .modal.show .modal-dialog { margin: 0 !important; max-width: 100% !important; min-height: 100vh !important; }
+            .modal.show .modal-content { border-radius: 0 !important; min-height: 100vh !important; border: 0 !important; }
+            .modal-backdrop.show { opacity: 1 !important; background: #fff !important; }
+        }
+    </style>
+    <style>
         /* Lock horizontal overflow site-wide on phones — fixes content being pushed off-screen */
         @media (max-width: 768px) {
             html, body { overflow-x: hidden !important; max-width: 100vw !important; }
