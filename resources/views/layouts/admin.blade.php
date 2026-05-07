@@ -118,8 +118,33 @@
             [id$="MediaModal"]:not(#_) [class$="-tabs"]:not(#_) { flex-wrap: wrap !important; }
 
             /* Bootstrap modals → full screen too */
-            .modal.show .modal-dialog { margin: 0 !important; max-width: 100% !important; min-height: 100vh !important; }
-            .modal.show .modal-content { border-radius: 0 !important; min-height: 100vh !important; border: 0 !important; }
+            .modal.show .modal-dialog,
+            #itemModal .modal-dialog,
+            #itemModal.show .modal-dialog {
+                margin: 0 !important;
+                max-width: 100vw !important;
+                width: 100vw !important;
+                min-height: 100vh !important;
+                height: 100vh !important;
+            }
+            .modal.show .modal-content,
+            #itemModal .modal-content {
+                border-radius: 0 !important;
+                min-height: 100vh !important;
+                height: 100vh !important;
+                border: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            #itemModal .modal-body { flex: 1 1 auto !important; overflow-y: auto !important; padding: 12px !important; }
+            #itemModal .modal-header,
+            #itemModal .modal-footer { flex-shrink: 0 !important; padding: 10px 12px !important; }
+            #itemModal .modal-footer-sticky { position: static !important; }
+            #itemModal .row > [class^="col-"],
+            #itemModal .row > [class*=" col-"] { width: 100% !important; flex: 0 0 100% !important; max-width: 100% !important; }
+            #itemModal .form-control,
+            #itemModal .form-select { font-size: 14px !important; }
+            #itemModal .modal-footer .btn { flex: 1 1 auto !important; }
             .modal-backdrop.show { opacity: 1 !important; background: #fff !important; }
         }
     </style>
