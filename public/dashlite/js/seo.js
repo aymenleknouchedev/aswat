@@ -39,35 +39,40 @@ document.addEventListener('DOMContentLoaded', function () {
     /**
      * Calculate keyword density in text
      */
-    function keywordDensity(text, keyword) {
-        if (!keyword || !text) return 0;
-        const words = text.toLowerCase().split(/\s+/).filter(w => w.length > 0);
-        if (words.length === 0) return 0;
-        
-        const keywordLower = keyword.toLowerCase();
-        const keywordCount = words.filter(w => w === keywordLower).length;
-        return (keywordCount / words.length) * 100;
+    function escapeRegex(str) {
+        return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
-    /**
-     * Count keyword occurrences in text
-     */
     function countKeywordOccurrences(text, keyword) {
         if (!keyword || !text) return 0;
-        const regex = new RegExp(keyword, 'gi');
+        const regex = new RegExp(escapeRegex(keyword), 'gi');
         const matches = text.match(regex);
         return matches ? matches.length : 0;
+    }
+
+    function keywordDensity(text, keyword) {
+        if (!keyword || !text) return 0;
+        const totalWords = wordCount(text);
+        if (totalWords === 0) return 0;
+        const keywordWords = Math.max(1, wordCount(keyword));
+        const occurrences = countKeywordOccurrences(text, keyword);
+        return ((occurrences * keywordWords) / totalWords) * 100;
     }
 
     /**
      * Get TinyMCE editor content
      */
     function getEditorContent() {
+        if (typeof tinymce === 'undefined') {
+            const ta = document.getElementById('myeditorinstance');
+            return ta ? (ta.value || '').replace(/<[^>]*>/g, ' ').trim() : '';
+        }
         const editor = tinymce.get('myeditorinstance');
         if (editor) {
             return editor.getContent({ format: 'text' }).trim();
         }
-        return '';
+        const ta = document.getElementById('myeditorinstance');
+        return ta ? (ta.value || '').replace(/<[^>]*>/g, ' ').trim() : '';
     }
 
     /**
@@ -535,26 +540,32 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // TinyMCE editor
+    // TinyMCE editor (guard if tinymce not loaded yet)
     function attachEditorListeners() {
+        if (typeof tinymce === 'undefined') return;
         const editor = tinymce.get('myeditorinstance');
         if (editor) {
-            editor.on('change input undo redo keyup PastePostProcess', () => {
-                // Delay to ensure content is updated
+            editor.on('change input undo redo keyup PastePostProcess SetContent', () => {
                 setTimeout(updateSEOBar, 100);
             });
         }
     }
 
-    if (tinymce.get('myeditorinstance')) {
-        attachEditorListeners();
-    } else {
-        tinymce.on('AddEditor', function (e) {
-            if (e.editor.id === 'myeditorinstance') {
-                attachEditorListeners();
-            }
-        });
+    function waitForTinyMCE() {
+        if (typeof tinymce === 'undefined') {
+            return setTimeout(waitForTinyMCE, 300);
+        }
+        if (tinymce.get('myeditorinstance')) {
+            attachEditorListeners();
+        } else {
+            tinymce.on('AddEditor', function (e) {
+                if (e.editor.id === 'myeditorinstance') {
+                    attachEditorListeners();
+                }
+            });
+        }
     }
+    waitForTinyMCE();
 
     // Watch for tag changes using MutationObserver
     const tagsContainer = document.getElementById('tags_id-selected-container');
@@ -622,6 +633,46 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }, 500);
 
-    // Initial update on page load
+    // Hook MediaTabManager.updateHiddenFields too — fires on any media mutation
+    const hookMediaUpdates = setInterval(function () {
+        if (window.mediaTabManager && !window.mediaTabManager._seoHiddenHook) {
+            window.mediaTabManager._seoHiddenHook = true;
+            const orig = window.mediaTabManager.updateHiddenFields.bind(window.mediaTabManager);
+            window.mediaTabManager.updateHiddenFields = function () {
+                orig();
+                updateSEOBar();
+            };
+            clearInterval(hookMediaUpdates);
+        }
+    }, 400);
+
+    // Polling fallback: hidden inputs (section/category/country/continent/trend/window)
+    // and tag/writer counts can change without firing input/change events.
+    let _seoLastSig = '';
+    function buildSignature() {
+        const fields = [
+            sectionInput, categoryInput, trendInput, windowInput,
+            document.querySelector('input[name="country_id"]'),
+            document.querySelector('input[name="continent_id"]'),
+            document.querySelector('input[name="city_id"]'),
+        ];
+        return [
+            ...fields.map(i => (i ? i.value : '')),
+            countSelectedItems('tags_id'),
+            countSelectedItems('writers-selected'),
+            hasMainImage() ? '1' : '0',
+            countMediaItems(),
+        ].join('|');
+    }
+    setInterval(function () {
+        const sig = buildSignature();
+        if (sig !== _seoLastSig) {
+            _seoLastSig = sig;
+            updateSEOBar();
+        }
+    }, 800);
+
+    // Initial update on page load (delay to allow hydration)
     setTimeout(updateSEOBar, 500);
+    setTimeout(updateSEOBar, 1500);
 });

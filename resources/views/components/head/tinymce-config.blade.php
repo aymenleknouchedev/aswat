@@ -3582,7 +3582,7 @@
         // Context menu configuration
         contextmenu: 'copy cut vvcPaste | selectall',
         // Auto-save configuration
-        autosave_ask_before_unload: true,
+        autosave_ask_before_unload: false,
         autosave_interval: '30s',
         autosave_prefix: '{path}{query}-{id}-',
         autosave_restore_when_empty: false,

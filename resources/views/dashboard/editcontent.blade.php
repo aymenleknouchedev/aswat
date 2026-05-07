@@ -1734,6 +1734,53 @@
         window.CURRENT_CONTENT_ID = {{ $content->id ?? 'null' }};
     </script>
 
+    {{-- Dirty-check: warn before leaving only if the form was actually modified --}}
+    <script>
+        (function () {
+            const form = document.getElementById('contentForm');
+            if (!form) return;
+
+            function snapshot() {
+                const data = new FormData(form);
+                const parts = [];
+                for (const [k, v] of data.entries()) {
+                    parts.push(k + '=' + (typeof v === 'string' ? v : (v && v.name) || ''));
+                }
+                // Include TinyMCE content (not in FormData until save())
+                if (typeof tinymce !== 'undefined') {
+                    const ed = tinymce.get('myeditorinstance');
+                    if (ed) parts.push('__tinymce=' + ed.getContent());
+                }
+                // Include media manager state
+                if (window.mediaTabManager && window.mediaTabManager.state) {
+                    try {
+                        parts.push('__media=' + JSON.stringify({
+                            t: window.mediaTabManager.state.currentTemplate,
+                            m: window.mediaTabManager.state.selectedMedia
+                        }));
+                    } catch (_) {}
+                }
+                return parts.sort().join('&');
+            }
+
+            let initial = '';
+            let submitting = false;
+
+            // Capture baseline after hydration settles
+            setTimeout(() => { initial = snapshot(); }, 1500);
+
+            form.addEventListener('submit', () => { submitting = true; });
+
+            window.addEventListener('beforeunload', function (e) {
+                if (submitting || !initial) return;
+                if (snapshot() === initial) return;
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            });
+        })();
+    </script>
+
     <script>
         // ========== SINGLE SELECTION FUNCTIONS ==========
         function showinDropdown(input) {
