@@ -204,10 +204,6 @@
                 filter: blur(0);
                 transform: scale(1);
             }
-            .mobile-featured-post.bg-blur-up > * {
-                position: relative;
-                z-index: 1;
-            }
 
             /* Most Reads full-screen section */
             .most-reads-screen {
