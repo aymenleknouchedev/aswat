@@ -106,9 +106,48 @@
         bindEvents() {
             document.querySelectorAll('.media-type-input').forEach(radio => {
                 radio.addEventListener('change', e => {
-                    this.state.currentTemplate = e.target.value;
-                    this.loadTemplateContent(e.target.value);
+                    const prev = this.state.currentTemplate;
+                    const next = e.target.value;
+                    this.carryOverImages(prev, next);
+                    this.state.currentTemplate = next;
+                    this.loadTemplateContent(next);
+                    // Re-render previews for fields just populated
+                    ['main_image','content_image','mobile_image'].forEach(suffix => {
+                        const key = this.templatePrefix(next) + '_' + suffix;
+                        if (this.state.selectedMedia[key]) {
+                            try { this.updateFieldPreview(key); } catch(_) {}
+                        }
+                    });
+                    this.updateSummary();
+                    this.updateHiddenFields();
                 });
+            });
+        }
+
+        templatePrefix(template) {
+            return template === 'normal_image' ? 'normal' : template;
+        }
+
+        carryOverImages(prevTemplate, nextTemplate) {
+            if (!prevTemplate || prevTemplate === nextTemplate) return;
+            const prev = this.templatePrefix(prevTemplate);
+            const next = this.templatePrefix(nextTemplate);
+            const suffixes = ['main_image', 'content_image', 'mobile_image'];
+            suffixes.forEach(suffix => {
+                // no_image template has no content_image
+                if (nextTemplate === 'no_image' && suffix === 'content_image') return;
+                const fromKey = `${prev}_${suffix}`;
+                const toKey = `${next}_${suffix}`;
+                const src = this.state.selectedMedia[fromKey];
+                const dst = this.state.selectedMedia[toKey];
+                if (src && (!dst || !dst.url)) {
+                    this.state.selectedMedia[toKey] = {
+                        id: src.id ?? null,
+                        url: src.url || '',
+                        title: src.title || '',
+                        alt: src.alt || ''
+                    };
+                }
             });
         }
 
