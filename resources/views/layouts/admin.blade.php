@@ -68,17 +68,18 @@
             .mmxc-modal .mmxc-backdrop,
             .mmxx-modal .mmxx-backdrop { display: none !important; }
 
-            /* Force every container variant to fill the viewport, beating !important rules */
-            .xmm-modal .xmm-container,
-            .mmm-modal .mmm-container,
-            .mmx-modal .mmx-container,
-            .mmxc-modal .mmxc-container,
-            .mmxx-modal .mmxx-container,
-            #xmmMediaModal .xmm-container,
-            #mmmMediaModal .mmm-container,
-            #mmxMediaModal .mmx-container,
-            #mmxcMediaModal .mmxc-container,
-            #mmxxMediaModal .mmxx-container {
+            /* Force every container variant to fill the viewport, beating the
+               doubled-class !important `width: clamp(...)` rules with matching specificity. */
+            .xmm-modal.xmm-modal.xmm-modal .xmm-container,
+            .mmm-modal.mmm-modal.mmm-modal .mmm-container,
+            .mmx-modal.mmx-modal.mmx-modal .mmx-container,
+            .mmxc-modal.mmxc-modal.mmxc-modal .mmxc-container,
+            .mmxx-modal.mmxx-modal.mmxx-modal .mmxx-container,
+            #xmmMediaModal.xmm-modal .xmm-container,
+            #mmmMediaModal.mmm-modal .mmm-container,
+            #mmxMediaModal.mmx-modal .mmx-container,
+            #mmxcMediaModal.mmxc-modal .mmxc-container,
+            #mmxxMediaModal.mmxx-modal .mmxx-container {
                 position: fixed !important;
                 top: 0 !important;
                 left: 0 !important;
