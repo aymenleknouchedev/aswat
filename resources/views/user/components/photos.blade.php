@@ -1,6 +1,10 @@
 @php
+    $excludedTopIds = isset($topContents)
+        ? $topContents->pluck('content_id')->toArray()
+        : \App\Models\TopContent::pluck('content_id')->toArray();
     $photosSliderItems = \App\Models\Content::where('section_id', \App\Models\Section::where('name', 'صور')->value('id'))
         ->where('status', 'published')
+        ->whereNotIn('id', $excludedTopIds)
         ->orderByDesc('published_date')
         ->take(10)
         ->get();
