@@ -90,6 +90,100 @@
                 flex-direction: column;
                 gap: 10px;
             }
+
+            /* Tabs: horizontal scroll instead of wrap */
+            #contentTabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            #contentTabs::-webkit-scrollbar { display: none; }
+            #contentTabs .nav-item { flex-shrink: 0; }
+            #contentTabs .nav-link {
+                white-space: nowrap;
+                padding: 8px 10px;
+                margin-right: 4px;
+                font-size: 14px;
+            }
+
+            /* Sidebar/main columns full-width when stacked */
+            .col-md-3 { padding-left: 0; padding-right: 0; margin-top: 16px; }
+            .col-md-9 { padding-left: 0; padding-right: 0; }
+
+            /* Inputs: shrink the giant 18pt to phone-friendly */
+            input.form-control,
+            textarea.form-control,
+            select.form-control,
+            .search-input,
+            .writer-role-input,
+            input[type="text"],
+            input[type="email"],
+            input[type="url"],
+            input[type="datetime-local"] {
+                font-size: 14pt !important;
+            }
+
+            /* Submit-button row stacks neatly */
+            .mt-4.d-flex { flex-wrap: wrap; gap: 8px; }
+            .mt-4.d-flex > .btn { flex: 1 1 calc(50% - 8px); margin: 0 !important; }
+
+            /* Bootstrap modals full-screen */
+            .modal-dialog { margin: 0; max-width: 100%; }
+            .modal-content { border-radius: 0; min-height: 100vh; }
+
+            /* Common dashlite content padding tightening */
+            .nk-content-inner, .nk-content-body {
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+
+            /* Selected-item chips wrap rather than overflow */
+            .selected-item, .tags-selected-container, .writers-selected-container,
+            #section-selected-container, #category-selected-container,
+            #country-selected-container, #continent-selected-container,
+            #trend-selected-container, #window-selected-container,
+            #city-selected-container, #writer_location-selected-container,
+            #tags_id-selected-container {
+                flex-wrap: wrap !important;
+                max-width: 100% !important;
+            }
+
+            /* Search containers: full width */
+            .search-container, .search-wrapper { width: 100% !important; min-width: 0 !important; }
+
+            /* Right sidebar cards: full width */
+            .card { width: 100% !important; }
+
+            /* TinyMCE toolbar wraps on phones */
+            .tox .tox-toolbar__primary,
+            .tox .tox-toolbar { flex-wrap: wrap !important; }
+            .tox-tinymce { max-width: 100% !important; }
+
+            /* Image previews don't blow out */
+            #preview_image_container img,
+            .media-preview-selected img,
+            .field-preview img { max-width: 100% !important; height: auto !important; }
+        }
+
+        @media (max-width: 480px) {
+            .nk-content-inner, .nk-content-body {
+                padding-left: 8px !important;
+                padding-right: 8px !important;
+            }
+            input.form-control,
+            textarea.form-control,
+            select.form-control,
+            input[type="text"],
+            input[type="email"],
+            input[type="url"],
+            input[type="datetime-local"] {
+                font-size: 13pt !important;
+            }
+            .mt-4.d-flex > .btn { flex: 1 1 100%; }
+            #contentTabs .nav-link { padding: 7px 8px; font-size: 13px; }
+            .form-label { font-size: 13px; }
         }
 
         /* ===== TAB STYLES ===== */
