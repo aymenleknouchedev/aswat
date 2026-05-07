@@ -3,6 +3,34 @@
 @section('title', 'أصوات جزائرية | تعديل محتوى')
 
 @section('content')
+    {{-- Block any third-party beforeunload registrations (TinyMCE, autosave, etc.).
+         Only our own dirty check below is allowed to prompt. --}}
+    <script>
+        (function () {
+            window.__editFormDirty = function () { return false; };
+            const origAdd = window.addEventListener;
+            window.addEventListener = function (type, listener, options) {
+                if (type === 'beforeunload' && !(listener && listener.__ourCheck)) return;
+                return origAdd.call(this, type, listener, options);
+            };
+            try {
+                Object.defineProperty(window, 'onbeforeunload', {
+                    configurable: true,
+                    get: () => null,
+                    set: () => {}
+                });
+            } catch (_) {}
+            const ourHandler = function (e) {
+                if (window.__editFormDirty && window.__editFormDirty()) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                    return '';
+                }
+            };
+            ourHandler.__ourCheck = true;
+            origAdd.call(window, 'beforeunload', ourHandler);
+        })();
+    </script>
     <style>
         /* ===== VALIDATION STYLES ===== */
         .hidden-input:invalid~.selected-item {
@@ -1767,8 +1795,8 @@
             let submitting = false;
             let interacted = false;
 
-            // Mark as interacted only on real user input
-            ['input', 'change', 'click'].forEach(ev => {
+            // Mark as interacted only on real user typing/selection (not mere clicks)
+            ['input', 'change'].forEach(ev => {
                 form.addEventListener(ev, (e) => {
                     if (e.isTrusted) interacted = true;
                 }, true);
@@ -1792,14 +1820,11 @@
 
             form.addEventListener('submit', () => { submitting = true; });
 
-            window.addEventListener('beforeunload', function (e) {
-                if (submitting) return;
-                if (!interacted) return;
-                if (snapshot() === initial) return;
-                e.preventDefault();
-                e.returnValue = '';
-                return '';
-            });
+            window.__editFormDirty = function () {
+                if (submitting) return false;
+                if (!interacted) return false;
+                return snapshot() !== initial;
+            };
         })();
     </script>
 
