@@ -178,6 +178,35 @@
                 flex-direction: column;
                 justify-content: flex-end;
                 overflow: hidden;
+                background-color: #1a1a1a;
+            }
+
+            /* Blur-up: image lives in ::before so we can blur it without affecting text */
+            .mobile-featured-post.bg-blur-up::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-image: var(--bg-img, none);
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                opacity: 0;
+                filter: blur(20px);
+                transform: scale(1.06);
+                transition: opacity 0.45s ease, filter 0.5s ease, transform 0.5s ease;
+                z-index: 0;
+            }
+            .mobile-featured-post.bg-blur-up.bg-pending::before {
+                opacity: 1;
+            }
+            .mobile-featured-post.bg-blur-up.bg-ready::before {
+                opacity: 1;
+                filter: blur(0);
+                transform: scale(1);
+            }
+            .mobile-featured-post.bg-blur-up > * {
+                position: relative;
+                z-index: 1;
             }
 
             /* Most Reads full-screen section */
@@ -935,8 +964,8 @@
                         @foreach ($topContents->take($topcontentslist) as $tc)
                             @php $c = $tc->content ?? null; @endphp
                             @if ($c)
-                                <div class="h-snap-slide mobile-featured-post"
-                                    style="background-image: url('{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}');">
+                                <div class="h-snap-slide mobile-featured-post bg-blur-up"
+                                    data-bg="{{ $c->media()->wherePivot('type', 'mobile')->first()?->path ?? ($c->media()->wherePivot('type', 'main')->first()?->path ?? asset($c->image ?? 'user/assets/images/default-post.jpg')) }}">
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content2">
                                         @if (isset($c->category) && $c->category)
@@ -987,8 +1016,8 @@
                         </div>
                         <div class="h-snap" dir="rtl">
                             @foreach ($trends->take(5) as $content)
-                                <div class="h-snap-slide mobile-featured-post"
-                                    style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? ($content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg')) }}');">
+                                <div class="h-snap-slide mobile-featured-post bg-blur-up"
+                                    data-bg="{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? ($content->media()->wherePivot('type', 'main')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg')) }}">
                                     <div class="post-overlay-dark"></div>
                                     <div class="featured-post-content2">
                                         @if (isset($content->category) && $content->category)
@@ -1059,8 +1088,8 @@
                             </div>
                             <div class="h-snap" dir="rtl">
                                 @foreach ($collection->take(5) as $content)
-                                    <div class="h-snap-slide mobile-featured-post"
-                                        style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                    <div class="h-snap-slide mobile-featured-post bg-blur-up"
+                                        data-bg="{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}">
                                         <div class="post-overlay-dark"></div>
                                         <div class="featured-post-content">
                                             @php
@@ -1132,8 +1161,8 @@
                             </div>
                             <div class="h-snap" dir="rtl">
                                 @foreach ($collection->take(5) as $content)
-                                    <div class="h-snap-slide mobile-featured-post"
-                                        style="background-image: url('{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}');">
+                                    <div class="h-snap-slide mobile-featured-post bg-blur-up"
+                                        data-bg="{{ $content->media()->wherePivot('type', 'mobile')->first()?->path ?? asset($content->image ?? 'user/assets/images/default-post.jpg') }}">
                                         <div class="post-overlay-dark"></div>
 
                                         @if ($content->template === 'normal_image' && $sectionSlug === 'photos')
@@ -1403,7 +1432,40 @@
         });
     </script>
 
+    {{-- Blur-up loader for mobile featured slides --}}
+    <script>
+        (function () {
+            function loadBlurUp(el) {
+                const url = el.getAttribute('data-bg');
+                if (!url || el._bgInit) return;
+                el._bgInit = true;
+                el.style.setProperty('--bg-img', `url("${url}")`);
+                el.classList.add('bg-pending');
+                const img = new Image();
+                img.onload = () => el.classList.add('bg-ready');
+                img.onerror = () => el.classList.add('bg-ready');
+                img.src = url;
+            }
 
+            const slides = document.querySelectorAll('.mobile-featured-post.bg-blur-up[data-bg]');
+            if (!slides.length) return;
 
+            if ('IntersectionObserver' in window) {
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        if (e.isIntersecting) { loadBlurUp(e.target); io.unobserve(e.target); }
+                    });
+                }, { rootMargin: '200px' });
+                slides.forEach(s => io.observe(s));
+                // Eagerly load the first slide of each slider so the hero is ready instantly
+                document.querySelectorAll('.h-snap').forEach(track => {
+                    const first = track.querySelector('.mobile-featured-post.bg-blur-up[data-bg]');
+                    if (first) loadBlurUp(first);
+                });
+            } else {
+                slides.forEach(loadBlurUp);
+            }
+        })();
+    </script>
 
 @endsection
