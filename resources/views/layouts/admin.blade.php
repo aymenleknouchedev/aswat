@@ -116,6 +116,15 @@
         /* Lock horizontal overflow site-wide on phones — fixes content being pushed off-screen */
         @media (max-width: 768px) {
             html, body { overflow-x: hidden !important; max-width: 100vw !important; }
+            /* Neutralize ancestor transforms / filters that hijack position:fixed containing blocks */
+            .nk-app-root, .nk-main, .nk-wrap, .nk-content, .nk-content-inner,
+            .nk-content-body, .nk-block, body > div, body > main {
+                transform: none !important;
+                filter: none !important;
+                perspective: none !important;
+                will-change: auto !important;
+                contain: none !important;
+            }
             .nk-app-root, .nk-main, .nk-wrap, .nk-content, .nk-content-inner,
             .nk-content-body, .nk-block, .container, .container-fluid {
                 max-width: 100vw !important;
