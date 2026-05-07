@@ -1,2 +1,11 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /api/
+Disallow: /img/
+
+User-agent: Googlebot-News
+Allow: /
+
+Sitemap: https://asswatdjazairia.com/sitemap.xml

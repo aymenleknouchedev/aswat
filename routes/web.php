@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\JoinTeamController;
 use App\Http\Controllers\ImageResizeController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ ."/mail.php";
@@ -13,6 +14,14 @@ Route::get('/img/w-{width}/{path}', [ImageResizeController::class, 'show'])
     ->where('width', '[0-9]+')
     ->where('path', '.*')
     ->name('img.resize');
+
+// SEO: XML sitemaps
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
+Route::get('/sitemap-static.xml', [SitemapController::class, 'staticPages'])->name('sitemap.static');
+Route::get('/sitemap-articles.xml', [SitemapController::class, 'articles'])->name('sitemap.articles');
+Route::get('/sitemap-news.xml', [SitemapController::class, 'news'])->name('sitemap.news');
+Route::get('/sitemap-sections.xml', [SitemapController::class, 'sections'])->name('sitemap.sections');
+Route::get('/sitemap-tags.xml', [SitemapController::class, 'tags'])->name('sitemap.tags');
 
 
 

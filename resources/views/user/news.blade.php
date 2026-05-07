@@ -50,6 +50,65 @@
 @section('meta_twitter_description', $shareDescription)
 @section('meta_twitter_image', $shareImageUrl)
 
+@push('seo')
+    @php
+        $authorNames = $news->writers->pluck('name')->filter()->values();
+        $sectionName = $news->section?->name;
+        $publishedIso = optional($news->published_date)->toIso8601String();
+        $modifiedIso = optional($news->updated_at)->toIso8601String();
+        $articleUrl = route('news.show', $news->shortlink);
+        $logoUrl = asset('covergoogle.png');
+
+        $articleSchema = array_filter([
+            '@context' => 'https://schema.org',
+            '@type' => 'NewsArticle',
+            'mainEntityOfPage' => [
+                '@type' => 'WebPage',
+                '@id' => $articleUrl,
+            ],
+            'headline' => mb_substr($news->title ?? '', 0, 110),
+            'description' => $shareDescription,
+            'image' => [$shareImageUrl],
+            'datePublished' => $publishedIso,
+            'dateModified' => $modifiedIso ?: $publishedIso,
+            'author' => $authorNames->isEmpty()
+                ? [['@type' => 'Organization', 'name' => 'أصوات جزائرية']]
+                : $authorNames->map(fn($n) => ['@type' => 'Person', 'name' => $n])->all(),
+            'publisher' => [
+                '@type' => 'NewsMediaOrganization',
+                'name' => 'أصوات جزائرية',
+                'logo' => [
+                    '@type' => 'ImageObject',
+                    'url' => $logoUrl,
+                ],
+            ],
+            'articleSection' => $sectionName,
+            'inLanguage' => 'ar',
+            'keywords' => $articleKeywords,
+        ], fn($v) => !empty($v) || $v === 0);
+    @endphp
+
+    @if ($publishedIso)
+        <meta property="article:published_time" content="{{ $publishedIso }}">
+    @endif
+    @if ($modifiedIso)
+        <meta property="article:modified_time" content="{{ $modifiedIso }}">
+    @endif
+    @if ($sectionName)
+        <meta property="article:section" content="{{ $sectionName }}">
+    @endif
+    @foreach ($authorNames as $authorName)
+        <meta property="article:author" content="{{ $authorName }}">
+    @endforeach
+    @foreach ($tagNames as $tag)
+        <meta property="article:tag" content="{{ $tag }}">
+    @endforeach
+
+    <script type="application/ld+json">
+        {!! json_encode($articleSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>
+@endpush
+
 @section('content')
 
     <script>

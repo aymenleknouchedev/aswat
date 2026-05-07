@@ -53,6 +53,12 @@
     <link rel="me" href="https://instagram.com/asswatdjazairia">
     <meta property="article:publisher" content="https://web.facebook.com/asswatdjazairia">
 
+    <!-- ================= SEO: SITEMAP & FEEDS ================= -->
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ url('/sitemap.xml') }}">
+
+    <!-- Per-page injected SEO (JSON-LD, article meta) -->
+    @stack('seo')
+
     <!-- ================= ICONS & EXTRA STYLES ================= -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="{{ asset('user/css/breaking-news.css') }}">
