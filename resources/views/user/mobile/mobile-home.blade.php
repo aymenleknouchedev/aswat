@@ -512,11 +512,19 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                flex-wrap: wrap;
                 gap: 18px;
-                padding: 16px 0 20px;
+                row-gap: 16px;
+                padding: 16px 12px 20px;
                 margin-top: 30px;
+                max-width: 280px;
+                margin-left: auto;
+                margin-right: auto;
             }
             .sidebar-social .s-icon { width: 22px; height: 22px; opacity: 0.85; }
+            @media (max-width: 380px) {
+                .sidebar-social { gap: 14px; max-width: 220px; }
+            }
         }
     </style>
 

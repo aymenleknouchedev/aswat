@@ -30,8 +30,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
+            row-gap: 14px;
             gap: 14px;
             margin: 6px 0 14px;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 380px) {
+            .m-footer .m-icons {
+                max-width: 240px;
+                gap: 12px;
+            }
         }
 
         .m-footer .m-icon {
