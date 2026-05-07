@@ -83,6 +83,28 @@
             opacity: 1;
         }
 
+        /* Blur-up placeholder for responsive-img (LQIP) */
+        img.rimg-blur {
+            filter: blur(18px);
+            transform: scale(1.04);
+            transition: filter 0.4s ease-out, transform 0.4s ease-out;
+            background-color: #eee;
+        }
+        img.rimg-blur.rimg-loaded {
+            filter: blur(0);
+            transform: scale(1);
+        }
+    </style>
+    <script>
+        // Mark already-cached blur-up images as loaded immediately
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('img.rimg-blur').forEach(function (img) {
+                if (img.complete && img.naturalWidth > 0) img.classList.add('rimg-loaded');
+            });
+        });
+    </script>
+    <style>
+
         .fb-embed-block .fb-embed-title,
         .fb-embed-block .fb-embed-url {
             display: none;

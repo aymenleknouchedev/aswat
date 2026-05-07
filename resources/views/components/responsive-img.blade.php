@@ -27,18 +27,22 @@
         $build = fn ($w) => url("/img/w-{$w}/{$relForRoute}");
         $srcset = collect($widths)->map(fn ($w) => $build($w) . ' ' . $w . 'w')->implode(', ');
         $defaultSrc = $build($default);
+        $lqipSrc = $build(20);
     } else {
         $srcset = null;
         $defaultSrc = $rawSrc;
+        $lqipSrc = null;
     }
 @endphp
 
 <img
     src="{{ $defaultSrc }}"
     @if ($srcset) srcset="{{ $srcset }}" sizes="{{ $sizes }}" @endif
+    @if ($lqipSrc) style="background-image:url('{{ $lqipSrc }}');background-size:cover;background-position:center;" @endif
     alt="{{ $alt }}"
     @if ($eager) loading="eager" @else loading="lazy" @endif
     decoding="async"
     @if ($priority) fetchpriority="high" @endif
-    {{ $attributes }}
+    onload="this.classList.add('rimg-loaded')"
+    {{ $attributes->merge(['class' => 'rimg-blur']) }}
 >
