@@ -1765,14 +1765,36 @@
 
             let initial = '';
             let submitting = false;
+            let interacted = false;
 
-            // Capture baseline after hydration settles
-            setTimeout(() => { initial = snapshot(); }, 1500);
+            // Mark as interacted only on real user input
+            ['input', 'change', 'click'].forEach(ev => {
+                form.addEventListener(ev, (e) => {
+                    if (e.isTrusted) interacted = true;
+                }, true);
+            });
+            if (typeof tinymce !== 'undefined') {
+                const hookTiny = setInterval(() => {
+                    const ed = tinymce.get('myeditorinstance');
+                    if (ed) {
+                        ed.on('input keyup change', () => { interacted = true; });
+                        clearInterval(hookTiny);
+                    }
+                }, 300);
+            }
+
+            // Re-baseline while user hasn't touched anything (handles async hydration)
+            const baselineTimer = setInterval(() => {
+                if (!interacted) initial = snapshot();
+                else clearInterval(baselineTimer);
+            }, 600);
+            setTimeout(() => clearInterval(baselineTimer), 8000);
 
             form.addEventListener('submit', () => { submitting = true; });
 
             window.addEventListener('beforeunload', function (e) {
-                if (submitting || !initial) return;
+                if (submitting) return;
+                if (!interacted) return;
                 if (snapshot() === initial) return;
                 e.preventDefault();
                 e.returnValue = '';
