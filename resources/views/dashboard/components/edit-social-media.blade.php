@@ -2170,6 +2170,16 @@
     btnClear && btnClear.addEventListener('click', removeShareImage);
     btnRemove && btnRemove.addEventListener('click', removeShareImage);
 
+    // Hydrate preview if share image already exists on the content
+    if (shareUrl && shareUrl.value) {
+        setShareImage({
+            id: shareId?.value || '',
+            url: shareUrl.value,
+            title: shareTitle?.value || '',
+            alt: shareAlt?.value || ''
+        });
+    }
+
     // Bridge de soumission: recopier share_image_url → share_image (nom back)
     document.addEventListener('DOMContentLoaded', function() {
         const tab = document.getElementById('social-media');
