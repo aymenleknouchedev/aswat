@@ -199,89 +199,20 @@
             font-size: 32px;
         }
 
-        /* ===== Writer chip ===== */
         .review-writer {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'asswat-medium', sans-serif;
-            font-size: 13px;
-            color: #6b6b6b;
-            margin-bottom: 6px;
+            margin: 0 0 8px;
+            font-size: 16px;
+            font-family: asswat-medium;
+            color: #555;
         }
 
-        .review-writer-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
+        .review-writer a {
             color: inherit;
-            padding: 4px 10px 4px 4px;
-            border-radius: 999px;
-            background: #f5f5f5;
-            transition: background .2s ease, color .2s ease, transform .15s ease;
+            text-decoration: none;
         }
 
-        .review-writer-link:hover {
-            background: #ececec;
-            color: #c8102e;
-            transform: translateY(-1px);
-        }
-
-        .review-writer-avatar {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: #c8102e;
-            color: #fff;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            font-size: 12px;
-            flex-shrink: 0;
-        }
-
-        .review-writer-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .review-writer-name {
-            font-family: 'asswat-bold', sans-serif;
-            font-size: 13px;
-            color: #222;
-            line-height: 1;
-        }
-
-        .review-writer-link:hover .review-writer-name {
-            color: #c8102e;
-        }
-
-        .review-writer-dot {
-            color: #c0c0c0;
-            font-size: 10px;
-            line-height: 1;
-        }
-
-        .review-writer-location {
-            color: #8a8a8a;
-            font-size: 12px;
-        }
-
-        .review-writer--featured {
-            margin-bottom: 12px;
-        }
-
-        .review-writer--featured .review-writer-name {
-            font-size: 14px;
-        }
-
-        .review-writer--featured .review-writer-avatar {
-            width: 30px;
-            height: 30px;
-            font-size: 13px;
+        .review-writer a:hover {
+            text-decoration: underline;
         }
 
         .alert-info {
@@ -325,22 +256,11 @@
                             $featuredWriter = $reviews[0]->writers()->first();
                         @endphp
                         @if ($featuredWriter)
-                            <div class="review-writer review-writer--featured">
-                                <a href="{{ route('writer.show', $featuredWriter->id) }}" class="review-writer-link">
-                                    <span class="review-writer-avatar">
-                                        @if($featuredWriter->image)
-                                            <img src="{{ $featuredWriter->image }}" alt="{{ $featuredWriter->name }}" loading="lazy">
-                                        @else
-                                            <i class="fas fa-user"></i>
-                                        @endif
-                                    </span>
-                                    <span class="review-writer-name">{{ $featuredWriter->name }}</span>
+                            <h3 class="review-writer">
+                                <a href="{{ route('writer.show', $featuredWriter->id) }}">
+                                    {{ $featuredWriter->name }}
                                 </a>
-                                @if($featuredWriter->location)
-                                    <span class="review-writer-dot">•</span>
-                                    <span class="review-writer-location">{{ $featuredWriter->location }}</span>
-                                @endif
-                            </div>
+                            </h3>
                         @endif
                         <a href="{{ route('news.show', $reviews[0]->shortlink ?? '') }}"
                             style="text-decoration: none; color: inherit;">

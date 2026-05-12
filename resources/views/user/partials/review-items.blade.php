@@ -17,21 +17,10 @@
                     $writer = $review->writers()->first();
                 @endphp
                 @if($writer)
-                    <div class="review-writer" style="margin-top: 10px;">
-                        <a href="{{ route('writer.show', $writer->id) }}" class="review-writer-link">
-                            <span class="review-writer-avatar">
-                                @if($writer->image)
-                                    <img src="{{ $writer->image }}" alt="{{ $writer->name }}" loading="lazy">
-                                @else
-                                    <i class="fas fa-user"></i>
-                                @endif
-                            </span>
-                            <span class="review-writer-name">{{ $writer->name }}</span>
+                    <div style="margin-top: 10px; font-size: 16px; font-family: asswat-medium; color: #555;">
+                        <a href="{{ route('writer.show', $writer->id) }}" style="color: inherit; text-decoration: none;">
+                            {{ $writer->name }}
                         </a>
-                        @if($writer->location)
-                            <span class="review-writer-dot">•</span>
-                            <span class="review-writer-location">{{ $writer->location }}</span>
-                        @endif
                     </div>
                 @endif
             </div>
