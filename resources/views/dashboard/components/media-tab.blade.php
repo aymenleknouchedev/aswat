@@ -535,24 +535,50 @@
             return `
       <div class="field-card field-card--full" data-field="${fieldName}">
         <div class="field-label assets-label-row">
-          <span data-ar="${labelAr}" data-en="${labelEn}">${label}</span>
+          <span class="assets-title">
+            <i class="fas fa-images"></i>
+            <span data-ar="${labelAr}" data-en="${labelEn}">${label}</span>
+            <span class="assets-count-badge">${items.length}</span>
+          </span>
           <div class="assets-toolbar" data-assets-toolbar="${fieldName}">
-            <div class="assets-toolbar-group">
-              <label class="assets-size-label" data-ar="حجم" data-en="Size">${this.state.currentLanguage === 'ar' ? 'حجم' : 'Size'}</label>
+            <div class="assets-toolbar-group assets-size-control">
+              <i class="fas fa-search-minus assets-size-icon"></i>
               <input type="range" min="120" max="260" step="10" value="${ui.size}"
-                     oninput="mediaTabManager.onAssetsSize('${fieldName}', this.value)">
-              <button type="button" class="btn btn-sm"
-                      onclick="mediaTabManager.toggleAssetsView('${fieldName}')" data-ar="تبديل العرض" data-en="Toggle View">${this.state.currentLanguage === 'ar' ? 'تبديل العرض' : 'Toggle View'}</button>
-              <button type="button" class="btn btn-sm btn-outline-primary"
-                      onclick="mediaTabManager.openAssetsPicker('${fieldName}')" data-ar="إضافة عناصر" data-en="Add Items">${this.state.currentLanguage === 'ar' ? 'إضافة عناصر' : 'Add Items'}</button>
-              <button type="button" class="btn btn-sm"
-                      onclick="mediaTabManager.selectAllAssets('${fieldName}')" data-ar="تحديد الكل" data-en="Select All">${this.state.currentLanguage === 'ar' ? 'تحديد الكل' : 'Select All'}</button>
-              <button type="button" class="btn btn-sm"
-                      onclick="mediaTabManager.clearSelection('${fieldName}')" data-ar="إلغاء التحديد" data-en="Clear Selection">${this.state.currentLanguage === 'ar' ? 'إلغاء التحديد' : 'Clear Selection'}</button>
-              <button type="button" class="btn btn-sm btn-outline-danger"
-                      onclick="mediaTabManager.deleteSelectedAssets('${fieldName}')" data-ar="حذف المحدد" data-en="Delete Selected">${this.state.currentLanguage === 'ar' ? 'حذف المحدد' : 'Delete Selected'}</button>
-              <button type="button" class="btn btn-sm btn-outline-danger"
-                      onclick="mediaTabManager.clearAllAssets('${fieldName}')" data-ar="تفريغ الألبوم" data-en="Clear All">${this.state.currentLanguage === 'ar' ? 'تفريغ الألبوم' : 'Clear All'}</button>
+                     oninput="mediaTabManager.onAssetsSize('${fieldName}', this.value)"
+                     title="${this.state.currentLanguage === 'ar' ? 'حجم' : 'Size'}">
+              <i class="fas fa-search-plus assets-size-icon"></i>
+            </div>
+            <div class="assets-toolbar-group assets-toolbar-buttons">
+              <button type="button" class="btn btn-sm btn-light assets-btn"
+                      onclick="mediaTabManager.toggleAssetsView('${fieldName}')"
+                      title="${this.state.currentLanguage === 'ar' ? 'تبديل العرض' : 'Toggle View'}">
+                <i class="fas ${ui.view === 'list' ? 'fa-th' : 'fa-list'}"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-primary assets-btn"
+                      onclick="mediaTabManager.openAssetsPicker('${fieldName}')">
+                <i class="fas fa-plus"></i>
+                <span data-ar="إضافة" data-en="Add">${this.state.currentLanguage === 'ar' ? 'إضافة' : 'Add'}</span>
+              </button>
+              <button type="button" class="btn btn-sm btn-light assets-btn"
+                      onclick="mediaTabManager.selectAllAssets('${fieldName}')"
+                      title="${this.state.currentLanguage === 'ar' ? 'تحديد الكل' : 'Select All'}">
+                <i class="fas fa-check-double"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-light assets-btn"
+                      onclick="mediaTabManager.clearSelection('${fieldName}')"
+                      title="${this.state.currentLanguage === 'ar' ? 'إلغاء التحديد' : 'Clear Selection'}">
+                <i class="far fa-square"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-danger assets-btn"
+                      onclick="mediaTabManager.deleteSelectedAssets('${fieldName}')"
+                      title="${this.state.currentLanguage === 'ar' ? 'حذف المحدد' : 'Delete Selected'}">
+                <i class="fas fa-trash"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-danger assets-btn"
+                      onclick="mediaTabManager.clearAllAssets('${fieldName}')"
+                      title="${this.state.currentLanguage === 'ar' ? 'تفريغ الألبوم' : 'Clear All'}">
+                <i class="fas fa-broom"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -570,9 +596,12 @@
 
         getAssetsEmptyState(fieldName) {
             const text = this.state.currentLanguage === 'ar' ? 'انقر للإضافة' : 'Click to add';
+            const subText = this.state.currentLanguage === 'ar' ? 'أضف صورًا أو فيديوهات أو ملفات صوتية إلى الألبوم' : 'Add images, videos, or audio files to the album';
             return `
       <div class="assets-empty" onclick="mediaTabManager.openAssetsPicker('${fieldName}')">
-        <span data-ar="انقر للإضافة" data-en="Click to add">${text}</span>
+        <div class="assets-empty-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <div class="assets-empty-title" data-ar="انقر للإضافة" data-en="Click to add">${text}</div>
+        <div class="assets-empty-sub">${subText}</div>
       </div>`;
         }
 
@@ -600,19 +629,35 @@
             const noTitleText = this.state.currentLanguage === 'ar' ? 'بدون عنوان' : 'No title';
             const deleteText = this.state.currentLanguage === 'ar' ? 'حذف' : 'Delete';
 
+            const typeIcon = type === 'audio' ? 'fa-music'
+                : (type === 'youtube' || type === 'vimeo' || type === 'dailymotion' || type === 'video') ? 'fa-play'
+                : 'fa-image';
+
             return `
       <div class="asset-item${selected}" data-index="${index}" draggable="true"
            ondragstart="mediaTabManager.onAssetDragStart(event, '${fieldName}', ${index})">
-        <label class="asset-check">
+        <div class="asset-order">${index + 1}</div>
+        <label class="asset-check" title="${this.state.currentLanguage === 'ar' ? 'تحديد' : 'Select'}">
           <input type="checkbox" ${selected ? 'checked' : ''}
                  onchange="mediaTabManager.onAssetToggle('${fieldName}', ${index}, this.checked)">
-          <span></span>
+          <span><i class="fas fa-check"></i></span>
         </label>
+        <div class="asset-drag-handle" title="${this.state.currentLanguage === 'ar' ? 'اسحب لإعادة الترتيب' : 'Drag to reorder'}">
+          <i class="fas fa-grip-vertical"></i>
+        </div>
         <div class="asset-thumb">
           ${type === 'audio'
-            ? `<div class="asset-audio" title="${media.title || ''}">${media.title || audioText}</div>`
+            ? `<div class="asset-audio" title="${media.title || ''}"><i class="fas fa-music"></i><span>${media.title || audioText}</span></div>`
             : `<img src="${thumb}" alt="${media.title || ''}" loading="lazy"
                      onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`}
+          <div class="asset-type-badge"><i class="fas ${typeIcon}"></i> ${this.getFileTypeLabel(type)}</div>
+          <div class="asset-overlay">
+            <button type="button" class="asset-overlay-btn asset-overlay-delete"
+                    onclick="mediaTabManager.removeAsset('${fieldName}', ${index})"
+                    title="${deleteText}" data-ar="حذف" data-en="Delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
         </div>
         <div class="asset-meta">
           <div class="asset-title" title="${media.title || ''}">${media.title || noTitleText}</div>
@@ -620,7 +665,9 @@
         </div>
         <div class="asset-actions">
           <button type="button" class="btn btn-sm btn-outline-danger"
-                  onclick="mediaTabManager.removeAsset('${fieldName}', ${index})" data-ar="حذف" data-en="Delete">${deleteText}</button>
+                  onclick="mediaTabManager.removeAsset('${fieldName}', ${index})" data-ar="حذف" data-en="Delete">
+            <i class="fas fa-trash"></i> ${deleteText}
+          </button>
         </div>
       </div>`;
         }
@@ -1185,10 +1232,10 @@
       <h6 class="template-title" data-ar="إعدادات الفيديو" data-en="Video Settings">${title}</h6>
       <div class="fields-grid">
         ${this.createCaptionField()}
+        ${this.createField('video_file','ملف الفيديو','Video File','fas fa-video','file')}
         ${this.createField('video_main_image','صورة الفيديو الرئيسية','Video Main Image','fas fa-image')}
         ${this.createField('video_content_image','صورة محتوى الفيديو','Video Content Image','fas fa-image')}
         ${this.createField('video_mobile_image','صورة الفيديو للموبايل','Video Mobile Image','fas fa-mobile-alt')}
-        ${this.createField('video_file','ملف الفيديو','Video File','fas fa-video','file')}
       </div>
     </div>`;
         }
@@ -1200,10 +1247,10 @@
       <h6 class="template-title" data-ar="إعدادات البودكاست" data-en="Podcast Settings">${title}</h6>
       <div class="fields-grid">
         ${this.createCaptionField()}
+        ${this.createField('podcast_file','ملف البودكاست','Podcast File','fas fa-podcast','file')}
         ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','Podcast Main Image','fas fa-image')}
         ${this.createField('podcast_content_image','صورة محتوى البودكاست','Podcast Content Image','fas fa-image')}
         ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','Podcast Mobile Image','fas fa-mobile-alt')}
-        ${this.createField('podcast_file','ملف البودكاست','Podcast File','fas fa-podcast','file')}
       </div>
     </div>`;
         }
@@ -1215,10 +1262,10 @@
       <h6 class="template-title" data-ar="إعدادات الألبوم" data-en="Album Settings">${title}</h6>
       <div class="fields-grid">
         ${this.createCaptionField()}
+        ${this.createAssetsField('album_assets','أصول الألبوم','Album Assets')}
         ${this.createField('album_main_image','صورة الألبوم الرئيسية','Album Main Image','fas fa-image')}
         ${this.createField('album_content_image','صورة محتوى الألبوم','Album Content Image','fas fa-image')}
         ${this.createField('album_mobile_image','صورة الألبوم للموبايل','Album Mobile Image','fas fa-mobile-alt')}
-        ${this.createAssetsField('album_assets','أصول الألبوم','Album Assets')}
       </div>
     </div>`;
         }
@@ -1634,62 +1681,138 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .assets-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--bs-body-color);
+    }
+
+    .assets-title > i {
+        color: var(--bs-primary);
+    }
+
+    .assets-count-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 24px;
+        height: 22px;
+        padding: 0 8px;
+        font-size: .75rem;
+        font-weight: 700;
+        color: var(--bs-primary);
+        background: rgba(var(--bs-primary-rgb), .12);
+        border-radius: 999px;
     }
 
     /* ===== تحسينات عرض الألبوم المتعدد ===== */
     .assets-wrapper {
         --asset-size: 180px;
+        background: linear-gradient(180deg, var(--bs-white) 0%, var(--bs-gray-100, #f8f9fb) 100%);
+        border: 1px solid var(--bs-border-color);
+        border-radius: 12px;
+        padding: 14px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
     }
 
     .assets-wrapper.is-grid .assets-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(var(--asset-size), 1fr));
-        gap: 10px;
+        gap: 14px;
     }
 
     .assets-wrapper.is-list .assets-grid {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
     }
 
     .assets-toolbar {
         display: flex;
-        gap: 8px;
+        gap: 10px;
         flex-wrap: wrap;
         align-items: center;
-    }
-
-    .assets-toolbar .assets-search {
-        padding: 6px 8px;
-        min-width: 220px;
-        border: 1px solid var(--bs-border-color);
-        background: var(--bs-white);
-        border-radius: var(--bs-border-radius);
-        color: var(--bs-body-color);
     }
 
     .assets-toolbar-group {
         display: flex;
         gap: 6px;
         align-items: center;
+        padding: 4px;
+        background: var(--bs-white);
+        border: 1px solid var(--bs-border-color);
+        border-radius: 999px;
     }
 
-    .assets-size-label {
-        font-size: .9rem;
+    .assets-toolbar-buttons .assets-btn {
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        line-height: 1;
+        padding: 6px 10px;
+    }
+
+    .assets-size-control {
+        padding: 4px 12px;
+    }
+
+    .assets-size-control input[type="range"] {
+        accent-color: var(--bs-primary);
+        width: 110px;
+    }
+
+    .assets-size-icon {
         color: var(--bs-gray);
+        font-size: .8rem;
     }
 
     .assets-empty {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 160px;
+        gap: 8px;
+        min-height: 200px;
         border: 2px dashed var(--bs-border-color);
         background: var(--bs-white);
         color: var(--bs-gray);
         cursor: pointer;
-        border-radius: var(--bs-border-radius);
+        border-radius: 12px;
+        transition: border-color .2s ease, background .2s ease, transform .15s ease;
+        grid-column: 1 / -1;
+    }
+
+    .assets-empty:hover {
+        border-color: var(--bs-primary);
+        background: rgba(var(--bs-primary-rgb), .04);
+        color: var(--bs-primary);
+    }
+
+    .assets-empty-icon {
+        font-size: 2.5rem;
+        color: var(--bs-primary);
+        opacity: .7;
+    }
+
+    .assets-empty-title {
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--bs-body-color);
+    }
+
+    .assets-empty-sub {
+        font-size: .85rem;
+        color: var(--bs-gray);
+        text-align: center;
+        max-width: 320px;
     }
 
     .asset-item {
@@ -1698,30 +1821,69 @@
         flex-direction: column;
         border: 1px solid var(--bs-border-color);
         background: var(--bs-white);
-        padding: 8px;
-        gap: 6px;
-        transition: box-shadow .15s ease, border-color .15s ease;
-        border-radius: var(--bs-border-radius);
+        padding: 0;
+        gap: 0;
+        overflow: hidden;
+        transition: box-shadow .2s ease, border-color .2s ease, transform .15s ease;
+        border-radius: 10px;
+        cursor: grab;
+    }
+
+    .asset-item:active {
+        cursor: grabbing;
+    }
+
+    .asset-item:hover {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
+        border-color: var(--bs-primary);
+        transform: translateY(-2px);
+    }
+
+    .asset-item:hover .asset-overlay {
+        opacity: 1;
+    }
+
+    .asset-item:hover .asset-drag-handle {
+        opacity: 1;
     }
 
     .assets-wrapper.is-list .asset-item {
         flex-direction: row;
-        align-items: center;
+        align-items: stretch;
     }
 
     .asset-item.is-selected {
         border-color: var(--bs-primary);
-        box-shadow: 0 0 0 2px rgba(var(--bs-primary-rgb), .15) inset;
+        box-shadow: 0 0 0 2px var(--bs-primary), 0 6px 18px rgba(var(--bs-primary-rgb), .15);
+    }
+
+    .asset-order {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 3;
+        min-width: 26px;
+        height: 26px;
+        padding: 0 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, .65);
+        color: #fff;
+        font-size: .75rem;
+        font-weight: 700;
+        border-radius: 999px;
+        backdrop-filter: blur(4px);
     }
 
     .asset-check {
         position: absolute;
-        top: 6px;
-        left: 6px;
+        top: 8px;
+        left: 8px;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        z-index: 2;
+        z-index: 3;
+        cursor: pointer;
     }
 
     .asset-check input {
@@ -1729,32 +1891,68 @@
     }
 
     .asset-check span {
-        width: 18px;
-        height: 18px;
-        border: 1px solid var(--bs-gray-400);
-        background: var(--bs-white);
-        display: inline-block;
-        border-radius: var(--bs-border-radius-sm);
+        width: 22px;
+        height: 22px;
+        border: 2px solid #fff;
+        background: rgba(0, 0, 0, .35);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: transparent;
+        border-radius: 6px;
+        transition: background .15s ease, color .15s ease, transform .15s ease;
+        backdrop-filter: blur(4px);
+    }
+
+    .asset-check span i {
+        font-size: .75rem;
+    }
+
+    .asset-item:hover .asset-check span {
+        background: rgba(0, 0, 0, .55);
     }
 
     .asset-item.is-selected .asset-check span {
         background: var(--bs-primary);
-        border-color: var(--bs-primary);
+        border-color: #fff;
+        color: #fff;
+        transform: scale(1.05);
+    }
+
+    .asset-drag-handle {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        z-index: 3;
+        width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background: rgba(0, 0, 0, .5);
+        border-radius: 6px;
+        opacity: 0;
+        transition: opacity .2s ease;
+        backdrop-filter: blur(4px);
+        cursor: grab;
+        font-size: .8rem;
     }
 
     .asset-thumb {
+        position: relative;
         width: 100%;
-        aspect-ratio: 16/9;
-        background: var(--bs-gray-200);
+        aspect-ratio: 1/1;
+        background: linear-gradient(135deg, var(--bs-gray-200) 0%, var(--bs-gray-300, #dee2e6) 100%);
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        border-radius: var(--bs-border-radius-sm);
     }
 
     .assets-wrapper.is-list .asset-thumb {
-        width: 220px;
+        width: 180px;
+        flex: 0 0 180px;
         aspect-ratio: 16/9;
     }
 
@@ -1763,22 +1961,113 @@
         height: 100%;
         object-fit: cover;
         display: block;
+        transition: transform .35s ease;
+    }
+
+    .asset-item:hover .asset-thumb img {
+        transform: scale(1.06);
     }
 
     .asset-audio {
+        width: 100%;
+        height: 100%;
         padding: 12px;
-        font-size: .9rem;
-        color: var(--bs-gray-700);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: .85rem;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+        text-align: center;
+    }
+
+    .asset-audio i {
+        font-size: 1.6rem;
+        opacity: .9;
+    }
+
+    .asset-audio span {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .asset-type-badge {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 8px;
+        font-size: .7rem;
+        font-weight: 600;
+        color: #fff;
+        background: rgba(0, 0, 0, .6);
+        border-radius: 999px;
+        backdrop-filter: blur(4px);
+        text-transform: uppercase;
+        letter-spacing: .3px;
+    }
+
+    .asset-type-badge i {
+        font-size: .7rem;
+    }
+
+    .asset-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .35) 100%);
+        opacity: 0;
+        transition: opacity .2s ease;
+        pointer-events: none;
+    }
+
+    .asset-overlay-btn {
+        pointer-events: auto;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, .95);
+        color: var(--bs-body-color);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform .15s ease, background .15s ease, color .15s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+    }
+
+    .asset-overlay-btn:hover {
+        transform: scale(1.1);
+    }
+
+    .asset-overlay-delete:hover {
+        background: var(--bs-danger);
+        color: #fff;
     }
 
     .asset-meta {
         display: flex;
         flex-direction: column;
         gap: 2px;
+        padding: 10px 12px 6px;
+        flex: 1;
+        min-width: 0;
     }
 
     .asset-title {
         font-weight: 600;
+        font-size: .9rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -1786,21 +2075,36 @@
     }
 
     .asset-type {
-        font-size: .85rem;
+        font-size: .75rem;
         color: var(--bs-gray);
+        text-transform: uppercase;
+        letter-spacing: .3px;
     }
 
     .asset-actions {
         display: flex;
         justify-content: flex-end;
+        padding: 0 12px 10px;
+    }
+
+    .assets-wrapper.is-grid .asset-actions {
+        display: none;
+    }
+
+    .assets-wrapper.is-list .asset-overlay,
+    .assets-wrapper.is-list .asset-order,
+    .assets-wrapper.is-list .asset-drag-handle {
+        display: none;
     }
 
     .assets-pagination {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 8px;
-        padding-top: 8px;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+        padding-top: 12px;
         border-top: 1px solid var(--bs-border-color);
     }
 

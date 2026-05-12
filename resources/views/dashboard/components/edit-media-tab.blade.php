@@ -261,24 +261,43 @@
             return `
       <div class="field-card field-card--full" data-field="${fieldName}">
         <div class="field-label assets-label-row">
-          <span>${label}</span>
+          <span class="assets-title">
+            <i class="fas fa-images"></i>
+            <span>${label}</span>
+            <span class="assets-count-badge">${items.length}</span>
+          </span>
           <div class="assets-toolbar" data-assets-toolbar="${fieldName}">
-            <div class="assets-toolbar-group">
-              <label class="assets-size-label">حجم</label>
+            <div class="assets-toolbar-group assets-size-control">
+              <i class="fas fa-search-minus assets-size-icon"></i>
               <input type="range" min="120" max="260" step="10" value="${ui.size}"
-                     oninput="mediaTabManager.onAssetsSize('${fieldName}', this.value)">
-              <button type="button" class="btn btn-sm"
-                      onclick="mediaTabManager.toggleAssetsView('${fieldName}')">تبديل العرض</button>
-              <button type="button" class="btn btn-sm btn-outline-primary"
-                      onclick="mediaTabManager.openAssetsPicker('${fieldName}')">إضافة عناصر</button>
-              <button type="button" class="btn btn-sm"
-                      onclick="mediaTabManager.selectAllAssets('${fieldName}')">تحديد الكل</button>
-              <button type="button" class="btn btn-sm"
-                      onclick="mediaTabManager.clearSelection('${fieldName}')">إلغاء التحديد</button>
-              <button type="button" class="btn btn-sm btn-outline-danger"
-                      onclick="mediaTabManager.deleteSelectedAssets('${fieldName}')">حذف المحدد</button>
-              <button type="button" class="btn btn-sm btn-outline-danger"
-                      onclick="mediaTabManager.clearAllAssets('${fieldName}')">تفريغ الألبوم</button>
+                     oninput="mediaTabManager.onAssetsSize('${fieldName}', this.value)" title="حجم">
+              <i class="fas fa-search-plus assets-size-icon"></i>
+            </div>
+            <div class="assets-toolbar-group assets-toolbar-buttons">
+              <button type="button" class="btn btn-sm btn-light assets-btn"
+                      onclick="mediaTabManager.toggleAssetsView('${fieldName}')" title="تبديل العرض">
+                <i class="fas ${ui.view === 'list' ? 'fa-th' : 'fa-list'}"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-primary assets-btn"
+                      onclick="mediaTabManager.openAssetsPicker('${fieldName}')">
+                <i class="fas fa-plus"></i> <span>إضافة</span>
+              </button>
+              <button type="button" class="btn btn-sm btn-light assets-btn"
+                      onclick="mediaTabManager.selectAllAssets('${fieldName}')" title="تحديد الكل">
+                <i class="fas fa-check-double"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-light assets-btn"
+                      onclick="mediaTabManager.clearSelection('${fieldName}')" title="إلغاء التحديد">
+                <i class="far fa-square"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-danger assets-btn"
+                      onclick="mediaTabManager.deleteSelectedAssets('${fieldName}')" title="حذف المحدد">
+                <i class="fas fa-trash"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-danger assets-btn"
+                      onclick="mediaTabManager.clearAllAssets('${fieldName}')" title="تفريغ الألبوم">
+                <i class="fas fa-broom"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -297,7 +316,9 @@
         getAssetsEmptyState(fieldName) {
             return `
       <div class="assets-empty" onclick="mediaTabManager.openAssetsPicker('${fieldName}')">
-        <span>انقر للإضافة</span>
+        <div class="assets-empty-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <div class="assets-empty-title">انقر للإضافة</div>
+        <div class="assets-empty-sub">أضف صورًا أو فيديوهات أو ملفات صوتية إلى الألبوم</div>
       </div>`;
         }
 
@@ -324,19 +345,34 @@
             const ui = this.state._assetsUi[fieldName];
             const selected = ui.selected.has(this._assetKey(media)) ? ' is-selected' : '';
 
+            const typeIcon = type === 'audio' ? 'fa-music'
+                : (type === 'youtube' || type === 'vimeo' || type === 'dailymotion' || type === 'video') ? 'fa-play'
+                : 'fa-image';
+
             return `
       <div class="asset-item${selected}" data-index="${index}" draggable="true"
            ondragstart="mediaTabManager.onAssetDragStart(event, '${fieldName}', ${index})">
-        <label class="asset-check">
+        <div class="asset-order">${index + 1}</div>
+        <label class="asset-check" title="تحديد">
           <input type="checkbox" ${selected ? 'checked' : ''}
                  onchange="mediaTabManager.onAssetToggle('${fieldName}', ${index}, this.checked)">
-          <span></span>
+          <span><i class="fas fa-check"></i></span>
         </label>
+        <div class="asset-drag-handle" title="اسحب لإعادة الترتيب">
+          <i class="fas fa-grip-vertical"></i>
+        </div>
         <div class="asset-thumb">
           ${type === 'audio'
-            ? `<div class="asset-audio" title="${media.title || ''}">${media.title || 'صوت'}</div>`
+            ? `<div class="asset-audio" title="${media.title || ''}"><i class="fas fa-music"></i><span>${media.title || 'صوت'}</span></div>`
             : `<img src="${thumb}" alt="${media.title || ''}" loading="lazy"
                      onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`}
+          <div class="asset-type-badge"><i class="fas ${typeIcon}"></i> ${this.getFileTypeLabel(type)}</div>
+          <div class="asset-overlay">
+            <button type="button" class="asset-overlay-btn asset-overlay-delete"
+                    onclick="mediaTabManager.removeAsset('${fieldName}', ${index})" title="حذف">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
         </div>
         <div class="asset-meta">
           <div class="asset-title" title="${media.title || ''}">${media.title || 'بدون عنوان'}</div>
@@ -344,7 +380,9 @@
         </div>
         <div class="asset-actions">
           <button type="button" class="btn btn-sm btn-outline-danger"
-                  onclick="mediaTabManager.removeAsset('${fieldName}', ${index})">حذف</button>
+                  onclick="mediaTabManager.removeAsset('${fieldName}', ${index})">
+            <i class="fas fa-trash"></i> حذف
+          </button>
         </div>
       </div>`;
         }
@@ -848,10 +886,10 @@
       <h6 class="template-title">إعدادات الفيديو</h6>
       <div class="fields-grid">
         ${this.createCaptionField()}
+        ${this.createField('video_file','ملف الفيديو','fas fa-video','file')}
         ${this.createField('video_main_image','صورة الفيديو الرئيسية','fas fa-image')}
         ${this.createField('video_content_image','صورة محتوى الفيديو','fas fa-image')}
         ${this.createField('video_mobile_image','صورة الفيديو للموبايل','fas fa-mobile-alt')}
-        ${this.createField('video_file','ملف الفيديو','fas fa-video','file')}
       </div>
     </div>`;
         }
@@ -862,10 +900,10 @@
       <h6 class="template-title">إعدادات البودكاست</h6>
       <div class="fields-grid">
         ${this.createCaptionField()}
+        ${this.createField('podcast_file','ملف البودكاست','fas fa-podcast','file')}
         ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','fas fa-image')}
         ${this.createField('podcast_content_image','صورة محتوى البودكاست','fas fa-image')}
         ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','fas fa-mobile-alt')}
-        ${this.createField('podcast_file','ملف البودكاست','fas fa-podcast','file')}
       </div>
     </div>`;
         }
@@ -876,10 +914,10 @@
       <h6 class="template-title">إعدادات الألبوم</h6>
       <div class="fields-grid">
         ${this.createCaptionField()}
+        ${this.createAssetsField('album_assets','أصول الألبوم')}
         ${this.createField('album_main_image','صورة الألبوم الرئيسية','fas fa-image')}
         ${this.createField('album_content_image','صورة محتوى الألبوم','fas fa-image')}
         ${this.createField('album_mobile_image','صورة الألبوم للموبايل','fas fa-mobile-alt')}
-        ${this.createAssetsField('album_assets','أصول الألبوم')}
       </div>
     </div>`;
         }
@@ -1315,62 +1353,134 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .assets-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--az-title);
+    }
+
+    .assets-title > i { color: var(--az-accent); }
+
+    .assets-count-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 24px;
+        height: 22px;
+        padding: 0 8px;
+        font-size: .75rem;
+        font-weight: 700;
+        color: var(--az-accent);
+        background: rgba(101, 118, 255, .12);
+        border-radius: 999px;
     }
 
     /* ===== تحسينات عرض الألبوم المتعدد ===== */
     .assets-wrapper {
         --asset-size: 180px;
+        background: linear-gradient(180deg, var(--az-card) 0%, var(--az-soft) 100%);
+        border: 1px solid var(--az-border);
+        border-radius: 12px;
+        padding: 14px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
     }
 
     .assets-wrapper.is-grid .assets-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(var(--asset-size), 1fr));
-        gap: 10px;
+        gap: 14px;
     }
 
     .assets-wrapper.is-list .assets-grid {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
     }
 
     .assets-toolbar {
         display: flex;
-        gap: 8px;
+        gap: 10px;
         flex-wrap: wrap;
         align-items: center;
-    }
-
-    .assets-toolbar .assets-search {
-        padding: 6px 8px;
-        min-width: 220px;
-        border: 1px solid var(--az-border);
-        background: var(--az-card);
-        border-radius: var(--az-radius);
-        color: var(--az-title);
     }
 
     .assets-toolbar-group {
         display: flex;
         gap: 6px;
         align-items: center;
+        padding: 4px;
+        background: var(--az-card);
+        border: 1px solid var(--az-border);
+        border-radius: 999px;
     }
 
-    .assets-size-label {
-        font-size: .9rem;
+    .assets-toolbar-buttons .assets-btn {
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        line-height: 1;
+        padding: 6px 10px;
+    }
+
+    .assets-size-control { padding: 4px 12px; }
+
+    .assets-size-control input[type="range"] {
+        accent-color: var(--az-accent);
+        width: 110px;
+    }
+
+    .assets-size-icon {
         color: var(--az-muted);
+        font-size: .8rem;
     }
 
     .assets-empty {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 160px;
+        gap: 8px;
+        min-height: 200px;
         border: 2px dashed var(--az-border);
         background: var(--az-card);
         color: var(--az-muted);
         cursor: pointer;
-        border-radius: var(--az-radius);
+        border-radius: 12px;
+        transition: border-color .2s ease, background .2s ease;
+        grid-column: 1 / -1;
+    }
+
+    .assets-empty:hover {
+        border-color: var(--az-accent);
+        background: rgba(101, 118, 255, .04);
+        color: var(--az-accent);
+    }
+
+    .assets-empty-icon {
+        font-size: 2.5rem;
+        color: var(--az-accent);
+        opacity: .7;
+    }
+
+    .assets-empty-title {
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--az-title);
+    }
+
+    .assets-empty-sub {
+        font-size: .85rem;
+        color: var(--az-muted);
+        text-align: center;
+        max-width: 320px;
     }
 
     .asset-item {
@@ -1379,63 +1489,125 @@
         flex-direction: column;
         border: 1px solid var(--az-border);
         background: var(--az-card);
-        padding: 8px;
-        gap: 6px;
-        transition: box-shadow .15s ease, border-color .15s ease;
-        border-radius: var(--az-radius);
+        padding: 0;
+        gap: 0;
+        overflow: hidden;
+        transition: box-shadow .2s ease, border-color .2s ease, transform .15s ease;
+        border-radius: 10px;
+        cursor: grab;
     }
+
+    .asset-item:active { cursor: grabbing; }
+
+    .asset-item:hover {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
+        border-color: var(--az-accent);
+        transform: translateY(-2px);
+    }
+
+    .asset-item:hover .asset-overlay { opacity: 1; }
+    .asset-item:hover .asset-drag-handle { opacity: 1; }
 
     .assets-wrapper.is-list .asset-item {
         flex-direction: row;
-        align-items: center;
+        align-items: stretch;
     }
 
     .asset-item.is-selected {
         border-color: var(--az-accent);
-        box-shadow: 0 0 0 2px rgba(101, 118, 255, .15) inset;
+        box-shadow: 0 0 0 2px var(--az-accent), 0 6px 18px rgba(101, 118, 255, .2);
+    }
+
+    .asset-order {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 3;
+        min-width: 26px;
+        height: 26px;
+        padding: 0 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, .65);
+        color: #fff;
+        font-size: .75rem;
+        font-weight: 700;
+        border-radius: 999px;
+        backdrop-filter: blur(4px);
     }
 
     .asset-check {
         position: absolute;
-        top: 6px;
-        left: 6px;
+        top: 8px;
+        left: 8px;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        z-index: 2;
+        z-index: 3;
+        cursor: pointer;
     }
 
-    .asset-check input {
-        display: none;
-    }
+    .asset-check input { display: none; }
 
     .asset-check span {
-        width: 18px;
-        height: 18px;
-        border: 1px solid var(--az-border);
-        background: var(--az-card);
-        display: inline-block;
-        border-radius: var(--az-radius);
+        width: 22px;
+        height: 22px;
+        border: 2px solid #fff;
+        background: rgba(0, 0, 0, .35);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: transparent;
+        border-radius: 6px;
+        transition: background .15s ease, color .15s ease, transform .15s ease;
+        backdrop-filter: blur(4px);
     }
+
+    .asset-check span i { font-size: .75rem; }
+
+    .asset-item:hover .asset-check span { background: rgba(0, 0, 0, .55); }
 
     .asset-item.is-selected .asset-check span {
         background: var(--az-accent);
-        border-color: var(--az-accent);
+        border-color: #fff;
+        color: #fff;
+        transform: scale(1.05);
+    }
+
+    .asset-drag-handle {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        z-index: 3;
+        width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background: rgba(0, 0, 0, .5);
+        border-radius: 6px;
+        opacity: 0;
+        transition: opacity .2s ease;
+        backdrop-filter: blur(4px);
+        cursor: grab;
+        font-size: .8rem;
     }
 
     .asset-thumb {
+        position: relative;
         width: 100%;
-        aspect-ratio: 16/9;
-        background: var(--az-soft);
+        aspect-ratio: 1/1;
+        background: linear-gradient(135deg, var(--az-soft) 0%, var(--az-border) 100%);
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        border-radius: var(--az-radius);
     }
 
     .assets-wrapper.is-list .asset-thumb {
-        width: 220px;
+        width: 180px;
+        flex: 0 0 180px;
         aspect-ratio: 16/9;
     }
 
@@ -1444,22 +1616,102 @@
         height: 100%;
         object-fit: cover;
         display: block;
+        transition: transform .35s ease;
     }
 
+    .asset-item:hover .asset-thumb img { transform: scale(1.06); }
+
     .asset-audio {
+        width: 100%;
+        height: 100%;
         padding: 12px;
-        font-size: .9rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: .85rem;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+        text-align: center;
+    }
+
+    .asset-audio i { font-size: 1.6rem; opacity: .9; }
+
+    .asset-audio span {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .asset-type-badge {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 8px;
+        font-size: .7rem;
+        font-weight: 600;
+        color: #fff;
+        background: rgba(0, 0, 0, .6);
+        border-radius: 999px;
+        backdrop-filter: blur(4px);
+        text-transform: uppercase;
+        letter-spacing: .3px;
+    }
+
+    .asset-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .35) 100%);
+        opacity: 0;
+        transition: opacity .2s ease;
+        pointer-events: none;
+    }
+
+    .asset-overlay-btn {
+        pointer-events: auto;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, .95);
         color: var(--az-title);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform .15s ease, background .15s ease, color .15s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+    }
+
+    .asset-overlay-btn:hover { transform: scale(1.1); }
+
+    .asset-overlay-delete:hover {
+        background: var(--bs-danger, #dc3545);
+        color: #fff;
     }
 
     .asset-meta {
         display: flex;
         flex-direction: column;
         gap: 2px;
+        padding: 10px 12px 6px;
+        flex: 1;
+        min-width: 0;
     }
 
     .asset-title {
         font-weight: 600;
+        font-size: .9rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -1467,14 +1719,23 @@
     }
 
     .asset-type {
-        font-size: .85rem;
+        font-size: .75rem;
         color: var(--az-muted);
+        text-transform: uppercase;
+        letter-spacing: .3px;
     }
 
     .asset-actions {
         display: flex;
         justify-content: flex-end;
+        padding: 0 12px 10px;
     }
+
+    .assets-wrapper.is-grid .asset-actions { display: none; }
+
+    .assets-wrapper.is-list .asset-overlay,
+    .assets-wrapper.is-list .asset-order,
+    .assets-wrapper.is-list .asset-drag-handle { display: none; }
 
     .assets-pagination {
         display: flex;
