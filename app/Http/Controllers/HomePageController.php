@@ -213,18 +213,16 @@ class HomePageController extends Controller
                 $query->withSum('contentDailyViews', 'views');
             }
 
+            // Top N ordered by view count (desc). Only keep ones with > 0 views
+            // so we don't pollute the ranking with zero-view rows.
             $results = $query
-                ->having('content_daily_views_sum_views', '>', 0)
                 ->orderByDesc('content_daily_views_sum_views')
                 ->take($limit)
-                ->get();
+                ->get()
+                ->filter(fn ($c) => (int) ($c->content_daily_views_sum_views ?? 0) > 0)
+                ->values();
 
             if ($results->count() >= $limit) {
-                return $results;
-            }
-
-            // Keep the widest non-empty result around as a partial fallback
-            if ($days === null && $results->count() > 0) {
                 return $results;
             }
         }
