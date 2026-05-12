@@ -1428,28 +1428,35 @@
 
                         {{-- ===== SUBMIT BUTTONS ===== --}}
 
-                        <div class="mt-4 d-flex">
-                            <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="تحديث" data-en="Update"
-                                id="updateButton" data-action="update" onclick="markForRefresh()">تحديث</button>
+                        <div class="mt-4 d-flex flex-wrap" style="gap: 10px;">
+                            <button type="submit" class="btn btn-primary btn-lg" data-ar="تحديث" data-en="Update"
+                                id="updateButton" data-action="update"
+                                onclick="markForRefresh(); setRedirect('stay');">تحديث</button>
+
+                            <button type="submit" class="btn btn-primary btn-lg" data-ar="تحديث وخروج"
+                                data-en="Update and Exit" data-action="update-exit"
+                                onclick="markForRefresh(); setRedirect('exit');">تحديث وخروج</button>
+
+                            @canDo('publish_content')
+                                @if ($content->status === 'draft')
+                                    <button type="submit" class="btn btn-success btn-lg" data-ar="نشر"
+                                        data-en="Publish" id="publishButton" data-action="publish"
+                                        onclick="setStatus(this, 'published', 'stay')">نشر</button>
+                                    <button type="submit" class="btn btn-success btn-lg" data-ar="نشر وخروج"
+                                        data-en="Publish and Exit" data-action="publish-exit"
+                                        onclick="setStatus(this, 'published', 'exit')">نشر وخروج</button>
+                                @else
+                                    <button type="submit" class="btn btn-warning btn-lg" data-ar="إلغاء النشر"
+                                        data-en="Unpublish" id="publishButton" data-action="publish"
+                                        onclick="setStatus(this, 'draft', 'stay')">إلغاء النشر</button>
+                                @endif
+                            @endcanDo
 
                             <a href="{{ route('news.show', $content->shortlink) }}" target="_blank"
-                                class="btn btn-secondary btn-lg" id="previewButton" style="margin-left: 10px;" 
+                                class="btn btn-secondary btn-lg" id="previewButton"
                                 onclick="openPreview(event)">
                                 معاينة
                             </a>
-                            @canDo('publish_content')
-                            @if ($content->status === 'draft')
-                                <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر"
-                                    data-en="Publish" id="publishButton" data-action="publish"
-                                    onclick="setStatus(this, 'published')">نشر</button>
-                            @else
-                                <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="حفظ و إلغاء النشر"
-                                    data-en="save and draft" id="publishButton" data-action="publish"
-                                    onclick="setStatus(this, 'draft')">حفظ و إلغاء النشر</button>
-                            @endif
-                            @endcanDo
-
-
                         </div>
                     </div>
 
@@ -1516,7 +1523,7 @@
                         });
 
                         // ========== SET STATUS FUNCTION ==========
-                        function setStatus(button, statusValue) {
+                        function setStatus(button, statusValue, redirectAfter) {
                             // Create or update hidden input for status
                             let statusInput = document.getElementById('status_hidden_input');
                             if (!statusInput) {
@@ -1527,9 +1534,24 @@
                                 document.getElementById('contentForm').appendChild(statusInput);
                             }
                             statusInput.value = statusValue;
-                            
+
+                            setRedirect(redirectAfter || 'stay');
+
                             // Also mark for refresh when publishing
                             shouldRefreshPreview = true;
+                        }
+
+                        // ========== SET REDIRECT TARGET ==========
+                        function setRedirect(target) {
+                            let redirectInput = document.getElementById('redirect_after_input');
+                            if (!redirectInput) {
+                                redirectInput = document.createElement('input');
+                                redirectInput.type = 'hidden';
+                                redirectInput.id = 'redirect_after_input';
+                                redirectInput.name = 'redirect_after';
+                                document.getElementById('contentForm').appendChild(redirectInput);
+                            }
+                            redirectInput.value = target || 'stay';
                         }
                     </script>
 
@@ -2323,11 +2345,11 @@
                     return;
                 }
 
-                // If update button was clicked, use AJAX; otherwise, submit normally
+                // Only "Update" (stay on edit, no status change) uses AJAX for a seamless save.
+                // Any "exit" or "publish" action does a full submit so the server can redirect us.
                 if (isUpdateAction) {
                     await submitFormViaAjax(form);
                 } else {
-                    // Normal form submission for publish buttons
                     form.submit();
                 }
             });

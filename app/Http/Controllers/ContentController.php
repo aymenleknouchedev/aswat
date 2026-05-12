@@ -1311,6 +1311,12 @@ class ContentController extends BaseController
                 ], 200);
             }
 
+            if ($request->input('redirect_after') === 'exit') {
+                return redirect()
+                    ->route('dashboard.contents.index')
+                    ->with('success');
+            }
+
             return redirect()
                 ->route('dashboard.content.edit', $content->id)
                 ->with('success');
