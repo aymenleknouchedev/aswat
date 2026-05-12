@@ -596,7 +596,7 @@
 
         getAssetsEmptyState(fieldName) {
             const text = this.state.currentLanguage === 'ar' ? 'انقر للإضافة' : 'Click to add';
-            const subText = this.state.currentLanguage === 'ar' ? 'أضف صورًا أو فيديوهات أو ملفات صوتية إلى الألبوم' : 'Add images, videos, or audio files to the album';
+            const subText = this.state.currentLanguage === 'ar' ? 'أضف صورًا إلى الألبوم' : 'Add images to the album';
             return `
       <div class="assets-empty" onclick="mediaTabManager.openAssetsPicker('${fieldName}')">
         <div class="assets-empty-icon"><i class="fas fa-cloud-upload-alt"></i></div>

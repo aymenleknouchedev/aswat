@@ -13,20 +13,27 @@
 
                 <span>{{ $review->summary }}</span>
 
-                <div style="display: flex; margin-right: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
-                    @php
-                        $writer = $review->writers()->first();
-                    @endphp
-                    @if($writer)
-                        <a href="{{ route('writer.show', $writer->id) }}">
-                            {{ $writer->name ?? '' }}
+                @php
+                    $writer = $review->writers()->first();
+                @endphp
+                @if($writer)
+                    <div class="review-writer" style="margin-top: 10px;">
+                        <a href="{{ route('writer.show', $writer->id) }}" class="review-writer-link">
+                            <span class="review-writer-avatar">
+                                @if($writer->image)
+                                    <img src="{{ $writer->image }}" alt="{{ $writer->name }}" loading="lazy">
+                                @else
+                                    <i class="fas fa-user"></i>
+                                @endif
+                            </span>
+                            <span class="review-writer-name">{{ $writer->name }}</span>
                         </a>
                         @if($writer->location)
-                            <span style="margin-right: 4px;">-</span>
-                            <span>{{ $writer->location }}</span>
+                            <span class="review-writer-dot">•</span>
+                            <span class="review-writer-location">{{ $writer->location }}</span>
                         @endif
-                    @endif
-                </div>
+                    </div>
+                @endif
             </div>
     </div>
 

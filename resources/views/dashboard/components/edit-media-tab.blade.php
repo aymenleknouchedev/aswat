@@ -318,7 +318,7 @@
       <div class="assets-empty" onclick="mediaTabManager.openAssetsPicker('${fieldName}')">
         <div class="assets-empty-icon"><i class="fas fa-cloud-upload-alt"></i></div>
         <div class="assets-empty-title">انقر للإضافة</div>
-        <div class="assets-empty-sub">أضف صورًا أو فيديوهات أو ملفات صوتية إلى الألبوم</div>
+        <div class="assets-empty-sub">أضف صورًا إلى الألبوم</div>
       </div>`;
         }
 
