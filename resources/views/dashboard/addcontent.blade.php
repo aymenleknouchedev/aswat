@@ -701,24 +701,27 @@
             color: transparent !important;
         }
 
-        /* ===== Fixed bottom action bar ===== */
+        /* ===== Fixed bottom action bar (content side only, RTL) ===== */
         .content-action-bar {
             position: fixed;
             bottom: 0;
             left: 0;
-            right: 0;
+            right: 290px;
             z-index: 1030;
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             padding: 12px 24px;
             background: var(--bs-body-bg, #fff);
-            border-top: 1px solid var(--bs-border-color);
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, .06);
-            justify-content: flex-end;
+            border-top: 1px solid #e5e5e5;
+            justify-content: flex-start;
         }
 
         body { padding-bottom: 96px; }
+
+        @media (max-width: 1200px) {
+            .content-action-bar { right: 0; }
+        }
 
         @media (max-width: 768px) {
             .content-action-bar {
