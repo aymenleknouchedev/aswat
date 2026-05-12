@@ -142,12 +142,9 @@ class HomePageController extends Controller
             ->take(4)
             ->get();
 
-        $topViewed = Content::where('status', 'published')
-            ->with(['media', 'section', 'category', 'writers'])
-            ->withSum('contentDailyViews', 'views')
-            ->orderByDesc('content_daily_views_sum_views')
-            ->take(5)
-            ->get();
+        // "الأكثر قراءةً" — try last 7 days first, then widen the window
+        // (30d, 90d, all-time) until we have at least 5 articles with views.
+        $topViewed = $this->fetchTopViewed(null, 5);
 
 
         $sectionstitles = [
@@ -184,6 +181,63 @@ class HomePageController extends Controller
         }
 
         return view('user.home', compact('sectionscontents', 'topContents', 'algeria', 'world', 'economy', 'sports', 'people', 'arts', 'reviews', 'videos', 'files', 'technology', 'health', 'environment', 'media', 'cheeck', 'podcasts', 'variety', 'photos', 'topViewed', 'algeriaLatestImportant', 'principalTrend', 'trends'));
+    }
+
+    /**
+     * Build the "الأكثر قراءةً" list, ordered by views accumulated within a recent
+     * time window. Starts from the last 7 days and progressively widens (30, 90,
+     * all-time) until $limit contents with non-zero views are found — falling
+     * back to latest published as a final safety net.
+     *
+     * @param  int|null $sectionId optional section scope
+     * @param  int      $limit     desired number of items
+     */
+    protected function fetchTopViewed(?int $sectionId = null, int $limit = 5)
+    {
+        $windows = [7, 30, 90, null]; // days; null = no date filter (all-time)
+
+        foreach ($windows as $days) {
+            $query = Content::where('status', 'published')
+                ->with(['media', 'section', 'category', 'writers']);
+
+            if ($sectionId !== null) {
+                $query->where('section_id', $sectionId);
+            }
+
+            if ($days !== null) {
+                $since = now('Africa/Algiers')->subDays($days)->toDateString();
+                $query->withSum(['contentDailyViews as content_daily_views_sum_views' => function ($q) use ($since) {
+                    $q->where('date', '>=', $since);
+                }], 'views');
+            } else {
+                $query->withSum('contentDailyViews', 'views');
+            }
+
+            $results = $query
+                ->having('content_daily_views_sum_views', '>', 0)
+                ->orderByDesc('content_daily_views_sum_views')
+                ->take($limit)
+                ->get();
+
+            if ($results->count() >= $limit) {
+                return $results;
+            }
+
+            // Keep the widest non-empty result around as a partial fallback
+            if ($days === null && $results->count() > 0) {
+                return $results;
+            }
+        }
+
+        // Final fallback: latest published (no view data at all)
+        $fallback = Content::where('status', 'published')
+            ->with(['media', 'section', 'category', 'writers']);
+
+        if ($sectionId !== null) {
+            $fallback->where('section_id', $sectionId);
+        }
+
+        return $fallback->orderByDesc('published_date')->take($limit)->get();
     }
 
 
@@ -688,13 +742,8 @@ class HomePageController extends Controller
             ->take($perPage)
             ->get();
 
-        // Top viewed + suggestions
-        $topViewed = Content::where('section_id', $sectionId)
-            ->where('status', 'published')
-            ->withSum('contentDailyViews', 'views')
-            ->orderByDesc('content_daily_views_sum_views')
-            ->take(5)
-            ->get();
+        // Top viewed + suggestions — scoped to this section, with widening window
+        $topViewed = $this->fetchTopViewed($sectionId, 5);
 
         $suggestions = Content::where('section_id', $sectionId)
             ->where('status', 'published')
