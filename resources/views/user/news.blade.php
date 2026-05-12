@@ -3892,9 +3892,12 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         function initializeGallery() {
             galleryImages = [];
 
-            // Add all content images only (excluding feature image)
+            // Add all content images only (excluding feature image and "اقرأ أيضاً" cards)
             const contentImages = document.querySelectorAll('.custom-article-content img');
             contentImages.forEach(img => {
+                // Skip images that belong to a "read more" block
+                if (img.closest('.read-more-block')) return;
+
                 const figure = img.closest('figure');
                 const caption = figure ? (figure.querySelector('figcaption')?.textContent?.trim() || '') : '';
 
@@ -3918,9 +3921,11 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         function initializeMobileGallery() {
             let mobileGalleryImages = [];
 
-            // Add all mobile content images (excluding feature image)
+            // Add all mobile content images (excluding feature image and "اقرأ أيضاً" cards)
             const mobileContentImages = document.querySelectorAll('.mobile-article-content img');
             mobileContentImages.forEach(img => {
+                if (img.closest('.read-more-block')) return;
+
                 const figure = img.closest('figure');
                 const caption = figure ? (figure.querySelector('figcaption')?.textContent?.trim() || '') : '';
 
