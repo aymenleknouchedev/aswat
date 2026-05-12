@@ -720,6 +720,38 @@
         .text-muted {
             color: var(--bs-secondary-color) !important;
         }
+
+        /* ===== Fixed bottom action bar ===== */
+        .content-action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px 24px;
+            background: var(--bs-body-bg, #fff);
+            border-top: 1px solid var(--bs-border-color);
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, .06);
+            justify-content: flex-end;
+        }
+
+        /* Push page content above the fixed bar so it never overlaps form fields */
+        body { padding-bottom: 96px; }
+
+        @media (max-width: 768px) {
+            .content-action-bar {
+                padding: 10px 12px;
+                gap: 8px;
+            }
+            .content-action-bar .btn-lg {
+                font-size: 0.95rem;
+                padding: 0.5rem 0.85rem;
+            }
+            body { padding-bottom: 140px; }
+        }
     </style>
 
     <div class="nk-app-root">
@@ -1428,7 +1460,7 @@
 
                         {{-- ===== SUBMIT BUTTONS ===== --}}
 
-                        <div class="mt-4 d-flex flex-wrap" style="gap: 10px;">
+                        <div class="content-action-bar">
                             <button type="submit" class="btn btn-primary btn-lg" data-ar="تحديث" data-en="Update"
                                 id="updateButton" data-action="update"
                                 onclick="markForRefresh(); setRedirect('stay');">تحديث</button>
