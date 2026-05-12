@@ -1469,17 +1469,14 @@
                         function openPreview(event) {
                             event.preventDefault();
                             const previewUrl = '{{ route('news.show', $content->shortlink) }}';
-                            
-                            if (previewWindow && !previewWindow.closed) {
-                                previewWindow.focus();
-                                // Reload the page when clicking preview again
-                                try {
-                                    previewWindow.location.reload();
-                                } catch (e) {
-                                    console.log('Could not refresh preview window:', e);
-                                }
-                            } else {
-                                previewWindow = window.open(previewUrl, 'PreviewWindow');
+
+                            // Always navigate the named "PreviewWindow" to *this* content's URL.
+                            // Using window.open with a target name will reuse the existing tab
+                            // (if any) and force-navigate it instead of just reloading whatever
+                            // page the user moved to in that tab.
+                            previewWindow = window.open(previewUrl, 'PreviewWindow');
+                            if (previewWindow) {
+                                try { previewWindow.focus(); } catch (e) {}
                             }
                         }
 
