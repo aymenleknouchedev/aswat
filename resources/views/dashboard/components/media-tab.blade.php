@@ -624,9 +624,19 @@
             thumb = this.maybeProxy(thumb);
             const ui = this.state._assetsUi[fieldName];
             const selected = ui.selected.has(this._assetKey(media)) ? ' is-selected' : '';
-            const title = media.title || (this.state.currentLanguage === 'ar' ? 'بدون عنوان' : 'No title');
-            const audioText = this.state.currentLanguage === 'ar' ? 'صوت' : 'Audio';
-            const noTitleText = this.state.currentLanguage === 'ar' ? 'بدون عنوان' : 'No title';
+            const filenameFromUrl = (() => {
+                try {
+                    const u = new URL(url, window.location.origin);
+                    const last = decodeURIComponent(u.pathname.split('/').filter(Boolean).pop() || '');
+                    return last || '';
+                } catch (e) {
+                    const last = (url || '').split('?')[0].split('#')[0].split('/').filter(Boolean).pop() || '';
+                    try { return decodeURIComponent(last); } catch (_) { return last; }
+                }
+            })();
+            const displayName = media.title || media.name || filenameFromUrl || (this.state.currentLanguage === 'ar' ? 'بدون عنوان' : 'No title');
+            const audioText = displayName;
+            const noTitleText = displayName;
             const deleteText = this.state.currentLanguage === 'ar' ? 'حذف' : 'Delete';
 
             const typeIcon = type === 'audio' ? 'fa-music'
@@ -647,8 +657,8 @@
         </div>
         <div class="asset-thumb">
           ${type === 'audio'
-            ? `<div class="asset-audio" title="${media.title || ''}"><i class="fas fa-music"></i><span>${media.title || audioText}</span></div>`
-            : `<img src="${thumb}" alt="${media.title || ''}" loading="lazy"
+            ? `<div class="asset-audio" title="${displayName}"><i class="fas fa-music"></i><span>${displayName}</span></div>`
+            : `<img src="${thumb}" alt="${displayName}" loading="lazy"
                      onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`}
           <div class="asset-type-badge"><i class="fas ${typeIcon}"></i> ${this.getFileTypeLabel(type)}</div>
           <div class="asset-overlay">
@@ -660,7 +670,7 @@
           </div>
         </div>
         <div class="asset-meta">
-          <div class="asset-title" title="${media.title || ''}">${media.title || noTitleText}</div>
+          <div class="asset-title" title="${displayName}">${displayName}</div>
           <div class="asset-type">${this.getFileTypeLabel(type)}</div>
         </div>
         <div class="asset-actions">
