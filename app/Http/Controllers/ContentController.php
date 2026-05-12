@@ -540,6 +540,13 @@ class ContentController extends BaseController
             }
         }
 
+        if ($request->input('redirect_after') === 'stay') {
+            return redirect()
+                ->route('dashboard.content.edit', ['id' => $content->id])
+                ->with('success', 'Content created successfully.')
+                ->with('clear_local_storage', true);
+        }
+
         return redirect()
             ->route('dashboard.contents.index')
             ->with('success', 'Content created successfully.')

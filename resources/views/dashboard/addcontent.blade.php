@@ -1333,16 +1333,17 @@
 
                         {{-- ===== SUBMIT BUTTONS ===== --}}
                         <div class="mt-4 d-flex">
-                            @canDo('publish_content')
-                             <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="نشر" data-en="Publish"
-                                id="publishButton" onclick="setStatus(this, 'published')">نشر</button>
-                            @endcanDo
-                        
                             <button type="submit" class="btn btn-primary btn-lg me-3"
                                 style="color: white;" data-ar="حفظ" data-en="Save"
-                                onclick="setStatus(this, 'preview')">حفظ</button>
-                            <button type="submit" class="btn btn-primary btn-lg" data-ar="حفظ وخروج"
-                                data-en="Save and Exit" onclick="setStatus(this, 'draft')">حفظ وخروج</button>
+                                onclick="setStatus(this, 'preview', 'stay')">حفظ</button>
+                            <button type="submit" class="btn btn-primary btn-lg me-3" data-ar="حفظ وخروج"
+                                data-en="Save and Exit" onclick="setStatus(this, 'draft', 'exit')">حفظ وخروج</button>
+                            @canDo('publish_content')
+                            <button type="submit" class="btn btn-success btn-lg me-3" data-ar="نشر" data-en="Publish"
+                                id="publishButton" onclick="setStatus(this, 'published', 'stay')">نشر</button>
+                            <button type="submit" class="btn btn-success btn-lg" data-ar="نشر وخروج"
+                                data-en="Publish and Exit" onclick="setStatus(this, 'published', 'exit')">نشر وخروج</button>
+                            @endcanDo
                         </div>
                     </div>
 
@@ -2698,7 +2699,7 @@
         }
 
         // ========== SET STATUS FUNCTION ==========
-        function setStatus(button, statusValue) {
+        function setStatus(button, statusValue, redirectAfter) {
             // Create or update hidden input for status
             let statusInput = document.getElementById('status_hidden_input');
             if (!statusInput) {
@@ -2709,6 +2710,17 @@
                 document.getElementById('contentForm').appendChild(statusInput);
             }
             statusInput.value = statusValue;
+
+            // Create or update hidden input for redirect target (stay = edit page, exit = contents list)
+            let redirectInput = document.getElementById('redirect_after_input');
+            if (!redirectInput) {
+                redirectInput = document.createElement('input');
+                redirectInput.type = 'hidden';
+                redirectInput.id = 'redirect_after_input';
+                redirectInput.name = 'redirect_after';
+                document.getElementById('contentForm').appendChild(redirectInput);
+            }
+            redirectInput.value = redirectAfter || 'exit';
         }
 
         // ========== ADD WRITER LOCATION (CITY) FUNCTION ==========
