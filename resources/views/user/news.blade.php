@@ -246,9 +246,10 @@
                         renderFbFallbackCard(el);
                         return;
                     }
-                    // A real post iframe is typically 500–800px tall.
-                    // The "no longer available" placeholder is ~250–350px.
-                    if (iframe.offsetHeight > 0 && iframe.offsetHeight < 400) {
+                    // Facebook's "no longer available" placeholder is very short
+                    // (~150–220px). Real posts — even text-only ones — are
+                    // taller. Only treat very small iframes as broken.
+                    if (iframe.offsetHeight > 0 && iframe.offsetHeight < 230) {
                         renderFbFallbackCard(el);
                     }
                 });
