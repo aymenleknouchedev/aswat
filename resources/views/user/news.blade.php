@@ -180,10 +180,11 @@
                 }
             });
 
-            // Render Facebook embeds via direct plugin iframe (more reliable than the
-            // XFBML SDK for "pfbid…" permalinks and other new-format URLs).
-            // We replace any blockquote/fb-post placeholder with a real iframe
-            // pointing to plugins/post.php (or plugins/video.php for videos/reels).
+            // Render Facebook embeds.
+            //  - For "pfbid…" permalinks (which Facebook itself refuses to embed
+            //    via iframe and renders as "no longer available"), show a styled
+            //    click-through card instead of a broken iframe.
+            //  - For other URL formats, use plugins/post.php (or plugins/video.php).
             document.querySelectorAll('.fb-embed-block').forEach(function(el) {
                 if (el.dataset.fbRendered === '1') return;
 
@@ -194,41 +195,70 @@
                 }
                 if (!url) return;
 
-                // Normalize hostname (web/m/mobile → www) just in case
+                // Normalize hostname (web/m/mobile → www) and strip tracking params
                 try {
                     var u = new URL(url);
                     if (/(^|\.)facebook\.com$/i.test(u.hostname)) {
                         u.hostname = 'www.facebook.com';
-                        url = u.toString();
                     }
+                    ['__cft__[0]', '__cft__', '__tn__', 'mibextid', '__xts__[0]', '_rdc', '_rdr'].forEach(function(k) { u.searchParams.delete(k); });
+                    u.hash = '';
+                    url = u.toString();
                 } catch (e) {}
 
                 var isVideo = /\/(videos|reel|watch)/i.test(url);
-                var pluginPath = isVideo ? 'plugins/video.php' : 'plugins/post.php';
-                var width = Math.min(el.clientWidth || 500, 552);
-                var iframeSrc = 'https://www.facebook.com/' + pluginPath +
-                    '?href=' + encodeURIComponent(url) +
-                    '&show_text=true&width=' + width +
-                    '&locale=ar_AR';
+                var isPfbid = /\/pfbid[0-9a-z]+/i.test(url);
 
-                var iframe = document.createElement('iframe');
-                iframe.src = iframeSrc;
-                iframe.width = width;
-                iframe.height = isVideo ? 380 : 620;
-                iframe.style.cssText = 'border:none;overflow:hidden;width:100%;max-width:' + width + 'px;display:block;margin:0 auto;';
-                iframe.setAttribute('scrolling', 'no');
-                iframe.setAttribute('frameborder', '0');
-                iframe.setAttribute('allowfullscreen', 'true');
-                iframe.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share');
-                iframe.setAttribute('loading', 'lazy');
-
-                // Remove old placeholders (blockquote / fb-post wrapper / fb-embed-url text)
+                // Wipe old placeholders
                 el.querySelectorAll('.fb-post, .fb-video, blockquote, .fb-embed-url').forEach(function(n) { n.remove(); });
-                el.appendChild(iframe);
-                el.dataset.fbRendered = '1';
 
-                // Always-visible "Open on Facebook" link below the iframe.
-                if (!el.querySelector('.fb-open-link')) {
+                if (isPfbid && !isVideo) {
+                    // Facebook blocks iframe embedding for pfbid permalinks.
+                    // Render an attractive click-through card instead.
+                    var pageName = '';
+                    try {
+                        var seg = new URL(url).pathname.split('/').filter(Boolean);
+                        if (seg.length) pageName = decodeURIComponent(seg[0]).replace(/[._-]/g, ' ');
+                    } catch (e) {}
+
+                    var card = document.createElement('a');
+                    card.href = url;
+                    card.target = '_blank';
+                    card.rel = 'noopener noreferrer';
+                    card.className = 'fb-card-link';
+                    card.style.cssText = 'display:flex;align-items:center;gap:14px;padding:16px 18px;margin:16px auto;max-width:560px;background:#f0f2f5;border:1px solid #dadde1;border-radius:10px;text-decoration:none;color:#050505;transition:background .15s;';
+                    card.onmouseover = function() { card.style.background = '#e4e6eb'; };
+                    card.onmouseout  = function() { card.style.background = '#f0f2f5'; };
+                    card.innerHTML =
+                        '<div style="flex:0 0 48px;width:48px;height:48px;border-radius:50%;background:#1877f2;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;font-size:26px;font-family:Arial,sans-serif;">f</div>' +
+                        '<div style="flex:1;min-width:0;text-align:right;">' +
+                            '<div style="font-family:asswat-medium;font-size:15px;color:#1877f2;margin-bottom:2px;">منشور على فيسبوك</div>' +
+                            (pageName ? '<div style="font-family:asswat-medium;font-size:14px;color:#050505;margin-bottom:4px;">' + pageName + '</div>' : '') +
+                            '<div style="font-size:12px;color:#65676b;direction:ltr;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + url + '</div>' +
+                        '</div>' +
+                        '<div style="flex:0 0 auto;color:#1877f2;font-size:18px;">↗</div>';
+                    el.appendChild(card);
+                } else {
+                    var pluginPath = isVideo ? 'plugins/video.php' : 'plugins/post.php';
+                    var width = Math.min(el.clientWidth || 500, 552);
+                    var iframeSrc = 'https://www.facebook.com/' + pluginPath +
+                        '?href=' + encodeURIComponent(url) +
+                        '&show_text=true&width=' + width +
+                        '&locale=ar_AR';
+
+                    var iframe = document.createElement('iframe');
+                    iframe.src = iframeSrc;
+                    iframe.width = width;
+                    iframe.height = isVideo ? 380 : 620;
+                    iframe.style.cssText = 'border:none;overflow:hidden;width:100%;max-width:' + width + 'px;display:block;margin:0 auto;';
+                    iframe.setAttribute('scrolling', 'no');
+                    iframe.setAttribute('frameborder', '0');
+                    iframe.setAttribute('allowfullscreen', 'true');
+                    iframe.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share');
+                    iframe.setAttribute('loading', 'lazy');
+                    el.appendChild(iframe);
+
+                    // Always-visible "Open on Facebook" link below the iframe.
                     var link = document.createElement('a');
                     link.className = 'fb-open-link';
                     link.href = url;
@@ -238,6 +268,8 @@
                     link.style.cssText = 'display:block;text-align:center;margin:8px auto 20px;padding:8px 14px;background:#1877f2;color:#fff;font-family:asswat-medium;font-size:14px;border-radius:6px;text-decoration:none;max-width:300px;';
                     el.appendChild(link);
                 }
+
+                el.dataset.fbRendered = '1';
             });
 
             // Still run the SDK processor for Instagram / X embeds.
