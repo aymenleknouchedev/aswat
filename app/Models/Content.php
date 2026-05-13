@@ -195,4 +195,20 @@ class Content extends Model
             ->withPivot('role')
             ->withTimestamps();
     }
+
+    public function getContentAttribute($value)
+    {
+        if (!is_string($value) || $value === '') {
+            return $value;
+        }
+
+        // Normalize Facebook embed hosts: SDK only renders posts from www.facebook.com.
+        // Old content may contain web.facebook.com or m.facebook.com which causes the
+        // iframe to render "This Facebook post is no longer available".
+        return preg_replace(
+            '#https?://(?:web|m|mobile|mbasic|free|business|l|lm|touch)\.facebook\.com#i',
+            'https://www.facebook.com',
+            $value
+        );
+    }
 }

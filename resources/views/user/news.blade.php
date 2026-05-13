@@ -200,6 +200,27 @@
                     if (!el.querySelector('iframe')) el.classList.add('embed-fallback');
                 });
             }, 6000);
+
+            // Always-visible "Open on Facebook" link beneath every FB embed,
+            // so users can reach the post even if Facebook's iframe shows
+            // "no longer available" due to embed restrictions.
+            document.querySelectorAll('.fb-embed-block').forEach(function(el) {
+                if (el.querySelector('.fb-open-link')) return;
+                var url = el.getAttribute('data-fb-url');
+                if (!url) {
+                    var a = el.querySelector('a[href*="facebook.com"]');
+                    if (a) url = a.getAttribute('href');
+                }
+                if (!url) return;
+                var link = document.createElement('a');
+                link.className = 'fb-open-link';
+                link.href = url;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.textContent = 'افتح المنشور على فيسبوك ↗';
+                link.style.cssText = 'display:block;text-align:center;margin:8px auto 20px;padding:8px 14px;background:#1877f2;color:#fff;font-family:asswat-medium;font-size:14px;border-radius:6px;text-decoration:none;max-width:300px;';
+                el.appendChild(link);
+            });
         });
 
         // Expose globally for manual triggering if needed
