@@ -6,7 +6,7 @@
         ->where('status', 'published')
         ->whereNotIn('id', $excludedTopIds)
         ->orderByDesc('published_date')
-        ->take(10)
+        ->take(12)
         ->get();
     $firstPhoto = $photosSliderItems->first() ?? $firstPhoto;
     $photosData = $photosSliderItems->map(function ($p) {
