@@ -4094,7 +4094,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         /* High-specificity overrides — article-content sets img{height:auto!important} which would stack our images */
         .custom-article-content .vvc-cgallery,
         .mobile-article-content  .vvc-cgallery,
-        .vvc-cgallery{position:relative;background:#0b1320;border:2px solid #16263d;border-radius:6px;overflow:hidden;margin:1.5rem 0;color:#fff;font-family:inherit;direction:rtl;contain:layout style;}
+        .vvc-cgallery{position:relative;background:#0b1320;border:2px solid #16263d;border-radius:0;overflow:hidden;margin:1.5rem 0;color:#fff;font-family:inherit;direction:rtl;contain:layout style;}
         .vvc-cgallery *{box-sizing:border-box;}
         /* Article content forces font-family on all descendants with !important — undo it for FA icons inside the slider */
         .custom-article-content .vvc-cgallery i[class*="fa-"],
@@ -4122,7 +4122,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         @keyframes vvc-cg-spin{to{transform:rotate(360deg);}}
 
         .vvc-cgallery .vvc-cgs-progress{position:absolute;top:10px;inset-inline-end:14px;display:flex;gap:4px;z-index:3;max-width:60%;flex-wrap:wrap;justify-content:flex-end;}
-        .vvc-cgallery .vvc-cgs-progress span{display:block;width:20px;height:3px;background:rgba(255,255,255,.28);border-radius:2px;transition:background .2s, width .25s;cursor:pointer;}
+        .vvc-cgallery .vvc-cgs-progress span{display:block;width:20px;height:3px;background:rgba(255,255,255,.28);border-radius:0;transition:background .2s, width .25s;cursor:pointer;}
         .vvc-cgallery .vvc-cgs-progress span.is-active{background:#fff;width:28px;}
 
         .vvc-cgallery .vvc-cgs-arrow{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:60px;background:rgba(15,25,40,.55);border:0;color:#fff;font-size:1.45rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s, transform .15s;z-index:4;backdrop-filter:blur(2px);}
@@ -4131,7 +4131,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         .vvc-cgallery .vvc-cgs-arrow.vvc-cgs-prev{left:10px;}
         .vvc-cgallery .vvc-cgs-arrow.vvc-cgs-next{right:10px;}
 
-        .vvc-cgallery .vvc-cgs-toggle{position:absolute;left:14px;bottom:14px;width:34px;height:34px;border:0;border-radius:50%;background:rgba(15,25,40,.55);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;z-index:4;transition:background .15s, transform .25s;}
+        .vvc-cgallery .vvc-cgs-toggle{position:absolute;left:14px;bottom:14px;width:34px;height:34px;border:0;border-radius:0;background:rgba(15,25,40,.55);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;z-index:4;transition:background .15s, transform .25s;}
         .vvc-cgallery .vvc-cgs-toggle:hover{background:rgba(15,25,40,.85);}
         .vvc-cgallery.is-collapsed .vvc-cgs-toggle{transform:rotate(180deg);}
 
@@ -4142,7 +4142,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         @keyframes vvc-cg-fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
 
         .vvc-cgallery .vvc-cgs-foot{display:flex;align-items:center;justify-content:space-between;padding:.45rem .85rem;border-top:1px solid #16263d;background:#0a1626;}
-        .vvc-cgallery .vvc-cgs-play{width:36px;height:36px;border:0;background:transparent;color:#e6ecf5;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:background .15s, color .15s;}
+        .vvc-cgallery .vvc-cgs-play{width:36px;height:36px;border:0;background:transparent;color:#e6ecf5;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;border-radius:0;transition:background .15s, color .15s;}
         .vvc-cgallery .vvc-cgs-play:hover{background:rgba(255,255,255,.07);color:#fff;}
         .vvc-cgallery .vvc-cgs-counter{font-size:.9rem;color:#cfd6e2;letter-spacing:.5px;font-variant-numeric:tabular-nums;}
 
