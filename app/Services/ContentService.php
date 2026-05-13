@@ -19,71 +19,116 @@ class ContentService
     public function getRelatedNews(Content $content, int $limit = 4): Collection
     {
         $relatedNews = collect();
+        $excludeIds = [$content->id];
 
-        // 🟢 1. Find by seo_keyword
+        // Build keyword list from seo_keyword (الكلمة الرئيسية) and tags (الكلمات المفتاحية)
+        $keywords = collect();
+
         if (!empty($content->seo_keyword)) {
-            $relatedNews = Content::where('id', '!=', $content->id)
-                ->where('status', 'published')
-                ->where('seo_keyword', $content->seo_keyword)
-                ->take($limit)
-                ->get();
+            $keywords = $keywords->merge(
+                collect(preg_split('/[,،\s]+/u', $content->seo_keyword))
+                    ->map(fn($k) => trim($k))
+                    ->filter(fn($k) => mb_strlen($k) > 2)
+            );
         }
 
-        // 🟡 2. Find by tags if not enough results
+        if ($content->tags->isNotEmpty()) {
+            $keywords = $keywords->merge($content->tags->pluck('name'));
+        }
+
+        $keywords = $keywords->map(fn($k) => trim($k))->filter()->unique()->values();
+
+        // 🟢 1. Exact seo_keyword match across ALL sections/categories
+        if (!empty($content->seo_keyword)) {
+            $bySeo = Content::whereNotIn('id', $excludeIds)
+                ->where('status', 'published')
+                ->where('seo_keyword', $content->seo_keyword)
+                ->latest('published_at')
+                ->take($limit)
+                ->get();
+
+            $relatedNews = $relatedNews->merge($bySeo);
+            $excludeIds = array_merge($excludeIds, $bySeo->pluck('id')->all());
+        }
+
+        // 🟡 2. By tags across ALL sections/categories
         if ($relatedNews->count() < $limit && $content->tags->isNotEmpty()) {
             $tagIds = $content->tags->pluck('id');
 
-            $tagBased = Content::where('id', '!=', $content->id)
+            $byTags = Content::whereNotIn('id', $excludeIds)
                 ->where('status', 'published')
                 ->whereHas('tags', function ($query) use ($tagIds) {
                     $query->whereIn('tags.id', $tagIds);
                 })
-                ->inRandomOrder()
+                ->latest('published_at')
                 ->take($limit - $relatedNews->count())
                 ->get();
 
-            $relatedNews = $relatedNews->merge($tagBased);
+            $relatedNews = $relatedNews->merge($byTags);
+            $excludeIds = array_merge($excludeIds, $byTags->pluck('id')->all());
         }
 
-        // 🔵 3. Find by text similarity if no seo_keyword and no tags
-        if ($relatedNews->count() < $limit && empty($content->seo_keyword) && $content->tags->isEmpty()) {
-            $text = strtolower(strip_tags($content->title . ' ' . $content->summary . ' ' . $content->content));
-
-            $keywords = collect(explode(' ', $text))
-                ->filter(fn($word) => strlen($word) > 4)
-                ->unique()
-                ->take(8)
-                ->values();
-
-            $relatedByText = Content::where('id', '!=', $content->id)
+        // 🔵 3. By keyword text-match in title/summary/content across ALL sections/categories
+        if ($relatedNews->count() < $limit && $keywords->isNotEmpty()) {
+            $byKeywords = Content::whereNotIn('id', $excludeIds)
                 ->where('status', 'published')
                 ->where(function ($query) use ($keywords) {
                     foreach ($keywords as $word) {
                         $query->orWhere('title', 'like', "%{$word}%")
                             ->orWhere('summary', 'like', "%{$word}%")
+                            ->orWhere('seo_keyword', 'like', "%{$word}%")
                             ->orWhere('content', 'like', "%{$word}%");
                     }
                 })
-                ->inRandomOrder()
+                ->latest('published_at')
                 ->take($limit - $relatedNews->count())
                 ->get();
 
-            $relatedNews = $relatedNews->merge($relatedByText);
+            $relatedNews = $relatedNews->merge($byKeywords);
+            $excludeIds = array_merge($excludeIds, $byKeywords->pluck('id')->all());
         }
 
-        // ⚪️ 4. Fallback: random from same section
+        // 🟣 4. If still empty (no seo_keyword and no tags), build keywords from the title itself
+        if ($relatedNews->count() < $limit && $keywords->isEmpty()) {
+            $text = strip_tags($content->title . ' ' . $content->summary);
+            $titleWords = collect(preg_split('/\s+/u', $text))
+                ->map(fn($w) => trim($w, " \t\n\r\0\x0B،,.؟?!:\"'()[]{}"))
+                ->filter(fn($w) => mb_strlen($w) > 3)
+                ->unique()
+                ->take(8)
+                ->values();
+
+            if ($titleWords->isNotEmpty()) {
+                $byTitle = Content::whereNotIn('id', $excludeIds)
+                    ->where('status', 'published')
+                    ->where(function ($query) use ($titleWords) {
+                        foreach ($titleWords as $word) {
+                            $query->orWhere('title', 'like', "%{$word}%")
+                                ->orWhere('summary', 'like', "%{$word}%")
+                                ->orWhere('content', 'like', "%{$word}%");
+                        }
+                    })
+                    ->latest('published_at')
+                    ->take($limit - $relatedNews->count())
+                    ->get();
+
+                $relatedNews = $relatedNews->merge($byTitle);
+                $excludeIds = array_merge($excludeIds, $byTitle->pluck('id')->all());
+            }
+        }
+
+        // ⚪️ 5. Final fallback: latest published across ALL sections/categories
         if ($relatedNews->count() < $limit) {
-            $fallback = Content::where('id', '!=', $content->id)
+            $fallback = Content::whereNotIn('id', $excludeIds)
                 ->where('status', 'published')
-                ->where('section_id', $content->section_id)
-                ->inRandomOrder()
+                ->latest('published_at')
                 ->take($limit - $relatedNews->count())
                 ->get();
 
             $relatedNews = $relatedNews->merge($fallback);
         }
 
-        return $relatedNews;
+        return $relatedNews->unique('id')->take($limit)->values();
     }
 
     /**
