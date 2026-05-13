@@ -4089,4 +4089,139 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
     {{-- ================= DYNAMIC READMORE LOADER ================= --}}
     @include('components.readmore-loader')
 
+    {{-- ================= IN-CONTENT GALLERY SLIDER ================= --}}
+    <style>
+        .vvc-cgallery{position:relative;background:#0b1320;border:2px solid #16263d;border-radius:6px;overflow:hidden;margin:1.5rem 0;color:#fff;font-family:inherit;direction:rtl;}
+        .vvc-cgallery .vvc-cgs-progress{position:absolute;top:8px;inset-inline-end:12px;display:flex;gap:4px;z-index:3;}
+        .vvc-cgallery .vvc-cgs-progress span{display:block;width:18px;height:3px;background:rgba(255,255,255,.25);border-radius:2px;transition:background .2s;}
+        .vvc-cgallery .vvc-cgs-progress span.is-active{background:#fff;}
+        .vvc-cgallery .vvc-cgs-stage{position:relative;width:100%;aspect-ratio:16/10;background:#000;overflow:hidden;}
+        .vvc-cgallery .vvc-cgs-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s ease;}
+        .vvc-cgallery .vvc-cgs-img.is-active{opacity:1;}
+        .vvc-cgallery .vvc-cgs-arrow{position:absolute;top:50%;transform:translateY(-50%);width:54px;height:64px;background:rgba(20,30,46,.55);border:0;color:#fff;font-size:2rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;z-index:2;}
+        .vvc-cgallery .vvc-cgs-arrow:hover{background:rgba(20,30,46,.85);}
+        .vvc-cgallery .vvc-cgs-arrow.vvc-cgs-prev{left:10px;}
+        .vvc-cgallery .vvc-cgs-arrow.vvc-cgs-next{right:10px;}
+        .vvc-cgallery .vvc-cgs-toggle{position:absolute;left:14px;bottom:14px;width:34px;height:34px;border:0;border-radius:50%;background:rgba(20,30,46,.55);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;z-index:2;transition:background .15s, transform .25s;}
+        .vvc-cgallery .vvc-cgs-toggle:hover{background:rgba(20,30,46,.85);}
+        .vvc-cgallery.is-collapsed .vvc-cgs-toggle{transform:rotate(180deg);}
+        .vvc-cgallery .vvc-cgs-caption-wrap{padding:1rem 1.4rem .8rem;max-height:240px;overflow:hidden;transition:max-height .3s ease, padding .3s ease, opacity .25s ease;}
+        .vvc-cgallery.is-collapsed .vvc-cgs-caption-wrap{max-height:0;padding-top:0;padding-bottom:0;opacity:0;}
+        .vvc-cgallery .vvc-cgs-caption{font-size:.95rem;line-height:1.65;color:#e6ecf5;margin:0;}
+        .vvc-cgallery .vvc-cgs-source{font-size:.78rem;color:#8b9bb4;margin-top:.55rem;}
+        .vvc-cgallery .vvc-cgs-foot{display:flex;align-items:center;justify-content:space-between;padding:.45rem .8rem;border-top:1px solid #16263d;background:#0a1626;}
+        .vvc-cgallery .vvc-cgs-play{width:34px;height:34px;border:0;background:transparent;color:#e6ecf5;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:background .15s;}
+        .vvc-cgallery .vvc-cgs-play:hover{background:rgba(255,255,255,.06);}
+        .vvc-cgallery .vvc-cgs-counter{font-size:.9rem;color:#cfd6e2;letter-spacing:.5px;font-variant-numeric:tabular-nums;}
+        @media (max-width:640px){
+            .vvc-cgallery .vvc-cgs-arrow{width:42px;height:54px;font-size:1.5rem;}
+            .vvc-cgallery .vvc-cgs-stage{aspect-ratio:4/3;}
+        }
+    </style>
+    <script>
+        (function () {
+            function buildSlider(node) {
+                let items;
+                try {
+                    items = JSON.parse(node.getAttribute('data-vvc-gallery') || '[]');
+                } catch (e) { items = []; }
+                if (!Array.isArray(items) || items.length === 0) { node.remove(); return; }
+
+                const wrap = document.createElement('div');
+                wrap.className = 'vvc-cgallery';
+                wrap.innerHTML = `
+                    <div class="vvc-cgs-stage" aria-roledescription="carousel">
+                        <div class="vvc-cgs-progress" aria-hidden="true">
+                            ${items.map((_, i) => `<span data-idx="${i}"></span>`).join('')}
+                        </div>
+                        ${items.map((it, i) => {
+                            const url = String(it.u || '').replace(/"/g, '&quot;');
+                            const alt = String(it.a || it.t || '').replace(/"/g, '&quot;');
+                            return `<img class="vvc-cgs-img" data-idx="${i}" src="${url}" alt="${alt}" loading="${i === 0 ? 'eager' : 'lazy'}"/>`;
+                        }).join('')}
+                        <button type="button" class="vvc-cgs-arrow vvc-cgs-prev" aria-label="السابق">‹</button>
+                        <button type="button" class="vvc-cgs-arrow vvc-cgs-next" aria-label="التالي">›</button>
+                        <button type="button" class="vvc-cgs-toggle" aria-label="إخفاء الوصف">⌄</button>
+                    </div>
+                    <div class="vvc-cgs-caption-wrap">
+                        <p class="vvc-cgs-caption"></p>
+                        <div class="vvc-cgs-source" hidden></div>
+                    </div>
+                    <div class="vvc-cgs-foot">
+                        <button type="button" class="vvc-cgs-play" aria-label="تشغيل تلقائي"><span class="vvc-cgs-play-icon">▶</span></button>
+                        <span class="vvc-cgs-counter"></span>
+                    </div>`;
+                node.replaceWith(wrap);
+
+                const imgs    = Array.from(wrap.querySelectorAll('.vvc-cgs-img'));
+                const dots    = Array.from(wrap.querySelectorAll('.vvc-cgs-progress span'));
+                const caption = wrap.querySelector('.vvc-cgs-caption');
+                const source  = wrap.querySelector('.vvc-cgs-source');
+                const counter = wrap.querySelector('.vvc-cgs-counter');
+                const playBtn = wrap.querySelector('.vvc-cgs-play');
+                const playIcon = wrap.querySelector('.vvc-cgs-play-icon');
+                const toggle  = wrap.querySelector('.vvc-cgs-toggle');
+                const total   = items.length;
+                let index = 0, autoTimer = null, playing = false;
+
+                function show(i) {
+                    index = (i + total) % total;
+                    imgs.forEach((el, k) => el.classList.toggle('is-active', k === index));
+                    dots.forEach((el, k) => el.classList.toggle('is-active', k === index));
+                    const cur = items[index] || {};
+                    caption.textContent = cur.t || '';
+                    if (cur.a && cur.a !== cur.t) {
+                        source.hidden = false;
+                        source.textContent = 'صورة من: ' + cur.a;
+                    } else {
+                        source.hidden = true;
+                        source.textContent = '';
+                    }
+                    counter.textContent = (index + 1) + ' | ' + total;
+                }
+
+                function play() {
+                    if (playing || total < 2) return;
+                    playing = true;
+                    playIcon.textContent = '❚❚';
+                    playBtn.setAttribute('aria-label', 'إيقاف');
+                    autoTimer = setInterval(() => show(index + 1), 3500);
+                }
+                function pause() {
+                    playing = false;
+                    playIcon.textContent = '▶';
+                    playBtn.setAttribute('aria-label', 'تشغيل تلقائي');
+                    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+                }
+
+                wrap.querySelector('.vvc-cgs-prev').addEventListener('click', () => { pause(); show(index - 1); });
+                wrap.querySelector('.vvc-cgs-next').addEventListener('click', () => { pause(); show(index + 1); });
+                dots.forEach(d => d.addEventListener('click', () => { pause(); show(parseInt(d.dataset.idx, 10)); }));
+                playBtn.addEventListener('click', () => (playing ? pause() : play()));
+                toggle.addEventListener('click', () => wrap.classList.toggle('is-collapsed'));
+
+                // Touch swipe
+                let touchX = null;
+                wrap.querySelector('.vvc-cgs-stage').addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+                wrap.querySelector('.vvc-cgs-stage').addEventListener('touchend', (e) => {
+                    if (touchX == null) return;
+                    const dx = e.changedTouches[0].clientX - touchX;
+                    if (Math.abs(dx) > 40) { pause(); show(index + (dx > 0 ? -1 : 1)); }
+                    touchX = null;
+                });
+
+                show(0);
+            }
+
+            function init(root) {
+                (root || document).querySelectorAll('.vvc-content-gallery[data-vvc-gallery]').forEach(buildSlider);
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => init());
+            } else {
+                init();
+            }
+        })();
+    </script>
+
 @endsection

@@ -14,6 +14,12 @@ use Exception;
 
 class DashboardController extends Controller
 {
+    /** Window (minutes) during which a session is considered "online". */
+    private const ONLINE_WINDOW_MIN = 5;
+    /** Sessions newer than this are "active"; older (within window) are "idle". */
+    private const ACTIVE_WINDOW_MIN = 2;
+    /** Short cache so the list feels live without hammering the DB. */
+    private const ACTIVE_USERS_TTL = 20;
 
     protected $last_10_cache_ttl = 1000;
 
@@ -22,7 +28,7 @@ class DashboardController extends Controller
         // $this->middleware(['auth', 'check:dashboard_access']);
     }
 
-    
+
 
     public function index()
     {

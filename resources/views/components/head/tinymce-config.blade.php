@@ -2825,6 +2825,214 @@
         });
     };
 
+    /* ============================================================
+     * CONTENT-GALLERY (multi-select images → embedded gallery block)
+     * ============================================================ */
+    (function () {
+        if (window.__vvcContentGalleryReady) return;
+        window.__vvcContentGalleryReady = true;
+
+        const FETCH_URL = "{{ route('dashboard.media.getAllMediaPaginated') }}";
+        const escAttr = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const escHtml = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        const isImageUrl = (u) => /\.(png|jpe?g|webp|gif|bmp|svg|avif)(\?|$)/i.test(u || '');
+
+        // Build the picker modal once
+        const modal = document.createElement('div');
+        modal.id = 'vvcCGModal';
+        modal.setAttribute('aria-hidden', 'true');
+        modal.innerHTML = `
+            <div class="vvc-cg-backdrop" data-vvc-cg-close></div>
+            <div class="vvc-cg-box" role="dialog" aria-modal="true">
+                <div class="vvc-cg-header">
+                    <h5>إدراج معرض صور</h5>
+                    <button type="button" class="vvc-cg-x" data-vvc-cg-close aria-label="إغلاق">&times;</button>
+                </div>
+                <div class="vvc-cg-toolbar">
+                    <input type="search" class="vvc-cg-search" placeholder="ابحث عن صورة..." />
+                    <span class="vvc-cg-count">تم اختيار <b>0</b> صورة</span>
+                </div>
+                <div class="vvc-cg-grid" role="listbox" aria-multiselectable="true"></div>
+                <div class="vvc-cg-pager"></div>
+                <div class="vvc-cg-footer">
+                    <button type="button" class="vvc-cg-btn vvc-cg-cancel" data-vvc-cg-close>إلغاء</button>
+                    <button type="button" class="vvc-cg-btn vvc-cg-insert" disabled>إدراج المعرض</button>
+                </div>
+            </div>`;
+        document.body.appendChild(modal);
+
+        const style = document.createElement('style');
+        style.textContent = `
+            #vvcCGModal{position:fixed;inset:0;display:none;z-index:100000;}
+            #vvcCGModal[aria-hidden="false"]{display:block;}
+            #vvcCGModal .vvc-cg-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);}
+            #vvcCGModal .vvc-cg-box{position:absolute;top:4%;left:50%;transform:translateX(-50%);width:clamp(320px,94vw,1000px);max-height:92vh;background:#fff;display:flex;flex-direction:column;box-shadow:0 12px 32px rgba(0,0,0,.18);border-radius:8px;overflow:hidden;}
+            #vvcCGModal .vvc-cg-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.1rem;border-bottom:1px solid #e5e9f2;}
+            #vvcCGModal .vvc-cg-header h5{margin:0;font-size:1.05rem;font-weight:600;}
+            #vvcCGModal .vvc-cg-x{border:0;background:transparent;font-size:1.6rem;color:#64748b;cursor:pointer;}
+            #vvcCGModal .vvc-cg-toolbar{display:flex;gap:.75rem;align-items:center;padding:.7rem 1.1rem;border-bottom:1px solid #eef1f6;}
+            #vvcCGModal .vvc-cg-search{flex:1;padding:.55rem .8rem;border:1px solid #dbdfea;border-radius:6px;font-size:.92rem;}
+            #vvcCGModal .vvc-cg-count{font-size:.85rem;color:#526484;white-space:nowrap;}
+            #vvcCGModal .vvc-cg-count b{color:#6576ff;}
+            #vvcCGModal .vvc-cg-grid{flex:1 1 auto;overflow:auto;padding:1rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.75rem;background:#f7f8fa;min-height:200px;}
+            #vvcCGModal .vvc-cg-item{position:relative;cursor:pointer;border:2px solid transparent;border-radius:6px;overflow:hidden;background:#fff;aspect-ratio:1/1;transition:border-color .12s, box-shadow .12s;}
+            #vvcCGModal .vvc-cg-item:hover{border-color:#b7c2d0;}
+            #vvcCGModal .vvc-cg-item.is-selected{border-color:#6576ff;box-shadow:0 0 0 3px rgba(101,118,255,.18);}
+            #vvcCGModal .vvc-cg-item img{width:100%;height:100%;object-fit:cover;display:block;}
+            #vvcCGModal .vvc-cg-item .vvc-cg-tick{position:absolute;top:6px;inset-inline-end:6px;width:24px;height:24px;border-radius:50%;background:#6576ff;color:#fff;display:none;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;}
+            #vvcCGModal .vvc-cg-item.is-selected .vvc-cg-tick{display:flex;}
+            #vvcCGModal .vvc-cg-item .vvc-cg-order{position:absolute;top:6px;inset-inline-start:6px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:rgba(15,23,42,.78);color:#fff;font-size:.75rem;font-weight:600;display:none;align-items:center;justify-content:center;}
+            #vvcCGModal .vvc-cg-item.is-selected .vvc-cg-order{display:flex;}
+            #vvcCGModal .vvc-cg-empty,#vvcCGModal .vvc-cg-loader{grid-column:1/-1;text-align:center;color:#8091a7;padding:2rem 1rem;}
+            #vvcCGModal .vvc-cg-pager{display:flex;gap:.3rem;justify-content:center;padding:.6rem;border-top:1px solid #eef1f6;background:#fff;flex-wrap:wrap;}
+            #vvcCGModal .vvc-cg-pager button{min-width:32px;height:32px;padding:0 .55rem;border:1px solid #dbdfea;background:#fff;border-radius:4px;font-size:.85rem;cursor:pointer;}
+            #vvcCGModal .vvc-cg-pager button.is-current{background:#6576ff;border-color:#6576ff;color:#fff;}
+            #vvcCGModal .vvc-cg-pager button:disabled{opacity:.4;cursor:not-allowed;}
+            #vvcCGModal .vvc-cg-footer{display:flex;justify-content:flex-end;gap:.5rem;padding:.85rem 1.1rem;border-top:1px solid #e5e9f2;background:#fff;}
+            #vvcCGModal .vvc-cg-btn{padding:.55rem 1.15rem;border-radius:6px;border:1px solid transparent;cursor:pointer;font-weight:500;font-size:.92rem;}
+            #vvcCGModal .vvc-cg-cancel{background:#f0f2f5;color:#364a63;}
+            #vvcCGModal .vvc-cg-insert{background:#6576ff;color:#fff;}
+            #vvcCGModal .vvc-cg-insert:disabled{background:#c6cbd6;cursor:not-allowed;}
+            @media(max-width:640px){#vvcCGModal .vvc-cg-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));}}
+        `;
+        document.head.appendChild(style);
+
+        const grid    = modal.querySelector('.vvc-cg-grid');
+        const pager   = modal.querySelector('.vvc-cg-pager');
+        const search  = modal.querySelector('.vvc-cg-search');
+        const counter = modal.querySelector('.vvc-cg-count b');
+        const insertBtn = modal.querySelector('.vvc-cg-insert');
+
+        const state = { page: 1, lastPage: 1, search: '', selected: [], editor: null };
+
+        function close() {
+            modal.setAttribute('aria-hidden', 'true');
+            state.selected = [];
+            state.editor = null;
+            search.value = '';
+            state.search = '';
+            state.page = 1;
+        }
+        modal.querySelectorAll('[data-vvc-cg-close]').forEach(el => el.addEventListener('click', close));
+        document.addEventListener('keydown', (e) => {
+            if (modal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') close();
+        });
+
+        let searchTimer = null;
+        search.addEventListener('input', () => {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => { state.search = search.value.trim(); state.page = 1; load(); }, 300);
+        });
+
+        function renderPager() {
+            pager.innerHTML = '';
+            if (state.lastPage <= 1) return;
+            const mk = (label, page, opts = {}) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = label;
+                if (opts.current) b.classList.add('is-current');
+                if (opts.disabled) b.disabled = true;
+                else b.addEventListener('click', () => { state.page = page; load(); });
+                pager.appendChild(b);
+            };
+            mk('«', Math.max(1, state.page - 1), { disabled: state.page === 1 });
+            const start = Math.max(1, state.page - 2);
+            const end   = Math.min(state.lastPage, start + 4);
+            for (let p = start; p <= end; p++) mk(String(p), p, { current: p === state.page });
+            mk('»', Math.min(state.lastPage, state.page + 1), { disabled: state.page === state.lastPage });
+        }
+
+        function refreshSelectionUI() {
+            counter.textContent = state.selected.length;
+            insertBtn.disabled = state.selected.length === 0;
+            grid.querySelectorAll('.vvc-cg-item').forEach(el => {
+                const id = el.dataset.id;
+                const idx = state.selected.findIndex(s => String(s.id) === String(id));
+                el.classList.toggle('is-selected', idx !== -1);
+                const ord = el.querySelector('.vvc-cg-order');
+                if (ord) ord.textContent = idx === -1 ? '' : (idx + 1);
+            });
+        }
+
+        async function load() {
+            grid.innerHTML = '<div class="vvc-cg-loader">جارٍ التحميل...</div>';
+            pager.innerHTML = '';
+            try {
+                const params = new URLSearchParams({ page: state.page, type: 'image' });
+                if (state.search) params.set('search', state.search);
+                const res = await fetch(`${FETCH_URL}?${params.toString()}`, { headers: { 'Accept': 'application/json' }, credentials: 'same-origin' });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                const items = (data.data || []).filter(m => {
+                    const url = m.url || m.path || '';
+                    return (m.media_type === 'image') || isImageUrl(url);
+                });
+                state.lastPage = data.last_page || 1;
+                if (!items.length) {
+                    grid.innerHTML = '<div class="vvc-cg-empty">لا توجد صور.</div>';
+                } else {
+                    grid.innerHTML = '';
+                    items.forEach(m => {
+                        const url = m.url || m.path || '';
+                        const title = m.name || '';
+                        const alt = m.alt || title || '';
+                        const el = document.createElement('div');
+                        el.className = 'vvc-cg-item';
+                        el.dataset.id = m.id;
+                        el.dataset.url = url;
+                        el.dataset.title = title;
+                        el.dataset.alt = alt;
+                        el.innerHTML = `<img src="${escAttr(url)}" alt="${escAttr(alt)}" loading="lazy"/><span class="vvc-cg-order"></span><span class="vvc-cg-tick">✓</span>`;
+                        el.addEventListener('click', () => toggleSelect(m.id, url, title, alt));
+                        grid.appendChild(el);
+                    });
+                }
+                renderPager();
+                refreshSelectionUI();
+            } catch (e) {
+                grid.innerHTML = '<div class="vvc-cg-empty">تعذّر تحميل الصور.</div>';
+            }
+        }
+
+        function toggleSelect(id, url, title, alt) {
+            const idx = state.selected.findIndex(s => String(s.id) === String(id));
+            if (idx === -1) state.selected.push({ id, url, title, alt });
+            else state.selected.splice(idx, 1);
+            refreshSelectionUI();
+        }
+
+        insertBtn.addEventListener('click', () => {
+            if (!state.editor || !state.selected.length) return;
+            const payload = state.selected.map(s => ({ u: s.url, t: s.title || '', a: s.alt || '' }));
+            const json = escAttr(JSON.stringify(payload));
+            const thumbs = state.selected.slice(0, 4).map(s =>
+                `<img src="${escAttr(s.url)}" alt=""/>`
+            ).join('');
+            const count = state.selected.length;
+            const block =
+                `<div class="vvc-content-gallery mceNonEditable" contenteditable="false" data-vvc-gallery="${json}">` +
+                  `<div class="vvc-cg-ph-head"><span class="vvc-cg-ph-icon">🖼</span> معرض صور (${count} ${count === 1 ? 'صورة' : 'صور'})</div>` +
+                  `<div class="vvc-cg-ph-thumbs">${thumbs}</div>` +
+                  `<div class="vvc-cg-ph-hint">سيظهر كمعرض شرائح في الصفحة المنشورة.</div>` +
+                `</div><p>&nbsp;</p>`;
+            state.editor.focus();
+            state.editor.execCommand('mceInsertContent', false, block);
+            close();
+        });
+
+        window.openVvcContentGalleryPicker = function (editor) {
+            if (!editor) return;
+            state.editor = editor;
+            state.page = 1;
+            state.search = '';
+            state.selected = [];
+            search.value = '';
+            modal.setAttribute('aria-hidden', 'false');
+            load();
+        };
+    })();
+
     /**
      * TinyMCE Configuration and Initialization
      */
@@ -2839,6 +3047,13 @@
         content_style: `
         body{font-family:Arial,Helvetica,sans-serif !important;font-size:18pt !important;line-height:1.6 !important;}
         img.tiny-sm,video.tiny-sm{width:280px;height:auto;max-width:100%;}
+
+        /* Content-gallery placeholder block inside editor */
+        .vvc-content-gallery{display:block;border:2px dashed #6576ff;background:#f4f6ff;padding:.9rem 1rem;margin:1rem 0;border-radius:8px;font-size:14pt;color:#364a63;}
+        .vvc-content-gallery .vvc-cg-ph-head{font-weight:700;margin-bottom:.5rem;color:#3245d6;}
+        .vvc-content-gallery .vvc-cg-ph-thumbs{display:flex;gap:.4rem;flex-wrap:wrap;margin:.4rem 0;}
+        .vvc-content-gallery .vvc-cg-ph-thumbs img{width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #d6daee;}
+        .vvc-content-gallery .vvc-cg-ph-hint{font-size:11pt;color:#6b7da0;margin-top:.3rem;}
 
         /* Facebook embed block placeholder inside editor */
         .fb-embed-block{
@@ -3040,6 +3255,12 @@
             // the same custom toolbar buttons and behaviour.
             if (!window.vvcRegisterCustomButtons) {
                 window.vvcRegisterCustomButtons = function(ed) {
+                    // Content Gallery — multi-image gallery block inside content
+                    ed.ui.registry.addButton('vvcContentGallery', {
+                        text: 'معرض صور',
+                        tooltip: 'إدراج معرض صور داخل المحتوى',
+                        onAction: () => { if (window.openVvcContentGalleryPicker) window.openVvcContentGalleryPicker(ed); }
+                    });
                     // Picker — opens vvc media modal for image/video selection
                     ed.ui.registry.addButton('vvcPicker', {
                         text: 'وسائط',
@@ -3303,6 +3524,13 @@
                 }
             });
 
+            // ---- CONTENT GALLERY BUTTON ----
+            editor.ui.registry.addButton('vvcContentGallery', {
+                text: 'معرض صور',
+                tooltip: 'إدراج معرض صور داخل المحتوى',
+                onAction: () => { if (window.openVvcContentGalleryPicker) window.openVvcContentGalleryPicker(editor); }
+            });
+
             // ---- MEDIA PICKER BUTTON ----
             editor.ui.registry.addButton('vvcPicker', {
                 text: 'وسائط',
@@ -3549,7 +3777,7 @@
         toolbar: [
             'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
             '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
-            '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcInstagramPost vvcXPost vvcPaste',
+            '| link table image media blockquote vvcPicker vvcContentGallery vvcClickableText vvcReadMore vvcFacebookPost vvcInstagramPost vvcXPost vvcPaste',
             '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
         ].join(' '),
         fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',
