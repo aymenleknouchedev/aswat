@@ -4096,6 +4096,11 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         .mobile-article-content  .vvc-cgallery,
         .vvc-cgallery{position:relative;background:#0b1320;border:2px solid #16263d;border-radius:6px;overflow:hidden;margin:1.5rem 0;color:#fff;font-family:inherit;direction:rtl;contain:layout style;}
         .vvc-cgallery *{box-sizing:border-box;}
+        /* Article content forces font-family on all descendants with !important — undo it for FA icons inside the slider */
+        .custom-article-content .vvc-cgallery i[class*="fa-"],
+        .mobile-article-content  .vvc-cgallery i[class*="fa-"],
+        .vvc-cgallery i[class*="fa-"]{font-family:"Font Awesome 6 Free","Font Awesome 6 Brands","FontAwesome" !important;font-weight:900 !important;font-style:normal !important;line-height:1 !important;}
+        .vvc-cgallery i.fa-spin{animation:vvc-cg-spin 1s linear infinite;}
 
         .vvc-cgallery .vvc-cgs-stage{position:relative !important;width:100% !important;aspect-ratio:16/10;background:#000;overflow:hidden;isolation:isolate;}
         /* Fallback height for browsers without aspect-ratio */
@@ -4110,9 +4115,10 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         .vvc-cgallery .vvc-cgs-img{position:absolute !important;inset:0 !important;width:100% !important;height:100% !important;max-width:100% !important;object-fit:cover !important;margin:0 !important;display:block !important;opacity:0;transition:opacity .35s ease;}
         .vvc-cgallery .vvc-cgs-img.is-loaded{opacity:1;}
 
-        .vvc-cgallery .vvc-cgs-spinner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);font-size:1.4rem;pointer-events:none;opacity:0;transition:opacity .2s;}
+        .vvc-cgallery .vvc-cgs-spinner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);font-size:1.6rem;pointer-events:none;opacity:0;transition:opacity .2s;}
         .vvc-cgallery .vvc-cgs-slide.is-loading .vvc-cgs-spinner{opacity:1;}
         .vvc-cgallery .vvc-cgs-spinner i{animation:vvc-cg-spin 1s linear infinite;}
+        .vvc-cgallery .vvc-cgs-slide.is-failed::after{content:"\f127";font-family:"Font Awesome 6 Free";font-weight:900;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.35);font-size:2.2rem;}
         @keyframes vvc-cg-spin{to{transform:rotate(360deg);}}
 
         .vvc-cgallery .vvc-cgs-progress{position:absolute;top:10px;inset-inline-end:14px;display:flex;gap:4px;z-index:3;max-width:60%;flex-wrap:wrap;justify-content:flex-end;}
@@ -4169,6 +4175,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 const items = parseItems(node);
                 if (!items.length) { node.remove(); return; }
 
+                const escAttr = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 const wrap = document.createElement('div');
                 wrap.className = 'vvc-cgallery';
                 wrap.innerHTML = `
@@ -4176,11 +4183,13 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                         <div class="vvc-cgs-progress" aria-hidden="true">
                             ${items.map((_, i) => `<span data-idx="${i}"></span>`).join('')}
                         </div>
-                        ${items.map((it, i) => {
-                            const url = String(it.u || '').replace(/"/g, '&quot;');
-                            const alt = String(it.a || it.t || '').replace(/"/g, '&quot;');
-                            return `<img class="vvc-cgs-img${i === 0 ? ' is-active' : ''}" data-idx="${i}" src="${url}" alt="${alt}" loading="${i === 0 ? 'eager' : 'lazy'}"/>`;
-                        }).join('')}
+                        <div class="vvc-cgs-track">
+                            ${items.map((it, i) => `
+                                <div class="vvc-cgs-slide is-loading" data-idx="${i}">
+                                    <img class="vvc-cgs-img" alt="${escAttr(it.a || it.t || '')}" src="${escAttr(it.u || '')}" loading="${i === 0 ? 'eager' : 'lazy'}" referrerpolicy="no-referrer"/>
+                                    <div class="vvc-cgs-spinner" aria-hidden="true"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                                </div>`).join('')}
+                        </div>
                         <button type="button" class="vvc-cgs-arrow vvc-cgs-prev" aria-label="السابق"><i class="fa-solid fa-chevron-left"></i></button>
                         <button type="button" class="vvc-cgs-arrow vvc-cgs-next" aria-label="التالي"><i class="fa-solid fa-chevron-right"></i></button>
                         <button type="button" class="vvc-cgs-toggle" aria-label="إخفاء الوصف"><i class="fa-solid fa-chevron-down"></i></button>
@@ -4195,23 +4204,44 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     </div>`;
                 node.replaceWith(wrap);
 
-                const imgs    = Array.from(wrap.querySelectorAll('.vvc-cgs-img'));
+                const track   = wrap.querySelector('.vvc-cgs-track');
+                const slides  = Array.from(wrap.querySelectorAll('.vvc-cgs-slide'));
+                const imgs    = slides.map(s => s.querySelector('.vvc-cgs-img'));
                 const dots    = Array.from(wrap.querySelectorAll('.vvc-cgs-progress span'));
                 const caption = wrap.querySelector('.vvc-cgs-caption');
                 const source  = wrap.querySelector('.vvc-cgs-source');
                 const counter = wrap.querySelector('.vvc-cgs-counter');
                 const playBtn = wrap.querySelector('.vvc-cgs-play');
                 const toggle  = wrap.querySelector('.vvc-cgs-toggle');
+                const stage   = wrap.querySelector('.vvc-cgs-stage');
                 const total   = items.length;
                 let index = 0, autoTimer = null, playing = false;
 
+                // Wire load/error per image: fade in once decoded, hide spinner on either outcome
+                imgs.forEach((img, i) => {
+                    const slide = slides[i];
+                    const done  = () => { img.classList.add('is-loaded'); slide.classList.remove('is-loading'); };
+                    const fail  = () => { slide.classList.remove('is-loading'); slide.classList.add('is-failed'); };
+                    // Attach listeners FIRST so we never miss a race with already-cached images
+                    img.addEventListener('load',  done);
+                    img.addEventListener('error', fail);
+                    if (img.complete) {
+                        if (img.naturalWidth > 0) done(); else fail();
+                    }
+                });
+
+                function updateTrack() {
+                    // RTL track: slide 0 sits at the right; translate positive X to move toward higher indices
+                    track.style.transform = `translateX(${index * 100}%)`;
+                }
+
                 function show(i) {
                     index = (i + total) % total;
-                    imgs.forEach((el, k) => el.classList.toggle('is-active', k === index));
+                    updateTrack();
                     dots.forEach((el, k) => el.classList.toggle('is-active', k === index));
                     const cur = items[index] || {};
                     caption.textContent = cur.t || '';
-                    if (cur.a && cur.a !== cur.t) {
+                    if (cur.a && cur.a !== cur.t && cur.a) {
                         source.hidden = false;
                         source.textContent = 'صورة من: ' + cur.a;
                     } else {
@@ -4226,7 +4256,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     playing = true;
                     playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
                     playBtn.setAttribute('aria-label', 'إيقاف');
-                    autoTimer = setInterval(() => show(index + 1), 3500);
+                    autoTimer = setInterval(() => show(index + 1), 4000);
                 }
                 function pause() {
                     playing = false;
@@ -4241,15 +4271,23 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 playBtn.addEventListener('click', () => (playing ? pause() : play()));
                 toggle.addEventListener('click', () => wrap.classList.toggle('is-collapsed'));
 
-                // Touch swipe (RTL): swipe left -> next, swipe right -> prev
-                const stage = wrap.querySelector('.vvc-cgs-stage');
-                let touchX = null;
-                stage.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
-                stage.addEventListener('touchend', (e) => {
+                // Touch swipe with live drag feedback (RTL)
+                let touchX = null, dragOffset = 0;
+                stage.addEventListener('touchstart', (e) => {
+                    touchX = e.touches[0].clientX;
+                    track.style.transition = 'none';
+                }, { passive: true });
+                stage.addEventListener('touchmove', (e) => {
                     if (touchX == null) return;
-                    const dx = e.changedTouches[0].clientX - touchX;
-                    if (Math.abs(dx) > 40) { pause(); show(index + (dx < 0 ? 1 : -1)); }
-                    touchX = null;
+                    dragOffset = e.touches[0].clientX - touchX;
+                    track.style.transform = `translateX(calc(${index * 100}% + ${dragOffset}px))`;
+                }, { passive: true });
+                stage.addEventListener('touchend', () => {
+                    if (touchX == null) return;
+                    track.style.transition = '';
+                    if (Math.abs(dragOffset) > 50) { pause(); show(index + (dragOffset < 0 ? 1 : -1)); }
+                    else updateTrack();
+                    touchX = null; dragOffset = 0;
                 });
 
                 // Keyboard
