@@ -194,40 +194,35 @@ class HomePageController extends Controller
      */
     protected function fetchTopViewed(?int $sectionId = null, int $limit = 5)
     {
-        $windows = [7, 30, 90, null]; // days; null = no date filter (all-time)
+        $windows = [7, 30, 90]; // days — try last week, then last month, then last 3 months
 
         foreach ($windows as $days) {
+            $since = now('Africa/Algiers')->subDays($days)->toDateString();
+
             $query = Content::where('status', 'published')
-                ->with(['media', 'section', 'category', 'writers']);
+                ->with(['media', 'section', 'category', 'writers'])
+                ->whereHas('contentDailyViews', function ($q) use ($since) {
+                    $q->where('date', '>=', $since);
+                });
 
             if ($sectionId !== null) {
                 $query->where('section_id', $sectionId);
             }
 
-            if ($days !== null) {
-                $since = now('Africa/Algiers')->subDays($days)->toDateString();
-                $query->withSum(['contentDailyViews as content_daily_views_sum_views' => function ($q) use ($since) {
-                    $q->where('date', '>=', $since);
-                }], 'views');
-            } else {
-                $query->withSum('contentDailyViews', 'views');
-            }
-
-            // Top N ordered by view count (desc). Only keep ones with > 0 views
-            // so we don't pollute the ranking with zero-view rows.
+            // Rank by total view count (read_count). The window above is a
+            // recency filter — we only consider articles that were actually
+            // read in that window, but the ordering itself is by view count.
             $results = $query
-                ->orderByDesc('content_daily_views_sum_views')
+                ->orderByDesc('read_count')
                 ->take($limit)
-                ->get()
-                ->filter(fn ($c) => (int) ($c->content_daily_views_sum_views ?? 0) > 0)
-                ->values();
+                ->get();
 
             if ($results->count() >= $limit) {
                 return $results;
             }
         }
 
-        // Final fallback: latest published (no view data at all)
+        // Final fallback: highest read_count across all time.
         $fallback = Content::where('status', 'published')
             ->with(['media', 'section', 'category', 'writers']);
 
@@ -235,7 +230,7 @@ class HomePageController extends Controller
             $fallback->where('section_id', $sectionId);
         }
 
-        return $fallback->orderByDesc('published_date')->take($limit)->get();
+        return $fallback->orderByDesc('read_count')->take($limit)->get();
     }
 
 
