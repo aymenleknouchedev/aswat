@@ -180,19 +180,75 @@
                 }
             });
 
-            // Process embeds at different intervals as scripts load
+            // Render Facebook embeds via direct plugin iframe (more reliable than the
+            // XFBML SDK for "pfbid…" permalinks and other new-format URLs).
+            // We replace any blockquote/fb-post placeholder with a real iframe
+            // pointing to plugins/post.php (or plugins/video.php for videos/reels).
+            document.querySelectorAll('.fb-embed-block').forEach(function(el) {
+                if (el.dataset.fbRendered === '1') return;
+
+                var url = el.getAttribute('data-fb-url');
+                if (!url) {
+                    var anchor = el.querySelector('a[href*="facebook.com"]');
+                    if (anchor) url = anchor.getAttribute('href');
+                }
+                if (!url) return;
+
+                // Normalize hostname (web/m/mobile → www) just in case
+                try {
+                    var u = new URL(url);
+                    if (/(^|\.)facebook\.com$/i.test(u.hostname)) {
+                        u.hostname = 'www.facebook.com';
+                        url = u.toString();
+                    }
+                } catch (e) {}
+
+                var isVideo = /\/(videos|reel|watch)/i.test(url);
+                var pluginPath = isVideo ? 'plugins/video.php' : 'plugins/post.php';
+                var width = Math.min(el.clientWidth || 500, 552);
+                var iframeSrc = 'https://www.facebook.com/' + pluginPath +
+                    '?href=' + encodeURIComponent(url) +
+                    '&show_text=true&width=' + width +
+                    '&locale=ar_AR';
+
+                var iframe = document.createElement('iframe');
+                iframe.src = iframeSrc;
+                iframe.width = width;
+                iframe.height = isVideo ? 380 : 620;
+                iframe.style.cssText = 'border:none;overflow:hidden;width:100%;max-width:' + width + 'px;display:block;margin:0 auto;';
+                iframe.setAttribute('scrolling', 'no');
+                iframe.setAttribute('frameborder', '0');
+                iframe.setAttribute('allowfullscreen', 'true');
+                iframe.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share');
+                iframe.setAttribute('loading', 'lazy');
+
+                // Remove old placeholders (blockquote / fb-post wrapper / fb-embed-url text)
+                el.querySelectorAll('.fb-post, .fb-video, blockquote, .fb-embed-url').forEach(function(n) { n.remove(); });
+                el.appendChild(iframe);
+                el.dataset.fbRendered = '1';
+
+                // Always-visible "Open on Facebook" link below the iframe.
+                if (!el.querySelector('.fb-open-link')) {
+                    var link = document.createElement('a');
+                    link.className = 'fb-open-link';
+                    link.href = url;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    link.textContent = 'افتح المنشور على فيسبوك ↗';
+                    link.style.cssText = 'display:block;text-align:center;margin:8px auto 20px;padding:8px 14px;background:#1877f2;color:#fff;font-family:asswat-medium;font-size:14px;border-radius:6px;text-decoration:none;max-width:300px;';
+                    el.appendChild(link);
+                }
+            });
+
+            // Still run the SDK processor for Instagram / X embeds.
             processEmbeds();
             setTimeout(processEmbeds, 500);
             setTimeout(processEmbeds, 1500);
-            // Extra passes for slower-loading Facebook SDK
             setTimeout(processEmbeds, 3000);
             setTimeout(processEmbeds, 5000);
 
-            // Fallback: if an embed didn't render an iframe after 6s, show a clickable link card
+            // Fallback class for X / Instagram embeds that fail to render.
             setTimeout(function() {
-                document.querySelectorAll('.fb-embed-block').forEach(function(el) {
-                    if (!el.querySelector('iframe')) el.classList.add('embed-fallback');
-                });
                 document.querySelectorAll('.x-embed-block').forEach(function(el) {
                     if (!el.querySelector('iframe')) el.classList.add('embed-fallback');
                 });
@@ -200,27 +256,6 @@
                     if (!el.querySelector('iframe')) el.classList.add('embed-fallback');
                 });
             }, 6000);
-
-            // Always-visible "Open on Facebook" link beneath every FB embed,
-            // so users can reach the post even if Facebook's iframe shows
-            // "no longer available" due to embed restrictions.
-            document.querySelectorAll('.fb-embed-block').forEach(function(el) {
-                if (el.querySelector('.fb-open-link')) return;
-                var url = el.getAttribute('data-fb-url');
-                if (!url) {
-                    var a = el.querySelector('a[href*="facebook.com"]');
-                    if (a) url = a.getAttribute('href');
-                }
-                if (!url) return;
-                var link = document.createElement('a');
-                link.className = 'fb-open-link';
-                link.href = url;
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-                link.textContent = 'افتح المنشور على فيسبوك ↗';
-                link.style.cssText = 'display:block;text-align:center;margin:8px auto 20px;padding:8px 14px;background:#1877f2;color:#fff;font-family:asswat-medium;font-size:14px;border-radius:6px;text-decoration:none;max-width:300px;';
-                el.appendChild(link);
-            });
         });
 
         // Expose globally for manual triggering if needed
