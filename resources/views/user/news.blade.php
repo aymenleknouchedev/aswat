@@ -180,11 +180,15 @@
                 }
             });
 
-            // Only intervene for problematic "pfbid…" permalinks, which Facebook
-            // itself refuses to embed and renders as "no longer available".
-            // Replace just those with a styled click-through card. All other
-            // Facebook posts continue to render normally via the FB SDK.
-            document.querySelectorAll('.fb-embed-block').forEach(function(el) {
+            // Run the SDK processor (Facebook, Instagram, X) at intervals.
+            processEmbeds();
+            setTimeout(processEmbeds, 500);
+            setTimeout(processEmbeds, 1500);
+            setTimeout(processEmbeds, 3000);
+            setTimeout(processEmbeds, 5000);
+
+            // Helper: replace a broken Facebook embed with a styled click-through card.
+            function renderFbFallbackCard(el) {
                 if (el.dataset.fbHandled === '1') return;
 
                 var url = el.getAttribute('data-fb-url');
@@ -193,8 +197,6 @@
                     if (anchor) url = anchor.getAttribute('href');
                 }
                 if (!url) return;
-
-                if (!/\/pfbid[0-9a-z]+/i.test(url) || /\/(videos|reel|watch)/i.test(url)) return;
 
                 try {
                     var u = new URL(url);
@@ -210,7 +212,7 @@
                     if (seg.length) pageName = decodeURIComponent(seg[0]).replace(/[._-]/g, ' ');
                 } catch (e) {}
 
-                el.querySelectorAll('.fb-post, .fb-video, blockquote, .fb-embed-url, .fb-embed-title').forEach(function(n) { n.remove(); });
+                el.querySelectorAll('.fb-post, .fb-video, .fb_iframe_widget, blockquote, .fb-embed-url, .fb-embed-title, iframe').forEach(function(n) { n.remove(); });
 
                 var card = document.createElement('a');
                 card.href = url;
@@ -230,27 +232,34 @@
                     '<div style="flex:0 0 auto;color:#1877f2;font-size:18px;">↗</div>';
                 el.appendChild(card);
                 el.dataset.fbHandled = '1';
-            });
+            }
 
-            // Run the SDK processor (Facebook, Instagram, X) at intervals.
-            processEmbeds();
-            setTimeout(processEmbeds, 500);
-            setTimeout(processEmbeds, 1500);
-            setTimeout(processEmbeds, 3000);
-            setTimeout(processEmbeds, 5000);
-
-            // Fallback class for embeds that fail to render after 6s.
+            // After the SDK has had time to render, check each Facebook embed.
+            // If the SDK did NOT produce an iframe, OR the rendered iframe is
+            // too short to contain real post content (Facebook's "no longer
+            // available" message is much smaller than a real post), swap in
+            // the styled fallback card.
             setTimeout(function() {
                 document.querySelectorAll('.fb-embed-block').forEach(function(el) {
-                    if (el.dataset.fbHandled !== '1' && !el.querySelector('iframe')) el.classList.add('embed-fallback');
+                    var iframe = el.querySelector('iframe');
+                    if (!iframe) {
+                        renderFbFallbackCard(el);
+                        return;
+                    }
+                    // A real post iframe is typically 500–800px tall.
+                    // The "no longer available" placeholder is ~250–350px.
+                    if (iframe.offsetHeight > 0 && iframe.offsetHeight < 400) {
+                        renderFbFallbackCard(el);
+                    }
                 });
+
                 document.querySelectorAll('.x-embed-block').forEach(function(el) {
                     if (!el.querySelector('iframe')) el.classList.add('embed-fallback');
                 });
                 document.querySelectorAll('.ig-embed-block').forEach(function(el) {
                     if (!el.querySelector('iframe')) el.classList.add('embed-fallback');
                 });
-            }, 6000);
+            }, 7000);
         });
 
         // Expose globally for manual triggering if needed
