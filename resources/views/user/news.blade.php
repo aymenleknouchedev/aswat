@@ -4120,12 +4120,25 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
     </style>
     <script>
         (function () {
+            function parseItems(node) {
+                const raw = node.getAttribute('data-vvc-gallery') || '';
+                if (!raw) return [];
+                const tries = [raw];
+                if (raw.indexOf('%') !== -1) {
+                    try { tries.push(decodeURIComponent(raw)); } catch (_) {}
+                }
+                if (raw.indexOf('&') !== -1) {
+                    tries.push(raw.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'));
+                }
+                for (const s of tries) {
+                    try { const v = JSON.parse(s); if (Array.isArray(v)) return v; } catch (_) {}
+                }
+                return [];
+            }
+
             function buildSlider(node) {
-                let items;
-                try {
-                    items = JSON.parse(node.getAttribute('data-vvc-gallery') || '[]');
-                } catch (e) { items = []; }
-                if (!Array.isArray(items) || items.length === 0) { node.remove(); return; }
+                const items = parseItems(node);
+                if (!items.length) { node.remove(); return; }
 
                 const wrap = document.createElement('div');
                 wrap.className = 'vvc-cgallery';
@@ -4137,18 +4150,18 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                         ${items.map((it, i) => {
                             const url = String(it.u || '').replace(/"/g, '&quot;');
                             const alt = String(it.a || it.t || '').replace(/"/g, '&quot;');
-                            return `<img class="vvc-cgs-img" data-idx="${i}" src="${url}" alt="${alt}" loading="${i === 0 ? 'eager' : 'lazy'}"/>`;
+                            return `<img class="vvc-cgs-img${i === 0 ? ' is-active' : ''}" data-idx="${i}" src="${url}" alt="${alt}" loading="${i === 0 ? 'eager' : 'lazy'}"/>`;
                         }).join('')}
-                        <button type="button" class="vvc-cgs-arrow vvc-cgs-prev" aria-label="السابق">‹</button>
-                        <button type="button" class="vvc-cgs-arrow vvc-cgs-next" aria-label="التالي">›</button>
-                        <button type="button" class="vvc-cgs-toggle" aria-label="إخفاء الوصف">⌄</button>
+                        <button type="button" class="vvc-cgs-arrow vvc-cgs-prev" aria-label="السابق"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button type="button" class="vvc-cgs-arrow vvc-cgs-next" aria-label="التالي"><i class="fa-solid fa-chevron-right"></i></button>
+                        <button type="button" class="vvc-cgs-toggle" aria-label="إخفاء الوصف"><i class="fa-solid fa-chevron-down"></i></button>
                     </div>
                     <div class="vvc-cgs-caption-wrap">
                         <p class="vvc-cgs-caption"></p>
                         <div class="vvc-cgs-source" hidden></div>
                     </div>
                     <div class="vvc-cgs-foot">
-                        <button type="button" class="vvc-cgs-play" aria-label="تشغيل تلقائي"><span class="vvc-cgs-play-icon">▶</span></button>
+                        <button type="button" class="vvc-cgs-play" aria-label="تشغيل تلقائي"><i class="fa-solid fa-play"></i></button>
                         <span class="vvc-cgs-counter"></span>
                     </div>`;
                 node.replaceWith(wrap);
@@ -4159,7 +4172,6 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 const source  = wrap.querySelector('.vvc-cgs-source');
                 const counter = wrap.querySelector('.vvc-cgs-counter');
                 const playBtn = wrap.querySelector('.vvc-cgs-play');
-                const playIcon = wrap.querySelector('.vvc-cgs-play-icon');
                 const toggle  = wrap.querySelector('.vvc-cgs-toggle');
                 const total   = items.length;
                 let index = 0, autoTimer = null, playing = false;
@@ -4183,31 +4195,39 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 function play() {
                     if (playing || total < 2) return;
                     playing = true;
-                    playIcon.textContent = '❚❚';
+                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
                     playBtn.setAttribute('aria-label', 'إيقاف');
                     autoTimer = setInterval(() => show(index + 1), 3500);
                 }
                 function pause() {
                     playing = false;
-                    playIcon.textContent = '▶';
+                    playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
                     playBtn.setAttribute('aria-label', 'تشغيل تلقائي');
                     if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
                 }
 
-                wrap.querySelector('.vvc-cgs-prev').addEventListener('click', () => { pause(); show(index - 1); });
-                wrap.querySelector('.vvc-cgs-next').addEventListener('click', () => { pause(); show(index + 1); });
+                wrap.querySelector('.vvc-cgs-prev').addEventListener('click', () => { pause(); show(index + 1); });
+                wrap.querySelector('.vvc-cgs-next').addEventListener('click', () => { pause(); show(index - 1); });
                 dots.forEach(d => d.addEventListener('click', () => { pause(); show(parseInt(d.dataset.idx, 10)); }));
                 playBtn.addEventListener('click', () => (playing ? pause() : play()));
                 toggle.addEventListener('click', () => wrap.classList.toggle('is-collapsed'));
 
-                // Touch swipe
+                // Touch swipe (RTL): swipe left -> next, swipe right -> prev
+                const stage = wrap.querySelector('.vvc-cgs-stage');
                 let touchX = null;
-                wrap.querySelector('.vvc-cgs-stage').addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
-                wrap.querySelector('.vvc-cgs-stage').addEventListener('touchend', (e) => {
+                stage.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+                stage.addEventListener('touchend', (e) => {
                     if (touchX == null) return;
                     const dx = e.changedTouches[0].clientX - touchX;
-                    if (Math.abs(dx) > 40) { pause(); show(index + (dx > 0 ? -1 : 1)); }
+                    if (Math.abs(dx) > 40) { pause(); show(index + (dx < 0 ? 1 : -1)); }
                     touchX = null;
+                });
+
+                // Keyboard
+                wrap.tabIndex = 0;
+                wrap.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft')  { pause(); show(index + 1); }
+                    if (e.key === 'ArrowRight') { pause(); show(index - 1); }
                 });
 
                 show(0);

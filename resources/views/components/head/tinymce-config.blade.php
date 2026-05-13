@@ -2846,7 +2846,7 @@
             <div class="vvc-cg-box" role="dialog" aria-modal="true">
                 <div class="vvc-cg-header">
                     <h5>إدراج معرض صور</h5>
-                    <button type="button" class="vvc-cg-x" data-vvc-cg-close aria-label="إغلاق">&times;</button>
+                    <button type="button" class="vvc-cg-x" data-vvc-cg-close aria-label="إغلاق"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="vvc-cg-toolbar">
                     <input type="search" class="vvc-cg-search" placeholder="ابحث عن صورة..." />
@@ -2903,12 +2903,13 @@
         const counter = modal.querySelector('.vvc-cg-count b');
         const insertBtn = modal.querySelector('.vvc-cg-insert');
 
-        const state = { page: 1, lastPage: 1, search: '', selected: [], editor: null };
+        const state = { page: 1, lastPage: 1, search: '', selected: [], editor: null, editingBlock: null };
 
         function close() {
             modal.setAttribute('aria-hidden', 'true');
             state.selected = [];
             state.editor = null;
+            state.editingBlock = null;
             search.value = '';
             state.search = '';
             state.page = 1;
@@ -2983,7 +2984,7 @@
                         el.dataset.url = url;
                         el.dataset.title = title;
                         el.dataset.alt = alt;
-                        el.innerHTML = `<img src="${escAttr(url)}" alt="${escAttr(alt)}" loading="lazy"/><span class="vvc-cg-order"></span><span class="vvc-cg-tick">✓</span>`;
+                        el.innerHTML = `<img src="${escAttr(url)}" alt="${escAttr(alt)}" loading="lazy"/><span class="vvc-cg-order"></span><span class="vvc-cg-tick"><i class="fa-solid fa-check"></i></span>`;
                         el.addEventListener('click', () => toggleSelect(m.id, url, title, alt));
                         grid.appendChild(el);
                     });
@@ -3002,31 +3003,67 @@
             refreshSelectionUI();
         }
 
-        insertBtn.addEventListener('click', () => {
-            if (!state.editor || !state.selected.length) return;
-            const payload = state.selected.map(s => ({ u: s.url, t: s.title || '', a: s.alt || '' }));
-            const json = escAttr(JSON.stringify(payload));
-            const thumbs = state.selected.slice(0, 4).map(s =>
-                `<img src="${escAttr(s.url)}" alt=""/>`
-            ).join('');
-            const count = state.selected.length;
-            const block =
+        function buildBlockHtml(items) {
+            const payload = items.map(s => ({ i: s.id || '', u: s.url, t: s.title || '', a: s.alt || '' }));
+            const json = encodeURIComponent(JSON.stringify(payload));
+            const thumbs = items.slice(0, 4).map(s => `<img src="${escAttr(s.url)}" alt=""/>`).join('');
+            const count = items.length;
+            return (
                 `<div class="vvc-content-gallery mceNonEditable" contenteditable="false" data-vvc-gallery="${json}">` +
-                  `<div class="vvc-cg-ph-head"><span class="vvc-cg-ph-icon">🖼</span> معرض صور (${count} ${count === 1 ? 'صورة' : 'صور'})</div>` +
+                  `<div class="vvc-cg-ph-head"><i class="fa-solid fa-images"></i> معرض صور (${count} ${count === 1 ? 'صورة' : 'صور'}) <span class="vvc-cg-ph-edit"><i class="fa-solid fa-pen-to-square"></i> انقر مرتين للتعديل</span></div>` +
                   `<div class="vvc-cg-ph-thumbs">${thumbs}</div>` +
                   `<div class="vvc-cg-ph-hint">سيظهر كمعرض شرائح في الصفحة المنشورة.</div>` +
-                `</div><p>&nbsp;</p>`;
+                `</div>`
+            );
+        }
+
+        insertBtn.addEventListener('click', () => {
+            if (!state.editor || !state.selected.length) return;
+            const block = buildBlockHtml(state.selected);
             state.editor.focus();
-            state.editor.execCommand('mceInsertContent', false, block);
+            if (state.editingBlock && state.editingBlock.parentNode) {
+                // Replace existing block in-place
+                state.editingBlock.outerHTML = block;
+                state.editor.undoManager.add();
+            } else {
+                state.editor.execCommand('mceInsertContent', false, block + '<p>&nbsp;</p>');
+            }
             close();
         });
 
-        window.openVvcContentGalleryPicker = function (editor) {
+        function parseExistingBlock(block) {
+            const raw = block.getAttribute('data-vvc-gallery') || '';
+            if (!raw) return [];
+            const tries = [raw];
+            if (raw.indexOf('%') !== -1) {
+                try { tries.push(decodeURIComponent(raw)); } catch (_) {}
+            }
+            if (raw.indexOf('&') !== -1) {
+                tries.push(raw.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'));
+            }
+            for (const s of tries) {
+                try {
+                    const items = JSON.parse(s);
+                    if (Array.isArray(items)) {
+                        return items.map(it => ({
+                            id: it.i || it.id || ('u_' + Math.random().toString(36).slice(2, 8)),
+                            url: it.u || it.url || '',
+                            title: it.t || it.title || '',
+                            alt: it.a || it.alt || ''
+                        })).filter(x => x.url);
+                    }
+                } catch (_) {}
+            }
+            return [];
+        }
+
+        window.openVvcContentGalleryPicker = function (editor, existingBlock) {
             if (!editor) return;
             state.editor = editor;
             state.page = 1;
             state.search = '';
-            state.selected = [];
+            state.editingBlock = existingBlock || null;
+            state.selected = existingBlock ? parseExistingBlock(existingBlock) : [];
             search.value = '';
             modal.setAttribute('aria-hidden', 'false');
             load();
@@ -3049,8 +3086,10 @@
         img.tiny-sm,video.tiny-sm{width:280px;height:auto;max-width:100%;}
 
         /* Content-gallery placeholder block inside editor */
-        .vvc-content-gallery{display:block;border:2px dashed #6576ff;background:#f4f6ff;padding:.9rem 1rem;margin:1rem 0;border-radius:8px;font-size:14pt;color:#364a63;}
-        .vvc-content-gallery .vvc-cg-ph-head{font-weight:700;margin-bottom:.5rem;color:#3245d6;}
+        .vvc-content-gallery{display:block;border:2px dashed #6576ff;background:#f4f6ff;padding:.9rem 1rem;margin:1rem 0;border-radius:8px;font-size:14pt;color:#364a63;cursor:pointer;}
+        .vvc-content-gallery:hover{background:#eaeefe;border-color:#3245d6;}
+        .vvc-content-gallery .vvc-cg-ph-head{font-weight:700;margin-bottom:.5rem;color:#3245d6;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;}
+        .vvc-content-gallery .vvc-cg-ph-edit{margin-inline-start:auto;font-size:11pt;font-weight:500;color:#fff;background:#6576ff;padding:.18em .55em;border-radius:14px;display:inline-flex;align-items:center;gap:.3em;}
         .vvc-content-gallery .vvc-cg-ph-thumbs{display:flex;gap:.4rem;flex-wrap:wrap;margin:.4rem 0;}
         .vvc-content-gallery .vvc-cg-ph-thumbs img{width:80px;height:80px;object-fit:cover;border-radius:4px;border:1px solid #d6daee;}
         .vvc-content-gallery .vvc-cg-ph-hint{font-size:11pt;color:#6b7da0;margin-top:.3rem;}
@@ -3260,6 +3299,14 @@
                         text: 'معرض صور',
                         tooltip: 'إدراج معرض صور داخل المحتوى',
                         onAction: () => { if (window.openVvcContentGalleryPicker) window.openVvcContentGalleryPicker(ed); }
+                    });
+                    // Edit a gallery block on dblclick / Enter
+                    ed.on('dblclick', (e) => {
+                        const block = e.target.closest && e.target.closest('.vvc-content-gallery');
+                        if (block && window.openVvcContentGalleryPicker) {
+                            e.preventDefault();
+                            window.openVvcContentGalleryPicker(ed, block);
+                        }
                     });
                     // Picker — opens vvc media modal for image/video selection
                     ed.ui.registry.addButton('vvcPicker', {
@@ -3529,6 +3576,14 @@
                 text: 'معرض صور',
                 tooltip: 'إدراج معرض صور داخل المحتوى',
                 onAction: () => { if (window.openVvcContentGalleryPicker) window.openVvcContentGalleryPicker(editor); }
+            });
+            // Edit a gallery block on dblclick
+            editor.on('dblclick', (e) => {
+                const block = e.target.closest && e.target.closest('.vvc-content-gallery');
+                if (block && window.openVvcContentGalleryPicker) {
+                    e.preventDefault();
+                    window.openVvcContentGalleryPicker(editor, block);
+                }
             });
 
             // ---- MEDIA PICKER BUTTON ----
