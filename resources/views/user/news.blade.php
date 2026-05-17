@@ -493,6 +493,28 @@
             max-width: 100% !important;
             height: auto !important;
         }
+        /* The article content sits in a 78% wrapper, but the feature image lives outside
+           that wrapper at 100% width. To match the feature image, content images and
+           galleries break out using negative margins. 100/78 ≈ 128.21% width, half excess
+           on each side as negative margin (~-14.1%). */
+        .custom-article-content .vvc-cgallery,
+        .custom-article-content .vvc-cgallery-grid,
+        .custom-article-content .vvc-cgallery-masonry,
+        .custom-article-content > figure,
+        .custom-article-content > p > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img),
+        .custom-article-content > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img) {
+            width: 128.21% !important;
+            max-width: 128.21% !important;
+            margin-left: -14.1% !important;
+            margin-right: -14.1% !important;
+            height: auto !important;
+        }
+        /* Inner gallery images stay 100% of their container (now 128.21% of text width). */
+        .custom-article-content .vvc-cgallery-grid img,
+        .custom-article-content .vvc-cgallery-masonry img,
+        .custom-article-content .vvc-cgallery img {
+            width: 100% !important;
+        }
 
         /* Content figure styling */
         .custom-article-content figure {
@@ -2143,6 +2165,16 @@
                 max-width: 100% !important;
                 height: auto !important;
                 cursor: pointer;
+            }
+            /* Mobile: container is full width, so no break-out needed. */
+            .mobile-article-content img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img) {
+                width: 100% !important;
+                height: auto !important;
+            }
+            .mobile-article-content .vvc-cgallery-grid img,
+            .mobile-article-content .vvc-cgallery-masonry img,
+            .mobile-article-content .vvc-cgallery img {
+                width: 100% !important;
             }
 
             /* Content figure styling */
@@ -4155,7 +4187,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         /* High-specificity overrides — article-content sets img{height:auto!important} which would stack our images */
         .custom-article-content .vvc-cgallery,
         .mobile-article-content  .vvc-cgallery,
-        .vvc-cgallery{position:relative;background:transparent;border:0;border-radius:0;overflow:hidden;margin:1.5rem 0;color:#fff;font-family:inherit;direction:rtl;contain:layout style;}
+        .vvc-cgallery{position:relative;width:100%;max-width:100%;display:block;background:transparent;border:0;border-radius:0;overflow:hidden;margin:25px 0;color:#fff;font-family:inherit;direction:rtl;contain:layout style;box-sizing:border-box;}
         .vvc-cgallery *{box-sizing:border-box;}
         /* Article content forces font-family on all descendants with !important — undo it for FA icons inside the slider */
         .custom-article-content .vvc-cgallery i[class*="fa-"],
@@ -4214,7 +4246,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         /* ----- Grid & Masonry layouts ----- */
         .custom-article-content .vvc-cgallery-grid,
         .mobile-article-content  .vvc-cgallery-grid,
-        .vvc-cgallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:1.5rem 0;direction:rtl;}
+        .vvc-cgallery-grid{display:grid;width:100%;max-width:100%;grid-template-columns:repeat(3,1fr);gap:10px;margin:25px 0;direction:rtl;box-sizing:border-box;}
         @media (max-width:760px){ .vvc-cgallery-grid{grid-template-columns:repeat(2,1fr);} }
         @media (max-width:420px){ .vvc-cgallery-grid{grid-template-columns:1fr;} }
         .vvc-cgallery-grid figure{margin:0;position:relative;border-radius:6px;overflow:hidden;background:#0b1320;cursor:zoom-in;}
@@ -4227,7 +4259,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
         .custom-article-content .vvc-cgallery-masonry,
         .mobile-article-content  .vvc-cgallery-masonry,
-        .vvc-cgallery-masonry{columns:3 240px;column-gap:10px;margin:1.5rem 0;direction:rtl;}
+        .vvc-cgallery-masonry{columns:3 240px;column-gap:10px;width:100%;max-width:100%;margin:25px 0;direction:rtl;box-sizing:border-box;}
         .vvc-cgallery-masonry figure{margin:0 0 10px;break-inside:avoid;position:relative;border-radius:6px;overflow:hidden;background:#0b1320;cursor:zoom-in;}
         .custom-article-content .vvc-cgallery-masonry figure img,
         .mobile-article-content  .vvc-cgallery-masonry figure img,
