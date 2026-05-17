@@ -493,6 +493,13 @@
             max-width: 100% !important;
             height: auto !important;
         }
+        /* Article text/content wrapper: 78% on desktop (so reading column matches design),
+           full width on mobile (avoids overly narrow column + horizontal overflow). */
+        .article-text-wrapper { width: 100%; margin: 0 auto; }
+        @media (min-width: 992px) {
+            .article-text-wrapper { width: 78%; }
+        }
+
         /* The article content sits in a 78% wrapper, but the feature image lives outside
            that wrapper at 100% width. To match the feature image, content images and
            galleries break out using negative margins. Only applied on desktop (≥992px)
@@ -3067,7 +3074,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     </div>
                 @endif
 
-                <div style="width: 78%; margin: 0 auto;">
+                <div class="article-text-wrapper">
                     {{-- Article Content --}}
                     <div class="custom-article-content">{!! $news->content !!}</div>
 
