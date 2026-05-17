@@ -4294,7 +4294,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     imgEl.src = it.u || '';
                     imgEl.alt = it.a || it.t || '';
                     const t = it.t ? escHtml(it.t) : '';
-                    const a = (it.a && it.a !== it.t) ? `<span class="vvc-cgs-src">صورة من: ${escHtml(it.a)}</span>` : '';
+                    const a = (it.a && it.a !== it.t) ? `<span class="vvc-cgs-src">${escHtml(it.a)}</span>` : '';
                     capEl.innerHTML = t + a;
                     cntEl.textContent = (lbState.index + 1) + ' | ' + n;
                 };
@@ -4323,7 +4323,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 wrap.className = layout === 'masonry' ? 'vvc-cgallery-masonry' : 'vvc-cgallery-grid';
                 wrap.innerHTML = items.map((it, i) => {
                     const cap = it.t ? escHtml(it.t) : '';
-                    const src = (it.a && it.a !== it.t) ? `<span class="vvc-cgs-src">صورة من: ${escHtml(it.a)}</span>` : '';
+                    const src = (it.a && it.a !== it.t) ? `<span class="vvc-cgs-src">${escHtml(it.a)}</span>` : '';
                     const figCap = (cap || src) ? `<figcaption>${cap}${src}</figcaption>` : '';
                     return `<figure data-idx="${i}"><img src="${escAttr(it.u || '')}" alt="${escAttr(it.a || it.t || '')}" loading="lazy" referrerpolicy="no-referrer"/>${figCap}</figure>`;
                 }).join('');
@@ -4423,7 +4423,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     caption.textContent = hasTitle ? cur.t : '';
                     if (hasSource) {
                         source.hidden = false;
-                        source.textContent = 'صورة من: ' + cur.a;
+                        source.textContent = cur.a;
                     } else {
                         source.hidden = true;
                         source.textContent = '';
