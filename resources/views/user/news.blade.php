@@ -4478,7 +4478,6 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 });
 
                 show(0);
-                if (total > 1) play();
             }
 
             function init(root) {
