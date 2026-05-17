@@ -2845,18 +2845,52 @@
             <div class="vvc-cg-backdrop" data-vvc-cg-close></div>
             <div class="vvc-cg-box" role="dialog" aria-modal="true">
                 <div class="vvc-cg-header">
-                    <h5>إدراج معرض صور</h5>
+                    <h5><i class="fa-solid fa-images"></i> إدراج معرض صور</h5>
+                    <div class="vvc-cg-steps">
+                        <span class="vvc-cg-step is-active" data-step="browse"><span class="vvc-cg-step-num">1</span> اختيار الصور</span>
+                        <span class="vvc-cg-step-sep"><i class="fa-solid fa-angle-left"></i></span>
+                        <span class="vvc-cg-step" data-step="organize"><span class="vvc-cg-step-num">2</span> الترتيب والتعديل</span>
+                    </div>
                     <button type="button" class="vvc-cg-x" data-vvc-cg-close aria-label="إغلاق"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-                <div class="vvc-cg-toolbar">
-                    <input type="search" class="vvc-cg-search" placeholder="ابحث عن صورة..." />
-                    <span class="vvc-cg-count">تم اختيار <b>0</b> صورة</span>
+                <div class="vvc-cg-body">
+                    <!-- LEFT: Browser -->
+                    <div class="vvc-cg-pane vvc-cg-pane-browse">
+                        <div class="vvc-cg-toolbar">
+                            <input type="search" class="vvc-cg-search" placeholder="ابحث عن صورة..." />
+                            <span class="vvc-cg-count">تم اختيار <b>0</b> صورة</span>
+                        </div>
+                        <div class="vvc-cg-grid" role="listbox" aria-multiselectable="true"></div>
+                        <div class="vvc-cg-pager"></div>
+                    </div>
+                    <!-- RIGHT: Organize -->
+                    <div class="vvc-cg-pane vvc-cg-pane-organize">
+                        <div class="vvc-cg-org-head">
+                            <span><i class="fa-solid fa-list-ol"></i> الصور المختارة</span>
+                            <button type="button" class="vvc-cg-clear" title="إزالة الكل"><i class="fa-solid fa-trash"></i> إفراغ</button>
+                        </div>
+                        <div class="vvc-cg-org-hint">اسحب الصور لإعادة ترتيبها · انقر على كل صورة لإضافة عنوان أو مصدر</div>
+                        <ol class="vvc-cg-org-list" aria-label="قائمة الصور المختارة"></ol>
+                        <div class="vvc-cg-org-empty">لم يتم اختيار أي صورة بعد. اختر الصور من اليسار.</div>
+                    </div>
                 </div>
-                <div class="vvc-cg-grid" role="listbox" aria-multiselectable="true"></div>
-                <div class="vvc-cg-pager"></div>
                 <div class="vvc-cg-footer">
-                    <button type="button" class="vvc-cg-btn vvc-cg-cancel" data-vvc-cg-close>إلغاء</button>
-                    <button type="button" class="vvc-cg-btn vvc-cg-insert" disabled>إدراج المعرض</button>
+                    <div class="vvc-cg-layout">
+                        <span class="vvc-cg-ratio-lbl"><i class="fa-solid fa-crop-simple"></i> النسبة:</span>
+                        <select class="vvc-cg-ratio">
+                            <option value="16/10" selected>16:10 (افتراضي)</option>
+                            <option value="16/9">16:9 (عريض)</option>
+                            <option value="4/3">4:3 (كلاسيكي)</option>
+                            <option value="1/1">1:1 (مربع)</option>
+                            <option value="3/4">3:4 (بورتريه)</option>
+                            <option value="9/16">9:16 (قصة/موبايل)</option>
+                            <option value="21/9">21:9 (سينمائي)</option>
+                        </select>
+                    </div>
+                    <div class="vvc-cg-footer-actions">
+                        <button type="button" class="vvc-cg-btn vvc-cg-cancel" data-vvc-cg-close>إلغاء</button>
+                        <button type="button" class="vvc-cg-btn vvc-cg-insert" disabled><i class="fa-solid fa-check"></i> إدراج المعرض</button>
+                    </div>
                 </div>
             </div>`;
         document.body.appendChild(modal);
@@ -2865,18 +2899,30 @@
         style.textContent = `
             #vvcCGModal{position:fixed;inset:0;display:none;z-index:100000;}
             #vvcCGModal[aria-hidden="false"]{display:block;}
-            #vvcCGModal .vvc-cg-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);}
-            #vvcCGModal .vvc-cg-box{position:absolute;top:4%;left:50%;transform:translateX(-50%);width:clamp(320px,94vw,1000px);max-height:92vh;background:#fff;display:flex;flex-direction:column;box-shadow:0 12px 32px rgba(0,0,0,.18);border-radius:8px;overflow:hidden;}
-            #vvcCGModal .vvc-cg-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.1rem;border-bottom:1px solid #e5e9f2;}
-            #vvcCGModal .vvc-cg-header h5{margin:0;font-size:1.05rem;font-weight:600;}
-            #vvcCGModal .vvc-cg-x{border:0;background:transparent;font-size:1.6rem;color:#64748b;cursor:pointer;}
-            #vvcCGModal .vvc-cg-toolbar{display:flex;gap:.75rem;align-items:center;padding:.7rem 1.1rem;border-bottom:1px solid #eef1f6;}
+            #vvcCGModal .vvc-cg-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);}
+            #vvcCGModal .vvc-cg-box{position:absolute;top:3%;left:50%;transform:translateX(-50%);width:clamp(320px,96vw,1200px);max-height:94vh;background:#fff;display:flex;flex-direction:column;box-shadow:0 18px 40px rgba(0,0,0,.22);border-radius:10px;overflow:hidden;}
+            #vvcCGModal .vvc-cg-header{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1.1rem;border-bottom:1px solid #e5e9f2;background:linear-gradient(135deg,#f7f8ff,#fff);}
+            #vvcCGModal .vvc-cg-header h5{margin:0;font-size:1.05rem;font-weight:700;color:#1f2a44;display:flex;align-items:center;gap:.45rem;}
+            #vvcCGModal .vvc-cg-header h5 i{color:#6576ff;}
+            #vvcCGModal .vvc-cg-steps{display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#8091a7;}
+            #vvcCGModal .vvc-cg-step{display:inline-flex;align-items:center;gap:.4rem;padding:.25rem .6rem;border-radius:99px;background:#eef1f6;}
+            #vvcCGModal .vvc-cg-step.is-active{background:#6576ff;color:#fff;}
+            #vvcCGModal .vvc-cg-step-num{display:inline-flex;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.35);color:inherit;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;}
+            #vvcCGModal .vvc-cg-step:not(.is-active) .vvc-cg-step-num{background:#fff;color:#6576ff;}
+            #vvcCGModal .vvc-cg-step-sep{color:#c6cbd6;}
+            #vvcCGModal .vvc-cg-x{border:0;background:transparent;font-size:1.5rem;color:#64748b;cursor:pointer;}
+            #vvcCGModal .vvc-cg-x:hover{color:#222;}
+            #vvcCGModal .vvc-cg-body{flex:1 1 auto;display:grid;grid-template-columns:1.55fr 1fr;min-height:0;background:#f7f8fa;}
+            #vvcCGModal .vvc-cg-pane{display:flex;flex-direction:column;min-height:0;}
+            #vvcCGModal .vvc-cg-pane-browse{border-inline-end:1px solid #e5e9f2;background:#fff;}
+            #vvcCGModal .vvc-cg-pane-organize{background:#fafbff;}
+            #vvcCGModal .vvc-cg-toolbar{display:flex;gap:.75rem;align-items:center;padding:.7rem 1rem;border-bottom:1px solid #eef1f6;background:#fff;}
             #vvcCGModal .vvc-cg-search{flex:1;padding:.55rem .8rem;border:1px solid #dbdfea;border-radius:6px;font-size:.92rem;}
-            #vvcCGModal .vvc-cg-count{font-size:.85rem;color:#526484;white-space:nowrap;}
+            #vvcCGModal .vvc-cg-count{font-size:.82rem;color:#526484;white-space:nowrap;}
             #vvcCGModal .vvc-cg-count b{color:#6576ff;}
-            #vvcCGModal .vvc-cg-grid{flex:1 1 auto;overflow:auto;padding:1rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.75rem;background:#f7f8fa;min-height:200px;}
-            #vvcCGModal .vvc-cg-item{position:relative;cursor:pointer;border:2px solid transparent;border-radius:6px;overflow:hidden;background:#fff;aspect-ratio:1/1;transition:border-color .12s, box-shadow .12s;}
-            #vvcCGModal .vvc-cg-item:hover{border-color:#b7c2d0;}
+            #vvcCGModal .vvc-cg-grid{flex:1 1 auto;overflow:auto;padding:.85rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.7rem;min-height:200px;}
+            #vvcCGModal .vvc-cg-item{position:relative;cursor:pointer;border:2px solid transparent;border-radius:6px;overflow:hidden;background:#fff;aspect-ratio:1/1;transition:border-color .12s, box-shadow .12s, transform .12s;}
+            #vvcCGModal .vvc-cg-item:hover{border-color:#b7c2d0;transform:translateY(-1px);}
             #vvcCGModal .vvc-cg-item.is-selected{border-color:#6576ff;box-shadow:0 0 0 3px rgba(101,118,255,.18);}
             #vvcCGModal .vvc-cg-item img{width:100%;height:100%;object-fit:cover;display:block;}
             #vvcCGModal .vvc-cg-item .vvc-cg-tick{position:absolute;top:6px;inset-inline-end:6px;width:24px;height:24px;border-radius:50%;background:#6576ff;color:#fff;display:none;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;}
@@ -2884,26 +2930,86 @@
             #vvcCGModal .vvc-cg-item .vvc-cg-order{position:absolute;top:6px;inset-inline-start:6px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:rgba(15,23,42,.78);color:#fff;font-size:.75rem;font-weight:600;display:none;align-items:center;justify-content:center;}
             #vvcCGModal .vvc-cg-item.is-selected .vvc-cg-order{display:flex;}
             #vvcCGModal .vvc-cg-empty,#vvcCGModal .vvc-cg-loader{grid-column:1/-1;text-align:center;color:#8091a7;padding:2rem 1rem;}
-            #vvcCGModal .vvc-cg-pager{display:flex;gap:.3rem;justify-content:center;padding:.6rem;border-top:1px solid #eef1f6;background:#fff;flex-wrap:wrap;}
+            #vvcCGModal .vvc-cg-pager{display:flex;gap:.3rem;justify-content:center;padding:.55rem;border-top:1px solid #eef1f6;background:#fff;flex-wrap:wrap;}
             #vvcCGModal .vvc-cg-pager button{min-width:32px;height:32px;padding:0 .55rem;border:1px solid #dbdfea;background:#fff;border-radius:4px;font-size:.85rem;cursor:pointer;}
             #vvcCGModal .vvc-cg-pager button.is-current{background:#6576ff;border-color:#6576ff;color:#fff;}
             #vvcCGModal .vvc-cg-pager button:disabled{opacity:.4;cursor:not-allowed;}
-            #vvcCGModal .vvc-cg-footer{display:flex;justify-content:flex-end;gap:.5rem;padding:.85rem 1.1rem;border-top:1px solid #e5e9f2;background:#fff;}
-            #vvcCGModal .vvc-cg-btn{padding:.55rem 1.15rem;border-radius:6px;border:1px solid transparent;cursor:pointer;font-weight:500;font-size:.92rem;}
+
+            /* Organize pane */
+            #vvcCGModal .vvc-cg-org-head{display:flex;justify-content:space-between;align-items:center;padding:.7rem 1rem;border-bottom:1px solid #eef1f6;background:#fff;font-weight:700;color:#1f2a44;font-size:.95rem;}
+            #vvcCGModal .vvc-cg-org-head i{color:#6576ff;}
+            #vvcCGModal .vvc-cg-clear{border:1px solid #f0c8c8;background:#fff5f5;color:#c0392b;padding:.3rem .6rem;border-radius:5px;font-size:.78rem;cursor:pointer;display:inline-flex;gap:.3rem;align-items:center;}
+            #vvcCGModal .vvc-cg-clear:hover{background:#fce4e4;}
+            #vvcCGModal .vvc-cg-clear:disabled{opacity:.4;cursor:not-allowed;}
+            #vvcCGModal .vvc-cg-org-hint{padding:.5rem 1rem;font-size:.78rem;color:#7a8aa3;background:#fff;border-bottom:1px solid #eef1f6;}
+            #vvcCGModal .vvc-cg-org-list{list-style:none;margin:0;padding:.6rem;overflow:auto;flex:1 1 auto;display:flex;flex-direction:column;gap:.55rem;}
+            #vvcCGModal .vvc-cg-org-empty{display:none;padding:2rem 1rem;text-align:center;color:#8091a7;font-size:.88rem;}
+            #vvcCGModal.is-empty .vvc-cg-org-list{display:none;}
+            #vvcCGModal.is-empty .vvc-cg-org-empty{display:block;}
+            #vvcCGModal .vvc-cg-org-item{display:grid;grid-template-columns:auto 64px 1fr auto;align-items:center;gap:.55rem;background:#fff;border:1px solid #e5e9f2;border-radius:8px;padding:.5rem;transition:box-shadow .12s, transform .12s;}
+            #vvcCGModal .vvc-cg-org-item.is-dragging{opacity:.45;transform:scale(.98);}
+            #vvcCGModal .vvc-cg-org-item.is-drop-target{box-shadow:0 0 0 2px #6576ff;}
+            #vvcCGModal .vvc-cg-drag{cursor:grab;color:#8091a7;font-size:1rem;padding:0 .25rem;user-select:none;}
+            #vvcCGModal .vvc-cg-drag:active{cursor:grabbing;}
+            #vvcCGModal .vvc-cg-org-thumb{position:relative;width:64px;height:64px;border-radius:6px;overflow:hidden;background:#eef1f6;}
+            #vvcCGModal .vvc-cg-org-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+            #vvcCGModal .vvc-cg-org-thumb .vvc-cg-org-num{position:absolute;top:2px;inset-inline-start:2px;background:rgba(15,23,42,.8);color:#fff;font-size:.68rem;font-weight:700;padding:1px 5px;border-radius:8px;line-height:1.3;}
+            #vvcCGModal .vvc-cg-org-fields{display:flex;flex-direction:column;gap:.3rem;min-width:0;}
+            #vvcCGModal .vvc-cg-org-fields input{width:100%;padding:.3rem .5rem;border:1px solid #dbdfea;border-radius:5px;font-size:.82rem;background:#fff;}
+            #vvcCGModal .vvc-cg-org-fields input:focus{border-color:#6576ff;outline:none;}
+            #vvcCGModal .vvc-cg-org-fields input::placeholder{color:#b7c2d0;font-size:.78rem;}
+            #vvcCGModal .vvc-cg-org-actions{display:flex;flex-direction:column;gap:.2rem;}
+            #vvcCGModal .vvc-cg-org-actions button{width:26px;height:24px;border:1px solid #e5e9f2;background:#fff;color:#526484;border-radius:4px;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;}
+            #vvcCGModal .vvc-cg-org-actions button:hover{background:#f0f2f5;color:#1f2a44;}
+            #vvcCGModal .vvc-cg-org-actions button.vvc-cg-rm{color:#c0392b;border-color:#f0c8c8;}
+            #vvcCGModal .vvc-cg-org-actions button.vvc-cg-rm:hover{background:#fce4e4;}
+            #vvcCGModal .vvc-cg-org-actions button:disabled{opacity:.35;cursor:not-allowed;}
+
+            /* Footer */
+            #vvcCGModal .vvc-cg-footer{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.75rem 1.1rem;border-top:1px solid #e5e9f2;background:#fff;flex-wrap:wrap;}
+            #vvcCGModal .vvc-cg-layout{display:flex;align-items:center;gap:.85rem;font-size:.85rem;color:#364a63;flex-wrap:wrap;}
+            #vvcCGModal .vvc-cg-layout-lbl{font-weight:600;color:#1f2a44;}
+            #vvcCGModal .vvc-cg-layout-lbl i{color:#6576ff;margin-inline-end:.25rem;}
+            #vvcCGModal .vvc-cg-layout label{display:inline-flex;align-items:center;gap:.3rem;cursor:pointer;padding:.25rem .55rem;border-radius:5px;border:1px solid #e5e9f2;background:#fff;}
+            #vvcCGModal .vvc-cg-layout label:hover{border-color:#b7c2d0;}
+            #vvcCGModal .vvc-cg-layout input[type="radio"],#vvcCGModal .vvc-cg-layout input[type="checkbox"]{accent-color:#6576ff;}
+            #vvcCGModal .vvc-cg-layout .vvc-cg-opt{margin-inline-start:.5rem;border-style:dashed;}
+            #vvcCGModal .vvc-cg-ratio-lbl{font-weight:600;color:#1f2a44;margin-inline-start:.5rem;}
+            #vvcCGModal .vvc-cg-ratio-lbl i{color:#6576ff;margin-inline-end:.25rem;}
+            #vvcCGModal .vvc-cg-ratio{padding:.3rem .55rem;border:1px solid #dbdfea;border-radius:5px;background:#fff;font-size:.85rem;color:#1f2a44;cursor:pointer;}
+            #vvcCGModal .vvc-cg-ratio:focus{border-color:#6576ff;outline:none;}
+            #vvcCGModal .vvc-cg-footer-actions{display:flex;gap:.5rem;}
+            #vvcCGModal .vvc-cg-btn{padding:.55rem 1.15rem;border-radius:6px;border:1px solid transparent;cursor:pointer;font-weight:500;font-size:.92rem;display:inline-flex;align-items:center;gap:.4rem;}
             #vvcCGModal .vvc-cg-cancel{background:#f0f2f5;color:#364a63;}
+            #vvcCGModal .vvc-cg-cancel:hover{background:#e1e5ec;}
             #vvcCGModal .vvc-cg-insert{background:#6576ff;color:#fff;}
+            #vvcCGModal .vvc-cg-insert:hover:not(:disabled){background:#4f5fe0;}
             #vvcCGModal .vvc-cg-insert:disabled{background:#c6cbd6;cursor:not-allowed;}
-            @media(max-width:640px){#vvcCGModal .vvc-cg-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));}}
+
+            @media(max-width:900px){
+                #vvcCGModal .vvc-cg-body{grid-template-columns:1fr;}
+                #vvcCGModal .vvc-cg-pane-organize{border-top:1px solid #e5e9f2;max-height:42vh;}
+                #vvcCGModal .vvc-cg-steps{display:none;}
+            }
+            @media(max-width:640px){
+                #vvcCGModal .vvc-cg-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));}
+                #vvcCGModal .vvc-cg-footer{flex-direction:column;align-items:stretch;}
+                #vvcCGModal .vvc-cg-footer-actions{justify-content:flex-end;}
+            }
         `;
         document.head.appendChild(style);
 
-        const grid    = modal.querySelector('.vvc-cg-grid');
-        const pager   = modal.querySelector('.vvc-cg-pager');
-        const search  = modal.querySelector('.vvc-cg-search');
-        const counter = modal.querySelector('.vvc-cg-count b');
-        const insertBtn = modal.querySelector('.vvc-cg-insert');
+        const grid       = modal.querySelector('.vvc-cg-grid');
+        const pager      = modal.querySelector('.vvc-cg-pager');
+        const search     = modal.querySelector('.vvc-cg-search');
+        const counter    = modal.querySelector('.vvc-cg-count b');
+        const insertBtn  = modal.querySelector('.vvc-cg-insert');
+        const orgList    = modal.querySelector('.vvc-cg-org-list');
+        const clearBtn   = modal.querySelector('.vvc-cg-clear');
+        const ratioSel   = modal.querySelector('.vvc-cg-ratio');
 
-        const state = { page: 1, lastPage: 1, search: '', selected: [], editor: null, editingBlock: null };
+        const VALID_RATIOS = ['16/10','16/9','4/3','1/1','3/4','9/16','21/9'];
+        const state = { page: 1, lastPage: 1, search: '', selected: [], editor: null, editingBlock: null, ratio: '16/10' };
 
         function close() {
             modal.setAttribute('aria-hidden', 'true');
@@ -2913,6 +3019,8 @@
             search.value = '';
             state.search = '';
             state.page = 1;
+            state.ratio = '16/10';
+            if (ratioSel) ratioSel.value = '16/10';
         }
         modal.querySelectorAll('[data-vvc-cg-close]').forEach(el => el.addEventListener('click', close));
         document.addEventListener('keydown', (e) => {
@@ -2947,6 +3055,8 @@
         function refreshSelectionUI() {
             counter.textContent = state.selected.length;
             insertBtn.disabled = state.selected.length === 0;
+            clearBtn.disabled = state.selected.length === 0;
+            modal.classList.toggle('is-empty', state.selected.length === 0);
             grid.querySelectorAll('.vvc-cg-item').forEach(el => {
                 const id = el.dataset.id;
                 const idx = state.selected.findIndex(s => String(s.id) === String(id));
@@ -2954,7 +3064,108 @@
                 const ord = el.querySelector('.vvc-cg-order');
                 if (ord) ord.textContent = idx === -1 ? '' : (idx + 1);
             });
+            renderOrganizer();
+            updateStepIndicator();
         }
+
+        function updateStepIndicator() {
+            const has = state.selected.length > 0;
+            modal.querySelectorAll('.vvc-cg-step').forEach(s => {
+                const step = s.dataset.step;
+                s.classList.toggle('is-active', (step === 'organize' && has) || (step === 'browse' && !has));
+            });
+        }
+
+        function renderOrganizer() {
+            orgList.innerHTML = '';
+            state.selected.forEach((it, idx) => {
+                const li = document.createElement('li');
+                li.className = 'vvc-cg-org-item';
+                li.draggable = true;
+                li.dataset.id = it.id;
+                li.innerHTML = `
+                    <span class="vvc-cg-drag" title="اسحب لإعادة الترتيب" aria-hidden="true"><i class="fa-solid fa-grip-vertical"></i></span>
+                    <div class="vvc-cg-org-thumb">
+                        <img src="${escAttr(it.url)}" alt=""/>
+                        <span class="vvc-cg-org-num">${idx + 1}</span>
+                    </div>
+                    <div class="vvc-cg-org-fields">
+                        <input type="text" class="vvc-cg-f-title" value="${escAttr(it.title || '')}" placeholder="عنوان / تعليق الصورة"/>
+                        <input type="text" class="vvc-cg-f-alt"   value="${escAttr(it.alt || '')}"   placeholder="المصدر / النص البديل"/>
+                    </div>
+                    <div class="vvc-cg-org-actions">
+                        <button type="button" class="vvc-cg-up"   title="إلى الأعلى"   ${idx === 0 ? 'disabled' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                        <button type="button" class="vvc-cg-down" title="إلى الأسفل" ${idx === state.selected.length - 1 ? 'disabled' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                        <button type="button" class="vvc-cg-rm"   title="إزالة"><i class="fa-solid fa-xmark"></i></button>
+                    </div>`;
+                orgList.appendChild(li);
+            });
+            wireOrganizerEvents();
+        }
+
+        function wireOrganizerEvents() {
+            orgList.querySelectorAll('.vvc-cg-org-item').forEach(li => {
+                const id = li.dataset.id;
+                const find = () => state.selected.findIndex(s => String(s.id) === String(id));
+
+                li.querySelector('.vvc-cg-f-title').addEventListener('input', (e) => {
+                    const i = find(); if (i !== -1) state.selected[i].title = e.target.value;
+                });
+                li.querySelector('.vvc-cg-f-alt').addEventListener('input', (e) => {
+                    const i = find(); if (i !== -1) state.selected[i].alt = e.target.value;
+                });
+                li.querySelector('.vvc-cg-rm').addEventListener('click', () => {
+                    const i = find(); if (i !== -1) { state.selected.splice(i, 1); refreshSelectionUI(); }
+                });
+                li.querySelector('.vvc-cg-up').addEventListener('click', () => {
+                    const i = find(); if (i > 0) { const [x] = state.selected.splice(i, 1); state.selected.splice(i - 1, 0, x); refreshSelectionUI(); }
+                });
+                li.querySelector('.vvc-cg-down').addEventListener('click', () => {
+                    const i = find(); if (i !== -1 && i < state.selected.length - 1) { const [x] = state.selected.splice(i, 1); state.selected.splice(i + 1, 0, x); refreshSelectionUI(); }
+                });
+
+                li.addEventListener('dragstart', (e) => {
+                    li.classList.add('is-dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                    try { e.dataTransfer.setData('text/plain', id); } catch (_) {}
+                });
+                li.addEventListener('dragend', () => {
+                    li.classList.remove('is-dragging');
+                    orgList.querySelectorAll('.is-drop-target').forEach(el => el.classList.remove('is-drop-target'));
+                });
+                li.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    orgList.querySelectorAll('.is-drop-target').forEach(el => el.classList.remove('is-drop-target'));
+                    li.classList.add('is-drop-target');
+                });
+                li.addEventListener('dragleave', () => li.classList.remove('is-drop-target'));
+                li.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    li.classList.remove('is-drop-target');
+                    const dragging = orgList.querySelector('.is-dragging');
+                    if (!dragging || dragging === li) return;
+                    const fromId = dragging.dataset.id;
+                    const toId   = li.dataset.id;
+                    const from = state.selected.findIndex(s => String(s.id) === String(fromId));
+                    const to   = state.selected.findIndex(s => String(s.id) === String(toId));
+                    if (from === -1 || to === -1) return;
+                    const [x] = state.selected.splice(from, 1);
+                    state.selected.splice(to, 0, x);
+                    refreshSelectionUI();
+                });
+            });
+        }
+
+        clearBtn.addEventListener('click', () => {
+            if (!state.selected.length) return;
+            state.selected = [];
+            refreshSelectionUI();
+        });
+
+        ratioSel.addEventListener('change', (e) => {
+            state.ratio = VALID_RATIOS.indexOf(e.target.value) !== -1 ? e.target.value : '16/10';
+        });
 
         async function load() {
             grid.innerHTML = '<div class="vvc-cg-loader">جارٍ التحميل...</div>';
@@ -3003,23 +3214,24 @@
             refreshSelectionUI();
         }
 
-        function buildBlockHtml(items) {
+        function buildBlockHtml(items, ratio) {
             const payload = items.map(s => ({ i: s.id || '', u: s.url, t: s.title || '', a: s.alt || '' }));
             const json = encodeURIComponent(JSON.stringify(payload));
             const thumbs = items.slice(0, 4).map(s => `<img src="${escAttr(s.url)}" alt=""/>`).join('');
             const count = items.length;
+            const ratioVal = VALID_RATIOS.indexOf(ratio) !== -1 ? ratio : '16/10';
             return (
-                `<div class="vvc-content-gallery mceNonEditable" contenteditable="false" data-vvc-gallery="${json}">` +
-                  `<div class="vvc-cg-ph-head"><i class="fa-solid fa-images"></i> معرض صور (${count} ${count === 1 ? 'صورة' : 'صور'}) <span class="vvc-cg-ph-edit"><i class="fa-solid fa-pen-to-square"></i> انقر مرتين للتعديل</span></div>` +
+                `<div class="vvc-content-gallery mceNonEditable" contenteditable="false" data-vvc-gallery="${json}" data-vvc-ratio="${escAttr(ratioVal)}">` +
+                  `<div class="vvc-cg-ph-head"><i class="fa-solid fa-images"></i> معرض صور (${count} ${count === 1 ? 'صورة' : 'صور'}) · ${ratioVal.replace('/', ':')} <span class="vvc-cg-ph-edit"><i class="fa-solid fa-pen-to-square"></i> انقر مرتين للتعديل</span></div>` +
                   `<div class="vvc-cg-ph-thumbs">${thumbs}</div>` +
-                  `<div class="vvc-cg-ph-hint">سيظهر كمعرض شرائح في الصفحة المنشورة.</div>` +
+                  `<div class="vvc-cg-ph-hint">سيظهر كمعرض في الصفحة المنشورة.</div>` +
                 `</div>`
             );
         }
 
         insertBtn.addEventListener('click', () => {
             if (!state.editor || !state.selected.length) return;
-            const block = buildBlockHtml(state.selected);
+            const block = buildBlockHtml(state.selected, state.ratio);
             state.editor.focus();
             if (state.editingBlock && state.editingBlock.parentNode) {
                 // Replace existing block in-place
@@ -3064,8 +3276,13 @@
             state.search = '';
             state.editingBlock = existingBlock || null;
             state.selected = existingBlock ? parseExistingBlock(existingBlock) : [];
+            // Restore layout/autoplay from existing block if present
+            const existingRatio = existingBlock && existingBlock.getAttribute('data-vvc-ratio');
+            state.ratio = (existingRatio && VALID_RATIOS.indexOf(existingRatio) !== -1) ? existingRatio : '16/10';
+            if (ratioSel) ratioSel.value = state.ratio;
             search.value = '';
             modal.setAttribute('aria-hidden', 'false');
+            refreshSelectionUI();
             load();
         };
     })();

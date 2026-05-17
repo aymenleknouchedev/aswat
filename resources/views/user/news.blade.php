@@ -4155,7 +4155,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         /* High-specificity overrides — article-content sets img{height:auto!important} which would stack our images */
         .custom-article-content .vvc-cgallery,
         .mobile-article-content  .vvc-cgallery,
-        .vvc-cgallery{position:relative;background:#0b1320;border:2px solid #16263d;border-radius:0;overflow:hidden;margin:1.5rem 0;color:#fff;font-family:inherit;direction:rtl;contain:layout style;}
+        .vvc-cgallery{position:relative;background:transparent;border:0;border-radius:0;overflow:hidden;margin:1.5rem 0;color:#fff;font-family:inherit;direction:rtl;contain:layout style;}
         .vvc-cgallery *{box-sizing:border-box;}
         /* Article content forces font-family on all descendants with !important — undo it for FA icons inside the slider */
         .custom-article-content .vvc-cgallery i[class*="fa-"],
@@ -4186,33 +4186,68 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         .vvc-cgallery .vvc-cgs-progress span{display:block;width:20px;height:3px;background:rgba(255,255,255,.28);border-radius:0;transition:background .2s, width .25s;cursor:pointer;}
         .vvc-cgallery .vvc-cgs-progress span.is-active{background:#fff;width:28px;}
 
-        .vvc-cgallery .vvc-cgs-arrow{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:60px;background:rgba(15,25,40,.55);border:0;color:#fff;font-size:1.45rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s, transform .15s;z-index:4;backdrop-filter:blur(2px);}
-        .vvc-cgallery .vvc-cgs-arrow:hover{background:rgba(15,25,40,.85);}
-        .vvc-cgallery .vvc-cgs-arrow:active{transform:translateY(-50%) scale(.94);}
-        .vvc-cgallery .vvc-cgs-arrow.vvc-cgs-prev{left:10px;}
-        .vvc-cgallery .vvc-cgs-arrow.vvc-cgs-next{right:10px;}
+        .vvc-cgallery .vvc-cgs-arrow{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;background:transparent;border:0;color:#fff;font-size:1rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%;text-shadow:0 1px 4px rgba(0,0,0,.6);transition:background .18s ease, color .18s ease, text-shadow .18s ease, transform .15s ease;z-index:4;}
+        .vvc-cgallery .vvc-cgs-arrow:hover{background:rgba(0,0,0,.6);text-shadow:none;}
+        .vvc-cgallery .vvc-cgs-arrow:active{transform:translateY(-50%) scale(.92);}
+        .vvc-cgallery .vvc-cgs-arrow.vvc-cgs-prev{left:8px;}
+        .vvc-cgallery .vvc-cgs-arrow.vvc-cgs-next{right:8px;}
 
-        .vvc-cgallery .vvc-cgs-toggle{position:absolute;left:14px;bottom:14px;width:34px;height:34px;border:0;border-radius:0;background:rgba(15,25,40,.55);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;z-index:4;transition:background .15s, transform .25s;}
-        .vvc-cgallery .vvc-cgs-toggle:hover{background:rgba(15,25,40,.85);}
-        .vvc-cgallery.is-collapsed .vvc-cgs-toggle{transform:rotate(180deg);}
+        .vvc-cgallery .vvc-cgs-toggle{display:none;}
 
-        .vvc-cgallery .vvc-cgs-caption-wrap{padding:1rem 1.4rem .85rem;max-height:260px;overflow:hidden;transition:max-height .3s ease, padding .3s ease, opacity .25s ease;}
-        .vvc-cgallery.is-collapsed .vvc-cgs-caption-wrap{max-height:0;padding-top:0;padding-bottom:0;opacity:0;}
-        .vvc-cgallery .vvc-cgs-caption{font-size:.95rem;line-height:1.7;color:#e6ecf5;margin:0;animation:vvc-cg-fade .35s ease both;}
-        .vvc-cgallery .vvc-cgs-source{font-size:.78rem;color:#8b9bb4;margin-top:.55rem;}
+        .vvc-cgallery .vvc-cgs-caption-wrap{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:1.5rem 1.2rem .8rem;background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.45) 55%,rgba(0,0,0,0) 100%);color:#fff;pointer-events:none;transition:opacity .25s ease;}
+        .vvc-cgallery .vvc-cgs-caption-wrap:empty,
+        .vvc-cgallery .vvc-cgs-caption-wrap.is-empty{display:none;}
+        .vvc-cgallery.is-collapsed .vvc-cgs-caption-wrap{opacity:0;}
+        .vvc-cgallery .vvc-cgs-caption{font-size:.92rem;line-height:1.6;color:#fff;margin:0;animation:vvc-cg-fade .35s ease both;}
+        .vvc-cgallery .vvc-cgs-source{font-size:.75rem;color:rgba(255,255,255,.78);margin-top:.35rem;}
         @keyframes vvc-cg-fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
 
-        .vvc-cgallery .vvc-cgs-foot{display:flex;align-items:center;justify-content:space-between;padding:.45rem .85rem;border-top:1px solid #16263d;background:#0a1626;}
-        .vvc-cgallery .vvc-cgs-play{width:36px;height:36px;border:0;background:transparent;color:#e6ecf5;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;border-radius:0;transition:background .15s, color .15s;}
-        .vvc-cgallery .vvc-cgs-play:hover{background:rgba(255,255,255,.07);color:#fff;}
-        .vvc-cgallery .vvc-cgs-counter{font-size:.9rem;color:#cfd6e2;letter-spacing:.5px;font-variant-numeric:tabular-nums;}
+        .vvc-cgallery .vvc-cgs-foot{display:none;}
 
         @media (max-width:640px){
-            .vvc-cgallery .vvc-cgs-arrow{width:42px;height:54px;font-size:1.15rem;}
+            .vvc-cgallery .vvc-cgs-arrow{width:30px;height:30px;font-size:.9rem;}
             .vvc-cgallery .vvc-cgs-stage{aspect-ratio:4/3;}
             @supports not (aspect-ratio:1/1){ .vvc-cgallery .vvc-cgs-stage{height:75vw;} }
-            .vvc-cgallery .vvc-cgs-caption-wrap{padding:.85rem 1rem .7rem;}
+            .vvc-cgallery .vvc-cgs-caption-wrap{padding:1.2rem .9rem .65rem;}
         }
+
+        /* ----- Grid & Masonry layouts ----- */
+        .custom-article-content .vvc-cgallery-grid,
+        .mobile-article-content  .vvc-cgallery-grid,
+        .vvc-cgallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:1.5rem 0;direction:rtl;}
+        @media (max-width:760px){ .vvc-cgallery-grid{grid-template-columns:repeat(2,1fr);} }
+        @media (max-width:420px){ .vvc-cgallery-grid{grid-template-columns:1fr;} }
+        .vvc-cgallery-grid figure{margin:0;position:relative;border-radius:6px;overflow:hidden;background:#0b1320;cursor:zoom-in;}
+        .custom-article-content .vvc-cgallery-grid figure img,
+        .mobile-article-content  .vvc-cgallery-grid figure img,
+        .vvc-cgallery-grid figure img{width:100% !important;height:100% !important;aspect-ratio:1/1;object-fit:cover !important;display:block;transition:transform .35s ease;margin:0 !important;}
+        .vvc-cgallery-grid figure:hover img{transform:scale(1.04);}
+        .vvc-cgallery-grid figcaption{position:absolute;left:0;right:0;bottom:0;padding:.55rem .7rem;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff;font-size:.82rem;line-height:1.4;}
+        .vvc-cgallery-grid figcaption .vvc-cgs-src{display:block;font-size:.7rem;color:#cfd6e2;margin-top:.2rem;}
+
+        .custom-article-content .vvc-cgallery-masonry,
+        .mobile-article-content  .vvc-cgallery-masonry,
+        .vvc-cgallery-masonry{columns:3 240px;column-gap:10px;margin:1.5rem 0;direction:rtl;}
+        .vvc-cgallery-masonry figure{margin:0 0 10px;break-inside:avoid;position:relative;border-radius:6px;overflow:hidden;background:#0b1320;cursor:zoom-in;}
+        .custom-article-content .vvc-cgallery-masonry figure img,
+        .mobile-article-content  .vvc-cgallery-masonry figure img,
+        .vvc-cgallery-masonry figure img{width:100% !important;height:auto !important;display:block;transition:transform .35s ease;margin:0 !important;}
+        .vvc-cgallery-masonry figure:hover img{transform:scale(1.03);}
+        .vvc-cgallery-masonry figcaption{position:absolute;left:0;right:0;bottom:0;padding:.55rem .7rem;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff;font-size:.82rem;line-height:1.4;}
+        .vvc-cgallery-masonry figcaption .vvc-cgs-src{display:block;font-size:.7rem;color:#cfd6e2;margin-top:.2rem;}
+
+        /* Lightbox for grid/masonry */
+        .vvc-cglb{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:99999;display:none;align-items:center;justify-content:center;direction:rtl;}
+        .vvc-cglb.is-open{display:flex;}
+        .vvc-cglb img{max-width:92vw;max-height:80vh;object-fit:contain;border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.5);}
+        .vvc-cglb .vvc-cglb-cap{position:absolute;left:0;right:0;bottom:0;padding:1rem 1.5rem;color:#fff;text-align:center;background:linear-gradient(transparent,rgba(0,0,0,.7));font-size:.95rem;}
+        .vvc-cglb .vvc-cglb-cap .vvc-cgs-src{display:block;font-size:.8rem;color:#cfd6e2;margin-top:.25rem;}
+        .vvc-cglb button{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:54px;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:1.4rem;cursor:pointer;}
+        .vvc-cglb button:hover{background:rgba(255,255,255,.22);}
+        .vvc-cglb .vvc-cglb-prev{left:14px;}
+        .vvc-cglb .vvc-cglb-next{right:14px;}
+        .vvc-cglb .vvc-cglb-close{top:14px;right:14px;transform:none;width:42px;height:42px;border-radius:50%;font-size:1.2rem;}
+        .vvc-cglb .vvc-cglb-counter{position:absolute;top:18px;left:18px;color:#cfd6e2;font-size:.9rem;font-variant-numeric:tabular-nums;}
     </style>
     <script>
         (function () {
@@ -4232,11 +4267,80 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 return [];
             }
 
+            const escAttr = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const escHtml = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+            // Shared lightbox for grid/masonry views
+            let lb = null, lbState = { items: [], index: 0 };
+            function ensureLightbox() {
+                if (lb) return lb;
+                lb = document.createElement('div');
+                lb.className = 'vvc-cglb';
+                lb.innerHTML = `
+                    <span class="vvc-cglb-counter"></span>
+                    <button type="button" class="vvc-cglb-close" aria-label="إغلاق"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" class="vvc-cglb-prev"  aria-label="السابق"><i class="fa-solid fa-chevron-left"></i></button>
+                    <img alt=""/>
+                    <button type="button" class="vvc-cglb-next"  aria-label="التالي"><i class="fa-solid fa-chevron-right"></i></button>
+                    <div class="vvc-cglb-cap"></div>`;
+                document.body.appendChild(lb);
+                const imgEl = lb.querySelector('img');
+                const capEl = lb.querySelector('.vvc-cglb-cap');
+                const cntEl = lb.querySelector('.vvc-cglb-counter');
+                const showIdx = (i) => {
+                    const n = lbState.items.length; if (!n) return;
+                    lbState.index = (i + n) % n;
+                    const it = lbState.items[lbState.index] || {};
+                    imgEl.src = it.u || '';
+                    imgEl.alt = it.a || it.t || '';
+                    const t = it.t ? escHtml(it.t) : '';
+                    const a = (it.a && it.a !== it.t) ? `<span class="vvc-cgs-src">صورة من: ${escHtml(it.a)}</span>` : '';
+                    capEl.innerHTML = t + a;
+                    cntEl.textContent = (lbState.index + 1) + ' | ' + n;
+                };
+                lb.querySelector('.vvc-cglb-prev').addEventListener('click', () => showIdx(lbState.index + 1)); // RTL: prev = next index
+                lb.querySelector('.vvc-cglb-next').addEventListener('click', () => showIdx(lbState.index - 1));
+                lb.querySelector('.vvc-cglb-close').addEventListener('click', () => lb.classList.remove('is-open'));
+                lb.addEventListener('click', (e) => { if (e.target === lb) lb.classList.remove('is-open'); });
+                document.addEventListener('keydown', (e) => {
+                    if (!lb.classList.contains('is-open')) return;
+                    if (e.key === 'Escape') lb.classList.remove('is-open');
+                    else if (e.key === 'ArrowLeft')  showIdx(lbState.index + 1);
+                    else if (e.key === 'ArrowRight') showIdx(lbState.index - 1);
+                });
+                lb._show = showIdx;
+                return lb;
+            }
+            function openLightbox(items, index) {
+                ensureLightbox();
+                lbState.items = items;
+                lb.classList.add('is-open');
+                lb._show(index || 0);
+            }
+
+            function buildGridOrMasonry(node, items, layout) {
+                const wrap = document.createElement('div');
+                wrap.className = layout === 'masonry' ? 'vvc-cgallery-masonry' : 'vvc-cgallery-grid';
+                wrap.innerHTML = items.map((it, i) => {
+                    const cap = it.t ? escHtml(it.t) : '';
+                    const src = (it.a && it.a !== it.t) ? `<span class="vvc-cgs-src">صورة من: ${escHtml(it.a)}</span>` : '';
+                    const figCap = (cap || src) ? `<figcaption>${cap}${src}</figcaption>` : '';
+                    return `<figure data-idx="${i}"><img src="${escAttr(it.u || '')}" alt="${escAttr(it.a || it.t || '')}" loading="lazy" referrerpolicy="no-referrer"/>${figCap}</figure>`;
+                }).join('');
+                node.replaceWith(wrap);
+                wrap.querySelectorAll('figure').forEach(fig => {
+                    fig.addEventListener('click', () => openLightbox(items, parseInt(fig.dataset.idx, 10) || 0));
+                });
+            }
+
             function buildSlider(node) {
                 const items = parseItems(node);
                 if (!items.length) { node.remove(); return; }
 
-                const escAttr = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const VALID_RATIOS = ['16/10','16/9','4/3','1/1','3/4','9/16','21/9'];
+                const rawRatio = (node.getAttribute('data-vvc-ratio') || '16/10').trim();
+                const ratio = VALID_RATIOS.indexOf(rawRatio) !== -1 ? rawRatio : '16/10';
+
                 const wrap = document.createElement('div');
                 wrap.className = 'vvc-cgallery';
                 wrap.innerHTML = `
@@ -4264,6 +4368,18 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                         <span class="vvc-cgs-counter"></span>
                     </div>`;
                 node.replaceWith(wrap);
+
+                // Apply chosen aspect ratio to the stage (overrides default 16/10)
+                const stageEl = wrap.querySelector('.vvc-cgs-stage');
+                if (stageEl && ratio) {
+                    stageEl.style.aspectRatio = ratio;
+                    // Cap tall (portrait) ratios so they don't exceed the viewport
+                    const parts = ratio.split('/').map(n => parseFloat(n));
+                    if (parts.length === 2 && parts[0] > 0 && parts[1] > 0) {
+                        if (parts[1] > parts[0]) stageEl.style.maxHeight = '85vh';
+                        else stageEl.style.maxHeight = '';
+                    }
+                }
 
                 const track   = wrap.querySelector('.vvc-cgs-track');
                 const slides  = Array.from(wrap.querySelectorAll('.vvc-cgs-slide'));
@@ -4296,20 +4412,23 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     track.style.transform = `translateX(${index * 100}%)`;
                 }
 
+                const captionWrap = wrap.querySelector('.vvc-cgs-caption-wrap');
                 function show(i) {
                     index = (i + total) % total;
                     updateTrack();
                     dots.forEach((el, k) => el.classList.toggle('is-active', k === index));
                     const cur = items[index] || {};
-                    caption.textContent = cur.t || '';
-                    if (cur.a && cur.a !== cur.t && cur.a) {
+                    const hasTitle  = !!(cur.t && String(cur.t).trim());
+                    const hasSource = !!(cur.a && cur.a !== cur.t && String(cur.a).trim());
+                    caption.textContent = hasTitle ? cur.t : '';
+                    if (hasSource) {
                         source.hidden = false;
                         source.textContent = 'صورة من: ' + cur.a;
                     } else {
                         source.hidden = true;
                         source.textContent = '';
                     }
-                    counter.textContent = (index + 1) + ' | ' + total;
+                    if (captionWrap) captionWrap.classList.toggle('is-empty', !hasTitle && !hasSource);
                 }
 
                 function play() {
@@ -4359,6 +4478,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 });
 
                 show(0);
+                if (total > 1) play();
             }
 
             function init(root) {
