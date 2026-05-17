@@ -500,22 +500,16 @@
             .article-text-wrapper { width: 78%; }
         }
 
-        /* The article content sits in a 78% wrapper, but the feature image lives outside
-           that wrapper at 100% width. To match the feature image, content images and
-           galleries break out using negative margins. Only applied on desktop (≥992px)
-           where the .web layout is visible and the 78% wrapper exists. */
+        /* Break-out: galleries inside the 78% text wrapper extend to match the
+           feature-image width. Desktop only (the wrapper is 100% on mobile). */
         @media (min-width: 992px) {
             .custom-article-content .vvc-cgallery,
             .custom-article-content .vvc-cgallery-grid,
-            .custom-article-content .vvc-cgallery-masonry,
-            .custom-article-content > figure,
-            .custom-article-content > p > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img),
-            .custom-article-content > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img) {
+            .custom-article-content .vvc-cgallery-masonry {
                 width: 128.21% !important;
                 max-width: 128.21% !important;
                 margin-left: -14.1% !important;
                 margin-right: -14.1% !important;
-                height: auto !important;
             }
             .custom-article-content .vvc-cgallery-grid img,
             .custom-article-content .vvc-cgallery-masonry img,
@@ -2174,11 +2168,9 @@
                 height: auto !important;
                 cursor: pointer;
             }
-            /* Mobile: container is full width, so no break-out needed. */
-            .mobile-article-content img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img) {
-                width: 100% !important;
-                height: auto !important;
-            }
+            /* Mobile: gallery images stay 100% of their (already full-width) container.
+               Regular content images keep the original `max-width:100%` behavior so
+               smaller images don't get force-stretched. */
             .mobile-article-content .vvc-cgallery-grid img,
             .mobile-article-content .vvc-cgallery-masonry img,
             .mobile-article-content .vvc-cgallery img {
