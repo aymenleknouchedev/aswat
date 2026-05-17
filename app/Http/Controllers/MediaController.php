@@ -516,6 +516,9 @@ class MediaController extends BaseController
     {
         try {
             $pagination = config('pagination.per12', 12);
+            if ($request->filled('per_page')) {
+                $pagination = max(1, min(100, (int) $request->input('per_page')));
+            }
 
             $query = ContentMedia::query();
 

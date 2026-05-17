@@ -2833,6 +2833,8 @@
         window.__vvcContentGalleryReady = true;
 
         const FETCH_URL = "{{ route('dashboard.media.getAllMediaPaginated') }}";
+        const CG_UPLOAD_URL = "{{ route('dashboard.media.store') }}";
+        const CG_CSRF = (document.querySelector('meta[name="csrf-token"]') || {}).content || '';
         const escAttr = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const escHtml = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         const isImageUrl = (u) => /\.(png|jpe?g|webp|gif|bmp|svg|avif)(\?|$)/i.test(u || '');
@@ -2858,7 +2860,27 @@
                     <div class="vvc-cg-pane vvc-cg-pane-browse">
                         <div class="vvc-cg-toolbar">
                             <input type="search" class="vvc-cg-search" placeholder="ابحث عن صورة..." />
+                            <button type="button" class="vvc-cg-upload-btn" title="رفع صورة جديدة">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> رفع صورة
+                            </button>
                             <span class="vvc-cg-count">تم اختيار <b>0</b> صورة</span>
+                        </div>
+                        <div class="vvc-cg-upload-panel" hidden>
+                            <div class="vvc-cg-up-row">
+                                <label class="vvc-cg-up-file">
+                                    <i class="fa-solid fa-image"></i>
+                                    <span class="vvc-cg-up-file-text">اختر صورة</span>
+                                    <input type="file" class="vvc-cg-upload-input" accept="image/*"/>
+                                </label>
+                                <input type="text" class="vvc-cg-up-name" placeholder="اسم الصورة"/>
+                                <input type="text" class="vvc-cg-up-alt"  placeholder="النص البديل / المصدر"/>
+                            </div>
+                            <div class="vvc-cg-up-row vvc-cg-up-actions">
+                                <button type="button" class="vvc-cg-up-cancel"><i class="fa-solid fa-xmark"></i> إلغاء</button>
+                                <button type="button" class="vvc-cg-up-submit" disabled><i class="fa-solid fa-cloud-arrow-up"></i> رفع</button>
+                                <span class="vvc-cg-upload-status"></span>
+                            </div>
+                            <div class="vvc-cg-up-bar" hidden><i></i></div>
                         </div>
                         <div class="vvc-cg-grid" role="listbox" aria-multiselectable="true"></div>
                         <div class="vvc-cg-pager"></div>
@@ -2918,6 +2940,38 @@
             #vvcCGModal .vvc-cg-pane-organize{background:#fafbff;}
             #vvcCGModal .vvc-cg-toolbar{display:flex;gap:.75rem;align-items:center;padding:.7rem 1rem;border-bottom:1px solid #eef1f6;background:#fff;}
             #vvcCGModal .vvc-cg-search{flex:1;padding:.55rem .8rem;border:1px solid #dbdfea;border-radius:6px;font-size:.92rem;}
+            #vvcCGModal .vvc-cg-upload-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.5rem .8rem;border:1px solid #6576ff;background:#6576ff;color:#fff;border-radius:6px;font-size:.85rem;cursor:pointer;white-space:nowrap;transition:background .15s, border-color .15s;}
+            #vvcCGModal .vvc-cg-upload-btn:hover:not(:disabled){background:#4f5fe0;border-color:#4f5fe0;}
+            #vvcCGModal .vvc-cg-upload-btn.is-open{background:#fff;color:#6576ff;}
+            #vvcCGModal .vvc-cg-upload-btn:disabled{opacity:.6;cursor:not-allowed;}
+
+            #vvcCGModal .vvc-cg-upload-panel{padding:.7rem 1rem;border-bottom:1px solid #eef1f6;background:#f7f8ff;display:flex;flex-direction:column;gap:.5rem;}
+            #vvcCGModal .vvc-cg-up-row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;}
+            #vvcCGModal .vvc-cg-up-file{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .75rem;border:1px dashed #b7c2d0;border-radius:6px;background:#fff;color:#364a63;font-size:.82rem;cursor:pointer;white-space:nowrap;transition:border-color .15s, color .15s;}
+            #vvcCGModal .vvc-cg-up-file:hover{border-color:#6576ff;color:#6576ff;}
+            #vvcCGModal .vvc-cg-up-file i{color:#6576ff;}
+            #vvcCGModal .vvc-cg-up-file.is-selected{border-style:solid;border-color:#6576ff;background:#eef0ff;color:#3245d6;}
+            #vvcCGModal .vvc-cg-up-file input[type="file"]{display:none;}
+            #vvcCGModal .vvc-cg-up-name,#vvcCGModal .vvc-cg-up-alt{flex:1;min-width:140px;padding:.45rem .65rem;border:1px solid #dbdfea;border-radius:6px;font-size:.85rem;background:#fff;}
+            #vvcCGModal .vvc-cg-up-name:focus,#vvcCGModal .vvc-cg-up-alt:focus{border-color:#6576ff;outline:none;}
+            #vvcCGModal input{color:#1f2a44 !important;}
+            #vvcCGModal input::placeholder{color:#8091a7 !important;opacity:1 !important;font-style:normal !important;font-size:.85rem !important;-webkit-text-fill-color:#8091a7 !important;}
+            #vvcCGModal input::-webkit-input-placeholder{color:#8091a7 !important;opacity:1 !important;-webkit-text-fill-color:#8091a7 !important;}
+            #vvcCGModal input::-moz-placeholder{color:#8091a7 !important;opacity:1 !important;}
+            #vvcCGModal input:-ms-input-placeholder{color:#8091a7 !important;}
+            #vvcCGModal input:-moz-placeholder{color:#8091a7 !important;opacity:1 !important;}
+            #vvcCGModal .vvc-cg-up-actions{justify-content:flex-end;}
+            #vvcCGModal .vvc-cg-up-cancel,#vvcCGModal .vvc-cg-up-submit{display:inline-flex;align-items:center;gap:.3rem;padding:.45rem .85rem;border-radius:6px;font-size:.82rem;cursor:pointer;border:1px solid transparent;}
+            #vvcCGModal .vvc-cg-up-cancel{background:#f0f2f5;color:#364a63;}
+            #vvcCGModal .vvc-cg-up-cancel:hover{background:#e1e5ec;}
+            #vvcCGModal .vvc-cg-up-submit{background:#6576ff;color:#fff;}
+            #vvcCGModal .vvc-cg-up-submit:hover:not(:disabled){background:#4f5fe0;}
+            #vvcCGModal .vvc-cg-up-submit:disabled{background:#c6cbd6;cursor:not-allowed;}
+            #vvcCGModal .vvc-cg-upload-status{font-size:.8rem;color:#526484;margin-inline-end:auto;display:inline-flex;align-items:center;gap:.35rem;}
+            #vvcCGModal .vvc-cg-upload-status.is-error{color:#c0392b;}
+            #vvcCGModal .vvc-cg-upload-status.is-ok{color:#0a7d3f;}
+            #vvcCGModal .vvc-cg-up-bar{height:5px;background:#eef1f6;border-radius:99px;overflow:hidden;}
+            #vvcCGModal .vvc-cg-up-bar i{display:block;height:100%;background:#6576ff;width:0;transition:width .15s linear;}
             #vvcCGModal .vvc-cg-count{font-size:.82rem;color:#526484;white-space:nowrap;}
             #vvcCGModal .vvc-cg-count b{color:#6576ff;}
             #vvcCGModal .vvc-cg-grid{flex:1 1 auto;overflow:auto;padding:.85rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.7rem;min-height:200px;}
@@ -3167,11 +3221,126 @@
             state.ratio = VALID_RATIOS.indexOf(e.target.value) !== -1 ? e.target.value : '16/10';
         });
 
+        /* ---- Inline upload (with name + alt fields) ---- */
+        const upBtn      = modal.querySelector('.vvc-cg-upload-btn');
+        const upPanel    = modal.querySelector('.vvc-cg-upload-panel');
+        const upFileLbl  = modal.querySelector('.vvc-cg-up-file');
+        const upFileText = modal.querySelector('.vvc-cg-up-file-text');
+        const upInput    = modal.querySelector('.vvc-cg-upload-input');
+        const upName     = modal.querySelector('.vvc-cg-up-name');
+        const upAlt      = modal.querySelector('.vvc-cg-up-alt');
+        const upSubmit   = modal.querySelector('.vvc-cg-up-submit');
+        const upCancel   = modal.querySelector('.vvc-cg-up-cancel');
+        const upStat     = modal.querySelector('.vvc-cg-upload-status');
+        const upBar      = modal.querySelector('.vvc-cg-up-bar');
+
+        function resetUploadPanel() {
+            upInput.value = '';
+            upName.value = '';
+            upAlt.value = '';
+            upFileText.textContent = 'اختر صورة';
+            upFileLbl.classList.remove('is-selected');
+            upSubmit.disabled = true;
+            upStat.textContent = '';
+            upStat.className = 'vvc-cg-upload-status';
+            upBar.hidden = true;
+            upBar.querySelector('i').style.width = '0';
+        }
+        function openUploadPanel() {
+            resetUploadPanel();
+            upPanel.hidden = false;
+            upBtn.classList.add('is-open');
+            setTimeout(() => upInput.click(), 0);
+        }
+        function closeUploadPanel() {
+            upPanel.hidden = true;
+            upBtn.classList.remove('is-open');
+            resetUploadPanel();
+        }
+        function setUpStatus(html, kind) {
+            upStat.className = 'vvc-cg-upload-status' + (kind ? ' is-' + kind : '');
+            upStat.innerHTML = html || '';
+        }
+
+        upBtn.addEventListener('click', () => {
+            if (upPanel.hidden) openUploadPanel(); else closeUploadPanel();
+        });
+        upCancel.addEventListener('click', closeUploadPanel);
+
+        upInput.addEventListener('change', () => {
+            const f = upInput.files && upInput.files[0];
+            if (!f) { upFileText.textContent = 'اختر صورة'; upFileLbl.classList.remove('is-selected'); upSubmit.disabled = true; return; }
+            if (!f.type || !f.type.startsWith('image/')) {
+                setUpStatus('<i class="fa-solid fa-circle-exclamation"></i> يُسمح فقط بالصور.', 'error');
+                upInput.value = '';
+                return;
+            }
+            upFileText.textContent = f.name;
+            upFileLbl.classList.add('is-selected');
+            if (!upName.value.trim()) {
+                upName.value = f.name.replace(/\.[a-z0-9]+$/i, '');
+            }
+            upSubmit.disabled = false;
+            setUpStatus('');
+        });
+
+        upSubmit.addEventListener('click', () => {
+            const f = upInput.files && upInput.files[0];
+            if (!f) return;
+            const nameVal = (upName.value || '').trim() || f.name;
+            const altVal  = (upAlt.value  || '').trim();
+
+            const fd = new FormData();
+            fd.append('media', f);
+            fd.append('name', nameVal);
+            if (altVal) fd.append('alt', altVal);
+
+            upSubmit.disabled = true;
+            upCancel.disabled = true;
+            upBtn.disabled = true;
+            upBar.hidden = false;
+            const barInner = upBar.querySelector('i');
+            barInner.style.width = '0';
+            setUpStatus('<i class="fa-solid fa-spinner fa-spin"></i> جارٍ الرفع…');
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', CG_UPLOAD_URL, true);
+            xhr.setRequestHeader('X-CSRF-TOKEN', CG_CSRF);
+            xhr.setRequestHeader('Accept', 'application/json');
+            xhr.upload.onprogress = (e) => {
+                if (e.lengthComputable) barInner.style.width = ((e.loaded / e.total) * 100).toFixed(1) + '%';
+            };
+            xhr.onload = async () => {
+                upSubmit.disabled = false;
+                upCancel.disabled = false;
+                upBtn.disabled = false;
+                if (xhr.status < 200 || xhr.status >= 300) {
+                    setUpStatus('<i class="fa-solid fa-circle-exclamation"></i> فشل الرفع (' + xhr.status + ')', 'error');
+                    return;
+                }
+                barInner.style.width = '100%';
+                setUpStatus('<i class="fa-solid fa-circle-check"></i> تم الرفع بنجاح', 'ok');
+                // Refresh grid; user picks the new image themselves
+                state.page = 1;
+                search.value = '';
+                state.search = '';
+                await load();
+                setTimeout(closeUploadPanel, 700);
+            };
+            xhr.onerror = () => {
+                upSubmit.disabled = false;
+                upCancel.disabled = false;
+                upBtn.disabled = false;
+                setUpStatus('<i class="fa-solid fa-circle-exclamation"></i> خطأ في الاتصال', 'error');
+            };
+            xhr.send(fd);
+        });
+
         async function load() {
             grid.innerHTML = '<div class="vvc-cg-loader">جارٍ التحميل...</div>';
             pager.innerHTML = '';
             try {
-                const params = new URLSearchParams({ page: state.page, type: 'image' });
+                const params = new URLSearchParams({ page: state.page, type: 'image', per_page: 15 });
                 if (state.search) params.set('search', state.search);
                 const res = await fetch(`${FETCH_URL}?${params.toString()}`, { headers: { 'Accept': 'application/json' }, credentials: 'same-origin' });
                 if (!res.ok) throw new Error('HTTP ' + res.status);
