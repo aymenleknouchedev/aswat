@@ -495,25 +495,26 @@
         }
         /* The article content sits in a 78% wrapper, but the feature image lives outside
            that wrapper at 100% width. To match the feature image, content images and
-           galleries break out using negative margins. 100/78 ≈ 128.21% width, half excess
-           on each side as negative margin (~-14.1%). */
-        .custom-article-content .vvc-cgallery,
-        .custom-article-content .vvc-cgallery-grid,
-        .custom-article-content .vvc-cgallery-masonry,
-        .custom-article-content > figure,
-        .custom-article-content > p > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img),
-        .custom-article-content > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img) {
-            width: 128.21% !important;
-            max-width: 128.21% !important;
-            margin-left: -14.1% !important;
-            margin-right: -14.1% !important;
-            height: auto !important;
-        }
-        /* Inner gallery images stay 100% of their container (now 128.21% of text width). */
-        .custom-article-content .vvc-cgallery-grid img,
-        .custom-article-content .vvc-cgallery-masonry img,
-        .custom-article-content .vvc-cgallery img {
-            width: 100% !important;
+           galleries break out using negative margins. Only applied on desktop (≥992px)
+           where the .web layout is visible and the 78% wrapper exists. */
+        @media (min-width: 992px) {
+            .custom-article-content .vvc-cgallery,
+            .custom-article-content .vvc-cgallery-grid,
+            .custom-article-content .vvc-cgallery-masonry,
+            .custom-article-content > figure,
+            .custom-article-content > p > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img),
+            .custom-article-content > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img) {
+                width: 128.21% !important;
+                max-width: 128.21% !important;
+                margin-left: -14.1% !important;
+                margin-right: -14.1% !important;
+                height: auto !important;
+            }
+            .custom-article-content .vvc-cgallery-grid img,
+            .custom-article-content .vvc-cgallery-masonry img,
+            .custom-article-content .vvc-cgallery img {
+                width: 100% !important;
+            }
         }
 
         /* Content figure styling */
