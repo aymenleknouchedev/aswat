@@ -500,21 +500,37 @@
             .article-text-wrapper { width: 78%; }
         }
 
-        /* Break-out: galleries inside the 78% text wrapper extend to match the
-           feature-image width. Desktop only (the wrapper is 100% on mobile). */
+        /* Break-out: galleries AND content images inside the 78% text wrapper extend to
+           match the feature-image width. Desktop only — on mobile the wrapper is 100%
+           and the break-out would overflow the screen. .tiny-sm and slider/lightbox
+           images are excluded so they keep their intended sizes. */
         @media (min-width: 992px) {
             .custom-article-content .vvc-cgallery,
             .custom-article-content .vvc-cgallery-grid,
-            .custom-article-content .vvc-cgallery-masonry {
+            .custom-article-content .vvc-cgallery-masonry,
+            .custom-article-content > figure,
+            .custom-article-content > p > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img),
+            .custom-article-content > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img) {
                 width: 128.21% !important;
                 max-width: 128.21% !important;
                 margin-left: -14.1% !important;
                 margin-right: -14.1% !important;
             }
+            /* Inside galleries: each image fills its (now wider) container. */
             .custom-article-content .vvc-cgallery-grid img,
             .custom-article-content .vvc-cgallery-masonry img,
             .custom-article-content .vvc-cgallery img {
                 width: 100% !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                max-width: 100% !important;
+            }
+            /* Inside <figure>: the inner <img> fills the figure (no double break-out). */
+            .custom-article-content > figure > img {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
             }
         }
 
