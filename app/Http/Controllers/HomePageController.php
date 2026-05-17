@@ -11,7 +11,7 @@ use App\Models\Window;
 use App\Models\WindowManagement;
 use App\Models\Contact;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreContactRequest;
+use App\Http\Requests\ContactFormRequest;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\Writer;
@@ -19,20 +19,17 @@ use App\Models\Tag;
 use App\Models\Trend;
 use Illuminate\Support\Facades\Cache;
 use App\Services\ContentService;
-use App\Services\ContactService;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\NormalEmail;
-use App\Models\Mail as MailModel;
+use Illuminate\Support\Facades\Log;
+use App\Mail\ContactFormMessage;
 
 class HomePageController extends Controller
 {
     protected $contentService;
-    protected $contactService;
 
-    public function __construct(ContentService $contentService, ContactService $contactService)
+    public function __construct(ContentService $contentService)
     {
         $this->contentService = $contentService;
-        $this->contactService = $contactService;
     }
 
     public function search(Request $request)
@@ -60,20 +57,70 @@ class HomePageController extends Controller
         return view('user.contact-us');
     }
 
-    public function submitContact(StoreContactRequest $request)
+    public function submitContact(ContactFormRequest $request)
     {
-        $this->contactService->processContactSubmission($request->validated(), $request);
+        $data = $request->validated();
 
-        // Return JSON for AJAX requests
-        if ($request->expectsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest') {
-            return response()->json([
-                'success' => true,
-                'message' => 'تم إرسال رسالتك بنجاح. شكرًا لتواصلك معنا.'
-            ]);
+        // Honeypot: if the hidden "website" field is filled, treat as spam silently.
+        if (!empty($data['website'] ?? null)) {
+            return $this->contactJsonOrRedirect($request, true);
         }
 
-        // Redirect for normal form submissions
-        return redirect()->route('contact-us')->with('status', 'تم إرسال رسالتك بنجاح. شكرًا لتواصلك معنا.');
+        // Persist for the admin dashboard
+        $parts    = preg_split('/\s+/', trim($data['name']), 2);
+        $first    = $parts[0] ?? $data['name'];
+        $last     = $parts[1] ?? '';
+
+        Contact::create([
+            'first_name'  => $first,
+            'last_name'   => $last,
+            'email'       => $data['email'],
+            'subject'     => $data['subject'],
+            'description' => $data['message'] . ($data['phone'] ? "\n\nالهاتف: " . $data['phone'] : ''),
+            'ip_address'  => $request->ip(),
+            'user_agent'  => $request->userAgent(),
+            'status'      => 'pending',
+        ]);
+
+        // Send the email to the site's professional inbox
+        try {
+            Mail::to(config('app.admin_email'))
+                ->send(new ContactFormMessage(
+                    senderName:  $data['name'],
+                    senderEmail: $data['email'],
+                    senderPhone: $data['phone'] ?? null,
+                    subjectLine: $data['subject'],
+                    body:        $data['message'],
+                ));
+        } catch (\Throwable $e) {
+            Log::error('Contact form mail send failed', [
+                'error'   => $e->getMessage(),
+                'email'   => $data['email'],
+                'subject' => $data['subject'],
+            ]);
+            // The submission is still stored, but tell the user something went wrong.
+            return $this->contactJsonOrRedirect($request, false, 'تم استلام رسالتك ولكن تعذّر إرسال الإشعار. سنراجعها يدويًا.');
+        }
+
+        return $this->contactJsonOrRedirect($request, true);
+    }
+
+    private function contactJsonOrRedirect(Request $request, bool $ok, ?string $message = null)
+    {
+        $message = $message ?? ($ok
+            ? 'تم إرسال رسالتك بنجاح. شكرًا لتواصلك معنا.'
+            : 'تعذّر إرسال الرسالة. حاول مرة أخرى لاحقًا.');
+
+        if ($request->expectsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest') {
+            return response()->json([
+                'success' => $ok,
+                'message' => $message,
+            ], $ok ? 200 : 500);
+        }
+
+        return $ok
+            ? redirect()->route('contact-us')->with('status', $message)
+            : redirect()->route('contact-us')->withErrors(['form' => $message])->withInput();
     }
 
     public function index()
