@@ -2891,7 +2891,7 @@
                             <span><i class="fa-solid fa-list-ol"></i> الصور المختارة</span>
                             <button type="button" class="vvc-cg-clear" title="إزالة الكل"><i class="fa-solid fa-trash"></i> إفراغ</button>
                         </div>
-                        <div class="vvc-cg-org-hint">اسحب الصور لإعادة ترتيبها · انقر على كل صورة لإضافة عنوان أو مصدر</div>
+                        <div class="vvc-cg-org-hint">اسحب الصور لإعادة ترتيبها · أضف عنوان/مصدر خاص بهذا المعرض لكل صورة (لن يؤثر على الصورة الأصلية ولا على المعارض الأخرى)</div>
                         <ol class="vvc-cg-org-list" aria-label="قائمة الصور المختارة"></ol>
                         <div class="vvc-cg-org-empty">لم يتم اختيار أي صورة بعد. اختر الصور من اليسار.</div>
                     </div>
@@ -3356,16 +3356,15 @@
                     grid.innerHTML = '';
                     items.forEach(m => {
                         const url = m.url || m.path || '';
-                        const title = m.name || '';
-                        const alt = m.alt || title || '';
+                        const mediaAlt = m.alt || m.name || '';
                         const el = document.createElement('div');
                         el.className = 'vvc-cg-item';
                         el.dataset.id = m.id;
                         el.dataset.url = url;
-                        el.dataset.title = title;
-                        el.dataset.alt = alt;
-                        el.innerHTML = `<img src="${escAttr(url)}" alt="${escAttr(alt)}" loading="lazy"/><span class="vvc-cg-order"></span><span class="vvc-cg-tick"><i class="fa-solid fa-check"></i></span>`;
-                        el.addEventListener('click', () => toggleSelect(m.id, url, title, alt));
+                        el.innerHTML = `<img src="${escAttr(url)}" alt="${escAttr(mediaAlt)}" loading="lazy"/><span class="vvc-cg-order"></span><span class="vvc-cg-tick"><i class="fa-solid fa-check"></i></span>`;
+                        // Caption/alt start EMPTY — user enters a custom caption for THIS gallery.
+                        // Reusing the same image in another gallery starts fresh too.
+                        el.addEventListener('click', () => toggleSelect(m.id, url, '', ''));
                         grid.appendChild(el);
                     });
                 }
@@ -3378,9 +3377,16 @@
 
         function toggleSelect(id, url, title, alt) {
             const idx = state.selected.findIndex(s => String(s.id) === String(id));
-            if (idx === -1) state.selected.push({ id, url, title, alt });
+            let justAdded = false;
+            if (idx === -1) { state.selected.push({ id, url, title, alt }); justAdded = true; }
             else state.selected.splice(idx, 1);
             refreshSelectionUI();
+            // Auto-focus the caption field for the newly added image so the user can type immediately
+            if (justAdded) {
+                const li = orgList.querySelector(`.vvc-cg-org-item[data-id="${CSS.escape(String(id))}"]`);
+                const inp = li && li.querySelector('.vvc-cg-f-title');
+                if (inp) { inp.focus(); inp.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+            }
         }
 
         function buildBlockHtml(items, ratio) {
