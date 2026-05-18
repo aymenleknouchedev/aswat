@@ -104,12 +104,9 @@
                                                 </select>
                                             </div>
                                             <!-- Buttons -->
-                                            <div class="col-12 col-md-6 col-lg-2 d-flex gap-1 align-items-center">
-                                                <button type="button" class="btn btn-sm btn-primary flex-grow-1" onclick="filterMedia()" title="تصفية">
-                                                    <em class="icon ni ni-filter me-1"></em><span>تصفية</span>
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearFilters()" title="إعادة التعيين">
-                                                    <em class="icon ni ni-undo"></em>
+                                            <div class="col-12 col-md-6 col-lg-2 d-flex align-items-center">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary w-100" onclick="clearFilters()" title="إعادة التعيين">
+                                                    <em class="icon ni ni-undo me-1"></em><span>إعادة تعيين</span>
                                                 </button>
                                             </div>
                                         </div>

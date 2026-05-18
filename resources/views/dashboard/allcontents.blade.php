@@ -38,19 +38,19 @@
                                 </div>
                             </div>
                             <!-- ================== FILTERS ================== -->
-                            <form action="{{ route('dashboard.contents.index') }}" method="GET" class="mb-3">
+                            <form id="contentsFilterForm" action="{{ route('dashboard.contents.index') }}" method="GET" class="mb-3">
                                 <div class="row g-2 align-items-center justify-content-center">
                                     <div class="col-12 col-md-6 col-lg-2">
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text bg-light text-muted">
                                                 <em class="icon ni ni-search"></em>
                                             </span>
-                                            <input type="text" name="search" class="form-control form-control-sm"
+                                            <input type="text" name="search" id="searchInput" class="form-control form-control-sm"
                                                 value="{{ request('search') }}" placeholder="بحث...">
                                         </div>
                                     </div>
                                     <div class="col-6 col-md-3 col-lg-2">
-                                        <select name="section" id="sectionFilter" class="form-select form-select-sm">
+                                        <select name="section" id="sectionFilter" class="form-select form-select-sm" onchange="document.getElementById('contentsFilterForm').submit()">
                                             <option value="">الأقسام</option>
                                             @foreach ($sections as $section)
                                                 <option value="{{ $section->id }}"
@@ -61,7 +61,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6 col-md-3 col-lg-2">
-                                        <select name="user" id="userFilter" class="form-select form-select-sm">
+                                        <select name="user" id="userFilter" class="form-select form-select-sm" onchange="document.getElementById('contentsFilterForm').submit()">
                                             <option value="">المحررون</option>
                                             @foreach ($users as $u)
                                                 <option value="{{ $u->id }}"
@@ -72,7 +72,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6 col-md-3 col-lg-2">
-                                        <select name="status" id="statusFilter" class="form-select form-select-sm">
+                                        <select name="status" id="statusFilter" class="form-select form-select-sm" onchange="document.getElementById('contentsFilterForm').submit()">
                                             <option value="">الحالات</option>
                                             <option value="published"
                                                 {{ request('status') == 'published' ? 'selected' : '' }}>
@@ -97,19 +97,35 @@
                                                 placeholder="التاريخ">
                                         </div>
                                     </div>
-                                    <!-- Buttons -->
-                                    <div
-                                        class="col-12 col-md-6 col-lg-2 d-flex gap-2 align-items-center justify-content-center">
-                                        <button class="btn btn-sm btn-primary flex-grow-1" type="submit">
-                                            <em class="icon ni ni-filter me-1"></em> تصفية
-                                        </button>
+                                    <!-- Reset only -->
+                                    <div class="col-12 col-md-6 col-lg-2 d-flex align-items-center">
                                         <a href="{{ route('dashboard.contents.index') }}"
-                                            class="btn btn-sm btn-outline-secondary">
-                                            <em class="icon ni ni-undo"></em>
+                                            class="btn btn-sm btn-outline-secondary w-100">
+                                            <em class="icon ni ni-undo me-1"></em><span>إعادة تعيين</span>
                                         </a>
                                     </div>
                                 </div>
                             </form>
+                            <script>
+                                (function () {
+                                    const form = document.getElementById('contentsFilterForm');
+                                    if (!form) return;
+                                    // Debounced auto-submit for search
+                                    const searchInput = document.getElementById('searchInput');
+                                    let t;
+                                    if (searchInput) {
+                                        searchInput.addEventListener('input', function () {
+                                            clearTimeout(t);
+                                            t = setTimeout(() => form.submit(), 500);
+                                        });
+                                    }
+                                    // Auto-submit when date range changes (flatpickr emits change on close)
+                                    const dateInput = document.getElementById('date_range');
+                                    if (dateInput) {
+                                        dateInput.addEventListener('change', function () { form.submit(); });
+                                    }
+                                })();
+                            </script>
                             <!-- ================== ALERTS ================== -->
                             @if (session('success'))
                                 <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
