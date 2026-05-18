@@ -574,7 +574,8 @@
             background-color: var(--bs-tertiary-bg);
         }
 
-        .btn-danger {
+        .image-preview-wrapper .btn-danger,
+        .delete-image-btn.btn-danger {
             width: 24px;
             height: 24px;
             border-radius: 50%;
