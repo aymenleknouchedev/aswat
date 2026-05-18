@@ -1367,10 +1367,10 @@ class ContentController extends BaseController
                 'action' => 'deleted',
             ]);
 
-            return redirect()->route('dashboard.contents.index')
+            return redirect(url()->previous() ?: route('dashboard.contents.index'))
                 ->with('success', 'Content deleted successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('dashboard.contents.index')
+            return redirect(url()->previous() ?: route('dashboard.contents.index'))
                 ->with('error', 'Failed to delete content: ' . $e->getMessage());
         }
     }

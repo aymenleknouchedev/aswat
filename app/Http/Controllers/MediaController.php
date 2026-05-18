@@ -105,7 +105,9 @@ class MediaController extends BaseController
                     'mediaGrid' => view('dashboard.partials.media-grid', compact('medias', 'getMediaTypeBadge', 'getMediaTypeLabel'))->render(),
                     'pagination' => $medias->appends($request->except('page'))->links()->toHtml(),
                     'resultsCount' => view('dashboard.partials.results-count', compact('medias'))->render(),
-                    'activeFilters' => view('dashboard.partials.active-filters', compact('getMediaTypeLabel', 'getSortLabel'))->render()
+                    'activeFilters' => view('dashboard.partials.active-filters', compact('getMediaTypeLabel', 'getSortLabel'))->render(),
+                    'currentPage' => $medias->currentPage(),
+                    'lastPage' => $medias->lastPage(),
                 ]);
             }
 
@@ -482,8 +484,7 @@ class MediaController extends BaseController
 
             // التحقق من أن الوسائط غير مرتبطة بأي محتوى
             if ($media->contents->isNotEmpty()) {
-                return redirect()
-                    ->route('dashboard.medias.index')
+                return redirect(url()->previous() ?: route('dashboard.medias.index'))
                     ->withErrors(['error' => 'لا يمكن حذف هذه الوسائط لأنها مرتبطة بمحتوى.']);
             }
 
@@ -502,12 +503,10 @@ class MediaController extends BaseController
             // حذف السجل من قاعدة البيانات
             $media->delete();
 
-            return redirect()
-                ->route('dashboard.medias.index')
+            return redirect(url()->previous() ?: route('dashboard.medias.index'))
                 ->with('success', 'تم حذف الوسائط بنجاح.');
         } catch (\Throwable $e) {
-            return redirect()
-                ->route('dashboard.medias.index')
+            return redirect(url()->previous() ?: route('dashboard.medias.index'))
                 ->withErrors(['error' => 'فشل حذف الوسائط. حاول مرة أخرى.']);
         }
     }

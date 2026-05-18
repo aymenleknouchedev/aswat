@@ -983,17 +983,39 @@
             loadMediaWithFilters();
         }
 
+        function initializePaginationAjax() {
+            document.querySelectorAll('#paginationContainer a').forEach(a => {
+                a.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (!href) return;
+                    e.preventDefault();
+                    const url = new URL(href, window.location.origin);
+                    const p = parseInt(url.searchParams.get('page') || '1', 10);
+                    loadMediaWithFilters({ page: isNaN(p) ? 1 : p });
+                });
+            });
+        }
+
+        function getCurrentPage() {
+            const params = new URLSearchParams(window.location.search);
+            const p = parseInt(params.get('page') || '1', 10);
+            return isNaN(p) || p < 1 ? 1 : p;
+        }
+
         // Load media with current filters
-        function loadMediaWithFilters() {
+        function loadMediaWithFilters(opts = {}) {
             // Show loading
             document.getElementById('loadingIndicator').style.display = 'block';
             document.getElementById('mediaGrid').classList.add('media-grid-loading');
+
+            const page = opts.page || 1;
 
             // Build query string
             const queryParams = new URLSearchParams();
             if (currentFilters.search) queryParams.append('search', currentFilters.search);
             if (currentFilters.type) queryParams.append('type', currentFilters.type);
             if (currentFilters.sort && currentFilters.sort !== 'newest') queryParams.append('sort', currentFilters.sort);
+            if (page > 1) queryParams.append('page', page);
 
             // Update URL without reloading page
             const newUrl = `${window.location.pathname}${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
@@ -1012,6 +1034,11 @@
                 })
                 .then(data => {
                     if (data.success) {
+                        // If requested page is past end, fall back to last page
+                        if (data.currentPage && data.lastPage && page > data.lastPage && data.lastPage >= 1) {
+                            return loadMediaWithFilters({ page: data.lastPage });
+                        }
+
                         // Update all sections
                         document.getElementById('mediaGrid').innerHTML = data.mediaGrid;
                         document.getElementById('paginationContainer').innerHTML = data.pagination;
@@ -1020,6 +1047,7 @@
 
                         // Re-initialize media interactions
                         initializeMediaInteractions();
+                        initializePaginationAjax();
                     } else {
                         throw new Error(data.error);
                     }
@@ -1378,6 +1406,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             initializeMediaInteractions();
             initializeEditForm(); // Initialize the edit form handler
+            initializePaginationAjax();
 
             // Show success/error messages from session
             @if (session('success'))
@@ -1453,7 +1482,8 @@
                     if (data.success) {
                         showAlert('success', data.message || 'تم الحذف', 'Deleted');
                         selectedMediaIds.clear();
-                        setTimeout(() => loadMediaWithFilters(), 800);
+                        const stayOnPage = getCurrentPage();
+                        setTimeout(() => loadMediaWithFilters({ page: stayOnPage }), 800);
                     } else {
                         showAlert('error', data.message || 'فشل الحذف', 'Delete failed');
                     }
