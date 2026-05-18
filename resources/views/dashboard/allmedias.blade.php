@@ -41,13 +41,6 @@
                                                                 </div>
                                                             </li>
                                                             <li class="nk-block-tools-opt">
-                                                                <button id="deleteUnusedBtn" class="btn btn-outline-danger"
-                                                                    data-bs-toggle="modal" data-bs-target="#deleteUnusedModal">
-                                                                    <em class="icon ni ni-trash-empty"></em>
-                                                                    <span>حذف غير المستخدم</span>
-                                                                </button>
-                                                            </li>
-                                                            <li class="nk-block-tools-opt">
                                                                 <button id="openMediaModal" class="btn btn-primary">
                                                                     <em class="icon ni ni-plus"></em>
                                                                     <span>رفع ملف</span>
@@ -326,41 +319,6 @@
                     </button>
                     <button type="button" class="btn btn-danger" id="confirmBulkDeleteBtn">
                         <em class="icon ni ni-trash me-1"></em><span>نعم، احذف</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Unused Media Confirmation Modal -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="deleteUnusedModal">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <em class="icon ni ni-alert-circle text-danger me-1"></em>
-                        حذف الوسائط غير المستخدمة
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="mb-2">
-                        سيتم حذف كل الوسائط غير المرتبطة بأي محتوى، مقال، أو ملف شخصي.
-                    </p>
-                    <div id="unusedCountWrap" class="text-muted">
-                        <em class="icon ni ni-loader"></em>
-                        <span>جاري حساب الوسائط غير المستخدمة...</span>
-                    </div>
-                    <p class="text-danger mt-2 mb-0 small">
-                        <em class="icon ni ni-info"></em> هذا الإجراء لا يمكن التراجع عنه.
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
-                        <em class="icon ni ni-cross me-1"></em><span>إلغاء</span>
-                    </button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteUnusedBtn">
-                        <em class="icon ni ni-trash me-1"></em><span>نعم، احذف الكل</span>
                     </button>
                 </div>
             </div>
@@ -1574,62 +1532,6 @@
                         const modalEl = document.getElementById('bulkDeleteModal');
                         const inst = bootstrap.Modal.getInstance(modalEl);
                         if (inst) inst.hide();
-                    });
-                });
-            }
-
-            // Delete unused media — fetch count on modal show, then perform delete
-            const deleteUnusedModalEl = document.getElementById('deleteUnusedModal');
-            const unusedCountWrap = document.getElementById('unusedCountWrap');
-            const confirmDeleteUnusedBtn = document.getElementById('confirmDeleteUnusedBtn');
-
-            if (deleteUnusedModalEl) {
-                deleteUnusedModalEl.addEventListener('show.bs.modal', function() {
-                    unusedCountWrap.innerHTML = '<em class="icon ni ni-loader"></em><span> جاري الحساب...</span>';
-                    confirmDeleteUnusedBtn.disabled = true;
-                    fetch("{{ route('dashboard.medias.unusedCount') }}", {
-                        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
-                    })
-                    .then(r => r.json())
-                    .then(data => {
-                        const n = (data && data.count) || 0;
-                        unusedCountWrap.innerHTML = `<strong>${n}</strong> <span>عنصر سيتم حذفه.</span>`;
-                        confirmDeleteUnusedBtn.disabled = n === 0;
-                    })
-                    .catch(() => {
-                        unusedCountWrap.innerHTML = '<span class="text-danger">تعذر حساب العدد.</span>';
-                    });
-                });
-            }
-
-            if (confirmDeleteUnusedBtn) {
-                confirmDeleteUnusedBtn.addEventListener('click', function() {
-                    const original = confirmDeleteUnusedBtn.innerHTML;
-                    confirmDeleteUnusedBtn.disabled = true;
-                    confirmDeleteUnusedBtn.innerHTML = '<em class="icon ni ni-loader"></em><span> جاري الحذف...</span>';
-                    const fd = new FormData();
-                    fd.append('_method', 'DELETE');
-                    fd.append('_token', '{{ csrf_token() }}');
-                    fetch("{{ route('dashboard.medias.deleteUnused') }}", {
-                        method: 'POST',
-                        body: fd,
-                        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
-                    })
-                    .then(r => r.json())
-                    .then(data => {
-                        if (data.success) {
-                            showAlert('success', data.message || 'تم الحذف', 'Deleted');
-                            const inst = bootstrap.Modal.getInstance(deleteUnusedModalEl);
-                            if (inst) inst.hide();
-                            setTimeout(() => loadMediaWithFilters({ page: getCurrentPage() }), 800);
-                        } else {
-                            showAlert('error', data.message || 'فشل الحذف', 'Delete failed');
-                        }
-                    })
-                    .catch(() => showAlert('error', 'فشل الحذف', 'Delete failed'))
-                    .finally(() => {
-                        confirmDeleteUnusedBtn.disabled = false;
-                        confirmDeleteUnusedBtn.innerHTML = original;
                     });
                 });
             }

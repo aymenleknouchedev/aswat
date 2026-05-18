@@ -113,8 +113,6 @@ Route::prefix('dashboard')->group(function () {
         Route::get('/readmore', [ContentController::class, 'readmore'])->name('dashboard.readmore');
         Route::delete('/contents/bulk-delete', [ContentController::class, 'bulkDestroy'])->name('dashboard.contents.bulkDestroy');
         Route::delete('/medias/bulk-delete', [MediaController::class, 'bulkDestroy'])->name('dashboard.medias.bulkDestroy');
-        Route::delete('/medias/delete-unused', [MediaController::class, 'deleteUnused'])->name('dashboard.medias.deleteUnused');
-        Route::get('/medias/unused-count', [MediaController::class, 'unusedCount'])->name('dashboard.medias.unusedCount');
         Route::get('/top-contents', [TopContentController::class, 'index'])->name('dashboard.topcontents');
         Route::get('/top-contents/search', [TopContentController::class, 'searchContents'])->name('dashboard.topcontents.search');
         Route::post('/top-contents/{id}', [TopContentController::class, 'store'])->name('dashboard.topcontents.store');
