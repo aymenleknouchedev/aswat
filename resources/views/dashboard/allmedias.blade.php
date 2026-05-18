@@ -113,14 +113,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Loading Indicator -->
-                                    <div id="loadingIndicator" class="text-center mb-3" style="display: none;">
-                                        <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                            <span class="visually-hidden">جاري التحميل...</span>
-                                        </div>
-                                        <span class="ms-2 text-muted">جاري التحميل...</span>
-                                    </div>
-
 
                                     <!-- Media Content Block -->
                                     <div class="nk-block">
@@ -1011,10 +1003,6 @@
 
         // Load media with current filters
         function loadMediaWithFilters(opts = {}) {
-            // Show loading
-            document.getElementById('loadingIndicator').style.display = 'block';
-            document.getElementById('mediaGrid').classList.add('media-grid-loading');
-
             const page = opts.page || 1;
 
             // Build query string
@@ -1065,10 +1053,6 @@
                     showAlert('error', 'حدث خطأ أثناء تحميل البيانات', 'An error occurred while loading data',
                         'يرجى المحاولة مرة أخرى.', 'Please try again.');
                 })
-                .finally(() => {
-                    document.getElementById('loadingIndicator').style.display = 'none';
-                    document.getElementById('mediaGrid').classList.remove('media-grid-loading');
-                });
         }
 
         // Bulk selection state
