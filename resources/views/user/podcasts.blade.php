@@ -245,9 +245,11 @@
                         @include('user.partials.podcast-items', ['otherPodcasts' => $otherPodcasts])
                     </div>
 
-                    <div class="text-center mt-3" id="load-more-container">
-                        <button class="podcasts-load-more-btn" data-page="1">المزيد</button>
-                    </div>
+                    @if (count($otherPodcasts) >= 9)
+                        <div class="text-center mt-3" id="load-more-container">
+                            <button class="podcasts-load-more-btn" data-page="1">المزيد</button>
+                        </div>
+                    @endif
                 </div>
                 <div class="podcasts-section-empty"></div>
             </div>
@@ -285,9 +287,11 @@
             </div>
 
             <!-- Mobile Load More button -->
-            <div class="text-center" id="mobile-load-more-container">
-                <button class="mobile-load-more-btn" data-page="1">المزيد</button>
-            </div>
+            @if (count($otherPodcasts) >= 9)
+                <div class="text-center" id="mobile-load-more-container">
+                    <button class="mobile-load-more-btn" data-page="1">المزيد</button>
+                </div>
+            @endif
 
             <!-- Mobile Footer -->
             @include('user.mobile.footer')

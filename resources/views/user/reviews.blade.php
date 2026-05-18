@@ -281,11 +281,13 @@
                             @include('user.partials.review-items', ['otherReviews' => $otherReviews])
                         </div>
                         {{-- Pagination Button --}}
-                        <div class="text-center mt-3" id="load-more-container">
-                            <button class="reviews-load-more-btn btn btn-primary" data-page="1">
-                                المزيد
-                            </button>
-                        </div>
+                        @if (count($otherReviews) >= 5)
+                            <div class="text-center mt-3" id="load-more-container">
+                                <button class="reviews-load-more-btn btn btn-primary" data-page="1">
+                                    المزيد
+                                </button>
+                            </div>
+                        @endif
                     @else
                         <div class="alert alert-info">
                             <p>لا توجد المزيد من الآراء.</p>
@@ -333,9 +335,11 @@
             </div>
 
             <!-- Mobile Load More button -->
-            <div class="text-center" id="mobile-load-more-container">
-                <button class="mobile-load-more-btn" data-page="1">المزيد</button>
-            </div>
+            @if (count($otherReviews) >= 5)
+                <div class="text-center" id="mobile-load-more-container">
+                    <button class="mobile-load-more-btn" data-page="1">المزيد</button>
+                </div>
+            @endif
 
             <!-- Mobile Footer -->
             @include('user.mobile.footer')

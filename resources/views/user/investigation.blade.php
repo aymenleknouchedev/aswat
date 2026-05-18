@@ -212,9 +212,11 @@
                         ])
                     </div>
 
-                    <div class="text-center mt-3" id="load-more-container">
-                        <button class="investigations-load-more-btn" data-page="1">المزيد</button>
-                    </div>
+                    @if (count($otherInvestigations) >= 9)
+                        <div class="text-center mt-3" id="load-more-container">
+                            <button class="investigations-load-more-btn" data-page="1">المزيد</button>
+                        </div>
+                    @endif
                 </div>
                 <div class="investigations-section-empty"></div>
             </div>
@@ -253,9 +255,11 @@
             </div>
 
             <!-- Mobile Load More button -->
-            <div class="text-center" id="mobile-load-more-container">
-                <button class="mobile-load-more-btn" data-page="1">المزيد</button>
-            </div>
+            @if (count($otherInvestigations) >= 9)
+                <div class="text-center" id="mobile-load-more-container">
+                    <button class="mobile-load-more-btn" data-page="1">المزيد</button>
+                </div>
+            @endif
 
             <!-- Mobile Footer -->
             @include('user.mobile.footer')

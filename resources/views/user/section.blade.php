@@ -900,12 +900,14 @@
                             @include('user.partials.section-items', ['moreContents' => $moreContents])
                         </div>
 
-                        <div class="text-center mt-3" id="load-more-container">
-                            <button class="photos-load-more-btn btn btn-primary" data-page="1"
-                                data-section="{{ $section ?? '' }}">
-                                المزيد
-                            </button>
-                        </div>
+                        @if (count($moreContents) >= 10)
+                            <div class="text-center mt-3" id="load-more-container">
+                                <button class="photos-load-more-btn btn btn-primary" data-page="1"
+                                    data-section="{{ $section ?? '' }}">
+                                    المزيد
+                                </button>
+                            </div>
+                        @endif
                     @else
                         <div class="alert alert-info">
                             <p>لا توجد المزيد من الأخبار في هذا القسم.</p>
@@ -1081,11 +1083,13 @@
             @endif
 
             <!-- Mobile Read More button -->
-            <div class="text-center mt-3" id="mobile-load-more-container">
-                <button class="mobile-load-more-btn btn btn-primary" data-page="1" data-section="{{ $section ?? '' }}">
-                    المزيد
-                </button>
-            </div>
+            @if (isset($moreContents) && count($moreContents) >= 10)
+                <div class="text-center mt-3" id="mobile-load-more-container">
+                    <button class="mobile-load-more-btn btn btn-primary" data-page="1" data-section="{{ $section ?? '' }}">
+                        المزيد
+                    </button>
+                </div>
+            @endif
 
 
             <!-- Readmore Section -->

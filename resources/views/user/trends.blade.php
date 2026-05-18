@@ -264,9 +264,11 @@
                     @endforeach
                 </div>
 
-                <div class="text-center mt-3" id="load-more-container">
-                    <button class="category-load-more-btn" data-page="1">المزيد</button>
-                </div>
+                @if (count($articles) >= 9)
+                    <div class="text-center mt-3" id="load-more-container">
+                        <button class="category-load-more-btn" data-page="1">المزيد</button>
+                    </div>
+                @endif
             </div>
 
             @include('user.components.sp60')
@@ -300,9 +302,11 @@
             </div>
 
             <!-- Mobile Load More button -->
-            <div class="text-center" id="mobile-load-more-container">
-                <button class="mobile-load-more-btn" data-page="1">المزيد</button>
-            </div>
+            @if (count($articles) >= 9)
+                <div class="text-center" id="mobile-load-more-container">
+                    <button class="mobile-load-more-btn" data-page="1">المزيد</button>
+                </div>
+            @endif
 
             <!-- Mobile Footer -->
             @include('user.mobile.footer')

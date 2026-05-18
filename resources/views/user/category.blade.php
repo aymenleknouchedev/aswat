@@ -266,9 +266,11 @@
                         </div>
                     @endforeach
 
-                    <div class="text-center mt-3" id="load-more-container">
-                        <button class="category-load-more-btn" data-page="1">المزيد</button>
-                    </div>
+                    @if (count($articles) >= 10)
+                        <div class="text-center mt-3" id="load-more-container">
+                            <button class="category-load-more-btn" data-page="1">المزيد</button>
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Right: الأكثر قراءة -->
@@ -308,12 +310,14 @@
             </div>
 
             <!-- Mobile Load More button -->
-            <div class="text-center mt-3" id="mobile-load-more-container">
-                <button class="mobile-load-more-btn btn btn-primary" data-page="1" data-current-id="{{ $current_id }}"
-                    data-type="{{ $type }}">
-                    المزيد
-                </button>
-            </div>
+            @if (count($articles) >= 10)
+                <div class="text-center mt-3" id="mobile-load-more-container">
+                    <button class="mobile-load-more-btn btn btn-primary" data-page="1" data-current-id="{{ $current_id }}"
+                        data-type="{{ $type }}">
+                        المزيد
+                    </button>
+                </div>
+            @endif
 
             <!-- Mobile Footer -->
             @include('user.mobile.footer')

@@ -245,9 +245,11 @@
                         @include('user.partials.photo-items', ['otherPhotos' => $otherPhotos])
                     </div>
 
-                    <div class="text-center mt-3" id="load-more-container">
-                        <button class="photos-load-more-btn" data-page="1">المزيد</button>
-                    </div>
+                    @if (count($otherPhotos) >= 9)
+                        <div class="text-center mt-3" id="load-more-container">
+                            <button class="photos-load-more-btn" data-page="1">المزيد</button>
+                        </div>
+                    @endif
                 </div>
                 <div class="photos-section-empty"></div>
             </div>
@@ -285,9 +287,11 @@
             </div>
 
             <!-- Mobile Load More button -->
-            <div class="text-center" id="mobile-load-more-container">
-                <button class="mobile-load-more-btn" data-page="1">المزيد</button>
-            </div>
+            @if (count($otherPhotos) >= 9)
+                <div class="text-center" id="mobile-load-more-container">
+                    <button class="mobile-load-more-btn" data-page="1">المزيد</button>
+                </div>
+            @endif
 
             <!-- Mobile Footer -->
             @include('user.mobile.footer')

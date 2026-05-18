@@ -211,9 +211,11 @@
                         @include('user.partials.file-items', ['otherFiles' => $otherFiles])
                     </div>
 
-                    <div class="text-center mt-3" id="load-more-container">
-                        <button class="files-load-more-btn" data-page="1">المزيد</button>
-                    </div>
+                    @if (count($otherFiles) >= 9)
+                        <div class="text-center mt-3" id="load-more-container">
+                            <button class="files-load-more-btn" data-page="1">المزيد</button>
+                        </div>
+                    @endif
                 </div>
                 <div class="files-section-empty"></div>
             </div>
@@ -251,9 +253,11 @@
             </div>
 
             <!-- Mobile Load More button -->
-            <div class="text-center" id="mobile-load-more-container">
-                <button class="mobile-load-more-btn" data-page="1">المزيد</button>
-            </div>
+            @if (count($otherFiles) >= 9)
+                <div class="text-center" id="mobile-load-more-container">
+                    <button class="mobile-load-more-btn" data-page="1">المزيد</button>
+                </div>
+            @endif
 
             <!-- Mobile Footer -->
             @include('user.mobile.footer')

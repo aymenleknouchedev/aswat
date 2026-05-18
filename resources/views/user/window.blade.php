@@ -158,9 +158,11 @@
                 </div>
             </div>
 
-            <div class="text-center mt-3" id="load-more-container">
-                <button class="window-load-more-btn" data-page="1">المزيد</button>
-            </div>
+            @if (count($windows) >= 9)
+                <div class="text-center mt-3" id="load-more-container">
+                    <button class="window-load-more-btn" data-page="1">المزيد</button>
+                </div>
+            @endif
 
             <style>
                 .window-load-more-btn {
