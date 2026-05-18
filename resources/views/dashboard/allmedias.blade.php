@@ -121,12 +121,6 @@
                                         <span class="ms-2 text-muted">جاري التحميل...</span>
                                     </div>
 
-                                    <!-- Active Filters -->
-                                    <div id="activeFilters" class="mb-3">
-                                        @include(
-                                            'dashboard.partials.active-filters',
-                                            compact('getMediaTypeLabel', 'getSortLabel'))
-                                    </div>
 
                                     <!-- Media Content Block -->
                                     <div class="nk-block">
@@ -1058,7 +1052,6 @@
                         document.getElementById('mediaGrid').innerHTML = data.mediaGrid;
                         document.getElementById('paginationContainer').innerHTML = data.pagination;
                         document.getElementById('resultsCount').innerHTML = data.resultsCount;
-                        document.getElementById('activeFilters').innerHTML = data.activeFilters;
 
                         // Re-initialize media interactions
                         initializeMediaInteractions();
