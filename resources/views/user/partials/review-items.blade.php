@@ -1,9 +1,15 @@
 @foreach ($otherReviews as $index => $review)
+    @php
+        $reviewWriter = $review->writers()->first();
+        $writerImage = $reviewWriter && $reviewWriter->image
+            ? $reviewWriter->image
+            : asset('user/assets/images/b2.jpeg');
+    @endphp
     <div class="custom-card">
         <div class="custom-image">
-            <a href="{{ route('news.show', $review->shortlink) }}">
-                <img loading="lazy" decoding="async" src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
-                    alt="خبر">
+            <a href="{{ $reviewWriter ? route('writer.show', $reviewWriter->id) : route('news.show', $review->shortlink) }}">
+                <img loading="lazy" decoding="async" src="{{ $writerImage }}"
+                    alt="{{ $reviewWriter->name ?? 'كاتب' }}">
             </a>
         </div>
         <div class="custom-texts">
@@ -13,13 +19,10 @@
 
                 <span>{{ $review->summary }}</span>
 
-                @php
-                    $writer = $review->writers()->first();
-                @endphp
-                @if($writer)
+                @if($reviewWriter)
                     <div style="margin-top: 10px; font-size: 16px; font-family: asswat-medium; color: #555;">
-                        <a href="{{ route('writer.show', $writer->id) }}" style="color: inherit; text-decoration: none;">
-                            {{ $writer->name }}
+                        <a href="{{ route('writer.show', $reviewWriter->id) }}" style="color: inherit; text-decoration: none;">
+                            {{ $reviewWriter->name }}
                         </a>
                     </div>
                 @endif

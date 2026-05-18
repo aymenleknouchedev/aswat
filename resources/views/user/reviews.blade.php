@@ -246,27 +246,24 @@
                         <div class="custom-image-wrapper">
                             <img loading="lazy" decoding="async" src="{{ $reviews[0]->media()->wherePivot('type', 'main')->first()->path ?? './user/assets/images/placeholder.jpg' }}"
                                 alt="{{ $reviews[0]->title ?? 'رأي مميز' }}">
-                            <div class="custom-corner-icon">
-                                @include('user.icons.image')
-                            </div>
                         </div>
                     </a>
                     <div class="custom-content">
                         @php
                             $featuredWriter = $reviews[0]->writers()->first();
                         @endphp
-                        @if ($featuredWriter)
-                            <h3 class="review-writer">
-                                <a href="{{ route('writer.show', $featuredWriter->id) }}">
-                                    {{ $featuredWriter->name }}
-                                </a>
-                            </h3>
-                        @endif
                         <a href="{{ route('news.show', $reviews[0]->shortlink ?? '') }}"
                             style="text-decoration: none; color: inherit;">
                             <h2>{{ $reviews[0]->title ?? 'عنوان الرأي' }}</h2>
                         </a>
                         <p>{{ $reviews[0]->summary ?? 'ملخص الرأي' }}</p>
+                        @if ($featuredWriter)
+                            <div style="margin-top: 10px; font-size: 16px; font-family: asswat-medium; color: #555;">
+                                <a href="{{ route('writer.show', $featuredWriter->id) }}" style="color: inherit; text-decoration: none;">
+                                    {{ $featuredWriter->name }}
+                                </a>
+                            </div>
+                        @endif
                     </div>
                 </div>
             @else

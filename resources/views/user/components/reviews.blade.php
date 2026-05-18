@@ -92,11 +92,16 @@
                 @php
                     $firstWriter = $review->writers->first();
                 @endphp
+                @php
+                    $writerImage = $firstWriter && $firstWriter->image
+                        ? $firstWriter->image
+                        : asset('user/assets/images/b2.jpeg');
+                @endphp
                 <div class="review-card">
                     <div class="review-card-image">
-                        <a href="{{ route('news.show', $review->shortlink) }}">
-                            <img loading="lazy" decoding="async" src="{{ $review->media()->wherePivot('type', 'main')->first()->path ?? asset('user/assets/images/b2.jpeg') }}"
-                                alt="خبر">
+                        <a href="{{ $firstWriter ? route('writer.show', $firstWriter->id) : route('news.show', $review->shortlink) }}">
+                            <img loading="lazy" decoding="async" src="{{ $writerImage }}"
+                                alt="{{ $firstWriter->name ?? 'كاتب' }}">
                         </a>
                     </div>
                     <div class="review-card-text">
