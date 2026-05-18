@@ -519,6 +519,50 @@ class MediaController extends BaseController
         }
     }
 
+    public function unusedCount()
+    {
+        try {
+            $count = ContentMedia::query()->get()->filter(fn ($m) => !$m->isReferenced())->count();
+            return response()->json(['success' => true, 'count' => $count]);
+        } catch (\Throwable $e) {
+            return response()->json(['success' => false, 'count' => 0], 500);
+        }
+    }
+
+    public function deleteUnused(Request $request)
+    {
+        try {
+            $deleted = 0;
+            ContentMedia::query()->chunkById(200, function ($chunk) use (&$deleted) {
+                foreach ($chunk as $media) {
+                    if ($media->isReferenced()) {
+                        continue;
+                    }
+
+                    if (str_starts_with($media->path, '/storage/') || str_contains($media->path, '/storage/')) {
+                        $filePath = preg_replace('#^.*?/storage/#', '', $media->path);
+                        $filePath = str_replace('\\', '/', $filePath);
+                        if (Storage::disk('public')->exists($filePath)) {
+                            Storage::disk('public')->delete($filePath);
+                        }
+                    }
+
+                    $media->delete();
+                    $deleted++;
+                }
+            });
+
+            return response()->json([
+                'success' => true,
+                'deleted' => $deleted,
+                'message' => "تم حذف {$deleted} وسيطة غير مستخدمة.",
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Delete unused media failed: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'فشل حذف الوسائط غير المستخدمة.'], 500);
+        }
+    }
+
     public function bulkDestroy(Request $request)
     {
         $request->validate([
