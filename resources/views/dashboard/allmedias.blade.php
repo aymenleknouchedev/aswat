@@ -111,9 +111,9 @@
                                                 </select>
                                             </div>
                                             <!-- Buttons -->
-                                            <div class="col-12 col-md-6 col-lg-3 d-flex gap-2 align-items-center justify-content-center">
-                                                <button type="button" class="btn btn-sm btn-primary flex-grow-1" onclick="filterMedia()">
-                                                    <em class="icon ni ni-filter me-1"></em> تصفية
+                                            <div class="col-12 col-md-6 col-lg-2 d-flex gap-1 align-items-center">
+                                                <button type="button" class="btn btn-sm btn-primary flex-grow-1" onclick="filterMedia()" title="تصفية">
+                                                    <em class="icon ni ni-filter me-1"></em><span>تصفية</span>
                                                 </button>
                                                 <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearFilters()" title="إعادة التعيين">
                                                     <em class="icon ni ni-undo"></em>
@@ -755,6 +755,17 @@
             padding-right: 0.5rem !important;
         }
         #mediaSearchForm .row { align-items: stretch; }
+        #mediaSearchForm .btn {
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
+            white-space: nowrap;
+        }
+        #mediaSearchForm .btn-outline-secondary {
+            flex: 0 0 auto;
+            width: 34px;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
 
         /* Bulk Actions Bar — alignment only */
         .bulk-bar {
