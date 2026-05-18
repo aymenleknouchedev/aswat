@@ -53,77 +53,63 @@
                                         </div>
                                     </div>
 
-                                    <!-- Search and Filter Section -->
-                                    <div class="nk-block">
-                                        <div class="card card-bordered filter-card">
-                                            <div class="card-inner">
-                                                <div id="mediaSearchForm" class="filter-bar">
-                                                    <div class="filter-field filter-search">
-                                                        <label class="filter-label" for="searchQuery">
-                                                            <em class="icon ni ni-search"></em><span>بحث</span>
-                                                        </label>
-                                                        <div class="form-control-wrap">
-                                                            <div class="form-icon form-icon-left">
-                                                                <em class="icon ni ni-search"></em>
-                                                            </div>
-                                                            <input type="text" class="form-control"
-                                                                id="searchQuery" name="search"
-                                                                placeholder="ابحث بالاسم أو النص البديل..."
-                                                                value="{{ request('search') }}"
-                                                                onkeyup="debounceFilter()">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="filter-field">
-                                                        <label class="filter-label" for="mediaType">
-                                                            <em class="icon ni ni-filter"></em><span>نوع الوسائط</span>
-                                                        </label>
-                                                        <select class="form-select" id="mediaType" name="type" onchange="filterMedia()">
-                                                            <option value="">جميع الأنواع</option>
-                                                            <option value="image"    {{ request('type') == 'image' ? 'selected' : '' }}>صور</option>
-                                                            <option value="video"    {{ request('type') == 'video' ? 'selected' : '' }}>فيديو</option>
-                                                            <option value="voice"    {{ request('type') == 'voice' ? 'selected' : '' }}>صوت</option>
-                                                            <option value="document" {{ request('type') == 'document' ? 'selected' : '' }}>مستندات</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="filter-field">
-                                                        <label class="filter-label" for="sortBy">
-                                                            <em class="icon ni ni-sort"></em><span>ترتيب حسب</span>
-                                                        </label>
-                                                        <select class="form-select" id="sortBy" name="sort" onchange="filterMedia()">
-                                                            <option value="newest"    {{ request('sort') == 'newest' ? 'selected' : '' }}>الأحدث أولاً</option>
-                                                            <option value="oldest"    {{ request('sort') == 'oldest' ? 'selected' : '' }}>الأقدم أولاً</option>
-                                                            <option value="name_asc"  {{ request('sort') == 'name_asc' ? 'selected' : '' }}>الاسم (أ-ي)</option>
-                                                            <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>الاسم (ي-أ)</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="filter-field filter-action">
-                                                        <span class="filter-label">&nbsp;</span>
-                                                        <button type="button" class="btn btn-outline-danger w-100" onclick="clearFilters()">
-                                                            <em class="icon ni ni-trash me-1"></em><span>مسح الكل</span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Loading Indicator -->
-                                                <div id="loadingIndicator" class="text-center mt-4" style="display: none;">
-                                                    <div class="spinner-border spinner-border-sm text-primary"
-                                                        role="status">
-                                                        <span class="visually-hidden">جاري التحميل...</span>
-                                                    </div>
-                                                    <p class="mt-2 text-muted">جاري التحميل...</p>
-                                                </div>
-
-                                                <!-- Active Filters -->
-                                                <div id="activeFilters" class="mt-3">
-                                                    @include(
-                                                        'dashboard.partials.active-filters',
-                                                        compact('getMediaTypeLabel', 'getSortLabel'))
+                                    <!-- ================== FILTERS ================== -->
+                                    <div id="mediaSearchForm" class="mb-3">
+                                        <div class="row g-2 align-items-center justify-content-center">
+                                            <div class="col-12 col-md-6 col-lg-4">
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-text bg-light text-muted">
+                                                        <em class="icon ni ni-search"></em>
+                                                    </span>
+                                                    <input type="text" id="searchQuery" name="search"
+                                                        class="form-control form-control-sm"
+                                                        value="{{ request('search') }}"
+                                                        placeholder="ابحث بالاسم أو النص البديل..."
+                                                        onkeyup="debounceFilter()">
                                                 </div>
                                             </div>
+                                            <div class="col-6 col-md-3 col-lg-2">
+                                                <select id="mediaType" name="type" class="form-select form-select-sm" onchange="filterMedia()">
+                                                    <option value="">جميع الأنواع</option>
+                                                    <option value="image"    {{ request('type') == 'image' ? 'selected' : '' }}>صور</option>
+                                                    <option value="video"    {{ request('type') == 'video' ? 'selected' : '' }}>فيديو</option>
+                                                    <option value="voice"    {{ request('type') == 'voice' ? 'selected' : '' }}>صوت</option>
+                                                    <option value="document" {{ request('type') == 'document' ? 'selected' : '' }}>مستندات</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-6 col-md-3 col-lg-3">
+                                                <select id="sortBy" name="sort" class="form-select form-select-sm" onchange="filterMedia()">
+                                                    <option value="newest"    {{ request('sort') == 'newest' ? 'selected' : '' }}>الأحدث أولاً</option>
+                                                    <option value="oldest"    {{ request('sort') == 'oldest' ? 'selected' : '' }}>الأقدم أولاً</option>
+                                                    <option value="name_asc"  {{ request('sort') == 'name_asc' ? 'selected' : '' }}>الاسم (أ-ي)</option>
+                                                    <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>الاسم (ي-أ)</option>
+                                                </select>
+                                            </div>
+                                            <!-- Buttons -->
+                                            <div class="col-12 col-md-6 col-lg-3 d-flex gap-2 align-items-center justify-content-center">
+                                                <button type="button" class="btn btn-sm btn-primary flex-grow-1" onclick="filterMedia()">
+                                                    <em class="icon ni ni-filter me-1"></em> تصفية
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearFilters()" title="إعادة التعيين">
+                                                    <em class="icon ni ni-undo"></em>
+                                                </button>
+                                            </div>
                                         </div>
+                                    </div>
+
+                                    <!-- Loading Indicator -->
+                                    <div id="loadingIndicator" class="text-center mb-3" style="display: none;">
+                                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                            <span class="visually-hidden">جاري التحميل...</span>
+                                        </div>
+                                        <span class="ms-2 text-muted">جاري التحميل...</span>
+                                    </div>
+
+                                    <!-- Active Filters -->
+                                    <div id="activeFilters" class="mb-3">
+                                        @include(
+                                            'dashboard.partials.active-filters',
+                                            compact('getMediaTypeLabel', 'getSortLabel'))
                                     </div>
 
                                     <!-- Media Content Block -->
@@ -690,38 +676,25 @@
             gap: 1rem;
         }
 
-        /* Filter Bar — CSS grid for perfect alignment */
-        .filter-card .card-inner { padding: 1.25rem 1.5rem; }
-        .filter-bar {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr auto;
-            gap: 1rem;
-            align-items: end;
+        /* Force all filter controls to the exact same height */
+        #mediaSearchForm .form-control,
+        #mediaSearchForm .form-select,
+        #mediaSearchForm .input-group-text,
+        #mediaSearchForm .btn {
+            height: 34px !important;
+            min-height: 34px !important;
+            padding-top: 0.25rem !important;
+            padding-bottom: 0.25rem !important;
+            font-size: 0.8125rem !important;
+            line-height: 1.4 !important;
+            box-sizing: border-box;
         }
-        .filter-field { display: flex; flex-direction: column; min-width: 0; }
-        .filter-label {
-            display: inline-flex;
-            align-items: center;
-            font-size: 0.8125rem;
-            font-weight: 500;
-            color: #364a63;
-            margin-bottom: 0.5rem;
-            min-height: 18px;
+        #mediaSearchForm .input-group { flex-wrap: nowrap; }
+        #mediaSearchForm .input-group-text {
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
         }
-        .filter-label em { margin-left: 0.4rem; color: #6576ff; font-size: 0.95rem; }
-        .filter-field .form-control,
-        .filter-field .form-select { height: 42px; }
-        .filter-field .btn { height: 42px; min-width: 130px; display: inline-flex; align-items: center; justify-content: center; }
-        @media (max-width: 991px) {
-            .filter-bar {
-                grid-template-columns: 1fr 1fr;
-            }
-            .filter-search { grid-column: 1 / -1; }
-            .filter-action { grid-column: 1 / -1; }
-        }
-        @media (max-width: 575px) {
-            .filter-bar { grid-template-columns: 1fr; }
-        }
+        #mediaSearchForm .row { align-items: stretch; }
 
         /* Bulk Actions Bar — alignment only */
         .bulk-bar {
