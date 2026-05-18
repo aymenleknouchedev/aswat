@@ -493,7 +493,7 @@ class MediaController extends BaseController
             // التحقق من أن الوسائط غير مرتبطة بأي محتوى أو مستخدمة داخل مقال
             if ($media->isReferenced()) {
                 return redirect(url()->previous() ?: route('dashboard.medias.index'))
-                    ->withErrors(['error' => 'لا يمكن حذف هذه الوسائط لأنها مرتبطة بمحتوى أو مستخدمة داخل مقال.']);
+                    ->withErrors(['error' => 'لا يمكن حذف هذه الوسائط لأنها مستخدمة (في محتوى، مقال، أو ملف شخصي).']);
             }
 
             // حذف الملف من التخزين إذا كان ملف محلي وليس رابط خارجي

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Content;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,8 +46,10 @@ class ContentMedia extends Model
     
 
     /**
-     * Is this media referenced anywhere? (pivot, article body, share image)
-     * Used to decide whether the delete button is enabled.
+     * Is this media referenced anywhere? Checks:
+     *  - media_content pivot (article cover / mobile / detail / social)
+     *  - article body and share image
+     *  - users.image, writers.image, trends.image, windows.image
      */
     public function isReferenced(): bool
     {
@@ -59,23 +62,51 @@ class ContentMedia extends Model
             return false;
         }
 
-        // Match the bare path (without scheme/host) too, so both relative and
-        // absolute embeds count as a reference.
-        $candidates = collect([$needle]);
+        // Both absolute URL and bare path (without scheme/host) should count.
+        $candidates = [$needle];
         $parsed = parse_url($needle, PHP_URL_PATH);
-        if ($parsed) {
-            $candidates->push($parsed);
+        if ($parsed && $parsed !== $needle) {
+            $candidates[] = $parsed;
+        }
+        // Also match by basename in case profile images are stored without a path prefix.
+        $basename = basename($parsed ?: $needle);
+        if ($basename && !in_array($basename, $candidates, true)) {
+            $candidates[] = $basename;
         }
 
-        return Content::query()
-            ->where(function ($q) use ($candidates) {
-                foreach ($candidates as $c) {
-                    $like = '%' . addcslashes($c, '\\%_') . '%';
-                    $q->orWhere('content', 'like', $like)
-                      ->orWhere('share_image', 'like', $like);
+        $likes = array_map(fn ($c) => '%' . addcslashes($c, '\\%_') . '%', $candidates);
+
+        // Articles: content body + share image
+        $hit = Content::query()->where(function ($q) use ($likes) {
+            foreach ($likes as $like) {
+                $q->orWhere('content', 'like', $like)
+                  ->orWhere('share_image', 'like', $like);
+            }
+        })->exists();
+        if ($hit) return true;
+
+        // Single-column lookups across user/writer/trend/window image fields.
+        $tables = [
+            ['table' => 'users',    'col' => 'image'],
+            ['table' => 'writers',  'col' => 'image'],
+            ['table' => 'trends',   'col' => 'image'],
+            ['table' => 'windows',  'col' => 'image'],
+        ];
+
+        foreach ($tables as $t) {
+            $q = DB::table($t['table'])->where(function ($q) use ($t, $likes, $candidates) {
+                foreach ($likes as $like) {
+                    $q->orWhere($t['col'], 'like', $like);
                 }
-            })
-            ->exists();
+                // Exact match too (covers stored-as-basename case)
+                foreach ($candidates as $c) {
+                    $q->orWhere($t['col'], $c);
+                }
+            });
+            if ($q->exists()) return true;
+        }
+
+        return false;
     }
 
     /**
