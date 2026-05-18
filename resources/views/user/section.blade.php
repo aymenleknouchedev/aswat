@@ -907,6 +907,8 @@
                                     المزيد
                                 </button>
                             </div>
+                        @else
+                            <div style="height: 60px;"></div>
                         @endif
                     @else
                         <div class="alert alert-info">
@@ -1089,6 +1091,8 @@
                         المزيد
                     </button>
                 </div>
+            @else
+                <div style="height: 40px;"></div>
             @endif
 
 

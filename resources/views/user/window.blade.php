@@ -162,6 +162,8 @@
                 <div class="text-center mt-3" id="load-more-container">
                     <button class="window-load-more-btn" data-page="1">المزيد</button>
                 </div>
+            @else
+                <div style="height: 60px;"></div>
             @endif
 
             <style>

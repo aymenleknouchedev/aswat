@@ -215,6 +215,8 @@
                         <div class="text-center mt-3" id="load-more-container">
                             <button class="files-load-more-btn" data-page="1">المزيد</button>
                         </div>
+                    @else
+                        <div style="height: 60px;"></div>
                     @endif
                 </div>
                 <div class="files-section-empty"></div>
@@ -257,6 +259,8 @@
                 <div class="text-center" id="mobile-load-more-container">
                     <button class="mobile-load-more-btn" data-page="1">المزيد</button>
                 </div>
+            @else
+                <div style="height: 40px;"></div>
             @endif
 
             <!-- Mobile Footer -->
