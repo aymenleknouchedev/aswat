@@ -282,6 +282,15 @@
                 </div>
             </div>
 
+            <!-- Mobile Load More button -->
+            @if (isset($totalResults) && isset($perPage) && $totalResults > count($results))
+                <div class="text-center mt-3" id="mobile-search-load-more-container">
+                    <button class="mobile-load-more-btn btn btn-primary" data-page="1">المزيد</button>
+                </div>
+            @else
+                <div style="height: 40px;"></div>
+            @endif
+
             <!-- Mobile Footer -->
             @include('user.mobile.footer')
 
@@ -315,6 +324,45 @@
         if (window.innerWidth <= 992) {
             initializeGreybarScroll();
         }
+    });
+
+    // Mobile load more (search)
+    let mobileSearchLoading = false;
+    document.addEventListener("click", async function(e) {
+        const btn = e.target.closest('#mobile-search-load-more-container .mobile-load-more-btn');
+        if (!btn) return;
+        if (mobileSearchLoading) return;
+        e.preventDefault();
+
+        let page = parseInt(btn.getAttribute("data-page")) + 1;
+        mobileSearchLoading = true;
+        btn.disabled = true;
+        btn.textContent = "جاري التحميل...";
+
+        try {
+            const params = new URLSearchParams(window.location.search);
+            params.set('page', String(page));
+            params.set('view', 'mobile');
+            const resp = await fetch(`{{ route('search') }}?${params.toString()}`, {
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            });
+            if (!resp.ok) throw new Error("خطأ في السيرفر");
+            const trimmed = (await resp.text()).trim();
+            if (!trimmed) {
+                btn.closest("#mobile-search-load-more-container")?.remove();
+            } else {
+                const list = document.getElementById("mobile-search-container");
+                if (list) list.insertAdjacentHTML("beforeend", trimmed);
+                btn.setAttribute("data-page", page);
+                btn.disabled = false;
+                btn.textContent = "المزيد";
+            }
+        } catch (err) {
+            alert("خطأ في تحميل المزيد");
+            btn.disabled = false;
+            btn.textContent = "المزيد";
+        }
+        mobileSearchLoading = false;
     });
 </script>
 

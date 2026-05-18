@@ -49,7 +49,7 @@
         </div>
 
         @php($writer = $item->writers()->first())
-        <div style="display: flex; margin-right: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
+        <div style="display: flex; margin-top: 8px; margin-right: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
             @if($writer)
                 <a href="{{ route('writer.show', $writer->id) }}">
                     {{ $writer->name }}

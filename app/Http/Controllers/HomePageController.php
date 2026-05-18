@@ -35,21 +35,34 @@ class HomePageController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
+        $perPage = 10;
+        $page = (int) $request->get('page', 1);
+        $skip = ($page - 1) * $perPage;
 
         $results = collect();
+        $totalResults = 0;
 
         if ($query) {
-            $results = Content::where('status', 'published')
+            $base = Content::where('status', 'published')
                 ->where(function ($q) use ($query) {
                     $q->where('title', 'like', '%' . $query . '%')
                         ->orWhere('summary', 'like', '%' . $query . '%');
                 })
-                ->orderByDesc('published_date')
-                ->take(20)
-                ->get();
+                ->orderByDesc('published_date');
+
+            $totalResults = (clone $base)->count();
+            $results = $base->skip($skip)->take($perPage)->get();
         }
 
-        return view('user.search', compact('query', 'results'));
+        if ($request->ajax() && $request->query('view') === 'mobile') {
+            $html = '';
+            foreach ($results as $item) {
+                $html .= view('user.mobile.item', compact('item'))->render();
+            }
+            return $html;
+        }
+
+        return view('user.search', compact('query', 'results', 'totalResults', 'perPage'));
     }
 
     public function contactUs()
@@ -298,6 +311,13 @@ class HomePageController extends Controller
             ->get();
 
         if ($request->ajax()) {
+            if ($request->query('view') === 'mobile') {
+                $html = '';
+                foreach ($latestContents as $item) {
+                    $html .= view('user.mobile.item', compact('item'))->render();
+                }
+                return $html;
+            }
             return view('user.partials.latest-news-items', compact('latestContents'))->render();
         }
 
