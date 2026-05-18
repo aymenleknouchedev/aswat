@@ -1,36 +1,47 @@
 <style>
+    /* Unified mobile list styling — no separator lines, consistent spacing */
+    .mobile-simple-ul {
+        list-style: none !important;
+        margin: 0 !important;
+        padding: 0 16px 12px !important;
+    }
+    .mobile-simple-item,
+    .mobile-simple-item + .mobile-simple-item {
+        border: 0 !important;
+        border-top: 0 !important;
+        border-bottom: 0 !important;
+        background: transparent !important;
+    }
     .mobile-more-link {
-        display: flex;
-        flex-direction: column;
-        padding: 24px 0 8px 0;
-        text-decoration: none;
-        color: inherit;
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 20px 0 !important;
+        text-decoration: none !important;
+        color: inherit !important;
     }
-
     .mobile-more-link .ms-thumb {
-        width: 100%;
+        width: 100% !important;
     }
-
     .mobile-more-link .ms-thumb img {
-        width: 100%;
-        aspect-ratio: 16/9;
-        object-fit: cover;
-        display: block;
+        width: 100% !important;
+        aspect-ratio: 16/9 !important;
+        object-fit: cover !important;
+        display: block !important;
+        border-radius: 4px;
     }
-
     .mobile-more-link .ms-text {
-        display: flex;
-        flex-direction: column;
-        padding-top: 8px;
+        display: flex !important;
+        flex-direction: column !important;
+        padding-top: 10px !important;
+        gap: 6px;
     }
-
     .ms-title {
-        margin: 0;
-        font-size: 20px;
-        font-weight: 800;
-        line-height: 1.35;
-        color: #000;
-        font-family: 'asswat-bold';
+        margin: 0 !important;
+        font-size: 20px !important;
+        font-weight: 800 !important;
+        line-height: 1.35 !important;
+        color: #000 !important;
+        font-family: 'asswat-bold' !important;
     }
 </style>
 <li class="mobile-simple-item">
