@@ -15,7 +15,7 @@
     .mobile-more-link {
         display: flex !important;
         flex-direction: column !important;
-        padding: 20px 0 !important;
+        padding: 10px 0 !important;
         text-decoration: none !important;
         color: inherit !important;
     }
@@ -30,9 +30,10 @@
     .mobile-more-link .ms-text {
         display: flex !important;
         flex-direction: column !important;
-        padding-top: 10px !important;
-        gap: 6px;
+        padding-top: 8px !important;
+        gap: 8px !important;
     }
+    .mobile-more-link .ms-text > * { margin: 0 !important; }
     .ms-title {
         margin: 0 !important;
         font-size: 20px !important;

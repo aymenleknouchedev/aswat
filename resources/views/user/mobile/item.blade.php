@@ -15,7 +15,7 @@
     .mobile-more-link {
         display: flex !important;
         flex-direction: column !important;
-        padding: 20px 0 !important;
+        padding: 10px 0 !important;
         text-decoration: none !important;
         color: inherit !important;
     }
@@ -32,9 +32,10 @@
     .mobile-more-link .ms-text {
         display: flex !important;
         flex-direction: column !important;
-        padding-top: 10px !important;
-        gap: 6px;
+        padding-top: 8px !important;
+        gap: 8px !important;
     }
+    .mobile-more-link .ms-text > * { margin: 0 !important; }
     .ms-title {
         margin: 0 !important;
         font-size: 20px !important;
@@ -56,41 +57,41 @@
             />
         </div>
 
-        <div
-            style="display: flex; margin-top: 8px; margin-right: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
-            @if ($item->category && $item->country)
-                <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}'; event.stopPropagation();">
-                    {{ $item->category->name ?? '' }}
-                </span>
-                <span style="margin-right: 4px; margin-left: 4px;">-</span>
-                <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->country->id, 'type' => 'Country']) }}'; event.stopPropagation();">
-                    {{ $item->country->name ?? '' }}
-                </span>
-            @elseif ($item->category && $item->continent)
-                <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}'; event.stopPropagation();">
-                    {{ $item->category->name ?? '' }}
-                </span>
-                <span style="margin-right: 4px; margin-left: 4px;">-</span>
-                <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->continent->id, 'type' => 'Continent']) }}'; event.stopPropagation();">
-                    {{ $item->continent->name ?? '' }}
-                </span>
-            @elseif ($item->category)
-                <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}'; event.stopPropagation();">
-                    {{ $item->category->name ?? '' }}
-                </span>
-            @endif
-        </div>
-
         <div class="ms-text">
+            <div
+                style="display: flex; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
+                @if ($item->category && $item->country)
+                    <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}'; event.stopPropagation();">
+                        {{ $item->category->name ?? '' }}
+                    </span>
+                    <span style="margin-right: 4px; margin-left: 4px;">-</span>
+                    <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->country->id, 'type' => 'Country']) }}'; event.stopPropagation();">
+                        {{ $item->country->name ?? '' }}
+                    </span>
+                @elseif ($item->category && $item->continent)
+                    <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}'; event.stopPropagation();">
+                        {{ $item->category->name ?? '' }}
+                    </span>
+                    <span style="margin-right: 4px; margin-left: 4px;">-</span>
+                    <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->continent->id, 'type' => 'Continent']) }}'; event.stopPropagation();">
+                        {{ $item->continent->name ?? '' }}
+                    </span>
+                @elseif ($item->category)
+                    <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}'; event.stopPropagation();">
+                        {{ $item->category->name ?? '' }}
+                    </span>
+                @endif
+            </div>
+
             <p class="ms-title">
                 {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}
             </p>
 
-            <p style="font-size: 16px; color: #666; margin: 4px 0 8px 0; line-height: 1.4;">
+            <p style="font-size: 16px; color: #666; line-height: 1.4;">
                 {{ \Illuminate\Support\Str::limit($item->summary ?? ($item->description ?? ''), 250) }}
             </p>
 
-            <div style="display: flex; justify-content: flex-start; font-size: 14px; color: #999; margin: 0;">
+            <div style="display: flex; justify-content: flex-start; font-size: 14px; color: #999;">
                 <p style="margin: 0;">
                     {{ $item->created_at->locale('ar')->translatedFormat('d') }}
                     {{ ['جانفي', 'فيفري', 'مارس', 'أفريل', 'ماي', 'جوان', 'جويلية', 'أوت', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'][$item->created_at->month - 1] }}

@@ -15,7 +15,7 @@
     .mobile-more-link {
         display: flex !important;
         flex-direction: column !important;
-        padding: 20px 0 !important;
+        padding: 10px 0 !important;
         text-decoration: none !important;
         color: inherit !important;
     }
@@ -30,9 +30,10 @@
     .mobile-more-link .ms-text {
         display: flex !important;
         flex-direction: column !important;
-        padding-top: 10px !important;
-        gap: 6px;
+        padding-top: 8px !important;
+        gap: 8px !important;
     }
+    .mobile-more-link .ms-text > * { margin: 0 !important; }
     .ms-title {
         margin: 0 !important;
         font-size: 20px !important;
@@ -42,6 +43,7 @@
         font-family: 'asswat-bold' !important;
     }
 </style>
+@php($writer = $item->writers()->first())
 <li class="mobile-simple-item">
     <a class="mobile-more-link" href="{{ route('news.show', $item->shortlink) }}" aria-label="{{ $item->shortlink }}">
         <div class="ms-thumb">
@@ -49,27 +51,22 @@
                 alt="{{ $item->title }}">
         </div>
 
-        @php($writer = $item->writers()->first())
-        <div style="display: flex; margin-top: 8px; margin-right: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
-            @if($writer)
-                <a href="{{ route('writer.show', $writer->id) }}">
-                    {{ $writer->name }}
-                </a>
-                @if(!empty($writer->location))
-                    <span style="margin-right: 4px;">-</span>
-                    <span>{{ $writer->location }}</span>
-                @endif
-            @else
-                <span>{{ '' }}</span>
-            @endif
-        </div>
-
         <div class="ms-text">
+            @if($writer)
+                <div style="display: flex; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
+                    <a href="{{ route('writer.show', $writer->id) }}" style="color: inherit; text-decoration: none;">{{ $writer->name }}</a>
+                    @if(!empty($writer->location))
+                        <span style="margin-right: 4px;">-</span>
+                        <span>{{ $writer->location }}</span>
+                    @endif
+                </div>
+            @endif
+
             <p class="ms-title">
                 {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}
             </p>
 
-            <p style="font-size: 16px; color: #666; margin: 4px 0 8px 0; line-height: 1.4;">
+            <p style="font-size: 16px; color: #666; margin: 0; line-height: 1.4;">
                 {{ \Illuminate\Support\Str::limit($item->summary ?? ($item->description ?? ''), 250) }}
             </p>
 
