@@ -63,7 +63,7 @@
                                     <!-- ================== FILTERS ================== -->
                                     <div id="mediaSearchForm" class="mb-3">
                                         <div class="row g-2 align-items-center justify-content-center">
-                                            <div class="col-12 col-md-6 col-lg-3">
+                                            <div class="col-12 col-md-6 col-lg-2">
                                                 <div class="input-group input-group-sm">
                                                     <span class="input-group-text bg-light text-muted">
                                                         <em class="icon ni ni-search"></em>
@@ -71,7 +71,7 @@
                                                     <input type="text" id="searchQuery" name="search"
                                                         class="form-control form-control-sm"
                                                         value="{{ request('search') }}"
-                                                        placeholder="ابحث بالاسم أو النص البديل..."
+                                                        placeholder="ابحث..."
                                                         onkeyup="debounceFilter()">
                                                 </div>
                                             </div>
@@ -93,6 +93,13 @@
                                                             {{ trim($u->name . ' ' . $u->surname) }}
                                                         </option>
                                                     @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-6 col-md-3 col-lg-2">
+                                                <select id="usageFilter" name="usage" class="form-select form-select-sm" onchange="filterMedia()">
+                                                    <option value="">كل الوسائط</option>
+                                                    <option value="unused" {{ request('usage') == 'unused' ? 'selected' : '' }}>غير المستخدمة</option>
+                                                    <option value="used"   {{ request('usage') == 'used' ? 'selected' : '' }}>المستخدمة</option>
                                                 </select>
                                             </div>
                                             <div class="col-6 col-md-3 col-lg-2">
@@ -963,6 +970,7 @@
             search: "{{ request('search') }}",
             type: "{{ request('type') }}",
             user: "{{ request('user') }}",
+            usage: "{{ request('usage') }}",
             sort: "{{ request('sort', 'newest') }}"
         };
 
@@ -980,6 +988,7 @@
             currentFilters.search = document.getElementById('searchQuery').value;
             currentFilters.type = document.getElementById('mediaType').value;
             currentFilters.user = document.getElementById('userFilter').value;
+            currentFilters.usage = document.getElementById('usageFilter').value;
             currentFilters.sort = document.getElementById('sortBy').value;
             loadMediaWithFilters();
         }
@@ -994,6 +1003,8 @@
                 document.getElementById('mediaType').value = '';
             } else if (filterName === 'user') {
                 document.getElementById('userFilter').value = '';
+            } else if (filterName === 'usage') {
+                document.getElementById('usageFilter').value = '';
             } else if (filterName === 'sort') {
                 document.getElementById('sortBy').value = 'newest';
             }
@@ -1007,11 +1018,13 @@
                 search: '',
                 type: '',
                 user: '',
+                usage: '',
                 sort: 'newest'
             };
             document.getElementById('searchQuery').value = '';
             document.getElementById('mediaType').value = '';
             document.getElementById('userFilter').value = '';
+            document.getElementById('usageFilter').value = '';
             document.getElementById('sortBy').value = 'newest';
             loadMediaWithFilters();
         }
@@ -1048,6 +1061,7 @@
             if (currentFilters.search) queryParams.append('search', currentFilters.search);
             if (currentFilters.type) queryParams.append('type', currentFilters.type);
             if (currentFilters.user) queryParams.append('user', currentFilters.user);
+            if (currentFilters.usage) queryParams.append('usage', currentFilters.usage);
             if (currentFilters.sort && currentFilters.sort !== 'newest') queryParams.append('sort', currentFilters.sort);
             if (page > 1) queryParams.append('page', page);
 

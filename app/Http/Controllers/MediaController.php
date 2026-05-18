@@ -51,6 +51,21 @@ class MediaController extends BaseController
                 $query->where('user_id', $userId);
             }
 
+            // فلترة حسب الاستخدام (مستخدمة / غير مستخدمة)
+            if ($usage = $request->input('usage')) {
+                $candidates = (clone $query)->select('id')->get();
+                $matchingIds = [];
+                foreach ($candidates as $row) {
+                    $m = ContentMedia::find($row->id);
+                    if (!$m) continue;
+                    $referenced = $m->isReferenced();
+                    if (($usage === 'unused' && !$referenced) || ($usage === 'used' && $referenced)) {
+                        $matchingIds[] = $m->id;
+                    }
+                }
+                $query->whereIn('id', $matchingIds ?: [0]);
+            }
+
             // الترتيب
             $sort = $request->input('sort', 'newest');
             switch ($sort) {
