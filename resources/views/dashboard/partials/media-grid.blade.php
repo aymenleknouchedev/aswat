@@ -37,8 +37,13 @@
             $extension = strtolower(pathinfo($urlPath, PATHINFO_EXTENSION));
             $isPdf = $extension === 'pdf';
         @endphp
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-            <div class="card media-card media-card--tall">
+        <div class="col-xl-3 col-lg-4 col-md-6 col-12 media-col" data-media-id="{{ $media->id }}">
+            <div class="card media-card media-card--tall position-relative">
+                <div class="media-select-wrap" style="position:absolute; top:10px; right:10px; z-index:5;">
+                    <input type="checkbox" class="media-select-checkbox" value="{{ $media->id }}"
+                        @if ($media->contents->isNotEmpty()) disabled title="مرتبط بمحتوى" @endif
+                        style="width:20px; height:20px; cursor:pointer;">
+                </div>
                 <div class="card-inner">
                     <!-- Media Preview with 16:9 Ratio (Clickable) -->
                     <div class="media-preview-container preview-media" role="button" tabindex="0"

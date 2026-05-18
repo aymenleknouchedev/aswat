@@ -29,6 +29,18 @@
                                                         style="display: none;">
                                                         <ul class="nk-block-tools g-3">
                                                             <li class="nk-block-tools-opt">
+                                                                <div class="btn-group" role="group" aria-label="view toggle">
+                                                                    <button type="button" class="btn btn-outline-primary active" id="viewGridBtn" title="عرض شبكي">
+                                                                        <em class="icon ni ni-grid-alt"></em>
+                                                                        <span>شبكة</span>
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-outline-primary" id="viewListBtn" title="عرض قائمة">
+                                                                        <em class="icon ni ni-list"></em>
+                                                                        <span>قائمة</span>
+                                                                    </button>
+                                                                </div>
+                                                            </li>
+                                                            <li class="nk-block-tools-opt">
                                                                 <button id="openMediaModal" class="btn btn-primary">
                                                                     <em class="icon ni ni-plus"></em>
                                                                     <span>رفع ملف</span>
@@ -43,81 +55,55 @@
 
                                     <!-- Search and Filter Section -->
                                     <div class="nk-block">
-                                        <div class="card card-bordered">
+                                        <div class="card card-bordered filter-card">
                                             <div class="card-inner">
-                                                <div id="mediaSearchForm">
-                                                    <div class="row g-3 align-items-end">
-                                                        <div class="col-lg-4">
-                                                            <div class="form-group">
-                                                                <label class="form-label" for="searchQuery">
-                                                                    <em class="icon ni ni-search me-1"></em>بحث
-                                                                </label>
-                                                                <div class="form-control-wrap">
-                                                                    <div class="form-icon form-icon-left">
-                                                                        <em class="icon ni ni-search"></em>
-                                                                    </div>
-                                                                    <input type="text" class="form-control"
-                                                                        id="searchQuery" name="search"
-                                                                        placeholder="ابحث بالاسم أو النص البديل..."
-                                                                        value="{{ request('search') }}"
-                                                                        onkeyup="debounceFilter()">
-                                                                </div>
+                                                <div id="mediaSearchForm" class="filter-bar">
+                                                    <div class="filter-field filter-search">
+                                                        <label class="filter-label" for="searchQuery">
+                                                            <em class="icon ni ni-search"></em><span>بحث</span>
+                                                        </label>
+                                                        <div class="form-control-wrap">
+                                                            <div class="form-icon form-icon-left">
+                                                                <em class="icon ni ni-search"></em>
                                                             </div>
+                                                            <input type="text" class="form-control"
+                                                                id="searchQuery" name="search"
+                                                                placeholder="ابحث بالاسم أو النص البديل..."
+                                                                value="{{ request('search') }}"
+                                                                onkeyup="debounceFilter()">
                                                         </div>
-                                                        <div class="col-lg-3">
-                                                            <div class="form-group">
-                                                                <label class="form-label" for="mediaType">
-                                                                    <em class="icon ni ni-filter me-1"></em>نوع الوسائط
-                                                                </label>
-                                                                <select class="form-select" id="mediaType" name="type"
-                                                                    onchange="filterMedia()">
-                                                                    <option value="">جميع الأنواع</option>
-                                                                    <option value="image"
-                                                                        {{ request('type') == 'image' ? 'selected' : '' }}>
-                                                                        صور</option>
-                                                                    <option value="video"
-                                                                        {{ request('type') == 'video' ? 'selected' : '' }}>
-                                                                        فيديو</option>
-                                                                    <option value="voice"
-                                                                        {{ request('type') == 'voice' ? 'selected' : '' }}>
-                                                                        صوت</option>
-                                                                    <option value="document"
-                                                                        {{ request('type') == 'document' ? 'selected' : '' }}>
-                                                                        مستندات</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3">
-                                                            <div class="form-group">
-                                                                <label class="form-label" for="sortBy">
-                                                                    <em class="icon ni ni-sort me-1"></em>ترتيب حسب
-                                                                </label>
-                                                                <select class="form-select" id="sortBy" name="sort"
-                                                                    onchange="filterMedia()">
-                                                                    <option value="newest"
-                                                                        {{ request('sort') == 'newest' ? 'selected' : '' }}>
-                                                                        الأحدث أولاً</option>
-                                                                    <option value="oldest"
-                                                                        {{ request('sort') == 'oldest' ? 'selected' : '' }}>
-                                                                        الأقدم أولاً</option>
-                                                                    <option value="name_asc"
-                                                                        {{ request('sort') == 'name_asc' ? 'selected' : '' }}>
-                                                                        الاسم (أ-ي)</option>
-                                                                    <option value="name_desc"
-                                                                        {{ request('sort') == 'name_desc' ? 'selected' : '' }}>
-                                                                        الاسم (ي-أ)</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-2">
-                                                            <div class="form-group">
-                                                                <button type="button" class="btn btn-outline-danger w-100"
-                                                                    onclick="clearFilters()">
-                                                                    <em class="icon ni ni-trash"></em>
-                                                                    <span>مسح الكل</span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
+                                                    </div>
+
+                                                    <div class="filter-field">
+                                                        <label class="filter-label" for="mediaType">
+                                                            <em class="icon ni ni-filter"></em><span>نوع الوسائط</span>
+                                                        </label>
+                                                        <select class="form-select" id="mediaType" name="type" onchange="filterMedia()">
+                                                            <option value="">جميع الأنواع</option>
+                                                            <option value="image"    {{ request('type') == 'image' ? 'selected' : '' }}>صور</option>
+                                                            <option value="video"    {{ request('type') == 'video' ? 'selected' : '' }}>فيديو</option>
+                                                            <option value="voice"    {{ request('type') == 'voice' ? 'selected' : '' }}>صوت</option>
+                                                            <option value="document" {{ request('type') == 'document' ? 'selected' : '' }}>مستندات</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="filter-field">
+                                                        <label class="filter-label" for="sortBy">
+                                                            <em class="icon ni ni-sort"></em><span>ترتيب حسب</span>
+                                                        </label>
+                                                        <select class="form-select" id="sortBy" name="sort" onchange="filterMedia()">
+                                                            <option value="newest"    {{ request('sort') == 'newest' ? 'selected' : '' }}>الأحدث أولاً</option>
+                                                            <option value="oldest"    {{ request('sort') == 'oldest' ? 'selected' : '' }}>الأقدم أولاً</option>
+                                                            <option value="name_asc"  {{ request('sort') == 'name_asc' ? 'selected' : '' }}>الاسم (أ-ي)</option>
+                                                            <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>الاسم (ي-أ)</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="filter-field filter-action">
+                                                        <span class="filter-label">&nbsp;</span>
+                                                        <button type="button" class="btn btn-outline-danger w-100" onclick="clearFilters()">
+                                                            <em class="icon ni ni-trash me-1"></em><span>مسح الكل</span>
+                                                        </button>
                                                     </div>
                                                 </div>
 
@@ -145,6 +131,35 @@
                                         <!-- Results Count -->
                                         <div id="resultsCount" class="mb-4">
                                             @include('dashboard.partials.results-count', compact('medias'))
+                                        </div>
+
+                                        <!-- Bulk Actions Bar -->
+                                        <div id="bulkActionsBar" class="card card-bordered mb-3" style="display:none;">
+                                            <div class="card-inner py-2 px-3">
+                                                <div class="bulk-bar">
+                                                    <div class="bulk-bar-left">
+                                                        <label class="bulk-select-all mb-0">
+                                                            <input type="checkbox" id="selectAllMedia">
+                                                            <span>تحديد الكل</span>
+                                                        </label>
+                                                        <span class="bulk-divider"></span>
+                                                        <span class="bulk-count">
+                                                            <em class="icon ni ni-check-circle"></em>
+                                                            <span id="selectedCount">0</span>
+                                                            <span class="text-muted">عنصر محدد</span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="bulk-bar-right">
+                                                        <button type="button" class="btn btn-sm btn-light" id="clearSelectionBtn">
+                                                            <em class="icon ni ni-cross-circle me-1"></em><span>إلغاء التحديد</span>
+                                                        </button>
+                                                        <button type="button" class="btn btn-sm btn-danger" id="bulkDeleteModalBtn" disabled
+                                                            data-bs-toggle="modal" data-bs-target="#bulkDeleteModal">
+                                                            <em class="icon ni ni-trash me-1"></em><span>حذف المحدد</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <!-- Media Grid -->
@@ -270,6 +285,37 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bulk Delete Confirmation Modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="bulkDeleteModal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <em class="icon ni ni-alert-circle text-danger me-1"></em>
+                        تأكيد حذف الوسائط المحددة
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-2">
+                        أنت على وشك حذف <strong><span id="bulkDeleteCount">0</span></strong> عنصر من الوسائط.
+                    </p>
+                    <p class="text-muted mb-0">
+                        هذا الإجراء لا يمكن التراجع عنه. سيتم تخطي أي وسائط مرتبطة بمحتوى.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                        <em class="icon ni ni-cross me-1"></em><span>إلغاء</span>
+                    </button>
+                    <button type="button" class="btn btn-danger" id="confirmBulkDeleteBtn">
+                        <em class="icon ni ni-trash me-1"></em><span>نعم، احذف</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -643,6 +689,199 @@
         .gap-gs {
             gap: 1rem;
         }
+
+        /* Filter Bar — CSS grid for perfect alignment */
+        .filter-card .card-inner { padding: 1.25rem 1.5rem; }
+        .filter-bar {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 1rem;
+            align-items: end;
+        }
+        .filter-field { display: flex; flex-direction: column; min-width: 0; }
+        .filter-label {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: #364a63;
+            margin-bottom: 0.5rem;
+            min-height: 18px;
+        }
+        .filter-label em { margin-left: 0.4rem; color: #6576ff; font-size: 0.95rem; }
+        .filter-field .form-control,
+        .filter-field .form-select { height: 42px; }
+        .filter-field .btn { height: 42px; min-width: 130px; display: inline-flex; align-items: center; justify-content: center; }
+        @media (max-width: 991px) {
+            .filter-bar {
+                grid-template-columns: 1fr 1fr;
+            }
+            .filter-search { grid-column: 1 / -1; }
+            .filter-action { grid-column: 1 / -1; }
+        }
+        @media (max-width: 575px) {
+            .filter-bar { grid-template-columns: 1fr; }
+        }
+
+        /* Bulk Actions Bar — alignment only */
+        .bulk-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            row-gap: 0.5rem;
+        }
+        .bulk-bar-left,
+        .bulk-bar-right {
+            display: flex;
+            align-items: center;
+        }
+        .bulk-bar-left > * + *,
+        .bulk-bar-right > * + * { margin-right: 0.75rem; }
+        .bulk-select-all {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        .bulk-select-all input { width: 18px; height: 18px; margin-left: 0.5rem; }
+        .bulk-divider {
+            display: inline-block;
+            width: 1px;
+            height: 22px;
+            background: #e5e9f2;
+        }
+        .bulk-count {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #364a63;
+        }
+        .bulk-count em { margin-left: 0.4rem; color: #8094ae; }
+        .bulk-count #selectedCount {
+            font-weight: 600;
+            margin-left: 0.25rem;
+            color: #526484;
+        }
+
+        /* Page header — make toggle + upload buttons sit on one line cleanly */
+        .nk-block-tools.g-3 { align-items: center; }
+
+        /* List view */
+        #mediaGrid.view-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 0;
+        }
+        #mediaGrid.view-list .media-col {
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: 0 0 100%;
+            padding: 0;
+        }
+        #mediaGrid.view-list .media-card {
+            min-height: auto !important;
+            height: auto;
+            display: grid !important;
+            grid-template-columns: 44px 1fr;
+            align-items: center;
+        }
+        #mediaGrid.view-list .media-card .card-inner {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+        }
+        #mediaGrid.view-list .media-select-wrap {
+            position: static !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 0 0.75rem 0.5rem;
+        }
+        #mediaGrid.view-list .media-info {
+            flex: 1 1 auto;
+            min-width: 0;
+            padding-left: 1rem;
+            height: auto !important;
+            overflow: visible !important;
+            margin: 0 !important;
+        }
+        #mediaGrid.view-list .media-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            line-height: 1.5 !important;
+            padding: 2px 0;
+        }
+        #mediaGrid.view-list .media-actions {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        #mediaGrid.view-list .media-preview-container {
+            width: 72px !important;
+            height: 72px !important;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 0;
+        }
+        #mediaGrid.view-list .media-preview-16-9 {
+            width: 72px !important;
+            height: 72px !important;
+        }
+        #mediaGrid.view-list .media-preview-16-9 em,
+        #mediaGrid.view-list .media-preview-16-9 i { font-size: 1.5rem !important; margin-bottom: 0 !important; }
+        #mediaGrid.view-list .media-preview-16-9 div[style*="font-size"] { display: none; }
+        #mediaGrid.view-list .media-info {
+            margin: 0 !important;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+        }
+        #mediaGrid.view-list .media-name { margin-bottom: 0 !important; }
+        #mediaGrid.view-list .media-date,
+        #mediaGrid.view-list .media-user { font-size: 0.75rem; }
+        #mediaGrid.view-list .media-actions {
+            border-top: 0 !important;
+            padding-top: 0 !important;
+            flex-wrap: nowrap;
+            gap: 0.4rem;
+            margin: 0 !important;
+        }
+        #mediaGrid.view-list .media-actions .btn,
+        #mediaGrid.view-list .media-actions .delete-form {
+            padding: 0;
+            flex: 0 0 auto;
+        }
+        #mediaGrid.view-list .media-actions .btn {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8125rem;
+        }
+        #mediaGrid.view-list .media-actions .delete-form { display: inline-flex; }
+
+        @media (max-width: 768px) {
+            #mediaGrid.view-list .media-card .card-inner {
+                grid-template-columns: 30px 60px 1fr;
+                gap: 0.75rem;
+                row-gap: 0.5rem;
+            }
+            #mediaGrid.view-list .media-actions {
+                grid-column: 1 / -1;
+                justify-content: flex-end;
+            }
+            #mediaGrid.view-list .media-preview-container,
+            #mediaGrid.view-list .media-preview-16-9 {
+                width: 60px !important;
+                height: 60px !important;
+            }
+        }
     </style>
 
     <script>
@@ -796,8 +1035,56 @@
                 });
         }
 
+        // Bulk selection state
+        const selectedMediaIds = new Set();
+
+        function updateBulkBar() {
+            const bar = document.getElementById('bulkActionsBar');
+            const count = selectedMediaIds.size;
+            document.getElementById('selectedCount').textContent = count;
+            const delModalBtn = document.getElementById('bulkDeleteModalBtn');
+            if (delModalBtn) delModalBtn.disabled = count === 0;
+            if (bar) bar.style.display = 'block';
+
+            // Sync select-all checkbox state
+            const checkboxes = document.querySelectorAll('.media-select-checkbox:not(:disabled)');
+            const selectAll = document.getElementById('selectAllMedia');
+            if (selectAll) {
+                if (checkboxes.length > 0 && Array.from(checkboxes).every(cb => cb.checked)) {
+                    selectAll.checked = true;
+                    selectAll.indeterminate = false;
+                } else if (count > 0) {
+                    selectAll.checked = false;
+                    selectAll.indeterminate = true;
+                } else {
+                    selectAll.checked = false;
+                    selectAll.indeterminate = false;
+                }
+            }
+        }
+
+        function syncSelectedClass(cb) {
+            const col = cb.closest('.media-col');
+            if (col) col.classList.toggle('is-selected', cb.checked);
+        }
+
+        function initializeSelectionCheckboxes() {
+            document.querySelectorAll('.media-select-checkbox').forEach(cb => {
+                if (selectedMediaIds.has(cb.value)) cb.checked = true;
+                syncSelectedClass(cb);
+                cb.addEventListener('change', function() {
+                    if (this.checked) selectedMediaIds.add(this.value);
+                    else selectedMediaIds.delete(this.value);
+                    syncSelectedClass(this);
+                    updateBulkBar();
+                });
+            });
+            updateBulkBar();
+        }
+
         // Initialize media interactions
         function initializeMediaInteractions() {
+            initializeSelectionCheckboxes();
             // YouTube players
             document.querySelectorAll('.youtube-player').forEach(player => {
                 const youtubeId = player.getAttribute('data-youtube-id');
@@ -1100,6 +1387,107 @@
             @if (session('error') || $errors->any())
                 showAlert('error', '{{ session('error') ?? $errors->first() }}', 'An error occurred');
             @endif
+
+            // View toggle (grid/list)
+            const grid = document.getElementById('mediaGrid');
+            const gridBtn = document.getElementById('viewGridBtn');
+            const listBtn = document.getElementById('viewListBtn');
+            const savedView = localStorage.getItem('mediasViewType') || 'grid';
+            const applyView = (mode) => {
+                if (mode === 'list') {
+                    grid.classList.add('view-list');
+                    listBtn.classList.add('active');
+                    gridBtn.classList.remove('active');
+                } else {
+                    grid.classList.remove('view-list');
+                    gridBtn.classList.add('active');
+                    listBtn.classList.remove('active');
+                }
+                localStorage.setItem('mediasViewType', mode);
+            };
+            applyView(savedView);
+            gridBtn.addEventListener('click', () => applyView('grid'));
+            listBtn.addEventListener('click', () => applyView('list'));
+
+            // Select all
+            const selectAll = document.getElementById('selectAllMedia');
+            if (selectAll) {
+                selectAll.addEventListener('change', function() {
+                    document.querySelectorAll('.media-select-checkbox:not(:disabled)').forEach(cb => {
+                        cb.checked = this.checked;
+                        if (this.checked) selectedMediaIds.add(cb.value);
+                        else selectedMediaIds.delete(cb.value);
+                        syncSelectedClass(cb);
+                    });
+                    updateBulkBar();
+                });
+            }
+
+            // Clear selection
+            const clearBtn = document.getElementById('clearSelectionBtn');
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function() {
+                    selectedMediaIds.clear();
+                    document.querySelectorAll('.media-select-checkbox').forEach(cb => {
+                        cb.checked = false;
+                        syncSelectedClass(cb);
+                    });
+                    updateBulkBar();
+                });
+            }
+
+            // Shared bulk delete request
+            function performBulkDelete(onDone) {
+                const ids = Array.from(selectedMediaIds);
+                const fd = new FormData();
+                fd.append('_method', 'DELETE');
+                fd.append('_token', '{{ csrf_token() }}');
+                ids.forEach(id => fd.append('ids[]', id));
+                return fetch("{{ route('dashboard.medias.bulkDestroy') }}", {
+                    method: 'POST',
+                    body: fd,
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        showAlert('success', data.message || 'تم الحذف', 'Deleted');
+                        selectedMediaIds.clear();
+                        setTimeout(() => loadMediaWithFilters(), 800);
+                    } else {
+                        showAlert('error', data.message || 'فشل الحذف', 'Delete failed');
+                    }
+                })
+                .catch(() => showAlert('error', 'فشل الحذف', 'Delete failed'))
+                .finally(() => { if (onDone) onDone(); });
+            }
+
+            // Bulk delete via Bootstrap modal
+            const bulkDeleteModalBtn = document.getElementById('bulkDeleteModalBtn');
+            const bulkDeleteCountEl = document.getElementById('bulkDeleteCount');
+            const confirmBulkDeleteBtn = document.getElementById('confirmBulkDeleteBtn');
+
+            if (bulkDeleteModalBtn) {
+                bulkDeleteModalBtn.addEventListener('click', function() {
+                    if (bulkDeleteCountEl) bulkDeleteCountEl.textContent = selectedMediaIds.size;
+                });
+            }
+
+            if (confirmBulkDeleteBtn) {
+                confirmBulkDeleteBtn.addEventListener('click', function() {
+                    if (selectedMediaIds.size === 0) return;
+                    const originalHtml = confirmBulkDeleteBtn.innerHTML;
+                    confirmBulkDeleteBtn.disabled = true;
+                    confirmBulkDeleteBtn.innerHTML = '<em class="icon ni ni-loader"></em><span>جاري الحذف...</span>';
+                    performBulkDelete(() => {
+                        confirmBulkDeleteBtn.disabled = false;
+                        confirmBulkDeleteBtn.innerHTML = originalHtml;
+                        const modalEl = document.getElementById('bulkDeleteModal');
+                        const inst = bootstrap.Modal.getInstance(modalEl);
+                        if (inst) inst.hide();
+                    });
+                });
+            }
 
             // Open media upload modal
             const openMediaBtn = document.getElementById('openMediaModal');

@@ -512,6 +512,49 @@ class MediaController extends BaseController
         }
     }
 
+    public function bulkDestroy(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer|exists:content_media,id',
+        ]);
+
+        try {
+            $medias = ContentMedia::with('contents')->whereIn('id', $request->input('ids'))->get();
+
+            $deleted = 0;
+            $skipped = [];
+
+            foreach ($medias as $media) {
+                if ($media->contents->isNotEmpty()) {
+                    $skipped[] = $media->name;
+                    continue;
+                }
+
+                if (str_starts_with($media->path, '/storage/') || str_contains($media->path, '/storage/')) {
+                    $filePath = preg_replace('#^.*?/storage/#', '', $media->path);
+                    $filePath = str_replace('\\', '/', $filePath);
+                    if (Storage::disk('public')->exists($filePath)) {
+                        Storage::disk('public')->delete($filePath);
+                    }
+                }
+
+                $media->delete();
+                $deleted++;
+            }
+
+            return response()->json([
+                'success' => true,
+                'deleted' => $deleted,
+                'skipped' => $skipped,
+                'message' => "تم حذف {$deleted} عنصر." . (count($skipped) ? ' تم تخطي ' . count($skipped) . ' عناصر مرتبطة بمحتوى.' : ''),
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Bulk media delete failed: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'فشل حذف الوسائط.'], 500);
+        }
+    }
+
     public function getAllMediaPaginated(Request $request)
     {
         try {

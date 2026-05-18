@@ -47,6 +47,7 @@ class UserSeeder extends Seeder
             'coming_soon_access',
             'email_access',
             'publish_content',
+            'delete',
         ];
 
 
