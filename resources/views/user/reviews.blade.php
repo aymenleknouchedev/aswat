@@ -114,6 +114,7 @@
         .custom-cards-wrapper {
             display: flex;
             flex-direction: column;
+            margin-bottom: 60px;
         }
 
         .custom-card {
@@ -287,8 +288,6 @@
                                     المزيد
                                 </button>
                             </div>
-                        @else
-                            <div style="height: 60px;"></div>
                         @endif
                     @else
                         <div class="alert alert-info">
@@ -341,9 +340,8 @@
                 <div class="text-center" id="mobile-load-more-container">
                     <button class="mobile-load-more-btn" data-page="1">المزيد</button>
                 </div>
-            @else
-                <div style="height: 40px;"></div>
             @endif
+            <div style="height: 40px;"></div>
 
             <!-- Mobile Footer -->
             @include('user.mobile.footer')
