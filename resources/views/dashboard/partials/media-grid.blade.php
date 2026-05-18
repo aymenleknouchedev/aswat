@@ -39,9 +39,10 @@
         @endphp
         <div class="col-xl-3 col-lg-4 col-md-6 col-12 media-col" data-media-id="{{ $media->id }}">
             <div class="card media-card media-card--tall position-relative">
+                @php $isInUse = $media->isReferenced(); @endphp
                 <div class="media-select-wrap" style="position:absolute; top:10px; right:10px; z-index:5;">
                     <input type="checkbox" class="media-select-checkbox" value="{{ $media->id }}"
-                        @if ($media->contents->isNotEmpty()) disabled title="مرتبط بمحتوى" @endif
+                        @if ($isInUse) disabled title="مرتبط بمحتوى أو مستخدم داخل مقال" @endif
                         style="width:20px; height:20px; cursor:pointer;">
                 </div>
                 <div class="card-inner">
@@ -135,7 +136,7 @@
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn btn-dim btn-sm btn-outline-danger delete-btn"
-                                @if ($media->contents->isNotEmpty()) disabled title="هذه الوسائط مرتبطة بمحتوى ولا يمكن حذفها" @endif
+                                @if ($isInUse) disabled title="هذه الوسائط مرتبطة بمحتوى أو مستخدمة داخل مقال ولا يمكن حذفها" @endif
                                 data-ar-title="تأكيد الحذف" data-en-title="Confirm Deletion"
                                 data-ar-text="هل أنت متأكد من حذف هذه الوسائط؟"
                                 data-en-text="Are you sure you want to delete this media?" data-ar-confirm="نعم، احذف"

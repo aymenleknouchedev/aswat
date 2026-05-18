@@ -488,12 +488,12 @@ class MediaController extends BaseController
     public function destroy(string $id)
     {
         try {
-            $media = ContentMedia::with('contents')->findOrFail($id);
+            $media = ContentMedia::findOrFail($id);
 
-            // التحقق من أن الوسائط غير مرتبطة بأي محتوى
-            if ($media->contents->isNotEmpty()) {
+            // التحقق من أن الوسائط غير مرتبطة بأي محتوى أو مستخدمة داخل مقال
+            if ($media->isReferenced()) {
                 return redirect(url()->previous() ?: route('dashboard.medias.index'))
-                    ->withErrors(['error' => 'لا يمكن حذف هذه الوسائط لأنها مرتبطة بمحتوى.']);
+                    ->withErrors(['error' => 'لا يمكن حذف هذه الوسائط لأنها مرتبطة بمحتوى أو مستخدمة داخل مقال.']);
             }
 
             // حذف الملف من التخزين إذا كان ملف محلي وليس رابط خارجي
@@ -527,13 +527,13 @@ class MediaController extends BaseController
         ]);
 
         try {
-            $medias = ContentMedia::with('contents')->whereIn('id', $request->input('ids'))->get();
+            $medias = ContentMedia::whereIn('id', $request->input('ids'))->get();
 
             $deleted = 0;
             $skipped = [];
 
             foreach ($medias as $media) {
-                if ($media->contents->isNotEmpty()) {
+                if ($media->isReferenced()) {
                     $skipped[] = $media->name;
                     continue;
                 }

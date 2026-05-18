@@ -45,6 +45,40 @@ class ContentMedia extends Model
     
 
     /**
+     * Is this media referenced anywhere? (pivot, article body, share image)
+     * Used to decide whether the delete button is enabled.
+     */
+    public function isReferenced(): bool
+    {
+        if ($this->contents()->exists()) {
+            return true;
+        }
+
+        $needle = $this->path;
+        if (empty($needle)) {
+            return false;
+        }
+
+        // Match the bare path (without scheme/host) too, so both relative and
+        // absolute embeds count as a reference.
+        $candidates = collect([$needle]);
+        $parsed = parse_url($needle, PHP_URL_PATH);
+        if ($parsed) {
+            $candidates->push($parsed);
+        }
+
+        return Content::query()
+            ->where(function ($q) use ($candidates) {
+                foreach ($candidates as $c) {
+                    $like = '%' . addcslashes($c, '\\%_') . '%';
+                    $q->orWhere('content', 'like', $like)
+                      ->orWhere('share_image', 'like', $like);
+                }
+            })
+            ->exists();
+    }
+
+    /**
      * Get badge color for media type
      */
     public function getTypeBadgeAttribute()
