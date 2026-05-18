@@ -421,64 +421,23 @@
             btn.textContent = "جاري التحميل...";
 
             try {
-                const url = `/category/${currentId}/${type}?page=${page}`;
+                const url = `/category/${currentId}/${type}?page=${page}&view=mobile`;
                 const resp = await fetch(url, {
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest"
-                    }
+                    headers: { "X-Requested-With": "XMLHttpRequest" }
                 });
 
                 if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-                const html = await resp.text();
-                const tmp = document.createElement("div");
-                tmp.innerHTML = html;
-                const cards = Array.from(tmp.querySelectorAll(".newCategory-all-card"));
+                const trimmed = (await resp.text()).trim();
 
-                if (!cards.length) {
-                    // No more data, remove container
+                if (!trimmed) {
                     btn.closest("#mobile-load-more-container")?.remove();
                 } else {
-                    // Get the existing list
                     let list = document.querySelector(".mobile .mobile-simple-ul");
                     if (!list) {
                         console.error("Mobile simple list not found");
                         return;
                     }
-
-                    const frag = document.createDocumentFragment();
-                    cards.forEach(card => {
-                        const a = card.querySelector(".newCategory-all-card-text a[href]") ||
-                            card.querySelector("a[href]");
-                        const img = card.querySelector("img");
-                        const cat = card.querySelector(".newCategory-all-card-text h3");
-                        const summaryEl = card.querySelector(
-                            ".newCategory-all-card-text h3:nth-of-type(2)");
-                        const dateEl = card.querySelector(".newCategory-all-card-date h4");
-
-                        const li = document.createElement("li");
-                        li.className = "mobile-simple-item";
-                        const href = a ? a.getAttribute("href") : "#";
-                        const title = a ? (a.textContent || "").trim() : "";
-                        const src = img ? img.getAttribute("src") : "";
-                        const catText = cat ? (cat.textContent || "").trim() : "";
-                        let summary = summaryEl ? (summaryEl.textContent || "").trim() : "";
-                        if (summary.length > 250) summary = summary.slice(0, 247) + "...";
-                        const dateText = dateEl ? (dateEl.textContent || "").trim() : "";
-
-                        li.innerHTML = `
-                            <a class="mobile-more-link" href="${href}" aria-label="${title}">
-                              <div class="ms-thumb">
-                                <img loading="lazy" decoding="async" src="${src}" alt="${title}">
-                              </div>
-                              <div class="ms-text">
-                                <p class="ms-title">${title}</p>
-                                ${summary ? `<p style="font-size: 16px; color: #666; margin: 4px 0 8px 0; line-height: 1.4;">${summary}</p>` : ""}
-                                ${dateText ? `<div style="display: flex; justify-content: flex-start; font-size: 14px; color: #999; margin: 0;"><p style="margin: 0;">${dateText}</p></div>` : ""}
-                              </div>
-                            </a>`;
-                        frag.appendChild(li);
-                    });
-                    list.appendChild(frag);
+                    list.insertAdjacentHTML("beforeend", trimmed);
                     btn.setAttribute("data-page", String(page));
                     btn.disabled = false;
                     btn.textContent = "المزيد";

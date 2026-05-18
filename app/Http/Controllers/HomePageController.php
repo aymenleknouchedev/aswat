@@ -432,6 +432,13 @@ class HomePageController extends Controller
             ->get();
 
         if ($request->ajax()) {
+            if ($request->query('view') === 'mobile') {
+                $html = '';
+                foreach ($otherReviews as $item) {
+                    $html .= view('user.mobile.writer-item', compact('item'))->render();
+                }
+                return $html;
+            }
             return view('user.partials.review-items', compact('otherReviews', 'reviews'))->render();
         }
 
@@ -954,6 +961,13 @@ class HomePageController extends Controller
 
         // ✅ إذا الطلب AJAX → نرجع جزء المقالات فقط
         if ($request->ajax()) {
+            if ($request->query('view') === 'mobile') {
+                $html = '';
+                foreach ($articles as $item) {
+                    $html .= view('user.mobile.item-withoutcategory', compact('item'))->render();
+                }
+                return $html;
+            }
             return view('user.partials.category-items', [
                 'articles' => $articles,
             ])->render();
@@ -984,6 +998,13 @@ class HomePageController extends Controller
 
         // If it's an AJAX request, return only the articles list partial
         if ($request->ajax()) {
+            if ($request->query('view') === 'mobile') {
+                $html = '';
+                foreach ($articles as $item) {
+                    $html .= view('user.mobile.item', compact('item'))->render();
+                }
+                return $html;
+            }
             return view('user.partials.writer-items', compact('articles'))->render();
         }
 
@@ -1013,6 +1034,13 @@ class HomePageController extends Controller
             ->get();
 
         if ($request->ajax()) {
+            if ($request->query('view') === 'mobile') {
+                $html = '';
+                foreach ($articles as $item) {
+                    $html .= view('user.mobile.item', compact('item'))->render();
+                }
+                return $html;
+            }
             return view('user.partials.tag-items', compact('articles'))->render();
         }
 
@@ -1048,6 +1076,13 @@ class HomePageController extends Controller
             ->get();
 
         if ($request->ajax()) {
+            if ($request->query('view') === 'mobile') {
+                $html = '';
+                foreach ($articles as $item) {
+                    $html .= view('user.mobile.item', compact('item'))->render();
+                }
+                return $html;
+            }
             return view('user.partials.tag-items', compact('articles'))->render();
         }
 
@@ -1081,6 +1116,13 @@ class HomePageController extends Controller
             ->get();
 
         if ($request->ajax()) {
+            if ($request->query('view') === 'mobile') {
+                $html = '';
+                foreach ($articles as $item) {
+                    $html .= view('user.mobile.item', compact('item'))->render();
+                }
+                return $html;
+            }
             return view('user.partials.tag-items', compact('articles'))->render();
         }
 

@@ -402,10 +402,8 @@
                 btn.textContent = "جاري التحميل...";
 
                 try {
-                    let response = await fetch(`/tag/${categoryId}?page=${page}`, {
-                        headers: {
-                            "X-Requested-With": "XMLHttpRequest"
-                        }
+                    let response = await fetch(`/tag/${categoryId}?page=${page}&view=mobile`, {
+                        headers: { "X-Requested-With": "XMLHttpRequest" }
                     });
 
                     if (!response.ok) throw new Error("خطأ في السيرفر");
@@ -419,45 +417,7 @@
                     } else {
                         const mobileContainer = document.getElementById("mobile-tags-container");
                         if (mobileContainer) {
-                            if (trimmed.includes('mobile-simple-item')) {
-                                mobileContainer.insertAdjacentHTML("beforeend", trimmed);
-                            } else {
-                                const wrapper = document.createElement('div');
-                                wrapper.innerHTML = trimmed;
-                                const cards = wrapper.querySelectorAll('.newCategory-all-card');
-
-                                if (cards.length === 0) {
-                                    mobileContainer.insertAdjacentHTML("beforeend", trimmed);
-                                } else {
-                                    let html = '';
-                                    cards.forEach(card => {
-                                        const linkEl = card.querySelector('a[href]');
-                                        const href = linkEl ? linkEl.getAttribute('href') : '#';
-                                        const imgEl = card.querySelector('img');
-                                        const imgSrc = imgEl ? imgEl.getAttribute('src') : '';
-                                        const titleEl = card.querySelector(
-                                            '.newCategory-all-card-text h2') || card.querySelector(
-                                            'h2') || linkEl;
-                                        let title = titleEl ? (titleEl.textContent || '').trim() : '';
-                                        if (title.length > 90) title = title.slice(0, 87) + '...';
-
-                                        html += `
-                                            <li class="mobile-simple-item">
-                                                <a class="mobile-more-link" href="${href}" aria-label="${title}">
-                                                    <div class="ms-thumb">
-                                                        <img loading="lazy" decoding="async" src="${imgSrc}" alt="${title}">
-                                                    </div>
-                                                    <div class="ms-text">
-                                                        <p class="ms-title">${title}</p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        `;
-                                    });
-
-                                    if (html) mobileContainer.insertAdjacentHTML('beforeend', html);
-                                }
-                            }
+                            mobileContainer.insertAdjacentHTML("beforeend", trimmed);
                         }
 
                         btn.setAttribute("data-page", page);
