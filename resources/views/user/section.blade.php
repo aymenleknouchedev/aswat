@@ -1071,11 +1071,7 @@
             @if (!empty($moreMobItems))
                 <div class="mobile-container">
                     <div class="mobile-simple-list" dir="rtl">
-                        {{-- <h2 class="mobile-simple-header">المزيد من {{ $arabicName ?? 'أخبار' }}</h2>
-                        <div style="padding: 0px 16px">
-                            @include('user.components.ligne')
-                        </div> --}}
-                        <ul class="mobile-simple-ul" role="list">
+                        <ul class="mobile-simple-ul" role="list" id="mobile-section-list">
                             @foreach ($moreMobItems as $item)
                                 @include('user.mobile.item')
                             @endforeach
@@ -1169,61 +1165,23 @@
                 btn.disabled = true;
                 btn.textContent = 'جاري التحميل...';
                 try {
-                    const url = `/api/section/${section}?page=${page}`;
+                    const url = `/api/section/${section}?page=${page}&view=mobile`;
                     const resp = await fetch(url, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
                     });
                     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-                    const html = await resp.text();
-                    const tmp = document.createElement('div');
-                    tmp.innerHTML = html;
-                    const cards = Array.from(tmp.querySelectorAll('.newCategory-all-card'));
-                    if (!cards.length) {
-                        // No more data, remove container
+                    const trimmed = (await resp.text()).trim();
+                    if (!trimmed) {
                         btn.closest('#mobile-load-more-container')?.remove();
                     } else {
-                        // Ensure list exists
-                        let list = document.querySelector('.mobile .mobile-simple-ul');
+                        let list = document.getElementById('mobile-section-list');
                         if (!list) {
-                            const container = document.createElement('div');
-                            container.className = 'mobile-container';
-                            container.innerHTML = `
-                                <div class="mobile-simple-list" dir="rtl">
-                                  <div class="mobile-simple-header">${document.querySelector('.featured-post-section-badge')?.textContent || 'المزيد'}</div>
-                                  <ul class="mobile-simple-ul" role="list"></ul>
-                                </div>`;
-                            const insertPoint = document.querySelector('.mobile .mobile-flow');
-                            if (insertPoint && insertPoint.parentNode) insertPoint.parentNode.insertBefore(
-                                container, insertPoint.nextSibling);
-                            list = container.querySelector('.mobile-simple-ul');
+                            // Fall back: pick the first mobile list inside the mobile section
+                            list = document.querySelector('.mobile .mobile-simple-ul');
                         }
-                        const frag = document.createDocumentFragment();
-                        cards.forEach(card => {
-                            const a = card.querySelector('.newCategory-all-card-text a[href]') ||
-                                card.querySelector('a[href]');
-                            const img = card.querySelector('img');
-                            const cat = card.querySelector('.newCategory-all-card-text h3');
-                            const li = document.createElement('li');
-                            li.className = 'mobile-simple-item';
-                            const href = a ? a.getAttribute('href') : '#';
-                            const title = a ? (a.textContent || '').trim() : '';
-                            const src = img ? img.getAttribute('src') : '';
-                            const catText = cat ? (cat.textContent || '').trim() : '';
-                            li.innerHTML = `
-                                <a class="mobile-more-link" href="${href}" aria-label="${title}">
-                                  <div class="ms-thumb">
-                                    <img loading="lazy" decoding="async" src="${src}" alt="${title}">
-                                  </div>
-                                  <div class="ms-text">
-                                    ${catText ? `<p class="ms-cat">${catText}</p>` : ''}
-                                    <p class="ms-title">${title}</p>
-                                  </div>
-                                </a>`;
-                            frag.appendChild(li);
-                        });
-                        list.appendChild(frag);
+                        if (list) {
+                            list.insertAdjacentHTML('beforeend', trimmed);
+                        }
                         btn.setAttribute('data-page', String(page));
                         btn.disabled = false;
                         btn.textContent = 'المزيد';

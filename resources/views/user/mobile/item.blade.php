@@ -46,7 +46,7 @@
         </div>
 
         <div
-            style="display: flex; margin-right: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
+            style="display: flex; margin-top: 8px; margin-right: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; color: #999; font-family: 'asswat-regular';">
             @if ($item->category && $item->country)
                 <span style="cursor: pointer;" onclick="window.location.href='{{ route('category.show', ['id' => $item->category->id, 'type' => 'Category']) }}'; event.stopPropagation();">
                     {{ $item->category->name ?? '' }}

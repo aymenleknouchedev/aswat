@@ -873,6 +873,14 @@ class HomePageController extends Controller
             ->take($perPage)
             ->get();
 
+        if ($request->query('view') === 'mobile') {
+            $html = '';
+            foreach ($moreContents as $item) {
+                $html .= view('user.mobile.item', compact('item'))->render();
+            }
+            return $html;
+        }
+
         return view('user.partials.section-items', compact('moreContents'))->render();
     }
 
