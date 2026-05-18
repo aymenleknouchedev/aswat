@@ -56,7 +56,7 @@
                                     <!-- ================== FILTERS ================== -->
                                     <div id="mediaSearchForm" class="mb-3">
                                         <div class="row g-2 align-items-center justify-content-center">
-                                            <div class="col-12 col-md-6 col-lg-4">
+                                            <div class="col-12 col-md-6 col-lg-3">
                                                 <div class="input-group input-group-sm">
                                                     <span class="input-group-text bg-light text-muted">
                                                         <em class="icon ni ni-search"></em>
@@ -77,7 +77,18 @@
                                                     <option value="document" {{ request('type') == 'document' ? 'selected' : '' }}>مستندات</option>
                                                 </select>
                                             </div>
-                                            <div class="col-6 col-md-3 col-lg-3">
+                                            <div class="col-6 col-md-3 col-lg-2">
+                                                <select id="userFilter" name="user" class="form-select form-select-sm" onchange="filterMedia()">
+                                                    <option value="">المستخدمون</option>
+                                                    @foreach ($users as $u)
+                                                        <option value="{{ $u->id }}"
+                                                            {{ request('user') == $u->id ? 'selected' : '' }}>
+                                                            {{ trim($u->name . ' ' . $u->surname) }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-6 col-md-3 col-lg-2">
                                                 <select id="sortBy" name="sort" class="form-select form-select-sm" onchange="filterMedia()">
                                                     <option value="newest"    {{ request('sort') == 'newest' ? 'selected' : '' }}>الأحدث أولاً</option>
                                                     <option value="oldest"    {{ request('sort') == 'oldest' ? 'selected' : '' }}>الأقدم أولاً</option>
@@ -909,6 +920,7 @@
         let currentFilters = {
             search: "{{ request('search') }}",
             type: "{{ request('type') }}",
+            user: "{{ request('user') }}",
             sort: "{{ request('sort', 'newest') }}"
         };
 
@@ -923,7 +935,9 @@
 
         // Filter media function
         function filterMedia() {
+            currentFilters.search = document.getElementById('searchQuery').value;
             currentFilters.type = document.getElementById('mediaType').value;
+            currentFilters.user = document.getElementById('userFilter').value;
             currentFilters.sort = document.getElementById('sortBy').value;
             loadMediaWithFilters();
         }
@@ -936,6 +950,8 @@
                 document.getElementById('searchQuery').value = '';
             } else if (filterName === 'type') {
                 document.getElementById('mediaType').value = '';
+            } else if (filterName === 'user') {
+                document.getElementById('userFilter').value = '';
             } else if (filterName === 'sort') {
                 document.getElementById('sortBy').value = 'newest';
             }
@@ -948,10 +964,12 @@
             currentFilters = {
                 search: '',
                 type: '',
+                user: '',
                 sort: 'newest'
             };
             document.getElementById('searchQuery').value = '';
             document.getElementById('mediaType').value = '';
+            document.getElementById('userFilter').value = '';
             document.getElementById('sortBy').value = 'newest';
             loadMediaWithFilters();
         }
@@ -987,6 +1005,7 @@
             const queryParams = new URLSearchParams();
             if (currentFilters.search) queryParams.append('search', currentFilters.search);
             if (currentFilters.type) queryParams.append('type', currentFilters.type);
+            if (currentFilters.user) queryParams.append('user', currentFilters.user);
             if (currentFilters.sort && currentFilters.sort !== 'newest') queryParams.append('sort', currentFilters.sort);
             if (page > 1) queryParams.append('page', page);
 

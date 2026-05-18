@@ -69,6 +69,11 @@ class ContentController extends BaseController
             $query->where('section_id', $request->section);
         }
 
+        // 👤 User filter (creator / editor)
+        if ($request->filled('user')) {
+            $query->where('user_id', $request->user);
+        }
+
         // � Status filter
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -92,8 +97,9 @@ class ContentController extends BaseController
         $contents = $query->paginate($pagination)->appends($request->query());
 
         $sections = Section::all();
+        $users = \App\Models\User::whereHas('contents')->orderBy('name')->get(['id', 'name', 'surname']);
 
-        return view('dashboard.allcontents', compact('contents', 'sections'));
+        return view('dashboard.allcontents', compact('contents', 'sections', 'users'));
     }
 
     public function create()

@@ -46,6 +46,11 @@ class MediaController extends BaseController
                 $query->where('media_type', $type);
             }
 
+            // فلترة حسب المستخدم (الذي رفع/أضاف الوسائط)
+            if ($userId = $request->input('user')) {
+                $query->where('user_id', $userId);
+            }
+
             // الترتيب
             $sort = $request->input('sort', 'newest');
             switch ($sort) {
@@ -64,6 +69,9 @@ class MediaController extends BaseController
             }
 
             $medias = $query->paginate($pagination)->appends($request->all());
+
+            // Users who have uploaded media (for the filter dropdown)
+            $users = \App\Models\User::whereHas('medias')->orderBy('name')->get(['id', 'name', 'surname']);
 
             // Helper methods for media types
             $getMediaTypeBadge = function ($type) {
@@ -111,7 +119,7 @@ class MediaController extends BaseController
                 ]);
             }
 
-            return view('dashboard.allmedias', compact('medias', 'getMediaTypeBadge', 'getMediaTypeLabel', 'getSortLabel'));
+            return view('dashboard.allmedias', compact('medias', 'getMediaTypeBadge', 'getMediaTypeLabel', 'getSortLabel', 'users'));
         } catch (\Throwable $e) {
             if ($request->ajax()) {
                 return response()->json([

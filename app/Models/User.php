@@ -54,6 +54,11 @@ class User extends Authenticatable
         return $this->hasMany(BreakingContent::class);
     }
 
+    public function medias()
+    {
+        return $this->hasMany(ContentMedia::class);
+    }
+
     /**
      * علاقة مع الأدوار
      */

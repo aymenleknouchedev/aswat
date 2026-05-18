@@ -40,7 +40,7 @@
                             <!-- ================== FILTERS ================== -->
                             <form action="{{ route('dashboard.contents.index') }}" method="GET" class="mb-3">
                                 <div class="row g-2 align-items-center justify-content-center">
-                                    <div class="col-12 col-md-6 col-lg-3">
+                                    <div class="col-12 col-md-6 col-lg-2">
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text bg-light text-muted">
                                                 <em class="icon ni ni-search"></em>
@@ -56,6 +56,17 @@
                                                 <option value="{{ $section->id }}"
                                                     {{ request('section') == $section->id ? 'selected' : '' }}>
                                                     {{ $section->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-6 col-md-3 col-lg-2">
+                                        <select name="user" id="userFilter" class="form-select form-select-sm">
+                                            <option value="">المحررون</option>
+                                            @foreach ($users as $u)
+                                                <option value="{{ $u->id }}"
+                                                    {{ request('user') == $u->id ? 'selected' : '' }}>
+                                                    {{ trim($u->name . ' ' . $u->surname) }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -88,7 +99,7 @@
                                     </div>
                                     <!-- Buttons -->
                                     <div
-                                        class="col-12 col-md-6 col-lg-3 d-flex gap-2 align-items-center justify-content-center">
+                                        class="col-12 col-md-6 col-lg-2 d-flex gap-2 align-items-center justify-content-center">
                                         <button class="btn btn-sm btn-primary flex-grow-1" type="submit">
                                             <em class="icon ni ni-filter me-1"></em> تصفية
                                         </button>
