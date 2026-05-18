@@ -85,12 +85,15 @@ class ContentMedia extends Model
         })->exists();
         if ($hit) return true;
 
-        // Single-column lookups across user/writer/trend/window image fields.
+        // Single-column lookups across user/writer/trend/window image fields,
+        // plus list/social items that store their own image path.
         $tables = [
-            ['table' => 'users',    'col' => 'image'],
-            ['table' => 'writers',  'col' => 'image'],
-            ['table' => 'trends',   'col' => 'image'],
-            ['table' => 'windows',  'col' => 'image'],
+            ['table' => 'users',           'col' => 'image'],
+            ['table' => 'writers',         'col' => 'image'],
+            ['table' => 'trends',          'col' => 'image'],
+            ['table' => 'windows',         'col' => 'image'],
+            ['table' => 'content_lists',   'col' => 'image'],
+            ['table' => 'content_social',  'col' => 'image'],
         ];
 
         foreach ($tables as $t) {
