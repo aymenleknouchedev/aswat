@@ -71,20 +71,28 @@
             flex-direction: column;
             justify-content: flex-start;
             padding: 20px;
+            gap: 8px;
         }
 
-        .custom-photos-feature .custom-content h3 {
-            margin: 0;
-            color: #999;
-            font-size: 12px;
-            font-family: asswat-light;
-            font-weight: lighter;
-            cursor: pointer;
+        .custom-photos-feature .custom-content > * { margin: 0 !important; }
+
+        .custom-photos-feature .custom-content .feat-writer {
+            font-size: 16px;
+            font-family: asswat-medium;
+            color: #555;
+        }
+
+        .custom-photos-feature .custom-content .feat-writer a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .custom-photos-feature .custom-content .feat-writer a:hover {
+            text-decoration: underline;
         }
 
         .custom-photos-feature .custom-content h2 {
-            margin: 10px 0 10px;
-            font-size: 24px;
+            font-size: 26px;
             line-height: 1.3;
             font-family: asswat-bold;
             cursor: pointer;
@@ -92,10 +100,15 @@
         }
 
         .custom-photos-feature .custom-content p {
-            margin: 0;
             font-size: 17px;
             line-height: 1.6;
             color: #555;
+        }
+
+        .custom-photos-feature .custom-content .feat-date {
+            font-size: 14px;
+            color: #999;
+            font-family: asswat-regular;
         }
 
         .custom-photos-feature .custom-content h2:hover {
@@ -252,19 +265,23 @@
                     <div class="custom-content">
                         @php
                             $featuredWriter = $reviews[0]->writers()->first();
+                            $arabicMonths = ['جانفي', 'فيفري', 'مارس', 'أفريل', 'ماي', 'جوان', 'جويلية', 'أوت', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
                         @endphp
+                        @if ($featuredWriter)
+                            <div class="feat-writer">
+                                <a href="{{ route('writer.show', $featuredWriter->id) }}">{{ $featuredWriter->name }}</a>
+                            </div>
+                        @endif
                         <a href="{{ route('news.show', $reviews[0]->shortlink ?? '') }}"
                             style="text-decoration: none; color: inherit;">
                             <h2>{{ $reviews[0]->title ?? 'عنوان الرأي' }}</h2>
                         </a>
                         <p>{{ $reviews[0]->summary ?? 'ملخص الرأي' }}</p>
-                        @if ($featuredWriter)
-                            <div style="margin-top: 10px; font-size: 16px; font-family: asswat-medium; color: #555;">
-                                <a href="{{ route('writer.show', $featuredWriter->id) }}" style="color: inherit; text-decoration: none;">
-                                    {{ $featuredWriter->name }}
-                                </a>
-                            </div>
-                        @endif
+                        <div class="feat-date">
+                            {{ $reviews[0]->created_at->locale('ar')->translatedFormat('d') }}
+                            {{ $arabicMonths[$reviews[0]->created_at->month - 1] }}
+                            {{ $reviews[0]->created_at->locale('ar')->translatedFormat('Y') }}
+                        </div>
                     </div>
                 </div>
             @else
