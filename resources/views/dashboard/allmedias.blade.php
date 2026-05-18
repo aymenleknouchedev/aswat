@@ -105,8 +105,9 @@
                                             </div>
                                             <!-- Buttons -->
                                             <div class="col-12 col-md-6 col-lg-2 d-flex align-items-center">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary w-100" onclick="clearFilters()" title="إعادة التعيين">
-                                                    <em class="icon ni ni-undo me-1"></em><span>إعادة تعيين</span>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary w-100 d-inline-flex align-items-center justify-content-center" onclick="clearFilters()" title="إعادة التعيين">
+                                                    <em class="icon ni ni-undo me-1"></em>
+                                                    <span>إعادة تعيين</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -716,10 +717,10 @@
             white-space: nowrap;
         }
         #mediaSearchForm .btn-outline-secondary {
-            flex: 0 0 auto;
-            width: 34px;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
         }
 
         /* Bulk Actions Bar — alignment only */
