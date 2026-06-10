@@ -35,11 +35,21 @@
             direction: rtl;
             align-items: center;
             border: 1px solid #e5e5e5;
-            border-right: 3px solid #d32f2f;
             border-radius: 0;
-            padding: 16px;
+            padding: 16px 24px 16px 16px;
             background: #fff;
+            position: relative;
             transition: background-color .25s ease, border-color .25s ease, color .25s ease;
+        }
+
+        .newCategory-all-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            bottom: -1px;
+            right: -1px;
+            width: 8px;
+            background: #d32f2f;
         }
 
         .newCategory-all-card:hover {
