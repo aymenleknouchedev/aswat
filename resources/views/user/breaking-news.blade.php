@@ -74,7 +74,7 @@
         }
 
         .newCategory-all-card-text h2 {
-            font-family: asswat-bold !important;
+            font-family: asswat-medium !important;
             font-weight: normal !important;
             font-size: 20px !important;
             color: #333 !important;
