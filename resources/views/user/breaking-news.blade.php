@@ -43,8 +43,33 @@
         }
 
         .newCategory-all-card:hover {
-            border-color: #bdbdbd;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            background: #d32f2f;
+            border-color: #d32f2f;
+            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.25);
+        }
+
+        .newCategory-all-card:hover .newCategory-all-card-text p,
+        .newCategory-all-card:hover .newCategory-all-card-date,
+        .newCategory-all-card:hover .newCategory-all-card-date h4,
+        .newCategory-all-card:hover .newCategory-all-card-date span {
+            color: #fff !important;
+        }
+
+        .newCategory-all-card:hover .bn-share-icon {
+            color: #fff;
+        }
+
+        .newCategory-all-card:hover .bn-share-icon:hover {
+            color: #d32f2f;
+            background: #fff;
+        }
+
+        .newCategory-all-card:hover .bn-share-btn {
+            background: transparent;
+        }
+
+        .newCategory-all-card:hover .bn-share-btn img {
+            filter: brightness(0) invert(1);
         }
 
         /* ===== Breaking news share ===== */
