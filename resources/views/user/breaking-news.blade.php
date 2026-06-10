@@ -86,7 +86,7 @@
             font-weight: 800 !important;
             font-size: 18px !important;
             line-height: 1.5 !important;
-            color: #000 !important;
+            color: #333333 !important;
             margin: 0 !important;
         }
 
@@ -181,7 +181,7 @@
             font-size: 17px;
             font-weight: 800;
             line-height: 1.4;
-            color: #000;
+            color: #333333;
             font-family: 'asswat-bold';
         }
 
