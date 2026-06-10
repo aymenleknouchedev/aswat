@@ -806,7 +806,6 @@
                                 <h2>{{ $contents[0]->title ?? 'عنوان الخبر' }}</h2>
                             </a>
                             <p>{{ $contents[0]->summary ?? 'ملخص الخبر' }}</p>
-                            <x-content-date :content="$contents[0]" />
                         @else
                             <img loading="lazy" decoding="async" src="./user/assets/images/placeholder.jpg" alt="لا يوجد محتوى">
                             <h3>لا يوجد محتوى</h3>
@@ -831,7 +830,6 @@
                                     <h2>{{ $contents[1]->title ?? 'عنوان الخبر' }}</h2>
                                 </a>
                                 <p>{{ $contents[1]->summary ?? 'ملخص الخبر' }}</p>
-                                <x-content-date :content="$contents[1]" />
                             </div>
                         @endif
 
@@ -853,7 +851,6 @@
                                                 style="text-decoration: none; color: inherit;">
                                                 <p>{{ $contents[$i]->title ?? 'عنوان الخبر' }}</p>
                                             </a>
-                                            <x-content-date :content="$contents[$i]" />
                                         </div>
                                     </div>
                                 @endif
