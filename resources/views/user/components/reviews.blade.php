@@ -51,24 +51,17 @@
         font-size: 12px;
         color: #74747C;
         margin-bottom: 4px;
-        font-family: asswat-regular;
+        font-family: asswat-medium;
         font-weight: 600;
         display: block;
     }
 
-    .review-card .review-card-text span {
-        cursor: pointer;
-    }
 
     .review-card .review-card-text span:hover {
         text-decoration: underline;
         cursor: pointer;
     }
 
-    .review-card .review-card-text p:hover {
-        text-decoration: underline;
-        cursor: pointer;
-    }
 
     #reviewBackArrow,
     #reviewNextArrow {
