@@ -36,7 +36,7 @@
             align-items: center;
             border: 1px solid #e5e5e5;
             border-radius: 0;
-            padding: 16px 24px 16px 16px;
+            padding: 16px 20px 16px 16px;
             background: #fff;
             position: relative;
             transition: background-color .25s ease, border-color .25s ease, color .25s ease;
@@ -48,7 +48,7 @@
             top: -1px;
             bottom: -1px;
             right: -1px;
-            width: 8px;
+            width: 4px;
             background: #d32f2f;
         }
 
