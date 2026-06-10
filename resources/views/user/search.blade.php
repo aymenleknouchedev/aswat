@@ -43,7 +43,7 @@
             font-size: 14px;
             width: 125px;
             flex: 0 0 125px;
-            text-align: center;
+            text-align: right;
             white-space: nowrap;
         }
 
