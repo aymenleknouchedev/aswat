@@ -46,6 +46,64 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
         }
 
+        /* ===== Breaking news share ===== */
+        .bn-share-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            margin-right: auto;
+        }
+
+        .bn-share-icons {
+            display: flex;
+            gap: 6px;
+            opacity: 0;
+            transform: translateX(-10px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .bn-share-container.active .bn-share-icons {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .bn-share-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #929292;
+            font-size: 16px;
+            transition: color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .bn-share-icon:hover {
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .bn-share-btn {
+            background: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .bn-share-btn:hover {
+            background: #f0f0f0;
+        }
+
         .newCategory-all-card-image img {
             width: 300px;
             aspect-ratio: 16/9;
@@ -387,5 +445,36 @@
         }
 
         breakingLoading = false;
+    });
+
+    // Share toggle + copy link (event delegation, works for loaded-more items)
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.bn-share-btn');
+        if (btn) {
+            e.preventDefault();
+            const container = btn.closest('.bn-share-container');
+            document.querySelectorAll('.bn-share-container.active').forEach(c => {
+                if (c !== container) c.classList.remove('active');
+            });
+            container.classList.toggle('active');
+            return;
+        }
+
+        const copy = e.target.closest('.bn-copy-link');
+        if (copy) {
+            e.preventDefault();
+            const url = copy.getAttribute('data-url');
+            navigator.clipboard.writeText(url).then(() => {
+                const icon = copy.querySelector('i');
+                const original = icon.className;
+                icon.className = 'fa-solid fa-check';
+                setTimeout(() => { icon.className = original; }, 1200);
+            });
+            return;
+        }
+
+        if (!e.target.closest('.bn-share-container')) {
+            document.querySelectorAll('.bn-share-container.active').forEach(c => c.classList.remove('active'));
+        }
     });
 </script>
