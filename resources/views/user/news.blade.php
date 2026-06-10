@@ -493,6 +493,14 @@
             max-width: 100% !important;
             height: auto !important;
         }
+
+        /* Horizontal rule inserted via TinyMCE */
+        .custom-article-content hr {
+            border: none;
+            height: 1px;
+            background-color: #f5f5f5;
+            margin: 24px 0;
+        }
         /* Article text/content wrapper: 78% on desktop (so reading column matches design),
            full width on mobile (avoids overly narrow column + horizontal overflow). */
         .article-text-wrapper { width: 100%; margin: 0 auto; }

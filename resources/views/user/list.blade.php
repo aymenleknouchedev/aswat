@@ -2128,6 +2128,14 @@
         </div>
 
         <style>
+            /* Horizontal rule inserted via TinyMCE inside article content */
+            .intro hr {
+                border: none;
+                height: 1px;
+                background-color: #f5f5f5;
+                margin: 24px 0;
+            }
+
             .admin-top-bar {
                 position: fixed;
                 top: 0;
