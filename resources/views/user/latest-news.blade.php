@@ -34,9 +34,6 @@
             gap: 20px;
             direction: rtl;
             align-items: center;
-            border: 1px solid #d1d1d1;
-            border-radius: 0;
-            padding: 15px;
         }
 
         .newCategory-all-card-image img {
