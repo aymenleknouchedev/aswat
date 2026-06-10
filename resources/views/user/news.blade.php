@@ -483,8 +483,11 @@
             font-family: asswat-bold !important;
             font-weight: normal !important;
             line-height: 1.9 !important;
-            margin: 0 !important;
             text-align: right !important;
+        }
+
+        .custom-article-content h3 {
+            margin: 24px 0 !important;
         }
 
         /* Image spacing and captions */

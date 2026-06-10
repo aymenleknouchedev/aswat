@@ -700,7 +700,7 @@
 
         .intro h3 {
             color: #333 !important;
-            margin: 0 !important;
+            margin: 24px 0 !important;
         }
 
         .intro img {
