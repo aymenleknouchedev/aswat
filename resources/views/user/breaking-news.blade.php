@@ -179,7 +179,7 @@
             font-size: 17px;
             font-weight: 800;
             line-height: 1.4;
-            color: #1a1a1a;
+            color: #000;
             font-family: 'asswat-bold';
         }
 
