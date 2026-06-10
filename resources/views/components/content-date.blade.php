@@ -14,7 +14,8 @@
         '12' => 'ديسمبر',
     ];
 
-    $dateToUse = $content->published_date ?? $content->published_at ?? $content->created_at;
+    $rawDate = $content->published_date ?? $content->published_at ?? $content->created_at;
+    $dateToUse = $rawDate ? \Carbon\Carbon::parse($rawDate) : null;
 @endphp
 @if ($dateToUse)
     <span class="content-card-date" style="font-size: 12px; color: #74747C; font-family: asswat-light;">
