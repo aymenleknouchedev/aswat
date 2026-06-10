@@ -82,9 +82,11 @@
         }
 
         .newCategory-all-card-text p {
-            font-size: 16px !important;
+            font-family: asswat-bold !important;
+            font-weight: 800 !important;
+            font-size: 18px !important;
             line-height: 1.5 !important;
-            color: #555 !important;
+            color: #000 !important;
             margin: 0 !important;
         }
 
