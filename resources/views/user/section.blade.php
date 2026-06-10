@@ -596,7 +596,7 @@
 
             /* Mobile "Read more" button */
             #mobile-load-more-container {
-                padding: 8px 0 28px;
+                padding: 0px 0 28px;
             }
 
             #mobile-load-more-container .mobile-load-more-btn {
