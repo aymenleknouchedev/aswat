@@ -41,7 +41,8 @@
             color: #333;
             /* dark grey */
             font-size: 14px;
-            min-width: 70px;
+            width: 110px;
+            flex: 0 0 110px;
             text-align: center;
         }
 
