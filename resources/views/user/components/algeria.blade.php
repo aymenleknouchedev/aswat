@@ -158,7 +158,8 @@
     .algeria-feature h2:hover,
     .algeria-feature-m h2:hover,
     .news-card-horizontal .news-card-text p:hover,
-    .extra-item p:hover {
+    .extra-item p:hover,
+    .extra-item h3:hover {
         text-decoration: underline;
         cursor: pointer;
     }
