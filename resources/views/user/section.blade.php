@@ -684,6 +684,7 @@
                 align-items: center;
                 justify-content: center;
                 padding: 0px 20px;
+                margin-bottom: 40px;
                 box-sizing: border-box;
             }
 
