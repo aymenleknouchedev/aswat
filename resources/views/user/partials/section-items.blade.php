@@ -18,7 +18,7 @@
                 <h2>{{ $content->title ?? '' }}</h2>
             </a>
             <p>{{ $content->summary ?? '' }}</p>
-
+            <x-content-date :content="$content" />
         </div>
     </div>
 @endforeach
