@@ -25,7 +25,7 @@
             <p style="font-family: asswat-bold; font-weight: 800; font-size: 18px; line-height: 1.5; color: #333333; margin: 0;">{{ $item->text }}</p>
         </div>
         @php
-            $itemUrl = route('news.show', $item->shortlink);
+            $itemUrl = route('breakingNews');
             $shareText = $item->text;
         @endphp
         <div class="bn-share-container">
