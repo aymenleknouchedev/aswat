@@ -3351,50 +3351,7 @@
 
         @media (max-width: 480px) {
             .economy-grid-container-news {
-                display: flex;
-                grid-template-columns: none;
-                flex-direction: row;
-                overflow-x: auto;
-                overflow-y: hidden;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-                direction: rtl;
-                gap: 16px;
-                padding-bottom: 8px;
-            }
-
-            .economy-grid-container-news::-webkit-scrollbar {
-                display: none;
-            }
-
-            .economy-card-news {
-                flex: 0 0 80vw;
-                scroll-snap-align: start;
-            }
-
-            .economy-card-news img {
-                width: 100%;
-                aspect-ratio: 16 / 9;
-                object-fit: cover;
-                display: block;
-            }
-
-            .economy-card-news h3 {
-                font-size: 14px;
-                color: #74747C;
-                margin: 12px 0 4px;
-                font-family: 'asswat-light';
-                text-align: right;
-            }
-
-            .economy-card-news h2 {
-                font-size: 20px;
-                font-weight: 800;
-                line-height: 1.4;
-                color: #000;
-                margin: 0;
-                font-family: 'asswat-bold';
-                text-align: right;
+                grid-template-columns: 1fr;
             }
         }
     </style>

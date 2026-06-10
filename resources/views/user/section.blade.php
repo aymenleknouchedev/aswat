@@ -678,7 +678,7 @@
             /* Readmore Section with Grey Background */
             .readmore-section {
                 width: 100%;
-                background: #f5f5f5;
+                background: #ffffff;
                 color: #000;
                 display: flex;
                 align-items: center;
@@ -1099,8 +1099,9 @@
             @if (isset($topViewed) && is_countable($topViewed) && $topViewed->count())
                 <div class="readmore-section" dir="rtl">
                     <div style="width: 100%; max-width: 820px;">
-                        <h2 style="font-size: 24px; font-weight: 800; margin: 0 0 30px 0; font-family: 'asswat-bold';">
-                            الأكثر قراءة</h2>
+                        <p class="section-title" style="font-size: 20px; font-family: 'asswat-bold'; color: #141414; text-align: right; margin: 0 0 10px 0;">
+                            الأكثر قراءة</p>
+                        @include('user.components.ligne')
                         <ol class="readmore-list" role="list">
                             @foreach ($topViewed->take(5) as $i => $content)
                                 <li class="readmore-item">
