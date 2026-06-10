@@ -81,16 +81,12 @@
                                                         class="btn btn-sm btn-primary" data-en="Edit"
                                                         data-ar="تعديل">تعديل</a>
 
-                                                    <!-- ✅ زر الحذف -->
-                                                    <form action="{{ route('dashboard.section.destroy', $section->id) }}"
-                                                        method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="btn btn-sm btn-danger delete-btn"
-                                                            data-en="Delete" data-ar="حذف">
-                                                            حذف
-                                                        </button>
-                                                    </form>
+                                                    <!-- ✅ زر الحذف (معطل) -->
+                                                    <button type="button" class="btn btn-sm btn-danger" disabled
+                                                        style="opacity: 0.5; cursor: not-allowed;"
+                                                        data-en="Delete" data-ar="حذف">
+                                                        حذف
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @endforeach
