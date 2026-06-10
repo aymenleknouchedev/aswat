@@ -35,6 +35,7 @@
             direction: rtl;
             align-items: center;
             border: 1px solid #e5e5e5;
+            border-right: 3px solid #d32f2f;
             border-radius: 0;
             padding: 16px;
             background: #fff;
