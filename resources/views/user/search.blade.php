@@ -44,6 +44,12 @@
             width: 125px;
             flex: 0 0 125px;
             text-align: center;
+            white-space: nowrap;
+        }
+
+        .newCategory-all-card-date h4 {
+            margin: 0;
+            white-space: nowrap;
         }
 
         .newCategory-all-card-image img {
