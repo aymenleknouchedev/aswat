@@ -29,14 +29,21 @@
         }
 
         .newCategory-all-card {
-            margin-bottom: 25px;
+            margin-bottom: 16px;
             display: flex;
             gap: 20px;
             direction: rtl;
             align-items: center;
-            border: 1px solid #d1d1d1;
+            border: 1px solid #e5e5e5;
             border-radius: 0;
-            padding: 15px;
+            padding: 16px;
+            background: #fff;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .newCategory-all-card:hover {
+            border-color: #bdbdbd;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
         }
 
         .newCategory-all-card-image img {
