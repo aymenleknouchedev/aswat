@@ -46,7 +46,13 @@ class HomePageController extends Controller
             $base = Content::where('status', 'published')
                 ->where(function ($q) use ($query) {
                     $q->where('title', 'like', '%' . $query . '%')
-                        ->orWhere('summary', 'like', '%' . $query . '%');
+                        ->orWhere('summary', 'like', '%' . $query . '%')
+                        ->orWhereHas('writers', function ($w) use ($query) {
+                            $w->where('name', 'like', '%' . $query . '%');
+                        })
+                        ->orWhereHas('tags', function ($t) use ($query) {
+                            $t->where('name', 'like', '%' . $query . '%');
+                        });
                 })
                 ->orderByDesc('published_date');
 
