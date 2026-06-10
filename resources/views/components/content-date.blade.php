@@ -18,7 +18,7 @@
     $dateToUse = $rawDate ? \Carbon\Carbon::parse($rawDate) : null;
 @endphp
 @if ($dateToUse)
-    <span class="content-card-date" style="font-size: 12px; color: #74747C; font-family: asswat-light;">
+    <span class="content-card-date" style="display: block; margin-top: 8px; font-size: 12px; color: #74747C; font-family: asswat-light;">
         {{ $dateToUse->format('d') }} {{ $months[$dateToUse->format('m')] }} {{ $dateToUse->format('Y') }}
     </span>
 @endif
