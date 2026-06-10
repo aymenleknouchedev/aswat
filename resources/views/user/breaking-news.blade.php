@@ -45,7 +45,6 @@
         .newCategory-all-card:hover {
             background: #d32f2f;
             border-color: #d32f2f;
-            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.25);
         }
 
         .newCategory-all-card:hover .newCategory-all-card-text p,
@@ -62,10 +61,6 @@
         .newCategory-all-card:hover .bn-share-icon:hover {
             color: #d32f2f;
             background: #fff;
-        }
-
-        .newCategory-all-card:hover .bn-share-btn {
-            background: transparent;
         }
 
         .newCategory-all-card:hover .bn-share-btn img {
@@ -114,20 +109,14 @@
         }
 
         .bn-share-btn {
-            background: #fff;
+            background: transparent;
             border: none;
-            border-radius: 50%;
             width: 32px;
             height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .bn-share-btn:hover {
-            background: #f0f0f0;
         }
 
         .newCategory-all-card-image img {
