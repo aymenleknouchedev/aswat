@@ -22,7 +22,7 @@
             </h4>
         </div>
         <div class="newCategory-all-card-text">
-            <p style="font-size: 16px; line-height: 1.5; color: #555; margin: 0;">{{ $item->text }}</p>
+            <p style="font-family: asswat-bold; font-weight: 800; font-size: 18px; line-height: 1.5; color: #1a1a1a; margin: 0;">{{ $item->text }}</p>
         </div>
     </div>
 @endforeach

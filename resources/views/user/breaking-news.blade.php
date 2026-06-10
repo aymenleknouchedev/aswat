@@ -132,17 +132,27 @@
         .mobile-simple-ul {
             list-style: none;
             margin: 0;
-            padding: 0 16px 12px;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .mobile-simple-item+.mobile-simple-item {
-            border-top: 1px solid rgba(0, 0, 0, 0.12);
+        .mobile-simple-item {
+            border: 1px solid #e5e5e5;
+            background: #fff;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .mobile-simple-item:active {
+            border-color: #bdbdbd;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
         }
 
         .mobile-more-link {
             display: flex;
             flex-direction: column;
-            padding: 12px 0;
+            padding: 14px 16px;
             text-decoration: none;
             color: inherit;
         }
@@ -166,10 +176,10 @@
 
         .ms-title {
             margin: 0;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
-            line-height: 1.35;
-            color: #000;
+            line-height: 1.4;
+            color: #1a1a1a;
             font-family: 'asswat-bold';
         }
 
