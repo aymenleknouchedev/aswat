@@ -163,6 +163,15 @@
         cursor: pointer;
     }
 
+    /* Underline on hover when the wrapping <a> is hovered (overrides inline text-decoration: none) */
+    .algeria-feature a:hover h2,
+    .algeria-feature-m a:hover h2,
+    .news-card-horizontal a:hover p,
+    .extra-item a:hover p {
+        text-decoration: underline !important;
+        cursor: pointer;
+    }
+
     @media (max-width: 992px) {
         .algeria-grid-container {
             grid-template-columns: 1fr;

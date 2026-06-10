@@ -60,6 +60,11 @@
         cursor: pointer;
     }
 
+    .review-card .review-card-text span:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
     .review-card .review-card-text p:hover {
         text-decoration: underline;
         cursor: pointer;
