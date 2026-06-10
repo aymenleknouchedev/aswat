@@ -57,8 +57,14 @@
     }
 
 
-    .review-card .review-card-text span:hover {
-        text-decoration: underline;
+    .review-card .review-card-text span:hover,
+    .review-card .review-card-text a:hover span {
+        text-decoration: underline !important;
+        cursor: pointer;
+    }
+
+    .review-card .review-card-text a:hover p {
+        text-decoration: underline !important;
         cursor: pointer;
     }
 
