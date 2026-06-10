@@ -39,7 +39,7 @@
             border-radius: 0;
             padding: 16px;
             background: #fff;
-            transition: border-color .2s ease, box-shadow .2s ease;
+            transition: background-color .25s ease, border-color .25s ease, color .25s ease;
         }
 
         .newCategory-all-card:hover {
@@ -216,7 +216,7 @@
         .mobile-simple-item {
             border: 1px solid #e5e5e5;
             background: #fff;
-            transition: border-color .2s ease, box-shadow .2s ease;
+            transition: background-color .25s ease, border-color .25s ease, color .25s ease;
         }
 
         .mobile-simple-item:active {
