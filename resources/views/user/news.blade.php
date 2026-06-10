@@ -1594,16 +1594,15 @@
 
         @media (max-width: 600px) {
             .read-more-block {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0;
-                padding: 0;
-                background: transparent;
+                flex-direction: row;
+                gap: 8px;
+                background: #f9f9f9;
                 border-radius: 0;
                 overflow: visible;
                 border: none;
                 box-shadow: none;
                 transition: none;
+                align-items: center;
             }
 
             .read-more-block:active {
@@ -1612,48 +1611,48 @@
             }
 
             .read-more-label-text {
-                font-size: 14px;
-                color: #74747C;
-                font-family: 'asswat-light';
+                font-size: 13px;
                 padding: 0;
-                margin: 0 0 8px 0;
+                margin: 0;
                 display: block;
-                order: 1;
-                text-align: right;
+                order: -1;
+                min-width: 60px;
+                text-align: center;
             }
 
             .read-more-image {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 16 / 9;
-                object-fit: cover;
-                display: block;
+                width: 120px;
+                height: 70px;
                 order: 0;
                 flex-shrink: 0;
             }
 
             .read-more-content {
-                padding: 12px 0;
-                gap: 0;
+                padding: 0;
+                gap: 4px;
                 flex: 1;
-                order: 2;
             }
 
             .read-more-label {
                 display: none;
             }
 
-            .read-more-title {
-                font-size: 22px;
-                font-weight: 800;
-                font-family: 'asswat-bold' !important;
-                line-height: 1.4;
-                color: #000;
+            .read-more-category {
+                font-size: 11px;
+                color: #999;
                 margin: 0 !important;
-                text-align: right;
+            }
+
+            .read-more-title {
+                font-size: 14px;
+                line-height: 1.3;
+                margin: 0 !important;
             }
 
             .read-more-summary {
+                font-size: 13px;
+                color: #666;
+                line-height: 1.3;
                 display: none;
             }
         }

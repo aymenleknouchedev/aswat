@@ -1279,63 +1279,6 @@
             display: none;
         }
 
-        @media (max-width: 600px) {
-            .read-more-block {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0;
-                padding: 0;
-                background: transparent;
-                border-radius: 0;
-                overflow: visible;
-                border: none;
-                box-shadow: none;
-                transition: none;
-            }
-
-            .read-more-label-text {
-                font-size: 14px;
-                color: #74747C;
-                font-family: 'asswat-light';
-                padding: 0;
-                margin: 0 0 8px 0;
-                display: block;
-                order: 1;
-                text-align: right;
-            }
-
-            .read-more-image {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 16 / 9;
-                object-fit: cover;
-                display: block;
-                order: 0;
-                flex-shrink: 0;
-            }
-
-            .read-more-content {
-                padding: 12px 0;
-                gap: 0;
-                flex: 1;
-                order: 2;
-            }
-
-            .read-more-label {
-                display: none;
-            }
-
-            .read-more-title {
-                font-size: 22px;
-                font-weight: 800;
-                font-family: 'asswat-bold' !important;
-                line-height: 1.4;
-                color: #000;
-                margin: 0 !important;
-                text-align: right;
-            }
-        }
-
         /* ==================== BACK TO TOP BUTTON ==================== */
         .back-to-top {
             position: fixed;
