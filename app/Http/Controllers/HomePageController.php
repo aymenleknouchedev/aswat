@@ -775,7 +775,9 @@ class HomePageController extends Controller
         }
 
         [$arabicName, $count] = $sectionNames[$section];
-        $sectionId = \App\Models\Section::where('name', $arabicName)->value('id');
+        $sectionModel = \App\Models\Section::where('name', $arabicName)->first();
+        $sectionId = $sectionModel?->id;
+        $sectionDescription = $sectionModel?->description;
 
         if (!$sectionId) {
             abort(404);
@@ -832,6 +834,7 @@ class HomePageController extends Controller
         return view('user.section', compact(
             'section',
             'arabicName',
+            'sectionDescription',
             'contents',
             'moreContents',
             'topViewed',

@@ -63,6 +63,16 @@
                             </div>
 
                             <div class="form-group mt-3">
+                                <label class="form-label" for="description" data-en="Description" data-ar="الوصف">الوصف</label>
+                                <div class="form-control-wrap">
+                                    <textarea name="description" class="form-control" id="description" rows="3">{{ old('description') }}</textarea>
+                                </div>
+                                @error('description')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mt-3">
                                 <button type="submit" class="btn btn-primary" data-en="Add Section"
                                     data-ar="إضافة قسم">إضافة قسم</button>
                             </div>

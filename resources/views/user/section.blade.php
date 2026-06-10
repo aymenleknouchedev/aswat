@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'أصوات جزائرية | الجزائر')
+@section('title', !empty($sectionDescription) ? $sectionDescription : 'أصوات جزائرية | ' . ($arabicName ?? 'القسم'))
 
 @section('content')
 

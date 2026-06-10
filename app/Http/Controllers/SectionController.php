@@ -50,10 +50,12 @@ class SectionController extends BaseController
         try {
             $request->validate([
                 'name' => 'required|string|max:255|unique:sections,name',
+                'description' => 'nullable|string|max:1000',
             ]);
 
-            $section = new Section();       
+            $section = new Section();
             $section->name = $request->input('name');
+            $section->description = $request->input('description');
             $section->save();
             CacheService::forget(CacheKeys::SECTIONS);
 
@@ -88,10 +90,12 @@ class SectionController extends BaseController
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
+                'description' => 'nullable|string|max:1000',
             ]);
 
             $section = Section::findOrFail($id);
             $section->name = $request->input('name');
+            $section->description = $request->input('description');
             $section->save();
 
             CacheService::forget(CacheKeys::SECTIONS);
