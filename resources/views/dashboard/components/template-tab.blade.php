@@ -2034,7 +2034,7 @@
                                     toolbar: [
                                         'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor',
                                         '| alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist',
-                                        '| link table image media blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcInstagramPost vvcXPost vvcPaste',
+                                        '| link table image media hr blockquote vvcPicker vvcClickableText vvcReadMore vvcFacebookPost vvcInstagramPost vvcXPost vvcPaste',
                                         '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
                                     ].join(' '),
                                     fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',
