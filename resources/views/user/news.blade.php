@@ -498,7 +498,7 @@
         .custom-article-content hr {
             border: none;
             height: 1px;
-            background-color: #f5f5f5;
+            background-color: #cacaca;
             margin: 24px 0;
         }
         /* Article text/content wrapper: 78% on desktop (so reading column matches design),
