@@ -1505,7 +1505,11 @@
             text-decoration: none;
             color: inherit;
             position: relative;
-            border-radius: 6px;
+            border-radius: 0;
+        }
+
+        .read-more-category {
+            display: none !important;
         }
 
         /* Placeholder state (before content loads) */
