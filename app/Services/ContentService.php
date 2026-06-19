@@ -128,7 +128,7 @@ class ContentService
             $relatedNews = $relatedNews->merge($fallback);
         }
 
-        return $relatedNews->unique('id')->take($limit)->values();
+        return $relatedNews->unique('id')->sortByDesc('published_at')->take($limit)->values();
     }
 
     /**
