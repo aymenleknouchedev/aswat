@@ -134,6 +134,116 @@
             line-height: 1.5;
             margin: 0;
         }
+
+        /* ===== Criterion-style window lists ===== */
+        .cw-list {
+            direction: rtl;
+            padding: 32px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .cw-list:last-child {
+            border-bottom: none;
+        }
+
+        .cw-list-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .cw-list-title-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .cw-list-title {
+            font-family: asswat-bold;
+            font-size: 28px;
+            color: #000;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .cw-list-title-link:hover .cw-list-title {
+            text-decoration: underline;
+        }
+
+        .cw-list-meta {
+            font-family: asswat-light;
+            font-size: 13px;
+            color: #74747C;
+        }
+
+        .cw-list-grid {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        .cw-list-item {
+            margin: 0;
+        }
+
+        .cw-list-card {
+            position: relative;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .cw-list-rank {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            z-index: 2;
+            font-family: asswat-bold;
+            font-size: 28px;
+            color: #fff;
+            line-height: 1;
+            padding: 4px 10px;
+            background: rgba(0, 0, 0, 0.65);
+        }
+
+        .cw-list-thumb {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .cw-list-thumb img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+            transition: transform .3s ease;
+        }
+
+        .cw-list-card:hover .cw-list-thumb img {
+            transform: scale(1.03);
+        }
+
+        .cw-list-card-title {
+            margin: 10px 0 0;
+            font-family: asswat-bold;
+            font-size: 15px;
+            line-height: 1.4;
+            color: #000;
+        }
+
+        .cw-list-card:hover .cw-list-card-title {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 992px) {
+            .cw-list-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 
     <div class="web">
