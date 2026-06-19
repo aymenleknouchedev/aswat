@@ -36,7 +36,7 @@
 
         .newCategory-all-card-image img {
             width: 100%;
-            aspect-ratio: 16/9;
+            aspect-ratio: 4/3;
             object-fit: cover;
             display: block;
         }
