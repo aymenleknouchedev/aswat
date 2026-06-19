@@ -208,7 +208,9 @@
                     @if ($window->contents && $window->contents->count() > 0)
                         <div class="mobile-window-section">
                             <div class="mobile-window-header">
-                                <h2 class="mobile-simple-header">{{ $window->name ?? 'النافذة' }}</h2>
+                                <a href="{{ route('window.show', $window) }}" style="text-decoration: none; color: inherit;">
+                                    <h2 class="mobile-simple-header">{{ $window->name ?? 'النافذة' }}</h2>
+                                </a>
                             </div>
                             <div class="mobile-window-carousel" dir="rtl">
                                 @foreach ($window->contents->sortByDesc('created_at')->take(4) as $content)
