@@ -340,7 +340,7 @@
             display: none;
             border: none;
             border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-            background-color: transparent;
+            background-color: rgba(255, 255, 255, 0.18);
             padding: 10px 12px;
             outline: none;
             font-family: asswat-regular;
