@@ -202,25 +202,69 @@
             }
         }
 
-        .theme-hero {
+        .theme-hero-full {
             position: relative;
-            width: 100%;
-            min-height: 280px;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            min-height: 480px;
             display: flex;
-            align-items: flex-end;
+            flex-direction: column;
+            justify-content: space-between;
             direction: rtl;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             overflow: hidden;
         }
 
-        .theme-hero-overlay {
+        .theme-hero-header {
             width: 100%;
-            padding: 40px 30px 24px;
+            padding: 16px 30px;
+            z-index: 10;
+        }
+
+        .theme-hero-header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .theme-hero-logo img {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+
+        .theme-hero-nav {
+            list-style: none;
+            display: flex;
+            gap: 28px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .theme-hero-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-family: asswat-medium;
+            font-size: 16px;
+        }
+
+        .theme-hero-nav a:hover {
+            font-weight: 700;
+        }
+
+        .theme-hero-title-wrap {
+            padding: 40px 30px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
         }
 
         .theme-hero-title {
             font-family: asswat-bold;
-            font-size: 40px;
+            font-size: 48px;
             color: #fff;
             margin: 0;
             line-height: 1.2;
@@ -268,24 +312,47 @@
     </style>
 
     <div class="web">
-        @include('user.components.fixed-nav')
+        @if (!(in_array($type, ['Window', 'Trend']) && !empty($theme->image)))
+            @include('user.components.fixed-nav')
+        @endif
+
+        @if (in_array($type, ['Window', 'Trend']) && !empty($theme->image))
+            <div class="theme-hero-full"
+                style="background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.75)), url('{{ asset($theme->image) }}') center/cover no-repeat;">
+                <header class="theme-hero-header">
+                    <div class="theme-hero-header-inner">
+                        <a href="{{ route('index') }}" class="theme-hero-logo">
+                            <img src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo">
+                        </a>
+                        <nav>
+                            <ul class="theme-hero-nav">
+                                <li><a href="{{ route('latestNews') }}">أخبار</a></li>
+                                <li><a href="{{ route('reviews') }}">آراء</a></li>
+                                <li><a href="{{ route('windows') }}">نوافذ</a></li>
+                                <li><a href="{{ route('files') }}">ملفات</a></li>
+                                <li><a href="{{ route('investigation') }}">فحص</a></li>
+                                <li><a href="{{ route('videos') }}">فيديو</a></li>
+                                <li><a href="{{ route('podcasts') }}">بودكاست</a></li>
+                                <li><a href="{{ route('photos') }}">صور</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </header>
+                <div class="theme-hero-title-wrap">
+                    <h1 class="theme-hero-title">{{ $theme->name ?? ($theme->title ?? 'الأخبار') }}</h1>
+                </div>
+            </div>
+        @endif
 
         <div class="container">
-            @if (in_array($type, ['Window', 'Trend']) && !empty($theme->image))
-                <div class="theme-hero"
-                    style="background: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.75)), url('{{ asset($theme->image) }}') center/cover no-repeat;">
-                    <div class="theme-hero-overlay">
-                        <h1 class="theme-hero-title">{{ $theme->name ?? ($theme->title ?? 'الأخبار') }}</h1>
-                    </div>
-                </div>
-                @include('user.components.ligne')
-                <div class="under-title-ligne-space"></div>
-            @else
+            @if (!(in_array($type, ['Window', 'Trend']) && !empty($theme->image)))
                 <div class="title">
                     <p class="section-title">{{ $theme->title ?? 'الأخبار' }}</p>
                     @include('user.components.ligne')
                     <div class="under-title-ligne-space"></div>
                 </div>
+            @else
+                <div class="under-title-ligne-space"></div>
             @endif
 
             <div class="newCategory-all-section">
