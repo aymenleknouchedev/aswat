@@ -34,10 +34,6 @@
             background: #f5f5f5;
         }
 
-        .newCategory-all-card-text {
-            padding: 12px;
-        }
-
         .newCategory-all-card-image img {
             width: 100%;
             aspect-ratio: 16/9;
@@ -49,7 +45,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 15px 0;
+            padding: 18px 20px;
         }
 
 
