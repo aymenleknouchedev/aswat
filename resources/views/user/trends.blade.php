@@ -230,6 +230,12 @@
             margin: 0 auto;
         }
 
+        .theme-hero-right-group {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
         .theme-hero-logo img {
             height: 40px;
             width: auto;
@@ -327,31 +333,34 @@
         .theme-hero-search {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 6px 12px;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .theme-hero-search input {
-            background: transparent;
+        .theme-hero-search-input {
+            display: none;
+            border: none;
+            background-color: #f5f5f5;
+            padding: 10px 20px;
+            outline: none;
+            font-family: asswat-regular;
+            color: #000;
+        }
+
+        .theme-hero-search-input.active {
+            display: inline-block;
+        }
+
+        .theme-hero-search-input:focus {
             border: none;
             outline: none;
-            color: #fff;
-            font-family: asswat-regular;
-            font-size: 14px;
-            width: 140px;
         }
 
-        .theme-hero-search input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .theme-hero-search button {
-            background: transparent;
+        .theme-hero-search-btn {
+            background: none;
             border: none;
-            color: #fff;
             cursor: pointer;
+            color: #fff;
+            font-size: 18px;
             padding: 0;
             display: flex;
             align-items: center;
@@ -423,10 +432,11 @@
                 style="background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.75)), url('{{ asset($theme->image) }}') center/cover no-repeat;">
                 <header class="theme-hero-header">
                     <div class="theme-hero-header-inner">
-                        <a href="{{ route('index') }}" class="theme-hero-logo">
-                            <img src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo">
-                        </a>
-                        <nav>
+                        <div class="theme-hero-right-group">
+                            <a href="{{ route('index') }}" class="theme-hero-logo">
+                                <img src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo">
+                            </a>
+                            <nav>
                             <ul class="theme-hero-nav">
                                 <li class="theme-hero-nav-item has-sub">
                                     <a href="{{ route('latestNews') }}">أخبار <i class="fa-solid fa-chevron-down"></i></a>
@@ -453,9 +463,10 @@
                                 <li><a href="{{ route('photos') }}">صور</a></li>
                             </ul>
                         </nav>
+                        </div>
                         <form action="{{ route('search') }}" method="GET" class="theme-hero-search">
-                            <input name="query" type="text" placeholder="ابحث...">
-                            <button type="submit" aria-label="ابحث">
+                            <input name="query" type="text" class="theme-hero-search-input" placeholder="ابحث...">
+                            <button type="submit" class="theme-hero-search-btn" aria-label="ابحث">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </button>
                         </form>
@@ -593,6 +604,31 @@
     </div>
 
     <script>
+        // Theme hero search toggle
+        (function() {
+            const input = document.querySelector('.theme-hero-search-input');
+            const btn = document.querySelector('.theme-hero-search-btn');
+            if (!input || !btn) return;
+            btn.addEventListener('click', function(e) {
+                if (input.classList.contains('active')) {
+                    if (input.value.trim().length > 0) return;
+                    e.preventDefault();
+                    input.classList.remove('active');
+                } else {
+                    e.preventDefault();
+                    input.classList.add('active');
+                    input.focus();
+                }
+            });
+            document.addEventListener('click', function(e) {
+                if (!input.contains(e.target) && !btn.contains(e.target)) {
+                    if (input.value.trim().length === 0) {
+                        input.classList.remove('active');
+                    }
+                }
+            });
+        })();
+
         // Initialize Greybar Hide on Scroll
         function initializeGreybarScroll() {
             const greybar = document.getElementById('greybar');
