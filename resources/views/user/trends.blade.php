@@ -333,6 +333,7 @@
         .theme-hero-search {
             display: flex;
             align-items: center;
+            gap: 10px;
         }
 
         .theme-hero-search-btn {
@@ -344,21 +345,16 @@
             padding: 0;
             display: flex;
             align-items: center;
-            flex: 0 0 auto;
         }
 
         .theme-hero-search-input {
-            width: 0;
-            padding: 8px 0;
-            margin: 0;
+            display: none;
             border: none;
-            background-color: transparent;
+            background-color: rgba(255, 255, 255, 0.18);
+            padding: 10px 20px;
             outline: none;
             font-family: asswat-regular;
-            font-size: 14px;
             color: #fff;
-            overflow: hidden;
-            transition: width .25s ease, padding .25s ease, margin .25s ease, background-color .25s ease;
         }
 
         .theme-hero-search-input::placeholder {
@@ -366,10 +362,12 @@
         }
 
         .theme-hero-search-input.active {
-            width: 200px;
-            padding: 8px 12px;
-            margin-right: 10px;
-            background-color: rgba(255, 255, 255, 0.18);
+            display: inline-block;
+        }
+
+        .theme-hero-search-input:focus {
+            border: none;
+            outline: none;
         }
 
         .theme-hero-title-wrap {
