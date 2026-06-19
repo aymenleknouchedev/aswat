@@ -161,7 +161,7 @@
                     const shortlink = card.dataset.shortlink;
                     if (shortlink) {
                         e.preventDefault();
-                        window.location.href = '/article/' + shortlink;
+                        window.open('/article/' + shortlink, '_blank', 'noopener');
                     }
                 }
             });
@@ -174,7 +174,7 @@
                         const shortlink = card.dataset.shortlink;
                         if (shortlink) {
                             e.preventDefault();
-                            window.location.href = '/article/' + shortlink;
+                            window.open('/article/' + shortlink, '_blank', 'noopener');
                         }
                     }
                 }
