@@ -247,6 +247,24 @@
             text-align: right;
             width: 100%;
         }
+
+        #mobile-tags-container .mobile-simple-item {
+            background: #f5f5f5 !important;
+            margin-bottom: 16px;
+        }
+
+        #mobile-tags-container .mobile-more-link {
+            padding: 0 !important;
+        }
+
+        #mobile-tags-container .mobile-more-link .ms-thumb img {
+            aspect-ratio: 4/3 !important;
+            border-radius: 0 !important;
+        }
+
+        #mobile-tags-container .mobile-more-link .ms-text {
+            padding: 14px 16px !important;
+        }
     </style>
 
     <div class="web">
