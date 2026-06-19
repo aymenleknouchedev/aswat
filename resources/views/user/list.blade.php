@@ -673,7 +673,7 @@
             font-size: 16px !important;
             font-family: asswat-regular;
             color: #000000;
-            line-height: 1.9;
+            line-height: 1.625rem;
             text-align: right;
             margin-bottom: 30px;
         }
