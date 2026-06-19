@@ -255,6 +255,80 @@
             font-weight: 700;
         }
 
+        .theme-hero-nav-item.has-sub {
+            position: relative;
+        }
+
+        .theme-hero-nav-item.has-sub > a i {
+            font-size: 11px;
+            margin-right: 4px;
+        }
+
+        .theme-hero-subnav {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            list-style: none;
+            margin: 0;
+            padding: 10px 0;
+            background: rgba(0, 0, 0, 0.85);
+            min-width: 160px;
+            display: none;
+            z-index: 20;
+        }
+
+        .theme-hero-nav-item.has-sub:hover .theme-hero-subnav {
+            display: block;
+        }
+
+        .theme-hero-subnav li a {
+            display: block;
+            padding: 8px 16px;
+            color: #fff;
+            font-family: asswat-regular;
+            font-size: 15px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .theme-hero-subnav li a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 400;
+        }
+
+        .theme-hero-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 12px;
+            gap: 8px;
+        }
+
+        .theme-hero-search input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: asswat-regular;
+            font-size: 14px;
+            width: 140px;
+        }
+
+        .theme-hero-search input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .theme-hero-search button {
+            background: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
         .theme-hero-title-wrap {
             padding: 40px 30px;
             max-width: 1400px;
@@ -326,7 +400,22 @@
                         </a>
                         <nav>
                             <ul class="theme-hero-nav">
-                                <li><a href="{{ route('latestNews') }}">أخبار</a></li>
+                                <li class="theme-hero-nav-item has-sub">
+                                    <a href="{{ route('latestNews') }}">أخبار <i class="fa-solid fa-chevron-down"></i></a>
+                                    <ul class="theme-hero-subnav">
+                                        <li><a href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a></li>
+                                        <li><a href="{{ route('newSection', ['section' => 'world']) }}">عالم</a></li>
+                                        <li><a href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a></li>
+                                        <li><a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a></li>
+                                        <li><a href="{{ route('newSection', ['section' => 'people']) }}">ناس</a></li>
+                                        <li><a href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة وفنون</a></li>
+                                        <li><a href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a></li>
+                                        <li><a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>
+                                        <li><a href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a></li>
+                                        <li><a href="{{ route('newSection', ['section' => 'media']) }}">ميديا</a></li>
+                                        <li><a href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a></li>
+                                    </ul>
+                                </li>
                                 <li><a href="{{ route('reviews') }}">آراء</a></li>
                                 <li><a href="{{ route('windows') }}">نوافذ</a></li>
                                 <li><a href="{{ route('files') }}">ملفات</a></li>
@@ -336,6 +425,12 @@
                                 <li><a href="{{ route('photos') }}">صور</a></li>
                             </ul>
                         </nav>
+                        <form action="{{ route('search') }}" method="GET" class="theme-hero-search">
+                            <input name="query" type="text" placeholder="ابحث...">
+                            <button type="submit" aria-label="ابحث">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </form>
                     </div>
                 </header>
                 <div class="theme-hero-title-wrap">
