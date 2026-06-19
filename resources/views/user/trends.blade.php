@@ -264,9 +264,14 @@
             margin-right: 4px;
         }
 
+        .theme-hero-nav-item.has-sub > a {
+            padding-bottom: 18px;
+            margin-bottom: -18px;
+        }
+
         .theme-hero-subnav {
             position: absolute;
-            top: calc(100% + 14px);
+            top: 100%;
             right: 50%;
             transform: translateX(50%) translateY(-8px);
             list-style: none;
@@ -278,24 +283,11 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 2px 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-            border-top: 3px solid #c8102e;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
             transition: opacity .18s ease, transform .18s ease, visibility .18s;
             z-index: 20;
-        }
-
-        .theme-hero-subnav::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            right: 50%;
-            transform: translateX(50%);
-            width: 14px;
-            height: 14px;
-            background: #c8102e;
-            clip-path: polygon(50% 0, 100% 100%, 0 100%);
         }
 
         .theme-hero-nav-item.has-sub:hover .theme-hero-subnav,
@@ -327,7 +319,7 @@
         }
 
         .theme-hero-subnav li a:hover {
-            color: #c8102e;
+            color: #000;
             padding-right: 18px;
             font-weight: 700;
         }
