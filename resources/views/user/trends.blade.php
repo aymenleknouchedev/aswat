@@ -339,11 +339,16 @@
         .theme-hero-search-input {
             display: none;
             border: none;
-            background-color: #f5f5f5;
-            padding: 10px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+            background-color: transparent;
+            padding: 10px 12px;
             outline: none;
             font-family: asswat-regular;
-            color: #000;
+            color: #fff;
+        }
+
+        .theme-hero-search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .theme-hero-search-input.active {
