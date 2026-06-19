@@ -333,31 +333,6 @@
         .theme-hero-search {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .theme-hero-search-input {
-            display: none;
-            border: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-            background-color: rgba(255, 255, 255, 0.18);
-            padding: 10px 12px;
-            outline: none;
-            font-family: asswat-regular;
-            color: #fff;
-        }
-
-        .theme-hero-search-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .theme-hero-search-input.active {
-            display: inline-block;
-        }
-
-        .theme-hero-search-input:focus {
-            border: none;
-            outline: none;
         }
 
         .theme-hero-search-btn {
@@ -369,6 +344,32 @@
             padding: 0;
             display: flex;
             align-items: center;
+            flex: 0 0 auto;
+        }
+
+        .theme-hero-search-input {
+            width: 0;
+            padding: 8px 0;
+            margin: 0;
+            border: none;
+            background-color: transparent;
+            outline: none;
+            font-family: asswat-regular;
+            font-size: 14px;
+            color: #fff;
+            overflow: hidden;
+            transition: width .25s ease, padding .25s ease, margin .25s ease, background-color .25s ease;
+        }
+
+        .theme-hero-search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .theme-hero-search-input.active {
+            width: 200px;
+            padding: 8px 12px;
+            margin-right: 10px;
+            background-color: rgba(255, 255, 255, 0.18);
         }
 
         .theme-hero-title-wrap {
@@ -470,10 +471,10 @@
                         </nav>
                         </div>
                         <form action="{{ route('search') }}" method="GET" class="theme-hero-search">
-                            <input name="query" type="text" class="theme-hero-search-input" placeholder="ابحث...">
                             <button type="submit" class="theme-hero-search-btn" aria-label="ابحث">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </button>
+                            <input name="query" type="text" class="theme-hero-search-input" placeholder="ابحث...">
                         </form>
                     </div>
                 </header>
