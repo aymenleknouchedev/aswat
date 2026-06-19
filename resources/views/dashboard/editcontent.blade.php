@@ -3527,4 +3527,13 @@
         })();
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.nk-sidebar a[href]:not([href="#"]):not([href=""])').forEach(function(a) {
+                a.setAttribute('target', '_blank');
+                a.setAttribute('rel', 'noopener');
+            });
+        });
+    </script>
+
 @endsection
