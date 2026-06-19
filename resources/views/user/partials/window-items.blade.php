@@ -3,7 +3,9 @@
           <section class="art-section-hero"
               style="background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.851)), url('{{ asset($item->image) }}') center/cover no-repeat;">
               <div class="art-section-overlay">
-                  <h2 class="art-section-title">{{ $item->name }}</h2>
+                  <a href="{{ route('window.show', $item) }}" style="text-decoration: none; color: inherit;">
+                      <h2 class="art-section-title">{{ $item->name }}</h2>
+                  </a>
                   <div class="art-section-grid">
                       @foreach (($item->contents ?? [])->sortByDesc('created_at')->take(4) as $content)
                           <div class="art-section-card">
