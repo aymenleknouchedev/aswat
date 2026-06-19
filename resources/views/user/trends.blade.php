@@ -31,6 +31,11 @@
             display: flex;
             flex-direction: column;
             direction: rtl;
+            background: #f5f5f5;
+        }
+
+        .newCategory-all-card-text {
+            padding: 12px;
         }
 
         .newCategory-all-card-image img {
