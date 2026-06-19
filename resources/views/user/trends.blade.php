@@ -334,6 +334,14 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            position: relative;
+        }
+
+        .theme-hero-search-input {
+            position: absolute;
+            top: 50%;
+            right: calc(100% + 12px);
+            transform: translateY(-50%);
         }
 
         .theme-hero-search-btn {
