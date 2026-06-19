@@ -265,13 +265,13 @@
         }
 
         .theme-hero-nav-item.has-sub > a {
-            padding-bottom: 18px;
-            margin-bottom: -18px;
+            padding-bottom: 32px;
+            margin-bottom: -32px;
         }
 
         .theme-hero-subnav {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 14px);
             right: 50%;
             transform: translateX(50%) translateY(-8px);
             list-style: none;
