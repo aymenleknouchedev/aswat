@@ -688,13 +688,19 @@
 
                     let data = await response.text();
 
-                    if (data.trim().length === 0) {
+                    const trimmed = data.trim();
+                    if (trimmed.length === 0) {
                         btn.closest("#load-more-container").remove();
                     } else {
-                        document.getElementById("category-container").insertAdjacentHTML("beforeend", data);
-                        btn.setAttribute("data-page", page);
-                        btn.disabled = false;
-                        btn.textContent = "المزيد";
+                        document.getElementById("category-container").insertAdjacentHTML("beforeend", trimmed);
+                        const itemCount = (trimmed.match(/newCategory-all-card/g) || []).length;
+                        if (itemCount < 9) {
+                            btn.closest("#load-more-container").remove();
+                        } else {
+                            btn.setAttribute("data-page", page);
+                            btn.disabled = false;
+                            btn.textContent = "المزيد";
+                        }
                     }
                 } catch (error) {
                     alert("خطأ في تحميل المزيد");
@@ -734,10 +740,15 @@
                         if (mobileContainer) {
                             mobileContainer.insertAdjacentHTML("beforeend", trimmed);
                         }
-
-                        btn.setAttribute("data-page", page);
-                        btn.disabled = false;
-                        btn.textContent = "المزيد";
+                        const itemCount = (trimmed.match(/mobile-simple-item/g) || []).length;
+                        if (itemCount < 9) {
+                            const cont = btn.closest("#mobile-load-more-container");
+                            if (cont) cont.remove();
+                        } else {
+                            btn.setAttribute("data-page", page);
+                            btn.disabled = false;
+                            btn.textContent = "المزيد";
+                        }
                     }
                 } catch (error) {
                     alert("خطأ في تحميل المزيد");
