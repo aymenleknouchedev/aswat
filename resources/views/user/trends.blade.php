@@ -266,34 +266,70 @@
 
         .theme-hero-subnav {
             position: absolute;
-            top: 100%;
-            right: 0;
+            top: calc(100% + 14px);
+            right: 50%;
+            transform: translateX(50%) translateY(-8px);
             list-style: none;
             margin: 0;
-            padding: 10px 0;
-            background: rgba(0, 0, 0, 0.85);
-            min-width: 160px;
-            display: none;
+            padding: 14px 18px;
+            background: #fff;
+            min-width: 360px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+            border-top: 3px solid #c8102e;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity .18s ease, transform .18s ease, visibility .18s;
             z-index: 20;
         }
 
-        .theme-hero-nav-item.has-sub:hover .theme-hero-subnav {
-            display: block;
+        .theme-hero-subnav::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 14px;
+            height: 14px;
+            background: #c8102e;
+            clip-path: polygon(50% 0, 100% 100%, 0 100%);
+        }
+
+        .theme-hero-nav-item.has-sub:hover .theme-hero-subnav,
+        .theme-hero-nav-item.has-sub:focus-within .theme-hero-subnav {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(50%) translateY(0);
+        }
+
+        .theme-hero-subnav li {
+            margin: 0;
         }
 
         .theme-hero-subnav li a {
             display: block;
-            padding: 8px 16px;
-            color: #fff;
-            font-family: asswat-regular;
+            padding: 9px 12px;
+            color: #1a1a1a;
+            font-family: asswat-medium;
             font-size: 15px;
             text-decoration: none;
             white-space: nowrap;
+            border-bottom: 1px solid #f0f0f0;
+            transition: color .15s ease, padding-right .15s ease;
+        }
+
+        .theme-hero-subnav li:nth-last-child(-n+2) a {
+            border-bottom: none;
         }
 
         .theme-hero-subnav li a:hover {
-            background: rgba(255, 255, 255, 0.1);
-            font-weight: 400;
+            color: #c8102e;
+            padding-right: 18px;
+            font-weight: 700;
         }
 
         .theme-hero-search {
