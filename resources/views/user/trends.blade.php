@@ -233,7 +233,7 @@
         .theme-hero-right-group {
             display: flex;
             align-items: center;
-            gap: 40px;
+            gap: 80px;
         }
 
         .theme-hero-logo img {
