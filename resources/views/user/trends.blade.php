@@ -330,53 +330,6 @@
             font-weight: 700;
         }
 
-        .theme-hero-search {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-        }
-
-        .theme-hero-search-input {
-            position: absolute;
-            top: 50%;
-            right: calc(100% + 12px);
-            transform: translateY(-50%);
-        }
-
-        .theme-hero-search-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #fff;
-            font-size: 18px;
-            padding: 0;
-            display: flex;
-            align-items: center;
-        }
-
-        .theme-hero-search-input {
-            display: none;
-            border: none;
-            background-color: rgba(255, 255, 255, 0.18);
-            padding: 10px 20px;
-            outline: none;
-            font-family: asswat-regular;
-            color: #fff;
-        }
-
-        .theme-hero-search-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .theme-hero-search-input.active {
-            display: inline-block;
-        }
-
-        .theme-hero-search-input:focus {
-            border: none;
-            outline: none;
-        }
 
         .theme-hero-title-wrap {
             padding: 40px 30px;
@@ -476,11 +429,11 @@
                             </ul>
                         </nav>
                         </div>
-                        <form action="{{ route('search') }}" method="GET" class="theme-hero-search">
-                            <button type="submit" class="theme-hero-search-btn" aria-label="ابحث">
-                                <i class="fa-solid fa-magnifying-glass"></i>
+                        <form action="{{ route('search') }}" method="GET" class="site-search-form">
+                            <input name="query" type="text" class="site-search-input" placeholder="ابحث...">
+                            <button type="submit" class="search-icon" style="background:none;border:none;padding:0;color:#fff;">
+                                @include('user.icons.search')
                             </button>
-                            <input name="query" type="text" class="theme-hero-search-input" placeholder="ابحث...">
                         </form>
                     </div>
                 </header>
