@@ -200,17 +200,74 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .theme-hero {
+            position: relative;
+            width: 100%;
+            min-height: 280px;
+            display: flex;
+            align-items: flex-end;
+            direction: rtl;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .theme-hero-overlay {
+            width: 100%;
+            padding: 40px 30px 24px;
+        }
+
+        .theme-hero-title {
+            font-family: asswat-bold;
+            font-size: 40px;
+            color: #fff;
+            margin: 0;
+            line-height: 1.2;
+            text-align: right;
+        }
+
+        .theme-hero-mobile {
+            position: relative;
+            width: 100%;
+            min-height: 180px;
+            display: flex;
+            align-items: flex-end;
+            direction: rtl;
+            margin-bottom: 12px;
+        }
+
+        .theme-hero-title-mobile {
+            font-family: asswat-bold;
+            font-size: 26px;
+            color: #fff;
+            margin: 0;
+            padding: 16px;
+            line-height: 1.25;
+            text-align: right;
+            width: 100%;
+        }
     </style>
 
     <div class="web">
         @include('user.components.fixed-nav')
 
         <div class="container">
-            <div class="title">
-                <p class="section-title">{{ $theme->title ?? 'الأخبار' }}</p>
+            @if (in_array($type, ['Window', 'Trend']) && !empty($theme->image))
+                <div class="theme-hero"
+                    style="background: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.75)), url('{{ asset($theme->image) }}') center/cover no-repeat;">
+                    <div class="theme-hero-overlay">
+                        <h1 class="theme-hero-title">{{ $theme->name ?? ($theme->title ?? 'الأخبار') }}</h1>
+                    </div>
+                </div>
                 @include('user.components.ligne')
                 <div class="under-title-ligne-space"></div>
-            </div>
+            @else
+                <div class="title">
+                    <p class="section-title">{{ $theme->title ?? 'الأخبار' }}</p>
+                    @include('user.components.ligne')
+                    <div class="under-title-ligne-space"></div>
+                </div>
+            @endif
 
             <div class="newCategory-all-section">
                 <div class="newCategory-all-list" id="category-container">
@@ -291,7 +348,14 @@
         <div class="mobile-flow">
             <div class="mobile-container" style="margin-top: 68px;">
                 <div class="mobile-simple-list" dir="rtl">
-                    <h2 class="mobile-simple-header">{{ $theme->title ?? 'الأخبار' }}</h2>
+                    @if (in_array($type, ['Window', 'Trend']) && !empty($theme->image))
+                        <div class="theme-hero-mobile"
+                            style="background: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.75)), url('{{ asset($theme->image) }}') center/cover no-repeat;">
+                            <h2 class="theme-hero-title-mobile">{{ $theme->name ?? ($theme->title ?? 'الأخبار') }}</h2>
+                        </div>
+                    @else
+                        <h2 class="mobile-simple-header">{{ $theme->title ?? 'الأخبار' }}</h2>
+                    @endif
                     <div style="padding: 0px 16px">
                         @include('user.components.ligne')
                     </div>
