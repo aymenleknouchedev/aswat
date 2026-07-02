@@ -69,6 +69,8 @@ class TrendController extends BaseController
             $trend->slug = Str::slug($request->input('title')) ?: Str::random(8);
 
             $trend->image = $request->input('image');
+            $trend->social_image = $request->input('social_image');
+            $trend->description = $request->input('description');
             $trend->save();
 
             return redirect()->route('dashboard.trend.create')->with('success', 'Trend created successfully.');
@@ -110,6 +112,8 @@ class TrendController extends BaseController
             if ($request->filled('image')) {
                 $trend->image = $request->input('image');
             }
+            $trend->social_image = $request->input('social_image');
+            $trend->description = $request->input('description');
             $trend->save();
             return redirect()->route('dashboard.trends.index')->with('success', 'Trend updated successfully.');
         } catch (\Throwable $e) {

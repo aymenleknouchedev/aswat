@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Window extends Model
 {
-    protected $fillable = ['name' , 'slug', 'image'];
+    protected $fillable = ['name' , 'slug', 'image', 'social_image', 'description'];
 
     public function contents()
     {

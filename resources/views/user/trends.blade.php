@@ -4,14 +4,22 @@
 
 @php
     $shareTitle = $theme->name ?? ($theme->title ?? 'أصوات جزائرية');
+    $shareImage = $theme->social_image ?: $theme->image;
+    $shareDescription = $theme->description;
 @endphp
 
 @section('meta_og_title', $shareTitle)
 @section('meta_twitter_title', $shareTitle)
 
-@if (!empty($theme->image))
-    @section('meta_og_image', asset($theme->image))
-    @section('meta_twitter_image', asset($theme->image))
+@if (!empty($shareImage))
+    @section('meta_og_image', asset($shareImage))
+    @section('meta_twitter_image', asset($shareImage))
+@endif
+
+@if (!empty($shareDescription))
+    @section('meta_description', $shareDescription)
+    @section('meta_og_description', $shareDescription)
+    @section('meta_twitter_description', $shareDescription)
 @endif
 
 @push('seo')

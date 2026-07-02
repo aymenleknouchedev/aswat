@@ -66,6 +66,8 @@ class WindowController extends BaseController
             $window->slug = Str::slug($request->input('name')) ?: Str::random(8);
 
             $window->image = $request->input('image');
+            $window->social_image = $request->input('social_image');
+            $window->description = $request->input('description');
 
             $window->save();
 
@@ -111,6 +113,9 @@ class WindowController extends BaseController
             if ($request->filled('image')) {
                 $window->image = $request->input('image');
             }
+
+            $window->social_image = $request->input('social_image');
+            $window->description = $request->input('description');
 
             $window->save();
 

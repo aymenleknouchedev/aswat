@@ -202,6 +202,35 @@
                                 @enderror
                             </div>
 
+                            <!-- صورة السوشيال ميديا -->
+                            <div class="form-group">
+                                <label class="form-label" for="social_image" data-en="Social Media Image"
+                                    data-ar="صورة السوشيال ميديا">صورة السوشيال ميديا</label>
+                                <div class="input-group mb-2">
+                                    <input id="socialImageUrl" class="form-control" data-ar="لم يتم الاختيار"
+                                        data-en="Not selected" readonly />
+                                    <button type="button" class="btn btn-outline-secondary" id="btnPickSocialImage"
+                                        data-ar="اختيار الصورة" data-en="Pick image">
+                                        <i class="fa fa-images"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger" id="btnClearSocialImage"
+                                        title="مسح" data-ar="مسح" data-en="Clear">
+                                        <i class="fa fa-xmark"></i>
+                                    </button>
+                                </div>
+                                <input type="hidden" id="social_image" name="social_image" value="{{ old('social_image') }}">
+                                <div id="socialImagePreview" class="mt-2"></div>
+                            </div>
+
+                            <!-- الوصف -->
+                            <div class="form-group">
+                                <label class="form-label" for="description" data-en="Description"
+                                    data-ar="الوصف">الوصف</label>
+                                <textarea name="description" id="description" rows="3" class="form-control"
+                                    data-en="Description (used for the browser tab and social share)"
+                                    data-ar="الوصف (يُستخدم في عنوان التبويب ومشاركة السوشيال ميديا)">{{ old('description') }}</textarea>
+                            </div>
+
                             <!-- زر الإرسال -->
                             <div class="form-group mt-3">
                                 <button type="submit" class="btn btn-primary" data-en="Add Trend" data-ar="إضافة ترند">
@@ -1542,39 +1571,62 @@
                 closeModal();
             });
 
-            // Main form image selection
-            const imageUrlInput = document.getElementById("trendImageUrl");
-            const imagePreview = document.getElementById("trendImagePreview");
-            const imageHiddenInput = document.getElementById("image");
-            const btnPickImage = document.getElementById("btnPickTrendImage");
-            const btnClearImage = document.getElementById("btnClearTrendImage");
+            // Image selection targets (main + social)
+            const targets = {
+                main: {
+                    urlInput: document.getElementById("trendImageUrl"),
+                    preview: document.getElementById("trendImagePreview"),
+                    hidden: document.getElementById("image"),
+                    pick: document.getElementById("btnPickTrendImage"),
+                    clear: document.getElementById("btnClearTrendImage"),
+                },
+                social: {
+                    urlInput: document.getElementById("socialImageUrl"),
+                    preview: document.getElementById("socialImagePreview"),
+                    hidden: document.getElementById("social_image"),
+                    pick: document.getElementById("btnPickSocialImage"),
+                    clear: document.getElementById("btnClearSocialImage"),
+                },
+            };
+            let activeTarget = "main";
 
-            function selectImage(media) {
-                imageUrlInput.value = media.url || "";
-                imageHiddenInput.value = media.url || "";
-                renderImagePreview();
-            }
-
-            function renderImagePreview() {
-                imagePreview.innerHTML = "";
-                const url = imageHiddenInput.value || imageUrlInput.value;
+            function renderTargetPreview(t) {
+                t.preview.innerHTML = "";
+                const url = t.hidden.value || t.urlInput.value;
                 if (!url) return;
                 const img = new Image();
                 img.src = url;
                 img.alt = "";
                 img.className = "media-preview";
                 img.loading = "lazy";
-                imagePreview.appendChild(img);
+                t.preview.appendChild(img);
             }
 
-            btnPickImage?.addEventListener("click", () => {
-                openModal();
-            });
+            // Backward-compat shim
+            function renderImagePreview() {
+                renderTargetPreview(targets.main);
+            }
 
-            btnClearImage?.addEventListener("click", () => {
-                imageUrlInput.value = "";
-                imageHiddenInput.value = "";
-                imagePreview.innerHTML = "";
+            function selectImage(media) {
+                const t = targets[activeTarget];
+                if (!t) return;
+                t.urlInput.value = media.url || "";
+                t.hidden.value = media.url || "";
+                renderTargetPreview(t);
+            }
+
+            Object.keys(targets).forEach((key) => {
+                const t = targets[key];
+                t.pick?.addEventListener("click", () => {
+                    activeTarget = key;
+                    openModal();
+                });
+                t.clear?.addEventListener("click", () => {
+                    t.urlInput.value = "";
+                    t.hidden.value = "";
+                    t.preview.innerHTML = "";
+                });
+                renderTargetPreview(t);
             });
 
             // Upload functionality
