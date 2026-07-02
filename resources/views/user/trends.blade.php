@@ -542,7 +542,7 @@
 
 
         .theme-hero-title-wrap {
-            padding: 40px 0px;
+            padding: 40px 10px;
             max-width: 1220px;
             width: 100%;
             margin: 0 auto;
