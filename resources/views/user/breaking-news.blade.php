@@ -2,6 +2,9 @@
 
 @section('title', 'أصوات جزائرية | أخبار عاجلة')
 
+@section('meta_og_image', asset('breaking.jpeg'))
+@section('meta_twitter_image', asset('breaking.jpeg'))
+
 @section('content')
 
     <style>
