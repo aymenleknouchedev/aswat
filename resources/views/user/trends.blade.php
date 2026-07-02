@@ -216,7 +216,7 @@
             position: relative;
             width: 100vw;
             margin-left: calc(-50vw + 50%);
-            min-height: 500px;
+            min-height: 510px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -530,7 +530,7 @@
         .theme-hero-mobile {
             position: relative;
             width: 100%;
-            min-height: 200px;
+            min-height: 210px;
             display: flex;
             align-items: flex-end;
             direction: rtl;
