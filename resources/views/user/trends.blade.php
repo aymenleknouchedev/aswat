@@ -2,6 +2,18 @@
 
 @section('title', 'أصوات جزائرية | ' . ($theme->title ?? 'الأخبار'))
 
+@php
+    $shareTitle = $theme->name ?? ($theme->title ?? 'أصوات جزائرية');
+@endphp
+
+@section('meta_og_title', $shareTitle)
+@section('meta_twitter_title', $shareTitle)
+
+@if (!empty($theme->image))
+    @section('meta_og_image', asset($theme->image))
+    @section('meta_twitter_image', asset($theme->image))
+@endif
+
 @push('seo')
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=dehaze" />
