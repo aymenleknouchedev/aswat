@@ -89,6 +89,10 @@
                                                 <td>{{ $trend->title }}</td>
                                                 <td>{{ $trend->slug }}</td>
                                                 <td>
+                                                    <a href="{{ route('trend.show', $trend->id) }}"
+                                                        target="_blank" class="btn btn-sm btn-info" data-en="Preview"
+                                                        data-ar="معاينة">معاينة</a>
+
                                                     <a href="{{ route('dashboard.trend.edit', $trend->id) }}"
                                                         class="btn btn-sm btn-primary" data-en="Edit"
                                                         data-ar="تعديل">تعديل</a>

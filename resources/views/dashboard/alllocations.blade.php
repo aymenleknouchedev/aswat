@@ -79,6 +79,12 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                @if (in_array($location->type, ['country', 'continent']))
+                                                    <a href="{{ route('category.show', ['id' => $location->id, 'type' => ucfirst($location->type)]) }}"
+                                                        target="_blank" class="btn btn-sm btn-info" data-en="Preview"
+                                                        data-ar="معاينة">معاينة</a>
+                                                @endif
+
                                                 <a href="{{ route('dashboard.location.edit', $location->id) }}"
                                                     class="btn btn-sm btn-primary" data-en="Edit" data-ar="تعديل">
                                                     تعديل

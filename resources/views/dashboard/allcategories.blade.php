@@ -91,6 +91,10 @@
                                                 <td>{{ $category->name }}</td>
                                                 <td>{{ $category->slug }}</td>
                                                 <td>
+                                                    <a href="{{ route('category.show', ['id' => $category->id, 'type' => 'Category']) }}"
+                                                        target="_blank" class="btn btn-sm btn-info" data-en="Preview"
+                                                        data-ar="معاينة">معاينة</a>
+
                                                     <a href="{{ route('dashboard.categorie.edit', $category->id) }}"
                                                         class="btn btn-sm btn-primary" data-en="Edit" data-ar="تعديل">
                                                         تعديل
