@@ -3308,7 +3308,7 @@
             background: none;
             border: none;
             color: #fff;
-            font-size: 38px;
+            font-size: 50px;
             line-height: 1;
             cursor: pointer;
             padding: 6px 8px;
