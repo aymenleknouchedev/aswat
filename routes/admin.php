@@ -71,6 +71,7 @@ Route::prefix('dashboard')->group(function () {
 
         // Settings
         Route::get('/settings', [SettingsController::class, 'settings'])->name('dashboard.settings');
+        Route::post('/settings', [SettingsController::class, 'update'])->name('dashboard.settings.update');
 
         // get all media paginated (for JS fetch)
         Route::get('/media/getAllMediaPaginated', [MediaController::class, 'getAllMediaPaginated'])

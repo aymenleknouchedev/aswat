@@ -2,8 +2,20 @@
 
 @section('title', 'أصوات جزائرية | أخبار عاجلة')
 
-@section('meta_og_image', asset('breaking.jpeg'))
-@section('meta_twitter_image', asset('breaking.jpeg'))
+@php
+    $breakingShareImage = \App\Models\Setting::get('breaking_share_image');
+    $breakingShareImage = $breakingShareImage ? asset($breakingShareImage) : asset('breaking.jpeg');
+    $breakingShareDescription = \App\Models\Setting::get('breaking_share_description');
+@endphp
+
+@section('meta_og_image', $breakingShareImage)
+@section('meta_twitter_image', $breakingShareImage)
+
+@if (!empty($breakingShareDescription))
+    @section('meta_description', $breakingShareDescription)
+    @section('meta_og_description', $breakingShareDescription)
+    @section('meta_twitter_description', $breakingShareDescription)
+@endif
 
 @section('content')
 
