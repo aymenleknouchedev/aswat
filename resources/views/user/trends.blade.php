@@ -400,10 +400,6 @@
             color: #fff;
         }
 
-        body.theme-menu-open {
-            overflow: hidden;
-        }
-
         .theme-hero-nav {
             list-style: none;
             display: flex;
@@ -752,7 +748,6 @@
             function openMenu() {
                 panel.classList.add('open');
                 overlay.classList.add('open');
-                document.body.classList.add('theme-menu-open');
                 btn.setAttribute('aria-expanded', 'true');
                 panel.setAttribute('aria-hidden', 'false');
             }
@@ -760,7 +755,6 @@
             function closeMenu() {
                 panel.classList.remove('open');
                 overlay.classList.remove('open');
-                document.body.classList.remove('theme-menu-open');
                 btn.setAttribute('aria-expanded', 'false');
                 panel.setAttribute('aria-hidden', 'true');
             }
