@@ -226,7 +226,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 30px;
-            max-width: 1400px;
+            max-width: 100%;
             margin: 0 auto;
         }
 
