@@ -7,6 +7,11 @@
                     $created = \Carbon\Carbon::parse($item->created_at);
                     $now = \Carbon\Carbon::now();
                     $diffHours = $created->diffInHours($now);
+                    $months = [
+                        '01' => 'جانفي', '02' => 'فيفري', '03' => 'مارس', '04' => 'أفريل',
+                        '05' => 'ماي', '06' => 'جوان', '07' => 'جويلية', '08' => 'أوت',
+                        '09' => 'سبتمبر', '10' => 'أكتوبر', '11' => 'نوفمبر', '12' => 'ديسمبر',
+                    ];
                 @endphp
 
                 @if ($diffHours < 24)
@@ -15,8 +20,8 @@
                     </div>
                 @else
                     <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                        <span>{{ $created->translatedFormat('d F Y') }}</span>
-                        <span style="color: #74747C;">{{ $created->translatedFormat('H:i') }}</span>
+                        <span>{{ $created->format('d') }} {{ $months[$created->format('m')] }} {{ $created->format('Y') }}</span>
+                        <span style="color: #74747C;">{{ $created->format('H:i') }}</span>
                     </div>
                 @endif
             </h4>
