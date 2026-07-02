@@ -21,7 +21,7 @@
                 $month = $months[$date->format('m')];
                 $year = $date->format('Y');
             @endphp
-            <h4>{{ $day }} {{ $month }} {{ $year }}</h4>
+            <h4 style="width: 140px">{{ $day }} {{ $month }} {{ $year }}</h4>
         </div>
 
         <div class="newCategory-all-card-image">
