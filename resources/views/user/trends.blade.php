@@ -256,7 +256,7 @@
         }
 
         .theme-hero-menu-btn .material-symbols-outlined {
-            font-size: 50px;
+            font-size: 38px;
             line-height: 1;
         }
 
