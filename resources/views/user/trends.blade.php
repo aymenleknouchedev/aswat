@@ -56,6 +56,8 @@
             display: flex;
             flex-direction: column;
             padding: 18px 20px;
+            /* Match the image height (image is full-width with 4/3 ratio) */
+            aspect-ratio: 4 / 3;
         }
 
 
