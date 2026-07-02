@@ -2221,64 +2221,10 @@
                         <img class="logo-scrolled" src="{{ asset('user/assets/images/white_logo.svg') }}"
                             alt="Logo" style="height: 40px; display: none;">
                     </a>
-                    <nav>
-                        <ul class="site-nav-links">
-                            <li class="site-nav-link {{ request()->routeIs('latestNews') ? 'active' : '' }}"
-                                id="hero-show-subnav">
-                                <a href="{{ route('latestNews') }}" class="has-sub" aria-expanded="false">أخبار <i
-                                        class="fa-solid fa-chevron-down sub-arrow"></i></a>
-                                <ul class="subnav-list">
-                                    <li class="site-subnav-link"><a
-                                            href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a>
-                                    </li>
-                                    <li class="site-subnav-link"><a
-                                            href="{{ route('newSection', ['section' => 'world']) }}">عالم</a></li>
-                                    <li class="site-subnav-link"><a
-                                            href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a></li>
-                                    <li class="site-subnav-link"><a
-                                            href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a></li>
-                                    <li class="site-subnav-link"><a
-                                            href="{{ route('newSection', ['section' => 'people']) }}">ناس</a></li>
-                                    <li class="site-subnav-link"><a
-                                            href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة وفنون</a>
-                                    </li>
-                                    <li class="site-subnav-link"><a
-                                            href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a>
-                                    </li>
-                                    <li class="site-subnav-link"><a
-                                            href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>
-                                    <li class="site-subnav-link"><a
-                                            href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a>
-                                    </li>
-                                    <li class="site-subnav-link"><a
-                                            href="{{ route('newSection', ['section' => 'media']) }}">ميديا</a></li>
-                                    <li class="site-subnav-link"><a
-                                            href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a></li>
-                                </ul>
-                            </li>
-                            <li class="site-nav-link {{ request()->routeIs('reviews') ? 'active' : '' }}">
-                                <a href="{{ route('reviews') }}">آراء</a>
-                            </li>
-                            <li class="site-nav-link {{ request()->routeIs('windows') ? 'active' : '' }}">
-                                <a href="{{ route('windows') }}">نوافذ</a>
-                            </li>
-                            <li class="site-nav-link {{ request()->routeIs('files') ? 'active' : '' }}">
-                                <a href="{{ route('files') }}">ملفات</a>
-                            </li>
-                            <li class="site-nav-link {{ request()->routeIs('investigation') ? 'active' : '' }}">
-                                <a href="{{ route('investigation') }}">فحص</a>
-                            </li>
-                            <li class="site-nav-link {{ request()->routeIs('videos') ? 'active' : '' }}">
-                                <a href="{{ route('videos') }}">فيديو</a>
-                            </li>
-                            <li class="site-nav-link {{ request()->routeIs('podcasts') ? 'active' : '' }}">
-                                <a href="{{ route('podcasts') }}">بودكاست</a>
-                            </li>
-                            <li class="site-nav-link {{ request()->routeIs('photos') ? 'active' : '' }}">
-                                <a href="{{ route('photos') }}">صور</a>
-                            </li>
-                        </ul>
-                    </nav>
+                    <button type="button" class="theme-hero-menu-btn" data-theme-menu-open
+                        aria-label="القائمة" aria-expanded="false" aria-controls="themeMenuPanel">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
                 </div>
             </div>
         </header>
@@ -2430,68 +2376,10 @@
                             <img class="logo-scrolled" src="{{ asset('user/assets/images/white_logo.svg') }}"
                                 alt="Logo" style="height: 40px; display: none;">
                         </a>
-                        <nav>
-                            <ul class="site-nav-links">
-                                <li class="site-nav-link {{ request()->routeIs('latestNews') ? 'active' : '' }}"
-                                    id="scroll-show-subnav">
-                                    <a href="{{ route('latestNews') }}" class="has-sub" aria-expanded="false">أخبار
-                                        <i class="fa-solid fa-chevron-down sub-arrow"></i></a>
-                                    <ul class="subnav-list">
-                                        <li class="site-subnav-link"><a
-                                                href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a>
-                                        </li>
-                                        <li class="site-subnav-link"><a
-                                                href="{{ route('newSection', ['section' => 'world']) }}">عالم</a></li>
-                                        <li class="site-subnav-link"><a
-                                                href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a>
-                                        </li>
-                                        <li class="site-subnav-link"><a
-                                                href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a>
-                                        </li>
-                                        <li class="site-subnav-link"><a
-                                                href="{{ route('newSection', ['section' => 'people']) }}">ناس</a></li>
-                                        <li class="site-subnav-link"><a
-                                                href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة
-                                                وفنون</a></li>
-                                        <li class="site-subnav-link"><a
-                                                href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a>
-                                        </li>
-                                        <li class="site-subnav-link"><a
-                                                href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>
-                                        <li class="site-subnav-link"><a
-                                                href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a>
-                                        </li>
-                                        <li class="site-subnav-link"><a
-                                                href="{{ route('newSection', ['section' => 'media']) }}">ميديا</a>
-                                        </li>
-                                        <li class="site-subnav-link"><a
-                                                href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="site-nav-link {{ request()->routeIs('reviews') ? 'active' : '' }}">
-                                    <a href="{{ route('reviews') }}">آراء</a>
-                                </li>
-                                <li class="site-nav-link {{ request()->routeIs('windows') ? 'active' : '' }}">
-                                    <a href="{{ route('windows') }}">نوافذ</a>
-                                </li>
-                                <li class="site-nav-link {{ request()->routeIs('files') ? 'active' : '' }}">
-                                    <a href="{{ route('files') }}">ملفات</a>
-                                </li>
-                                <li class="site-nav-link {{ request()->routeIs('investigation') ? 'active' : '' }}">
-                                    <a href="{{ route('investigation') }}">فحص</a>
-                                </li>
-                                <li class="site-nav-link {{ request()->routeIs('videos') ? 'active' : '' }}">
-                                    <a href="{{ route('videos') }}">فيديو</a>
-                                </li>
-                                <li class="site-nav-link {{ request()->routeIs('podcasts') ? 'active' : '' }}">
-                                    <a href="{{ route('podcasts') }}">بودكاست</a>
-                                </li>
-                                <li class="site-nav-link {{ request()->routeIs('photos') ? 'active' : '' }}">
-                                    <a href="{{ route('photos') }}">صور</a>
-                                </li>
-                            </ul>
-                        </nav>
+                        <button type="button" class="theme-hero-menu-btn" data-theme-menu-open
+                            aria-label="القائمة" aria-expanded="false" aria-controls="themeMenuPanel">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
                     </div>
                 </div>
             </nav>
@@ -3355,6 +3243,239 @@
             }
         }
     </style>
+
+    <!-- Slide-out menu (links + search) -->
+    <div class="theme-menu-overlay" id="themeMenuOverlay"></div>
+    <aside class="theme-menu-panel" id="themeMenuPanel" aria-hidden="true" dir="rtl">
+        <button type="button" class="theme-menu-close" id="themeMenuClose" aria-label="إغلاق">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <form action="{{ route('search') }}" method="GET" class="theme-menu-search">
+            <input name="query" type="text" class="theme-menu-search-input" placeholder="ابحث...">
+            <button type="submit" class="theme-menu-search-btn" aria-label="بحث">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
+
+        <nav>
+            <ul class="theme-menu-nav">
+                <li><a href="{{ route('latestNews') }}">أخبار</a></li>
+                <li class="theme-menu-sublist">
+                    <a href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a>
+                    <a href="{{ route('newSection', ['section' => 'world']) }}">عالم</a>
+                    <a href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a>
+                    <a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a>
+                    <a href="{{ route('newSection', ['section' => 'people']) }}">ناس</a>
+                    <a href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة وفنون</a>
+                    <a href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a>
+                    <a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a>
+                    <a href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a>
+                    <a href="{{ route('newSection', ['section' => 'media']) }}">ميديا</a>
+                    <a href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a>
+                </li>
+                <li><a href="{{ route('reviews') }}">آراء</a></li>
+                <li><a href="{{ route('windows') }}">نوافذ</a></li>
+                <li><a href="{{ route('files') }}">ملفات</a></li>
+                <li><a href="{{ route('investigation') }}">فحص</a></li>
+                <li><a href="{{ route('videos') }}">فيديو</a></li>
+                <li><a href="{{ route('podcasts') }}">بودكاست</a></li>
+                <li><a href="{{ route('photos') }}">صور</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <style>
+        /* Hamburger menu button */
+        .theme-hero-menu-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 26px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 6px 8px;
+            display: flex;
+            align-items: center;
+            transition: opacity .2s ease;
+        }
+
+        .theme-hero-menu-btn:hover {
+            opacity: .75;
+        }
+
+        /* Slide-out menu panel */
+        .theme-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .3s ease, visibility .3s;
+            z-index: 2000;
+        }
+
+        .theme-menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .theme-menu-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 340px;
+            max-width: 85vw;
+            background: #1a1a1a;
+            padding: 70px 28px 30px;
+            transform: translateX(100%);
+            transition: transform .3s ease;
+            z-index: 2001;
+            overflow-y: auto;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.35);
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .theme-menu-panel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .theme-menu-panel.open {
+            transform: translateX(0);
+        }
+
+        .theme-menu-close {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 26px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 4px;
+            transition: opacity .2s ease;
+        }
+
+        .theme-menu-close:hover {
+            opacity: .7;
+        }
+
+        .theme-menu-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 4px 10px;
+            margin-bottom: 26px;
+        }
+
+        .theme-menu-search-input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: asswat-regular;
+            font-size: 16px;
+            padding: 8px 4px;
+        }
+
+        .theme-menu-search-input::placeholder {
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .theme-menu-search-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 17px;
+            cursor: pointer;
+            padding: 4px 6px;
+        }
+
+        .theme-menu-nav {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+
+        .theme-menu-nav > li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+
+        .theme-menu-nav > li > a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            font-family: asswat-medium;
+            font-size: 18px;
+            padding: 14px 0;
+            transition: padding-right .15s ease, opacity .15s ease;
+        }
+
+        .theme-menu-nav > li > a:hover {
+            opacity: .8;
+            padding-right: 6px;
+        }
+
+        .theme-menu-sublist {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px 10px;
+            padding: 6px 0 10px;
+        }
+
+        .theme-menu-sublist a {
+            color: rgba(255, 255, 255, 0.75);
+            text-decoration: none;
+            font-family: asswat-regular;
+            font-size: 15px;
+            padding: 7px 0;
+            transition: color .15s ease;
+        }
+
+        .theme-menu-sublist a:hover {
+            color: #fff;
+        }
+    </style>
+
+    <script>
+        (function() {
+            const panel = document.getElementById('themeMenuPanel');
+            const overlay = document.getElementById('themeMenuOverlay');
+            const closeBtn = document.getElementById('themeMenuClose');
+            const openBtns = document.querySelectorAll('[data-theme-menu-open]');
+            if (!panel || !overlay) return;
+
+            function openMenu() {
+                panel.classList.add('open');
+                overlay.classList.add('open');
+                openBtns.forEach(b => b.setAttribute('aria-expanded', 'true'));
+                panel.setAttribute('aria-hidden', 'false');
+            }
+
+            function closeMenu() {
+                panel.classList.remove('open');
+                overlay.classList.remove('open');
+                openBtns.forEach(b => b.setAttribute('aria-expanded', 'false'));
+                panel.setAttribute('aria-hidden', 'true');
+            }
+
+            openBtns.forEach(b => b.addEventListener('click', openMenu));
+            overlay.addEventListener('click', closeMenu);
+            if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeMenu();
+            });
+        })();
+    </script>
 </body>
 
 </html>
