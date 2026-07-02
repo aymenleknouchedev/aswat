@@ -217,7 +217,7 @@
 
         .theme-hero-header {
             width: 100%;
-            padding: 16px 30px;
+            padding: 30px 45px;
             z-index: 10;
         }
 

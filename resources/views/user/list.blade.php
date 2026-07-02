@@ -3290,7 +3290,7 @@
         #main-header > .container,
         #scroll-navbar > .container {
             max-width: 100%;
-            padding: 0 30px;
+            padding: 16px 45px;
         }
 
         /* Hamburger menu button */
