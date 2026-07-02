@@ -3286,6 +3286,13 @@
     </aside>
 
     <style>
+        /* Make header logo + menu button span full page width */
+        #main-header > .container,
+        #scroll-navbar > .container {
+            max-width: 100%;
+            padding: 0 30px;
+        }
+
         /* Hamburger menu button */
         .theme-hero-menu-btn {
             background: none;
