@@ -6,7 +6,7 @@
     $shareDescription = $theme->description;
 @endphp
 
-@section('title', $shareTitle . (!empty($shareDescription) ? ' - ' . $shareDescription : '') . ' | أصوات جزائرية')
+@section('title', (!empty($shareDescription) ? $shareDescription : $shareTitle) . ' | أصوات جزائرية')
 
 @section('meta_og_title', $shareTitle)
 @section('meta_twitter_title', $shareTitle)
