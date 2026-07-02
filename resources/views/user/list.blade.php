@@ -3303,6 +3303,11 @@
                 'opsz' 24;
         }
 
+        .theme-hero-menu-btn .material-symbols-outlined {
+            font-size: 50px;
+            line-height: 1;
+        }
+
         /* Hamburger menu button */
         .theme-hero-menu-btn {
             background: none;
