@@ -233,8 +233,7 @@
                                 <label class="form-label" for="description" data-en="Description"
                                     data-ar="الوصف">الوصف</label>
                                 <textarea name="description" id="description" rows="3" class="form-control"
-                                    data-en="Description (used for the browser tab and social share)"
-                                    data-ar="الوصف (يُستخدم في عنوان التبويب ومشاركة السوشيال ميديا)">{{ old('description') }}</textarea>
+                                    placeholder="الوصف (يُستخدم في عنوان التبويب ومشاركة السوشيال ميديا)">{{ old('description') }}</textarea>
                             </div>
 
                             <!-- زر الإرسال -->
