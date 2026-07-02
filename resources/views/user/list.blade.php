@@ -9,6 +9,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <!-- Use project fonts instead of Google Poppins -->
     <link rel="stylesheet" href="{{ asset('user/css/fonts.css') }}">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=dehaze" />
      <!-- ================= FAVICON ================= -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('user/assets/images/icon-logo.svg') }}" />
 
@@ -2223,7 +2225,7 @@
                     </a>
                     <button type="button" class="theme-hero-menu-btn" data-theme-menu-open
                         aria-label="القائمة" aria-expanded="false" aria-controls="themeMenuPanel">
-                        <i class="fa-solid fa-bars"></i>
+                        <span class="material-symbols-outlined">dehaze</span>
                     </button>
                 </div>
             </div>
@@ -2378,7 +2380,7 @@
                         </a>
                         <button type="button" class="theme-hero-menu-btn" data-theme-menu-open
                             aria-label="القائمة" aria-expanded="false" aria-controls="themeMenuPanel">
-                            <i class="fa-solid fa-bars"></i>
+                            <span class="material-symbols-outlined">dehaze</span>
                         </button>
                     </div>
                 </div>
@@ -3293,12 +3295,20 @@
             padding: 16px 45px;
         }
 
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24;
+        }
+
         /* Hamburger menu button */
         .theme-hero-menu-btn {
             background: none;
             border: none;
             color: #fff;
-            font-size: 26px;
+            font-size: 30px;
             line-height: 1;
             cursor: pointer;
             padding: 6px 8px;
