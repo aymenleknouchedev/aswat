@@ -39,15 +39,25 @@
                             </div>
                         @endif
 
-                        <!-- ✅ إعدادات مشاركة الأخبار العاجلة -->
-                        <div class="card">
-                            <div class="card-inner">
-                                <h5 class="mb-3" data-en="Breaking News Share" data-ar="مشاركة الأخبار العاجلة">
-                                    مشاركة الأخبار العاجلة</h5>
+                        <!-- ✅ تبويبات الإعدادات -->
+                        <ul class="nav nav-tabs mb-0" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#tab-breaking" role="tab"
+                                    data-en="Breaking News" data-ar="الأخبار العاجلة">الأخبار العاجلة</a>
+                            </li>
+                        </ul>
 
-                                <form action="{{ route('dashboard.settings.update') }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
+                        <div class="tab-content">
+                            <!-- ✅ تبويب الأخبار العاجلة -->
+                            <div class="tab-pane active" id="tab-breaking" role="tabpanel">
+                                <div class="card">
+                                    <div class="card-inner">
+                                        <h5 class="mb-3" data-en="Breaking News Share" data-ar="مشاركة الأخبار العاجلة">
+                                            مشاركة الأخبار العاجلة</h5>
+
+                                        <form action="{{ route('dashboard.settings.update') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
 
                                     <!-- الصورة -->
                                     <div class="form-group">
@@ -83,8 +93,11 @@
                                             <em class="icon ni ni-save"></em> <span>حفظ</span>
                                         </button>
                                     </div>
-                                </form>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
+                            <!-- ✅ تبويبات إضافية تُضاف هنا لاحقاً -->
                         </div>
 
                     </div>
