@@ -75,23 +75,24 @@
                                     <tbody class="tb-odr-body">
                                         @foreach ($sections as $section)
                                             <tr class="tb-odr-item">
-                                                <td>{{ $section->name }}</td>
+                                                @php
+                                                    $sectionSlugMap = [
+                                                        'الجزائر' => 'algeria', 'عالم' => 'world', 'اقتصاد' => 'economy',
+                                                        'رياضة' => 'sports', 'ناس' => 'people', 'تكنولوجيا' => 'technology',
+                                                        'صحة' => 'health', 'بيئة' => 'environment', 'ميديا' => 'media',
+                                                        'منوعات' => 'variety', 'ثقافة وفنون' => 'culture',
+                                                    ];
+                                                    $sectionSlug = $sectionSlugMap[$section->name] ?? null;
+                                                @endphp
                                                 <td>
-                                                    @php
-                                                        $sectionSlugMap = [
-                                                            'الجزائر' => 'algeria', 'عالم' => 'world', 'اقتصاد' => 'economy',
-                                                            'رياضة' => 'sports', 'ناس' => 'people', 'تكنولوجيا' => 'technology',
-                                                            'صحة' => 'health', 'بيئة' => 'environment', 'ميديا' => 'media',
-                                                            'منوعات' => 'variety', 'ثقافة وفنون' => 'culture',
-                                                        ];
-                                                        $sectionSlug = $sectionSlugMap[$section->name] ?? null;
-                                                    @endphp
                                                     @if ($sectionSlug)
-                                                        <a href="{{ route('newSection', $sectionSlug) }}"
-                                                            target="_blank" class="btn btn-sm btn-info" data-en="Preview"
-                                                            data-ar="معاينة">معاينة</a>
+                                                        <a href="{{ route('newSection', $sectionSlug) }}" target="_blank"
+                                                            class="text-dark text-decoration-none">{{ $section->name }}</a>
+                                                    @else
+                                                        {{ $section->name }}
                                                     @endif
-
+                                                </td>
+                                                <td>
                                                     <a href="{{ route('dashboard.section.edit', $section->id) }}"
                                                         class="btn btn-sm btn-primary" data-en="Edit"
                                                         data-ar="تعديل">تعديل</a>

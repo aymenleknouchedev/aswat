@@ -12,16 +12,12 @@
                 <div class="nk-content">
                     <div class="container">
 
-                        <div class="nk-block-head mb-4 d-flex justify-content-between align-items-center">
+                        <div class="nk-block-head mb-4">
                             <div class="nk-block-head-content">
                                 <h4 class="nk-block-title translatable" data-en="Add Breaking News" data-ar="إضافة خبر عاجل">
                                     إضافة خبر عاجل
                                 </h4>
                             </div>
-                            <a href="{{ route('breakingNews') }}" target="_blank"
-                                class="btn btn-info translatable" data-en="Preview Page" data-ar="معاينة الصفحة">
-                                <em class="icon ni ni-eye me-1"></em> معاينة الصفحة
-                            </a>
                         </div>
 
                         <!-- رسائل النجاح -->
@@ -102,8 +98,9 @@
                                         <tr class="tb-odr-item">
                                             <td class="tb-odr-info text-center">{{ $index + 1 }}</td>
                                             <td class="tb-odr-info">
-                                                <span class="tb-odr-total"><span
-                                                        class="amount">{{ $news->text }}</span></span>
+                                                <a href="{{ route('breakingNews') }}" target="_blank"
+                                                    class="tb-odr-total text-dark text-decoration-none"><span
+                                                        class="amount">{{ $news->text }}</span></a>
                                             </td>
                                             <td class="tb-odr-info text-center">
                                                 <small>{{ $news->created_at ? $news->created_at->format('Y-m-d H:i') : '-' }}</small>

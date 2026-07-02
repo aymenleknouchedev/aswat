@@ -85,12 +85,11 @@
                                     <tbody class="tb-odr-body">
                                         @forelse ($windows as $window)
                                             <tr class="tb-odr-item">
-                                                <td>{{ $window->name }}</td>
                                                 <td>
-                                                    <a href="{{ route('window.show', $window->id) }}"
-                                                        target="_blank" class="btn btn-sm btn-info" data-en="Preview"
-                                                        data-ar="معاينة">معاينة</a>
-
+                                                    <a href="{{ route('window.show', $window->id) }}" target="_blank"
+                                                        class="text-dark text-decoration-none">{{ $window->name }}</a>
+                                                </td>
+                                                <td>
                                                     <a href="{{ route('dashboard.window.edit', $window->id) }}"
                                                         class="btn btn-sm btn-primary" data-en="Edit"
                                                         data-ar="تعديل">تعديل</a>
