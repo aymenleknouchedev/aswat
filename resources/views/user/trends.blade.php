@@ -10,6 +10,11 @@
 @section('content')
 
     <style>
+        html,
+        body {
+            overflow-x: hidden;
+        }
+
         .web {
             display: block !important;
         }

@@ -52,6 +52,10 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        html {
+            overflow-x: hidden;
+        }
+
         ul, ol {
             list-style: none;
         }
