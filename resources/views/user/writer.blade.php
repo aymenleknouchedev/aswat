@@ -98,6 +98,20 @@
             color: #023e8a;
         }
 
+        /* Icon hover (overrides inline color on the <i>) */
+        .social-links a i,
+        .writer-title-bar .social-links a i,
+        .mobile-writer-socials a i {
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .social-links a:hover i,
+        .writer-title-bar .social-links a:hover i,
+        .mobile-writer-socials a:hover i {
+            color: #C1121F !important;
+            transform: translateY(-2px);
+        }
+
         /* Articles section */
         .newCategory-all-section {
             display: grid;
