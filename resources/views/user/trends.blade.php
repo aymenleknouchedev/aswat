@@ -1,12 +1,12 @@
 @extends('layouts.index')
 
-@section('title', 'أصوات جزائرية | ' . ($theme->title ?? 'الأخبار'))
-
 @php
     $shareTitle = $theme->name ?? ($theme->title ?? 'أصوات جزائرية');
     $shareImage = $theme->social_image ?: $theme->image;
     $shareDescription = $theme->description;
 @endphp
+
+@section('title', $shareTitle . (!empty($shareDescription) ? ' - ' . $shareDescription : '') . ' | أصوات جزائرية')
 
 @section('meta_og_title', $shareTitle)
 @section('meta_twitter_title', $shareTitle)
