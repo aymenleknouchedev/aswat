@@ -108,7 +108,7 @@
         .social-links a:hover i,
         .writer-title-bar .social-links a:hover i,
         .mobile-writer-socials a:hover i {
-            color: #C1121F !important;
+            color: #333 !important;
             transform: translateY(-2px);
         }
 
