@@ -574,7 +574,7 @@
 
         @if (in_array($type, ['Window', 'Trend']) && !empty($theme->image))
             <div class="theme-hero-full"
-                style="background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.75)), url('{{ asset($theme->image) }}') center/cover no-repeat;">
+                style="background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.75)), url('{{ asset($theme->image) }}') center top/cover no-repeat;">
                 <header class="theme-hero-header">
                     <div class="theme-hero-header-inner">
                         <a href="{{ route('index') }}" class="theme-hero-logo">
@@ -725,7 +725,7 @@
                 <div class="mobile-simple-list" dir="rtl">
                     @if (in_array($type, ['Window', 'Trend']) && !empty($theme->image))
                         <div class="theme-hero-mobile"
-                            style="background: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.75)), url('{{ asset($theme->image) }}') center/cover no-repeat;">
+                            style="background: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.75)), url('{{ asset($theme->image) }}') center top/cover no-repeat;">
                             <h2 class="theme-hero-title-mobile">{{ $theme->name ?? ($theme->title ?? 'الأخبار') }}</h2>
                         </div>
                     @else
