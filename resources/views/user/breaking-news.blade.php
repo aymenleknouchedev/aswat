@@ -64,12 +64,12 @@
             bottom: -1px;
             right: -1px;
             width: 4px;
-            background: #d32f2f;
+            background: #C1121F;
         }
 
         .newCategory-all-card:hover {
-            background: #d32f2f;
-            border-color: #d32f2f;
+            background: #C1121F;
+            border-color: #C1121F;
         }
 
         .newCategory-all-card:hover .newCategory-all-card-text p,
@@ -84,7 +84,7 @@
         }
 
         .newCategory-all-card:hover .bn-share-icon:hover {
-            color: #d32f2f;
+            color: #C1121F;
             background: #fff;
         }
 
