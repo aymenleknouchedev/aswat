@@ -216,7 +216,7 @@
             position: relative;
             width: 100vw;
             margin-left: calc(-50vw + 50%);
-            min-height: 510px;
+            min-height: 520px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
