@@ -3590,23 +3590,9 @@
             -webkit-backdrop-filter: blur(2px);
         }
 
-        .tm-menu-list > li > a,
-        .tm-item-header > a {
-            transition: opacity .2s ease, padding-right .2s ease;
-        }
-
-        .tm-menu-list > li > a:hover,
-        .tm-item-header > a:hover {
-            opacity: 1;
-            padding-right: 8px;
-        }
-
-        .tm-submenu a {
-            transition: color .2s ease, padding-right .2s ease;
-        }
-
-        .tm-submenu a:hover {
-            padding-right: 8px;
+        /* No hover transition/movement on menu links */
+        .tm-menu-list a {
+            transition: none;
         }
 
         .theme-menu-search {
