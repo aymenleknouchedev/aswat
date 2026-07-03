@@ -3520,12 +3520,14 @@
             display: block;
         }
 
-        .tm-menu-list > li > .tm-item-header,
-        .tm-menu-list > li > a {
+        /* Full-bleed divider lines (span the whole sidebar width) */
+        .tm-menu-list > li {
             border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            margin: 0 -28px;
+            padding: 0 28px;
         }
 
-        .tm-menu-list > li:last-child > a {
+        .tm-menu-list > li:last-child {
             border-bottom: none;
         }
 
@@ -3587,6 +3589,7 @@
             transition: max-height 0.3s ease;
         }
 
+        .theme-menu-panel nav ul.tm-submenu.active,
         .tm-submenu.active {
             max-height: 700px;
         }
