@@ -1336,9 +1336,6 @@
             z-index: 10002;
         }
 
-        .fullscreen-image-close:hover {
-            transform: scale(1.2);
-        }
 
         .fullscreen-image-prev,
         .fullscreen-image-next {

@@ -3279,10 +3279,6 @@
             z-index: 10001;
         }
 
-        .preview-close-btn:hover {
-            color: #ccc;
-            transform: scale(1.1);
-        }
 
         .preview-title {
             color: #fff;
