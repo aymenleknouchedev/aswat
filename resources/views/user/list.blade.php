@@ -3445,7 +3445,7 @@
             width: 340px;
             max-width: 85vw;
             background: #1a1a1a;
-            padding: 110px 28px 30px;
+            padding: 140px 28px 30px;
             transform: translateX(-100%);
             transition: transform .3s ease;
             z-index: 2001;
@@ -3505,10 +3505,12 @@
         }
 
         /* Mobile-style accordion menu inside the slide-out panel */
+        .theme-menu-panel nav ul.tm-menu-list,
         .tm-menu-list {
             list-style: none;
             margin: 0;
             padding: 0;
+            display: block;
         }
 
         .tm-menu-list > li > .tm-item-header,
@@ -3567,10 +3569,12 @@
             transform: rotate(-90deg);
         }
 
+        .theme-menu-panel nav ul.tm-submenu,
         .tm-submenu {
             list-style: none;
             margin: 0;
             padding: 0;
+            display: block;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
