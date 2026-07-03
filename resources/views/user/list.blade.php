@@ -3124,36 +3124,44 @@
             replaceInNode(document.body);
         }
 
-        // Add an "expand" icon to content images and open them in the preview modal
+        // Expand icon on the MAIN image only; body images stay plainly clickable
         function initContentImageExpand() {
             const modal = document.getElementById('imagePreviewModal');
             const previewImg = document.getElementById('previewImg');
             const previewTitle = document.getElementById('previewTitle');
             if (!modal || !previewImg) return;
 
-            document.querySelectorAll('.intro img').forEach(img => {
-                if (img.closest('.read-more-block')) return;
-                if (img.parentElement && img.parentElement.classList.contains('content-img-wrap')) return;
+            function openModal(img) {
+                const fig = img.closest('figure');
+                const caption = fig ? (fig.querySelector('figcaption')?.textContent?.trim() || '') : '';
+                previewImg.src = img.src;
+                if (previewTitle) previewTitle.textContent = caption;
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
 
-                const wrap = document.createElement('span');
-                wrap.className = 'content-img-wrap';
-                img.parentNode.insertBefore(wrap, img);
-                wrap.appendChild(img);
+            // Main (hero) image: expand icon only (image itself not clickable)
+            document.querySelectorAll('.hero-image').forEach(hero => {
+                const img = hero.querySelector('img');
+                if (!img || hero.querySelector('.content-img-expand')) return;
 
                 const icon = document.createElement('span');
                 icon.className = 'material-symbols-outlined content-img-expand';
                 icon.textContent = 'expand_content';
-                wrap.appendChild(icon);
+                hero.appendChild(icon);
 
-                // Only the icon opens fullscreen (image itself is not clickable)
                 icon.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    const fig = img.closest('figure');
-                    const caption = fig ? (fig.querySelector('figcaption')?.textContent?.trim() || '') : '';
-                    previewImg.src = img.src;
-                    if (previewTitle) previewTitle.textContent = caption;
-                    modal.style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
+                    openModal(img);
+                });
+            });
+
+            // Body/content images: clickable, no icon
+            document.querySelectorAll('.intro img').forEach(img => {
+                if (img.closest('.read-more-block')) return;
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', function() {
+                    openModal(img);
                 });
             });
         }

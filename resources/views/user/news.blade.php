@@ -4263,7 +4263,8 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
         // Add an "expand" icon to the bottom-right of each content image
         function addExpandIcons() {
-            const imgs = document.querySelectorAll('.custom-article-content img, .mobile-article-content img, .feature-image-clickable');
+            // Only the main (feature) image gets the expand icon
+            const imgs = document.querySelectorAll('.feature-image-clickable');
             imgs.forEach(img => {
                 if (img.closest('.read-more-block')) return;
                 if (img.parentElement && img.parentElement.classList.contains('content-img-wrap')) return;
