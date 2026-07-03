@@ -471,48 +471,19 @@
             border-bottom: none;
         }
 
-        .tm-submenu-toggle {
-            background: none;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-        }
-
-        .tm-toggle-arrow {
-            transition: transform 0.3s ease;
-            font-size: 16px;
-        }
-
-        .tm-submenu-toggle.active .tm-toggle-arrow {
-            transform: rotate(-90deg);
-        }
-
+        /* Sub-sections: always visible under the title, smaller */
         .theme-menu-panel nav ul.tm-submenu,
         .tm-submenu {
             list-style: none;
             margin: 0;
-            padding: 0;
+            padding: 0 0 12px;
             display: block;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .theme-menu-panel nav ul.tm-submenu.active,
-        .tm-submenu.active {
-            max-height: 700px;
         }
 
         .tm-submenu a {
-            font-size: 16px;
-            padding: 12px 20px 12px 0;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            padding: 7px 16px 7px 0;
+            color: rgba(255, 255, 255, 0.7);
             font-family: 'asswat-regular';
             border-bottom: none;
         }
@@ -763,9 +734,6 @@
                             <li class="tm-item-with-submenu">
                                 <div class="tm-item-header">
                                     <a href="{{ route('latestNews') }}">أخبار</a>
-                                    <button type="button" class="tm-submenu-toggle" aria-label="عرض الأقسام">
-                                        <i class="fa-solid fa-chevron-left tm-toggle-arrow"></i>
-                                    </button>
                                 </div>
                                 <ul class="tm-submenu">
                                     <li><a href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a></li>
@@ -971,16 +939,6 @@
             if (closeBtn) closeBtn.addEventListener('click', closeMenu);
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') closeMenu();
-            });
-
-            // Accordion submenu toggle inside the panel
-            panel.querySelectorAll('.tm-submenu-toggle').forEach(function(toggle) {
-                toggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const submenu = toggle.closest('.tm-item-with-submenu').querySelector('.tm-submenu');
-                    toggle.classList.toggle('active');
-                    if (submenu) submenu.classList.toggle('active');
-                });
             });
         })();
 
