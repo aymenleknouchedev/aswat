@@ -1440,8 +1440,8 @@
             right: 12px;
             background: rgba(0, 0, 0, 0.55);
             color: #fff;
-            border-radius: 6px;
-            padding: 4px;
+            border-radius: 50%;
+            padding: 8px;
             font-size: 22px;
             line-height: 1;
             display: flex;
