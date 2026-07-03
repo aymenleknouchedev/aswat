@@ -51,6 +51,8 @@
 @section('meta_twitter_image', $shareImageUrl)
 
 @push('seo')
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=expand_content" />
     @php
         $authorNames = $news->writers->pluck('name')->filter()->values();
         $sectionName = $news->section?->name;
@@ -1406,6 +1408,34 @@
         .custom-article-content img {
             cursor: pointer;
             transition: opacity 0.3s;
+        }
+
+        /* Expand icon on content images */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .content-img-wrap {
+            position: relative;
+            display: block;
+            width: fit-content;
+            max-width: 100%;
+        }
+
+        .content-img-expand {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            border-radius: 6px;
+            padding: 4px;
+            font-size: 22px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
         }
 
         @media (max-width: 768px) {
@@ -4213,9 +4243,29 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             e.stopPropagation();
         });
 
+        // Add an "expand" icon to the bottom-right of each content image
+        function addExpandIcons() {
+            const imgs = document.querySelectorAll('.custom-article-content img, .mobile-article-content img');
+            imgs.forEach(img => {
+                if (img.closest('.read-more-block')) return;
+                if (img.parentElement && img.parentElement.classList.contains('content-img-wrap')) return;
+
+                const wrap = document.createElement('span');
+                wrap.className = 'content-img-wrap';
+                img.parentNode.insertBefore(wrap, img);
+                wrap.appendChild(img);
+
+                const icon = document.createElement('span');
+                icon.className = 'material-symbols-outlined content-img-expand';
+                icon.textContent = 'expand_content';
+                wrap.appendChild(icon);
+            });
+        }
+
         // Initialize both feature image and gallery when page loads
         initializeFeatureImage();
         initializeGallery();
+        addExpandIcons();
     </script>
 
 

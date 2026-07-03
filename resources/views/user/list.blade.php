@@ -10,7 +10,7 @@
     <!-- Use project fonts instead of Google Poppins -->
     <link rel="stylesheet" href="{{ asset('user/css/fonts.css') }}">
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=dehaze" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=dehaze,expand_content" />
      <!-- ================= FAVICON ================= -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('user/assets/images/icon-logo.svg') }}" />
 
@@ -713,6 +713,34 @@
             display: block;
             max-width: 100% !important;
             height: auto !important;
+        }
+
+        /* Expand icon on content images */
+        .content-img-wrap {
+            position: relative;
+            display: block;
+            width: fit-content;
+            max-width: 100%;
+        }
+
+        .content-img-wrap img {
+            cursor: pointer;
+        }
+
+        .content-img-expand {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            border-radius: 6px;
+            padding: 4px;
+            font-size: 22px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
         }
 
         .intro a {
@@ -2531,6 +2559,7 @@
             initMobileMenu();
             initDescriptionToggle();
             initImagePreview();
+            initContentImageExpand();
             initializeShareFunctionality();
             initReadMoreClick();
             initializeShareFunctionality();
@@ -3087,6 +3116,39 @@
 
             // Process the entire body to replace all quotes
             replaceInNode(document.body);
+        }
+
+        // Add an "expand" icon to content images and open them in the preview modal
+        function initContentImageExpand() {
+            const modal = document.getElementById('imagePreviewModal');
+            const previewImg = document.getElementById('previewImg');
+            const previewTitle = document.getElementById('previewTitle');
+            if (!modal || !previewImg) return;
+
+            document.querySelectorAll('.intro img').forEach(img => {
+                if (img.closest('.read-more-block')) return;
+                if (img.parentElement && img.parentElement.classList.contains('content-img-wrap')) return;
+
+                const wrap = document.createElement('span');
+                wrap.className = 'content-img-wrap';
+                img.parentNode.insertBefore(wrap, img);
+                wrap.appendChild(img);
+
+                const icon = document.createElement('span');
+                icon.className = 'material-symbols-outlined content-img-expand';
+                icon.textContent = 'expand_content';
+                wrap.appendChild(icon);
+
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', function() {
+                    const fig = img.closest('figure');
+                    const caption = fig ? (fig.querySelector('figcaption')?.textContent?.trim() || '') : '';
+                    previewImg.src = img.src;
+                    if (previewTitle) previewTitle.textContent = caption;
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+            });
         }
 
         // Image preview functionality
