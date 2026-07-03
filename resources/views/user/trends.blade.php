@@ -24,7 +24,7 @@
 
 @push('seo')
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=dehaze" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close,dehaze" />
 @endpush
 
 @section('content')
@@ -283,6 +283,18 @@
         }
 
         .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
             font-variation-settings:
                 'FILL' 0,
                 'wght' 400,
@@ -293,6 +305,11 @@
         .theme-hero-menu-btn .material-symbols-outlined {
             font-size: 34px;
             line-height: 1;
+            transition: transform .3s ease;
+        }
+
+        .theme-hero-menu-btn.is-open .material-symbols-outlined {
+            transform: rotate(180deg);
         }
 
         /* Hamburger menu button */
@@ -307,6 +324,8 @@
             display: flex;
             align-items: center;
             transition: opacity .2s ease;
+            position: relative;
+            z-index: 1002;
         }
 
         .theme-hero-menu-btn:hover {
@@ -332,13 +351,13 @@
         .theme-menu-panel {
             position: fixed;
             top: 0;
-            right: 0;
+            left: 0;
             height: 100%;
             width: 340px;
             max-width: 85vw;
             background: #1a1a1a;
             padding: 70px 28px 30px;
-            transform: translateX(100%);
+            transform: translateX(-100%);
             transition: transform .3s ease;
             z-index: 1001;
             overflow-y: auto;
@@ -356,17 +375,7 @@
         }
 
         .theme-menu-close {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 26px;
-            line-height: 1;
-            cursor: pointer;
-            padding: 4px;
-            transition: opacity .2s ease;
+            display: none;
         }
 
         .theme-menu-close:hover {
@@ -804,10 +813,13 @@
             const overlay = document.getElementById('themeMenuOverlay');
             const closeBtn = document.getElementById('themeMenuClose');
             if (!btn || !panel || !overlay) return;
+            const btnIcon = btn.querySelector('.material-symbols-outlined');
 
             function openMenu() {
                 panel.classList.add('open');
                 overlay.classList.add('open');
+                btn.classList.add('is-open');
+                if (btnIcon) btnIcon.textContent = 'close';
                 btn.setAttribute('aria-expanded', 'true');
                 panel.setAttribute('aria-hidden', 'false');
             }
@@ -815,11 +827,19 @@
             function closeMenu() {
                 panel.classList.remove('open');
                 overlay.classList.remove('open');
+                btn.classList.remove('is-open');
+                if (btnIcon) btnIcon.textContent = 'dehaze';
                 btn.setAttribute('aria-expanded', 'false');
                 panel.setAttribute('aria-hidden', 'true');
             }
 
-            btn.addEventListener('click', openMenu);
+            btn.addEventListener('click', function() {
+                if (panel.classList.contains('open')) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
             overlay.addEventListener('click', closeMenu);
             if (closeBtn) closeBtn.addEventListener('click', closeMenu);
             document.addEventListener('keydown', function(e) {

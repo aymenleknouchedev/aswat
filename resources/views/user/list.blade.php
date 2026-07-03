@@ -10,7 +10,7 @@
     <!-- Use project fonts instead of Google Poppins -->
     <link rel="stylesheet" href="{{ asset('user/css/fonts.css') }}">
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=dehaze,expand_content" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close,dehaze,expand_content" />
      <!-- ================= FAVICON ================= -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('user/assets/images/icon-logo.svg') }}" />
 
@@ -203,7 +203,7 @@
             position: absolute;
             /* inside hero, not fixed to viewport */
             width: 100%;
-            z-index: 10;
+            z-index: 2002;
             top: 0;
             left: 0;
             box-shadow: none;
@@ -224,7 +224,7 @@
             background: #252525;
             /* solid white */
             padding: 14px 0;
-            z-index: 1000;
+            z-index: 2002;
             transform: translateY(-110%);
             /* hidden slightly above */
             opacity: 0;
@@ -3389,6 +3389,11 @@
         .theme-hero-menu-btn .material-symbols-outlined {
             font-size: 34px;
             line-height: 1;
+            transition: transform .3s ease;
+        }
+
+        .theme-hero-menu-btn.is-open .material-symbols-outlined {
+            transform: rotate(180deg);
         }
 
         /* Hamburger menu button */
@@ -3428,13 +3433,13 @@
         .theme-menu-panel {
             position: fixed;
             top: 0;
-            right: 0;
+            left: 0;
             height: 100%;
             width: 340px;
             max-width: 85vw;
             background: #1a1a1a;
             padding: 70px 28px 30px;
-            transform: translateX(100%);
+            transform: translateX(-100%);
             transition: transform .3s ease;
             z-index: 2001;
             overflow-y: auto;
@@ -3451,17 +3456,7 @@
         }
 
         .theme-menu-close {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 26px;
-            line-height: 1;
-            cursor: pointer;
-            padding: 4px;
-            transition: opacity .2s ease;
+            display: none;
         }
 
         .theme-menu-close:hover {
@@ -3558,21 +3553,38 @@
             const openBtns = document.querySelectorAll('[data-theme-menu-open]');
             if (!panel || !overlay) return;
 
+            function setIcons(name) {
+                openBtns.forEach(b => {
+                    const icon = b.querySelector('.material-symbols-outlined');
+                    if (icon) icon.textContent = name;
+                });
+            }
+
             function openMenu() {
                 panel.classList.add('open');
                 overlay.classList.add('open');
-                openBtns.forEach(b => b.setAttribute('aria-expanded', 'true'));
+                openBtns.forEach(b => {
+                    b.classList.add('is-open');
+                    b.setAttribute('aria-expanded', 'true');
+                });
+                setIcons('close');
                 panel.setAttribute('aria-hidden', 'false');
             }
 
             function closeMenu() {
                 panel.classList.remove('open');
                 overlay.classList.remove('open');
-                openBtns.forEach(b => b.setAttribute('aria-expanded', 'false'));
+                openBtns.forEach(b => {
+                    b.classList.remove('is-open');
+                    b.setAttribute('aria-expanded', 'false');
+                });
+                setIcons('dehaze');
                 panel.setAttribute('aria-hidden', 'true');
             }
 
-            openBtns.forEach(b => b.addEventListener('click', openMenu));
+            openBtns.forEach(b => b.addEventListener('click', function() {
+                panel.classList.contains('open') ? closeMenu() : openMenu();
+            }));
             overlay.addEventListener('click', closeMenu);
             if (closeBtn) closeBtn.addEventListener('click', closeMenu);
             document.addEventListener('keydown', function(e) {
