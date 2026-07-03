@@ -1412,6 +1412,18 @@
 
         /* Expand icon on content images */
         .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
 
@@ -4245,7 +4257,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
         // Add an "expand" icon to the bottom-right of each content image
         function addExpandIcons() {
-            const imgs = document.querySelectorAll('.custom-article-content img, .mobile-article-content img');
+            const imgs = document.querySelectorAll('.custom-article-content img, .mobile-article-content img, .feature-image-clickable');
             imgs.forEach(img => {
                 if (img.closest('.read-more-block')) return;
                 if (img.parentElement && img.parentElement.classList.contains('content-img-wrap')) return;
