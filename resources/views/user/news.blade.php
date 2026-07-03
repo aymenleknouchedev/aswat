@@ -1326,8 +1326,8 @@
             color: #fff;
             cursor: pointer;
             padding: 0;
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1336,7 +1336,7 @@
         }
 
         .fullscreen-image-close .material-symbols-outlined {
-            font-size: 28px;
+            font-size: 22px;
         }
 
 
