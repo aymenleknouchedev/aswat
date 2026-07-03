@@ -4234,24 +4234,15 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         fullscreenImagePrev.addEventListener('click', showPreviousImage);
         fullscreenImageNext.addEventListener('click', showNextImage);
 
-        // Close on backdrop click
-        fullscreenModal.addEventListener('click', function(e) {
-            if (e.target === fullscreenModal) {
-                closeFullscreenImageModal();
-            }
-        });
+        // Close only via the X button (no backdrop / Escape close)
 
-        // Keyboard navigation
+        // Keyboard navigation (arrows only; Escape does not close)
         document.addEventListener('keydown', function(e) {
-            if (fullscreenModal.classList.contains('active')) {
-                if (e.key === 'Escape') {
-                    closeFullscreenImageModal();
-                } else if (isGalleryMode) {
-                    if (e.key === 'ArrowLeft') {
-                        showNextImage();
-                    } else if (e.key === 'ArrowRight') {
-                        showPreviousImage();
-                    }
+            if (fullscreenModal.classList.contains('active') && isGalleryMode) {
+                if (e.key === 'ArrowLeft') {
+                    showNextImage();
+                } else if (e.key === 'ArrowRight') {
+                    showPreviousImage();
                 }
             }
         });

@@ -3193,14 +3193,8 @@
                 document.body.style.overflow = '';
             }
 
+            // Close only via the X button
             closeBtn.addEventListener('click', closePreview);
-            backdrop.addEventListener('click', closePreview);
-
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && modal.style.display === 'flex') {
-                    closePreview();
-                }
-            });
         }
     </script>
 
