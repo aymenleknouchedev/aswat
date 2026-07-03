@@ -949,10 +949,10 @@
 
         .film-item {
             display: flex;
-            margin-bottom: 60px;
+            margin-bottom: 20px;
             position: relative;
             gap: 40px;
-            padding: 40px;
+            padding: 20px 40px;
             border-radius: 0;
             background: #fff;
             border: 0;
@@ -1034,10 +1034,10 @@
 
         .film-description {
             font-size: 16px !important;
-            line-height: 1.9 !important;
+            line-height: 1.625rem !important;
             text-align: right !important;
             color: #000000 !important;
-            font-weight: 300;
+            font-weight: normal;
             font-family: asswat-regular !important;
             direction: rtl !important;
             position: relative;
@@ -1046,7 +1046,7 @@
         }
 
         .film-description p {
-            margin-bottom: 1.5em;
+            margin-bottom: 15px;
         }
 
         .film-description p:last-child {
