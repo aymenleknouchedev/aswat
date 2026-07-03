@@ -356,7 +356,7 @@
             width: 340px;
             max-width: 85vw;
             background: #1a1a1a;
-            padding: 70px 28px 30px;
+            padding: 110px 28px 30px;
             transform: translateX(-100%);
             transition: transform .3s ease;
             z-index: 1001;
@@ -416,48 +416,91 @@
             padding: 4px 6px;
         }
 
-        .theme-menu-nav {
+        /* Mobile-style accordion menu inside the slide-out panel */
+        .tm-menu-list {
             list-style: none;
             margin: 0;
             padding: 0;
         }
 
-        .theme-menu-nav > li {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .tm-menu-list > li > .tm-item-header,
+        .tm-menu-list > li > a {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        .theme-menu-nav > li > a {
+        .tm-menu-list > li:last-child > a {
+            border-bottom: none;
+        }
+
+        .tm-menu-list a {
             display: block;
+            padding: 16px 0;
             color: #fff;
             text-decoration: none;
-            font-family: asswat-medium;
-            font-size: 18px;
-            padding: 14px 0;
-            transition: padding-right .15s ease, opacity .15s ease;
+            font-size: 20px;
+            font-family: 'asswat-bold', 'asswat-regular';
+            transition: opacity .2s ease;
         }
 
-        .theme-menu-nav > li > a:hover {
+        .tm-menu-list a:hover {
             opacity: .8;
-            padding-right: 6px;
         }
 
-        .theme-menu-sublist {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2px 10px;
-            padding: 6px 0 10px;
+        .tm-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .theme-menu-sublist a {
-            color: rgba(255, 255, 255, 0.75);
-            text-decoration: none;
-            font-family: asswat-regular;
-            font-size: 15px;
-            padding: 7px 0;
-            transition: color .15s ease;
+        .tm-item-header a {
+            flex: 1;
+            border-bottom: none;
         }
 
-        .theme-menu-sublist a:hover {
+        .tm-submenu-toggle {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+        }
+
+        .tm-toggle-arrow {
+            transition: transform 0.3s ease;
+            font-size: 16px;
+        }
+
+        .tm-submenu-toggle.active .tm-toggle-arrow {
+            transform: rotate(-90deg);
+        }
+
+        .tm-submenu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .tm-submenu.active {
+            max-height: 700px;
+        }
+
+        .tm-submenu a {
+            font-size: 16px;
+            padding: 12px 20px 12px 0;
+            color: rgba(255, 255, 255, 0.8);
+            font-family: 'asswat-regular';
+            border-bottom: none;
+        }
+
+        .tm-submenu a:hover {
             color: #fff;
         }
 
@@ -641,20 +684,27 @@
                     </form>
 
                     <nav>
-                        <ul class="theme-menu-nav">
-                            <li><a href="{{ route('latestNews') }}">أخبار</a></li>
-                            <li class="theme-menu-sublist">
-                                <a href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a>
-                                <a href="{{ route('newSection', ['section' => 'world']) }}">عالم</a>
-                                <a href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a>
-                                <a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a>
-                                <a href="{{ route('newSection', ['section' => 'people']) }}">ناس</a>
-                                <a href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة وفنون</a>
-                                <a href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a>
-                                <a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a>
-                                <a href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a>
-                                <a href="{{ route('newSection', ['section' => 'media']) }}">ميديا</a>
-                                <a href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a>
+                        <ul class="tm-menu-list">
+                            <li class="tm-item-with-submenu">
+                                <div class="tm-item-header">
+                                    <a href="{{ route('latestNews') }}">أخبار</a>
+                                    <button type="button" class="tm-submenu-toggle" aria-label="عرض الأقسام">
+                                        <i class="fa-solid fa-chevron-left tm-toggle-arrow"></i>
+                                    </button>
+                                </div>
+                                <ul class="tm-submenu">
+                                    <li><a href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a></li>
+                                    <li><a href="{{ route('newSection', ['section' => 'world']) }}">عالم</a></li>
+                                    <li><a href="{{ route('newSection', ['section' => 'economy']) }}">اقتصاد</a></li>
+                                    <li><a href="{{ route('newSection', ['section' => 'sports']) }}">رياضة</a></li>
+                                    <li><a href="{{ route('newSection', ['section' => 'people']) }}">ناس</a></li>
+                                    <li><a href="{{ route('newSection', ['section' => 'culture']) }}">ثقافة وفنون</a></li>
+                                    <li><a href="{{ route('newSection', ['section' => 'technology']) }}">تكنولوجيا</a></li>
+                                    <li><a href="{{ route('newSection', ['section' => 'health']) }}">صحة</a></li>
+                                    <li><a href="{{ route('newSection', ['section' => 'environment']) }}">بيئة</a></li>
+                                    <li><a href="{{ route('newSection', ['section' => 'media']) }}">ميديا</a></li>
+                                    <li><a href="{{ route('newSection', ['section' => 'variety']) }}">منوعات</a></li>
+                                </ul>
                             </li>
                             <li><a href="{{ route('reviews') }}">آراء</a></li>
                             <li><a href="{{ route('windows') }}">نوافذ</a></li>
@@ -844,6 +894,16 @@
             if (closeBtn) closeBtn.addEventListener('click', closeMenu);
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') closeMenu();
+            });
+
+            // Accordion submenu toggle inside the panel
+            panel.querySelectorAll('.tm-submenu-toggle').forEach(function(toggle) {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const submenu = toggle.closest('.tm-item-with-submenu').querySelector('.tm-submenu');
+                    toggle.classList.toggle('active');
+                    if (submenu) submenu.classList.toggle('active');
+                });
             });
         })();
 
