@@ -2569,7 +2569,6 @@
             initContentImageExpand();
             initializeShareFunctionality();
             initReadMoreClick();
-            initializeShareFunctionality();
             initializeCopyLink();
         });
 
