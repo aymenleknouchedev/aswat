@@ -2824,9 +2824,9 @@
         <div class="fullscreen-image-container">
             <button class="fullscreen-image-close" id="fullscreenImageClose" type="button" aria-label="إغلاق">×</button>
             <button class="fullscreen-image-prev" id="fullscreenImagePrev" type="button"
-                aria-label="الصورة السابقة"><span class="material-symbols-outlined">chevron_left</span></button>
+                aria-label="الصورة السابقة"><span class="material-symbols-outlined">chevron_right</span></button>
             <button class="fullscreen-image-next" id="fullscreenImageNext" type="button"
-                aria-label="الصورة التالية"><span class="material-symbols-outlined">chevron_right</span></button>
+                aria-label="الصورة التالية"><span class="material-symbols-outlined">chevron_left</span></button>
             <img loading="lazy" decoding="async" id="fullscreenImageContent" src="" alt="صورة بحجم كامل">
             <div class="fullscreen-image-caption" id="fullscreenImageCaption"></div>
             <div class="fullscreen-image-counter" id="fullscreenImageCounter"></div>
