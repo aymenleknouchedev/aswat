@@ -52,7 +52,7 @@
 
 @push('seo')
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=expand_content" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=chevron_left,chevron_right,expand_content" />
     @php
         $authorNames = $news->writers->pluck('name')->filter()->values();
         $sectionName = $news->section?->name;
@@ -1342,21 +1342,25 @@
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
-            background: none;
+            background: #fff;
             border: none;
-            color: #fff;
-            font-size: 60px;
+            color: #111;
             cursor: pointer;
-            padding: 20px 15px;
-            width: 60px;
-            height: 80px;
+            padding: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: opacity 0.3s;
             z-index: 10003;
-            font-family: Arial, sans-serif;
-            font-weight: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .fullscreen-image-prev .material-symbols-outlined,
+        .fullscreen-image-next .material-symbols-outlined {
+            font-size: 28px;
         }
 
         .fullscreen-image-prev {
@@ -2820,9 +2824,9 @@
         <div class="fullscreen-image-container">
             <button class="fullscreen-image-close" id="fullscreenImageClose" type="button" aria-label="إغلاق">×</button>
             <button class="fullscreen-image-prev" id="fullscreenImagePrev" type="button"
-                aria-label="الصورة السابقة">‹</button>
+                aria-label="الصورة السابقة"><span class="material-symbols-outlined">chevron_left</span></button>
             <button class="fullscreen-image-next" id="fullscreenImageNext" type="button"
-                aria-label="الصورة التالية">›</button>
+                aria-label="الصورة التالية"><span class="material-symbols-outlined">chevron_right</span></button>
             <img loading="lazy" decoding="async" id="fullscreenImageContent" src="" alt="صورة بحجم كامل">
             <div class="fullscreen-image-caption" id="fullscreenImageCaption"></div>
             <div class="fullscreen-image-counter" id="fullscreenImageCounter"></div>
