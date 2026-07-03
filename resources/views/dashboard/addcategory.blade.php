@@ -50,7 +50,8 @@
 
 
                         <!-- ✅ النموذج -->
-                        <form action="{{ route('dashboard.categorie.store') }}" method="POST">
+                        <form action="{{ route('dashboard.categorie.store') }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
 
                             <!-- الاسم -->
@@ -63,6 +64,29 @@
                                 @error('name')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror
+                            </div>
+
+                            <!-- صورة السوشيال ميديا -->
+                            <div class="form-group">
+                                <label class="form-label" for="social_image" data-en="Social Media Image"
+                                    data-ar="صورة السوشيال ميديا">صورة السوشيال ميديا</label>
+                                <div class="form-control-wrap">
+                                    <input type="file" name="social_image" id="social_image" class="form-control"
+                                        accept="image/*">
+                                </div>
+                                @error('social_image')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- الوصف -->
+                            <div class="form-group">
+                                <label class="form-label" for="description" data-en="Description"
+                                    data-ar="الوصف">الوصف</label>
+                                <div class="form-control-wrap">
+                                    <textarea name="description" id="description" rows="3" class="form-control"
+                                        placeholder="الوصف (يُستخدم في مشاركة السوشيال ميديا)">{{ old('description') }}</textarea>
+                                </div>
                             </div>
 
 

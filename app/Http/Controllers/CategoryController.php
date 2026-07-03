@@ -58,9 +58,16 @@ class CategoryController extends BaseController
         try {
             Validator::make($request->all(), [
                 'name' => 'required|string|min:3|max:255|unique:categories,name',
+                'social_image' => 'nullable|image|max:6000',
+                'description' => 'nullable|string',
             ])->validate();
 
-            Category::create($request->all());
+            $data = $request->except('social_image');
+            if ($request->hasFile('social_image')) {
+                $data['social_image'] = 'storage/' . $request->file('social_image')->store('categories', 'public');
+            }
+
+            Category::create($data);
 
             return redirect()->back()->with('success', 'Category created successfully.');
         } catch (\Exception $e) {
@@ -95,9 +102,19 @@ class CategoryController extends BaseController
 
             Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
+                'social_image' => 'nullable|image|max:6000',
+                'description' => 'nullable|string',
             ])->validate();
 
-            $category->update($request->all());
+            $data = $request->except('social_image');
+            if ($request->hasFile('social_image')) {
+                if ($category->social_image && str_starts_with($category->social_image, 'storage/')) {
+                    \Storage::disk('public')->delete(substr($category->social_image, strlen('storage/')));
+                }
+                $data['social_image'] = 'storage/' . $request->file('social_image')->store('categories', 'public');
+            }
+
+            $category->update($data);
 
             return redirect()->route('dashboard.categories.index')->with('success', 'Category updated successfully.');
         } catch (\Exception $e) {

@@ -2,6 +2,20 @@
 
 @section('title', !empty($sectionDescription) ? $sectionDescription : 'أصوات جزائرية | ' . ($arabicName ?? 'القسم'))
 
+@section('meta_og_title', $arabicName ?? 'أصوات جزائرية')
+@section('meta_twitter_title', $arabicName ?? 'أصوات جزائرية')
+
+@if (!empty($sectionSocialImage))
+    @section('meta_og_image', asset($sectionSocialImage))
+    @section('meta_twitter_image', asset($sectionSocialImage))
+@endif
+
+@if (!empty($sectionDescription))
+    @section('meta_description', $sectionDescription)
+    @section('meta_og_description', $sectionDescription)
+    @section('meta_twitter_description', $sectionDescription)
+@endif
+
 @section('content')
 
     <style>

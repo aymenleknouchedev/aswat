@@ -778,6 +778,7 @@ class HomePageController extends Controller
         $sectionModel = \App\Models\Section::where('name', $arabicName)->first();
         $sectionId = $sectionModel?->id;
         $sectionDescription = $sectionModel?->description;
+        $sectionSocialImage = $sectionModel?->social_image;
 
         if (!$sectionId) {
             abort(404);
@@ -835,6 +836,7 @@ class HomePageController extends Controller
             'section',
             'arabicName',
             'sectionDescription',
+            'sectionSocialImage',
             'contents',
             'moreContents',
             'topViewed',

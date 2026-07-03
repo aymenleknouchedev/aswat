@@ -48,7 +48,8 @@
                             </div>
                         @endif
                         <!-- ✅ النموذج -->
-                        <form action="{{ route('dashboard.section.store') }}" method="POST">
+                        <form action="{{ route('dashboard.section.store') }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group">
@@ -58,6 +59,18 @@
                                         value="{{ old('name') }}" required>
                                 </div>
                                 @error('name')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="form-label" for="social_image" data-en="Social Media Image"
+                                    data-ar="صورة السوشيال ميديا">صورة السوشيال ميديا</label>
+                                <div class="form-control-wrap">
+                                    <input type="file" name="social_image" id="social_image" class="form-control"
+                                        accept="image/*">
+                                </div>
+                                @error('social_image')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>

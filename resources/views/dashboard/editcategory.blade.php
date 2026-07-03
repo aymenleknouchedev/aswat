@@ -52,7 +52,8 @@
                             @endif
 
                             <!-- ✅ النموذج -->
-                            <form action="{{ route('dashboard.categorie.update', $category->id) }}" method="POST">
+                            <form action="{{ route('dashboard.categorie.update', $category->id) }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
 
@@ -66,6 +67,38 @@
                                     @error('name')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
+                                </div>
+
+                                <!-- صورة السوشيال ميديا -->
+                                <div class="form-group">
+                                    <label class="form-label" for="social_image" data-en="Social Media Image"
+                                        data-ar="صورة السوشيال ميديا">صورة السوشيال ميديا</label>
+                                    <div class="form-control-wrap">
+                                        <input type="file" name="social_image" id="social_image" class="form-control"
+                                            accept="image/*">
+                                    </div>
+                                    @if ($category->social_image)
+                                        <div class="mt-2">
+                                            <img src="{{ asset($category->social_image) }}" alt="Social image"
+                                                style="max-width: 240px; border: 1px solid #eee;">
+                                            <p class="text-soft small mt-1" data-en="Current image (leave empty to keep it)"
+                                                data-ar="الصورة الحالية (اترك الحقل فارغاً للإبقاء عليها)">
+                                                الصورة الحالية (اترك الحقل فارغاً للإبقاء عليها)</p>
+                                        </div>
+                                    @endif
+                                    @error('social_image')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- الوصف -->
+                                <div class="form-group">
+                                    <label class="form-label" for="description" data-en="Description"
+                                        data-ar="الوصف">الوصف</label>
+                                    <div class="form-control-wrap">
+                                        <textarea name="description" id="description" rows="3" class="form-control"
+                                            placeholder="الوصف (يُستخدم في مشاركة السوشيال ميديا)">{{ old('description', $category->description) }}</textarea>
+                                    </div>
                                 </div>
 
 

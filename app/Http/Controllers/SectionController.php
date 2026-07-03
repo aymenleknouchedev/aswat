@@ -51,11 +51,15 @@ class SectionController extends BaseController
             $request->validate([
                 'name' => 'required|string|max:255|unique:sections,name',
                 'description' => 'nullable|string|max:1000',
+                'social_image' => 'nullable|image|max:6000',
             ]);
 
             $section = new Section();
             $section->name = $request->input('name');
             $section->description = $request->input('description');
+            if ($request->hasFile('social_image')) {
+                $section->social_image = 'storage/' . $request->file('social_image')->store('sections', 'public');
+            }
             $section->save();
             CacheService::forget(CacheKeys::SECTIONS);
 
@@ -91,11 +95,18 @@ class SectionController extends BaseController
             $request->validate([
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string|max:1000',
+                'social_image' => 'nullable|image|max:6000',
             ]);
 
             $section = Section::findOrFail($id);
             $section->name = $request->input('name');
             $section->description = $request->input('description');
+            if ($request->hasFile('social_image')) {
+                if ($section->social_image && str_starts_with($section->social_image, 'storage/')) {
+                    \Storage::disk('public')->delete(substr($section->social_image, strlen('storage/')));
+                }
+                $section->social_image = 'storage/' . $request->file('social_image')->store('sections', 'public');
+            }
             $section->save();
 
             CacheService::forget(CacheKeys::SECTIONS);

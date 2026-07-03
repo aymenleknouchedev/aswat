@@ -1,6 +1,25 @@
 @extends('layouts.index')
 
-@section('title', 'أصوات جزائرية | ' . ($theme->name ?? 'الأخبار'))
+@php
+    $catSocialImage = $theme->social_image ?? null;
+    $catDescription = $theme->description ?? null;
+@endphp
+
+@section('title', !empty($catDescription) ? $catDescription : 'أصوات جزائرية | ' . ($theme->name ?? 'الأخبار'))
+
+@section('meta_og_title', $theme->name ?? 'أصوات جزائرية')
+@section('meta_twitter_title', $theme->name ?? 'أصوات جزائرية')
+
+@if (!empty($catSocialImage))
+    @section('meta_og_image', asset($catSocialImage))
+    @section('meta_twitter_image', asset($catSocialImage))
+@endif
+
+@if (!empty($catDescription))
+    @section('meta_description', $catDescription)
+    @section('meta_og_description', $catDescription)
+    @section('meta_twitter_description', $catDescription)
+@endif
 
 @section('content')
 

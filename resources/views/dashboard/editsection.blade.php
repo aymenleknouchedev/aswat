@@ -48,7 +48,8 @@
                         @endif
 
                         <!-- ✅ النموذج -->
-                        <form action="{{ route('dashboard.section.update', $section->id) }}" method="POST">
+                        <form action="{{ route('dashboard.section.update', $section->id) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -59,6 +60,27 @@
                                         value="{{ old('name', $section->name) }}" required>
                                 </div>
                                 @error('name')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="form-label" for="social_image" data-en="Social Media Image"
+                                    data-ar="صورة السوشيال ميديا">صورة السوشيال ميديا</label>
+                                <div class="form-control-wrap">
+                                    <input type="file" name="social_image" id="social_image" class="form-control"
+                                        accept="image/*">
+                                </div>
+                                @if ($section->social_image)
+                                    <div class="mt-2">
+                                        <img src="{{ asset($section->social_image) }}" alt="Social image"
+                                            style="max-width: 240px; border: 1px solid #eee;">
+                                        <p class="text-soft small mt-1" data-en="Current image (leave empty to keep it)"
+                                            data-ar="الصورة الحالية (اترك الحقل فارغاً للإبقاء عليها)">
+                                            الصورة الحالية (اترك الحقل فارغاً للإبقاء عليها)</p>
+                                    </div>
+                                @endif
+                                @error('social_image')
                                     <span class="text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
