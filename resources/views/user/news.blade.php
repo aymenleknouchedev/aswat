@@ -1438,7 +1438,7 @@
             position: absolute;
             bottom: 12px;
             right: 12px;
-            background: rgba(0, 0, 0, 0.55);
+            background: rgba(0, 0, 0, 0.4);
             color: #fff;
             border-radius: 50%;
             padding: 8px;
@@ -1447,7 +1447,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            pointer-events: none;
+            pointer-events: auto;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .content-img-expand:hover {
+            background: rgba(0, 0, 0, 0.95);
         }
 
         @media (max-width: 768px) {
@@ -4271,6 +4277,22 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 icon.className = 'material-symbols-outlined content-img-expand';
                 icon.textContent = 'expand_content';
                 wrap.appendChild(icon);
+
+                // Only the icon opens fullscreen — block direct image clicks
+                img.style.cursor = 'default';
+                let allowOpen = false;
+                img.addEventListener('click', function(e) {
+                    if (!allowOpen) {
+                        e.stopImmediatePropagation();
+                        e.preventDefault();
+                    }
+                }, true);
+                icon.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    allowOpen = true;
+                    img.click();
+                    allowOpen = false;
+                });
             });
         }
 

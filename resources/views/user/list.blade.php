@@ -731,7 +731,7 @@
             position: absolute;
             bottom: 12px;
             right: 12px;
-            background: rgba(0, 0, 0, 0.55);
+            background: rgba(0, 0, 0, 0.4);
             color: #fff;
             border-radius: 50%;
             padding: 8px;
@@ -740,7 +740,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            pointer-events: none;
+            pointer-events: auto;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .content-img-expand:hover {
+            background: rgba(0, 0, 0, 0.95);
         }
 
         .intro a {
@@ -3139,8 +3145,9 @@
                 icon.textContent = 'expand_content';
                 wrap.appendChild(icon);
 
-                img.style.cursor = 'pointer';
-                img.addEventListener('click', function() {
+                // Only the icon opens fullscreen (image itself is not clickable)
+                icon.addEventListener('click', function(e) {
+                    e.stopPropagation();
                     const fig = img.closest('figure');
                     const caption = fig ? (fig.querySelector('figcaption')?.textContent?.trim() || '') : '';
                     previewImg.src = img.src;
