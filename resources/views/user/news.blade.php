@@ -1321,7 +1321,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.45);
+            background: transparent;
             border: none;
             color: #fff;
             cursor: pointer;
@@ -1332,7 +1332,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background 0.2s ease;
             z-index: 10002;
+        }
+
+        .fullscreen-image-close:hover {
+            background: rgba(0, 0, 0, 0.45);
         }
 
         .fullscreen-image-close .material-symbols-outlined {
