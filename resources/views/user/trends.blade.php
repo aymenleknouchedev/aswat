@@ -35,6 +35,15 @@
             overflow-x: hidden;
         }
 
+        /* Reserve the scrollbar gutter so locking scroll doesn't shift the layout */
+        html {
+            scrollbar-gutter: stable;
+        }
+
+        body.tm-no-scroll {
+            overflow: hidden;
+        }
+
         .web {
             display: block !important;
         }
@@ -508,6 +517,64 @@
             color: #fff;
         }
 
+        /* ===== Sidebar polish ===== */
+        .theme-menu-overlay {
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+
+        .tm-menu-list > li > a,
+        .tm-item-header > a {
+            transition: opacity .2s ease, padding-right .2s ease;
+        }
+
+        .tm-menu-list > li > a:hover,
+        .tm-item-header > a:hover {
+            opacity: 1;
+            padding-right: 8px;
+        }
+
+        .tm-submenu a {
+            transition: color .2s ease, padding-right .2s ease;
+        }
+
+        .tm-submenu a:hover {
+            padding-right: 8px;
+        }
+
+        .theme-menu-search {
+            transition: border-color .2s ease, background .2s ease;
+        }
+
+        .theme-menu-search:focus-within {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Staggered entrance for menu items when panel opens */
+        .theme-menu-panel .theme-menu-search,
+        .theme-menu-panel .tm-menu-list > li {
+            opacity: 0;
+            transform: translateX(-14px);
+            transition: opacity .3s ease, transform .3s ease;
+        }
+
+        .theme-menu-panel.open .theme-menu-search,
+        .theme-menu-panel.open .tm-menu-list > li {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .theme-menu-panel.open .theme-menu-search { transition-delay: .1s; }
+        .theme-menu-panel.open .tm-menu-list > li:nth-child(1) { transition-delay: .14s; }
+        .theme-menu-panel.open .tm-menu-list > li:nth-child(2) { transition-delay: .18s; }
+        .theme-menu-panel.open .tm-menu-list > li:nth-child(3) { transition-delay: .22s; }
+        .theme-menu-panel.open .tm-menu-list > li:nth-child(4) { transition-delay: .26s; }
+        .theme-menu-panel.open .tm-menu-list > li:nth-child(5) { transition-delay: .3s; }
+        .theme-menu-panel.open .tm-menu-list > li:nth-child(6) { transition-delay: .34s; }
+        .theme-menu-panel.open .tm-menu-list > li:nth-child(7) { transition-delay: .38s; }
+        .theme-menu-panel.open .tm-menu-list > li:nth-child(8) { transition-delay: .42s; }
+
         .theme-hero-nav {
             list-style: none;
             display: flex;
@@ -873,6 +940,7 @@
                 panel.classList.add('open');
                 overlay.classList.add('open');
                 btn.classList.add('is-open');
+                document.body.classList.add('tm-no-scroll');
                 if (btnIcon) btnIcon.textContent = 'close';
                 btn.setAttribute('aria-expanded', 'true');
                 panel.setAttribute('aria-hidden', 'false');
@@ -882,6 +950,7 @@
                 panel.classList.remove('open');
                 overlay.classList.remove('open');
                 btn.classList.remove('is-open');
+                document.body.classList.remove('tm-no-scroll');
                 if (btnIcon) btnIcon.textContent = 'dehaze';
                 btn.setAttribute('aria-expanded', 'false');
                 panel.setAttribute('aria-hidden', 'true');
