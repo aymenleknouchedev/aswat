@@ -58,7 +58,8 @@
             scrollbar-gutter: stable;
         }
 
-        body.tm-no-scroll {
+        html.tm-no-scroll,
+        html.tm-no-scroll body {
             overflow: hidden;
         }
 
@@ -3684,7 +3685,7 @@
                     b.setAttribute('aria-expanded', 'true');
                 });
                 setIcons('close');
-                document.body.classList.add('tm-no-scroll');
+                document.documentElement.classList.add('tm-no-scroll');
                 panel.setAttribute('aria-hidden', 'false');
             }
 
@@ -3696,7 +3697,7 @@
                     b.setAttribute('aria-expanded', 'false');
                 });
                 setIcons('dehaze');
-                document.body.classList.remove('tm-no-scroll');
+                document.documentElement.classList.remove('tm-no-scroll');
                 panel.setAttribute('aria-hidden', 'true');
             }
 

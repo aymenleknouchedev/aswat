@@ -40,7 +40,8 @@
             scrollbar-gutter: stable;
         }
 
-        body.tm-no-scroll {
+        html.tm-no-scroll,
+        html.tm-no-scroll body {
             overflow: hidden;
         }
 
@@ -940,7 +941,7 @@
                 panel.classList.add('open');
                 overlay.classList.add('open');
                 btn.classList.add('is-open');
-                document.body.classList.add('tm-no-scroll');
+                document.documentElement.classList.add('tm-no-scroll');
                 if (btnIcon) btnIcon.textContent = 'close';
                 btn.setAttribute('aria-expanded', 'true');
                 panel.setAttribute('aria-hidden', 'false');
@@ -950,7 +951,7 @@
                 panel.classList.remove('open');
                 overlay.classList.remove('open');
                 btn.classList.remove('is-open');
-                document.body.classList.remove('tm-no-scroll');
+                document.documentElement.classList.remove('tm-no-scroll');
                 if (btnIcon) btnIcon.textContent = 'dehaze';
                 btn.setAttribute('aria-expanded', 'false');
                 panel.setAttribute('aria-hidden', 'true');
