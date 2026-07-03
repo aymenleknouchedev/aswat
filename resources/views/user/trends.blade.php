@@ -366,7 +366,7 @@
             width: 340px;
             max-width: 85vw;
             background: #1a1a1a;
-            padding: 140px 28px 30px;
+            padding: 190px 28px 30px;
             transform: translateX(-100%);
             transition: transform .3s ease;
             z-index: 1001;
