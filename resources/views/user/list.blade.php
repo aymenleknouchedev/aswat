@@ -679,8 +679,8 @@
             font-size: 16px !important;
             font-family: asswat-regular;
             color: #000000;
-            line-height: 1.9;
-            font-weight: 300;
+            line-height: 1.625rem;
+            font-weight: normal;
             text-align: right;
             margin-bottom: 30px;
         }
@@ -692,7 +692,7 @@
         }
 
         .intro p {
-            margin-bottom: 1.5em;
+            margin-bottom: 15px;
         }
 
         .intro h2,
@@ -1035,10 +1035,10 @@
 
         .film-description {
             font-size: 16px !important;
-            line-height: 1.9 !important;
+            line-height: 1.625rem !important;
             text-align: right !important;
             color: #000000 !important;
-            font-weight: 300;
+            font-weight: normal;
             font-family: asswat-regular !important;
             direction: rtl !important;
             position: relative;
@@ -1047,7 +1047,7 @@
         }
 
         .film-description p {
-            margin-bottom: 1.5em;
+            margin-bottom: 15px;
         }
 
         .film-description p:last-child {
