@@ -52,7 +52,7 @@
 
 @push('seo')
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=chevron_left,chevron_right,expand_content" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=chevron_left,chevron_right,close,expand_content" />
     @php
         $authorNames = $news->writers->pluck('name')->filter()->values();
         $sectionName = $news->section?->name;
@@ -1321,19 +1321,22 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: none;
+            background: rgba(0, 0, 0, 0.45);
             border: none;
             color: #fff;
-            font-size: 40px;
             cursor: pointer;
             padding: 0;
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.2s;
             z-index: 10002;
+        }
+
+        .fullscreen-image-close .material-symbols-outlined {
+            font-size: 28px;
         }
 
 
@@ -2826,7 +2829,7 @@
     {{-- ================= FULLSCREEN IMAGE MODAL ================= --}}
     <div id="fullscreenImageModal" class="fullscreen-image-modal">
         <div class="fullscreen-image-container">
-            <button class="fullscreen-image-close" id="fullscreenImageClose" type="button" aria-label="إغلاق">×</button>
+            <button class="fullscreen-image-close" id="fullscreenImageClose" type="button" aria-label="إغلاق"><span class="material-symbols-outlined">close</span></button>
             <button class="fullscreen-image-prev" id="fullscreenImagePrev" type="button"
                 aria-label="الصورة السابقة"><span class="material-symbols-outlined">chevron_right</span></button>
             <button class="fullscreen-image-next" id="fullscreenImageNext" type="button"
