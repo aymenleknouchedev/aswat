@@ -1342,9 +1342,9 @@
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
-            background: #fff;
+            background: rgba(0, 0, 0, 0.45);
             border: none;
-            color: #111;
+            color: #fff;
             cursor: pointer;
             padding: 0;
             width: 48px;
@@ -1353,9 +1353,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.3s;
+            transition: background 0.2s ease;
             z-index: 10003;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .fullscreen-image-prev:hover,
+        .fullscreen-image-next:hover {
+            background: rgba(0, 0, 0, 0.8);
         }
 
         .fullscreen-image-prev .material-symbols-outlined,
