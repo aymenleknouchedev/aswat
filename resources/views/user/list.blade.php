@@ -3437,7 +3437,8 @@
             padding: 11px 16px;
             outline: none;
             font-family: asswat-regular;
-            border-radius: 4px;
+            border-radius: 0;
+            opacity: 0.8;
             margin-left: 8px;
         }
 
