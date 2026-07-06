@@ -3656,6 +3656,7 @@
             display: block !important;
         }
 
+        .theme-menu-panel nav ul.tm-submenu.active,
         .tm-submenu.active {
             max-height: 800px;
         }
