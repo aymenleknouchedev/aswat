@@ -3421,7 +3421,7 @@
             background: rgba(0, 0, 0, 0.5);
             opacity: 0;
             visibility: hidden;
-            transition: opacity .55s ease, visibility .55s;
+            transition: opacity .9s ease, visibility .9s;
             z-index: 2000;
         }
 
@@ -3435,12 +3435,12 @@
             top: 0;
             left: 0;
             height: 100%;
-            width: 420px;
-            max-width: 85vw;
-            background: #1a1a1a;
+            width: 40vw;
+            max-width: 90vw;
+            background: rgba(26, 26, 26, 0);
             padding: 190px 28px 30px;
             transform: translateX(-100%);
-            transition: transform .55s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: transform .9s cubic-bezier(0.22, 1, 0.36, 1), background-color .9s ease;
             z-index: 2001;
             overflow-y: auto;
             scrollbar-width: none;
@@ -3453,20 +3453,21 @@
 
         .theme-menu-panel.open {
             transform: translateX(0);
+            background: rgba(26, 26, 26, 1);
         }
 
         .theme-menu-close {
-            position: absolute;
-            top: 24px;
-            left: 28px;
+            position: fixed;
+            top: 30px;
+            left: 45px;
             background: none;
             border: none;
             color: #fff;
-            font-size: 28px;
+            font-size: 34px;
             line-height: 1;
             cursor: pointer;
-            padding: 6px;
-            z-index: 2003;
+            padding: 6px 8px;
+            z-index: 3000;
             transition: opacity .2s ease;
         }
 
