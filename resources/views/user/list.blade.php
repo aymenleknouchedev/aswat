@@ -3329,6 +3329,9 @@
                 <li class="tm-item-with-submenu">
                     <div class="tm-item-header">
                         <a href="{{ route('latestNews') }}">أخبار</a>
+                        <button type="button" class="tm-submenu-toggle" aria-label="عرض الأقسام">
+                            <i class="fa-solid fa-chevron-left tm-toggle-arrow" aria-hidden="true"></i>
+                        </button>
                     </div>
                     <ul class="tm-submenu">
                         <li><a href="{{ route('newSection', ['section' => 'algeria']) }}">الجزائر</a></li>
@@ -3352,6 +3355,15 @@
                 <li><a href="{{ route('podcasts') }}">بودكاست</a></li>
                 <li><a href="{{ route('photos') }}">صور</a></li>
             </ul>
+
+            <div class="tm-social" aria-label="تابعنا">
+                <a href="https://www.facebook.com/asswatdjazairia" target="_blank" class="s-icon" aria-label="Facebook">@include('user.icons.facebook')</a>
+                <a href="https://x.com/asswatdjazairia" target="_blank" class="s-icon" aria-label="Twitter">@include('user.icons.twitter')</a>
+                <a href="https://www.youtube.com/@asswatdjazairia" target="_blank" class="s-icon" aria-label="YouTube">@include('user.icons.youtube')</a>
+                <a href="https://www.instagram.com/asswatdjazairia" target="_blank" class="s-icon" aria-label="Instagram">@include('user.icons.instagram')</a>
+                <a href="https://t.me/AsswatDjazairia" target="_blank" class="s-icon" aria-label="Telegram">@include('user.icons.telegram')</a>
+                <a href="https://www.linkedin.com/in/asswatdjazairia/" target="_blank" class="s-icon" aria-label="LinkedIn">@include('user.icons.linkedin')</a>
+            </div>
         </nav>
     </aside>
 
@@ -3553,98 +3565,152 @@
             padding: 4px 6px;
         }
 
-        /* ===== Sidebar menu list ===== */
+        /* ===== Sidebar menu list (mobile-sidebar style) ===== */
         .theme-menu-panel nav ul.tm-menu-list,
         .tm-menu-list {
             list-style: none;
             margin: 0;
-            padding: 0;
+            padding: 12px 0 0;
             display: block !important;
         }
 
         .tm-menu-list > li {
             display: block;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            margin: 0 -28px;
-            padding: 0 28px;
+            border-bottom: none;
         }
 
-        .tm-menu-list > li:last-child {
+        .tm-menu-list > li > .tm-item-header,
+        .tm-menu-list > li > a {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tm-menu-list > li:last-child > .tm-item-header,
+        .tm-menu-list > li:last-child > a {
             border-bottom: none;
         }
 
         /* Top-level links */
         .tm-menu-list > li > a,
         .tm-item-header > a {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 0;
+            display: block;
+            padding: 16px 0;
             color: #fff;
             text-decoration: none;
-            font-size: 19px;
-            font-family: 'asswat-bold', 'asswat-regular';
-            letter-spacing: .2px;
-            transition: color .2s ease;
+            font-size: 24px;
+            font-family: 'asswat-bold';
+            font-weight: 500;
+            transition: all .2s ease;
         }
 
-        /* Animated chevron accent on simple (no-submenu) links */
-        .tm-menu-list > li:not(.tm-item-with-submenu) > a::after {
-            content: '\2039';
-            font-size: 22px;
-            line-height: 1;
-            color: rgba(255, 255, 255, 0.3);
-            transition: transform .2s ease, color .2s ease;
-        }
-
-        .tm-menu-list > li:not(.tm-item-with-submenu) > a:hover::after {
-            color: #C1121F;
-            transform: translateX(-5px);
+        .tm-menu-list > li > a:hover,
+        .tm-item-header > a:hover {
+            opacity: .85;
         }
 
         .tm-item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 0;
         }
 
         .tm-item-header > a {
             flex: 1;
         }
 
-        /* News sections rendered as a compact chip grid */
+        /* Submenu accordion toggle (chevron) */
+        .tm-submenu-toggle {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            transition: all .3s ease;
+        }
+
+        .tm-toggle-arrow {
+            display: inline-block;
+            transition: transform .3s ease;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .tm-submenu-toggle.active .tm-toggle-arrow {
+            transform: rotate(90deg);
+        }
+
+        /* News sections: collapsible accordion */
         .theme-menu-panel nav ul.tm-submenu,
         .tm-submenu {
             list-style: none;
-            margin: 0 0 4px;
-            padding: 2px 0 16px;
-            display: grid !important;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            margin: 0;
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .35s ease;
+            display: block !important;
         }
 
-        .tm-submenu > li {
-            display: block;
-            width: 100%;
+        .tm-submenu.active {
+            max-height: 800px;
+        }
+
+        .tm-submenu li > a {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .tm-submenu li:last-child > a {
+            border-bottom: none;
         }
 
         .tm-submenu a {
             display: block;
-            text-align: center;
-            font-size: 13.5px;
-            padding: 9px 10px;
-            color: rgba(255, 255, 255, 0.72);
-            background: rgba(255, 255, 255, 0.06);
-            font-family: 'asswat-regular';
-            border-radius: 6px;
+            padding: 12px 24px 12px 0;
+            color: #828282;
             text-decoration: none;
-            transition: background .2s ease, color .2s ease;
+            font-size: 16px;
+            font-family: 'asswat-bold';
+            font-weight: 400;
+            transition: all .2s ease;
         }
 
         .tm-submenu a:hover {
             color: #fff;
-            background: #C1121F;
+        }
+
+        /* Social row at the bottom */
+        .tm-social {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            row-gap: 16px;
+            padding: 8px 0 20px;
+            margin-top: 26px;
+        }
+
+        .tm-social .s-icon {
+            width: 22px;
+            height: 22px;
+            color: #fff;
+            opacity: .85;
+            display: inline-flex;
+            transition: opacity .2s ease;
+        }
+
+        .tm-social .s-icon:hover {
+            opacity: 1;
+        }
+
+        .tm-social .s-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
         }
 
         /* ===== Sidebar polish ===== */
@@ -3775,6 +3841,20 @@
                         const input = form.querySelector('.theme-hero-search-input');
                         if (input) input.classList.remove('active');
                     }
+                });
+            });
+        })();
+
+        // Sidebar submenu accordion (news sections)
+        (function() {
+            document.querySelectorAll('.tm-submenu-toggle').forEach(function(toggle) {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const item = toggle.closest('.tm-item-with-submenu');
+                    const submenu = item ? item.querySelector('.tm-submenu') : null;
+                    toggle.classList.toggle('active');
+                    if (submenu) submenu.classList.toggle('active');
                 });
             });
         })();
