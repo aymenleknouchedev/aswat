@@ -3631,8 +3631,10 @@
             background: none;
             border: none;
             padding: 0;
+            margin-left: 20px;
             cursor: pointer;
             color: #fff;
+            display: flex;
             align-items: center;
             justify-content: center;
             width: 44px;
