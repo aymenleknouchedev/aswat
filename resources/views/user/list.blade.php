@@ -3431,15 +3431,21 @@
             display: none;
             width: 240px;
             max-width: 40vw;
-            border: none;
-            background: #f5f5f5;
-            color: #111;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.12);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            color: #fff;
             padding: 11px 16px;
             outline: none;
             font-family: asswat-regular;
             border-radius: 0;
-            opacity: 0.5;
             margin-left: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        .theme-hero-search-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .theme-hero-search-input.active {
