@@ -2197,7 +2197,7 @@
                 background: #F5F5F5;
                 color: #333;
                 font-size: 14px;
-                z-index: 2001;
+                z-index: 4000;
                 display: flex;
                 align-items: center;
             }
@@ -2206,36 +2206,26 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                gap: 30px;
             }
 
             .admin-bar-content span {
-                font-family: asswat-bold, asswat-regular;
+                font-family: asswat-bold;
                 display: flex;
                 align-items: center;
                 gap: 6px;
             }
 
-            .admin-actions {
-                display: flex;
-                align-items: center;
-                gap: 15px;
-            }
-
             .admin-actions a {
                 color: #333;
+                margin-right: 15px;
                 text-decoration: none;
                 transition: color 0.2s;
+                font-family: asswat-bold;
                 font-size: 16px;
             }
 
-            .admin-actions a i {
-                font-family: "Font Awesome 6 Free";
-                font-weight: 900;
-            }
-
             .admin-actions a:hover {
-                color: #555;
+                color: #333;
             }
 
             .admin-action-breaking i {
@@ -2246,8 +2236,6 @@
             .admin-action-breaking:hover i {
                 color: #c82333;
             }
-
-
 
             .split-hero {
                 margin-top: 36px;
