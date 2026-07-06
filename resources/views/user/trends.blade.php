@@ -571,7 +571,7 @@
         .theme-menu-panel nav ul.tm-submenu,
         .tm-submenu {
             list-style: none;
-            margin: 0;
+            margin: 0 -28px;
             padding: 0;
             max-height: 0;
             overflow: hidden;
@@ -594,7 +594,6 @@
 
         .tm-submenu a {
             display: block;
-            margin: 0 -28px;
             padding: 12px 52px 12px 28px;
             color: #828282;
             text-decoration: none;
