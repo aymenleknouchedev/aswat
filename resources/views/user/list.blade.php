@@ -3504,7 +3504,7 @@
             width: 40vw;
             max-width: 90vw;
             background: rgba(26, 26, 26, 0);
-            padding: 190px 28px 30px;
+            padding: 90px 28px 30px;
             transform: translateX(-100%);
             transition: transform .9s cubic-bezier(0.22, 1, 0.36, 1), background-color .9s ease;
             z-index: 2001;
