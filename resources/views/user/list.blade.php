@@ -3633,7 +3633,6 @@
             padding: 0;
             cursor: pointer;
             color: #fff;
-            display: flex;
             align-items: center;
             justify-content: center;
             width: 44px;
@@ -3667,6 +3666,12 @@
         .theme-menu-panel nav ul.tm-submenu.active,
         .tm-submenu.active {
             max-height: 800px;
+        }
+
+        /* Override any global `li { display: flex }` so the row fills the panel */
+        .tm-submenu > li {
+            display: block;
+            width: 100%;
         }
 
         .tm-submenu li > a {

@@ -592,6 +592,12 @@
             max-height: 800px;
         }
 
+        /* Override any global `li { display: flex }` so the row fills the panel */
+        .tm-submenu > li {
+            display: block;
+            width: 100%;
+        }
+
         .tm-submenu li > a {
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
