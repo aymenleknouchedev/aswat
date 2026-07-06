@@ -1447,7 +1447,7 @@
             .hero-content .custom-date-share {
                 position: absolute;
                 bottom: 24px;
-                left: 40px;
+                left: 53px;
                 margin: 0;
             }
         }
