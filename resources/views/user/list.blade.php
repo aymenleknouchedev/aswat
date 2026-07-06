@@ -3451,18 +3451,7 @@
         }
 
         .theme-menu-close {
-            position: absolute;
-            top: 24px;
-            left: 28px;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 26px;
-            line-height: 1;
-            cursor: pointer;
-            padding: 6px;
-            z-index: 1003;
-            transition: opacity .2s ease;
+            display: none;
         }
 
         .theme-menu-close:hover {

@@ -335,7 +335,7 @@
             align-items: center;
             transition: opacity .2s ease;
             position: relative;
-            z-index: 1002;
+            z-index: 2002;
         }
 
         .theme-hero-menu-btn:hover {
@@ -350,7 +350,7 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity .55s ease, visibility .55s;
-            z-index: 1000;
+            z-index: 2000;
         }
 
         .theme-menu-overlay.open {
@@ -369,7 +369,7 @@
             padding: 190px 28px 30px;
             transform: translateX(-100%);
             transition: transform .55s cubic-bezier(0.22, 1, 0.36, 1);
-            z-index: 1001;
+            z-index: 2001;
             overflow-y: auto;
             /* Hide scrollbar while keeping scroll */
             scrollbar-width: none;
@@ -385,18 +385,7 @@
         }
 
         .theme-menu-close {
-            position: absolute;
-            top: 24px;
-            left: 28px;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 26px;
-            line-height: 1;
-            cursor: pointer;
-            padding: 6px;
-            z-index: 1003;
-            transition: opacity .2s ease;
+            display: none;
         }
 
         .theme-menu-close:hover {
