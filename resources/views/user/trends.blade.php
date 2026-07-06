@@ -703,6 +703,7 @@
         @endif
 
         @if (in_array($type, ['Window', 'Trend']) && !empty($theme->image))
+            @include('user.components.admin-top-bar')
             <div class="theme-hero-full"
                 style="background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.75)), url('{{ asset($theme->image) }}') center top/cover no-repeat;">
                 <header class="theme-hero-header">
