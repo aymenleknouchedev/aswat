@@ -335,16 +335,11 @@
             align-items: center;
             transition: opacity .2s ease;
             position: relative;
-            z-index: 10;
+            z-index: 3000;
         }
 
         .theme-hero-menu-btn:hover {
             opacity: .75;
-        }
-
-        /* When the panel is open, hide the hamburger so only the in-panel X shows */
-        .theme-hero-menu-btn.is-open {
-            display: none;
         }
 
         /* Slide-out menu panel */
@@ -390,19 +385,9 @@
             background: rgba(26, 26, 26, 1);
         }
 
+        /* Not used: the hamburger button itself is the close (toggles to X) */
         .theme-menu-close {
-            position: fixed;
-            top: 30px;
-            left: 45px;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 34px;
-            line-height: 1;
-            cursor: pointer;
-            padding: 6px 8px;
-            z-index: 3000;
-            transition: opacity .2s ease;
+            display: none;
         }
 
         .theme-menu-close:hover {
