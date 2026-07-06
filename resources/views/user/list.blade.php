@@ -3147,22 +3147,6 @@
                 document.body.style.overflow = 'hidden';
             }
 
-            // Main (hero) image: expand icon only (image itself not clickable)
-            document.querySelectorAll('.hero-image').forEach(hero => {
-                const img = hero.querySelector('img');
-                if (!img || hero.querySelector('.content-img-expand')) return;
-
-                const icon = document.createElement('span');
-                icon.className = 'material-symbols-outlined content-img-expand';
-                icon.textContent = 'expand_content';
-                hero.appendChild(icon);
-
-                icon.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    openModal(img);
-                });
-            });
-
             // Body/content images: clickable, no icon
             document.querySelectorAll('.intro img').forEach(img => {
                 if (img.closest('.read-more-block')) return;
