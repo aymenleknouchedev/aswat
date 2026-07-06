@@ -335,7 +335,7 @@
             align-items: center;
             transition: opacity .2s ease;
             position: relative;
-            z-index: 2002;
+            z-index: 10;
         }
 
         .theme-hero-menu-btn:hover {
