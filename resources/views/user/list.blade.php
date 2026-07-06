@@ -2247,7 +2247,7 @@
             }
 
             header {
-                top: 36px;
+                top: 0;
             }
         </style>
     @endif
