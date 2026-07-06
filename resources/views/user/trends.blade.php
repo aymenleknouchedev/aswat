@@ -268,7 +268,11 @@
         .theme-hero-header {
             width: 100%;
             padding: 30px 45px;
-            z-index: 10;
+            position: relative;
+            /* Above the slide-out panel (2001) so the menu/close button stays on top.
+               .theme-hero-full is display:flex, so this header is a flex item and its
+               z-index establishes a stacking context that would otherwise trap the button. */
+            z-index: 3000;
         }
 
         .theme-hero-header-inner {
