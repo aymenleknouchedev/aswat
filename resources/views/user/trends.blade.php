@@ -502,21 +502,40 @@
             border-bottom: none;
         }
 
-        .tm-menu-list > li > .tm-item-header,
-        .tm-menu-list > li > a {
+        /* Full-bleed divider under each row (simple link or news header) */
+        .tm-menu-list > li > a,
+        .tm-menu-list > li > .tm-item-header {
+            margin: 0 -28px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        .tm-menu-list > li:last-child > .tm-item-header,
-        .tm-menu-list > li:last-child > a {
+        .tm-menu-list > li:last-child > a,
+        .tm-menu-list > li:last-child > .tm-item-header {
             border-bottom: none;
         }
 
-        /* Top-level links */
+        /* Horizontal insets keep the text 28px from the panel edges */
+        .tm-menu-list > li > a {
+            padding: 16px 28px;
+        }
+
+        .tm-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0;
+            padding: 0 28px;
+        }
+
+        .tm-item-header > a {
+            flex: 1;
+            padding: 16px 0;
+        }
+
+        /* Shared row typography */
         .tm-menu-list > li > a,
         .tm-item-header > a {
             display: block;
-            padding: 16px 0;
             color: #fff;
             text-decoration: none;
             font-size: 24px;
@@ -528,17 +547,6 @@
         .tm-menu-list > li > a:hover,
         .tm-item-header > a:hover {
             opacity: .85;
-        }
-
-        .tm-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0;
-        }
-
-        .tm-item-header > a {
-            flex: 1;
         }
 
         /* Submenu accordion toggle (chevron) */
