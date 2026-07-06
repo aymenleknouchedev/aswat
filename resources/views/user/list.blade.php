@@ -3409,6 +3409,11 @@
             opacity: .75;
         }
 
+        /* When the panel is open, hide the hamburger so only the in-panel X shows */
+        .theme-hero-menu-btn.is-open {
+            display: none;
+        }
+
         /* Slide-out menu panel */
         .theme-menu-overlay {
             position: fixed;
