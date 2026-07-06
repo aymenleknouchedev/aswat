@@ -3503,7 +3503,7 @@
             height: 100%;
             width: 40vw;
             max-width: 90vw;
-            background: rgba(26, 26, 26, 0);
+            background: rgba(37, 37, 37, 0);
             padding: 90px 28px 30px;
             transform: translateX(-100%);
             transition: transform .9s cubic-bezier(0.22, 1, 0.36, 1), background-color .9s ease;
@@ -3519,7 +3519,7 @@
 
         .theme-menu-panel.open {
             transform: translateX(0);
-            background: rgba(26, 26, 26, 1);
+            background: rgba(37, 37, 37, 1);
         }
 
         /* Not used: the hamburger button itself is the close (toggles to X) */
