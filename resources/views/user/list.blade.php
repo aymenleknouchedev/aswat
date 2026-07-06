@@ -2262,10 +2262,18 @@
                         <img class="logo-scrolled" src="{{ asset('user/assets/images/white_logo.svg') }}"
                             alt="Logo" style="height: 40px; display: none;">
                     </a>
-                    <button type="button" class="theme-hero-menu-btn" data-theme-menu-open
-                        aria-label="القائمة" aria-expanded="false" aria-controls="themeMenuPanel">
-                        <span class="material-symbols-outlined">dehaze</span>
-                    </button>
+                    <div class="theme-hero-actions">
+                        <form action="{{ route('search') }}" method="GET" class="theme-hero-search">
+                            <input name="query" type="text" class="theme-hero-search-input" placeholder="ابحث...">
+                            <button type="submit" class="theme-hero-search-btn" aria-label="بحث">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </form>
+                        <button type="button" class="theme-hero-menu-btn" data-theme-menu-open
+                            aria-label="القائمة" aria-expanded="false" aria-controls="themeMenuPanel">
+                            <span class="material-symbols-outlined">dehaze</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </header>
@@ -2417,10 +2425,18 @@
                             <img class="logo-scrolled" src="{{ asset('user/assets/images/white_logo.svg') }}"
                                 alt="Logo" style="height: 40px; display: none;">
                         </a>
-                        <button type="button" class="theme-hero-menu-btn" data-theme-menu-open
-                            aria-label="القائمة" aria-expanded="false" aria-controls="themeMenuPanel">
-                            <span class="material-symbols-outlined">dehaze</span>
-                        </button>
+                        <div class="theme-hero-actions">
+                            <form action="{{ route('search') }}" method="GET" class="theme-hero-search">
+                                <input name="query" type="text" class="theme-hero-search-input" placeholder="ابحث...">
+                                <button type="submit" class="theme-hero-search-btn" aria-label="بحث">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </form>
+                            <button type="button" class="theme-hero-menu-btn" data-theme-menu-open
+                                aria-label="القائمة" aria-expanded="false" aria-controls="themeMenuPanel">
+                                <span class="material-symbols-outlined">dehaze</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -3308,13 +3324,6 @@
             <i class="fa-solid fa-xmark"></i>
         </button>
 
-        <form action="{{ route('search') }}" method="GET" class="theme-menu-search">
-            <input name="query" type="text" class="theme-menu-search-input" placeholder="ابحث...">
-            <button type="submit" class="theme-menu-search-btn" aria-label="بحث">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-        </form>
-
         <nav>
             <ul class="tm-menu-list">
                 <li class="tm-item-with-submenu">
@@ -3399,6 +3408,55 @@
         }
 
         .theme-hero-menu-btn:hover {
+            opacity: .75;
+        }
+
+        /* Hero header search (icon toggles an expandable input, like the fixed nav) */
+        .theme-hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-hero-search {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-hero-search.hide-search {
+            display: none;
+        }
+
+        .theme-hero-search-input {
+            display: none;
+            width: 240px;
+            max-width: 40vw;
+            border: none;
+            background: #f5f5f5;
+            color: #111;
+            padding: 11px 16px;
+            outline: none;
+            font-family: asswat-regular;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        .theme-hero-search-input.active {
+            display: inline-block;
+        }
+
+        .theme-hero-search-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 6px 8px;
+            transition: opacity .2s ease;
+        }
+
+        .theme-hero-search-btn:hover {
             opacity: .75;
         }
 
@@ -3624,6 +3682,8 @@
                 });
             }
 
+            const heroSearches = document.querySelectorAll('.theme-hero-search');
+
             function openMenu() {
                 panel.classList.add('open');
                 overlay.classList.add('open');
@@ -3634,6 +3694,11 @@
                 setIcons('close');
                 document.documentElement.classList.add('tm-no-scroll');
                 panel.setAttribute('aria-hidden', 'false');
+                heroSearches.forEach(s => {
+                    s.classList.add('hide-search');
+                    const i = s.querySelector('.theme-hero-search-input');
+                    if (i) i.classList.remove('active');
+                });
             }
 
             function closeMenu() {
@@ -3646,6 +3711,7 @@
                 setIcons('dehaze');
                 document.documentElement.classList.remove('tm-no-scroll');
                 panel.setAttribute('aria-hidden', 'true');
+                heroSearches.forEach(s => s.classList.remove('hide-search'));
             }
 
             openBtns.forEach(b => b.addEventListener('click', function() {
@@ -3655,6 +3721,41 @@
             if (closeBtn) closeBtn.addEventListener('click', closeMenu);
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') closeMenu();
+            });
+        })();
+
+        // Hero header search toggle (mirrors the fixed-nav search behaviour)
+        (function() {
+            const forms = document.querySelectorAll('.theme-hero-search');
+            if (!forms.length) return;
+
+            forms.forEach(function(form) {
+                const input = form.querySelector('.theme-hero-search-input');
+                const btn = form.querySelector('.theme-hero-search-btn');
+                if (!input || !btn) return;
+
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (input.classList.contains('active')) {
+                        if (input.value.trim().length > 0) return; // let the form submit
+                        e.preventDefault();
+                        input.classList.remove('active');
+                        input.blur();
+                    } else {
+                        e.preventDefault();
+                        input.classList.add('active');
+                        input.focus();
+                    }
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                forms.forEach(function(form) {
+                    if (!form.contains(e.target)) {
+                        const input = form.querySelector('.theme-hero-search-input');
+                        if (input) input.classList.remove('active');
+                    }
+                });
             });
         })();
     </script>
