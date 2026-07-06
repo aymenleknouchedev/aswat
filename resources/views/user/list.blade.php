@@ -3671,7 +3671,8 @@
 
         .tm-submenu a {
             display: block;
-            padding: 12px 24px 12px 0;
+            margin: 0 -28px;
+            padding: 12px 52px 12px 28px;
             color: #828282;
             text-decoration: none;
             font-size: 16px;
