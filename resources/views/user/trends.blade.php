@@ -488,7 +488,7 @@
             padding: 4px 6px;
         }
 
-        /* Mobile-style accordion menu inside the slide-out panel */
+        /* ===== Sidebar menu list ===== */
         .theme-menu-panel nav ul.tm-menu-list,
         .tm-menu-list {
             list-style: none;
@@ -499,11 +499,7 @@
 
         .tm-menu-list > li {
             display: block;
-        }
-
-        /* Full-bleed divider lines (span the whole sidebar width) */
-        .tm-menu-list > li {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             margin: 0 -28px;
             padding: 0 28px;
         }
@@ -512,18 +508,34 @@
             border-bottom: none;
         }
 
-        .tm-menu-list a {
-            display: block;
-            padding: 16px 0;
+        /* Top-level links */
+        .tm-menu-list > li > a,
+        .tm-item-header > a {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
             color: #fff;
             text-decoration: none;
-            font-size: 20px;
+            font-size: 19px;
             font-family: 'asswat-bold', 'asswat-regular';
-            transition: opacity .2s ease;
+            letter-spacing: .2px;
+            transition: color .2s ease;
         }
 
-        .tm-menu-list a:hover {
-            opacity: .8;
+        /* Animated chevron accent on simple (no-submenu) links */
+        .tm-menu-list > li:not(.tm-item-with-submenu) > a::after {
+            content: '\2039';
+            font-size: 22px;
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.3);
+            transition: transform .2s ease, color .2s ease;
+        }
+
+        .tm-menu-list > li:not(.tm-item-with-submenu) > a:hover::after {
+            color: #C1121F;
+            transform: translateX(-5px);
         }
 
         .tm-item-header {
@@ -532,18 +544,19 @@
             align-items: center;
         }
 
-        .tm-item-header a {
+        .tm-item-header > a {
             flex: 1;
-            border-bottom: none;
         }
 
-        /* Sub-sections: always visible under the title, stacked vertically, smaller */
+        /* News sections rendered as a compact chip grid */
         .theme-menu-panel nav ul.tm-submenu,
         .tm-submenu {
             list-style: none;
-            margin: 0;
-            padding: 0 0 12px;
-            display: block !important;
+            margin: 0 0 4px;
+            padding: 2px 0 16px;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
         }
 
         .tm-submenu > li {
@@ -553,26 +566,26 @@
 
         .tm-submenu a {
             display: block;
-            font-size: 14px;
-            padding: 7px 16px 7px 0;
-            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            font-size: 13.5px;
+            padding: 9px 10px;
+            color: rgba(255, 255, 255, 0.72);
+            background: rgba(255, 255, 255, 0.06);
             font-family: 'asswat-regular';
-            border-bottom: none;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background .2s ease, color .2s ease;
         }
 
         .tm-submenu a:hover {
             color: #fff;
+            background: #C1121F;
         }
 
         /* ===== Sidebar polish ===== */
         .theme-menu-overlay {
             backdrop-filter: blur(2px);
             -webkit-backdrop-filter: blur(2px);
-        }
-
-        /* No hover transition/movement on menu links */
-        .tm-menu-list a {
-            transition: none;
         }
 
         .theme-menu-search {
