@@ -373,7 +373,7 @@
             outline: none;
             font-family: asswat-regular;
             border-radius: 0;
-            opacity: 0.8;
+            opacity: 0.5;
             margin-left: 8px;
         }
 
