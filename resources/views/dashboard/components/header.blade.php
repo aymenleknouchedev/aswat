@@ -3,16 +3,19 @@
     <div class="container-fluid">
         <div class="nk-header-wrap">
 
-            <!-- Add New Content Button (Left Side) -->
-            <div class="nk-header-tools-left">
-                <a href="dashboard/content-create" class="btn btn-primary btn-sm">
+            <!-- Quick add buttons (Left Side) -->
+            <div class="nk-header-tools-left d-flex align-items-center" style="gap:8px;">
+                <a href="{{ url('dashboard/content-create') }}"
+                   class="btn btn-primary btn-sm d-inline-flex align-items-center"
+                   style="gap:6px;" title="إضافة محتوى" aria-label="إضافة محتوى">
                     <em class="icon ni ni-plus"></em>
+                    <span class="d-none d-md-inline" data-ar="إضافة محتوى" data-en="Add Content">إضافة محتوى</span>
                 </a>
-            </div>
-
-            <div class="nk-header-tools-left">
-                <a href="dashboard/breakingnew-create" class="btn btn-danger btn-sm">
+                <a href="{{ url('dashboard/breakingnew-create') }}"
+                   class="btn btn-danger btn-sm d-inline-flex align-items-center"
+                   style="gap:6px;" title="إضافة عاجل" aria-label="إضافة عاجل">
                     <em class="icon ni ni-plus"></em>
+                    <span class="d-none d-md-inline" data-ar="إضافة عاجل" data-en="Add Breaking News">إضافة عاجل</span>
                 </a>
             </div>
 

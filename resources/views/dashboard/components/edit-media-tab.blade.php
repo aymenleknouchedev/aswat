@@ -617,6 +617,18 @@
             const url = this.normalizeUrl(raw);
             const type = this.getFileType(url);
 
+            // Fall back to the file name / URL filename when no explicit title exists
+            const filenameFromUrl = (() => {
+                try {
+                    const u = new URL(url, window.location.origin);
+                    return decodeURIComponent(u.pathname.split('/').filter(Boolean).pop() || '');
+                } catch (e) {
+                    const last = (url || '').split('?')[0].split('#')[0].split('/').filter(Boolean).pop() || '';
+                    try { return decodeURIComponent(last); } catch (_) { return last; }
+                }
+            })();
+            const nameFallback = media.name || filenameFromUrl || '';
+
             const wrap = (visualHtml, title, typeLabel, isAudio = false) => `
       <div class="media-preview-selected">
         <div class="media-visual ${isAudio ? 'is-audio' : ''}">${visualHtml}</div>
@@ -670,20 +682,20 @@
             if (type === 'video') {
                 const safe = this.maybeProxy(url);
                 const visual = `<video src="${safe}" controls preload="metadata"></video>`;
-                return wrap(visual, media.title || 'ملف فيديو', 'فيديو');
+                return wrap(visual, media.title || nameFallback || 'ملف فيديو', 'فيديو');
             }
 
             if (type === 'audio') {
                 const safe = this.maybeProxy(url);
                 const visual =
                     `<audio src="${safe}" controls preload="metadata" style="width:100%"></audio>`;
-                return wrap(visual, media.title || 'ملف صوت', 'صوت', true);
+                return wrap(visual, media.title || nameFallback || 'ملف صوت', 'صوت', true);
             }
 
             const safeImg = this.maybeProxy(url);
             const visual =
                 `<img class="media-thumb" src="${safeImg}" alt="${media.title || ''}" loading="lazy" onerror="this.onerror=null; this.src='${this.placeholderThumb(url)}';">`;
-            return wrap(visual, media.title || 'بدون عنوان', this.getFileTypeLabel(type));
+            return wrap(visual, media.title || nameFallback, this.getFileTypeLabel(type));
         }
 
         getEmptyState(fieldName, icon, type) {
