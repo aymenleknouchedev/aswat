@@ -502,10 +502,10 @@
             border-bottom: none;
         }
 
-        /* Full-bleed divider under each row (simple link or news header) */
+        /* Inset divider under each row: symmetric empty space left & right */
         .tm-menu-list > li > a,
         .tm-menu-list > li > .tm-item-header {
-            margin: 0 -28px;
+            margin: 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.15);
         }
 
@@ -514,9 +514,9 @@
             border-bottom: none;
         }
 
-        /* Horizontal insets keep the text 28px from the panel edges */
+        /* Titles align flush with the divider start (no extra horizontal inset) */
         .tm-menu-list > li > a {
-            padding: 16px 28px;
+            padding: 16px 0;
         }
 
         .tm-item-header {
@@ -524,7 +524,7 @@
             justify-content: space-between;
             align-items: center;
             gap: 0;
-            padding: 0 28px;
+            padding: 0;
         }
 
         .tm-item-header > a {
@@ -580,7 +580,7 @@
         .theme-menu-panel nav ul.tm-submenu,
         .tm-submenu {
             list-style: none;
-            margin: 0 -28px;
+            margin: 0;
             padding: 0;
             max-height: 0;
             overflow: hidden;
@@ -609,7 +609,7 @@
 
         .tm-submenu a {
             display: block;
-            padding: 12px 52px 12px 28px;
+            padding: 12px 24px;
             color: #828282;
             text-decoration: none;
             font-size: 16px;
