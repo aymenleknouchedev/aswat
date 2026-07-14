@@ -698,7 +698,7 @@
             margin: 25px 0;
             -webkit-overflow-scrolling: touch;
             border: 1px solid #e6e6e6;
-            border-radius: 10px;
+            border-radius: 0;
         }
 
         .custom-article-content table {
@@ -735,14 +735,27 @@
 
         .custom-article-content table td {
             font-family: asswat-medium !important;
-        }
-
-        .custom-article-content table tbody tr:nth-child(even) td {
-            background: #fafafa;
+            background: #fff;
         }
 
         .custom-article-content table tbody tr:hover td {
             background: #f0f0f0;
+        }
+
+        /* Headings inside a table cell must not add their outside vertical spacing */
+        .custom-article-content table th h1,
+        .custom-article-content table th h2,
+        .custom-article-content table th h3,
+        .custom-article-content table th h4,
+        .custom-article-content table th h5,
+        .custom-article-content table th h6,
+        .custom-article-content table td h1,
+        .custom-article-content table td h2,
+        .custom-article-content table td h3,
+        .custom-article-content table td h4,
+        .custom-article-content table td h5,
+        .custom-article-content table td h6 {
+            margin: 0 !important;
         }
 
         .video-container {
@@ -2404,7 +2417,7 @@
                 margin: 20px 0;
                 -webkit-overflow-scrolling: touch;
                 border: 1px solid #e6e6e6;
-                border-radius: 10px;
+                border-radius: 0;
             }
 
             .mobile-article-content table {
@@ -2441,10 +2454,27 @@
 
             .mobile-article-content table td {
                 font-family: asswat-medium !important;
+                background: #fff;
             }
 
-            .mobile-article-content table tbody tr:nth-child(even) td {
-                background: #fafafa;
+            .mobile-article-content table tbody tr:hover td {
+                background: #f0f0f0;
+            }
+
+            /* Headings inside a table cell must not add their outside vertical spacing */
+            .mobile-article-content table th h1,
+            .mobile-article-content table th h2,
+            .mobile-article-content table th h3,
+            .mobile-article-content table th h4,
+            .mobile-article-content table th h5,
+            .mobile-article-content table th h6,
+            .mobile-article-content table td h1,
+            .mobile-article-content table td h2,
+            .mobile-article-content table td h3,
+            .mobile-article-content table td h4,
+            .mobile-article-content table td h5,
+            .mobile-article-content table td h6 {
+                margin: 0 !important;
             }
 
             /* Image spacing and captions */
