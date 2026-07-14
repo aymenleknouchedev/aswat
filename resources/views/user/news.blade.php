@@ -2177,7 +2177,8 @@
             background: #fff;
         }
 
-        .audio-glass-bar .audio-play-icon i {
+        .audio-glass-bar .audio-play-icon i,
+        .audio-player-wrapper.playing .audio-glass-bar .audio-play-icon i {
             color: #444;
             font-size: 15px;
             margin-left: 0;
