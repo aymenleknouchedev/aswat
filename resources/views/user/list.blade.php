@@ -1927,34 +1927,27 @@
                 display: flex;
                 flex-direction: column;
                 gap: 5px;
-                transition: opacity 0.3s ease;
             }
 
             .line {
                 width: 20px;
                 height: 2px;
                 background-color: #ffffff;
-                transition: all 0.3s ease;
+                transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
                 border-radius: 2px;
             }
 
-            .menu-toggle::after {
-                content: '✕';
-                position: absolute;
-                font-size: 24px;
-                color: #ffffff;
-                opacity: 0;
-                transition: opacity 0.3s ease;
+            /* Same button morphs into an X (menu <-> close) with a transition */
+            .menu-toggle.active .line-1 {
+                transform: translateY(7px) rotate(45deg);
             }
 
-            .menu-toggle.active .hamburger-icon {
+            .menu-toggle.active .line-2 {
                 opacity: 0;
-                visibility: hidden;
             }
 
-            .menu-toggle.active::after {
-                opacity: 1;
-                visibility: visible;
+            .menu-toggle.active .line-3 {
+                transform: translateY(-7px) rotate(-45deg);
             }
 
             .mobile-sidebar {
