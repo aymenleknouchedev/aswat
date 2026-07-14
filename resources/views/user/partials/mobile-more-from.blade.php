@@ -13,8 +13,9 @@
 
         .mmf-heading {
             font-size: 20px;
-            font-family: 'asswat-bold';
-            color: #141414;
+            font-family: 'asswat-medium';
+            color: #000;
+            line-height: 1;
             text-align: right;
             margin: 0 0 10px 0;
         }
