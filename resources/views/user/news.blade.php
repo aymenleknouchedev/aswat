@@ -4335,7 +4335,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         .vvc-cgallery .vvc-cgs-slide{position:relative !important;flex:0 0 100% !important;width:100% !important;height:100% !important;margin:0 !important;background:#000;display:block;}
         .custom-article-content .vvc-cgallery .vvc-cgs-img,
         .mobile-article-content  .vvc-cgallery .vvc-cgs-img,
-        .vvc-cgallery .vvc-cgs-img{position:absolute !important;inset:0 !important;width:100% !important;height:100% !important;max-width:100% !important;object-fit:cover !important;margin:0 !important;display:block !important;opacity:0;transition:opacity .35s ease;}
+        .vvc-cgallery .vvc-cgs-img{position:absolute !important;inset:0 !important;width:100% !important;height:100% !important;max-width:100% !important;object-fit:contain !important;margin:0 !important;display:block !important;opacity:0;transition:opacity .35s ease;}
         .vvc-cgallery .vvc-cgs-img.is-loaded{opacity:1;}
 
         .vvc-cgallery .vvc-cgs-spinner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);font-size:1.6rem;pointer-events:none;opacity:0;transition:opacity .2s;}
@@ -4499,10 +4499,6 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 const items = parseItems(node);
                 if (!items.length) { node.remove(); return; }
 
-                const VALID_RATIOS = ['16/10','16/9','4/3','1/1','3/4','9/16','21/9'];
-                const rawRatio = (node.getAttribute('data-vvc-ratio') || '16/10').trim();
-                const ratio = VALID_RATIOS.indexOf(rawRatio) !== -1 ? rawRatio : '16/10';
-
                 const wrap = document.createElement('div');
                 wrap.className = 'vvc-cgallery';
                 wrap.innerHTML = `
@@ -4531,16 +4527,14 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     </div>`;
                 node.replaceWith(wrap);
 
-                // Apply chosen aspect ratio to the stage (overrides default 16/10)
+                // Size the stage to the images' natural aspect ratio (all images are
+                // expected to be the same size), so nothing is cropped or letter-boxed.
                 const stageEl = wrap.querySelector('.vvc-cgs-stage');
-                if (stageEl && ratio) {
-                    stageEl.style.aspectRatio = ratio;
-                    // Cap tall (portrait) ratios so they don't exceed the viewport
-                    const parts = ratio.split('/').map(n => parseFloat(n));
-                    if (parts.length === 2 && parts[0] > 0 && parts[1] > 0) {
-                        if (parts[1] > parts[0]) stageEl.style.maxHeight = '85vh';
-                        else stageEl.style.maxHeight = '';
-                    }
+                function applyNaturalRatio(img) {
+                    if (!stageEl || !img || !img.naturalWidth || !img.naturalHeight) return;
+                    stageEl.style.aspectRatio = img.naturalWidth + '/' + img.naturalHeight;
+                    // Cap tall (portrait) images so they don't exceed the viewport
+                    stageEl.style.maxHeight = (img.naturalHeight > img.naturalWidth) ? '85vh' : '';
                 }
 
                 const track   = wrap.querySelector('.vvc-cgs-track');
@@ -4559,7 +4553,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 // Wire load/error per image: fade in once decoded, hide spinner on either outcome
                 imgs.forEach((img, i) => {
                     const slide = slides[i];
-                    const done  = () => { img.classList.add('is-loaded'); slide.classList.remove('is-loading'); };
+                    const done  = () => { img.classList.add('is-loaded'); slide.classList.remove('is-loading'); if (i === 0) applyNaturalRatio(img); };
                     const fail  = () => { slide.classList.remove('is-loading'); slide.classList.add('is-failed'); };
                     // Attach listeners FIRST so we never miss a race with already-cached images
                     img.addEventListener('load',  done);

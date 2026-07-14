@@ -2897,18 +2897,6 @@
                     </div>
                 </div>
                 <div class="vvc-cg-footer">
-                    <div class="vvc-cg-layout">
-                        <span class="vvc-cg-ratio-lbl"><i class="fa-solid fa-crop-simple"></i> النسبة:</span>
-                        <select class="vvc-cg-ratio">
-                            <option value="16/10" selected>16:10 (افتراضي)</option>
-                            <option value="16/9">16:9 (عريض)</option>
-                            <option value="4/3">4:3 (كلاسيكي)</option>
-                            <option value="1/1">1:1 (مربع)</option>
-                            <option value="3/4">3:4 (بورتريه)</option>
-                            <option value="9/16">9:16 (قصة/موبايل)</option>
-                            <option value="21/9">21:9 (سينمائي)</option>
-                        </select>
-                    </div>
                     <div class="vvc-cg-footer-actions">
                         <button type="button" class="vvc-cg-btn vvc-cg-cancel" data-vvc-cg-close>إلغاء</button>
                         <button type="button" class="vvc-cg-btn vvc-cg-insert" disabled><i class="fa-solid fa-check"></i> إدراج المعرض</button>
@@ -3217,9 +3205,12 @@
             refreshSelectionUI();
         });
 
-        ratioSel.addEventListener('change', (e) => {
-            state.ratio = VALID_RATIOS.indexOf(e.target.value) !== -1 ? e.target.value : '16/10';
-        });
+        // Ratio selection removed: galleries now render at the images' natural size.
+        if (ratioSel) {
+            ratioSel.addEventListener('change', (e) => {
+                state.ratio = VALID_RATIOS.indexOf(e.target.value) !== -1 ? e.target.value : '16/10';
+            });
+        }
 
         /* ---- Inline upload (with name + alt fields) ---- */
         const upBtn      = modal.querySelector('.vvc-cg-upload-btn');
@@ -3394,10 +3385,9 @@
             const json = encodeURIComponent(JSON.stringify(payload));
             const thumbs = items.slice(0, 4).map(s => `<img src="${escAttr(s.url)}" alt=""/>`).join('');
             const count = items.length;
-            const ratioVal = VALID_RATIOS.indexOf(ratio) !== -1 ? ratio : '16/10';
             return (
-                `<div class="vvc-content-gallery mceNonEditable" contenteditable="false" data-vvc-gallery="${json}" data-vvc-ratio="${escAttr(ratioVal)}">` +
-                  `<div class="vvc-cg-ph-head"><i class="fa-solid fa-images"></i> معرض صور (${count} ${count === 1 ? 'صورة' : 'صور'}) · ${ratioVal.replace('/', ':')} <span class="vvc-cg-ph-edit"><i class="fa-solid fa-pen-to-square"></i> انقر مرتين للتعديل</span></div>` +
+                `<div class="vvc-content-gallery mceNonEditable" contenteditable="false" data-vvc-gallery="${json}">` +
+                  `<div class="vvc-cg-ph-head"><i class="fa-solid fa-images"></i> معرض صور (${count} ${count === 1 ? 'صورة' : 'صور'}) <span class="vvc-cg-ph-edit"><i class="fa-solid fa-pen-to-square"></i> انقر مرتين للتعديل</span></div>` +
                   `<div class="vvc-cg-ph-thumbs">${thumbs}</div>` +
                   `<div class="vvc-cg-ph-hint">سيظهر كمعرض في الصفحة المنشورة.</div>` +
                 `</div>`
