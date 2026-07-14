@@ -6,7 +6,8 @@
             <!-- Logo Section (Always visible) -->
             <div class="navbar-logo">
                 <a href="{{ route('index') }}">
-                    <img loading="lazy" decoding="async" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
+                    <img loading="lazy" decoding="async" src="{{ asset('user/assets/images/logo.svg') }}" alt="Logo" class="logo-img logo-web">
+                    <img loading="lazy" decoding="async" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img logo-white">
                 </a>
             </div>
 
@@ -656,9 +657,18 @@
             border-bottom: 1px solid #e0e0e0 !important;
         }
 
-        /* Closed state: darken the transparent navbar's logo + icons for the white bar */
-        body:has(#greybar) .mobile-navbar .logo-img {
-            filter: brightness(0);
+        /* Default (home hero): show the white logo, hide the web logo */
+        .mobile-navbar .logo-web {
+            display: none;
+        }
+
+        /* Closed state on grey-bar pages: web logo on the white bar + dark icons */
+        body:has(#greybar) .mobile-navbar .logo-web {
+            display: block;
+        }
+
+        body:has(#greybar) .mobile-navbar .logo-white {
+            display: none;
         }
 
         body:has(#greybar) .navbar-icons .search-toggle i {
@@ -674,8 +684,12 @@
             background-color: #ffffff !important;
         }
 
-        body:has(#greybar):has(.mobile-sidebar.active) .mobile-navbar .logo-img {
-            filter: none !important;
+        body:has(#greybar):has(.mobile-sidebar.active) .mobile-navbar .logo-web {
+            display: none;
+        }
+
+        body:has(#greybar):has(.mobile-sidebar.active) .mobile-navbar .logo-white {
+            display: block;
         }
 
         body:has(#greybar):has(.mobile-sidebar.active) .navbar-icons .search-toggle i {
