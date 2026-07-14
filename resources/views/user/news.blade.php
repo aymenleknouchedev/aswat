@@ -2174,11 +2174,11 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: #444;
+            background: #fff;
         }
 
         .audio-glass-bar .audio-play-icon i {
-            color: #fff;
+            color: #444;
             font-size: 15px;
             margin-left: 0;
         }
@@ -2186,9 +2186,9 @@
         .audio-glass-bar .audio-progress-container {
             position: relative;
             flex: 1 1 auto;
-            height: 6px;
+            height: 3px;
             padding: 0;
-            background: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.4);
             border-radius: 3px;
             cursor: pointer;
         }
@@ -2207,8 +2207,8 @@
             position: absolute;
             top: 50%;
             left: 0;
-            width: 13px;
-            height: 13px;
+            width: 11px;
+            height: 11px;
             border-radius: 50%;
             background: #fff;
             transform: translate(-50%, -50%);
@@ -2223,7 +2223,7 @@
             flex: 0 0 auto;
             color: #fff;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 400;
         }
 
         /* Audio time display - positioned on the right side */
