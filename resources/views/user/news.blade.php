@@ -708,7 +708,7 @@
             direction: rtl;
             font-size: 15px;
             color: #222;
-            background: #fff;
+            background: #f6f6f6;
             min-width: 480px;
         }
 
@@ -727,7 +727,7 @@
 
         .custom-article-content table th,
         .custom-article-content table thead td {
-            background: #f5f5f5;
+            background: #ececec;
             color: #111;
             font-family: asswat-bold !important;
             font-weight: normal;
@@ -735,11 +735,11 @@
 
         .custom-article-content table td {
             font-family: asswat-medium !important;
-            background: #fff;
+            background: #f6f6f6;
         }
 
         .custom-article-content table tbody tr:hover td {
-            background: #f0f0f0;
+            background: #eee;
         }
 
         /* Headings inside a table cell must not add their outside vertical spacing */
@@ -2427,7 +2427,7 @@
                 direction: rtl;
                 font-size: 14px;
                 color: #222;
-                background: #fff;
+                background: #f6f6f6;
                 min-width: 440px;
             }
 
@@ -2446,7 +2446,7 @@
 
             .mobile-article-content table th,
             .mobile-article-content table thead td {
-                background: #f5f5f5;
+                background: #ececec;
                 color: #111;
                 font-family: asswat-bold !important;
                 font-weight: normal;
@@ -2454,11 +2454,11 @@
 
             .mobile-article-content table td {
                 font-family: asswat-medium !important;
-                background: #fff;
+                background: #f6f6f6;
             }
 
             .mobile-article-content table tbody tr:hover td {
-                background: #f0f0f0;
+                background: #eee;
             }
 
             /* Headings inside a table cell must not add their outside vertical spacing */
