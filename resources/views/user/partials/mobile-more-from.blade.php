@@ -21,6 +21,15 @@
             margin: 0 0 10px 0;
         }
 
+        /* Remove the default <li> bullet marker on the cards */
+        .mmf-section .mobile-simple-item {
+            list-style: none !important;
+        }
+
+        .mmf-section .mobile-simple-item::marker {
+            content: "" !important;
+        }
+
         /* Hide summary + date in the "المزيد من" cards */
         .mmf-section .ms-summary,
         .mmf-section .ms-date {
