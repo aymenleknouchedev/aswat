@@ -2579,6 +2579,9 @@
 
             {{-- Most read (below related) — mobile only --}}
             @include('user.partials.mobile-most-read', ['items' => $lastWeekNews ?? null])
+
+            {{-- More from the category — mobile only --}}
+            @include('user.partials.mobile-more-from', ['items' => $lastNews ?? null])
         </div>
     </section>
 
