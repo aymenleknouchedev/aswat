@@ -15,7 +15,7 @@
                 width: 100%;
                 background: #ffffff;
                 color: #000;
-                margin: 24px 0 40px;
+                margin: 50px 0 40px;
                 box-sizing: border-box;
             }
 
