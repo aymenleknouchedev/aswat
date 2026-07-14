@@ -72,7 +72,7 @@
             'description' => $shareDescription,
             'image' => [$shareImageUrl],
             'datePublished' => $publishedIso,
-            'dateModified' => $modifiedIso ?: $publishedIso,
+            // dateModified intentionally omitted so Google shows the published date
             'author' => $authorNames->isEmpty()
                 ? [['@type' => 'Organization', 'name' => 'أصوات جزائرية']]
                 : $authorNames->map(fn($n) => ['@type' => 'Person', 'name' => $n])->all(),
@@ -92,9 +92,6 @@
 
     @if ($publishedIso)
         <meta property="article:published_time" content="{{ $publishedIso }}">
-    @endif
-    @if ($modifiedIso)
-        <meta property="article:modified_time" content="{{ $modifiedIso }}">
     @endif
     @if ($sectionName)
         <meta property="article:section" content="{{ $sectionName }}">
