@@ -9,17 +9,12 @@
                 width: 100%;
                 background: #ffffff;
                 color: #000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 0 20px;
                 margin: 24px 0 40px;
                 box-sizing: border-box;
             }
 
             .mmr-inner {
                 width: 100%;
-                max-width: 820px;
             }
 
             .mmr-heading {
