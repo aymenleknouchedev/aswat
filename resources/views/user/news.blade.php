@@ -2418,7 +2418,7 @@
             .mobile-article-image figcaption {
                 font-size: 14px;
                 color: #888;
-                padding: 8px;
+                padding: 8px 20px;
                 background: #f9f9f9;
                 text-align: right;
             }
