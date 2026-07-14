@@ -740,10 +740,6 @@
 
         .custom-article-content table td.td-active,
         .custom-article-content table th.td-active {
-            background: #e9ecef;
-        }
-
-        .custom-article-content table tbody tr:hover td {
             background: #eef0f2;
         }
 
@@ -2464,10 +2460,6 @@
 
             .mobile-article-content table td.td-active,
             .mobile-article-content table th.td-active {
-                background: #e9ecef;
-            }
-
-            .mobile-article-content table tbody tr:hover td {
                 background: #eef0f2;
             }
 
