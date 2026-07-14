@@ -30,6 +30,11 @@
             content: "" !important;
         }
 
+        /* No rounded corners on the card images */
+        .mmf-section .mobile-more-link .ms-thumb img {
+            border-radius: 0 !important;
+        }
+
         /* Hide summary + date in the "المزيد من" cards */
         .mmf-section .ms-summary,
         .mmf-section .ms-date {
