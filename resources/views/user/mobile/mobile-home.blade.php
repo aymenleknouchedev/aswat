@@ -656,3 +656,31 @@
             handleFooterVisibility(); // Initial check
         });
     </script>
+
+{{-- White mobile nav (with grey bottom border) on inner pages that use the grey bar --}}
+<style>
+    @media (max-width: 991px) {
+        body:has(#greybar) #greybar {
+            background-color: #ffffff !important;
+            border-bottom: 1px solid #e0e0e0 !important;
+        }
+
+        /* Darken the transparent navbar's logo + icons so they read on the white bar */
+        body:has(#greybar) .mobile-navbar .logo-img {
+            filter: brightness(0);
+        }
+
+        body:has(#greybar) .navbar-icons .search-toggle i {
+            color: #252525 !important;
+        }
+
+        body:has(#greybar) .mobile-navbar .line {
+            background-color: #252525 !important;
+        }
+
+        body:has(#greybar) .mobile-navbar .menu-toggle::after,
+        body:has(#greybar) .mobile-navbar .menu-toggle.active::after {
+            color: #252525 !important;
+        }
+    }
+</style>
