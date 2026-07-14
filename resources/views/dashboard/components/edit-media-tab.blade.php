@@ -1080,6 +1080,11 @@
         display: block;
     }
 
+    .field-label::after {
+        content: " *";
+        color: var(--bs-danger);
+    }
+
     /* Caption Input */
     .caption-input {
         width: 100%;

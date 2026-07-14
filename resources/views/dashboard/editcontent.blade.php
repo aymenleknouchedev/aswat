@@ -50,11 +50,6 @@
             transition: all 0.2s ease;
         }
 
-        .required-field::after {
-            content: " *";
-            color: var(--bs-danger);
-        }
-
         /* ===== SELECT2 RTL SUPPORT ===== */
         .select2-indropdown-rtl {
             direction: rtl !important;
@@ -881,7 +876,6 @@
                                         <label class="form-label required-field" for="title" data-ar="العنوان" data-en="Title">
                                             العنوان
                                         </label>
-                                        <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input required id="title" name="title" type="text"
                                                 class="form-control form-control" maxlength="68" data-ar="العنوان"
@@ -897,7 +891,6 @@
                                             data-en="Long Title">
                                             العنوان الطويل
                                         </label>
-                                        <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input required id="long_title" name="long_title" type="text"
                                                 class="form-control form-control" maxlength="95"
@@ -914,7 +907,6 @@
                                             data-en="Mobile Title">
                                             عنوان الموبايل
                                         </label>
-                                        <span style="color:var(--bs-danger);">*</span>
                                         <div class="form-control-wrap">
                                             <input required id="mobile_title" name="mobile_title" type="text"
                                                 class="form-control form-control" maxlength="50" data-ar="عنوان الموبايل"
@@ -1378,7 +1370,6 @@
                                 <div class="form-group col-12 my-3">
                                     <label class="form-label required-field" for="summary" data-ar="الملخص"
                                         data-en="Summary">الملخص</label>
-                                    <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <textarea required id="summary" name="summary" class="form-control form-control" rows="3"
                                             style="max-height: calc(1.5em * 3 + 1rem);" maxlength="130">{{ old('summary', $content->summary) }}</textarea>
@@ -1392,7 +1383,6 @@
                                 <div class="form-group col-12 mb-3">
                                     <label class="form-label required-field" for="body" data-ar="المتن"
                                         data-en="Body">المتن</label>
-                                    <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <x-forms.tinymce-editor id="myeditorinstance" :value="old('content', $content->content ?? '')" name="content" />
                                     </div>
@@ -1402,7 +1392,6 @@
                                 <div class="form-group col-12 mb-3">
                                     <label class="form-label required-field" for="seo_keyword" data-ar="الكلمة الرئيسية"
                                         data-en="SEO Keyword">الكلمة الرئيسية</label>
-                                    <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
                                         <input required id="seo_keyword" name="seo_keyword" type="text"
                                             class="form-control form-control" maxlength="50"
