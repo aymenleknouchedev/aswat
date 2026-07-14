@@ -626,7 +626,7 @@
             background-color: var(--bs-tertiary-bg);
         }
 
-        .btn-danger {
+        .btn-danger:not(.btn-icon) {
             width: 24px;
             height: 24px;
             border-radius: 50%;
