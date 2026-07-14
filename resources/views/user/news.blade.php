@@ -474,7 +474,7 @@
             color: #111 !important;
             text-align: right !important;
             margin-top: 35px !important;
-            margin-bottom: 18px !important;
+            margin-bottom: 35px !important;
             font-size: 32px !important;
         }
 
@@ -2236,7 +2236,7 @@
                 color: #111 !important;
                 text-align: right !important;
                 margin-top: 35px !important;
-                margin-bottom: 18px !important;
+                margin-bottom: 35px !important;
                 font-size: 24px !important;
             }
 
