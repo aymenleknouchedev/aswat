@@ -19,7 +19,8 @@
 
             .mmr-heading {
                 font-size: 20px;
-                font-family: 'asswat-medium';
+                font-family: 'asswat-medium' !important;
+                font-weight: 400 !important;
                 color: #000;
                 line-height: 1;
                 text-align: right;
