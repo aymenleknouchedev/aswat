@@ -2411,9 +2411,11 @@
     <section class="content">
         <div class="container">
 
-            <div class="intro">
-                <p>{!! $news->content !!}</p>
+            <div class="intro custom-article-content">
+                {!! $news->content !!}
             </div>
+
+            @include('user.partials.content-enhancements')
 
             <!-- Secondary navbar (appears only when scrolling UP past hero) -->
             <nav id="scroll-navbar" class="scroll-navbar">
