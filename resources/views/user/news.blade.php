@@ -595,7 +595,19 @@
             display: block;
             border-radius: 25px;
             background: #f5f5f5;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+
+        /* Audio wrapped in a figure (with a caption): remove the audio's own margin so
+           the figure controls spacing, and let the shared figcaption style the caption. */
+        .custom-article-content figure.audio {
+            margin: 25px 0;
+        }
+
+        .custom-article-content figure.audio > audio {
+            margin: 0 !important;
         }
 
         .custom-article-content audio::-webkit-media-controls-panel {

@@ -1709,6 +1709,10 @@
                                 tinymce.activeEditor.execCommand('mceInsertContent', false,
                                     `<iframe class="tiny-sm" src="https://player.vimeo.com/video/${escapeHtml(vid)}" frameborder="0" allowfullscreen></iframe>`
                                 );
+                            } else if (/\.(mp3|wav|ogg|m4a|aac|flac|opus)(\?|$)/i.test(u)) {
+                                tinymce.activeEditor.execCommand('mceInsertContent', false,
+                                    `<figure class="audio"><audio class="tiny-sm" src="${escapeHtml(u)}" controls preload="metadata"></audio><figcaption>${escapeHtml(normalized.title||'')}</figcaption></figure>`
+                                );
                             } else {
                                 tinymce.activeEditor.execCommand('mceInsertContent', false,
                                     `<video class="tiny-sm" src="${escapeHtml(normalized.url)}" controls preload="metadata"></video>`
@@ -3997,6 +4001,10 @@
                             const vid = vimeoMatch[1];
                             editor.execCommand('mceInsertContent', false,
                                 `<iframe class="tiny-sm" src="https://player.vimeo.com/video/${escapeHtml(vid)}" frameborder="0" allowfullscreen></iframe>`
+                            );
+                        } else if (/\.(mp3|wav|ogg|m4a|aac|flac|opus)(\?|$)/i.test(u)) {
+                            editor.execCommand('mceInsertContent', false,
+                                `<figure class="audio"><audio class="tiny-sm" src="${escapeHtml(u)}" controls preload="metadata"></audio><figcaption>${escapeHtml(picked.title||'')}</figcaption></figure>`
                             );
                         } else {
                             editor.execCommand('mceInsertContent', false,
