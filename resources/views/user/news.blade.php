@@ -691,6 +691,60 @@
             font-variant-numeric: tabular-nums;
         }
 
+        /* ===== Content tables ===== */
+        .custom-article-content .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            margin: 25px 0;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid #e6e6e6;
+            border-radius: 10px;
+        }
+
+        .custom-article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            direction: rtl;
+            font-size: 15px;
+            color: #222;
+            background: #fff;
+            min-width: 480px;
+        }
+
+        .custom-article-content .table-wrap > table {
+            border: none;
+        }
+
+        .custom-article-content table th,
+        .custom-article-content table td {
+            border: 1px solid #ececec;
+            padding: 12px 14px;
+            text-align: right;
+            vertical-align: middle;
+            line-height: 1.65;
+        }
+
+        .custom-article-content table th,
+        .custom-article-content table thead td {
+            background: #f5f5f5;
+            color: #111;
+            font-family: asswat-bold !important;
+            font-weight: normal;
+        }
+
+        .custom-article-content table td {
+            font-family: asswat-medium !important;
+        }
+
+        .custom-article-content table tbody tr:nth-child(even) td {
+            background: #fafafa;
+        }
+
+        .custom-article-content table tbody tr:hover td {
+            background: #f0f0f0;
+        }
+
         .video-container {
             position: relative;
             width: 100%;
@@ -2343,6 +2397,56 @@
                 margin: 24px 0 !important;
             }
 
+            /* Content tables */
+            .mobile-article-content .table-wrap {
+                width: 100%;
+                overflow-x: auto;
+                margin: 20px 0;
+                -webkit-overflow-scrolling: touch;
+                border: 1px solid #e6e6e6;
+                border-radius: 10px;
+            }
+
+            .mobile-article-content table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 0;
+                direction: rtl;
+                font-size: 14px;
+                color: #222;
+                background: #fff;
+                min-width: 440px;
+            }
+
+            .mobile-article-content .table-wrap > table {
+                border: none;
+            }
+
+            .mobile-article-content table th,
+            .mobile-article-content table td {
+                border: 1px solid #ececec;
+                padding: 10px 12px;
+                text-align: right;
+                vertical-align: middle;
+                line-height: 1.6;
+            }
+
+            .mobile-article-content table th,
+            .mobile-article-content table thead td {
+                background: #f5f5f5;
+                color: #111;
+                font-family: asswat-bold !important;
+                font-weight: normal;
+            }
+
+            .mobile-article-content table td {
+                font-family: asswat-medium !important;
+            }
+
+            .mobile-article-content table tbody tr:nth-child(even) td {
+                background: #fafafa;
+            }
+
             /* Image spacing and captions */
             .mobile-article-content img {
                 display: block;
@@ -3664,6 +3768,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             initializeCopyLink();
             initializeAudioPlayer();
             initializeContentAudioPlayers();
+            enhanceContentTables();
             initializeGreybarScroll();
             initializeMobileFeatureImage();
             initializeMobileGallery();
@@ -3705,6 +3810,27 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
             initializeSingleAudioPlayer('audioPlayerWrapperMobile', 'podcastAudioMobile', 'audioPlayIconMobile',
                 null, null, null, 'currentTimeMobile', 'totalDurationMobile');
+        }
+
+        /**
+         * Wrap every content table in a horizontally-scrollable container so wide
+         * tables never overflow the page on small screens. Also strips the inline
+         * border/width attributes TinyMCE adds so the CSS styling can take over.
+         */
+        function enhanceContentTables() {
+            document.querySelectorAll('.custom-article-content table, .mobile-article-content table').forEach((table) => {
+                if (table.dataset.tblEnhanced) return;
+                table.dataset.tblEnhanced = '1';
+                table.removeAttribute('border');
+                table.removeAttribute('width');
+                table.style.removeProperty('width');
+                if (!table.parentElement.classList.contains('table-wrap')) {
+                    const wrap = document.createElement('div');
+                    wrap.className = 'table-wrap';
+                    table.parentNode.insertBefore(wrap, table);
+                    wrap.appendChild(table);
+                }
+            });
         }
 
         /**
