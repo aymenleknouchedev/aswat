@@ -629,7 +629,7 @@
             height: 44px;
             border: none;
             border-radius: 50%;
-            background: #111;
+            background: #444;
             color: #fff;
             cursor: pointer;
             display: flex;
@@ -640,7 +640,7 @@
         }
 
         .aud-player .aud-play:hover {
-            background: #000;
+            background: #333;
         }
 
         .aud-player .aud-play:active {
@@ -666,7 +666,7 @@
             left: 0;
             bottom: 0;
             width: 0;
-            background: #111;
+            background: #444;
             border-radius: 3px;
         }
 
@@ -677,7 +677,7 @@
             width: 13px;
             height: 13px;
             border-radius: 50%;
-            background: #111;
+            background: #444;
             transform: translate(-50%, -50%);
             transition: opacity .2s ease;
         }
@@ -3721,8 +3721,8 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 return m + ':' + String(s % 60).padStart(2, '0');
             };
 
-            const PLAY_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
-            const PAUSE_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
+            const PLAY_SVG = '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+            const PAUSE_SVG = '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
 
             audios.forEach((audio) => {
                 if (audio.dataset.audEnhanced) return;
