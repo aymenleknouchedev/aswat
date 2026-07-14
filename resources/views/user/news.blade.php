@@ -4092,6 +4092,8 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             contentImages.forEach(img => {
                 // Skip images that belong to a "read more" block
                 if (img.closest('.read-more-block')) return;
+                // Skip content-gallery slider images: they open their own scoped viewer
+                if (img.closest('.vvc-content-gallery') || img.closest('.vvc-cgallery')) return;
 
                 const figure = img.closest('figure');
                 const caption = figure ? (figure.querySelector('figcaption')?.textContent?.trim() || '') : '';
@@ -4120,6 +4122,8 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             const mobileContentImages = document.querySelectorAll('.mobile-article-content img');
             mobileContentImages.forEach(img => {
                 if (img.closest('.read-more-block')) return;
+                // Skip content-gallery slider images: they open their own scoped viewer
+                if (img.closest('.vvc-content-gallery') || img.closest('.vvc-cgallery')) return;
 
                 const figure = img.closest('figure');
                 const caption = figure ? (figure.querySelector('figcaption')?.textContent?.trim() || '') : '';
@@ -4175,6 +4179,15 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             document.body.style.overflow = 'hidden';
             updateNavigationButtons();
         }
+
+        // Open the fullscreen viewer for a content gallery (vvc slider) using its own
+        // set of images, so navigation stays scoped to that gallery. Exposed globally
+        // because the slider is built in a separate script.
+        window.openContentGallery = function(images, index) {
+            if (!Array.isArray(images) || !images.length) return;
+            galleryImages = images;
+            openGallery(Math.min(Math.max(index || 0, 0), images.length - 1));
+        };
 
         // Show current image in gallery
         function showCurrentImage() {
@@ -4551,6 +4564,12 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 const total   = items.length;
                 let index = 0, autoTimer = null, playing = false;
 
+                // Fullscreen viewer payload for this gallery (kept scoped to its own images)
+                const fsImages = items.map(it => ({
+                    src: it.u || '',
+                    caption: (it.t && String(it.t).trim()) ? it.t : (it.a || '')
+                }));
+
                 // Wire load/error per image: fade in once decoded, hide spinner on either outcome
                 imgs.forEach((img, i) => {
                     const slide = slides[i];
@@ -4562,6 +4581,13 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     if (img.complete) {
                         if (img.naturalWidth > 0) done(); else fail();
                     }
+                    // Click a slide image to open the fullscreen viewer at that image
+                    img.style.cursor = 'zoom-in';
+                    img.addEventListener('click', () => {
+                        if (typeof window.openContentGallery === 'function') {
+                            window.openContentGallery(fsImages, i);
+                        }
+                    });
                 });
 
                 function updateTrack() {
