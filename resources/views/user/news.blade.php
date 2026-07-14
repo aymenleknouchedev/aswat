@@ -1448,7 +1448,7 @@
         .content-img-expand {
             position: absolute;
             bottom: 12px;
-            right: 12px;
+            left: 12px;
             background: rgba(0, 0, 0, 0.4);
             color: #fff;
             border-radius: 50%;
