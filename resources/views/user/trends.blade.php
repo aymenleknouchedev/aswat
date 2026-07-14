@@ -554,7 +554,7 @@
             background: none;
             border: none;
             padding: 0;
-            margin-left: 20px;
+            margin-left: 4px;
             cursor: pointer;
             color: #fff;
             display: flex;
@@ -629,7 +629,7 @@
             flex-wrap: wrap;
             gap: 18px;
             row-gap: 16px;
-            padding: 8px 0 20px;
+            padding: 8px 16px 20px;
             margin-top: 26px;
         }
 
