@@ -4532,15 +4532,10 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 const stageEl = wrap.querySelector('.vvc-cgs-stage');
                 function applyNaturalRatio(img) {
                     if (!stageEl || !img || !img.naturalWidth || !img.naturalHeight) return;
-                    const ratio = img.naturalWidth / img.naturalHeight;
+                    // Stage spans the full content width; its height follows the image's
+                    // natural ratio, so the image fills it edge-to-edge with no black bars
+                    // and no cropping (portrait images just make a taller gallery).
                     stageEl.style.aspectRatio = img.naturalWidth + '/' + img.naturalHeight;
-                    // Match the stage to the image: landscape fills the width, while tall
-                    // images shrink the stage width (centered) so its height stays within
-                    // the viewport. This keeps the stage exactly the image's shape, so
-                    // object-fit:contain fills it with no black bars on any side.
-                    stageEl.style.setProperty('width', 'min(100%, calc(85vh * ' + ratio + '))', 'important');
-                    stageEl.style.maxHeight = '85vh';
-                    stageEl.style.marginInline = 'auto';
                 }
 
                 const track   = wrap.querySelector('.vvc-cgs-track');
