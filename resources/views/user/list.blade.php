@@ -1956,7 +1956,12 @@
                 transform: translateY(-7px) rotate(-45deg);
             }
 
-            /* Sidebar open (dark panel): logo + close (X) turn white */
+            /* Sidebar open (dark panel): grey navbar with white logo + close (X) */
+            body:has(.mobile-sidebar.active) .mobile-navbar {
+                background-color: #252525;
+                border-bottom-color: transparent;
+            }
+
             body:has(.mobile-sidebar.active) .mobile-navbar .logo-img {
                 filter: none;
             }
