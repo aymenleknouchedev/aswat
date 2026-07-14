@@ -2148,6 +2148,85 @@
             direction: rtl;
         }
 
+        /* ===== Glassmorphism podcast control bar (content-player style) ===== */
+        .audio-player-wrapper .podcast-lines { display: none !important; }
+
+        .audio-glass-bar {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 6;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 0;
+            background: rgba(20, 20, 20, 0.30);
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
+        }
+
+        .audio-glass-bar .audio-play-icon {
+            position: static;
+            bottom: auto;
+            left: auto;
+            flex: 0 0 44px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        .audio-glass-bar .audio-play-icon i {
+            color: #111;
+            font-size: 15px;
+            margin-left: 0;
+        }
+
+        .audio-glass-bar .audio-progress-container {
+            position: relative;
+            flex: 1 1 auto;
+            height: 6px;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .audio-glass-bar .audio-progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            background: #fff;
+            border-radius: 3px;
+        }
+
+        .audio-glass-bar .audio-progress-handle {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #fff;
+            transform: translate(-50%, -50%);
+        }
+
+        .audio-glass-bar .audio-time-display {
+            position: static;
+            bottom: auto;
+            right: auto;
+            opacity: 1;
+            pointer-events: none;
+            flex: 0 0 auto;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
         /* Audio time display - positioned on the right side */
         .audio-time-display {
             position: absolute;
@@ -3319,31 +3398,18 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
                         <div class="audio-player-image" style="position:relative;">
                             <img loading="lazy" decoding="async" src="{{ $coverImage }}" alt="{{ $news->caption ?? 'بودكاست' }}" loading="lazy">
-                            {{-- Play icon positioned at bottom left --}}
-                            <div class="audio-play-icon" id="audioPlayIcon">
-                                <i class="fa-solid fa-play"></i>
-                            </div>
-                            {{-- Vertical podcast lines aligned with play icon - Interactive for seeking --}}
-                            <div class="podcast-lines" id="podcastLines">
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                                <div class="podcast-line"></div>
-                            </div>
-                            {{-- Time display on the right side --}}
-                            <div class="audio-time-display" id="audioTimeDisplay">
-                                <span id="currentTime">0:00</span> / <span id="totalDuration">0:00</span>
+                            {{-- Glassmorphism control bar (content-player style) --}}
+                            <div class="audio-glass-bar" onclick="event.stopPropagation()">
+                                <div class="audio-play-icon" id="audioPlayIcon">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                                <div class="audio-progress-container" id="audioProgressBarInteractive">
+                                    <div class="audio-progress-fill" id="audioProgressFillInteractive"></div>
+                                    <div class="audio-progress-handle" id="audioProgressHandle"></div>
+                                </div>
+                                <div class="audio-time-display" id="audioTimeDisplay">
+                                    <span id="currentTime">0:00</span> / <span id="totalDuration">0:00</span>
+                                </div>
                             </div>
                         </div>
 
@@ -3683,16 +3749,17 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 <div class="audio-player-wrapper" id="audioPlayerWrapperMobile">
                     <div class="audio-player-image" style="position:relative;">
                         <img loading="lazy" decoding="async" src="{{ $coverImage }}" alt="{{ $news->caption ?? 'بودكاست' }}" loading="lazy">
-                        <div class="audio-play-icon" id="audioPlayIconMobile">
-                            <i class="fa-solid fa-play"></i>
-                        </div>
-                        <div class="podcast-lines" id="podcastLinesMobile">
-                            @for ($i = 0; $i < 15; $i++)
-                                <div class="podcast-line"></div>
-                            @endfor
-                        </div>
-                        <div class="audio-time-display" id="audioTimeDisplayMobile">
-                            <span id="currentTimeMobile">0:00</span> / <span id="totalDurationMobile">0:00</span>
+                        <div class="audio-glass-bar" onclick="event.stopPropagation()">
+                            <div class="audio-play-icon" id="audioPlayIconMobile">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                            <div class="audio-progress-container" id="audioProgressBarInteractiveMobile">
+                                <div class="audio-progress-fill" id="audioProgressFillInteractiveMobile"></div>
+                                <div class="audio-progress-handle" id="audioProgressHandleMobile"></div>
+                            </div>
+                            <div class="audio-time-display" id="audioTimeDisplayMobile">
+                                <span id="currentTimeMobile">0:00</span> / <span id="totalDurationMobile">0:00</span>
+                            </div>
                         </div>
                     </div>
                     <div class="audio-player-controls">
@@ -3841,7 +3908,8 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 'currentTime', 'totalDuration');
 
             initializeSingleAudioPlayer('audioPlayerWrapperMobile', 'podcastAudioMobile', 'audioPlayIconMobile',
-                null, null, null, 'currentTimeMobile', 'totalDurationMobile');
+                'audioProgressBarInteractiveMobile', 'audioProgressFillInteractiveMobile', 'audioProgressHandleMobile',
+                'currentTimeMobile', 'totalDurationMobile');
         }
 
         /**
