@@ -1888,9 +1888,9 @@
                 width: 100%;
             }
 
-            /* Closed: dark logo on the white bar */
-            .mobile-navbar .logo-img {
-                filter: brightness(0);
+            /* Closed (white bar): show the web logo; hide the white one */
+            .mobile-navbar .logo-white {
+                display: none;
             }
 
             .navbar-content {
@@ -1962,8 +1962,12 @@
                 border-bottom-color: transparent;
             }
 
-            body:has(.mobile-sidebar.active) .mobile-navbar .logo-img {
-                filter: none;
+            body:has(.mobile-sidebar.active) .mobile-navbar .logo-web {
+                display: none;
+            }
+
+            body:has(.mobile-sidebar.active) .mobile-navbar .logo-white {
+                display: block;
             }
 
             body:has(.mobile-sidebar.active) .mobile-navbar .line {
@@ -2099,7 +2103,8 @@
         <div class="navbar-content">
             <div class="navbar-logo">
                 <a href="{{ route('index') }}">
-                    <img loading="lazy" decoding="async" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img">
+                    <img loading="lazy" decoding="async" src="{{ asset('user/assets/images/logo.svg') }}" alt="Logo" class="logo-img logo-web">
+                    <img loading="lazy" decoding="async" src="{{ asset('user/assets/images/white_logo.svg') }}" alt="Logo" class="logo-img logo-white">
                 </a>
             </div>
             <div class="navbar-icons">
