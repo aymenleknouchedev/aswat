@@ -2401,8 +2401,8 @@
             }
 
             .mobile-article-image {
-                width: 100%;
-                margin: 15px 0;
+                width: calc(100% + 40px);
+                margin: 15px -20px;
                 overflow: hidden;
             }
 
