@@ -1229,7 +1229,7 @@
       <div class="fields-grid">
         ${this.createCaptionField()}
         ${this.createField('normal_content_image','صورة المحتوى','Content Image','fas fa-image')}
-        ${this.createField('normal_main_image','صورة الواجهة','Main Image','fas fa-image')}
+        ${this.createField('normal_main_image','صورة الويب','Web Image','fas fa-image')}
         ${this.createField('normal_mobile_image','صورة الموبايل','Mobile Image','fas fa-mobile-alt')}
       </div>
     </div>`;
@@ -1243,9 +1243,9 @@
       <div class="fields-grid">
         ${this.createCaptionField()}
         ${this.createField('video_file','ملف الفيديو','Video File','fas fa-video','file')}
-        ${this.createField('video_main_image','صورة الفيديو الرئيسية','Video Main Image','fas fa-image')}
-        ${this.createField('video_content_image','صورة محتوى الفيديو','Video Content Image','fas fa-image')}
-        ${this.createField('video_mobile_image','صورة الفيديو للموبايل','Video Mobile Image','fas fa-mobile-alt')}
+        ${this.createField('video_content_image','صورة المحتوى','Content Image','fas fa-image')}
+        ${this.createField('video_main_image','صورة الويب','Web Image','fas fa-image')}
+        ${this.createField('video_mobile_image','صورة الموبايل','Mobile Image','fas fa-mobile-alt')}
       </div>
     </div>`;
         }
@@ -1258,9 +1258,9 @@
       <div class="fields-grid">
         ${this.createCaptionField()}
         ${this.createField('podcast_file','ملف البودكاست','Podcast File','fas fa-podcast','file')}
-        ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','Podcast Main Image','fas fa-image')}
-        ${this.createField('podcast_content_image','صورة محتوى البودكاست','Podcast Content Image','fas fa-image')}
-        ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','Podcast Mobile Image','fas fa-mobile-alt')}
+        ${this.createField('podcast_content_image','صورة المحتوى','Content Image','fas fa-image')}
+        ${this.createField('podcast_main_image','صورة الويب','Web Image','fas fa-image')}
+        ${this.createField('podcast_mobile_image','صورة الموبايل','Mobile Image','fas fa-mobile-alt')}
       </div>
     </div>`;
         }
@@ -1273,9 +1273,9 @@
       <div class="fields-grid">
         ${this.createCaptionField()}
         ${this.createAssetsField('album_assets','أصول الألبوم','Album Assets')}
-        ${this.createField('album_main_image','صورة الألبوم الرئيسية','Album Main Image','fas fa-image')}
-        ${this.createField('album_content_image','صورة محتوى الألبوم','Album Content Image','fas fa-image')}
-        ${this.createField('album_mobile_image','صورة الألبوم للموبايل','Album Mobile Image','fas fa-mobile-alt')}
+        ${this.createField('album_content_image','صورة المحتوى','Content Image','fas fa-image')}
+        ${this.createField('album_main_image','صورة الويب','Web Image','fas fa-image')}
+        ${this.createField('album_mobile_image','صورة الموبايل','Mobile Image','fas fa-mobile-alt')}
       </div>
     </div>`;
         }
@@ -1287,8 +1287,8 @@
       <h6 class="template-title" data-ar="إعدادات بلا صورة" data-en="Article Settings">${title}</h6>
       <div class="fields-grid">
         ${this.createCaptionField()}
-        ${this.createField('no_image_main_image','صورة الواجهة','Main Image','fas fa-image')}
-        ${this.createField('no_image_mobile_image','صورة بلا صورة للموبايل','Article Mobile Image','fas fa-mobile-alt')}
+        ${this.createField('no_image_main_image','صورة الويب','Web Image','fas fa-image')}
+        ${this.createField('no_image_mobile_image','صورة الموبايل','Mobile Image','fas fa-mobile-alt')}
       </div>
     </div>`;
         }

@@ -898,7 +898,7 @@
       <div class="fields-grid">
         ${this.createCaptionField()}
         ${this.createField('normal_content_image','صورة المحتوى','fas fa-image')}
-        ${this.createField('normal_main_image','صورة الواجهة','fas fa-image')}
+        ${this.createField('normal_main_image','صورة الويب','fas fa-image')}
         ${this.createField('normal_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
       </div>
     </div>`;
@@ -911,9 +911,9 @@
       <div class="fields-grid">
         ${this.createCaptionField()}
         ${this.createField('video_file','ملف الفيديو','fas fa-video','file')}
-        ${this.createField('video_main_image','صورة الفيديو الرئيسية','fas fa-image')}
-        ${this.createField('video_content_image','صورة محتوى الفيديو','fas fa-image')}
-        ${this.createField('video_mobile_image','صورة الفيديو للموبايل','fas fa-mobile-alt')}
+        ${this.createField('video_content_image','صورة المحتوى','fas fa-image')}
+        ${this.createField('video_main_image','صورة الويب','fas fa-image')}
+        ${this.createField('video_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
       </div>
     </div>`;
         }
@@ -925,9 +925,9 @@
       <div class="fields-grid">
         ${this.createCaptionField()}
         ${this.createField('podcast_file','ملف البودكاست','fas fa-podcast','file')}
-        ${this.createField('podcast_main_image','صورة البودكاست الرئيسية','fas fa-image')}
-        ${this.createField('podcast_content_image','صورة محتوى البودكاست','fas fa-image')}
-        ${this.createField('podcast_mobile_image','صورة البودكاست للموبايل','fas fa-mobile-alt')}
+        ${this.createField('podcast_content_image','صورة المحتوى','fas fa-image')}
+        ${this.createField('podcast_main_image','صورة الويب','fas fa-image')}
+        ${this.createField('podcast_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
       </div>
     </div>`;
         }
@@ -939,9 +939,9 @@
       <div class="fields-grid">
         ${this.createCaptionField()}
         ${this.createAssetsField('album_assets','أصول الألبوم')}
-        ${this.createField('album_main_image','صورة الألبوم الرئيسية','fas fa-image')}
-        ${this.createField('album_content_image','صورة محتوى الألبوم','fas fa-image')}
-        ${this.createField('album_mobile_image','صورة الألبوم للموبايل','fas fa-mobile-alt')}
+        ${this.createField('album_content_image','صورة المحتوى','fas fa-image')}
+        ${this.createField('album_main_image','صورة الويب','fas fa-image')}
+        ${this.createField('album_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
       </div>
     </div>`;
         }
@@ -952,8 +952,8 @@
       <h6 class="template-title">إعدادات المقال</h6>
       <div class="fields-grid">
         ${this.createCaptionField()}
-        ${this.createField('no_image_main_image','الصورة الرئيسية','fas fa-image')}
-        ${this.createField('no_image_mobile_image','صورة المقال للموبايل','fas fa-mobile-alt')}
+        ${this.createField('no_image_main_image','صورة الويب','fas fa-image')}
+        ${this.createField('no_image_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
       </div>
     </div>`;
         }
