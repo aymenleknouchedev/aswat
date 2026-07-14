@@ -1250,8 +1250,10 @@
             gap: 12px;
             padding: 16px 12px;
             direction: rtl;
-            margin-top: 28px;
-            margin-bottom: 28px;
+            margin: 28px auto;
+            max-width: 650px;
+            width: 100%;
+            box-sizing: border-box;
             background: #F5F5F5;
             cursor: pointer;
             text-decoration: none;
