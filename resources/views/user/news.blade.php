@@ -2157,14 +2157,13 @@
             right: 0;
             bottom: 0;
             z-index: 6;
+            direction: ltr !important;
             display: flex;
             align-items: center;
             gap: 14px;
             padding: 12px 16px;
             border-radius: 0;
-            background: rgba(20, 20, 20, 0.30);
-            backdrop-filter: blur(16px) saturate(140%);
-            -webkit-backdrop-filter: blur(16px) saturate(140%);
+            background: transparent;
         }
 
         .audio-glass-bar .audio-play-icon {
@@ -2179,7 +2178,7 @@
         }
 
         .audio-glass-bar .audio-play-icon i {
-            color: #111;
+            color: #444;
             font-size: 15px;
             margin-left: 0;
         }
