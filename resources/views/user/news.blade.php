@@ -513,14 +513,12 @@
             .article-text-wrapper { width: 78%; }
         }
 
-        /* Break-out: galleries AND content images inside the 78% text wrapper extend to
-           match the feature-image width. Desktop only — on mobile the wrapper is 100%
+        /* Break-out: content images/figures inside the 78% text wrapper extend to
+           match the feature-image width. Galleries are intentionally excluded so they
+           stay at the text-column width. Desktop only — on mobile the wrapper is 100%
            and the break-out would overflow the screen. .tiny-sm and slider/lightbox
            images are excluded so they keep their intended sizes. */
         @media (min-width: 992px) {
-            .custom-article-content .vvc-cgallery,
-            .custom-article-content .vvc-cgallery-grid,
-            .custom-article-content .vvc-cgallery-masonry,
             .custom-article-content > figure,
             .custom-article-content > p > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img),
             .custom-article-content > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img) {
