@@ -336,6 +336,29 @@
         }
     </style>
 
+    {{-- Yakout font for the article title/summary fields --}}
+    <style>
+        @font-face {
+            font-family: 'Yakout';
+            src: url('{{ asset('YAKOUTLINOTYPELIGHT-REGULAR.TTF') }}') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Yakout';
+            src: url('{{ asset('YAKOUT-LINOTYPE-LIGHT-BOLD.TTF') }}') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        #title,
+        #long_title,
+        #summary {
+            font-family: 'Yakout', Arial, Helvetica, sans-serif !important;
+        }
+    </style>
+
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar ui-clean">
