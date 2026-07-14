@@ -738,6 +738,7 @@
             background: #f8f9fa;
         }
 
+        .custom-article-content table tr.tr-active td,
         .custom-article-content table tbody tr:hover td {
             background: #eef0f2;
         }
@@ -2457,6 +2458,7 @@
                 background: #f8f9fa;
             }
 
+            .mobile-article-content table tr.tr-active td,
             .mobile-article-content table tbody tr:hover td {
                 background: #eef0f2;
             }
@@ -3860,6 +3862,18 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                     table.parentNode.insertBefore(wrap, table);
                     wrap.appendChild(table);
                 }
+
+                // Rows that contain bold text get the "active" (hover-like) background
+                table.querySelectorAll('tr').forEach((row) => {
+                    let bold = !!row.querySelector('strong, b');
+                    if (!bold) {
+                        row.querySelectorAll('td, th, td *, th *').forEach((el) => {
+                            const fw = window.getComputedStyle(el).fontWeight;
+                            if (fw === 'bold' || fw === 'bolder' || parseInt(fw, 10) >= 600) bold = true;
+                        });
+                    }
+                    row.classList.toggle('tr-active', bold);
+                });
             });
         }
 
