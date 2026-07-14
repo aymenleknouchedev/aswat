@@ -6,16 +6,16 @@
             <!-- Quick add buttons (Left Side) -->
             <div class="nk-header-tools-left d-flex align-items-center" style="gap:8px;">
                 <a href="{{ url('dashboard/content-create') }}"
-                   class="btn btn-primary btn-sm d-inline-flex align-items-center"
-                   style="gap:6px;" title="إضافة محتوى" aria-label="إضافة محتوى">
+                   class="btn btn-primary btn-sm d-inline-flex align-items-center flex-shrink-0"
+                   style="gap:6px;white-space:nowrap;" title="إضافة محتوى" aria-label="إضافة محتوى">
                     <em class="icon ni ni-plus"></em>
-                    <span class="d-none d-md-inline" data-ar="إضافة محتوى" data-en="Add Content">إضافة محتوى</span>
+                    <span class="d-none d-lg-inline" data-ar="محتوى" data-en="Content">محتوى</span>
                 </a>
                 <a href="{{ url('dashboard/breakingnew-create') }}"
-                   class="btn btn-danger btn-sm d-inline-flex align-items-center"
-                   style="gap:6px;" title="إضافة عاجل" aria-label="إضافة عاجل">
+                   class="btn btn-danger btn-sm d-inline-flex align-items-center flex-shrink-0"
+                   style="gap:6px;white-space:nowrap;" title="إضافة عاجل" aria-label="إضافة عاجل">
                     <em class="icon ni ni-plus"></em>
-                    <span class="d-none d-md-inline" data-ar="إضافة عاجل" data-en="Add Breaking News">إضافة عاجل</span>
+                    <span class="d-none d-lg-inline" data-ar="عاجل" data-en="Breaking">عاجل</span>
                 </a>
             </div>
 
