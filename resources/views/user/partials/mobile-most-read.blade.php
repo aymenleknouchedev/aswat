@@ -4,6 +4,12 @@
 
 @if (is_countable($mostReadItems) && count($mostReadItems))
     <style>
+        @media (min-width: 992px) {
+            .mmr-section {
+                display: none;
+            }
+        }
+
         @media (max-width: 991px) {
             .mmr-section {
                 width: 100%;
