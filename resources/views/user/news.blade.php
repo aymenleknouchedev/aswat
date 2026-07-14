@@ -2932,7 +2932,7 @@
                 right: auto;
                 background: transparent;
                 color: #000;
-                padding: 0px 0px 16px 16px;
+                padding: 0px 0px 10px 16px;
                 font-size: 20px;
                 line-height: 1;
                 border-radius: 0;
