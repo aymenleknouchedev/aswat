@@ -1878,13 +1878,19 @@
         @media (max-width: 768px) {
             .mobile-navbar {
                 display: block !important;
-                background-color: #252525;
+                background-color: #ffffff;
+                border-bottom: 1px solid #e0e0e0;
                 position: fixed;
                 top: 0;
                 left: 0;
                 right: 0;
                 z-index: 1500;
                 width: 100%;
+            }
+
+            /* Closed: dark logo on the white bar */
+            .mobile-navbar .logo-img {
+                filter: brightness(0);
             }
 
             .navbar-content {
@@ -1932,7 +1938,7 @@
             .line {
                 width: 20px;
                 height: 2px;
-                background-color: #ffffff;
+                background-color: #252525;
                 transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
                 border-radius: 2px;
             }
@@ -1948,6 +1954,15 @@
 
             .menu-toggle.active .line-3 {
                 transform: translateY(-7px) rotate(-45deg);
+            }
+
+            /* Sidebar open (dark panel): logo + close (X) turn white */
+            body:has(.mobile-sidebar.active) .mobile-navbar .logo-img {
+                filter: none;
+            }
+
+            body:has(.mobile-sidebar.active) .mobile-navbar .line {
+                background-color: #ffffff;
             }
 
             .mobile-sidebar {
