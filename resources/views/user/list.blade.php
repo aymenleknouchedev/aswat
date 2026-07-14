@@ -2576,6 +2576,9 @@
                     </div>
                 </div>
             @endif
+
+            {{-- Most read (below related) — mobile only --}}
+            @include('user.partials.mobile-most-read', ['items' => $lastWeekNews ?? null])
         </div>
     </section>
 

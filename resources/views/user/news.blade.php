@@ -3844,6 +3844,9 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 </div>
             @endif
 
+            {{-- Most read (below related) --}}
+            @include('user.partials.mobile-most-read', ['items' => $lastWeekNews ?? null])
+
         </div>
 
         <!-- Compact mobile footer at the end -->
