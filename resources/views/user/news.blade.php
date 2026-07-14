@@ -4372,7 +4372,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
         .vvc-cgallery .vvc-cgs-caption-wrap.is-empty{display:none;}
         .vvc-cgallery.is-collapsed .vvc-cgs-caption-wrap{opacity:0;}
         .vvc-cgallery .vvc-cgs-caption{font-size:18px;line-height:1.55;color:#fff;margin:0;font-family:'asswat-medium';font-weight:600;animation:vvc-cg-fade .35s ease both;}
-        .vvc-cgallery .vvc-cgs-source{font-size:14px;line-height:1.5;color:rgba(255,255,255,.92);margin-top:.5rem;font-family:'asswat-regular';}
+        .vvc-cgallery .vvc-cgs-source{font-size:14px;line-height:1.5;color:rgba(255,255,255,.92);margin-top:.5rem;font-family:'asswat-medium';}
         @keyframes vvc-cg-fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
 
         .vvc-cgallery .vvc-cgs-foot{display:none;}
