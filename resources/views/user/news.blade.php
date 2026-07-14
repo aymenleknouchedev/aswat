@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', $news->mobile_title)
+@section('title', $news->title)
 
 @if ($news->status !== 'published')
     @section('meta_robots', 'noindex, nofollow')
