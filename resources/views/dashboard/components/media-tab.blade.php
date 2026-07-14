@@ -1228,8 +1228,8 @@
       <h6 class="template-title" data-ar="إعدادات الصورة" data-en="Image Settings">${title}</h6>
       <div class="fields-grid">
         ${this.createCaptionField()}
-        ${this.createField('normal_main_image','صورة الواجهة','Main Image','fas fa-image')}
         ${this.createField('normal_content_image','صورة المحتوى','Content Image','fas fa-image')}
+        ${this.createField('normal_main_image','صورة الواجهة','Main Image','fas fa-image')}
         ${this.createField('normal_mobile_image','صورة الموبايل','Mobile Image','fas fa-mobile-alt')}
       </div>
     </div>`;

@@ -885,8 +885,8 @@
       <h6 class="template-title">إعدادات الصورة</h6>
       <div class="fields-grid">
         ${this.createCaptionField()}
-        ${this.createField('normal_main_image','الصورة الرئيسية','fas fa-image')}
         ${this.createField('normal_content_image','صورة المحتوى','fas fa-image')}
+        ${this.createField('normal_main_image','صورة الواجهة','fas fa-image')}
         ${this.createField('normal_mobile_image','صورة الموبايل','fas fa-mobile-alt')}
       </div>
     </div>`;
