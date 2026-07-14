@@ -2174,11 +2174,11 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: #fff;
+            background: #444;
         }
 
         .audio-glass-bar .audio-play-icon i {
-            color: #444;
+            color: #fff;
             font-size: 15px;
             margin-left: 0;
         }
