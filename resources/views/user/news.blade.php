@@ -708,7 +708,7 @@
             direction: rtl;
             font-size: 15px;
             color: #222;
-            background: #f8f9fa;
+            background: #f1f1f1;
             min-width: 480px;
         }
 
@@ -727,7 +727,7 @@
 
         .custom-article-content table th,
         .custom-article-content table thead td {
-            background: #f8f9fa;
+            background: #f1f1f1;
             color: #111;
             font-family: asswat-bold !important;
             font-weight: normal;
@@ -735,12 +735,12 @@
 
         .custom-article-content table td {
             font-family: asswat-medium !important;
-            background: #f8f9fa;
+            background: #f1f1f1;
         }
 
         .custom-article-content table td.td-active,
         .custom-article-content table th.td-active {
-            background: #f1f1f1;
+            background: #ddd;
         }
 
         /* Headings inside a table cell must not add their outside vertical spacing */
@@ -2428,7 +2428,7 @@
                 direction: rtl;
                 font-size: 14px;
                 color: #222;
-                background: #f8f9fa;
+                background: #f1f1f1;
                 min-width: 440px;
             }
 
@@ -2447,7 +2447,7 @@
 
             .mobile-article-content table th,
             .mobile-article-content table thead td {
-                background: #f8f9fa;
+                background: #f1f1f1;
                 color: #111;
                 font-family: asswat-bold !important;
                 font-weight: normal;
@@ -2455,12 +2455,12 @@
 
             .mobile-article-content table td {
                 font-family: asswat-medium !important;
-                background: #f8f9fa;
+                background: #f1f1f1;
             }
 
             .mobile-article-content table td.td-active,
             .mobile-article-content table th.td-active {
-                background: #f1f1f1;
+                background: #ddd;
             }
 
             /* Headings inside a table cell must not add their outside vertical spacing */
