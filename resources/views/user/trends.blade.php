@@ -493,7 +493,7 @@
         .tm-menu-list {
             list-style: none;
             margin: 0;
-            padding: 12px 0 0;
+            padding: 12px 16px 0;
             display: block !important;
         }
 
