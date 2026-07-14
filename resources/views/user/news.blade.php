@@ -2939,7 +2939,8 @@
                 display: block;
                 text-align: right;
                 z-index: 10;
-                font-family: 'asswat-medium';
+                font-family: 'asswat-medium' !important;
+                font-weight: 400 !important;
             }
 
             .related-news-track {
