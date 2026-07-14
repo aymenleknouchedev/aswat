@@ -21,6 +21,12 @@
             margin: 0 0 10px 0;
         }
 
+        /* Hide summary + date in the "المزيد من" cards */
+        .mmf-section .ms-summary,
+        .mmf-section .ms-date {
+            display: none !important;
+        }
+
         @media (min-width: 992px) {
             .mmf-section {
                 display: none;

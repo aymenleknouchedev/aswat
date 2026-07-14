@@ -87,11 +87,11 @@
                 {{ \Illuminate\Support\Str::limit($item->mobile_title ?? $item->title, 90) }}
             </p>
 
-            <p style="font-size: 16px; color: #666; line-height: 1.4;">
+            <p class="ms-summary" style="font-size: 16px; color: #666; line-height: 1.4;">
                 {{ \Illuminate\Support\Str::limit($item->summary ?? ($item->description ?? ''), 250) }}
             </p>
 
-            <div style="display: flex; justify-content: flex-start; font-size: 14px; color: #999;">
+            <div class="ms-date" style="display: flex; justify-content: flex-start; font-size: 14px; color: #999;">
                 <p style="margin: 0;">
                     {{ $item->created_at->locale('ar')->translatedFormat('d') }}
                     {{ ['جانفي', 'فيفري', 'مارس', 'أفريل', 'ماي', 'جوان', 'جويلية', 'أوت', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'][$item->created_at->month - 1] }}
