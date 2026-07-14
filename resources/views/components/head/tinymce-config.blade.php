@@ -18,6 +18,13 @@
             stroke-width="2" />
         <polygon points="10,9 16,12 10,15" fill="currentColor" />
     </symbol>
+    <!-- Audio icon for media thumbnails -->
+    <symbol id="vvc-icon-audio" viewBox="0 0 24 24">
+        <path d="M9 17V6l10-2v11" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="6.5" cy="17" r="2.5" fill="currentColor" />
+        <circle cx="16.5" cy="15" r="2.5" fill="currentColor" />
+    </symbol>
 </svg>
 
 <!-- ============================================
@@ -55,6 +62,7 @@
                     <option value="all">كل الوسائط</option>
                     <option value="image">صورة</option>
                     <option value="video">فيديو</option>
+                    <option value="audio">صوت</option>
                 </select>
             </div>
             <!-- Media grid display area -->
@@ -564,6 +572,46 @@
         font-size: .85rem;
         color: #eaeaea;
         line-height: 1.2;
+    }
+
+    /* Audio card: distinct accent so it doesn't read as a video */
+    .vvc-thumb-audio {
+        flex-direction: column;
+        background: linear-gradient(135deg, #1f6f78, #2b9aa8);
+    }
+
+    .vvc-thumb-audio .vvc-thumb-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .vvc-thumb-audio .vvc-thumb-text {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 0 .35rem;
+    }
+
+    /* Play overlay on real video thumbnails */
+    .vvc-thumb-play {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, .55);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .vvc-thumb-play svg {
+        width: 18px;
+        height: 18px;
     }
 
     /* Badge (image/video indicator) */
@@ -1617,9 +1665,13 @@
          */
         function getMediaKind(m) {
             const mt = (m.media_type || '').toLowerCase();
-            if (mt === 'image' || mt === 'video') return mt;
+            if (mt === 'image' || mt === 'video' || mt === 'audio') return mt;
+            if (mt.startsWith('image/')) return 'image';
+            if (mt.startsWith('video/')) return 'video';
+            if (mt.startsWith('audio/')) return 'audio';
             const ext = extFromPath(m.path || m.url || '');
             if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'].includes(ext)) return 'image';
+            if (['mp3', 'wav', 'ogg', 'm4a', 'aac', 'flac', 'opus'].includes(ext)) return 'audio';
             return 'video';
         }
 
@@ -1628,7 +1680,10 @@
          * @param {object} m - Media object
          * @returns {string} Icon symbol ID
          */
-        const getBadgeIconId = (m) => (getMediaKind(m) === 'image' ? 'vvc-icon-image' : 'vvc-icon-video');
+        const getBadgeIconId = (m) => {
+            const k = getMediaKind(m);
+            return k === 'image' ? 'vvc-icon-image' : k === 'audio' ? 'vvc-icon-audio' : 'vvc-icon-video';
+        };
 
         // ============================================
         // MEDIA MODAL MANAGER (Public API)
@@ -1922,13 +1977,26 @@
                     `<svg aria-hidden="true"><use href="#${getBadgeIconId(media)}"></use></svg>`;
                 thumb.appendChild(badge);
 
-                // Add image or video to thumbnail
+                // Add image / audio / video to thumbnail
                 if (kind === 'image') {
                     const img = document.createElement('img');
                     img.src = toAbsoluteUrl(media.path || media.url);
                     img.alt = media.alt || media.name || '';
                     img.loading = 'lazy';
                     thumb.appendChild(img);
+                } else if (kind === 'audio') {
+                    // Audio file — show an audio placeholder (icon + name), not a video card
+                    const ph = document.createElement('div');
+                    ph.className = 'vvc-thumb-placeholder vvc-thumb-audio';
+                    const icon = document.createElement('div');
+                    icon.className = 'vvc-thumb-icon';
+                    icon.innerHTML = `<svg aria-hidden="true"><use href="#vvc-icon-audio"></use></svg>`;
+                    const text = document.createElement('div');
+                    text.className = 'vvc-thumb-text';
+                    text.textContent = media.name || 'ملف صوتي';
+                    ph.appendChild(icon);
+                    ph.appendChild(text);
+                    thumb.appendChild(ph);
                 } else {
                     if (/\.(mp4|webm|mkv|mov|avi|m4v)(\?|$)/i.test(media.path || media.url || '')) {
                         const video = document.createElement('video');
@@ -1936,6 +2004,11 @@
                         video.muted = true;
                         video.preload = 'metadata';
                         thumb.appendChild(video);
+                        // Centered play overlay so it reads clearly as a video
+                        const play = document.createElement('div');
+                        play.className = 'vvc-thumb-play';
+                        play.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="8,5 19,12 8,19" fill="#fff"/></svg>`;
+                        thumb.appendChild(play);
                     } else {
                         // Link-only video (e.g., YouTube/Vimeo) — show a styled placeholder
                         const ph = document.createElement('div');
