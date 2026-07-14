@@ -697,7 +697,7 @@
             overflow-x: auto;
             margin: 25px 0;
             -webkit-overflow-scrolling: touch;
-            border: 1px solid #e6e6e6;
+            border: 1px solid #ececec;
             border-radius: 0;
         }
 
@@ -708,7 +708,7 @@
             direction: rtl;
             font-size: 15px;
             color: #222;
-            background: #f6f6f6;
+            background: #f8f9fa;
             min-width: 480px;
         }
 
@@ -727,7 +727,7 @@
 
         .custom-article-content table th,
         .custom-article-content table thead td {
-            background: #ececec;
+            background: #f8f9fa;
             color: #111;
             font-family: asswat-bold !important;
             font-weight: normal;
@@ -735,11 +735,11 @@
 
         .custom-article-content table td {
             font-family: asswat-medium !important;
-            background: #f6f6f6;
+            background: #f8f9fa;
         }
 
         .custom-article-content table tbody tr:hover td {
-            background: #eee;
+            background: #eef0f2;
         }
 
         /* Headings inside a table cell must not add their outside vertical spacing */
@@ -2416,7 +2416,7 @@
                 overflow-x: auto;
                 margin: 20px 0;
                 -webkit-overflow-scrolling: touch;
-                border: 1px solid #e6e6e6;
+                border: 1px solid #ececec;
                 border-radius: 0;
             }
 
@@ -2427,7 +2427,7 @@
                 direction: rtl;
                 font-size: 14px;
                 color: #222;
-                background: #f6f6f6;
+                background: #f8f9fa;
                 min-width: 440px;
             }
 
@@ -2446,7 +2446,7 @@
 
             .mobile-article-content table th,
             .mobile-article-content table thead td {
-                background: #ececec;
+                background: #f8f9fa;
                 color: #111;
                 font-family: asswat-bold !important;
                 font-weight: normal;
@@ -2454,11 +2454,11 @@
 
             .mobile-article-content table td {
                 font-family: asswat-medium !important;
-                background: #f6f6f6;
+                background: #f8f9fa;
             }
 
             .mobile-article-content table tbody tr:hover td {
-                background: #eee;
+                background: #eef0f2;
             }
 
             /* Headings inside a table cell must not add their outside vertical spacing */
