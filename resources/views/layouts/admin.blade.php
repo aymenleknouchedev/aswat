@@ -354,6 +354,7 @@
         }
         #title,
         #long_title,
+        #mobile_title,
         #summary {
             font-family: 'Yakout', Arial, Helvetica, sans-serif !important;
         }
