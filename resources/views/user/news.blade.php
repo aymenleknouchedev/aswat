@@ -604,14 +604,15 @@
         /* ===== Custom audio player ===== */
         .custom-article-content .aud-player,
         .mobile-article-content .aud-player {
-            direction: ltr;
+            direction: ltr !important;
+            flex-direction: row !important;
             display: flex;
             align-items: center;
             gap: 14px;
             width: 100%;
             box-sizing: border-box;
             background: #f5f5f5;
-            border-radius: 14px;
+            border-radius: 0;
             padding: 12px 16px;
             margin: 25px 0;
             font-family: asswat-medium;
@@ -646,8 +647,8 @@
             transform: scale(.94);
         }
 
-        .aud-player .aud-play i {
-            line-height: 1;
+        .aud-player .aud-play svg {
+            display: block;
         }
 
         .aud-player .aud-bar {
@@ -3720,6 +3721,9 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 return m + ':' + String(s % 60).padStart(2, '0');
             };
 
+            const PLAY_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+            const PAUSE_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
+
             audios.forEach((audio) => {
                 if (audio.dataset.audEnhanced) return;
                 audio.dataset.audEnhanced = '1';
@@ -3728,14 +3732,13 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 const player = document.createElement('div');
                 player.className = 'aud-player';
                 player.innerHTML =
-                    '<button type="button" class="aud-play" aria-label="تشغيل"><i class="fa-solid fa-play"></i></button>' +
+                    '<button type="button" class="aud-play" aria-label="تشغيل">' + PLAY_SVG + '</button>' +
                     '<span class="aud-time aud-cur">0:00</span>' +
                     '<div class="aud-bar"><div class="aud-fill"></div><div class="aud-knob"></div></div>' +
                     '<span class="aud-time aud-dur">0:00</span>';
                 audio.parentNode.insertBefore(player, audio);
 
                 const playBtn = player.querySelector('.aud-play');
-                const icon = playBtn.querySelector('i');
                 const bar = player.querySelector('.aud-bar');
                 const fill = player.querySelector('.aud-fill');
                 const knob = player.querySelector('.aud-knob');
@@ -3756,15 +3759,15 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
                 audio.addEventListener('play', () => {
                     // Pause any other content audio that is playing
                     audios.forEach((a) => { if (a !== audio && !a.paused) a.pause(); });
-                    icon.className = 'fa-solid fa-pause';
+                    playBtn.innerHTML = PAUSE_SVG;
                     playBtn.setAttribute('aria-label', 'إيقاف');
                 });
                 audio.addEventListener('pause', () => {
-                    icon.className = 'fa-solid fa-play';
+                    playBtn.innerHTML = PLAY_SVG;
                     playBtn.setAttribute('aria-label', 'تشغيل');
                 });
                 audio.addEventListener('ended', () => {
-                    icon.className = 'fa-solid fa-play';
+                    playBtn.innerHTML = PLAY_SVG;
                     fill.style.width = '0%';
                     knob.style.left = '0%';
                 });
