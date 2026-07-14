@@ -264,36 +264,27 @@
                 display: flex;
                 flex-direction: column;
                 gap: 5px;
-                transition: opacity 0.3s ease;
             }
 
             .line {
                 width: 20px;
                 height: 2px;
                 background-color: #ffffff;
-                transition: all 0.3s ease;
+                transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
                 border-radius: 2px;
             }
 
-            /* Show X icon when sidebar is active */
-            .menu-toggle::after {
-                content: '✕';
-                position: absolute;
-                font-size: 20px;
-                color: #ffffff;
-                opacity: 0;
-                transition: opacity 0.3s ease;
-                pointer-events: none;
+            /* Same button morphs into an X (menu <-> close) with a transition */
+            .menu-toggle.active .line-1 {
+                transform: translateY(7px) rotate(45deg);
             }
 
-            .menu-toggle.active .hamburger-icon {
+            .menu-toggle.active .line-2 {
                 opacity: 0;
-                visibility: hidden;
             }
 
-            .menu-toggle.active::after {
-                opacity: 1;
-                visibility: visible;
+            .menu-toggle.active .line-3 {
+                transform: translateY(-7px) rotate(-45deg);
             }
 
             /* Full Screen Sidebar */
@@ -679,8 +670,8 @@
         }
 
         /* Sidebar open (dark panel): logo, close (X) and search icon stay white */
-        body:has(#greybar) .mobile-navbar .menu-toggle.active::after {
-            color: #ffffff !important;
+        body:has(#greybar):has(.mobile-sidebar.active) .mobile-navbar .line {
+            background-color: #ffffff !important;
         }
 
         body:has(#greybar):has(.mobile-sidebar.active) .mobile-navbar .logo-img {
