@@ -1388,6 +1388,38 @@
             color: #555;
         }
 
+        /* Related news: horizontal scroll on mobile (like news.blade) */
+        @media (max-width: 991px) {
+            .economy-grid-container-news {
+                display: flex;
+                grid-template-columns: none;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+                scrollbar-width: none;
+                gap: 14px;
+                direction: rtl;
+            }
+
+            .economy-grid-container-news::-webkit-scrollbar {
+                display: none;
+            }
+
+            .economy-card-news {
+                flex: 0 0 72vw;
+                scroll-snap-align: start;
+            }
+
+            .economy-card-news h3 {
+                font-size: 14px;
+            }
+
+            .economy-card-news h2 {
+                font-size: 18px;
+            }
+        }
+
         .section-title {
             font-size: 20px;
             font-family: 'asswat-medium' !important;
