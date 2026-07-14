@@ -4367,12 +4367,12 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
         .vvc-cgallery .vvc-cgs-toggle{display:none;}
 
-        .vvc-cgallery .vvc-cgs-caption-wrap{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:1.5rem 1.2rem .8rem;background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.45) 55%,rgba(0,0,0,0) 100%);color:#fff;pointer-events:none;transition:opacity .25s ease;}
+        .vvc-cgallery .vvc-cgs-caption-wrap{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:1.8rem 1.2rem .9rem;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.78) 40%,rgba(0,0,0,.35) 75%,rgba(0,0,0,0) 100%);color:#fff;pointer-events:none;transition:opacity .25s ease;}
         .vvc-cgallery .vvc-cgs-caption-wrap:empty,
         .vvc-cgallery .vvc-cgs-caption-wrap.is-empty{display:none;}
         .vvc-cgallery.is-collapsed .vvc-cgs-caption-wrap{opacity:0;}
-        .vvc-cgallery .vvc-cgs-caption{font-size:.92rem;line-height:1.6;color:#fff;margin:0;animation:vvc-cg-fade .35s ease both;}
-        .vvc-cgallery .vvc-cgs-source{font-size:.75rem;color:rgba(255,255,255,.78);margin-top:.35rem;}
+        .vvc-cgallery .vvc-cgs-caption{font-size:18px;line-height:1.55;color:#fff;margin:0;font-family:'asswat-medium';font-weight:600;animation:vvc-cg-fade .35s ease both;}
+        .vvc-cgallery .vvc-cgs-source{font-size:14px;line-height:1.5;color:rgba(255,255,255,.92);margin-top:.5rem;font-family:'asswat-regular';}
         @keyframes vvc-cg-fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
 
         .vvc-cgallery .vvc-cgs-foot{display:none;}
