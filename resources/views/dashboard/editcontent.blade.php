@@ -878,7 +878,7 @@
                                 {{-- TITLE FIELDS --}}
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <label class="form-label" for="title" data-ar="العنوان" data-en="Title">
+                                        <label class="form-label required-field" for="title" data-ar="العنوان" data-en="Title">
                                             العنوان
                                         </label>
                                         <span style="color:var(--bs-danger);">*</span>
@@ -893,7 +893,7 @@
                                     </div>
 
                                     <div class="form-group col-12">
-                                        <label class="form-label" for="long_title" data-ar="العنوان الطويل"
+                                        <label class="form-label required-field" for="long_title" data-ar="العنوان الطويل"
                                             data-en="Long Title">
                                             العنوان الطويل
                                         </label>
@@ -910,7 +910,7 @@
                                     </div>
 
                                     <div class="form-group col-12">
-                                        <label class="form-label" for="mobile_title" data-ar="عنوان الموبايل"
+                                        <label class="form-label required-field" for="mobile_title" data-ar="عنوان الموبايل"
                                             data-en="Mobile Title">
                                             عنوان الموبايل
                                         </label>
@@ -1376,7 +1376,7 @@
 
                                 {{-- ===== SUMMARY FIELD ===== --}}
                                 <div class="form-group col-12 my-3">
-                                    <label class="form-label" for="summary" data-ar="الملخص"
+                                    <label class="form-label required-field" for="summary" data-ar="الملخص"
                                         data-en="Summary">الملخص</label>
                                     <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
@@ -1390,7 +1390,7 @@
 
                                 {{-- ===== BODY CONTENT EDITOR ===== --}}
                                 <div class="form-group col-12 mb-3">
-                                    <label class="form-label" for="body" data-ar="المتن"
+                                    <label class="form-label required-field" for="body" data-ar="المتن"
                                         data-en="Body">المتن</label>
                                     <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
@@ -1400,7 +1400,7 @@
 
                                 {{-- ===== SEO KEYWORD FIELD ===== --}}
                                 <div class="form-group col-12 mb-3">
-                                    <label class="form-label" for="seo_keyword" data-ar="الكلمة الرئيسية"
+                                    <label class="form-label required-field" for="seo_keyword" data-ar="الكلمة الرئيسية"
                                         data-en="SEO Keyword">الكلمة الرئيسية</label>
                                     <span style="color:var(--bs-danger);">*</span>
                                     <div class="form-control-wrap">
