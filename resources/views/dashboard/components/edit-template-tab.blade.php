@@ -1986,8 +1986,8 @@
                                         '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
                                     ].join(' '),
                                     fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',
-                                    font_family_formats: 'Arial=arial,helvetica,sans-serif; Helvetica=helvetica; Times New Roman=times new roman,times; Courier New=courier new,courier;',
-                                    content_style: 'body { font-family: Arial, Helvetica, sans-serif; font-size:18pt; line-height:1.6; }',
+                                    font_family_formats: 'Yakout=Yakout,arial,sans-serif; Arial=arial,helvetica,sans-serif; Helvetica=helvetica; Times New Roman=times new roman,times; Courier New=courier new,courier;',
+                                    content_style: '@font-face{font-family:"Yakout";src:url("{{ asset('YAKOUTLINOTYPELIGHT-REGULAR.TTF') }}") format("truetype");font-weight:400;font-display:swap;} @font-face{font-family:"Yakout";src:url("{{ asset('YAKOUT-LINOTYPE-LIGHT-BOLD.TTF') }}") format("truetype");font-weight:700;font-display:swap;} body { font-family: "Yakout", Arial, Helvetica, sans-serif; font-size:18pt; line-height:1.6; }',
                                     menubar: 'file edit view insert format tools table help',
                                     contextmenu: 'copy cut vvcPaste | selectall',
                                     image_advtab: true,

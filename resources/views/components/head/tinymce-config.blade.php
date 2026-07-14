@@ -3541,7 +3541,9 @@
         auto_focus: false,
         // Custom CSS for editor content
         content_style: `
-        body{font-family:Arial,Helvetica,sans-serif !important;font-size:18pt !important;line-height:1.6 !important;}
+        @font-face{font-family:'Yakout';src:url('{{ asset('YAKOUTLINOTYPELIGHT-REGULAR.TTF') }}') format('truetype');font-weight:400;font-style:normal;font-display:swap;}
+        @font-face{font-family:'Yakout';src:url('{{ asset('YAKOUT-LINOTYPE-LIGHT-BOLD.TTF') }}') format('truetype');font-weight:700;font-style:normal;font-display:swap;}
+        body{font-family:'Yakout',Arial,Helvetica,sans-serif !important;font-size:18pt !important;line-height:1.6 !important;}
         img.tiny-sm,video.tiny-sm{width:280px;height:auto;max-width:100%;}
 
         /* Content-gallery placeholder block inside editor */
@@ -4299,7 +4301,7 @@
             '| code fullscreen wordcount searchreplace | removeformat subscript superscript charmap emoticons insertdatetime pagebreak preview print template visualblocks visualchars help'
         ].join(' '),
         fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt',
-        font_family_formats: 'Arial=arial,helvetica,sans-serif; Helvetica=helvetica; Times New Roman=times new roman,times; Courier New=courier;',
+        font_family_formats: 'Yakout=Yakout,arial,sans-serif; Arial=arial,helvetica,sans-serif; Helvetica=helvetica; Times New Roman=times new roman,times; Courier New=courier;',
         file_picker_types: 'image media',
         /**
          * Custom file picker for images and media
