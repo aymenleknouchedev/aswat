@@ -2476,6 +2476,9 @@
                 @endforeach
             </div>
 
+            {{-- Read-more block(s) are moved out of the article body to here (with the tags) --}}
+            <div id="list-readmore-slot"></div>
+
             {{-- Tags --}}
             @if ($news->tags && count($news->tags) > 0)
                 <div class="tags-container">
@@ -2486,6 +2489,24 @@
                     @endforeach
                 </div>
             @endif
+
+            <script>
+                (function () {
+                    function moveReadMore() {
+                        const slot = document.getElementById('list-readmore-slot');
+                        const body = document.querySelector('.intro.custom-article-content');
+                        if (!slot || !body) return;
+                        body.querySelectorAll('.read-more-block').forEach(function (block) {
+                            slot.appendChild(block);
+                        });
+                    }
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', moveReadMore);
+                    } else {
+                        moveReadMore();
+                    }
+                })();
+            </script>
 
             @php
                 $writers = $news->writers;
