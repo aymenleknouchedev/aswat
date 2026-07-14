@@ -665,7 +665,7 @@
             border-bottom: 1px solid #e0e0e0 !important;
         }
 
-        /* Darken the transparent navbar's logo + icons so they read on the white bar */
+        /* Closed state: darken the transparent navbar's logo + icons for the white bar */
         body:has(#greybar) .mobile-navbar .logo-img {
             filter: brightness(0);
         }
@@ -678,9 +678,17 @@
             background-color: #252525 !important;
         }
 
-        body:has(#greybar) .mobile-navbar .menu-toggle::after,
+        /* Sidebar open (dark panel): logo, close (X) and search icon stay white */
         body:has(#greybar) .mobile-navbar .menu-toggle.active::after {
-            color: #252525 !important;
+            color: #ffffff !important;
+        }
+
+        body:has(#greybar):has(.mobile-sidebar.active) .mobile-navbar .logo-img {
+            filter: none !important;
+        }
+
+        body:has(#greybar):has(.mobile-sidebar.active) .navbar-icons .search-toggle i {
+            color: #ffffff !important;
         }
     }
 </style>
