@@ -519,7 +519,7 @@
            and the break-out would overflow the screen. .tiny-sm and slider/lightbox
            images are excluded so they keep their intended sizes. */
         @media (min-width: 992px) {
-            .custom-article-content > figure,
+            .custom-article-content > figure:not(.audio),
             .custom-article-content > p > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img),
             .custom-article-content > img:not(.tiny-sm):not(.vvc-cgs-img):not(.vvc-cglb-img) {
                 width: 128.21% !important;
@@ -588,37 +588,106 @@
         }
 
         /* Audio styling within content */
-        .custom-article-content audio {
-            width: 100% !important;
-            height: 50px !important;
+        /* Native <audio> is kept only as the playback engine; the custom player UI
+           below replaces its controls. */
+        .custom-article-content audio,
+        .mobile-article-content audio {
+            display: none !important;
+        }
+
+        .custom-article-content figure.audio,
+        .mobile-article-content figure.audio {
             margin: 25px 0;
-            display: block;
-            border-radius: 25px;
+            width: 100%;
+        }
+
+        /* ===== Custom audio player ===== */
+        .custom-article-content .aud-player,
+        .mobile-article-content .aud-player {
+            direction: ltr;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            box-sizing: border-box;
             background: #f5f5f5;
-            border: none;
-            outline: none;
-            box-shadow: none;
-        }
-
-        /* Audio wrapped in a figure (with a caption): remove the audio's own margin so
-           the figure controls spacing, and let the shared figcaption style the caption. */
-        .custom-article-content figure.audio {
+            border-radius: 14px;
+            padding: 12px 16px;
             margin: 25px 0;
+            font-family: asswat-medium;
         }
 
-        .custom-article-content figure.audio > audio {
-            margin: 0 !important;
+        .custom-article-content figure.audio > .aud-player,
+        .mobile-article-content figure.audio > .aud-player {
+            margin: 0;
         }
 
-        .custom-article-content audio::-webkit-media-controls-panel {
-            background: linear-gradient(to right, #f5f5f5, #ffffff);
-            border-radius: 25px;
-        }
-
-        .custom-article-content audio::-webkit-media-controls-play-button,
-        .custom-article-content audio::-webkit-media-controls-pause-button {
-            background-color: #000;
+        .aud-player .aud-play {
+            flex: 0 0 44px;
+            width: 44px;
+            height: 44px;
+            border: none;
             border-radius: 50%;
+            background: #111;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            transition: background .2s ease, transform .1s ease;
+        }
+
+        .aud-player .aud-play:hover {
+            background: #000;
+        }
+
+        .aud-player .aud-play:active {
+            transform: scale(.94);
+        }
+
+        .aud-player .aud-play i {
+            line-height: 1;
+        }
+
+        .aud-player .aud-bar {
+            position: relative;
+            flex: 1 1 auto;
+            height: 6px;
+            background: #d9d9d9;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .aud-player .aud-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            background: #111;
+            border-radius: 3px;
+        }
+
+        .aud-player .aud-knob {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #111;
+            transform: translate(-50%, -50%);
+            transition: opacity .2s ease;
+        }
+
+        .aud-player .aud-time {
+            flex: 0 0 auto;
+            min-width: 40px;
+            text-align: center;
+            font-size: 13px;
+            color: #555;
+            font-variant-numeric: tabular-nums;
         }
 
         .video-container {
@@ -2363,28 +2432,6 @@
                 max-width: 100% !important;
             }
 
-            /* Audio styling within mobile content */
-            .mobile-article-content audio {
-                width: 100% !important;
-                height: 50px !important;
-                margin: 20px 0;
-                display: block;
-                border-radius: 25px;
-                background: #f5f5f5;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            }
-
-            .mobile-article-content audio::-webkit-media-controls-panel {
-                background: linear-gradient(to right, #f5f5f5, #ffffff);
-                border-radius: 25px;
-            }
-
-            .mobile-article-content audio::-webkit-media-controls-play-button,
-            .mobile-article-content audio::-webkit-media-controls-pause-button {
-                background-color: #000;
-                border-radius: 50%;
-            }
-
             .mobile-article-content a {
                 color: #000000;
                 text-decoration: none;
@@ -3615,6 +3662,7 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
             initializeTextDefinitionModal();
             initializeCopyLink();
             initializeAudioPlayer();
+            initializeContentAudioPlayers();
             initializeGreybarScroll();
             initializeMobileFeatureImage();
             initializeMobileGallery();
@@ -3656,6 +3704,93 @@ $audioPath = $news->media()->wherePivot('type', 'podcast')->first()->path;
 
             initializeSingleAudioPlayer('audioPlayerWrapperMobile', 'podcastAudioMobile', 'audioPlayIconMobile',
                 null, null, null, 'currentTimeMobile', 'totalDurationMobile');
+        }
+
+        /**
+         * Build a simple custom UI for every <audio> inside the article content
+         * (both web and mobile). The native element is kept as the hidden engine.
+         */
+        function initializeContentAudioPlayers() {
+            const audios = document.querySelectorAll('.custom-article-content audio, .mobile-article-content audio');
+
+            const fmt = (s) => {
+                if (!isFinite(s) || s < 0) return '0:00';
+                s = Math.floor(s);
+                const m = Math.floor(s / 60);
+                return m + ':' + String(s % 60).padStart(2, '0');
+            };
+
+            audios.forEach((audio) => {
+                if (audio.dataset.audEnhanced) return;
+                audio.dataset.audEnhanced = '1';
+                audio.removeAttribute('controls');
+
+                const player = document.createElement('div');
+                player.className = 'aud-player';
+                player.innerHTML =
+                    '<button type="button" class="aud-play" aria-label="تشغيل"><i class="fa-solid fa-play"></i></button>' +
+                    '<span class="aud-time aud-cur">0:00</span>' +
+                    '<div class="aud-bar"><div class="aud-fill"></div><div class="aud-knob"></div></div>' +
+                    '<span class="aud-time aud-dur">0:00</span>';
+                audio.parentNode.insertBefore(player, audio);
+
+                const playBtn = player.querySelector('.aud-play');
+                const icon = playBtn.querySelector('i');
+                const bar = player.querySelector('.aud-bar');
+                const fill = player.querySelector('.aud-fill');
+                const knob = player.querySelector('.aud-knob');
+                const curEl = player.querySelector('.aud-cur');
+                const durEl = player.querySelector('.aud-dur');
+
+                const setDur = () => { durEl.textContent = fmt(audio.duration); };
+                audio.addEventListener('loadedmetadata', setDur);
+                if (audio.readyState >= 1) setDur();
+
+                audio.addEventListener('timeupdate', () => {
+                    const p = audio.duration ? (audio.currentTime / audio.duration) : 0;
+                    fill.style.width = (p * 100) + '%';
+                    knob.style.left = (p * 100) + '%';
+                    curEl.textContent = fmt(audio.currentTime);
+                });
+
+                audio.addEventListener('play', () => {
+                    // Pause any other content audio that is playing
+                    audios.forEach((a) => { if (a !== audio && !a.paused) a.pause(); });
+                    icon.className = 'fa-solid fa-pause';
+                    playBtn.setAttribute('aria-label', 'إيقاف');
+                });
+                audio.addEventListener('pause', () => {
+                    icon.className = 'fa-solid fa-play';
+                    playBtn.setAttribute('aria-label', 'تشغيل');
+                });
+                audio.addEventListener('ended', () => {
+                    icon.className = 'fa-solid fa-play';
+                    fill.style.width = '0%';
+                    knob.style.left = '0%';
+                });
+
+                playBtn.addEventListener('click', () => {
+                    if (audio.paused) audio.play(); else audio.pause();
+                });
+
+                const seek = (clientX) => {
+                    const r = bar.getBoundingClientRect();
+                    const ratio = Math.min(Math.max((clientX - r.left) / r.width, 0), 1);
+                    if (audio.duration) audio.currentTime = ratio * audio.duration;
+                };
+                bar.addEventListener('click', (e) => seek(e.clientX));
+
+                // Drag the knob / bar to scrub
+                let dragging = false;
+                const onMove = (e) => { if (dragging) seek(e.touches ? e.touches[0].clientX : e.clientX); };
+                const stop = () => { dragging = false; };
+                bar.addEventListener('mousedown', (e) => { dragging = true; seek(e.clientX); });
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', stop);
+                bar.addEventListener('touchstart', (e) => { dragging = true; seek(e.touches[0].clientX); }, { passive: true });
+                document.addEventListener('touchmove', onMove, { passive: true });
+                document.addEventListener('touchend', stop);
+            });
         }
 
         /**
