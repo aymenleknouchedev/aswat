@@ -740,7 +740,7 @@
 
         .custom-article-content table td.td-active,
         .custom-article-content table th.td-active {
-            background: #eef0f2;
+            background: #f1f1f1;
         }
 
         /* Headings inside a table cell must not add their outside vertical spacing */
@@ -2460,7 +2460,7 @@
 
             .mobile-article-content table td.td-active,
             .mobile-article-content table th.td-active {
-                background: #eef0f2;
+                background: #f1f1f1;
             }
 
             /* Headings inside a table cell must not add their outside vertical spacing */
