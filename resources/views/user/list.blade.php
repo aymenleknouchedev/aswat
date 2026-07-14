@@ -1390,8 +1390,9 @@
 
         .section-title {
             font-size: 20px;
-            font-family: asswat-bold;
-            color: #141414;
+            font-family: 'asswat-medium' !important;
+            font-weight: 400 !important;
+            color: #000;
             text-align: right;
         }
 
